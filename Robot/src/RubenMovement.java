@@ -28,18 +28,4 @@ public class RubenMovement implements IMovement{
     public void TurnAroundWheel(double angle, boolean isLeft) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    public void veelhoek(int l, int h){
-        int lengte=l;
-        int aantalHoeken=h;
-        int rotatiesRijden=berekenRijden(lengte);
-        int rotatiesHoeken=berekenHoeken(aantalHoeken);
-        System.out.println(rotatiesRijden);
-        System.out.println(rotatiesHoeken);
-        System.out.println(rotatiesRijden*150/SPEED);
-        for(int i=0;i<aantalHoeken;i++){
-            rijden(rotatiesRijden);
-            hoek(rotatiesHoeken);
-        }
-            System.out.println("Done");
-    }
 }
