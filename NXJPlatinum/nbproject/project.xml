@@ -24,20 +24,24 @@
             </folders>
             <ide-actions>
                 <action name="build">
+                    <script>nbproject/nbjdk.xml</script>
                     <target>compile</target>
                 </action>
                 <action name="clean">
+                    <script>nbproject/nbjdk.xml</script>
                     <target>clean</target>
                 </action>
                 <action name="run">
+                    <script>nbproject/nbjdk.xml</script>
                     <target>uploadandrun</target>
                 </action>
                 <action name="rebuild">
+                    <script>nbproject/nbjdk.xml</script>
                     <target>clean</target>
                     <target>compile</target>
                 </action>
                 <action name="run.single">
-                    <script>nbproject/ide-file-targets.xml</script>
+                    <script>nbproject/nbjdk.xml</script>
                     <target>run-selected-file-in-src</target>
                     <context>
                         <property>run.class</property>
@@ -50,7 +54,7 @@
                     </context>
                 </action>
                 <action name="compile.single">
-                    <script>nbproject/ide-file-targets.xml</script>
+                    <script>nbproject/nbjdk.xml</script>
                     <target>compile-selected-files-in-src</target>
                     <context>
                         <property>files</property>
@@ -85,7 +89,7 @@
         <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/3">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">classes.jar</classpath>
+                <classpath mode="compile">C:\Program Files (x86)\leJOS NXJ\lib\classes.jar</classpath>
                 <source-level>1.6</source-level>
             </compilation-unit>
         </java-data>
