@@ -13,7 +13,7 @@ public class Veelhoek {
     for(int i=0;i<number;i++){
       forward(time);
       try { Thread.sleep(1000); } catch(Exception e) {}
-      turn(angle);
+      turnRotations(angle);
       try { Thread.sleep(1000); } catch(Exception e) {}
     }
   }
@@ -36,4 +36,18 @@ public class Veelhoek {
     Motor.C.backward();
     try { Thread.sleep(sleep); } catch(Exception e) {}
   }
+  
+  static void turnRotations(int angle){
+	int speed = 360;
+	double lengthAxis = 11;
+	double lengthWeel = 17.5;
+	double circumference = 2*Math.PI*(lengthAxis/2);
+	double toTravel = angle*(circumference/360);
+	int amountOfRotations= (int) ((toTravel*360)/lengthWeel);
+	Motor.B.setSpeed(speed);
+	Motor.C.setSpeed(speed);
+	Motor.B.rotate(amountOfRotations, true);
+	Motor.C.rotate(amountOfRotations, false);
+  }
+  
 }
