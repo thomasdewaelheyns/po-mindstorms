@@ -1,6 +1,4 @@
 package PenoPlatinum;
-
-
 import lejos.nxt.Motor;
 
 /**
@@ -32,6 +30,14 @@ public class VeelhoekAction implements IAction {
                 Thread.sleep(1000);
             } catch (Exception e) {
             }
+        }
+    }
+    static void veelhoek2(double l, int n){
+        RubenMovement mov=new RubenMovement();
+        double hoek=360.0/n;
+        for(int i=0;i<n;i++){
+            mov.MoveStraight(l);
+            mov.TurnOnSpotCCW(hoek);
         }
     }
 
