@@ -5,10 +5,13 @@ import java.io.DataOutputStream;
 public class Veelhoek {
 
   public static void main(String [] args) {
-    veelhoek(3 , 1000);
+  forward(1000);
+  
+  //  veelhoek(3 , 1000);
   }
 
   static void veelhoek(int number, int time){
+	
     int angle = 180 * (number-2) / number;
     for(int i=0;i<number;i++){
       forward(time);
