@@ -22,8 +22,16 @@ public class ActionFrameworkServer {
         DataInputStream str = dis;
         dos = conn.openDataOutputStream();
         DataOutputStream stro = dos;
+        
+        sendActions();
+        
         return true;
         
+        
+    }
+    
+    private void sendActions()
+    {
         
     }
 }

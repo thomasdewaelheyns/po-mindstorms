@@ -11,4 +11,8 @@ public class ActionContainer {
     {
         actions.add(action);
     }
+    public IAction[] GetActions()
+    {
+        return (IAction[]) actions.toArray();
+    }
 }
