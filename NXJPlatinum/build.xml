@@ -97,7 +97,7 @@
 	</target>
 	
 	<target name="uploadandrun" depends="link" description="upload and run the binary">
-		<java classname="lejos.pc.tools.NXJUpload" fork="true" failonerror="true">
+		<  java classname="lejos.pc.tools.NXJUpload" fork="true" failonerror="true">
 			<jvmarg value="-Dnxj.home=${nxj.home}" />
 			<jvmarg value="${d32Flag}" />
 			<classpath refid="lejos.pc" />
