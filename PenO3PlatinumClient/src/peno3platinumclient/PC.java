@@ -10,6 +10,10 @@ import lejos.pc.comm.NXTCommandConnector;
 
 public class PC {
 
+    private OutputStream outputStream;
+    private InputStream inputStream;
+    private NXTComm open;
+
     public static void main(String[] args) {
 
         PC pc = new PC();
@@ -47,9 +51,6 @@ public class PC {
         pc.close();
 
     }
-    private OutputStream outputStream;
-    private InputStream inputStream;
-    private NXTComm open;
 
     public void connect() throws Exception {
         open = NXTCommandConnector.open();

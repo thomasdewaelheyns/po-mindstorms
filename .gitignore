@@ -1,4 +1,2 @@
 *.class
-
-/Robot/build.properties
-/Robot/build.xml
+build*
