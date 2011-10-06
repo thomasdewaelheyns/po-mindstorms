@@ -1,4 +1,4 @@
-package org.lejos.example;
+package PenoPlatinum;
 
 import lejos.nxt.*;
 
