@@ -1,4 +1,4 @@
-import lejos.nxt.Motor;
+import lejos.nxt.*;
 
 public class Veelhoeken {
     public static final int WIELOMTREK=176; //mm
