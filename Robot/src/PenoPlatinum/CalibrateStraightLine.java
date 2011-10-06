@@ -4,6 +4,9 @@
  */
 package PenoPlatinum;
 
+import lejos.nxt.SensorPort;
+import lejos.nxt.TouchSensor;
+
 /**
  *
  * @author MHGameWork
@@ -17,6 +20,22 @@ public class CalibrateStraightLine implements IAction {
     }
 
     public void Execute() {
-        System.out.println("Hellow all");
+        RubenMovement rub = new RubenMovement();
+        rub.CalibrateWheelCircumference();
+        /*IMovement movement = new RubenMovement();
+        movement.MoveStraight(100);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+        }
+
+        TouchSensor sensor = new TouchSensor(SensorPort.S4);
+        System.out.println("Weeeeee");
+        while (!sensor.isPressed()) {
+            
+        }
+        System.out.println("Auch!");*/
+        
+        
     }
 }
