@@ -17,6 +17,6 @@ public class CalibrateStraightLine implements IAction {
     }
 
     public void Execute() {
-        
+        System.out.println("Hellow all");
     }
 }
