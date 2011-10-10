@@ -5,7 +5,10 @@ import java.io.DataOutputStream;
 public class Veelhoek {
 
   public static void main(String [] args) {
-    veelhoek(3 , 1000);
+  System.out.println("Hello Ruben");
+	//AngleMovement a = new AngleMovement();
+	//a.Execute();
+    //veelhoek(3 , 1000);
   }
 
   static void veelhoek(int number, int time){
@@ -40,14 +43,16 @@ public class Veelhoek {
   static void turnRotations(int angle){
 	int speed = 360;
 	double lengthAxis = 11;
-	double lengthWeel = 17.5;
-	double circumference = 2*Math.PI*(lengthAxis/2);
-	double toTravel = angle*(circumference/360);
-	int amountOfRotations= (int) ((toTravel*360)/lengthWeel);
+	double lengthWheel = 17.5;
+	double circumference = Math.PI*(lengthAxis);
+	double toTravel = (angle*circumference)/360;
+	int amountOfRotations = (int) ((toTravel*360)/lengthWheel);
 	Motor.B.setSpeed(speed);
 	Motor.C.setSpeed(speed);
+	System.out.print(amountOfRotations);
 	Motor.B.rotate(amountOfRotations, true);
-	Motor.C.rotate(amountOfRotations, false);
+	Motor.C.rotate(-amountOfRotations, true);
+	try { Thread.sleep(3000); } catch(Exception e) {}
   }
   
 }
