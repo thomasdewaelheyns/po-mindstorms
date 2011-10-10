@@ -7,7 +7,6 @@ public class RubenMovement implements IMovement{
     public static final int SPEEDTURN=400;
     public static final int WIELOMTREK=175; //mm
     public static final int WIELAFSTAND=56;//mm
-    public static final int SPEED=350;
     public Motor motorLeft=Motor.C;
     public Motor motorRight=Motor.B;
     
