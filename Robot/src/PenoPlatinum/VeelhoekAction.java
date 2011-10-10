@@ -32,7 +32,7 @@ public class VeelhoekAction implements IAction {
             }
         }
     }
-    static void veelhoek2(double l, int n){
+    void veelhoek2(double l, int n){
         RubenMovement mov=new RubenMovement();
         double hoek=360.0/n;
         for(int i=0;i<n;i++){
