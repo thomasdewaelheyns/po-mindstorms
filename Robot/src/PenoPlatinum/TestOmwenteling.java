@@ -1,3 +1,5 @@
+package PenoPlatinum;
+
 
 import lejos.nxt.*;
 

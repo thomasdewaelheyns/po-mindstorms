@@ -1,2 +1,2 @@
-
-/PenO3PlatinumClient/build/*
+*.class
+build*

@@ -3,11 +3,11 @@
     <type>org.netbeans.modules.ant.freeform</type>
     <configuration>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
-            <name>PenO3Platinum</name>
+            <name>Robot</name>
         </general-data>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
             <!-- Do not use Project Properties customizer when editing this file manually. -->
-            <name>PenO3Platinum</name>
+            <name>Robot</name>
             <properties/>
             <folders>
                 <source-folder>
@@ -24,24 +24,20 @@
             </folders>
             <ide-actions>
                 <action name="build">
-                    <script>nbproject/nbjdk.xml</script>
                     <target>compile</target>
                 </action>
                 <action name="clean">
-                    <script>nbproject/nbjdk.xml</script>
                     <target>clean</target>
                 </action>
                 <action name="run">
-                    <script>nbproject/nbjdk.xml</script>
                     <target>uploadandrun</target>
                 </action>
                 <action name="rebuild">
-                    <script>nbproject/nbjdk.xml</script>
                     <target>clean</target>
                     <target>compile</target>
                 </action>
                 <action name="run.single">
-                    <script>nbproject/nbjdk.xml</script>
+                    <script>nbproject/ide-file-targets.xml</script>
                     <target>run-selected-file-in-src</target>
                     <context>
                         <property>run.class</property>
@@ -54,7 +50,7 @@
                     </context>
                 </action>
                 <action name="compile.single">
-                    <script>nbproject/nbjdk.xml</script>
+                    <script>nbproject/ide-file-targets.xml</script>
                     <target>compile-selected-files-in-src</target>
                     <context>
                         <property>files</property>
@@ -86,34 +82,23 @@
             </view>
             <subprojects/>
         </general-data>
-        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/3">
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">/home/rupsbant/Lejos/lejos_nxj/lib/classes.jar</classpath>
-                <source-level>1.6</source-level>
+                <classpath mode="compile">C:/Program Files (x86)/leJOS NXJ/lib/classes.jar:/home/rupsbant/Lejos/lejos_nxj/lib/classes.jar</classpath>
+                <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>
         <preferences xmlns="http://www.netbeans.org/ns/auxiliary-configuration-preferences/1">
             <module name="org-netbeans-modules-editor-indent">
                 <node name="CodeStyle">
-                    <node name="project"/>
-                </node>
-                <node name="project"/>
-                <node name="text">
-                    <node name="x-java">
-                        <node name="CodeStyle">
-                            <node name="project"/>
-                        </node>
-                    </node>
-                    <node name="x-ant+xml">
-                        <node name="CodeStyle">
-                            <node name="project"/>
-                        </node>
+                    <property name="usedProfile" value="default"/>
+                    <node name="project">
+                        <property name="tab-size" value="8"/>
+                        <property name="text-limit-width" value="80"/>
                     </node>
                 </node>
             </module>
-            <module name="org-netbeans-modules-projectimport-eclipse-core"/>
-            <module name="org-netbeans-modules-hudson"/>
         </preferences>
     </configuration>
 </project>
