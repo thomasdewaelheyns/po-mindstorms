@@ -63,14 +63,6 @@ public class SpeedBasedMovement implements IMovement {
 		} catch(Exception e){}
         }
 
-    public void MoveStraight(float distance) {
-        
-    }
-
-    public void TurnOnSpotCCW(float angle) {
-        
-    }
-
     public void TurnAroundWheel(double angle, boolean isLeft) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -81,6 +73,10 @@ public class SpeedBasedMovement implements IMovement {
 
     public void TurnOnSpotCCW(double angle) {
         turn((float)angle);
+    }
+
+    public void Stop() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 	
