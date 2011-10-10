@@ -1,4 +1,4 @@
-package PenoPlatinum;
+/*package PenoPlatinum;
 import lejos.nxt.*;
 import java.io.*;
 
@@ -47,4 +47,4 @@ public class MainThomas {
 	}
 
 
-}
+}*/

@@ -1,5 +1,7 @@
 package peno3platinumclient;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,6 +22,13 @@ public class PC {
 
         try {
             pc.connect();
+            pc.send(255);
+            pc.send(255);
+            pc.send(255);
+            pc.send(255);
+            pc.send(255);
+            pc.send(255);
+            return;
         } catch (Exception ex) {
         }
         System.out.println(pc.open);
@@ -70,6 +79,7 @@ public class PC {
 
     public void connect() throws Exception {
         open = NXTCommandConnector.open();
+        
         outputStream = open.getOutputStream();
         inputStream = open.getInputStream();
     }
@@ -82,11 +92,13 @@ public class PC {
     }
 
     public void send(int n) {
+        if (n > 255) throw new RuntimeException("QSDFSDQF");
         System.out.println("e: " + n);
         try {
-            outputStream.write(n);
+            outputStream.write((byte) n);
             outputStream.flush();
         } catch (IOException ex) {
+            System.out.println("IO Exception.");
         }
     }
 }
