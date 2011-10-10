@@ -1,6 +1,6 @@
 import lejos.nxt.*;
 
-public class Test2 {
+public class SpeedBased {
 
 	static final NXTRegulatedMotor MotorLeft = Motor.B;
 	static final NXTRegulatedMotor MotorRight = Motor.C;
