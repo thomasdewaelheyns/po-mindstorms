@@ -13,7 +13,7 @@ public class Interface {
 		if((angles<100)){LCD.drawString(angles,4,8)};
 		else {LCD.drawString(angles,4,7)};
 		while (true) {
-		  if (Button.ENTER.isPressed()) selectLength(angles,100);
+		  if (Button.ENTER.isPressed()) selectLength(angles,500);
 		  if (Button.ESCAPE.isPressed()) System.exit();
 		  if (Button.LEFT.isPressed()){ 
 			if((angles-1)>=3){selectAngles((angles-1))};
@@ -32,10 +32,10 @@ public class Interface {
 		  if (Button.ENTER.isPressed()) veelhoek();
 		  if (Button.ESCAPE.isPressed()) System.exit();
 		  if (Button.LEFT.isPressed()){ 
-			if((length-5)>=5){selectLength((length-5))};
+			if((length-10)>=10){selectLength((length-10))};
 			else { selectLength(length)};
 			};
-		  if (Button.RIGHT.isPressed()) selectLength((length+5));
+		  if (Button.RIGHT.isPressed()) selectLength((length+10));
 		}
 	
 	
