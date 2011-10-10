@@ -22,7 +22,7 @@ public class PC {
             pc.connect();
         } catch (Exception ex) {
         }
-        System.out.println(pc);
+        System.out.println(pc.open);
         Scanner sc = new Scanner(System.in);
         while (true) {
             char get = sc.next().charAt(0);

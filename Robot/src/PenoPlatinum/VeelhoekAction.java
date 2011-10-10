@@ -32,13 +32,15 @@ public class VeelhoekAction implements IAction {
             }
         }
     }
-    static void veelhoek2(double l, int n){
+    static void veelhoekRotate(double l, int n){
         RubenMovement mov=new RubenMovement();
         double hoek=360.0/n;
         for(int i=0;i<n;i++){
             mov.MoveStraight(l);
             mov.TurnOnSpotCCW(hoek);
         }
+        Motor.B.stop();
+        Motor.C.stop();
     }
 
     static void forward(int time) {
