@@ -34,7 +34,13 @@ public class Utils {
             try{
                 switch(str.readByte()){
                     case 4:
-                        VeelhoekAction.veelhoek(3,1000);
+                        int dist=str.readByte();
+                        int hoeken=str.readByte();
+                        int speed=str.readByte();
+                        System.out.println(hoeken+" "+dist);
+                        System.out.println(speed);
+                        VeelhoekAction.veelhoek(hoeken,dist);
+                        System.out.println("Done.");
                         break;
                     case 3:
                         cont=false;
@@ -42,14 +48,20 @@ public class Utils {
                     case 2:
                         int l=str.readByte()*10;
                         Motor.B.setSpeed(l);
-                        Motor.B.forward();
-                        System.out.println(l);
+                        if(l>0){
+                            Motor.B.forward();
+                        } else {
+                            Motor.B.backward();
+                        }
                         break;
                     case 1:
                         int r=str.readByte()*10;
                         Motor.C.setSpeed(r);
-                        Motor.C.forward();
-                        System.out.println(r);
+                        if(r>0){
+                            Motor.C.forward();
+                        } else {
+                            Motor.C.backward();
+                        }
                         break;
                     case 0:
                         byte ml = str.readByte();
