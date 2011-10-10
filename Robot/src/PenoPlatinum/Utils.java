@@ -6,6 +6,7 @@ package PenoPlatinum;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import lejos.nxt.Motor;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
@@ -69,7 +70,8 @@ public class Utils {
                         System.out.println(ml+" "+mr);
                         break;
                 }
-            } catch(Exception e){
+            } catch(IOException e){
+                System.out.println(e.getClass().toString());
                 conn = Bluetooth.waitForConnection();
                 str = conn.openDataInputStream();
                 stro = conn.openDataOutputStream();

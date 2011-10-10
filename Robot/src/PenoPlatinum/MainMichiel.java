@@ -11,7 +11,10 @@ package PenoPlatinum;
 public class MainMichiel {
     public static void main(String[] args)
     {
-        Utils.comp();
+        //Utils.comp();
+        //MainFlorian.testForwardDriving();
+        SpeedBaseMovementTest test = new SpeedBaseMovementTest();
+        test.testForwardDrivingVariableSpeed();
     }
     
 }
