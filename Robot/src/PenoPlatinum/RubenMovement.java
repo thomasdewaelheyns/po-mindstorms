@@ -3,12 +3,12 @@ package PenoPlatinum;
 import lejos.nxt.*;
 
 public class RubenMovement implements IMovement {
-
-    private Object waitLock = new Object();
     public static final int SPEEDFORWARD = 400;
     public static final int SPEEDTURN = 400;
     public final int WIELOMTREK = 175; //mm
-    public final int WIELAFSTAND = 56;//mm
+    public final int WIELAFSTANDMIDDEN = 56;//mm
+    public final int WIELAFSTAND = 112;//mm
+
     public static final int SPEED = 350;
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
@@ -20,21 +20,23 @@ public class RubenMovement implements IMovement {
         motorRight.setSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
         motorRight.rotate(r, true);
-        Utils.Sleep(r*1500/SPEEDFORWARD);
+        Utils.Sleep(r*1100/SPEEDFORWARD);
     }
 
     public void TurnOnSpotCCW(double angle) {
-        int h = (int) (angle * 2 * Math.PI * WIELAFSTAND / WIELOMTREK);
+        int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, true);
-        try {
-            Thread.sleep(h * 1500 / SPEEDTURN);
-        } catch (Exception e) {
-        }
+        Utils.Sleep(h*1100/SPEEDTURN);
     }
 
-    public void TurnAroundWheel(double angle, boolean isLeft) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void TurnAroundWheel(double angle, boolean aroundLeft) {
+        int h = (int) (angle * 2 * Math.PI * WIELAFSTAND / WIELOMTREK);
+        if(aroundLeft){
+            motorRight.rotate(h);
+        } else {
+            motorLeft.rotate(h);
+        }
     }
 
     public void CalibrateWheelCircumference() {
@@ -84,5 +86,10 @@ public class RubenMovement implements IMovement {
     }
 
     public void CalibrateWheelDistance() {
+    }
+
+    public void Stop() {
+        motorLeft.stop();
+        motorRight.stop();
     }
 }

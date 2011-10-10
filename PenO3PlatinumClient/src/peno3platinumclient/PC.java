@@ -22,15 +22,28 @@ public class PC {
             pc.connect();
         } catch (Exception ex) {
         }
-        System.out.println(pc);
+        System.out.println(pc.open);
         Scanner sc = new Scanner(System.in);
         while (true) {
             char get = sc.next().charAt(0);
-            if (get == 'z') {
+            if (get=='v') {
+                int h=sc.nextInt();
+                int d=sc.nextInt();
+                int sp=sc.nextInt();
+                pc.send(4);
+                pc.send(d);
+                pc.send(h);
+                pc.send(sp);
+            } else if(get=='r'){
                 pc.send(1);
-                pc.send(720/4);
+                pc.send(0);
                 pc.send(2);
-                pc.send(720/4);
+                pc.send(0);
+            } else if (get == 'z') {
+                pc.send(1);
+                pc.send(-720/4);
+                pc.send(2);
+                pc.send(-720/4);
             } else if (get == 'q') {
                 pc.send(1);
                 pc.send(0);
@@ -43,9 +56,9 @@ public class PC {
                 pc.send(0);
             } else if (get == 's') {
                 pc.send(1);
-                pc.send(-720/4);
+                pc.send(720/4);
                 pc.send(2);
-                pc.send(-720/4);
+                pc.send(720/4);
             } else if (get == 'b') {
                 pc.send(3);
                 break;
