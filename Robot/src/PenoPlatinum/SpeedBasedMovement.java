@@ -8,13 +8,16 @@ public class SpeedBasedMovement implements IMovement {
     static final float turn_DEFAULT_SPEED = 0.05f;
     static final Motor MotorLeft = Motor.B;
     static final Motor MotorRight = Motor.C;
+    
+    public int factor = 2070;
+    
 
     void forward(float time) {
         forward(FORWARD_DEFAULT_SPEED, time);
     }
 
     void forward(float speed, float time) {
-        int motorSpeed = (int) (speed * 2070);
+        int motorSpeed = (int) (speed * factor);
         System.out.println(motorSpeed + "");
         MotorLeft.setSpeed(motorSpeed);
         MotorRight.setSpeed(motorSpeed);

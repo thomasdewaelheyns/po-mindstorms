@@ -3,13 +3,12 @@ package PenoPlatinum;
 import lejos.nxt.*;
 
 public class RubenMovement implements IMovement {
-    public static final int SPEEDFORWARD = 400;
-    public static final int SPEEDTURN = 400;
+
+    public int SPEEDFORWARD = 400;
+    public int SPEEDTURN = 400;
     public final int WIELOMTREK = 175; //mm
     public final int WIELAFSTANDMIDDEN = 56;//mm
     public final int WIELAFSTAND = 112;//mm
-
-    public static final int SPEED = 350;
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
 
@@ -20,19 +19,21 @@ public class RubenMovement implements IMovement {
         motorRight.setSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
         motorRight.rotate(r, true);
-        Utils.Sleep(r*1100/SPEEDFORWARD);
+        Utils.Sleep(r * 1100 / SPEEDFORWARD);
     }
 
     public void TurnOnSpotCCW(double angle) {
+        motorLeft.setSpeed(SPEEDTURN);
+        motorRight.setSpeed(SPEEDTURN);
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, true);
-        Utils.Sleep(h*1100/SPEEDTURN);
+        Utils.Sleep(h * 1100 / SPEEDTURN);
     }
 
     public void TurnAroundWheel(double angle, boolean aroundLeft) {
         int h = (int) (angle * 2 * Math.PI * WIELAFSTAND / WIELOMTREK);
-        if(aroundLeft){
+        if (aroundLeft) {
             motorRight.rotate(h);
         } else {
             motorLeft.rotate(h);

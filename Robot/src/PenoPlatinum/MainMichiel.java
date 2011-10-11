@@ -13,8 +13,11 @@ public class MainMichiel {
     {
         //Utils.comp();
         //MainFlorian.testForwardDriving();
-        SpeedBaseMovementTest test = new SpeedBaseMovementTest();
-        test.testForwardDrivingVariableSpeed();
+        //SpeedBaseMovementTest test = new SpeedBaseMovementTest();
+        //test.testForwardDrivingVariableSpeed();
+        RubenMovementTest test = new RubenMovementTest();
+        test.testForwardDistances();
+        
     }
     
 }
