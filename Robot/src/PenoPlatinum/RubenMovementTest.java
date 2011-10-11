@@ -48,9 +48,9 @@ public class RubenMovementTest {
     }
 
     public void testRotateAngles() {
-        int speed = 200; // TODO
+        int speed = 200;
 
-        int[] angles = new int[]{15, 30, 45, 60, 75, 90, 135, 180, 225, 360};
+        int[] angles = new int[]{15, 30, 45, 60, 90};
         RubenMovement mov = new RubenMovement();
 
         mov.SPEEDTURN = speed;

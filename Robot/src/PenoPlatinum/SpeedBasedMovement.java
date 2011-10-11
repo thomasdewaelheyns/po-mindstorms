@@ -9,16 +9,12 @@ public class SpeedBasedMovement implements IMovement {
     static final Motor MotorLeft = Motor.B;
     static final Motor MotorRight = Motor.C;
     
-    public int factor = 2070;
-    
-
     void forward(float time) {
         forward(FORWARD_DEFAULT_SPEED, time);
     }
 
     void forward(float speed, float time) {
-        int motorSpeed = (int) (speed * factor);
-        System.out.println(motorSpeed + "");
+        int motorSpeed = (int) (speed);
         MotorLeft.setSpeed(motorSpeed);
         MotorRight.setSpeed(motorSpeed);
         MotorLeft.forward();
@@ -40,7 +36,7 @@ public class SpeedBasedMovement implements IMovement {
         MotorLeft.suspendRegulation();
         MotorRight.suspendRegulation();
         }*/
-        int motorSpeed = (int) (speed * 2070);
+        int motorSpeed = (int) (speed);
         int sleep = (int) (1500 * angle / 360);
         MotorLeft.setSpeed(motorSpeed);
         MotorRight.setSpeed(motorSpeed);

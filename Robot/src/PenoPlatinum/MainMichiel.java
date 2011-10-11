@@ -15,8 +15,16 @@ public class MainMichiel {
         //MainFlorian.testForwardDriving();
         //SpeedBaseMovementTest test = new SpeedBaseMovementTest();
         //test.testForwardDrivingVariableSpeed();
-        RubenMovementTest test = new RubenMovementTest();
-        test.testForwardDistances();
+        SpeedBasedMovementTest test = new SpeedBasedMovementTest();
+
+        System.out.println("testForwardSpeed");
+        test.testForwardSpeed();
+        System.out.println("testForwardDistance");
+        test.testForwardDistance();
+        System.out.println("testRotateSpeeds");
+        test.testRotateSpeeds();
+        System.out.println("testRotateFactor");
+        test.testRotateAngles();
         
     }
     
