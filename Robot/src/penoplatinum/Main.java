@@ -1,6 +1,7 @@
 package penoplatinum;
 
 import lejos.nxt.*;
+import penoplatinum.movement.RotationMovement;
 
 public class Main {
 
@@ -13,6 +14,9 @@ public class Main {
     static int pos=0;
 
     public static void selectVeelhoek(){
+        
+        Veelhoek veelhoek = new Veelhoek(new RotationMovement());
+        
         int[] p=new int[]{2,5};
         while(true){
             LCD.clear();
@@ -46,7 +50,7 @@ public class Main {
                         distance = Math.min(1000, distance+1);
                         break;
                     case Button.ID_ENTER:
-                        Veelhoek.veelhoekRotate(distance/100.0, hoeken);
+                        veelhoek.veelhoekRotate(distance/100.0, hoeken);
                         break;
                     case Button.ID_ESCAPE:
                         pos--;

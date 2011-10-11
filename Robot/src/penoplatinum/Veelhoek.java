@@ -1,14 +1,18 @@
 package penoplatinum;
 
-
-import penoplatinum.movement.RotationMovement;
 import lejos.nxt.*;
+import penoplatinum.movement.IMovement;
 
 public class Veelhoek {
-    static void veelhoekRotate(double l, int n){
-        RotationMovement mov=new RotationMovement();
-        double hoek=360.0/n;
-        for(int i=0;i<n;i++){
+    private final IMovement mov;
+
+    public Veelhoek(IMovement mov) {
+        this.mov = mov;
+    }
+
+    public void veelhoekRotate(double l, int n) {
+        double hoek = 360.0 / n;
+        for (int i = 0; i < n; i++) {
             mov.MoveStraight(l);
             mov.TurnOnSpotCCW(hoek);
         }
