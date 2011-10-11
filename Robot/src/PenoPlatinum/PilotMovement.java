@@ -6,14 +6,13 @@ import lejos.robotics.proposal.DifferentialPilot;
 public class PilotMovement implements IMovement {
 
     public static final int SPEED = 400;
-    private Object waitLock = new Object();
     public DifferentialPilot pilot = new DifferentialPilot(175, 113, Motor.C, Motor.B);
 
     /**
      * Zorgt ervoor dat de robot rechtdoor rijdt over een gekozen afstand.
      * 
      * @param distance
-     * 				Afstand die moet worden afgelegd. Negatieve afstand om achteruit te rijden. (mm)
+     * 		Afstand die moet worden afgelegd. Negatieve afstand om achteruit te rijden. (mm)
      */
     public void MoveStraight(double distance) {
         pilot.setSpeed(SPEED);
@@ -24,7 +23,7 @@ public class PilotMovement implements IMovement {
      * Laat de robot terplekke draaien.
      * 
      * @param angle
-     * 				Hoek die de robot moet afleggen. Negatieve hoek om met de klok te draaien.
+     * 		Hoek die de robot moet afleggen. Negatieve hoek om met de klok te draaien.
      */
     public void TurnOnSpotCCW(double angle) {
         pilot.setSpeed(SPEED);

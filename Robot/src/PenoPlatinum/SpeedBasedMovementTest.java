@@ -113,7 +113,6 @@ public class SpeedBasedMovementTest {
             Utils.Sleep(1000);
             for (int j = 0; j < 5; j++) {
                 mov.turn(speed, angle, true);
-
                 mov.TurnOnSpotCCW(angle);
                 Utils.Sleep(3000);
 

@@ -5,7 +5,7 @@ import lejos.nxt.*;
 public class SpeedBasedMovement implements IMovement {
 
     static final float FORWARD_DEFAULT_SPEED = 0.10f;
-    static final float turn_DEFAULT_SPEED = 0.05f;
+    static final float TURN_DEFAULT_SPEED = 0.05f;
     static final Motor MotorLeft = Motor.B;
     static final Motor MotorRight = Motor.C;
     
