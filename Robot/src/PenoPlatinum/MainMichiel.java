@@ -17,7 +17,7 @@ public class MainMichiel {
         //MainFlorian.testForwardDriving();
         //SpeedBaseMovementTest test = new SpeedBaseMovementTest();
         //test.testForwardDrivingVariableSpeed();
-        /*SpeedBasedMovementTest test = new SpeedBasedMovementTest();
+        SpeedBasedMovementTest test = new SpeedBasedMovementTest();
         
         //System.out.println("testForwardSpeed");
         //test.testForwardSpeed();
@@ -25,16 +25,16 @@ public class MainMichiel {
         test.testForwardTime();
         System.out.println("testRotateSpeeds");
         test.testRotateSpeeds();
-        System.out.println("testRotateFactor");
-        test.testRotateAngles();*/
+        System.out.println("testRotateAngles");
+        test.testRotateAngles();
 
-        RubenMovement mov = new RubenMovement();
+        /*RubenMovement mov = new RubenMovement();
 
         for (int i = 0; i < 10; i++) {
             Button.waitForPress();
             mov.SPEEDFORWARD = 500;
             mov.MoveStraight(3);
-        }
+        }*/
 
 
 
