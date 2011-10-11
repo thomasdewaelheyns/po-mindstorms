@@ -21,15 +21,16 @@ public class SpeedBasedMovementTest {
     }
 
 
-    public void testForwardDistance() {
+    public void testForwardTime() {
         float speed, time;
+        speed = 250;
         time = 2;
 
-        float[] values = new float[]{0.2f, 0.4f, 0.6f, 0.8f};
+        float[] values = new float[]{0.5f, 1f, 1.5f, 2.0f};
 
         for (int i = 0; i < values.length; i++) {
 
-            speed = values[i];
+            time = values[i];
 
             System.out.println(values[i]);
             Button.waitForPress();
