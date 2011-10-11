@@ -1,4 +1,4 @@
-package PenoPlatinum;
+package Movement;
 
 public interface IMovement {
     void MoveStraight(double distance);

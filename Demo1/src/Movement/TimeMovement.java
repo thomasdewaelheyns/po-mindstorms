@@ -1,14 +1,14 @@
-package PenoPlatinum;
+package Movement;
 
 import lejos.nxt.*;
 
-public class SpeedBasedMovement implements IMovement {
+public class TimeMovement implements IMovement {
 
     static final float FORWARD_DEFAULT_SPEED = 0.10f;
-    static final float TURN_DEFAULT_SPEED = 0.05f;
+    static final float turn_DEFAULT_SPEED = 0.05f;
     static final Motor MotorLeft = Motor.B;
     static final Motor MotorRight = Motor.C;
-    
+
     void forward(float time) {
         forward(FORWARD_DEFAULT_SPEED, time);
     }
@@ -19,10 +19,7 @@ public class SpeedBasedMovement implements IMovement {
         MotorRight.setSpeed(motorSpeed);
         MotorLeft.forward();
         MotorRight.forward();
-        try {
-            Thread.sleep((int) (time * 1000));
-        } catch (Exception e) {
-        }
+        Utils.Sleep((int)(time * 1000));
         Stop();
     }
 
@@ -30,31 +27,24 @@ public class SpeedBasedMovement implements IMovement {
         turn(turn_DEFAULT_SPEED, angle, true);
     }
 
-    void turn(float speed, float time, boolean regulate) {
-
+    void turn(float speed, float angle, boolean regulate) {
         /*if(!regulate){
         MotorLeft.suspendRegulation();
         MotorRight.suspendRegulation();
         }*/
         int motorSpeed = (int) (speed);
+        int sleep = (int) (1500 * angle / 360);
         MotorLeft.setSpeed(motorSpeed);
         MotorRight.setSpeed(motorSpeed);
         MotorLeft.forward();
         MotorRight.backward();
-        try {
-            Thread.sleep((int)(time * 1000));
-        } catch (Exception e) {
-        }
-        Stop();
+        Utils.Sleep(sleep);
     }
 
     void wait(int time) {
         MotorLeft.stop();
         MotorRight.stop();
-        try {
-            Thread.sleep(time);
-        } catch (Exception e) {
-        }
+        Utils.Sleep(time);
     }
 
     public void TurnAroundWheel(double angle, boolean isLeft) {

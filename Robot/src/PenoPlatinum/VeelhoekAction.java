@@ -1,10 +1,6 @@
 package PenoPlatinum;
 import lejos.nxt.Motor;
 
-/**
- *
- * @author MHGameWork
- */
 public class VeelhoekAction implements IAction {
 
     static
@@ -12,24 +8,14 @@ public class VeelhoekAction implements IAction {
         //TODO: fix
         ActionContainer.AddAction(new VeelhoekAction());
     }
-    
-    public static void main(String[] args) {
-        veelhoek(3, 1000);
-    }
 
     static void veelhoek(int number, int time) {
         int angle = 180 * (number - 2) / number;
         for (int i = 0; i < number; i++) {
             forward(time);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
+            Utils.Sleep(1000);
             turn(angle);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
+            Utils.Sleep(1000);
         }
     }
     static void veelhoekRotate(double l, int n){
@@ -49,10 +35,7 @@ public class VeelhoekAction implements IAction {
         Motor.C.setSpeed(speed);
         Motor.B.forward();
         Motor.C.forward();
-        try {
-            Thread.sleep(time);
-        } catch (Exception e) {
-        }
+        Utils.Sleep(time);
     }
 
     static void turn(int angle) {
@@ -62,10 +45,7 @@ public class VeelhoekAction implements IAction {
         Motor.C.setSpeed(speed);
         Motor.B.forward();
         Motor.C.backward();
-        try {
-            Thread.sleep(sleep);
-        } catch (Exception e) {
-        }
+        Utils.Sleep(sleep);
     }
 
     private ActionParameters parameters = new ActionParameters();

@@ -1,4 +1,4 @@
-package PenoPlatinum;
+package Movement;
 
 import lejos.nxt.*;
 import lejos.robotics.proposal.DifferentialPilot;
@@ -10,7 +10,7 @@ public class PilotMovement implements IMovement {
 
     /**
      * Zorgt ervoor dat de robot rechtdoor rijdt over een gekozen afstand.
-     * 
+     *
      * @param distance
      * 		Afstand die moet worden afgelegd. Negatieve afstand om achteruit te rijden. (mm)
      */
@@ -21,7 +21,7 @@ public class PilotMovement implements IMovement {
 
     /**
      * Laat de robot terplekke draaien.
-     * 
+     *
      * @param angle
      * 		Hoek die de robot moet afleggen. Negatieve hoek om met de klok te draaien.
      */
