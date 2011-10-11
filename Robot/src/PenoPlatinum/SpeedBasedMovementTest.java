@@ -20,7 +20,6 @@ public class SpeedBasedMovementTest {
         mov = movement;
     }
 
-
     public void testForwardTime() {
         float speed, time;
         speed = 250;
@@ -48,9 +47,7 @@ public class SpeedBasedMovementTest {
 
     public void testForwardSpeed() {
         float speed, time;
-        int factor;
         time = 2;
-        factor = 2000;
 
         int[] values = new int[]{125, 250, 500, 750, 1000};
 
@@ -74,9 +71,7 @@ public class SpeedBasedMovementTest {
 
     public void testRotateSpeeds() {
         int speed;
-        int angle = 45;
-        int factor = 2000;
-
+        float time = 2;
 
         int[] speeds = new int[]{50, 75, 125, 250, 500, 750, 1000};
 
@@ -88,9 +83,8 @@ public class SpeedBasedMovementTest {
             Button.waitForPress();
             Utils.Sleep(1000);
             for (int j = 0; j < 5; j++) {
-                mov.turn(speed, angle, true);
+                mov.turn(speed, time, true);
 
-                mov.TurnOnSpotCCW(angle);
                 Utils.Sleep(3000);
 
             }
@@ -99,22 +93,21 @@ public class SpeedBasedMovementTest {
 
     public void testRotateAngles() {
         int speed = 200;
-        int angle = 45;
+        float time = 45;
 
 
-        int[] values = new int[]{15, 30, 45, 60, 90};
+        float[] values = new float[]{0.5f, 1f, 1.5f, 2.0f};
 
         for (int i = 0; i < values.length; i++) {
 
-            angle = values[i];
+            time = values[i];
 
             System.out.println(values[i]);
             Button.waitForPress();
             Utils.Sleep(1000);
             for (int j = 0; j < 5; j++) {
-                mov.turn(speed, angle, true);
+                mov.turn(speed, time, true);
 
-                mov.TurnOnSpotCCW(angle);
                 Utils.Sleep(3000);
 
             }

@@ -30,22 +30,22 @@ public class SpeedBasedMovement implements IMovement {
         turn(turn_DEFAULT_SPEED, angle, true);
     }
 
-    void turn(float speed, float angle, boolean regulate) {
+    void turn(float speed, float time, boolean regulate) {
 
         /*if(!regulate){
         MotorLeft.suspendRegulation();
         MotorRight.suspendRegulation();
         }*/
         int motorSpeed = (int) (speed);
-        int sleep = (int) (1500 * angle / 360);
         MotorLeft.setSpeed(motorSpeed);
         MotorRight.setSpeed(motorSpeed);
         MotorLeft.forward();
         MotorRight.backward();
         try {
-            Thread.sleep((sleep * 1000));
+            Thread.sleep((int)(time * 1000));
         } catch (Exception e) {
         }
+        Stop();
     }
 
     void wait(int time) {
