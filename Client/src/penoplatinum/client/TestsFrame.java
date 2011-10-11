@@ -8,7 +8,7 @@
  *
  * Created on 6-okt-2011, 8:51:31
  */
-package peno3platinumclient;
+package penoplatinum.client;
 
 /**
  *
