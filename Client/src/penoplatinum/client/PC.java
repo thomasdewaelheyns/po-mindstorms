@@ -6,6 +6,7 @@ import java.io.OutputStream;
 
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommandConnector;
+import lejos.pc.comm.NXTConnector;
 
 public class PC {
 
@@ -14,30 +15,28 @@ public class PC {
     private NXTComm open;
 
     public static void main(String[] args) {
-
         PC pc = new PC();
 
         try {
             pc.connect();
-            pc.send(255);
-            pc.send(255);
-            pc.send(255);
-            pc.send(255);
-            pc.send(255);
-            pc.send(255);
-            return;
-        } catch (Exception ex) {
-        }
+        } catch (Exception ex) {}
         System.out.println(pc.open);
+        pc.sendCatch(1);
+        pc.sendCatch(0);
+        pc.sendCatch(0);
+        pc.sendCatch(0);
+        pc.sendCatch(123456789);
         pc.close();
 
     }
 
-    public void connect() throws Exception {
-        open = NXTCommandConnector.open();
-        
-        outputStream = open.getOutputStream();
-        inputStream = open.getInputStream();
+    public boolean connect() throws Exception {
+        NXTConnector conn = new NXTConnector();
+        boolean connected = conn.connectTo(NXTComm.PACKET);
+        open = (connected ? conn.getNXTComm() : null);
+        outputStream = (connected ? open.getOutputStream() : null);
+        inputStream = (connected ? open.getInputStream() : null);
+        return connected;
     }
 
     public void close() {
@@ -47,13 +46,18 @@ public class PC {
         }
     }
 
-    public void send(int n) {
-        System.out.println("e: " + n);
+    public boolean sendCatch(int n) {
         try {
-            outputStream.write(n);
-            outputStream.flush();
+            send(n);
         } catch (IOException ex) {
             System.out.println("IO Exception.");
+            return false;
         }
+        return true;
+    }
+    public void send(int n) throws IOException{
+        System.out.println("send: " + n);
+        outputStream.write(n);
+        outputStream.flush();
     }
 }

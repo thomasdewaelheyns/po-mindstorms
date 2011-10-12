@@ -9,8 +9,8 @@ import lejos.nxt.comm.NXTConnection;
 
 public class BluetoothCommunication {
     BTConnection conn;
-    private DataInputStream str;
-    private DataOutputStream stro;
+    DataInputStream str;
+    DataOutputStream stro;
     
     public BluetoothCommunication() {
     }
@@ -25,18 +25,8 @@ public class BluetoothCommunication {
         System.out.println("Connected: "+conn.getAddress());
         return true;
     }
-    public void printTest(){
-        connect();
-        try{
-            while(true){
-                while(str.available()<4){}
-                System.out.println(str.readInt());
-            }
-        } catch(IOException e){
-            System.out.println("Connection Lost");
-            connect();
-        }
+    public int readInt() throws IOException{
+        return str.readInt();
     }
-
 
 }
