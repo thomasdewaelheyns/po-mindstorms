@@ -1,6 +1,68 @@
 package penoplatinum.sensor;
 
 import lejos.nxt.LCD;
+import lejos.nxt.UltrasonicSensor;
+import penoplatinum.movement.IMovement;
+
+public class Muurvolger {
+    private UltrasonicSensor ultra;
+    public IMovement move;
+    
+    private int isLeft = 1;
+    public int toClose = 20;
+    public int toFar   = 30;
+    public int angleClose= 20;
+    public int angleFar = 15;
+    public int turnAngle=45;
+    public int SAMPLES = 5;
+    public int MAX=128;
+    public double dist=0.20;
+
+    public Muurvolger(UltrasonicSensor ultra, IMovement m) {
+        this.ultra = ultra;
+        isLeft = askSensorDirection();
+        move=m;
+    }
+
+    public final int askSensorDirection() {
+        return -1;	//+-1
+    }
+
+    public void run() {
+        double avg = 0;
+        for(int i=0;i<SAMPLES;i++){
+            avg+=ultra.getDistance();
+        }
+        avg/=SAMPLES;
+        if(avg>MAX){ //No Wall, move to check left
+            LCD.drawString("hoekRechts", 0, 1);
+            move.TurnOnSpotCCW(isLeft * 90);
+        }
+        avg = 0;
+        for(int i=0;i<SAMPLES;i++){
+            avg+=ultra.getDistance();
+        }
+        avg/=SAMPLES;
+        LCD.drawString(avg + "    ", 0, 0);
+        if (avg >= MAX){  //No data, assume corner
+            LCD.drawString("hoekLinks ", 0, 1);
+            move.TurnOnSpotCCW(isLeft * turnAngle);
+        } else if (avg < toClose) {
+            LCD.drawString("toClose   ", 0, 1);
+            move.TurnOnSpotCCW(-isLeft * angleClose);
+        } else if (avg > toFar) {
+            LCD.drawString("toFar     ", 0, 1);
+            move.TurnOnSpotCCW(isLeft * angleFar);
+        } else {
+            LCD.drawString("good      ", 0, 1);
+        }
+        move.TurnOnSpotCCW(-isLeft * 90); //move back forward
+        move.MoveStraight(dist);
+    }
+}
+package penoplatinum.sensor;
+
+import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.movement.IMovement;

@@ -33,6 +33,7 @@ public class RotationMovement implements IMovement {
         changeMotorSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
         motorRight.rotate(r, !block);
+        //TODO: sleep here???  Utils.Sleep(r * 1050 / SPEEDFORWARD); //1000ms/s + 10% foutmarge
     }
 
     public void TurnOnSpotCCW(double angle) {
@@ -46,8 +47,11 @@ public class RotationMovement implements IMovement {
 		//		Different formula in barcode???
 sqmdfqsdf
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK); 
+        LCD.drawString(""+h, 0, 2);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, true);
+        //TODO: ??? h=Math.abs(h);
+        //TODO: ??? Utils.Sleep(h * 1050 / SPEEDTURN); //1000ms/s + 10% foutmarge
     }
 
     public void TurnAroundWheel(double angle, boolean aroundLeft) {
