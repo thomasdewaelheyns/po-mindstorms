@@ -17,6 +17,7 @@ public class Muurvolger {
     public int SAMPLES = 5;
     public int MAX=128;
     public double dist=0.20;
+    public boolean debug=true;
 
     public Muurvolger(UltrasonicSensor ultra, IMovement m) {
         this.ultra = ultra;
@@ -35,7 +36,7 @@ public class Muurvolger {
         }
         avg/=SAMPLES;
         if(avg>MAX){ //No Wall, move to check left
-            LCD.drawString("hoekRechts", 0, 1);
+            if(debug)LCD.drawString("hoekRechts", 0, 1);
             move.TurnOnSpotCCW(isLeft * 90);
         }
         avg = 0;
@@ -45,16 +46,16 @@ public class Muurvolger {
         avg/=SAMPLES;
         LCD.drawString(avg + "    ", 0, 0);
         if (avg >= MAX){  //No data, assume corner
-            LCD.drawString("hoekLinks ", 0, 1);
+            if(debug)LCD.drawString("hoekLinks ", 0, 1);
             move.TurnOnSpotCCW(isLeft * turnAngle);
         } else if (avg < toClose) {
-            LCD.drawString("toClose   ", 0, 1);
+            if(debug)LCD.drawString("toClose   ", 0, 1);
             move.TurnOnSpotCCW(-isLeft * angleClose);
         } else if (avg > toFar) {
-            LCD.drawString("toFar     ", 0, 1);
+            if(debug)LCD.drawString("toFar     ", 0, 1);
             move.TurnOnSpotCCW(isLeft * angleFar);
         } else {
-            LCD.drawString("good      ", 0, 1);
+            if(debug)LCD.drawString("good      ", 0, 1);
         }
         move.TurnOnSpotCCW(-isLeft * 90); //move back forward
         move.MoveStraight(dist);
