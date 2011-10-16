@@ -23,12 +23,12 @@ class SimulationRunner {
     // setup the simulator, (optionally) providing a view and add the course
     // and the robot
     Simulator simulator = new Simulator();
-    simulator.displayOn(new ConsoleSimulationView());
+    simulator.displayOn(new SwingSimulationView());
     // simulator.useTrack   (track)
-    simulator.putRobotAt (robot, 10, 10, 0);  // robot @ 10,10, 0 angle (=N)
+    simulator.putRobotAt (robot, 285, 185, 0); // robot @ 285,185 angle (=N)
 
     // give robot instructions through the communication layer
-    simulator.send( "5;0.20" ); // run polygon with 5 vertexes of length 20cm
+    simulator.send( "15;0.10" ); // run polygon with 5 vertexes of length 20cm
 
     // start the simulator and enjoy the ride
     simulator.run();

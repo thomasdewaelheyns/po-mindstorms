@@ -80,21 +80,23 @@ class Simulator {
   }
   
   public Simulator moveRobot( float movement ) {
-    double rads = Math.toRadians(this.direction);
+    // our direction 0 is pointing North, while it results in East, so add
+    // 90 degrees
+    double rads = Math.toRadians(this.direction + 90);
 
     // convert movement in meters to (pixel-based) units
-    // 20cm = 40px / 1m = 200px / 1cm = 2px
-    int distance = (int) ( movement * 100.0 * 2.0 );
+    // 20cm = 120px / 1m = 600px / 1cm = 6px
+    int distance = (int)(movement * 100.0 * 6.0);
 
     // move in steps of 1cm/2px
     // TODO: we now only deal with movements that are defined up to cm's.
-    int step = 2;
+    double step = 6.0;
     int dx   = (int)(Math.cos(rads) * step);
     int dy   = (int)(Math.sin(rads) * step);
-    int steps = distance / step;
+    int steps = (int)(distance / step);
     for( ; steps>0; steps-- ) {
       this.positionX += dx;
-      this.positionY += dy;
+      this.positionY -= dy;
       this.refreshView();
       // TODO: add in-move collision checks
       // this.updateSensors();
