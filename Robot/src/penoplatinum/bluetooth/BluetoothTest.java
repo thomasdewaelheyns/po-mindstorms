@@ -1,13 +1,16 @@
 package penoplatinum.bluetooth;
 
 import java.io.IOException;
-import lejos.nxt.*;
+
 
 public class BluetoothTest {
-    BluetoothCommunication bt=new BluetoothCommunication();
+    BluetoothCommunicatorRobot bt=new BluetoothCommunicatorRobot();
 
     public void printTest(){
-        bt.connect();
+        /*while (!bt.connect())
+        {
+            System.out.println("Connection timed out.");
+        }
         try{
             while(true){
                 while(bt.str.available()<4){}
@@ -16,7 +19,13 @@ public class BluetoothTest {
         } catch(IOException e){
             System.out.println("Connection Lost");
             bt.connect();
-        }
+        }*/
+    }
+    
+    public void testInitializeConnection()
+    {
+        bt.initializeConnection();
+        System.out.println("Success!");
     }
 
 }
