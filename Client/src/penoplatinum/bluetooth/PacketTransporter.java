@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.util.Queue;
 
 /**
  *
@@ -15,6 +16,8 @@ import java.io.DataOutputStream;
  */
 public class PacketTransporter implements IPacketTransporter {
 
+    
+    private final Queue<Packet> receivedQueue;
     private ByteArrayOutputStream byteArrayOutputStream;
     private DataInputStream receiveStream;
     private DataOutputStream sendStream;
@@ -39,17 +42,36 @@ public class PacketTransporter implements IPacketTransporter {
     
     @Override
     public int ReceivePacket() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
     
     @Override
     public int ReceiveAvailablePacket() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        synchronized(receivedQueue)
+        {
+            if (queue.)
+        }
+                
     }
     
     @Override
     public void SendPacket(int packetIdentifier) {
         connection.SendPacket(this, packetIdentifier, byteArrayOutputStream.toByteArray());
-        sendStream = new DataOutputStream(byteArrayOutputStream); // TODO: GC 
+        sendStream = new DataOutputStream(byteArrayOutputStream); // TODO: GC
+        
     }
+
+    @Override
+    public void onPacketReceived(int packetIdentifier, byte[] dgram) {
+        Packet p = new Packet();
+        p.PacketIdentifier = packetIdentifier;
+        p.Dgram = dgram;
+        
+        synchronized(receivedQueue)
+        {
+            receivedQueue.add(p);
+        }
+        
+    }
+
 }

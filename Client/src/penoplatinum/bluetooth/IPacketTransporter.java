@@ -46,7 +46,7 @@ public interface IPacketTransporter {
     
     
     
-    void onPacketReceived();
+    void onPacketReceived(int packetIdentifier, byte[] dgram);
     
     
     
