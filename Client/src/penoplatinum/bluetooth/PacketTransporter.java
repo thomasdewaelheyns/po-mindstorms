@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  *
@@ -16,49 +17,80 @@ import java.util.Queue;
  */
 public class PacketTransporter implements IPacketTransporter {
 
-    
-    private final Queue<Packet> receivedQueue;
+    private final Queue<Packet> receivedQueue = new ArrayBlockingQueue<Packet>(100);
     private ByteArrayOutputStream byteArrayOutputStream;
     private DataInputStream receiveStream;
     private DataOutputStream sendStream;
     private final IConnection connection;
-    
+
     public PacketTransporter(IConnection connection) {
         receiveStream = new DataInputStream(new ByteArrayInputStream(new byte[1024]));
         byteArrayOutputStream = new ByteArrayOutputStream();
         sendStream = new DataOutputStream(byteArrayOutputStream);
         this.connection = connection;
     }
-    
+
     @Override
     public DataInputStream getReceiveStream() {
-        return receiveStream;
+        synchronized (this) {
+            return receiveStream;
+
+        }
     }
-    
+
     @Override
     public DataOutputStream getSendStream() {
-        return sendStream;
+        synchronized (this) {
+            return sendStream;
+        }
     }
-    
+
     @Override
     public int ReceivePacket() {
-        
+        synchronized (receivedQueue) {
+            while (receivedQueue.isEmpty()) {
+                try {
+                    receivedQueue.wait();
+                } catch (InterruptedException ex) {
+                    System.out.println("ReceivePacketException");
+                }
+            }
+
+            Packet p = receivedQueue.remove();
+            updateReceiveStream(p);
+
+            return p.PacketIdentifier;
+
+
+        }
     }
-    
+
+    private void updateReceiveStream(Packet p) {
+        ByteArrayInputStream strm = new ByteArrayInputStream(p.Dgram);
+        receiveStream = new DataInputStream(strm);
+    }
+
     @Override
     public int ReceiveAvailablePacket() {
-        synchronized(receivedQueue)
-        {
-            if (queue.)
+        synchronized (receivedQueue) {
+            if (receivedQueue.isEmpty()) {
+                return -1;
+            }
+
+            Packet p = receivedQueue.remove();
+
+            updateReceiveStream(p);
+
+            return p.PacketIdentifier;
         }
-                
+
     }
-    
+
     @Override
     public void SendPacket(int packetIdentifier) {
         connection.SendPacket(this, packetIdentifier, byteArrayOutputStream.toByteArray());
         sendStream = new DataOutputStream(byteArrayOutputStream); // TODO: GC
-        
+
     }
 
     @Override
@@ -66,12 +98,10 @@ public class PacketTransporter implements IPacketTransporter {
         Packet p = new Packet();
         p.PacketIdentifier = packetIdentifier;
         p.Dgram = dgram;
-        
-        synchronized(receivedQueue)
-        {
+
+        synchronized (receivedQueue) {
             receivedQueue.add(p);
         }
-        
-    }
 
+    }
 }
