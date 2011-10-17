@@ -19,9 +19,9 @@ class Simulator {
 
   private Robot robot;            // the actual robot
 
-  private int positionX;          // the position of the robot in the world
-  private int positionY;          //   expressed in X,Y coordinates
-  private int direction;          //   and a direction its facing
+  private double positionX;       // the position of the robot in the world
+  private double positionY;       //   expressed in X,Y coordinates
+  private double direction;       //   and a direction its facing
 
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
@@ -79,7 +79,7 @@ class Simulator {
     return this;
   }
   
-  public Simulator moveRobot( float movement ) {
+  public Simulator moveRobot( double movement ) {
     // our direction 0 is pointing North, while it results in East, so add
     // 90 degrees
     double rads = Math.toRadians(this.direction + 90);
@@ -91,8 +91,8 @@ class Simulator {
     // move in steps of 1cm/2px
     // TODO: we now only deal with movements that are defined up to cm's.
     double step = 6.0;
-    int dx   = (int)(Math.cos(rads) * step);
-    int dy   = (int)(Math.sin(rads) * step);
+    double dx   = Math.cos(rads) * step;
+    double dy   = Math.sin(rads) * step;
     int steps = (int)(distance / step);
     for( ; steps>0; steps-- ) {
       this.positionX += dx;
@@ -106,14 +106,15 @@ class Simulator {
     return this;
   }
   
-  public Simulator turnRobot( int angle ) {
+  public Simulator turnRobot( double angle ) {
     this.direction = ( this.direction + angle ) % 360;
     this.refreshView();
     return this;
   }
 
   private void refreshView() {
-    this.view.updateRobot( this.positionX, this.positionY, this.direction );
+    this.view.updateRobot( (int)this.positionX, (int)this.positionY,
+                           (int)this.direction );
   }
   
   /**

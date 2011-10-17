@@ -39,7 +39,7 @@ class VeelhoekRobot implements Robot {
   }
 
   public void run() {
-    int angle = (int)360.0 / this.edgeCount;
+    double angle = 360.0 / this.edgeCount;
     for( int i = 0; i < this.edgeCount; i++ ) {
       this.api.move(this.vertexLength);
       this.api.turn(angle);

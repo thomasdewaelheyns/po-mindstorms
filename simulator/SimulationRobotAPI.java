@@ -15,11 +15,11 @@ class SimulationRobotAPI implements RobotAPI {
     this.simulator = simulator;
   }
 
-  public void move( float distance ) {
+  public void move( double distance ) {
     this.simulator.moveRobot( distance );
   }
 
-  public void turn( int angle ) {
+  public void turn( double angle ) {
     this.simulator.turnRobot( angle );
   }
 

@@ -25,10 +25,10 @@ class SimulationRunner {
     Simulator simulator = new Simulator();
     simulator.displayOn(new SwingSimulationView());
     // simulator.useTrack   (track)
-    simulator.putRobotAt (robot, 285, 185, 0); // robot @ 285,185 angle (=N)
+    simulator.putRobotAt (robot, 270, 165, 0); // robot @ 285,185 angle (=N)
 
     // give robot instructions through the communication layer
-    simulator.send( "15;0.10" ); // run polygon with 5 vertexes of length 20cm
+    simulator.send( "22;0.05" ); // run polygon with 22 vertexes of 5cm
 
     // start the simulator and enjoy the ride
     simulator.run();
