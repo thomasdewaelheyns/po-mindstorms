@@ -74,4 +74,44 @@ public class BluetoothTest {
 
 
     }
+
+    @Test
+    public void testSendReceiveMultiple() throws IOException {
+        int packetA = 235432357;
+        int packetB = 780897687;
+        String msg = "Hellow Universe!";
+        String msg2 = "Hellow Humans!";
+
+        PacketTransporter tA = new PacketTransporter(ca);
+        PacketTransporter tB = new PacketTransporter(cb);
+
+        PacketTransporter sA = new PacketTransporter(ca);
+        PacketTransporter sB = new PacketTransporter(cb);
+
+        ca.RegisterTransporter(tA, packetA);
+        cb.RegisterTransporter(tB, packetA);
+
+        ca.RegisterTransporter(sA, packetB);
+        cb.RegisterTransporter(sB, packetB);
+
+
+        tA.getSendStream().writeUTF(msg);
+        tA.SendPacket(packetA);
+
+        assertEquals(packetA, tB.ReceivePacket());
+        assertEquals(msg, tB.getReceiveStream().readUTF());
+        assertEquals(0, tB.getReceiveStream().available());
+
+        
+        
+        sB.getSendStream().writeUTF(msg2);
+        sB.SendPacket(packetB);
+        
+        assertEquals(packetB, sA.ReceivePacket());
+        assertEquals(msg2, sA.getReceiveStream().readUTF());
+        assertEquals(0, sA.getReceiveStream().available());
+
+
+
+    }
 }
