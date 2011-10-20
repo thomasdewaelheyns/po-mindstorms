@@ -1,8 +1,6 @@
 package penoplatinum.movement;
 
 
-
-
 /**
  * TODO: put in shared project
  * @author MHGameWork
