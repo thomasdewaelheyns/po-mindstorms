@@ -20,9 +20,7 @@ public class Main {
         sensor.calibrate();
         readerThread reader = new readerThread(new BarcodeReader(sensor));
         reader.start();
-        IMovement move = new RotationMovement();
-        move.MoveStraight(1);
-        //Utils.Sleep(30000);
+        Utils.Sleep(40000);
         reader.codeReader.continueWhile = false;
         reader.continueThread = false;
         Utils.Sleep(5000);

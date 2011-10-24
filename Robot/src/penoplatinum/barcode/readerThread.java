@@ -14,35 +14,39 @@ import penoplatinum.movement.*;
 public class readerThread extends Thread {
     BarcodeReader codeReader;
     boolean continueThread;
+    IMovement move;
     public readerThread(BarcodeReader codeReader){
         this.codeReader = codeReader;
         this.continueThread = true;
+        move = new RotationMovement();
     }
     
     public void run(){
+        int commando = 0;
         while(continueThread){
-            switch(this.codeReader.read()){
-            case 0:
-                
-            case 1:
-            case 2:
-            case 3:
-                IMovement move = new RotationMovement();
-                move.MoveStraight(0.44);
-                move.TurnOnSpotCCW(90);
-                break;
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
+            move.MoveStraight(2, false);
+            commando = this.codeReader.read();
+            System.out.println(""+commando);
+            switch(commando){
+                case 1:
+                    break;
+                case 3:
+                    move.MoveStraight(0.25,true);
+                    move.TurnOnSpotCCW(90);
+                    break;
+                case 6:
+                    move.MoveStraight(0.25, true);
+                    move.TurnOnSpotCCW(-90);
+                    break;
+                case 9:
+                    move.TurnOnSpotCCW(180);
+                    break;
+                case 12:
+                    move.TurnOnSpotCCW(180);
+                    break;
+                case 15:
+                    move.TurnOnSpotCCW(180);
+                    break;
         }
        }
     }

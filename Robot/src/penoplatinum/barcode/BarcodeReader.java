@@ -52,15 +52,16 @@ public class BarcodeReader {
                 }
                 if (isReadingBarcode && counter >= 10) {
                     // Was reading barcode but is now completed.
-                    for(int i = 0; i<5; i++){
+                    for(int i = 0; i<10; i++){
                         code.remove(code.size()-1);
                     }
                     int temp = interpreter.translate(code);
-                    System.out.println(""+temp);
                     if(temp==-1){
                         return -1;
                     }
-                    return interpreter.correct(temp);
+                    int val = interpreter.correct(temp);
+                    System.out.println(""+val);
+                    return val;
                 }
             }
 
