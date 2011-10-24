@@ -22,7 +22,7 @@
         description="compile the source " >
     <!-- Compile the java code from ${src} to ${build}  -->
         <mkdir dir="${build}"/>
-        <javac srcdir="${src}" destdir="${build}" classpath="../Common/dist/Common.jar">
+        <javac srcdir="${src}" destdir="${build}" classpath="${basedir}/../Common/build/classes">
             
             <bootclasspath>
                 <pathelement location="${nxj.classes.home}/lib/classes.jar"/>
@@ -37,7 +37,7 @@
             <arg value="--bootclasspath"/>
             <arg path="${nxj.classes.jar}" />
             <arg value="--classpath"/>
-            <arg path="${build}" />
+            <arg path="${build};${basedir}/../Common/build/classes" />
             <arg value="--writeorder" />
             <arg value="LE" />
             <arg value="${main.class}"/>
