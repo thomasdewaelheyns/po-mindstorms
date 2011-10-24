@@ -1,63 +1,29 @@
 package penoplatinum;
 
 import lejos.nxt.*;
+import penoplatinum.movement.IMovement;
 import penoplatinum.movement.RotationMovement;
+import penoplatinum.sensor.BarcodeRuben;
+import penoplatinum.sensor.LijnVolgerRuben;
+import penoplatinum.sensor.MuurVolgerTest;
 
 public class Main {
-
+    public static UltrasonicSensor muurSensor = new UltrasonicSensor(SensorPort.S3);
+    public static LightSensor light = new LightSensor(SensorPort.S1);
+    public static Motor l = Motor.C;
+    public static Motor r = Motor.B;
+    public static Motor movingSonar = Motor.A;
+    public static IMovement mov = new RotationMovement();
+    
     public static void main(String[] args){
-        selectVeelhoek();
+        //BarcodeRuben b = new BarcodeRuben(light, mov);
+        //b.run();
+        //MuurVolgerTest.test(muurSensor, mov, movingSonar);
+        LijnVolgerRuben r = new LijnVolgerRuben(mov, light);
+        r.calibrate();
+        r.run();
+
     }
 
-    static int hoeken=3;
-    static int distance=40;
-    static int pos=0;
-
-    public static void selectVeelhoek(){
-        
-        Veelhoek veelhoek = new Veelhoek(new RotationMovement());
-        
-        int[] p=new int[]{2,5};
-        while(true){
-            LCD.clear();
-            LCD.drawString("Select number of",0,0);
-            LCD.drawString("angles:",0,1);
-            LCD.drawString(""+hoeken,2,2);
-            LCD.drawString("Select distance",0,4);
-            LCD.drawString(""+distance, 2, 5);
-            LCD.drawString("*", 0, p[pos]);
-            int button = Button.waitForPress();
-            if(pos==0){
-                switch(button){
-                    case Button.ID_LEFT:
-                        hoeken = Math.max(3,hoeken-1);
-                        break;
-                    case Button.ID_RIGHT:
-                        hoeken = Math.min(20, hoeken+1);
-                        break;
-                    case Button.ID_ENTER:
-                        pos++;
-                        break;
-                    case Button.ID_ESCAPE:
-                        return;
-                }
-            } else {
-                switch(button){
-                    case Button.ID_LEFT:
-                        distance = Math.max(10, distance-1);
-                        break;
-                    case Button.ID_RIGHT:
-                        distance = Math.min(1000, distance+1);
-                        break;
-                    case Button.ID_ENTER:
-                        veelhoek.veelhoekRotate(distance/100.0, hoeken);
-                        break;
-                    case Button.ID_ESCAPE:
-                        pos--;
-                        break;
-                }
-            }
-        }
-    }
 
 }

@@ -4,31 +4,42 @@ import lejos.nxt.*;
 
 public class RotationMovement implements IMovement {
 
-    public int SPEEDFORWARD = 400;
-    public int SPEEDTURN = 400;
+    public int SPEEDFORWARD = 250;
+    public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
     public final int WIELAFSTANDMIDDEN = 56;//mm
-    public final int WIELAFSTAND = 112;//mm
+    public final int WIELAFSTAND = 116;//112mm
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
 
     public void MoveStraight(double distance) {
         distance *= 1000;
+        distance /= 0.99;
         int r = (int) (distance * 360 / WIELOMTREK);
         motorLeft.setSpeed(SPEEDFORWARD);
         motorRight.setSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
-        motorRight.rotate(r, true);
-        Utils.Sleep(r * 1100 / SPEEDFORWARD); //1000ms/s + 10% foutmarge
+        motorRight.rotate(r, false);
+<<<<<<< HEAD
+        //Utils.Sleep(r * 1050 / SPEEDFORWARD); //1000ms/s + 10% foutmarge
+=======
+        Utils.Sleep(200); //200 ms voor momentum
+>>>>>>> b58f612d10e0e1e9f2ba2075884f20537f4041b8
     }
 
     public void TurnOnSpotCCW(double angle) {
         motorLeft.setSpeed(SPEEDTURN);
         motorRight.setSpeed(SPEEDTURN);
+        angle /=0.99;
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
         motorLeft.rotate(h, true);
-        motorRight.rotate(-h, true);
-        Utils.Sleep(h * 1100 / SPEEDTURN); //1000ms/s + 10% foutmarge
+        motorRight.rotate(-h, false);
+<<<<<<< HEAD
+        //h=Math.abs(h);
+        //Utils.Sleep(h * 1050 / SPEEDTURN); //1000ms/s + 10% foutmarge
+=======
+        Utils.Sleep(200); //200 ms voor momentum
+>>>>>>> b58f612d10e0e1e9f2ba2075884f20537f4041b8
     }
 
     public void TurnAroundWheel(double angle, boolean aroundLeft) {
