@@ -22,7 +22,7 @@ public class readerThread extends Thread {
     }
     
     public void run(){
-        int commando = 0;
+        int commando = 1;
         while(continueThread){
             move.MoveStraight(2, false);
             commando = this.codeReader.read();
