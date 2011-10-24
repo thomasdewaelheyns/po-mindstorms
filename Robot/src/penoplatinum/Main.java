@@ -16,12 +16,12 @@ public class Main {
     public static IMovement mov = new RotationMovement();
     
     public static void main(String[] args){
-        //BarcodeRuben b = new BarcodeRuben(light, mov);
-        //b.run();
+        BarcodeRuben b = new BarcodeRuben(light, mov);
+        b.run();
         //MuurVolgerTest.test(muurSensor, mov, movingSonar);
-        LijnVolgerRuben r = new LijnVolgerRuben(mov, light);
-        r.calibrate();
-        r.run();
+        //LijnVolgerRuben r = new LijnVolgerRuben(mov, light);
+        //r.calibrate();
+        //r.run();
 
     }
 

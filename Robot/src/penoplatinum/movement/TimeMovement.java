@@ -12,15 +12,23 @@ public class TimeMovement implements IMovement {
     void forward(float time) {
         forward(FORWARD_DEFAULT_SPEED, time);
     }
+    void forward(float time, boolean block){
+        forward(FORWARD_DEFAULT_SPEED, time, true);
+    }
 
     void forward(float speed, float time) {
+        forward(speed, time, true);
+    }
+    void forward(float speed, float time, boolean block) {
         int motorSpeed = (int) (speed);
         MotorLeft.setSpeed(motorSpeed);
         MotorRight.setSpeed(motorSpeed);
         MotorLeft.forward();
         MotorRight.forward();
-        Utils.Sleep((int)(time * 1000));
-        Stop();
+        if(block){
+            Utils.Sleep((int)(time * 1000));
+            Stop();
+        }
     }
 
     void turn(float angle) {
@@ -53,6 +61,9 @@ public class TimeMovement implements IMovement {
 
     public void MoveStraight(double distance) {
         forward((float) distance / FORWARD_DEFAULT_SPEED);
+    }
+    public void MoveStraight(double distance, boolean block) {
+        forward((float) distance / FORWARD_DEFAULT_SPEED, block);
     }
 
     public void TurnOnSpotCCW(double angle) {

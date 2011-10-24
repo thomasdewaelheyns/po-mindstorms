@@ -13,18 +13,16 @@ public class RotationMovement implements IMovement {
     public Motor motorRight = Motor.B;
 
     public void MoveStraight(double distance) {
+        MoveStraight(distance, true);
+    }
+    public void MoveStraight(double distance, boolean block) {
         distance *= 1000;
         distance /= 0.99;
         int r = (int) (distance * 360 / WIELOMTREK);
         motorLeft.setSpeed(SPEEDFORWARD);
         motorRight.setSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
-        motorRight.rotate(r, false);
-<<<<<<< HEAD
-        //Utils.Sleep(r * 1050 / SPEEDFORWARD); //1000ms/s + 10% foutmarge
-=======
-        Utils.Sleep(200); //200 ms voor momentum
->>>>>>> b58f612d10e0e1e9f2ba2075884f20537f4041b8
+        motorRight.rotate(r, !block);
     }
 
     public void TurnOnSpotCCW(double angle) {
@@ -34,12 +32,6 @@ public class RotationMovement implements IMovement {
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, false);
-<<<<<<< HEAD
-        //h=Math.abs(h);
-        //Utils.Sleep(h * 1050 / SPEEDTURN); //1000ms/s + 10% foutmarge
-=======
-        Utils.Sleep(200); //200 ms voor momentum
->>>>>>> b58f612d10e0e1e9f2ba2075884f20537f4041b8
     }
 
     public void TurnAroundWheel(double angle, boolean aroundLeft) {

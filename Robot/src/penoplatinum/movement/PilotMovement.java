@@ -15,9 +15,13 @@ public class PilotMovement implements IMovement {
      * 		Afstand die moet worden afgelegd. Negatieve afstand om achteruit te rijden. (mm)
      */
     public void MoveStraight(double distance) {
-        pilot.setSpeed(SPEED);
-        pilot.travel((float)distance, true);
+        MoveStraight(distance, true);
     }
+    public void MoveStraight(double distance, boolean block) {
+        pilot.setSpeed(SPEED);
+        pilot.travel((float)distance, !block);
+    }
+
 
     /**
      * Laat de robot terplekke draaien.
@@ -38,4 +42,5 @@ public class PilotMovement implements IMovement {
     public void Stop() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
 }

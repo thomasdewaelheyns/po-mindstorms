@@ -10,13 +10,11 @@ import penoplatinum.movement.Utils;
 
 public class BarcodeRuben {
     private final int SAMPLES = 5;
-
-    private final int WHITE = 80;
-    private final int BLACK = 50;
-
     private final int SWEEP = 10;
+    private final int MAX_BROWN_COUNT = 5;
+    private final int BARCODE_SLEEP = 20;
+    
     private final double standardDist = 0.02;
-    private final double recordingDist = 0.005;
 
 
     private IMovement m;
@@ -35,34 +33,57 @@ public class BarcodeRuben {
         calibrate();
         Utils.Sleep(1000);
         while(cont){
-            m.MoveStraight(standardDist);
+            m.MoveStraight(standardDist, false);
+            LCD.drawString("Checking      ", 0, 1);
             if(!isBrown()){
+                LCD.drawString("Found possible", 0, 1);
                 boolean wasBlack = isBlack();
                 m.TurnOnSpotCCW(SWEEP);
                 if(isBrown()){
+                    LCD.drawString("Found false   ", 0, 1);
                     if(!wasBlack){
                         m.TurnOnSpotCCW(-SWEEP*2);
                     }
                 } else {
+                    LCD.drawString("Found Barcode ", 0, 1);
+                    m.TurnOnSpotCCW(-SWEEP);
                     ArrayList<Integer> rec = record();
+                    LCD.drawString("End record    ", 0, 1);
                     int code = translate(rec);
+                    move(code);
                     code = correct(code);
                     move(code);
                 }
             }
+            Utils.Sleep(BARCODE_SLEEP);
         }
     }
     private void move(int code){
-        System.out.println(code+"   ");
+        LCD.drawString("Code: "+code, 0, 2);
         return;
     }
 
     private ArrayList<Integer> record() {
         ArrayList<Integer> rec = new ArrayList<Integer>();
-        //while (!isBrown()) {
-        for(int i=0;i<28||!isBrown();i++){
-            m.MoveStraight(recordingDist);
-            rec.add(getLightValue());
+        m.MoveStraight(0.5, false);
+        int brownCount=0;
+        int notBrownCount=0;
+        while (brownCount<MAX_BROWN_COUNT) {
+            int val = getLightValue();
+            if(isBrown(val)){
+                brownCount++;
+                //notBrownCount = 0;  //not used yet
+            } else {
+                //notBrownCount++;
+                //if(notBrownCount>2){
+                    brownCount = 0;
+                //}
+            }
+            rec.add(val);
+            Utils.Sleep(BARCODE_SLEEP);
+        }
+        for(int i=0;i<MAX_BROWN_COUNT;i++){
+            rec.remove(rec.size()-1);
         }
         return rec;
     }
@@ -87,7 +108,6 @@ public class BarcodeRuben {
         LCD.drawInt(l.readValue(), 1, 0);
         l.calibrateLow();
         BLACKVAL = l.readValue();
-
         Sound.beep();
         Utils.Sleep(1000);
 
@@ -97,9 +117,15 @@ public class BarcodeRuben {
         LCD.drawInt(l.readValue(), 3, 0);
         l.calibrateHigh();
         WHITEVAL = l.readValue();
-
         Sound.beep();
         Utils.Sleep(1000);
+
+        System.out.println("Zet de sensor op bruin en druk enter.");
+        Button.ENTER.waitForPressAndRelease();
+        BROWNVAL = l.readValue();
+        Sound.beep();
+        Utils.Sleep(1000);
+
         LCD.clear();
     }
     public int getLightValue(){
