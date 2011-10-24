@@ -6,11 +6,6 @@ import penoplatinum.movement.RotationMovement;
 public class Main {
 
     public static void main(String[] args) {
-        Veelhoek v = new Veelhoek(new RotationMovement());
-        for (int i = 0; i < 10; i++) {
-            Button.waitForPress();
-            v.veelhoekRotate(0.20, 10);
-        }
     }
     static int hoeken = 3;
     static int distance = 40;

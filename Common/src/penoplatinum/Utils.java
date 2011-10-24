@@ -1,4 +1,4 @@
-package penoplatinum.movement;
+package penoplatinum;
 
 
 /**
