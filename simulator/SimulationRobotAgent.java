@@ -18,7 +18,7 @@ class SimulationRobotAgent implements RobotAgent {
   }
   
   public void run() {
-    // no threading yet
+    // in the Simulator, we don't use threading
   }
 
   public void receive( String cmd ) {
@@ -28,10 +28,12 @@ class SimulationRobotAgent implements RobotAgent {
   public void send( String status ) {
     this.simulator.receive( status );
   }
-  
+
+  // this method is not part of the RobotAgent interface, but is used by
+  // the simulator to replace the outgoing bluetooth communication stack
   public void setSimulator( Simulator simulator ) {
     this.simulator = simulator;
-    this.simulator.receive( "SimulationAgent Ready" );
+    this.send( "SimulationAgent Ready" );
   }
 
 }

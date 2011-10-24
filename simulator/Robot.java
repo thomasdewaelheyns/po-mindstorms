@@ -31,9 +31,16 @@ public interface Robot {
   public String getNavigatorState();
 
   /**
-   * the actual method to start the robot's actions.
+   * in this method, the robot performs one step of its event loop. in this
+   * step, it should poll its sensors, update its model and ask the 
+   * navigator what to do next, calling the RobotAPI
    */ 
-  public void run();
+  public void step();
+
+  /**
+   * indicates that the robot reached its goal and doesn't do anything anymore
+   */
+  public Boolean reachedGoal();
   
   /**
    * a method to stop the robot (immediately)

@@ -23,4 +23,12 @@ class SimulationRobotAPI implements RobotAPI {
     this.simulator.turnRobot( angle );
   }
 
+  public void stop() {
+    this.simulator.stopRobot();
+  }
+
+  public int[] getSensorValues() {
+    return this.simulator.getSensorValues();
+  }
+
 }

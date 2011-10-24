@@ -15,4 +15,9 @@ public interface RobotAPI {
   // turns the robot on its spot by an angle expressed in degrees
   public void turn( double angle );
   
+  // stop the robot immediately
+  public void stop();
+  
+  // returns the current values for the sensors
+  public int[] getSensorValues();
 }

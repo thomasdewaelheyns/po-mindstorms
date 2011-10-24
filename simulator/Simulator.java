@@ -22,6 +22,13 @@ class Simulator {
   private double positionX;       // the position of the robot in the world
   private double positionY;       //   expressed in X,Y coordinates
   private double direction;       //   and a direction its facing
+  
+  private int[] sensorValues = new int[7]; // the current state of the sensors
+
+  private int steps;              // the number of steps still to do
+  private double dx, dy, dr;      // the difference for x, y and rotation
+  
+  private int currentMovement;    // movement that is being stepped
 
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
@@ -80,6 +87,8 @@ class Simulator {
   }
   
   public Simulator moveRobot( double movement ) {
+    this.currentMovement = Navigator.MOVE;
+    
     // our direction 0 is pointing North, while it results in East, so add
     // 90 degrees
     double rads = Math.toRadians(this.direction + 90);
@@ -91,30 +100,79 @@ class Simulator {
     // move in steps of 1cm/2px
     // TODO: we now only deal with movements that are defined up to cm's.
     double step = 6.0;
-    double dx   = Math.cos(rads) * step;
-    double dy   = Math.sin(rads) * step;
-    int steps = (int)(distance / step);
-    for( ; steps>0; steps-- ) {
-      this.positionX += dx;
-      this.positionY -= dy;
-      this.refreshView();
-      // TODO: add in-move collision checks
-      // this.updateSensors();
-      // this.updateStatus();
-      // TODO: This might cause this loop to be interrupted
-    }
+    this.dx   = Math.cos(rads) * step;
+    this.dy   = Math.sin(rads) * step;
+    this.steps = (int)(distance / step);
+    
     return this;
   }
   
   public Simulator turnRobot( double angle ) {
-    this.direction = ( this.direction + angle ) % 360;
-    this.refreshView();
+    this.currentMovement = Navigator.TURN;
+    
+    // turn in steps of 3 degrees
+    this.dr   = 3.0;
+    this.steps = (int)(angle / this.dr);
+
+    return this;
+  }
+  
+  public Simulator stopRobot() {
+    this.currentMovement = Navigator.STOP;
     return this;
   }
 
   private void refreshView() {
     this.view.updateRobot( (int)this.positionX, (int)this.positionY,
                            (int)this.direction );
+  }
+  
+  /**
+   * Performs the next step in the movement currently executed by the robot
+   */ 
+  private void step() {
+    // process the next step in the movement that is currently being performed
+    switch( this.currentMovement ) {
+      case Navigator.MOVE:
+        if( this.steps-- > 0 ) {
+          this.positionX += this.dx;
+          this.positionY -= this.dy;
+        }
+        break;
+      case Navigator.TURN:
+        if( this.steps-- > 0 ) {
+          this.direction = ( this.direction + this.dr ) % 360;
+        }
+        break;
+      case Navigator.STOP:
+        this.currentMovement = Navigator.NONE;
+        break;
+      case Navigator.NONE:
+      default:
+        // do nothing
+    }
+    
+    // based on the new location, determine the value of the different sensors
+    this.updateSensorValues();
+
+    // always refresh our SimulationView
+    this.refreshView();
+  }
+  
+  private void updateSensorValues() {
+    // TODO: improve this algorithm and make max configurable ;-)
+    int dist = 20;
+    int maxx = 320;
+    int maxy = 320;
+    
+    if( this.positionX < dist || this.positionX > maxx - dist 
+        ||
+        this.positionY < dist || this.positionY > maxy - dist )
+    {
+      // the robot is "close" to a wall, push the front pushsensor
+      // TODO: make this relative to the actual distance ;-)
+      this.sensorValues[Model.S1] = 50;
+    }
   }
   
   /**
@@ -143,8 +201,15 @@ class Simulator {
    */
   public Simulator run() {
     this.robotAgent.run();
-    this.robot.run();
+    while( ! this.robot.reachedGoal() ) {
+      this.robot.step();
+      this.step();
+    }
     return this;
+  }
+  
+  public int[] getSensorValues() {
+    return this.sensorValues;
   }
 
 }
