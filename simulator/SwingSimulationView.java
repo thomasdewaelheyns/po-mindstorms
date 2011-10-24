@@ -35,7 +35,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
   public void updateRobot( int x, int y, int direction ) {
     this.board.updateRobot( x, y, direction );
     try { 
-      Thread.sleep(50);
+      Thread.sleep(30);
     } catch( InterruptedException e ) {
       System.err.println( e );
     }

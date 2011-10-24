@@ -99,4 +99,8 @@ public class Model {
     return this.stuck;
   }
   
+  public Boolean isMoving() {
+    return ( this.sensors[Model.M1] > 0 || this.sensors[Model.M2] > 0 );
+  }
+  
 }

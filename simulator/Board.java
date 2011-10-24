@@ -74,7 +74,7 @@ public class Board extends JPanel {
       this.path.add(new Point(x,y));
     }
     this.direction = direction;
-    System.out.println( x + "," + y + " / " + direction );
+    System.err.println( "Robot @ " + x + "," + y + " / " + direction );
     this.repaint();
   }
 

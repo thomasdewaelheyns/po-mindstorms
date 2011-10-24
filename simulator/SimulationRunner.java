@@ -13,7 +13,7 @@ class SimulationRunner {
 
   public static void main(String[] args) {
     // setup the robot
-    Robot robot = new DriveStopNavigatorRobot();
+    Robot robot = new BumperNavigatorRobot();
 
     // construct a course
     // Track track = new PlainTrack(); // this robot doesn't track a course

@@ -29,6 +29,9 @@ class Simulator {
   private double dx, dy, dr;      // the difference for x, y and rotation
   
   private int currentMovement;    // movement that is being stepped
+  private int lastChangeM1 = 0;    // the last change on Motor 1
+  private int lastChangeM2 = 0;    // the last change on Motor 2
+  private int lastChangeM3 = 0;    // the last change on Motor 3
 
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
@@ -96,12 +99,17 @@ class Simulator {
     // convert movement in meters to (pixel-based) units
     // 20cm = 120px / 1m = 600px / 1cm = 6px
     int distance = (int)(movement * 100.0 * 6.0);
+    int direction = 1;
+    if( distance < 0 ) {
+      direction = -1;
+      distance *= -1;
+    }
 
     // move in steps of 1cm/2px
     // TODO: we now only deal with movements that are defined up to cm's.
     double step = 6.0;
-    this.dx   = Math.cos(rads) * step;
-    this.dy   = Math.sin(rads) * step;
+    this.dx   = Math.cos(rads) * step * direction;
+    this.dy   = Math.sin(rads) * step * direction;
     this.steps = (int)(distance / step);
     
     return this;
@@ -131,17 +139,25 @@ class Simulator {
    * Performs the next step in the movement currently executed by the robot
    */ 
   private void step() {
+    this.lastChangeM1 = 0;
+    this.lastChangeM2 = 0;
     // process the next step in the movement that is currently being performed
     switch( this.currentMovement ) {
       case Navigator.MOVE:
         if( this.steps-- > 0 ) {
           this.positionX += this.dx;
           this.positionY -= this.dy;
+          // TODO: fix this to be correct towards actual change
+          this.lastChangeM1 = 1;
+          this.lastChangeM2 = 1;
         }
         break;
       case Navigator.TURN:
         if( this.steps-- > 0 ) {
           this.direction = ( this.direction + this.dr ) % 360;
+          // TODO: fix this to be correct towards dimensions of robot
+          this.lastChangeM1 = 1;
+          this.lastChangeM2 = -1;
         }
         break;
       case Navigator.STOP:
@@ -163,7 +179,7 @@ class Simulator {
     // TODO: improve this algorithm and make max configurable ;-)
     int dist = 20;
     int maxx = 320;
-    int maxy = 320;
+    int maxy = 300;
     
     if( this.positionX < dist || this.positionX > maxx - dist 
         ||
@@ -172,7 +188,12 @@ class Simulator {
       // the robot is "close" to a wall, push the front pushsensor
       // TODO: make this relative to the actual distance ;-)
       this.sensorValues[Model.S1] = 50;
+    } else {
+      this.sensorValues[Model.S1] = 0;      
     }
+    
+    this.sensorValues[Model.M1] = this.lastChangeM1;
+    this.sensorValues[Model.M2] = this.lastChangeM2;
   }
   
   /**
