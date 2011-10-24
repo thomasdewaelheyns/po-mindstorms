@@ -49,10 +49,12 @@ public class Board extends JPanel {
     Graphics2D g2d = (Graphics2D)g;
 
     // render path
-    for( Point point : this.path ) {
-      g2d.setColor(Color.blue);
-      g2d.drawLine( (int)point.getX(), (int)point.getY(), 
-                    (int)point.getX(), (int)point.getY() );
+    synchronized(this) {
+      for( Point point : this.path ) {
+        g2d.setColor(Color.blue);
+        g2d.drawLine( (int)point.getX(), (int)point.getY(), 
+                      (int)point.getX(), (int)point.getY() );
+      }
     }
     
     // render robot
@@ -68,7 +70,9 @@ public class Board extends JPanel {
   }
 
   public void updateRobot( int x, int y, int direction ) {
-    this.path.add(new Point(x,y));
+    synchronized(this) {
+      this.path.add(new Point(x,y));
+    }
     this.direction = direction;
     System.out.println( x + "," + y + " / " + direction );
     this.repaint();
