@@ -1,5 +1,8 @@
 *.class
-build*
+build/
+build.xml
+build-impl.xml
+build.properties
 */nbproject/private/*
 /cOMMON/dist/
 /Common/dist/

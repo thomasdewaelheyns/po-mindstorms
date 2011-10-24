@@ -5,31 +5,31 @@ import penoplatinum.Utils;
 
 public class RotationMovement implements IMovement {
 
-    public int SPEEDFORWARD = 400;
-    public int SPEEDTURN = 400;
+    public int SPEEDFORWARD = 250;
+    public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
     public final int WIELAFSTANDMIDDEN = 56;//mm
-    public final int WIELAFSTAND = 112;//mm
+    public final int WIELAFSTAND = 116;//mm
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
 
     public void MoveStraight(double distance) {
         distance *= 1000;
+        distance /= .99;
         int r = (int) (distance * 360 / WIELOMTREK);
         motorLeft.setSpeed(SPEEDFORWARD);
         motorRight.setSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
-        motorRight.rotate(r, true);
-        Utils.Sleep(r * 1100 / SPEEDFORWARD); //1000ms/s + 10% foutmarge
+        motorRight.rotate(r, false);
     }
 
     public void TurnOnSpotCCW(double angle) {
+        angle /= .99;
         motorLeft.setSpeed(SPEEDTURN);
         motorRight.setSpeed(SPEEDTURN);
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
         motorLeft.rotate(h, true);
-        motorRight.rotate(-h, true);
-        Utils.Sleep(h * 1100 / SPEEDTURN); //1000ms/s + 10% foutmarge
+        motorRight.rotate(-h, false);
     }
 
     public void TurnAroundWheel(double angle, boolean aroundLeft) {
