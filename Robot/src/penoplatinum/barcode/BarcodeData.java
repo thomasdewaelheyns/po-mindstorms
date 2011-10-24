@@ -1,5 +1,7 @@
 package penoplatinum.barcode;
 
+
+
 /**
  *
  * This class contains data and some functions handling the repairation of barcodes

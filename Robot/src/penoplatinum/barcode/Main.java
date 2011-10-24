@@ -15,10 +15,14 @@ import penoplatinum.movement.Utils;
  */
 public class Main {
     public static void main(String[] Args){
-        readerThread reader = new readerThread();
+        LightSensorRobot sensor = new LightSensorRobot(SensorPort.S1);
+        
+        sensor.calibrate();
+        readerThread reader = new readerThread(new BarcodeReader(sensor));
         reader.start();
         IMovement move = new RotationMovement();
         move.MoveStraight(1);
+        //Utils.Sleep(30000);
         reader.codeReader.continueWhile = false;
         reader.continueThread = false;
         Utils.Sleep(5000);
