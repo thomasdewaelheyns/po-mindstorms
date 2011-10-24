@@ -6,3 +6,5 @@ build.properties
 */nbproject/private/*
 /cOMMON/dist/
 /Common/dist/
+!Robot/buildWindows/build.xml
+!Robot/buildWindows/build.properties
