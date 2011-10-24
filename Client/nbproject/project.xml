@@ -15,7 +15,7 @@
             <reference>
                 <foreign-project>Common</foreign-project>
                 <artifact-type>jar</artifact-type>
-                <script>${build.script.reference.Common}</script>
+                <script>${project.Common}/build.xml</script>
                 <target>jar</target>
                 <clean-target>clean</clean-target>
                 <id>jar</id>

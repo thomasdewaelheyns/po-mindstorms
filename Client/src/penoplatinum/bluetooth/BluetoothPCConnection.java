@@ -1,5 +1,6 @@
 package penoplatinum.bluetooth;
 
+import com.sun.corba.se.impl.logging.UtilSystemException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,12 +13,16 @@ import lejos.pc.comm.NXTConnector;
 import penoplatinum.Utils;
 
 public class BluetoothPCConnection implements IConnection {
-    
+
     private DataOutputStream outputStream;
     private DataInputStream inputStream;
     private NXTComm open;
     private HashMap<Integer, IPacketTransporter> listenerMap = new HashMap<Integer, IPacketTransporter>();
-    
+    /**
+     * Readonly, only write in main thread
+     */
+    private boolean receiving;
+
     public void initializeConnection() {
         while (!connect()) {
             Utils.Log("Connection failed, trying again");
@@ -26,17 +31,17 @@ public class BluetoothPCConnection implements IConnection {
         // Connected to NXJ, perform packet ID synchronization here
 
     }
-    
+
     @Override
     public void RegisterTransporter(IPacketTransporter l, int packetIdentifier) {
         if (listenerMap.containsKey(packetIdentifier)) {
             throw new RuntimeException("A listener has already been created with given packetIdentifer");
         }
-        
+
         listenerMap.put(packetIdentifier, l);
-        
+
     }
-    
+
     @Override
     public void SendPacket(IPacketTransporter transporter, int packetIdentifier, byte[] dgram) {
         if (listenerMap.get(packetIdentifier) != transporter) {
@@ -46,16 +51,19 @@ public class BluetoothPCConnection implements IConnection {
             outputStream.writeInt(packetIdentifier);
             outputStream.writeShort((short) dgram.length);
             outputStream.write(dgram, 0, dgram.length);
+            outputStream.flush();
+            //TODO: flush??
         } catch (IOException ex) {
-            System.out.println("Send error!");
+            Utils.Log("Send error!");
+            if (ex.getMessage() != null) {
+                Utils.Log(ex.getMessage());
+            }
         }
-        
-        
+
+
     }
-    
-    
-    
-    
+
+
     private boolean connect() {
         try {
             NXTConnector conn = new NXTConnector();
@@ -68,29 +76,13 @@ public class BluetoothPCConnection implements IConnection {
             Utils.Log(e.toString());
             return false;
         }
-        
+
     }
-    
+
     private void close() {
         try {
             open.close();
         } catch (IOException ex) {
         }
-    }
-    
-    private boolean sendCatch(int n) {
-        try {
-            send(n);
-        } catch (IOException ex) {
-            System.out.println("IO Exception.");
-            return false;
-        }
-        return true;
-    }
-    
-    private void send(int n) throws IOException {
-        System.out.println("send: " + n);
-        outputStream.writeInt(n);
-        outputStream.flush();
     }
 }
