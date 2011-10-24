@@ -13,6 +13,7 @@ import java.util.HashMap;
  */
 public class SimpleConnection  implements IConnection {
     private SimpleConnection endPoint;
+    private PacketBuilder builder;
     
     private HashMap<Integer, IPacketTransporter> map = new HashMap<Integer, IPacketTransporter>();
     

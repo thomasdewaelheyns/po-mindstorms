@@ -1,13 +1,10 @@
 package penoplatinum.bluetooth;
 
-import com.sun.corba.se.impl.logging.UtilSystemException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTConnector;
 import penoplatinum.Utils;
