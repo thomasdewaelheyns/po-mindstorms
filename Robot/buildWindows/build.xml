@@ -1,7 +1,7 @@
 
-<project name="Example" default="uploadandrun">
+<project name="Example" default="uploadandrun" basedir=".">
     <description>
-    	lejos Windows build file
+    	org.lejos.example.HelloWorld build file
     </description>
 
   <!-- set properties for this build -->
@@ -56,9 +56,7 @@
     <target name="upload" depends="link"
         description="upload the binary" >
             
-        <exec executable="cmd">
-            <arg value="/c"/>
-            <arg value="c:\Program Files (x86)\leJOS NXJ 90\bin\nxjupload.bat"/>
+        <exec executable="${basedir}\buildWindows\leJOS NXJ 90\bin\nxjupload.bat">         
             <arg value="-b"/>
             <arg value="${binary}"/>
         </exec>
@@ -66,9 +64,7 @@
     <target name="uploadandrun" depends="link"
         description="upload the binary" >
             
-        <exec executable="cmd">
-            <arg value="/c"/>
-            <arg value="c:\PROGRA~2\LE6D14~1\bin\nxjupload.bat"/>
+        <exec executable="${basedir}\buildWindows\leJOS NXJ 90\bin\nxjupload.bat">         
             <arg value="-b"/>
             <arg value="-r"/>
             <arg value="${binary}"/>
