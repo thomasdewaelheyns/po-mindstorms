@@ -2,7 +2,7 @@ package penoplatinum.bluetooth;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTConnection;
@@ -12,12 +12,14 @@ import penoplatinum.Utils;
  * Responsible for sending and receiving bluetooth packets on the PC
  * 
  */
-public class BluetoothCommunicatorRobot {
+public class BluetoothCommunicatorRobot implements IConnection {
 
     BTConnection conn;
-    DataInputStream str;
+    DataInputStream stri;
     DataOutputStream stro;
     //private HashMap<Integer, BluetoothPacketTransporter> listenerMap = new HashMap<Integer, BluetoothPacketTransporter>();
+    private ArrayList<TransporterItem> transporterItems = new ArrayList<TransporterItem>();
+    private PacketBuilder builder;
 
     public BluetoothCommunicatorRobot() {
     }
@@ -29,34 +31,105 @@ public class BluetoothCommunicatorRobot {
         }
         // Connected to NXJ, perform packet ID synchronization here
 
-    }
+        builder = new PacketBuilder(stro, stri, new IPacketReceiver() {
 
-    /*public BluetoothPacketTransporter RegisterTransporter(int packetIdentifier) {
-        BluetoothPacketTransporter l = new BluetoothPacketTransporter();
-        if (listenerMap.containsKey(packetIdentifier))
-            throw new RuntimeException("A listener has already been created with given packetIdentifer");
-        
-        listenerMap.put(packetIdentifier, l);
-        
-        return l;
-    }*/
+            public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
+                IPacketTransporter t = findTransporterByPacketIdentifier(packetIdentifier);
+                if (t == null)
+                {
+                    Utils.Log("Unkown packet type received! (" + packetIdentifier + ")");
+                    return;
+                }
+                
+                t.onPacketReceived(packetIdentifier, dgram, 0, size);
+            }
+        });
+    }
 
     private boolean connect() {
         System.out.println("Connecting.");
         conn = Bluetooth.waitForConnection(5000, NXTConnection.PACKET);
         if (conn == null) {
-            str = null;
+            stri = null;
             stro = null;
 
             return false;
         }
-        str = conn.openDataInputStream();
+        stri = conn.openDataInputStream();
         stro = conn.openDataOutputStream();
         System.out.println("Connected: " + conn.getAddress());
         return true;
     }
 
-    private int readInt() throws IOException {
-        return str.readInt();
+    public void RegisterTransporter(IPacketTransporter transporter, int packetIdentifier) {
+        synchronized (this) {
+            for (int i = 0; i < transporterItems.size(); i++) {
+                if (transporterItems.get(i).packetIdentifier == packetIdentifier) {
+                    Utils.Log("A transporter has already been created with given packetIdentifer");
+                    return;
+                }
+
+            }
+
+            TransporterItem item = new TransporterItem(packetIdentifier, transporter);
+            transporterItems.add(item);
+        }
+    }
+
+    public void SendPacket(IPacketTransporter transporter, int packetIdentifier, byte[] dgram) {
+        //TODO: remove security check for speed
+        TransporterItem t = null;
+
+        if (t == null) {
+            Utils.Log("Unknown packet identifier!");
+            return;
+        }
+        if (t != transporter) {
+            Utils.Log("Transporter is not allowed to send packets with given identifier");
+            return;
+        }
+
+        builder.sendPacket(packetIdentifier, dgram);
+
+
+
+    }
+
+    /**
+     * Thread safe!
+     * @param packetIdentifier
+     * @return 
+     */
+    private IPacketTransporter findTransporterByPacketIdentifier(int packetIdentifier) {
+        synchronized (this) {
+            for (int i = 0; i < transporterItems.size(); i++) {
+                final TransporterItem item = transporterItems.get(i);
+                if (item.getPacketIdentifier() == packetIdentifier) {
+                    return item.getTransporter();
+                }
+            }
+            return null;
+        }
+
+
+    }
+
+    private class TransporterItem {
+
+        private int packetIdentifier;
+        private IPacketTransporter transporter;
+
+        public TransporterItem(int packetIdentifier, IPacketTransporter transporter) {
+            this.packetIdentifier = packetIdentifier;
+            this.transporter = transporter;
+        }
+
+        public int getPacketIdentifier() {
+            return packetIdentifier;
+        }
+
+        public IPacketTransporter getTransporter() {
+            return transporter;
+        }
     }
 }

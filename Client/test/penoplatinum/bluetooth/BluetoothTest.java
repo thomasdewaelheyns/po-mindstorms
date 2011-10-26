@@ -23,8 +23,8 @@ import static org.junit.Assert.*;
  */
 public class BluetoothTest {
 
-    SimpleConnection ca;
-    SimpleConnection cb;
+    SimulatedConnection ca;
+    SimulatedConnection cb;
 
     public BluetoothTest() {
     }
@@ -39,8 +39,8 @@ public class BluetoothTest {
 
     @Before
     public void setUp() {
-        ca = new SimpleConnection();
-        cb = new SimpleConnection();
+        ca = new SimulatedConnection();
+        cb = new SimulatedConnection();
         ca.setEndPoint(cb);
         cb.setEndPoint(ca);
     }

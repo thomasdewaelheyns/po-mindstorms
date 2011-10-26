@@ -15,6 +15,7 @@ public class BluetoothPCConnection implements IConnection {
     private DataInputStream inputStream;
     private NXTComm open;
     private HashMap<Integer, IPacketTransporter> listenerMap = new HashMap<Integer, IPacketTransporter>();
+    private PacketBuilder builder;
     /**
      * Readonly, only write in main thread
      */
@@ -25,8 +26,27 @@ public class BluetoothPCConnection implements IConnection {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
         }
-        // Connected to NXJ, perform packet ID synchronization here
 
+
+        // Connected to NXJ, perform packet ID synchronization here (possible optimization)
+
+        createPacketBuilder();
+
+    }
+
+    private void createPacketBuilder() {
+        builder = new PacketBuilder(outputStream, inputStream, new IPacketReceiver() {
+
+            @Override
+            public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
+                IPacketTransporter t = listenerMap.get(packetIdentifier);
+                if (t == null) {
+                    Utils.Log("Packet discarded because no transporter is registered for this type! (" + packetIdentifier + ")");
+                }
+                t.onPacketReceived(packetIdentifier, dgram, 0, size);
+
+            }
+        });
     }
 
     @Override
@@ -44,22 +64,11 @@ public class BluetoothPCConnection implements IConnection {
         if (listenerMap.get(packetIdentifier) != transporter) {
             throw new RuntimeException("Unauthorized packet id!");
         }
-        try {
-            outputStream.writeInt(packetIdentifier);
-            outputStream.writeShort((short) dgram.length);
-            outputStream.write(dgram, 0, dgram.length);
-            outputStream.flush();
-            //TODO: flush??
-        } catch (IOException ex) {
-            Utils.Log("Send error!");
-            if (ex.getMessage() != null) {
-                Utils.Log(ex.getMessage());
-            }
-        }
+        builder.sendPacket(packetIdentifier, dgram);
+        //TODO: flush??
 
 
     }
-
 
     private boolean connect() {
         try {

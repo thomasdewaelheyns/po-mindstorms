@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -94,10 +95,10 @@ public class PacketTransporter implements IPacketTransporter {
     }
 
     @Override
-    public void onPacketReceived(int packetIdentifier, byte[] dgram) {
+    public void onPacketReceived(int packetIdentifier, byte[] dgram,int offset, int size) {
         Packet p = new Packet();
         p.PacketIdentifier = packetIdentifier;
-        p.Dgram = dgram;
+        p.Dgram = Arrays.copyOfRange(dgram, offset,size);
 
         synchronized (receivedQueue) {
             receivedQueue.add(p);

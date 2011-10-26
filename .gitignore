@@ -8,3 +8,4 @@ build.properties
 /Common/dist/
 !Robot/buildWindows/build.xml
 !Robot/buildWindows/build.properties
+*/dist/*
