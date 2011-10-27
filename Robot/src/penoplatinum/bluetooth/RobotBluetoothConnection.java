@@ -12,7 +12,7 @@ import penoplatinum.Utils;
  * Responsible for sending and receiving bluetooth packets on the PC
  * 
  */
-public class BluetoothCommunicatorRobot implements IConnection {
+public class RobotBluetoothConnection implements IConnection {
 
     BTConnection conn;
     DataInputStream stri;
@@ -21,7 +21,7 @@ public class BluetoothCommunicatorRobot implements IConnection {
     private ArrayList<TransporterItem> transporterItems = new ArrayList<TransporterItem>();
     private PacketBuilder builder;
 
-    public BluetoothCommunicatorRobot() {
+    public RobotBluetoothConnection() {
     }
 
     public void initializeConnection() {
@@ -31,6 +31,9 @@ public class BluetoothCommunicatorRobot implements IConnection {
         }
         // Connected to NXJ, perform packet ID synchronization here
 
+        IPacketReceiver r = null;
+        
+        
         builder = new PacketBuilder(stro, stri, new IPacketReceiver() {
 
             public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
@@ -44,6 +47,8 @@ public class BluetoothCommunicatorRobot implements IConnection {
                 t.onPacketReceived(packetIdentifier, dgram, 0, size);
             }
         });
+        
+        builder.startReceiving();
     }
 
     private boolean connect() {
@@ -78,8 +83,10 @@ public class BluetoothCommunicatorRobot implements IConnection {
 
     public void SendPacket(IPacketTransporter transporter, int packetIdentifier, byte[] dgram) {
         //TODO: remove security check for speed
-        TransporterItem t = null;
+        IPacketTransporter t = null;
 
+        t = findTransporterByPacketIdentifier(packetIdentifier);
+        
         if (t == null) {
             Utils.Log("Unknown packet identifier!");
             return;

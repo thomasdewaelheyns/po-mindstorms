@@ -166,4 +166,35 @@ public class BluetoothTest {
 
 
     }
+
+    @Test
+    public void testBluetoothButtonSend() {
+        int buttonPacketId = 5988695;
+
+        BluetoothPCConnection conn = new BluetoothPCConnection();
+
+        PacketTransporter t = new PacketTransporter(conn);
+
+        conn.RegisterTransporter(t, buttonPacketId);
+
+        conn.initializeConnection();
+
+        while (true) {
+            int packetID = t.ReceivePacket();
+            if (packetID == buttonPacketId) {
+                Utils.Log("Button packet received!");
+            } else {
+                Utils.Log("Unknown packet received");
+            }
+            try {
+                Utils.Log(t.getReceiveStream().readDouble() + "");
+            } catch (IOException ex) {
+                Utils.Log(ex.toString());
+            }
+
+        }
+
+
+
+    }
 }

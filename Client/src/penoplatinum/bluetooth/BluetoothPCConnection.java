@@ -27,10 +27,12 @@ public class BluetoothPCConnection implements IConnection {
             Utils.Sleep(1000);
         }
 
-
+        Utils.Log("Connected!");
         // Connected to NXJ, perform packet ID synchronization here (possible optimization)
 
         createPacketBuilder();
+
+        builder.startReceiving();
 
     }
 
@@ -75,6 +77,7 @@ public class BluetoothPCConnection implements IConnection {
             NXTConnector conn = new NXTConnector();
             boolean connected = conn.connectTo(NXTComm.PACKET);
             open = (connected ? conn.getNXTComm() : null);
+            
             outputStream = (connected ? new DataOutputStream(open.getOutputStream()) : null);
             inputStream = (connected ? new DataInputStream(open.getInputStream()) : null);
             return connected;

@@ -3,7 +3,7 @@ package penoplatinum.bluetooth;
 import java.io.IOException;
 
 public class BluetoothControl {
-    BluetoothCommunicatorRobot bt=new BluetoothCommunicatorRobot();
+    RobotBluetoothConnection bt=new RobotBluetoothConnection();
     boolean isActive=false;
 
     public BluetoothControl() {}

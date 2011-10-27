@@ -83,6 +83,7 @@ public class PacketBuilder {
     
     public void sendPacket(int packetIdentifier, byte[] dgram) {
         try {
+            Utils.Log("Send packet." + packetIdentifier);
             outputStream.writeInt(packetIdentifier);
             outputStream.writeShort((short) dgram.length);
             outputStream.write(dgram, 0, dgram.length);

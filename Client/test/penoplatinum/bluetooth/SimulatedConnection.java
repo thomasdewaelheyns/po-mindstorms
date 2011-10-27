@@ -22,24 +22,13 @@ public class SimulatedConnection implements IConnection {
     private SimulatedConnection endPoint;
     private PacketBuilder builder;
     private HashMap<Integer, IPacketTransporter> map = new HashMap<Integer, IPacketTransporter>();
-    private DataOutputStream endPointWriteStream;
-    private DataInputStream endPointReadStream;
-    private PipedInputStream internalReceiveStream;
-    private PipedOutputStream externalReceiveStream;
-    private PipedOutputStream internalSendStream;
-    private PipedInputStream externalSendStream;
+    private PipedInputStream internalStream;
+    private PipedOutputStream externalStream;
 
     public SimulatedConnection() {
-        internalReceiveStream = new PipedInputStream();
+        internalStream = new PipedInputStream();
         try {
-            externalReceiveStream = new PipedOutputStream(internalReceiveStream);
-        } catch (IOException ex) {
-            Logger.getLogger(SimulatedConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        externalSendStream = new PipedInputStream();
-        try {
-            internalSendStream = new PipedOutputStream(externalSendStream);
+            externalStream = new PipedOutputStream(internalStream);
         } catch (IOException ex) {
             Logger.getLogger(SimulatedConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -49,14 +38,13 @@ public class SimulatedConnection implements IConnection {
 
     public void setEndPoint(SimulatedConnection endPoint) {
         this.endPoint = endPoint;
-        endPointWriteStream = new DataOutputStream(endPoint.externalReceiveStream);
-        endPointReadStream = new DataInputStream(endPoint.externalSendStream);
 
-
+        createPacketBuilder();
+        builder.startReceiving();
     }
 
     private void createPacketBuilder() {
-        builder = new PacketBuilder(new DataOutputStream(endPointWriteStream), new DataInputStream(endPointReadStream), new IPacketReceiver() {
+        builder = new PacketBuilder(new DataOutputStream(endPoint.externalStream), new DataInputStream(internalStream), new IPacketReceiver() {
 
             @Override
             public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
