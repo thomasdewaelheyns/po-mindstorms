@@ -8,8 +8,7 @@ public class RotationMovement implements IMovement {
     public int SPEEDFORWARD = 125;
     public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
-    public final int WIELAFSTANDMIDDEN = 56;//mm
-    public final int WIELAFSTAND = 116;//112mm
+    public final int WIELAFSTAND = 113;//112mm
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
 
@@ -42,7 +41,11 @@ public class RotationMovement implements IMovement {
         //Utils.Log("Turn");
         changeMotorSpeed(SPEEDTURN);
         angle /= 0.99;
-        int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
+		//TODO: for barcode second rotate needs a false
+		//TODO: int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
+		//		Different formula in barcode???
+sqmdfqsdf
+        int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK); 
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, true);
     }

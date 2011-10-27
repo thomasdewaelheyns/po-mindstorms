@@ -44,15 +44,15 @@ public class BarcodeReader {
                 startCounter++;
             } else {
                 counter++;
-                if(isReadingBarcode && (startCounter<=4) && (counter >3)){
+                if(isReadingBarcode && (startCounter<=3) && (counter >5)){
                     isReadingBarcode = false;
                     startCounter = 0;
                     counter =0;
                     code.clear();
                 }
-                if (isReadingBarcode && counter >= 10) {
+                if (isReadingBarcode && counter >= 20) {
                     // Was reading barcode but is now completed.
-                    for(int i = 0; i<10; i++){
+                    for(int i = 0; i<20; i++){
                         code.remove(code.size()-1);
                     }
                     int temp = interpreter.translate(code);

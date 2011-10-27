@@ -20,12 +20,13 @@ public class Main {
         sensor.calibrate();
         readerThread reader = new readerThread(new BarcodeReader(sensor));
         reader.start();
-        Utils.Sleep(40000);
+        boolean Unlimited = true;
+        while(Unlimited){
+        if(Unlimited == false){ Unlimited = false;}
+       }
         reader.codeReader.continueWhile = false;
         reader.continueThread = false;
-        Utils.Sleep(5000);
-        Button.waitForPress();
-        System.exit(0);
+        
     }
     
     

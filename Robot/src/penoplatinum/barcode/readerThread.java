@@ -28,24 +28,42 @@ public class readerThread extends Thread {
             commando = this.codeReader.read();
             System.out.println(""+commando);
             switch(commando){
+                case 0:
+                    move.TurnOnSpotCCW(45);
+                    break;
+                case 15:
+                    move.TurnOnSpotCCW(-45);
+                    break;
                 case 1:
                     break;
                 case 3:
-                    move.MoveStraight(0.25,true);
+                    move.MoveStraight(0.325,true);
+                    Utils.Sleep(200);
                     move.TurnOnSpotCCW(90);
+                    Utils.Sleep(200);
                     break;
                 case 6:
-                    move.MoveStraight(0.25, true);
+                    move.MoveStraight(0.325, true);
+                    Utils.Sleep(200);
                     move.TurnOnSpotCCW(-90);
+                    Utils.Sleep(200);
                     break;
                 case 9:
+                    move.MoveStraight(0.15, true);
+                    Utils.Sleep(200);
                     move.TurnOnSpotCCW(180);
                     break;
                 case 12:
+                    move.MoveStraight(0.15, true);
+                    Utils.Sleep(200);
                     move.TurnOnSpotCCW(180);
+                    Utils.Sleep(200);
                     break;
-                case 15:
+                case 14:
+                    move.MoveStraight(0.15, true);
+                    Utils.Sleep(200);
                     move.TurnOnSpotCCW(180);
+                    Utils.Sleep(200);
                     break;
         }
        }
