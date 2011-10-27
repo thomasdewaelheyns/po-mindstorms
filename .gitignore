@@ -1,14 +1,9 @@
 *.class
 build/
 build.xml
+build.properties
 */nbproject/private/
 */nbproject/build-impl.xml
-build.properties
-*/nbproject/private/*
 !Robot/buildWindows/build.xml
 !Robot/buildWindows/build.properties
 */dist/*
-/Client/nbproject/private/
-/Common/nbproject/private/
-/Client/nbproject/private/
-/Common/nbproject/private/
