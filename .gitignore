@@ -8,3 +8,7 @@ build.properties
 !Robot/buildWindows/build.xml
 !Robot/buildWindows/build.properties
 */dist/*
+/Client/nbproject/private/
+/Common/nbproject/private/
+/Client/nbproject/private/
+/Common/nbproject/private/
