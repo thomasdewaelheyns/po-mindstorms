@@ -51,7 +51,7 @@ public class TranslateTest {
     }
 
     public void testTranslate() {
-        BarcodeInterpreter interpreter = new BarcodeInterpreter();
+        BarcodeData interpreter = new BarcodeData();
 
 
         System.out.print("" + interpreter.translate(barcodeInput));

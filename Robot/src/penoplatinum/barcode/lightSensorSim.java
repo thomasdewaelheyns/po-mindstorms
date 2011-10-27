@@ -24,5 +24,9 @@ public class lightSensorSim implements iLightSensor {
         index++;
         return (byte) (codeList[index-1]+Math.random()*3);
     }
+
+    public boolean isBrown(int val) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

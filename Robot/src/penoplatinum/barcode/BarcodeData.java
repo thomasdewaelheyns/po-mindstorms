@@ -1,13 +1,29 @@
 package penoplatinum.barcode;
 
+import java.util.ArrayList;
 
-
-/**
- *
- * This class contains data and some functions handling the repairation of barcodes
- * @author Thomas
- */
 public class BarcodeData {
+    public int translate(ArrayList<Integer> list) {
+        if(list.size()<7){return -1;}
+        int val = 0;
+        for (int i = 0; i < 7; i++) {
+            int sum = 0;
+            for (int j = (i * list.size()) / 7; j < (i + 1) * list.size() / 7; j++) {
+                sum += list.get(j);
+            }
+            int averageValue = sum / (((i + 1) * list.size() / 7) - ((i * list.size()) / 7));
+            val*=2;
+            val+=LightSensorRobot.isColor(averageValue);
+        }
+        return val;
+    }
+
+    public int correct(int value) {
+        BarcodeData temp = new BarcodeData();
+        byte corrected = (byte) (temp.getBarcodesRepair(value) / 8);
+        return corrected;
+    }
+    
     public static byte[] barcodesRepair = getBarcodes();
     public static byte[] getBarcodes(){
         byte[] out = new byte[128];

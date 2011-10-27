@@ -127,6 +127,11 @@ sqmdfqsdf
         motorRight.stop();
     }
 
+
+    public boolean isStopped() {
+        return (!motorLeft.isMoving() && !motorRight.isMoving());
+    }
+
     /**
      * Returns the average tacho count of the 2 motors
      */

@@ -75,4 +75,12 @@ public class TimeMovement implements IMovement {
         MotorLeft.stop();
         MotorRight.stop();
     }
+
+    public void TurnOnSpotCCW(double angle, boolean block) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean isStopped() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
