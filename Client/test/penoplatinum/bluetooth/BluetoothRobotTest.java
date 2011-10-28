@@ -4,7 +4,14 @@ package penoplatinum.bluetooth;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import lejos.pc.comm.NXTComm;
+import lejos.pc.comm.NXTConnector;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +24,6 @@ import penoplatinum.Utils;
  * @author MHGameWork
  */
 public class BluetoothRobotTest {
-
 
     public BluetoothRobotTest() {
     }
@@ -36,6 +42,50 @@ public class BluetoothRobotTest {
 
     @After
     public void tearDown() {
+    }
+    private DataOutputStream outputStream;
+    private DataInputStream inputStream;
+    private NXTComm open;
+    /**
+     * Readonly, only write in main thread
+     */
+    private boolean receiving;
+
+    public void initializeConnection() {
+        while (!connect()) {
+            Utils.Log("Connection failed, trying again");
+            Utils.Sleep(1000);
+        }
+
+        Utils.Log("Connected!");
+        // Connected to NXJ, perform packet ID synchronization here (possible optimization)
+
+        while (true) {
+            try {
+                outputStream.writeInt(42);
+                outputStream.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(BluetoothRobotTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+
+    }
+
+    private boolean connect() {
+        try {
+            NXTConnector conn = new NXTConnector();
+            boolean connected = conn.connectTo(NXTComm.PACKET);
+            open = (connected ? conn.getNXTComm() : null);
+
+            outputStream = (connected ? new DataOutputStream(open.getOutputStream()) : null);
+            inputStream = (connected ? new DataInputStream(open.getInputStream()) : null);
+            return connected;
+        } catch (Exception e) {
+            Utils.Log(e.toString());
+            return false;
+        }
+
     }
 
     @Test
