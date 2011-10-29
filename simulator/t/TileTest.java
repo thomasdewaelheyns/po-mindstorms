@@ -159,21 +159,9 @@ public class TileTest extends TestCase {
     tile.unsetNarrowingOrientation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
+
   private Tile createEmptyTile() {
     return new Tile();
   }
 
 }
-
-
-/*
-    Tile tile = new Tile();
-    tile.setWall(Tile.W);
-    tile.setLine(Tile.W);
-    tile.setBarcode(7);
-    System.out.println( tile.toString() );
-    tile.setBarcode(9);
-    System.out.println( tile.toString() );
-    System.out.println( tile.getBarcode() );
-
-*/

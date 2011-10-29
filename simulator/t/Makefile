@@ -5,7 +5,7 @@ JAVAC=javac -cp ${CP}
 JAVA=java -cp ${CP}
 JUNIT=${JAVA} junit.textui.TestRunner
 
-TARGETS=TileTest.test
+TARGETS=TileTest.test MapTest.test
 
 RM=rm -f
 
