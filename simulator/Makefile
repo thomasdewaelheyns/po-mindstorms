@@ -15,5 +15,8 @@ run: ${TARGETS}
 	@echo "*** building ${<:.class=}"
 	@${JAVAC} $<
 
+test:
+	@( cd t; make test )
+
 clean:
 	@${RM} *.class
