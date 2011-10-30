@@ -25,6 +25,8 @@ public class SwingSimulationView extends JFrame implements SimulationView {
   
   private void setupWindow() {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // by default we're 2 tiles by 2 (of 160px with 2px/cm
+    this.setSize( 2 * 160, 2 * 160 );
     this.setLocationRelativeTo(null);
     this.setTitle("Simulator");
     this.setResizable(false);
