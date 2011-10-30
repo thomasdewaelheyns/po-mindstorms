@@ -25,17 +25,23 @@ public class SwingSimulationView extends JFrame implements SimulationView {
   
   private void setupWindow() {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setSize(320, 320);
     this.setLocationRelativeTo(null);
     this.setTitle("Simulator");
     this.setResizable(false);
     this.setVisible(true);
   }
   
+  public void showMap(Map map) {
+    this.board.showMap(map);
+    // a tile is 80cm in reality, we apply a scale of 2px/cm
+    this.setSize(map.getWidth() * 160, map.getHeight() * 160 );
+  }
+  
   public void updateRobot( int x, int y, int direction ) {
-    this.board.updateRobot( x, y, direction );
+    // apply the scale of 2px/cm
+    this.board.updateRobot( x * 2, y * 2, direction );
     try { 
-      Thread.sleep(30);
+      Thread.sleep(10);
     } catch( InterruptedException e ) {
       System.err.println( e );
     }

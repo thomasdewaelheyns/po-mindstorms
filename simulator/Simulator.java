@@ -1,8 +1,8 @@
 /**
  * Simulator
  * 
- * Accepts a robot, track and view and simulates the how the robot would run
- * this track (in a perfect world). Its main use is to test the theory behind
+ * Accepts a robot, map and view and simulates the how the robot would run
+ * this map (in a perfect world). Its main use is to test the theory behind
  * Navigator implementations, without the extra step onto the robot.
  * 
  * Future Improvements: Add support for multiple robots
@@ -10,10 +10,12 @@
  * Author: Team Platinum
  */
  
+import java.awt.Point;
+ 
 class Simulator {
 
   private SimulationView view;    // a view to display the simulation
-  // private Track track;            // the track that the robot will run on
+  private Map map;                // the map that the robot will run on
   private SimulationRobotAPI robotAPI;      // the API used to access hardware
   private SimulationRobotAgent robotAgent;  // the communication layer
 
@@ -56,20 +58,26 @@ class Simulator {
    */
   public Simulator displayOn(SimulationView view) {
     this.view = view;
+    if( this.map != null ) {
+      this.view.showMap(map);
+    }
     return this;
   }
 
   /**
-   * A track can be provided. This will determine what information the 
+   * A map can be provided. This will determine what information the 
    * Simulator will send to the robot's sensors, using the SimulationRobotAPI.
    */
-  //public Simulator useTrack(Track track) {
-  //  this.track = track;
-  //  return this;
-  //}
+  public Simulator useMap(Map map) {
+    this.map = map;
+    if( this.view != null ) {
+      this.view.showMap(map);
+    }
+    return this;
+  }
   
   /**
-   * A robot is put on the track - as in the real world - on a certain place
+   * A robot is put on the map - as in the real world - on a certain place
    * and in a given direction.
    * The Simulator also instruments the robot with a RobotAPI and sets up
    * the RobotAgent to interact with the robot.
@@ -92,25 +100,20 @@ class Simulator {
   public Simulator moveRobot( double movement ) {
     this.currentMovement = Navigator.MOVE;
     
-    // our direction 0 is pointing North, while it results in East, so add
-    // 90 degrees
+    // our direction 0 is pointing North
     double rads = Math.toRadians(this.direction + 90);
 
-    // convert movement in meters to (pixel-based) units
-    // 20cm = 120px / 1m = 600px / 1cm = 6px
-    int distance = (int)(movement * 100.0 * 6.0);
+    // convert from distance in meters to cm
+    int distance = (int)(movement * 100.0);
     int direction = 1;
     if( distance < 0 ) {
       direction = -1;
       distance *= -1;
     }
 
-    // move in steps of 1cm/2px
-    // TODO: we now only deal with movements that are defined up to cm's.
-    double step = 6.0;
-    this.dx   = Math.cos(rads) * step * direction;
-    this.dy   = Math.sin(rads) * step * direction;
-    this.steps = (int)(distance / step);
+    this.dx    = Math.cos(rads) * direction;
+    this.dy    = Math.sin(rads) * direction;
+    this.steps = distance;
     
     return this;
   }
@@ -175,25 +178,249 @@ class Simulator {
     this.refreshView();
   }
   
+  /**
+   * based on the robot's position, determine the values for the different
+   * sensors.
+   * TODO: extract the robot's physical configuration into separate object
+   *       this is shared with the Model in a way (for now)
+   */
   private void updateSensorValues() {
-    // TODO: improve this algorithm and make max configurable ;-)
-    int dist = 20;
-    int maxx = 320;
-    int maxy = 300;
+    int lengthRobot = 20;
     
-    if( this.positionX < dist || this.positionX > maxx - dist 
-        ||
-        this.positionY < dist || this.positionY > maxy - dist )
-    {
-      // the robot is "close" to a wall, push the front pushsensor
-      // TODO: make this relative to the actual distance ;-)
+    int distance = this.getFreeFrontDistance();
+
+    if( distance < lengthRobot / 2 ) {
       this.sensorValues[Model.S1] = 50;
     } else {
-      this.sensorValues[Model.S1] = 0;      
+      this.sensorValues[Model.S1] = 0;
     }
-    
+        
     this.sensorValues[Model.M1] = this.lastChangeM1;
     this.sensorValues[Model.M2] = this.lastChangeM2;
+  }
+  
+  /**
+   * Determine the distance to the first obstacle in direct line of sight
+   */
+  private int getFreeFrontDistance() {
+    int distance = 0;
+    
+    // determine tile coordinates we're on
+    int left = (int)Math.floor(this.positionX / 80) + 1;
+    int top  = (int)Math.floor(this.positionY / 80) + 1;
+
+    // determine position within tile
+    int x = (int)this.positionX % 80;
+    int y = (int)this.positionY % 80;
+
+    // find distance to first wall in line of sight
+    distance = (int)Math.round(this.findHitDistance(left, top, x, y, 0));
+
+    System.out.println( (int)(x) + ", " + (int)(y) + " @ " + ( ( this.direction + 90 ) % 360 ) + " | " + distance );
+    
+    return distance;
+  }
+  
+  /**
+   * TODO : REFACTOR THIS !!!! URGENTLY !!!!!
+   */
+  private double findHitDistance(int left, int top, int x, int y, double d) {
+    Point hit   = this.findHitPoint(x,y);
+    double dist = Math.sqrt( Math.pow(hit.x - x, 2 ) + 
+                             Math.pow(hit.y - y, 2 ) );
+
+    Tile onTile = this.map.get( left, top );
+
+    System.out.println( x + ", " + y + " --> " + hit );
+
+    if( hit.x == 0 && hit.y == 0 ) {
+      int angle = (int)(( this.direction + 90 ) % 360);
+      if( angle == 90 ) {
+        // N
+        System.out.println( "facing north" );      
+        if( ! onTile.hasWall(Tile.N) ) {
+          System.out.println( "tile " + left + " , " + top + " has no north wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left, top - 1, 0, 80, dist );
+        }
+      } else if( angle > 90 && angle < 180 ) {
+        // NW
+        System.out.println( "facing north-west" );      
+        if( ! onTile.hasWall(Tile.N) && ! onTile.hasWall(Tile.W) ) {
+          System.out.println( "tile " + left + " , " + top + " has no north or west wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left - 1, top - 1, 80, 80, dist );
+        }
+      } else {
+        // W
+        System.out.println( "facing west" );
+        if( ! onTile.hasWall(Tile.W) ) {
+          System.out.println( "tile " + left + " , " + top + " has no west wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left - 1, top, 80, 0, dist );
+        }
+      }
+    } else if( hit.x == 0 && hit.y == 80 ) {
+      int angle = (int)(( this.direction + 90 ) % 360);
+      if( angle == 180 ) {
+        // W
+        System.out.println( "facing west" );
+        if( ! onTile.hasWall(Tile.W) ) {
+          System.out.println( "tile " + left + " , " + top + " has no west wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left - 1, top, 80, 80, dist );
+        }
+      } else if( angle > 180 && angle < 270 ) {
+        // SW
+        System.out.println( "facing south-west" );      
+        if( ! onTile.hasWall(Tile.S) && ! onTile.hasWall(Tile.W) ) {
+          System.out.println( "tile " + left + " , " + top + " has no south or west wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left - 1, top + 1, 0, 80, dist );
+        }
+      } else {
+        // S
+        System.out.println( "facing south" );      
+        if( ! onTile.hasWall(Tile.S) ) {
+          System.out.println( "tile " + left + " , " + top + " has no south wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left, top + 1, 0, 0, dist );
+        }
+      }
+    } else if( hit.x == 80 && hit.y == 0 ) {
+      int angle = (int)(( this.direction + 90 ) % 360);
+      if( angle == 0 ) {
+        // E
+        System.out.println( "facing east" );
+        if( ! onTile.hasWall(Tile.E) ) {
+          System.out.println( "tile " + left + " , " + top + " has no east wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left + 1, top, 0, 0, dist );
+        }
+      } else if( angle > 0 && angle < 90 ) {
+        // NE
+        System.out.println( "facing north-east" );      
+        if( ! onTile.hasWall(Tile.N) && ! onTile.hasWall(Tile.E) ) {
+          System.out.println( "tile " + left + " , " + top + " has no north or east wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left + 1, top - 1, 0, 80, dist );
+        }
+      } else {
+        // N
+        System.out.println( "facing north" );      
+        if( ! onTile.hasWall(Tile.N) ) {
+          System.out.println( "tile " + left + " , " + top + " has no north wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left, top - 1, 80, 80, dist );
+        }
+      }
+    } else if( hit.x == 80 && hit.y == 80 ) {
+      int angle = (int)(( this.direction + 90 ) % 360);
+      if( angle == 270 ) {
+        // S
+        System.out.println( "facing south" );
+        if( ! onTile.hasWall(Tile.S) ) {
+          System.out.println( "tile " + left + " , " + top + " has no south wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left, top + 1, 80, 0, dist );
+        }
+      } else if( angle > 270 && angle < 360 && angle != 0 ) {
+        // SE
+        System.out.println( "facing south-east" );      
+        if( ! onTile.hasWall(Tile.S) && ! onTile.hasWall(Tile.E) ) {
+          System.out.println( "tile " + left + " , " + top + " has no south or east wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left + 1, top + 1, 0, 0, dist );
+        }
+      } else {
+        // N
+        System.out.println( "facing east" );      
+        if( ! onTile.hasWall(Tile.E) ) {
+          System.out.println( "tile " + left + " , " + top + " has no east wall, adding to dist = " + dist );
+          dist = this.findHitDistance(left + 1, top, 0, 80, dist );
+        }
+      }
+    } else if( hit.x == 0 ) {
+      System.out.println( "facing west" );
+      if( ! onTile.hasWall(Tile.W) ) {
+        System.out.println( "tile " + left + " , " + top + " has no west wall, adding to dist = " + dist );
+        dist = this.findHitDistance(left - 1, top, 80, hit.y, dist );
+      }
+    } else if( hit.x == 80 ) {
+      System.out.println( "facing east" );      
+      if( ! onTile.hasWall(Tile.E) ) {
+        System.out.println( "tile " + left + " , " + top + " has no east wall, adding to dist = " + dist );
+        dist = this.findHitDistance(left + 1, top, 0, hit.y, dist );
+      }
+    } else if( hit.y == 0 ) {
+      System.out.println( "facing north" );      
+      if( ! onTile.hasWall(Tile.N) ) {
+        System.out.println( "tile " + left + " , " + top + " has no north wall, adding to dist = " + dist );
+        dist = this.findHitDistance(left, top - 1, hit.x, 80, dist );
+      }
+    } else if( hit.y == 80 ) {
+      System.out.println( "facing south" );      
+      if( ! onTile.hasWall(Tile.S) ) {
+        System.out.println( "tile " + left + " , " + top + " has no south wall, adding to dist = " + dist );
+        dist = this.findHitDistance(left, top + 1, hit.x, 0, dist );
+      }
+    } else {
+      System.out.println( "ERROR: " + hit );
+    }
+    
+    return d + dist;
+  }
+
+  private double T( double x, double d ) {
+    /**
+     * Geonometry used:
+     *
+     *            +
+     *          / |
+     *        /   |  Y
+     *      / a   |
+     *    +-------+
+     *        X
+     *
+     *    tan(a) = Y/X    =>   Y = tan(a) * X     ||   X = Y / tan(a)
+     */
+    return x * Math.tan(Math.toRadians(d));
+  }
+  
+  private Point findHitPoint( int X, int Y ) {
+    double angle   = ( ( this.direction + 90 ) % 360 );
+    double x, y;
+    double dx, dy;
+
+    if( angle <= 90 ) {
+      dx = 80 - X;
+      dy = this.T( dx, angle );
+      if( dy > Y ) {
+        dy = Y;
+        dx = this.T( dy, 90 - angle );
+      }
+      x = X + dx;
+      y = Y - dy;
+    } else if( angle > 90 && angle <= 180 ) {
+      dx = X;
+      dy = this.T( dx, 180-angle );
+      if( dy > Y ) {
+        dy = Y;
+        dx = this.T( dy, angle - 90 );
+      }
+      x = X - dx;
+      y = Y - dy;
+    } else if( angle > 180 && angle <= 270 ) {
+      dx = X;
+      dy = this.T( dx, angle - 180 );
+      if( dy > ( 80 - Y ) ) {
+        dy = ( 80 - Y );
+        dx = this.T( dy, 270 - angle );
+      }
+      x = X - dx;
+      y = Y + dy;
+    } else { 
+      // angle > 270 && angle < 360
+      dx = 80 - X;
+      dy = this.T( dx, 360 - angle );
+      if( dy > ( 80 - Y ) ) {
+        dy = ( 80 - Y );
+        dx = this.T( dy, angle - 270 );
+      }
+      x = X + dx;
+      y = Y + dy;
+    }
+    
+    return new Point((int)x,(int)y);
   }
   
   /**
