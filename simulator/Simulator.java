@@ -123,7 +123,11 @@ class Simulator {
     
     // turn in steps of 3 degrees
     this.dr   = 3.0;
-    this.steps = (int)(angle / this.dr);
+    this.steps = (int)(Math.abs(angle) / this.dr);
+    // if the angle is negative, move clock-wise
+    if( angle < 0 ) {
+      this.dr = -3.0;
+    }
 
     return this;
   }
@@ -157,7 +161,11 @@ class Simulator {
         break;
       case Navigator.TURN:
         if( this.steps-- > 0 ) {
-          this.direction = ( this.direction + this.dr ) % 360;
+          this.direction = this.direction + this.dr;
+          if( this.direction < 0 ) {
+            this.direction += 360;
+          }
+          this.direction %= 360;
           // TODO: fix this to be correct towards dimensions of robot
           this.lastChangeM1 = 1;
           this.lastChangeM2 = -1;

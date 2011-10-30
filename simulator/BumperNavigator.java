@@ -72,6 +72,6 @@ public class BumperNavigator implements Navigator {
   }
 
   public double getAngle() {
-    return 80;
+    return -80;
   }
 }
