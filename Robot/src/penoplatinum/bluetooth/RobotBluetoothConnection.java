@@ -2,6 +2,7 @@ package penoplatinum.bluetooth;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
@@ -32,22 +33,31 @@ public class RobotBluetoothConnection implements IConnection {
         // Connected to NXJ, perform packet ID synchronization here
 
         IPacketReceiver r = null;
-        
-        
+
+        /*while (true) {
+            try {
+                while (stri.available() == 0) {
+                    Utils.Sleep(20);
+                }
+                System.out.println(stri.readInt());
+            } catch (IOException ex) {
+            }
+        }*/
+
+
         builder = new PacketBuilder(stro, stri, new IPacketReceiver() {
 
             public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
                 IPacketTransporter t = findTransporterByPacketIdentifier(packetIdentifier);
-                if (t == null)
-                {
+                if (t == null) {
                     Utils.Log("Unkown packet type received! (" + packetIdentifier + ")");
                     return;
                 }
-                
+
                 t.onPacketReceived(packetIdentifier, dgram, 0, size);
             }
         });
-        
+
         builder.startReceiving();
     }
 
@@ -86,7 +96,7 @@ public class RobotBluetoothConnection implements IConnection {
         IPacketTransporter t = null;
 
         t = findTransporterByPacketIdentifier(packetIdentifier);
-        
+
         if (t == null) {
             Utils.Log("Unknown packet identifier!");
             return;

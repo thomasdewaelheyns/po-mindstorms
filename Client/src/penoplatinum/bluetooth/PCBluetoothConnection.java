@@ -5,11 +5,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTConnector;
 import penoplatinum.Utils;
 
-public class BluetoothPCConnection implements IConnection {
+public class PCBluetoothConnection implements IConnection {
 
     private DataOutputStream outputStream;
     private DataInputStream inputStream;
@@ -26,8 +28,15 @@ public class BluetoothPCConnection implements IConnection {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
         }
-
         Utils.Log("Connected!");
+        /*try {
+            outputStream.writeInt(82);
+            outputStream.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(PCBluetoothConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+
+        
         // Connected to NXJ, perform packet ID synchronization here (possible optimization)
 
         createPacketBuilder();

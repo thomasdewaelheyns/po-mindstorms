@@ -7,7 +7,6 @@ package penoplatinum.bluetooth;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lejos.pc.comm.NXTComm;
@@ -51,7 +50,8 @@ public class BluetoothRobotTest {
      */
     private boolean receiving;
 
-    public void initializeConnection() {
+    @Test
+    public void testBasicBluetooth() {
         while (!connect()) {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
@@ -62,8 +62,12 @@ public class BluetoothRobotTest {
 
         while (true) {
             try {
-                outputStream.writeInt(42);
+                outputStream.writeInt(43);
                 outputStream.flush();
+
+                System.out.println("Received: " + inputStream.readInt());
+
+
             } catch (IOException ex) {
                 Logger.getLogger(BluetoothRobotTest.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -76,10 +80,10 @@ public class BluetoothRobotTest {
         try {
             NXTConnector conn = new NXTConnector();
             boolean connected = conn.connectTo(NXTComm.PACKET);
-            open = (connected ? conn.getNXTComm() : null);
+            //open = (connected ? conn.getNXTComm() : null);
 
-            outputStream = (connected ? new DataOutputStream(open.getOutputStream()) : null);
-            inputStream = (connected ? new DataInputStream(open.getInputStream()) : null);
+            outputStream = (connected ? conn.getDataOut() : null);
+            inputStream = (connected ? conn.getDataIn() : null);
             return connected;
         } catch (Exception e) {
             Utils.Log(e.toString());
@@ -92,7 +96,7 @@ public class BluetoothRobotTest {
     public void testBluetoothButtonSend() {
         int buttonPacketId = 5988695;
 
-        BluetoothPCConnection conn = new BluetoothPCConnection();
+        PCBluetoothConnection conn = new PCBluetoothConnection();
 
         PacketTransporter t = new PacketTransporter(conn);
 

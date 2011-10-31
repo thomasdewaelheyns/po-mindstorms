@@ -3,8 +3,6 @@ package penoplatinum.bluetooth;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lejos.nxt.Button;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
@@ -49,23 +47,24 @@ public class BluetoothTest {
 
         while (true) {
             try {
-                while (stri.available() == 0) {
-                    Utils.Sleep(20);
-                }
-
                 System.out.println(stri.readInt());
+                
+                stro.writeInt(34);
+                stro.flush();
+                Utils.Log("Packet sent!");
 
             } catch (IOException ex) {
-                Logger.getLogger(BluetoothTest.class.getName()).log(Level.SEVERE, null, ex);
+                Utils.Log("AIJOOOOO");
+                if (ex.getMessage() != null)
+                    Utils.Log(ex.getMessage());
             }
-
         }
-
     }
 
     private boolean connect() {
         System.out.println("Connecting.");
         BTConnection conn = Bluetooth.waitForConnection(5000, NXTConnection.PACKET);
+        if (conn == null) return false;
         stri = conn.openDataInputStream();
         stro = conn.openDataOutputStream();
         System.out.println("Connected: " + conn.getAddress());
