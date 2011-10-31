@@ -34,7 +34,7 @@ public class readerThread extends Thread {
                     move.Stop();
                     System.out.println(""+BarcodeData.getBarcodesString(commando));
                     Button.ENTER.waitForPressAndRelease();
-                    Utils.Sleep(2000);
+                    Utils.Sleep(1000);
                 }
             
         }
