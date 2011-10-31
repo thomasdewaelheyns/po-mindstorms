@@ -42,11 +42,11 @@ public class BarcodeData {
         
     }
     
-    public byte getBarcodesRepair(int index){
-        return this.barcodesRepair[index];
+    public static byte getBarcodesRepair(int index){
+        return barcodesRepair[index];
     }
     
-    public String getBarcodesString(int index){
-        return this.codes[index];
+    public static String getBarcodesString(int index){
+        return codes[index];
     }
 }
