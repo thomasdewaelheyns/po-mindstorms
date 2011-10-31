@@ -250,7 +250,7 @@ De resultaten voor de verschillende hoeken zijn weergegeven in figuur \ref{chart
 	
 	\tikzset{external/remake next}
 	\begin{tikzpicture}
-		\begin{axis}[xmin=0,xmax=6,ymin=-14.0, ymax=27,
+		\begin{axis}[xmin=0,xmax=6,ymin=-14.5, ymax=27.5,
 			xtick={1,2,3,4,5,6},xticklabels={15,30,45,60,90},
 	      		xlabel={Verwachte hoek (graden)},
 			ylabel={Relatieve afwijking tov verwachting (\%)},
@@ -286,29 +286,76 @@ Figuur \ref{fig:resultsLargePolygons} toont het papier waarop we start en eindpu
 
 Het aansturen van de motoren op basis van tijd bleek geen valabel alternatief te zijn. De eerste resultaten gaven procentuele afwijkingen in de grootorde van 10 tot 20\%, zodat een verdere vergelijking met de resultaten voor de omwentelingen totaal overbodig werd. Deze piste werd dan ook verlaten.
 
-\section{Resultaten van de demo}
+\section{Resultaten en van de demo en conclusies}
 
-Tijdens de demo werd gevraagd om een veelhoek van eigen keuze te rijden. We opteerden voor een driehoek met een zijde van 40cm. De afwijking van het startpunt bedroeg ongeveer 10cm.
+Tijdens de demo werd gevraagd om een veelhoek van eigen keuze te rijden. We kozen een driehoek met een zijde van 40cm. De afwijking van het startpunt bedroeg ongeveer 10cm. De tweede veelhoek die opgegeven werd was een tienhoek met een zijde van 20cm. De afwijking van het startpunt bedroeg ongeveer 30cm.
 
-De tweede veelhoek die opgegeven werd was een tienhoek met een zijde van 20cm. De afwijking van het startpunt bedroeg ongeveer 30cm.
+De resultaten van de demo weken sterk af van de eerder opgetekende waarden. Na enig onderzoek moesten we concluderen dat de vervuilen van de wielen de oorzaak was.
 
-\section{Conclusies}
+Figuur \ref{chart:vervuiling} toont de evolutie van de afwijking tijdens de eerste vijf veelhoeken, gereden met init\"ieel gekuiste wielen. We merken op dat in deze grootorde van gereden veelhoeken de fout sterk stijgt. Figuur \ref{chart:vervuiling2} toont de relatieve afwijking bij 5, 10, 15, 20, 25, en 30 gereden veelhoeken.
 
-De resultaten van de demo waren zo sterk afwijkend van de eerder opgemeten waarden tijdens onze testen dat we op zoek moesten gaan naar een andere oorzaak.
+\begin{figure}
+	\caption{Relatieve afwijking tgv. vervuiling wielen}
+	\label{chart:vervuiling}
+	\vspace{10pt}	
+	\centering
+	
+	\tikzset{external/remake next}
+	\begin{tikzpicture}
+		\begin{axis}[xmin=0,xmax=6,ymin=-1.5, ymax=7,
+			xtick={1,2,3,4,5,6},xticklabels={1,2,3,4,5},
+	      		xlabel={Aantal gereden veelhoeken},
+			ylabel={Relatieve afwijking tov verwachting (\%)},
+			]
+			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
+			\boxplot{1}{0.7}{-0.1}{0.8}{1.0}{0.9}
+			\boxplot{2}{1.3}{0.8}{1.3}{0.3}{1.33}
+			\boxplot{3}{1.83}{1.79}{1.9}{1.75}{1.97}
+			\boxplot{4}{3.0}{2.9}{3.3}{2.75}{3.6}
+			\boxplot{5}{5.7}{4.7}{6}{3.7}{6.2}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
 
-We hebben de tienhoek opnieuw meermaals gereden en merkten op dat de afwijking sterk groeide per keer we de veelhoek reden. De eerste keer was de afwijking 3cm, daarna 6cm en 9cm. Bij elke rit viel op dat de wielen meer en meer doorslipten. Dit deed ons kijken naar de kwaliteit van de banden.
+\begin{figure}
+	\caption{Relatieve afwijking tgv. vervuiling wielen}
+	\label{chart:vervuiling2}
+	\vspace{10pt}	
+	\centering
+	
+	\tikzset{external/remake next}
+	\begin{tikzpicture}
+		\begin{axis}[xmin=0,xmax=7,ymin=0, ymax=14,
+			xtick={1,2,3,4,5,6,7},xticklabels={5,10,15,20,25,30},
+	      		xlabel={Aantal gereden veelhoeken},
+			ylabel={Relatieve afwijking tov verwachting (\%)},
+			]
+			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
+			\boxplot{1}{5.7}{4.7}{6}{3.7}{6.2}
+			\boxplot{2}{6.75}{5.6}{7.1}{4.45}{7.45}
+			\boxplot{3}{9.43}{7.68}{9.5}{5.93}{9.57}
+			\boxplot{4}{9.05}{7.69}{10.06}{6.33}{11.08}
+			\boxplot{5}{9.52}{7.98}{10.81}{6.44}{12.10}
+			\boxplot{6}{9.73}{8.43}{11.43}{7.12}{13.13}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
 
-De reden bleek de vervuiling van de banden te zijn. Bij elke rit werden de banden vuiler, waardoor de weerstand lager werd, het doorslippen en de daaruit voortvloeiende afwijking groter. Herhaalde testen met proper gemaakte banden leverden opnieuw de nagenoeg foutloze resultaten op. Daarop volgende ritten toonden opnieuw consistent het eerder ervaren vervuiling-en-verval-patroon.
+Uit de meting blijkt dat de fout init\"ieel sterk stijgt, maar rond 15 veelhoeken convergeert de afwijking. We zouden op basis van deze metingen kunnen besluiten dat we de robot ongeveer 15 veelhoeken zouden moeten laten rijden en vervolgens een correctie voor de gemeten fout kunnen implementeren.
 
-We hadden dit reeds een maal ervaren tijdens onze eerdere testen. Echter nooit was het probleem zo groot. Ook hiervoor hebben we een fout gevonden in onze manier van werken. Het merendeel van de testen waren uitgevoerd op houten banken en niet op de (vuile) vloer. Hierdoor werden bij het merendeel van onze testen de wielen niet zo vuil, met meer consistente resultaten tot gevolg.
+Aangezien dit een specifiek probleem voor het constant rijden van veelhoeken is en dit voor de einddoelstelling geen belangrijke impact heeft, zullen we deze aanpassing niet implementeren. 
 
-We hebben dit probleem en bijhorende (eenvoudige) oplossing post-mortem nog verhaald bij de professoren en mochten onze robot opnieuw laten rijden. Hierbij bleek dat met propere banden onze afwijking de kleinste was van alle deelnemende robots.
+\chapter{Demo 2a: Lijnvolger}
 
-Maar dit probleem is wel eigen aan onze robot/ontwerp en we moeten dit beter opnemen in ons project. Daarom zijn we nagegaan hoe het verloop van deze fout evolueert, op zoek naar een maximum, dat dan als correctie kan doorgevoerd worden.
 
-\bigskip
-TODO
-\bigskip
+
+\chapter{Demo 2b: Muurvolger}
+
+
+
+\chapter{Demo 2c: Barcode}
+
+
 
 \appendix
 
