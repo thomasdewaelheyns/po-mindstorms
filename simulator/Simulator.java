@@ -13,10 +13,9 @@
 import java.awt.Point;
  
 class Simulator {
-
   private SimulationView view;    // a view to display the simulation
   private Map map;                // the map that the robot will run on
-  private SimulationRobotAPI robotAPI;      // the API used to access hardware
+  private SimulationRobotAPI   robotAPI;    // the API used to access hardware
   private SimulationRobotAgent robotAgent;  // the communication layer
 
   private Robot robot;            // the actual robot
@@ -230,139 +229,39 @@ class Simulator {
   }
   
   /**
-   * TODO : REFACTOR THIS !!!! URGENTLY !!!!!
+   * Our internal representation of the baring uses zero pointing north.
+   * Math functions use zero pointing east.
+   * We also only want an angle from 0 to 359.
+   */
+  private int getAngle() {
+    return (int)( (this.direction + 90) % 360);    
+  }
+  
+  /**
+   * determines the distance to the first hit wall at the current baring.
+   * if the hit is not on a wall on the current tile, we follow the baring
+   * to the next tile and recusively try to find the hist-distance
    */
   private double findHitDistance(int left, int top, int x, int y, double d) {
-    Point hit   = this.findHitPoint(x,y);
+    // determine the point on the (virtual) wall on the current tile, where
+    // the robot would hit at this baring
+    Point hit    = this.findHitPoint(x,y);
+    
+    // distance from the starting point to the hit-point on this tile
     double dist = Math.sqrt( Math.pow(hit.x - x, 2 ) + 
                              Math.pow(hit.y - y, 2 ) );
 
-    Tile onTile = this.map.get( left, top );
-
-    System.out.println( x + ", " + y + " --> " + hit );
-
-    if( hit.x == 0 && hit.y == 0 ) {
-      int angle = (int)(( this.direction + 90 ) % 360);
-      if( angle == 90 ) {
-        // N
-        System.out.println( "facing north" );      
-        if( ! onTile.hasWall(Tile.N) ) {
-          System.out.println( "tile " + left + " , " + top + " has no north wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left, top - 1, 0, 80, dist );
-        }
-      } else if( angle > 90 && angle < 180 ) {
-        // NW
-        System.out.println( "facing north-west" );      
-        if( ! onTile.hasWall(Tile.N) && ! onTile.hasWall(Tile.W) ) {
-          System.out.println( "tile " + left + " , " + top + " has no north or west wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left - 1, top - 1, 80, 80, dist );
-        }
-      } else {
-        // W
-        System.out.println( "facing west" );
-        if( ! onTile.hasWall(Tile.W) ) {
-          System.out.println( "tile " + left + " , " + top + " has no west wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left - 1, top, 80, 0, dist );
-        }
-      }
-    } else if( hit.x == 0 && hit.y == 80 ) {
-      int angle = (int)(( this.direction + 90 ) % 360);
-      if( angle == 180 ) {
-        // W
-        System.out.println( "facing west" );
-        if( ! onTile.hasWall(Tile.W) ) {
-          System.out.println( "tile " + left + " , " + top + " has no west wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left - 1, top, 80, 80, dist );
-        }
-      } else if( angle > 180 && angle < 270 ) {
-        // SW
-        System.out.println( "facing south-west" );      
-        if( ! onTile.hasWall(Tile.S) && ! onTile.hasWall(Tile.W) ) {
-          System.out.println( "tile " + left + " , " + top + " has no south or west wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left - 1, top + 1, 0, 80, dist );
-        }
-      } else {
-        // S
-        System.out.println( "facing south" );      
-        if( ! onTile.hasWall(Tile.S) ) {
-          System.out.println( "tile " + left + " , " + top + " has no south wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left, top + 1, 0, 0, dist );
-        }
-      }
-    } else if( hit.x == 80 && hit.y == 0 ) {
-      int angle = (int)(( this.direction + 90 ) % 360);
-      if( angle == 0 ) {
-        // E
-        System.out.println( "facing east" );
-        if( ! onTile.hasWall(Tile.E) ) {
-          System.out.println( "tile " + left + " , " + top + " has no east wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left + 1, top, 0, 0, dist );
-        }
-      } else if( angle > 0 && angle < 90 ) {
-        // NE
-        System.out.println( "facing north-east" );      
-        if( ! onTile.hasWall(Tile.N) && ! onTile.hasWall(Tile.E) ) {
-          System.out.println( "tile " + left + " , " + top + " has no north or east wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left + 1, top - 1, 0, 80, dist );
-        }
-      } else {
-        // N
-        System.out.println( "facing north" );      
-        if( ! onTile.hasWall(Tile.N) ) {
-          System.out.println( "tile " + left + " , " + top + " has no north wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left, top - 1, 80, 80, dist );
-        }
-      }
-    } else if( hit.x == 80 && hit.y == 80 ) {
-      int angle = (int)(( this.direction + 90 ) % 360);
-      if( angle == 270 ) {
-        // S
-        System.out.println( "facing south" );
-        if( ! onTile.hasWall(Tile.S) ) {
-          System.out.println( "tile " + left + " , " + top + " has no south wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left, top + 1, 80, 0, dist );
-        }
-      } else if( angle > 270 && angle < 360 && angle != 0 ) {
-        // SE
-        System.out.println( "facing south-east" );      
-        if( ! onTile.hasWall(Tile.S) && ! onTile.hasWall(Tile.E) ) {
-          System.out.println( "tile " + left + " , " + top + " has no south or east wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left + 1, top + 1, 0, 0, dist );
-        }
-      } else {
-        // N
-        System.out.println( "facing east" );      
-        if( ! onTile.hasWall(Tile.E) ) {
-          System.out.println( "tile " + left + " , " + top + " has no east wall, adding to dist = " + dist );
-          dist = this.findHitDistance(left + 1, top, 0, 80, dist );
-        }
-      }
-    } else if( hit.x == 0 ) {
-      System.out.println( "facing west" );
-      if( ! onTile.hasWall(Tile.W) ) {
-        System.out.println( "tile " + left + " , " + top + " has no west wall, adding to dist = " + dist );
-        dist = this.findHitDistance(left - 1, top, 80, hit.y, dist );
-      }
-    } else if( hit.x == 80 ) {
-      System.out.println( "facing east" );      
-      if( ! onTile.hasWall(Tile.E) ) {
-        System.out.println( "tile " + left + " , " + top + " has no east wall, adding to dist = " + dist );
-        dist = this.findHitDistance(left + 1, top, 0, hit.y, dist );
-      }
-    } else if( hit.y == 0 ) {
-      System.out.println( "facing north" );      
-      if( ! onTile.hasWall(Tile.N) ) {
-        System.out.println( "tile " + left + " , " + top + " has no north wall, adding to dist = " + dist );
-        dist = this.findHitDistance(left, top - 1, hit.x, 80, dist );
-      }
-    } else if( hit.y == 80 ) {
-      System.out.println( "facing south" );      
-      if( ! onTile.hasWall(Tile.S) ) {
-        System.out.println( "tile " + left + " , " + top + " has no south wall, adding to dist = " + dist );
-        dist = this.findHitDistance(left, top + 1, hit.x, 0, dist );
-      }
-    } else {
-      System.out.println( "ERROR: " + hit );
+    // if we don't have a wall on this tile at this baring, move to the next
+    // at the same baring, starting at the hit point on the tile
+    Tile tile   = this.map.get(left, top);
+    int  baring = this.findHitWall(hit);
+    if( ! tile.hasWall(baring) ) {
+      int nextLeft = left + Baring.moveLeft(baring), 
+          nextTop  = top  + Baring.moveTop(baring),
+          nextX    = hit.x == 0 ? 80 : ( hit.x == 80 ? 0 : hit.x ),
+          nextY    = hit.y == 0 ? 80 : ( hit.y == 80 ? 0 : hit.y );
+      // recursively find more distance on the next tile
+      dist = this.findHitDistance(nextLeft, nextTop, nextX, nextY, dist );
     }
     
     return d + dist;
@@ -384,10 +283,13 @@ class Simulator {
     return x * Math.tan(Math.toRadians(d));
   }
   
+  /**
+   * calculates the point where given the current angle and position, the 
+   * robot will "hit" the wall of this tile.
+   */
   private Point findHitPoint( int X, int Y ) {
-    double angle   = ( ( this.direction + 90 ) % 360 );
-    double x, y;
-    double dx, dy;
+    double angle = this.getAngle();
+    double x, y, dx, dy;
 
     if( angle <= 90 ) {
       dx = 80 - X;
@@ -429,6 +331,21 @@ class Simulator {
     }
     
     return new Point((int)x,(int)y);
+  }
+  
+  /**
+   * based on a hit determine the wall that has been hit
+   */
+  private int findHitWall(Point hit) {
+    int wall;
+    if( hit.y == 0 ) {                          // North
+      wall = hit.x == 0 ? Baring.NW : ( hit.x == 80 ? Baring.NE : Baring.N );
+    } else if( hit.y == 80 ) {                  // South
+      wall = hit.x == 0 ? Baring.SW : ( hit.x == 80 ? Baring.SE : Baring.S );
+    } else {                                    // East or West
+      wall = hit.x == 0 ? Baring.W : Baring.E;
+    }
+    return wall;
   }
   
   /**

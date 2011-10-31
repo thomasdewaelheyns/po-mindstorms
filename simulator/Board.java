@@ -112,16 +112,16 @@ public class Board extends JPanel {
     // walls
     // walls are 2cm width = 4px
     g2d.setColor(new Color(100,53,38));
-    if( tile.hasWall(Tile.N) ) {
+    if( tile.hasWall(Baring.N) ) {
       g2d.fill(new Rectangle(160*(left-1), 160*(top-1), 160, 4));
     }
-    if( tile.hasWall(Tile.E) ) {
+    if( tile.hasWall(Baring.E) ) {
       g2d.fill(new Rectangle(160*(left)-4, 160*(top-1), 4, 160));
     }
-    if( tile.hasWall(Tile.S) ) {
+    if( tile.hasWall(Baring.S) ) {
       g2d.fill(new Rectangle(160*(left-1), 160*(top)-4, 160, 4));
     }
-    if( tile.hasWall(Tile.W) ) {
+    if( tile.hasWall(Baring.W) ) {
       g2d.fill(new Rectangle(160*(left-1), 160*(top-1), 4, 160));
     }
     

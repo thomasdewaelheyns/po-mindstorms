@@ -1,7 +1,7 @@
 /**
  * Tile
  * 
- * Class representing a tile. The internal data is stored as an integer, which
+ * Class representing a Baring. The internal data is stored as an integer, which
  * is treathed as a 32bit string, used to represent different information 
  * about the tile:
  * 
@@ -23,11 +23,6 @@
  */
 
 public class Tile {
-  public static final int N = 0;
-  public static final int E = 1;
-  public static final int S = 2;
-  public static final int W = 3;
-  
   private int data;
   
   public Tile() {
@@ -50,9 +45,21 @@ public class Tile {
   }
   
   public Boolean hasWall( int location ) {
-    return this.hasBit(location);
+    switch( location ) {
+      case Baring.NE:
+        return this.hasWall(Baring.N) || this.hasWall(Baring.E);
+      case Baring.SE:
+        return this.hasWall(Baring.S) || this.hasWall(Baring.E);
+      case Baring.SW:
+        return this.hasWall(Baring.S) || this.hasWall(Baring.W);
+      case Baring.NW:
+        return this.hasWall(Baring.N) || this.hasWall(Baring.W);
+      default:
+        // "simple" location, just check the bit
+        return this.hasBit(location);
+    }
   }
-  
+
   /* Lines */
   public Tile setLine(int location) { 
     this.setBit(location + 4);
