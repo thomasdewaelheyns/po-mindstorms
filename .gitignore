@@ -1,3 +1,9 @@
 *.class
-build*
-*/nbproject/private/*
+build/
+build.xml
+build.properties
+*/nbproject/private/
+*/nbproject/build-impl.xml
+!Robot/buildWindows/build.xml
+!Robot/buildWindows/build.properties
+*/dist/*

@@ -3,11 +3,11 @@
     <type>org.netbeans.modules.ant.freeform</type>
     <configuration>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
-            <name>Local</name>
+            <name>Demo1</name>
         </general-data>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
             <!-- Do not use Project Properties customizer when editing this file manually. -->
-            <name>Local</name>
+            <name>Demo1</name>
             <properties/>
             <folders>
                 <source-folder>
@@ -85,7 +85,7 @@
         <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">classes.jar</classpath>
+                <classpath mode="compile">classes.jar;../Common/dist/Common.jar</classpath>
                 <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>

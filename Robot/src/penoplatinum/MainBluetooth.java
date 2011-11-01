@@ -1,10 +1,10 @@
 package penoplatinum;
 
-import penoplatinum.bluetooth.BluetoothTest;
+import penoplatinum.bluetooth.RobotBluetoothTest;
 
 public class MainBluetooth {
     public static void main(String[] args){
-        BluetoothTest t=new BluetoothTest();
+        RobotBluetoothTest t=new RobotBluetoothTest();
         t.printTest();
     }
 }

@@ -1,6 +1,7 @@
 package penoplatinum.movement;
 
 import lejos.nxt.*;
+import penoplatinum.Utils;
 
 public class TimeMovement implements IMovement {
 

@@ -1,6 +1,7 @@
 package penoplatinum.movement;
 
 import lejos.nxt.Button;
+import penoplatinum.Utils;
 
 public class TimeMovementTest {
 

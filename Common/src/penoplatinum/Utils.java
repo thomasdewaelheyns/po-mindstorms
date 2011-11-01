@@ -1,9 +1,10 @@
-package penoplatinum.movement;
+package penoplatinum;
 
 
-
-
-
+/**
+ * TODO: put in shared project
+ * @author MHGameWork
+ */
 public class Utils {
     public static void Sleep(long milliseconds)
     {
@@ -13,4 +14,10 @@ public class Utils {
             System.out.println("InterruptException");
         }
     }
+    
+    public static void Log(String message)
+    {
+        System.out.println(message);
+    }
+    
 }

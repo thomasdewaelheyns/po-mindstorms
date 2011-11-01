@@ -3,17 +3,17 @@ package penoplatinum.bluetooth;
 import java.io.IOException;
 
 public class BluetoothControl {
-    BluetoothCommunication bt=new BluetoothCommunication();
+    RobotBluetoothConnection bt=new RobotBluetoothConnection();
     boolean isActive=false;
 
     public BluetoothControl() {}
 
     public void control() throws IOException {
-        while(bt.str.available()>4){
-            int read=bt.str.readInt();
+        while(bt.stri.available()>4){
+            int read=bt.stri.readInt();
             switch(read){
                 case 0:
-                    isActive=(bt.str.readInt()==0?false:true);
+                    isActive=(bt.stri.readInt()==0?false:true);
                     break;
                 case 1:
                     motorControl();
@@ -25,8 +25,8 @@ public class BluetoothControl {
         }
     }
     public void motorControl() throws IOException{
-        int mL = bt.str.readInt();
-        int mR = bt.str.readInt();
+        int mL = bt.stri.readInt();
+        int mR = bt.stri.readInt();
         // TODO Add motors
     }
 
