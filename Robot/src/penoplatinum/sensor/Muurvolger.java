@@ -79,4 +79,7 @@ public class Muurvolger {
             move.MoveStraight(dist);
         }
     }
+    public void run2(){
+        
+    }
 }

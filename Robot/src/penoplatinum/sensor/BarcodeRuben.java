@@ -10,7 +10,7 @@ import penoplatinum.movement.Utils;
 
 public class BarcodeRuben {
     private final int SAMPLES = 5;
-    private final int SWEEP = 10;
+    private final int SWEEP = 00;
     private final int MAX_BROWN_COUNT = 5;
     private final int BARCODE_SLEEP = 20;
     
@@ -50,7 +50,7 @@ public class BarcodeRuben {
                     ArrayList<Integer> rec = record();
                     LCD.drawString("End record    ", 0, 1);
                     int code = translate(rec);
-                    move(code);
+                    //move(code);
                     code = correct(code);
                     move(code);
                 }
@@ -59,7 +59,28 @@ public class BarcodeRuben {
         }
     }
     private void move(int code){
-        LCD.drawString("Code: "+code, 0, 2);
+        System.out.println("" + code/8+" "+code);
+        switch(code/8){
+                case 1:
+                    break;
+                case 3:
+                    m.MoveStraight(0.25,true);
+                    m.TurnOnSpotCCW(90);
+                    break;
+                case 6:
+                    m.MoveStraight(0.25, true);
+                    m.TurnOnSpotCCW(-90);
+                    break;
+                case 9:
+                    m.TurnOnSpotCCW(180);
+                    break;
+                case 12:
+                    m.TurnOnSpotCCW(180);
+                    break;
+                case 15:
+                    m.TurnOnSpotCCW(180);
+                    break;
+        }
         return;
     }
 
@@ -164,6 +185,7 @@ public class BarcodeRuben {
             System.out.println("Not enough data!");
             return -1;
         }
+        LCD.drawString(""+rec.size(), 0, 3);
         int out = 0;
         for(int i=0;i<7;i++){
             double avg=0;

@@ -4,7 +4,7 @@ import lejos.nxt.*;
 
 public class RotationMovement implements IMovement {
 
-    public int SPEEDFORWARD = 250;
+    public int SPEEDFORWARD = 125;
     public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
     public final int WIELAFSTANDMIDDEN = 56;//mm

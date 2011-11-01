@@ -7,7 +7,7 @@ public class RotationMovementTest {
     public void testForwardDistances() {
         double[] distances = new double[]{0.20, 0.40, 0.60, 0.80};
         RotationMovement mov = new RotationMovement();
-        mov.SPEEDFORWARD = 250;
+        mov.SPEEDFORWARD = 500;
         for (int i = 0; i < distances.length; i++) {
             System.out.println(distances[i]);
             Button.waitForPress();
