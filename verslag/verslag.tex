@@ -131,7 +131,7 @@ Het ontwerp van de robot voor de eerste opdracht is het basismodel van de Mindst
  
 De Lejos API biedt twee mogelijkheden om de motoren aan te sturen: op basis van tijd en op basis van de omwentelingen van de wielen. Intu\"itief waren we overtuigd dat de methode op basis van omwentelingen de meest betrouwbare moest zijn. Maar we moeten dit kunnen aantonen.
 
-Wat betreft de rij-technische mogelijkheden, kiezen we voor twee onafhankelijke bewegingen: het rechtdoor rijden (vooruit of achteruit) en het ter plekke draaien. Dit is enerzijds een noodzaak voor de opdracht, maar is tevens de meest berekenbare methode.
+Wat betreft de rij-technische mogelijkheden, kiezen we voor twee onafhankelijke bewegingen: het rechtdoor rijden (vooruit of achteruit) en het ter plekke draaien. Dit is enerzijds een noodzaak voor de opdracht, maar is tevens de eenvoudigste te hanteren en betrouwbaarste methode. Het draaien tijdens het rijden gaat gepaard met noodzakelijke slip- en schuifbewegingen, wat de berekenbaarheid sterk kan be"invloeden.
 
 In beide gevallen is er nog een parameter die bepalend kan zijn: de rotatiesnelheid. Ook deze zullen we in onze testen laten vari\"eren om een optimale verhouding te vinden.
 
@@ -286,7 +286,7 @@ Figuur \ref{fig:resultsLargePolygons} toont het papier waarop we start en eindpu
 
 Het aansturen van de motoren op basis van tijd bleek geen valabel alternatief te zijn. De eerste resultaten gaven procentuele afwijkingen in de grootorde van 10 tot 20\%, zodat een verdere vergelijking met de resultaten voor de omwentelingen totaal overbodig werd. Deze piste werd dan ook verlaten.
 
-\section{Resultaten en van de demo en conclusies}
+\section{Resultaten van de demo en conclusies}
 
 Tijdens de demo werd gevraagd om een veelhoek van eigen keuze te rijden. We kozen een driehoek met een zijde van 40cm. De afwijking van het startpunt bedroeg ongeveer 10cm. De tweede veelhoek die opgegeven werd was een tienhoek met een zijde van 20cm. De afwijking van het startpunt bedroeg ongeveer 30cm.
 
@@ -347,17 +347,241 @@ Aangezien dit een specifiek probleem voor het constant rijden van veelhoeken is 
 
 \chapter{Demo 2a: Lijnvolger}
 
+De doelstelling van de volgende demo is het volgen van een ononderbroken lijn. Deze lijn kan wit of zwart zijn en is uitgezet op bruine panelen.
 
+\section{De robot}
+
+Tijdens het onderzoek voor de verschillende onderdelen van demo 2, is het ontwerp van de robot ge"evolueerd. De belangrijkste aanpassing is het omkeren van de rijrichting, waarbij het zwenkwiel vooraan komt te staan en we dus een achterwiel aangedreven robot bekomen.
+
+TODO: reden en resultaten
+
+TODO: herdoen test afstanden en hoeken
+
+Voor het volgen van een lijn maken we gebruik van een grijswaardesensor. Deze werd vooraan op de robot bevestigd.
+
+\section{De software}
+
+Voor deze demo diende software ontwikkeld te worden die de robot in staat stelt om een lijn autonoom te volgen. De meetresultaten van de grijswaardesensor dienen tevens verzonden te worden via Bluetooth naar een PC, waar ze gevisualiseerd moeten worden. De ontwikkeling voor robot en PC worden in dit deel verder toegelicht. De communicatie component wordt in bijlage \ref{appendix:bluetooth} in detail besproken.
+
+\subsection{Robot}
+
+De grijswaardesensor kan gekalibreerd worden, waarna deze genormaliseerde waarden terug geeft van 0 tot 1024\footnote{Re\"ele waarden liggen typisch tussen 145 voor een meting in een donkere omgeving en 890 in klaar zonlicht.}. Voor het kalibreren kunnen een donker en licht waarde aan de Lejos API gegeven worden, welke dan gebruikt worden om de genormaliseerde waarden op af te stemmen.
+
+Het algoritme van de robot is zeer eenvoudig gehouden, om de betrouwbaarheid te bevorderen. De volgende stappen worden in een oneindige lust uitgevoerd:
+
+\begin{enumerate}
+\item lees de genormaliseerde waarde van de grijswaardesensor
+\item bepaal of de gemeten grijswaarde overeenstemt met een lijn; indien ja, rij verder rechtdoor
+\item indien niet (meer) op een lijn, zoek een lijn door ter plekke te draaien in steeds groeiende hoeken tot een lijn gevonden is
+\end{enumerate}
+
+Voor dit algoritme werd de manier waarop de Lejos API aangesproken werd ook gewijzigd. Voor het rijden van veelhoeken werd aan de Lejos API de opdracht gegeven om een bepaald aantal omwentelingen te doen. Vervolgens werd er gewacht om een synchrone verwerking te simuleren voor onze software. Met de introductie van sensoren en de nood om acties te ondernemen voor een bepaalde afstand bereikt is, is deze synchrone verwerking verwijderd en zal de controle onmiddellijk teruggegeven worden aan de controleren applicatie, in dit geval het lijnvolger algoritme.
+
+\subsection{PC}
+
+TODO: beschrijving van UI
+
+\section{Testplan en resultaten}
+
+Met de grijswaardesensor willen we drie kleuren kunnen onderscheiden: bruin, wit en zwart. De grijswaardesensor zal typisch verschillende waarden geven binnen een bepaald bereik voor elk van de kleuren. Het kalibreren van de lichtsensor zal bepalend zijn voor de nauwkeurigheid van deze bereiken.
+
+We hebben met verschillende sets van kalibratiewaarden telkens 12 metingen gedaan van bruin, wit en zwart. Voor elk van deze meetwaarden hebben we vervolgens het gemiddelde berekend en de relatieve afwijking van elk van de gemeten waarden. Figuren \ref{chart:bruin}, \ref{chart:wit} en \ref{chart:zwart} geven respectievelijk de resultaten voor bruin, wit en zwart weer.
+
+\begin{figure}
+	\caption{Relatieve afwijking tov. gemiddelde gemeten grijswaarde voor bruin}
+	\label{chart:bruin}
+	\vspace{10pt}	
+	\centering
+	
+	\tikzset{external/remake next}
+	\begin{tikzpicture}
+		\begin{axis}[xmin=0,xmax=4,ymin=-8, ymax=8,
+			xtick={1,2,3,4},xticklabels={1,2,3},
+	      		xlabel={Kalibratie set},
+			ylabel={Relatieve afwijking tov verwachting (\%)},
+			]
+			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
+			\boxplot{1}{-0.34}{-1.68}{2.36}{-7.07}{5.05}
+			\boxplot{2}{-1.68}{-3.03}{2.69}{-7.07}{7.74}
+			\boxplot{3}{-0.11}{-1.44}{1.55}{-6.77}{5.22}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+\begin{figure}
+	\caption{Relatieve afwijking tov. gemiddelde gemeten grijswaarde voor wit}
+	\label{chart:wit}
+	\vspace{10pt}	
+	\centering
+	
+	\tikzset{external/remake next}
+	\begin{tikzpicture}
+		\begin{axis}[xmin=0,xmax=4,ymin=-16, ymax=20,
+			xtick={1,2,3,4},xticklabels={1,2,3},
+	      		xlabel={Kalibratie set},
+			ylabel={Relatieve afwijking tov verwachting (\%)},
+			]
+			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
+			\boxplot{1}{-0.49}{-3.66}{2.44}{-10.24}{16.10}
+			\boxplot{2}{-0.66}{-3.38}{3.29}{-9.06}{8.73}
+			\boxplot{3}{1.82}{-9.85}{4.55}{-15.56}{19.21}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+\begin{figure}
+	\caption{Relatieve afwijking tov. gemiddelde gemeten grijswaarde voor zwart}
+	\label{chart:zwart}
+	\vspace{10pt}	
+	\centering
+	
+	\tikzset{external/remake next}
+	\begin{tikzpicture}
+		\begin{axis}[xmin=0,xmax=4,ymin=-600, ymax=490,
+			xtick={1,2,3,4},xticklabels={1,2,3},
+	      		xlabel={Kalibratie set},
+			ylabel={Relatieve afwijking tov verwachting (\%)},
+			]
+			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
+			\boxplot{1}{68}{-256}{200}{-580}{476}
+			\boxplot{2}{-26.15}{-90.77}{38.46}{-210.77}{269.23}
+			\boxplot{3}{0}{-100}{78.57}{-228.57}{257.14}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+De resultaten tonen aan dat met verschillende kalibraties, de resultaten voor elk van de kleuren binnen vergelijkbare bereiken liggen. Voor zwart dient opgemerkt te worden dat hier in verhouding tot bruin en wit, veel grotere relatieve afwijkingen optreden. We kunnen dit toeschrijven aan het vuil worden of slijten, waaraan zwart het meest onderhevig is.
+
+Voor het bepalen van de waarden waarbinnen we besluiten of een kleur bruin, wit of zwart is, bekijken we de resultaten in absolute vorm over alle metingen heen. Figuur \ref{chart:kleuren} illustreert de bereiken van de drie verschillende kleuren. Hierbij merken we op, dat ofschoon zwart een grotere potenti‘le relatieve afwijking kent, dit in praktijk geen probleem zal opleveren. Het bereik van de metingen voor zwart ligt ver van het bereik van bruin en wit. Deze twee laatsten daarentegen hebben wel minima en maxima die in elkaars buurt liggen en potentieel kunnen zorgen voor "valse positieven" in beide richtingen. 
+
+\begin{figure}
+	\caption{Absolute gemeten waarden voor wit, bruin en zwart}
+	\label{chart:kleuren}
+	\vspace{10pt}	
+	\centering
+	
+	\tikzset{external/remake next}
+	\begin{tikzpicture}
+		\begin{axis}[xmin=0,xmax=4,ymin=-15, ymax=130,
+			xtick={1,2,3,4},xticklabels={wit,bruin,zwart},
+	      		xlabel={Kalibratie set},
+			ylabel={Gemeten grijswaarde},
+			]
+			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
+			\boxplot{1}{102}{97.25}{105}{85}{120}
+			\boxplot{2}{74}{73}{76}{69}{80}
+			\boxplot{3}{4.5}{-0.25}{10.25}{-10}{25}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+\section{Resultaten van de demo en conclusies}
+
+Dit deel wordt later toegevoegd.
 
 \chapter{Demo 2b: Muurvolger}
 
+De doelstelling van de volgende demo is het volgen van een ononderbroken muur.
 
+\section{De robot}
+
+\section{De software}
+
+\section{Testplan en resultaten}
+
+\section{Resultaten van de demo en conclusies}
+
+Dit deel wordt later toegevoegd.
 
 \chapter{Demo 2c: Barcode}
 
+\section{De robot}
 
+\section{De software}
+
+\section{Testplan en resultaten}
+
+\section{Resultaten van de demo en conclusies}
+
+Dit deel wordt later toegevoegd.
+
+\chapter{Finale demonstratie}
+
+Dit deel wordt later toegevoegd.
+
+\section{De robot}
+
+Dit deel wordt later toegevoegd.
+
+\section{De software}
+
+Dit deel wordt later toegevoegd.
+
+\section{Testplan en resultaten}
+
+Dit deel wordt later toegevoegd.
+
+\section{Resultaten van de demo en conclusies}
+
+Dit deel wordt later toegevoegd.
+
+\chapter{Het process}
+
+Dit deel wordt later toegevoegd.
+
+\chapter{Werkverdeling}
+
+\section{Verantwoordelijkheden}
+
+TODO
+
+\section{Tijdsregistratie}
+
+TODO
+
+\chapter{Analyse}
+
+Dit deel wordt later toegevoegd.
 
 \appendix
+
+\chapter{Software}
+
+TODO
+
+\label{appendix:software}
+\section{Bluetooth}
+
+Dit deel wordt later toegevoegd.
+
+\section{Klasse Diagrammen}
+
+TODO
+
+\section{Overzicht Methodes}
+
+Dit deel wordt later toegevoegd.
+
+\section{Functionaliteit}
+
+Dit deel wordt later toegevoegd.
+
+\section{Simulator}
+
+Dit deel wordt later toegevoegd.
+
+\chapter{User Interface}
+\label{appendix:ui}
+
+Dit deel wordt later toegevoegd.
+
+\section{Design}
+
+Dit deel wordt later toegevoegd.
+
+\section{Functionaliteit}
+
+Dit deel wordt later toegevoegd.
 
 \chapter{Work Breakdown Structure}
 \label{appendix:wbs}
@@ -522,13 +746,5 @@ Aangezien dit een specifiek probleem voor het constant rijden van veelhoeken is 
 \caption{Planning (vervolg)}
 \label{fig:planning2}
 \end{figure}
-
-\chapter{Klasse Diagrammen}
-\label{appendix:classdiagrams}
-
-\chapter{Tijdsregistratie}
-\label{appendix:tijdsregistratie}
-
-
 
 \end{document}
