@@ -13,6 +13,9 @@
 import java.awt.Point;
  
 class Simulator {
+  private static int tileSize = 80;  // our tiles are 80cm
+  private static int scale    = 2;   // 1cm = 2px
+  
   private SimulationView view;    // a view to display the simulation
   private Map map;                // the map that the robot will run on
   private SimulationRobotAPI   robotAPI;    // the API used to access hardware
@@ -213,17 +216,18 @@ class Simulator {
     int distance = 0;
     
     // determine tile coordinates we're on
-    int left = (int)Math.floor(this.positionX / 80) + 1;
-    int top  = (int)Math.floor(this.positionY / 80) + 1;
+    int left = (int)Math.floor(this.positionX / Simulator.tileSize) + 1;
+    int top  = (int)Math.floor(this.positionY / Simulator.tileSize) + 1;
 
     // determine position within tile
-    int x = (int)this.positionX % 80;
-    int y = (int)this.positionY % 80;
+    int x = (int)this.positionX % Simulator.tileSize;
+    int y = (int)this.positionY % Simulator.tileSize;
 
     // find distance to first wall in line of sight
     distance = (int)Math.round(this.findHitDistance(left, top, x, y, 0));
 
-    System.out.println( (int)(x) + ", " + (int)(y) + " @ " + ( ( this.direction + 90 ) % 360 ) + " | " + distance );
+    System.out.println( (int)(x) + ", " + (int)(y) + " @ " + 
+                        ((this.direction + 90) % 360) + " | " + distance );
     
     return distance;
   }
@@ -245,21 +249,22 @@ class Simulator {
   private double findHitDistance(int left, int top, int x, int y, double d) {
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this baring
-    Point hit    = this.findHitPoint(x,y);
+    Point hit = Tile.findHitPoint(x,y, this.getAngle(), Simulator.tileSize);
     
     // distance from the starting point to the hit-point on this tile
-    double dist = Math.sqrt( Math.pow(hit.x - x, 2 ) + 
-                             Math.pow(hit.y - y, 2 ) );
+    double dist = Tile.getDistance(x, y, hit);
 
     // if we don't have a wall on this tile at this baring, move to the next
     // at the same baring, starting at the hit point on the tile
     Tile tile   = this.map.get(left, top);
-    int  baring = this.findHitWall(hit);
+    int  baring = Tile.getHitWall(hit, Simulator.tileSize);
     if( ! tile.hasWall(baring) ) {
       int nextLeft = left + Baring.moveLeft(baring), 
           nextTop  = top  + Baring.moveTop(baring),
-          nextX    = hit.x == 0 ? 80 : ( hit.x == 80 ? 0 : hit.x ),
-          nextY    = hit.y == 0 ? 80 : ( hit.y == 80 ? 0 : hit.y );
+          nextX    = hit.x == 0 ? Simulator.tileSize : 
+                   ( hit.x == Simulator.tileSize ? 0 : hit.x ),
+          nextY    = hit.y == 0 ? Simulator.tileSize : 
+                   ( hit.y == Simulator.tileSize ? 0 : hit.y );
       // recursively find more distance on the next tile
       dist = this.findHitDistance(nextLeft, nextTop, nextX, nextY, dist );
     }
@@ -267,87 +272,6 @@ class Simulator {
     return d + dist;
   }
 
-  private double T( double x, double d ) {
-    /**
-     * Geonometry used:
-     *
-     *            +
-     *          / |
-     *        /   |  Y
-     *      / a   |
-     *    +-------+
-     *        X
-     *
-     *    tan(a) = Y/X    =>   Y = tan(a) * X     ||   X = Y / tan(a)
-     */
-    return x * Math.tan(Math.toRadians(d));
-  }
-  
-  /**
-   * calculates the point where given the current angle and position, the 
-   * robot will "hit" the wall of this tile.
-   */
-  private Point findHitPoint( int X, int Y ) {
-    double angle = this.getAngle();
-    double x, y, dx, dy;
-
-    if( angle <= 90 ) {
-      dx = 80 - X;
-      dy = this.T( dx, angle );
-      if( dy > Y ) {
-        dy = Y;
-        dx = this.T( dy, 90 - angle );
-      }
-      x = X + dx;
-      y = Y - dy;
-    } else if( angle > 90 && angle <= 180 ) {
-      dx = X;
-      dy = this.T( dx, 180-angle );
-      if( dy > Y ) {
-        dy = Y;
-        dx = this.T( dy, angle - 90 );
-      }
-      x = X - dx;
-      y = Y - dy;
-    } else if( angle > 180 && angle <= 270 ) {
-      dx = X;
-      dy = this.T( dx, angle - 180 );
-      if( dy > ( 80 - Y ) ) {
-        dy = ( 80 - Y );
-        dx = this.T( dy, 270 - angle );
-      }
-      x = X - dx;
-      y = Y + dy;
-    } else { 
-      // angle > 270 && angle < 360
-      dx = 80 - X;
-      dy = this.T( dx, 360 - angle );
-      if( dy > ( 80 - Y ) ) {
-        dy = ( 80 - Y );
-        dx = this.T( dy, angle - 270 );
-      }
-      x = X + dx;
-      y = Y + dy;
-    }
-    
-    return new Point((int)x,(int)y);
-  }
-  
-  /**
-   * based on a hit determine the wall that has been hit
-   */
-  private int findHitWall(Point hit) {
-    int wall;
-    if( hit.y == 0 ) {                          // North
-      wall = hit.x == 0 ? Baring.NW : ( hit.x == 80 ? Baring.NE : Baring.N );
-    } else if( hit.y == 80 ) {                  // South
-      wall = hit.x == 0 ? Baring.SW : ( hit.x == 80 ? Baring.SE : Baring.S );
-    } else {                                    // East or West
-      wall = hit.x == 0 ? Baring.W : Baring.E;
-    }
-    return wall;
-  }
-  
   /**
    * Allows the end-user to send commands throught the communication layer
    * to the Robot. In the real world this is done through the RobotAgent,
