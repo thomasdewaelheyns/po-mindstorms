@@ -4,11 +4,7 @@ package penoplatinum.bluetooth;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -121,51 +117,42 @@ public class BluetoothTest {
     }
 
     @Test
-    public void testPacketBuilder() throws IOException {
+    public void testSendSpeed_Simulated() {
+        final BluetoothPerformanceTests perf = new BluetoothPerformanceTests();
 
-        final byte[] data = new byte[]{3, 1, 4, 1, 5, 9, 2};
 
-        PipedOutputStream o = new PipedOutputStream();
-        PipedInputStream i = new PipedInputStream(o);
-
-        final boolean[] success = new boolean[1];
-
-        DataOutputStream outputStream = new DataOutputStream(o);
-        DataInputStream inputStream = new DataInputStream(i);
-
-        final IPacketReceiver iPacketReceiver = new IPacketReceiver() {
+        Thread t1 = new Thread(new Runnable() {
 
             @Override
-            public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
-                if (size == 0) {
-                    return; //for second packet
+            public void run() {
+                try {
+                    assertTrue(perf.testSendSpeed_Send(ca));
+                } catch (IOException ex) {
+                    Utils.Log("AAAIO");
                 }
-                assertEquals(3, packetIdentifier);
-                assertEquals(data.length, size);
-                for (int j = 0; j < size; j++) {
-                    assertEquals(data[j], dgram[j]);
-                }
-                success[0] = true;
-
             }
-        };
+        });
+        Thread t2 = new Thread(new Runnable() {
 
-        PacketBuilder builder = new PacketBuilder(outputStream, inputStream, iPacketReceiver);
+            @Override
+            public void run() {
+                try {
+                    perf.testSendSpeed_Receive(cb);
+                } catch (IOException ex) {
+                    Utils.Log("AAAIO");
+                }
+            }
+        });
 
-        builder.startReceiving();
+        t1.start();
+        t2.start();
+        try {
+            t1.join();
+            t2.join();
 
-        builder.sendPacket(3, data);
-        builder.sendPacket(5, new byte[0]);
-        //builder.sendPacket(5, new byte[0]);
-        //builder.sendPacket(5, new byte[300]);
-
-        Utils.Sleep(2000);
-
-        assertTrue(success[0]);
-
-
+        } catch (InterruptedException ex) {
+            Utils.Log("AAAIO");
+        }
 
     }
-
-
 }

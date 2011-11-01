@@ -34,7 +34,7 @@ public class PacketBuilder {
             @Override
             public void run() {
                 try {
-                    byte[] buffer = new byte[256];
+                    byte[] buffer = new byte[1024];//new byte[256];
                     int available;
                     int packetHeaderSize = 4 + 2; // Identifier + (short) size
                     while (receiving) {
@@ -83,7 +83,7 @@ public class PacketBuilder {
     
     public void sendPacket(int packetIdentifier, byte[] dgram) {
         try {
-            Utils.Log("Send packet." + packetIdentifier);
+            //Utils.Log("Send packet." + packetIdentifier);
             outputStream.writeInt(packetIdentifier);
             outputStream.writeShort((short) dgram.length);
             outputStream.write(dgram, 0, dgram.length);

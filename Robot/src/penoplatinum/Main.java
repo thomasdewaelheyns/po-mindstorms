@@ -1,14 +1,19 @@
 package penoplatinum;
 
+import java.io.IOException;
 import lejos.nxt.*;
-import penoplatinum.bluetooth.BluetoothTest;
+import penoplatinum.bluetooth.RobotBluetoothTest;
 import penoplatinum.movement.RotationMovement;
 
 public class Main {
 
     public static void main(String[] args) {
-        BluetoothTest test = new BluetoothTest();
-        test.testBluetoothButtonSend();
+        RobotBluetoothTest test = new RobotBluetoothTest();
+        try {
+            test.testSendSpeed();
+        } catch (IOException ex) {
+            Utils.Log("AAIAOOO");
+        }
     }
     static int hoeken = 3;
     static int distance = 40;

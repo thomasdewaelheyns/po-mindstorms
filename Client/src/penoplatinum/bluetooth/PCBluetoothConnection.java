@@ -5,8 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTConnector;
 import penoplatinum.Utils;
@@ -30,13 +28,13 @@ public class PCBluetoothConnection implements IConnection {
         }
         Utils.Log("Connected!");
         /*try {
-            outputStream.writeInt(82);
-            outputStream.flush();
+        outputStream.writeInt(82);
+        outputStream.flush();
         } catch (IOException ex) {
-            Logger.getLogger(PCBluetoothConnection.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(PCBluetoothConnection.class.getName()).log(Level.SEVERE, null, ex);
         }*/
 
-        
+
         // Connected to NXJ, perform packet ID synchronization here (possible optimization)
 
         createPacketBuilder();
@@ -86,7 +84,7 @@ public class PCBluetoothConnection implements IConnection {
             NXTConnector conn = new NXTConnector();
             boolean connected = conn.connectTo(NXTComm.PACKET);
             open = (connected ? conn.getNXTComm() : null);
-            
+
             outputStream = (connected ? new DataOutputStream(open.getOutputStream()) : null);
             inputStream = (connected ? new DataInputStream(open.getInputStream()) : null);
             return connected;
@@ -103,4 +101,6 @@ public class PCBluetoothConnection implements IConnection {
         } catch (IOException ex) {
         }
     }
+
+    
 }

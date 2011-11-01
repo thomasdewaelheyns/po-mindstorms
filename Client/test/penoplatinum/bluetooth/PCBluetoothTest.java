@@ -22,23 +22,23 @@ import penoplatinum.Utils;
  *
  * @author MHGameWork
  */
-public class BluetoothRobotTest {
-
-    public BluetoothRobotTest() {
+public class PCBluetoothTest {
+    
+    public PCBluetoothTest() {
     }
-
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
-
+    
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-
+    
     @Before
     public void setUp() {
     }
-
+    
     @After
     public void tearDown() {
     }
@@ -49,14 +49,14 @@ public class BluetoothRobotTest {
      * Readonly, only write in main thread
      */
     private boolean receiving;
-
+    
     @Test
     public void testBasicBluetooth() {
         while (!connect()) {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
         }
-
+        
         Utils.Log("Connected!");
         // Connected to NXJ, perform packet ID synchronization here (possible optimization)
 
@@ -64,18 +64,18 @@ public class BluetoothRobotTest {
             try {
                 outputStream.writeInt(43);
                 outputStream.flush();
-
+                
                 System.out.println("Received: " + inputStream.readInt());
-
-
+                
+                
             } catch (IOException ex) {
-                Logger.getLogger(BluetoothRobotTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PCBluetoothTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-
+        
+        
     }
-
+    
     private boolean connect() {
         try {
             NXTConnector conn = new NXTConnector();
@@ -89,21 +89,21 @@ public class BluetoothRobotTest {
             Utils.Log(e.toString());
             return false;
         }
-
+        
     }
-
+    
     @Test
     public void testBluetoothButtonSend() {
         int buttonPacketId = 5988695;
-
+        
         PCBluetoothConnection conn = new PCBluetoothConnection();
-
+        
         PacketTransporter t = new PacketTransporter(conn);
-
+        
         conn.RegisterTransporter(t, buttonPacketId);
-
+        
         conn.initializeConnection();
-
+        
         while (true) {
             int packetID = t.ReceivePacket();
             if (packetID == buttonPacketId) {
@@ -116,10 +116,18 @@ public class BluetoothRobotTest {
             } catch (IOException ex) {
                 Utils.Log(ex.toString());
             }
-
+            
         }
-
-
-
+    }
+    
+    @Test
+    public void testSendSpeed() throws IOException {
+        PCBluetoothConnection conn = new PCBluetoothConnection();
+        Utils.Log("Initializeing");
+        conn.initializeConnection();
+        Utils.Log("Done");
+        penoplatinum.bluetooth.BluetoothPerformanceTests test = new BluetoothPerformanceTests();
+        test.testSendSpeed_Send(conn);
+        
     }
 }

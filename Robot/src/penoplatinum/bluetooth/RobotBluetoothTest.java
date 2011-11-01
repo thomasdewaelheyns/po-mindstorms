@@ -9,7 +9,7 @@ import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTConnection;
 import penoplatinum.Utils;
 
-public class BluetoothTest {
+public class RobotBluetoothTest {
 
     RobotBluetoothConnection bt = new RobotBluetoothConnection();
     BTConnection conn;
@@ -48,15 +48,16 @@ public class BluetoothTest {
         while (true) {
             try {
                 System.out.println(stri.readInt());
-                
+
                 stro.writeInt(34);
                 stro.flush();
                 Utils.Log("Packet sent!");
 
             } catch (IOException ex) {
                 Utils.Log("AIJOOOOO");
-                if (ex.getMessage() != null)
+                if (ex.getMessage() != null) {
                     Utils.Log(ex.getMessage());
+                }
             }
         }
     }
@@ -64,7 +65,9 @@ public class BluetoothTest {
     private boolean connect() {
         System.out.println("Connecting.");
         BTConnection conn = Bluetooth.waitForConnection(5000, NXTConnection.PACKET);
-        if (conn == null) return false;
+        if (conn == null) {
+            return false;
+        }
         stri = conn.openDataInputStream();
         stro = conn.openDataOutputStream();
         System.out.println("Connected: " + conn.getAddress());
@@ -99,4 +102,16 @@ public class BluetoothTest {
         }
 
     }
+    
+    public void testSendSpeed() throws IOException
+    {
+        RobotBluetoothConnection conn = new RobotBluetoothConnection();
+        conn.initializeConnection();
+        
+        penoplatinum.bluetooth.BluetoothPerformanceTests test = new BluetoothPerformanceTests();
+        test.testSendSpeed_Receive(conn);
+        
+    }
+
+   
 }

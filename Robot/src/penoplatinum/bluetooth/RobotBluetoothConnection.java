@@ -88,6 +88,7 @@ public class RobotBluetoothConnection implements IConnection {
 
             TransporterItem item = new TransporterItem(packetIdentifier, transporter);
             transporterItems.add(item);
+            Utils.Log(transporterItems.size() + "");
         }
     }
 

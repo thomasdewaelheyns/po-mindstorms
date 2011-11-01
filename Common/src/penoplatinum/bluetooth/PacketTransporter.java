@@ -87,7 +87,7 @@ public class PacketTransporter implements IPacketTransporter {
     @Override
     public void SendPacket(int packetIdentifier) {
         connection.SendPacket(this, packetIdentifier, byteArrayOutputStream.toByteArray());
-        sendStream = new DataOutputStream(byteArrayOutputStream); // TODO: GC
+        byteArrayOutputStream.reset();
 
     }
 
