@@ -31,7 +31,7 @@
 \tableofcontents
 
 \begin{abstract}
-Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, zullen wij een autonome robot bouwen met behulp van Lego Mindstorms. Voor de programmatie wordt beroep gedaan op Lejos, een Open Bron project dat een minimale JAVA virtuele machine heeft gemaakt die de plaats kan innemen van de standaard programmatie omgeving van Lego.
+Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, bouwen wij een autonome robot met behulp van Lego Mindstorms. Voor de programmatie wordt beroep gedaan op Lejos, een Open Bron project dat een minimale JAVA virtuele machine heeft gemaakt die de plaats kan innemen van de standaard programmatie omgeving van Lego.
 
 Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen ivm het werken in team verband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
 
@@ -39,7 +39,7 @@ Parallel met het verplicht te volgen traject van meerdere demo sessies, kiezen w
 
 \bigskip
 
-(De samenvatting wordt verder aangevuld met belangrijke aspecten die tijdens het verdere verloop van het project naar voor treden.)
+(De samenvatting wordt later verder aangevuld met belangrijke aspecten die tijdens het verdere verloop van het project naar voor treden.)
 
 \end{abstract}
 
@@ -277,9 +277,9 @@ Figuur \ref{fig:resultsLargePolygons} toont het papier waarop we start en eindpu
 
 \begin{figure}[htbp]
    \centering
-   \includegraphics[width=140mm]{resources/meetresultaten.png}
    \caption{Meetresultaten voor grote veelhoeken.}
    \label{fig:resultsLargePolygons}
+   \includegraphics[width=140mm]{resources/meetresultaten.png}
 \end{figure}
 
 \subsection{Tijd}
@@ -350,14 +350,13 @@ Aangezien dit een specifiek probleem voor het constant rijden van veelhoeken is 
 De doelstelling van de volgende demo is het volgen van een ononderbroken lijn. Deze lijn kan wit of zwart zijn en is uitgezet op bruine panelen.
 
 \section{De robot}
-
-Tijdens het onderzoek voor de verschillende onderdelen van demo 2, is het ontwerp van de robot ge"evolueerd. De belangrijkste aanpassing is het omkeren van de rijrichting, waarbij het zwenkwiel vooraan komt te staan en we dus een achterwiel aangedreven robot bekomen.
-
-TODO: reden en resultaten
-
-TODO: herdoen test afstanden en hoeken
+\label{section:lichtsensor}
 
 Voor het volgen van een lijn maken we gebruik van een grijswaardesensor. Deze werd vooraan op de robot bevestigd.
+
+Tijdens het onderzoek voor de verschillende onderdelen van demo 2, is het ontwerp van de robot in zijn geheel ge"evolueerd. De belangrijkste aanpassing is het omkeren van de rijrichting, waarbij het zwenkwiel vooraan komt te staan en we dus een achterwiel aangedreven robot bekomen.
+
+De belangrijkste reden voor deze aanpassing, was een probleem bij het oprijden van een helling. Met de nieuwe opbouw kan de grijswaardesensor dichter bij de as geplaatst worden, waardoor deze zich sneller opnieuw in een juiste hoek tov. de ondergrond zal bevinden. Ook de NXT brick werd in een horizontale positie geplaatst, waardoor montage van alle sensoren en motoren eenvoudiger werd.
 
 \section{De software}
 
@@ -379,7 +378,18 @@ Voor dit algoritme werd de manier waarop de Lejos API aangesproken werd ook gewi
 
 \subsection{PC}
 
-TODO: beschrijving van UI
+Op de PC voorzien we een User Interface die een visuele voorstelling biedt van de door de robot opgemeten grijswaarden, gedetecteerde barcodes en bijhorende actie die ondernomen wordt. Figuur \ref{fig:demo2UI} toont de User Interface die voor de drie onderdelen van de demo zal gebruikt worden.
+
+\begin{figure}[htbp]
+   \centering
+   \caption{User Interface voor Demo 2.}
+   \label{fig:demo2UI}
+   \includegraphics[width=150mm]{resources/demo2-ui.png}
+\end{figure}
+
+Aan de linkerkant wordt de gemeten grijswaarde weergegeven: als getal, als grijswaarde en als ge\"interpreteerde kleur (bruin, wit of zwart). Aan de rechterkant wordt een eventueel gedetecteerde barcode gevisualiseerd, als ook een indicatie van de actie die de robot zal uitvoeren op basis van deze informatie.
+
+De User Interface bevat geen logica om enige conclusie te trekken en visualiseert louter de door de robot doorgestuurde gegevens. De robot stuurt dus de grijswaarde, de ge\"interpreteerde kleur, de barcode en actie door naar de PC.
 
 \section{Testplan en resultaten}
 
@@ -485,9 +495,176 @@ De doelstelling van de volgende demo is het volgen van een ononderbroken muur.
 
 \section{De robot}
 
+Voor het volgen van een muur dient de sonarsensor gebruikt te worden. We hebben in ons ontwerp gekozen om de sonar te combineren met de derde motor om zo een richtbare sonar te bekomen, onafhankelijk van de ori\"entatie van de robot.
+
 \section{De software}
 
+Het algoritme dat we toepassen om een muur te volgen berust op het feit dat de kortste afstand tussen de robot en de muur steeds de lijn is die loodrecht op de muur staat. Het doel van de robot is om zichzelf ook loodrecht tov. deze lijn te positioneren en zo evenwijdig met de muur te bewegen. Figuur \ref{fig:muurvolgerAlgoritme} illustreert dit principe.
+
+\begin{figure}[htbp]
+   \centering
+   \caption{Bepalen van evenwijdige rijrichting tov een muur.}
+   \label{fig:muurvolgerAlgoritme}
+   \includegraphics[width=80mm]{resources/muurvolger.png}
+\end{figure}
+
+Dankzij de richtbare sonar, kan de robot zowel de afstand tot de te volgen muur meten als voor zich controleren of er geen muur, ten gevolge van een hoek in het parcours, volgt. De robot zal de sonar dus constant heen en weer laten bewegen om deze twee meetpunten te controleren.
+
+De implementatie van dit principe zal gebeuren aan de hand van een aparte thread die de constante beweging van de sonar regelt en meetwaarden ter beschikking stelt van de thread die het volgen van de muur implementeert. Initieel zal een zoekroutine voorzien worden om na te gaan of er een muur links of rechts dient gevolgd te worden.
+
+Om deze richtbare sonar initieel recht vooruit te positioneren, voorzien we een automatische calibratie op basis van een v\'o\'or de robot opgesteld obstakel. De robot zal vervolgens de kortste afstand tot dit obstakel zoeken door de sonar te laten ronddraaien en metingen te doen.
+
 \section{Testplan en resultaten}
+
+In tegenstelling tot het rijden en de lichtsensor, verliepen de testen voor de sonarsensor anders: de sonarsensor meet constant dezelfde waarde in gelijke omstandigheden. Ook verschil in materiaal gaf zo goed als geen afwijkingen. We bekijken vervolgens metingen met de sonarsensor in een rechthoek tot een obstakel en het effect van een hoek op de meetresultaten. Tot slot bekijken we de invloed van rijden op het meten van afstanden.
+
+\subsection{Afstand}
+
+In een eerste test bepaalden we de absolute afwijking op een afstandsmeting van 1 tot 60cm. Figuur \ref{chart:sonarDistance} geeft de relatieve fout weer op de gemeten afstanden.
+
+\begin{figure}[htbp]
+   \centering
+   \caption{Test 1: Relatieve afwijking van de sonarsensor tov de te meten afstand.}
+\begin{tikzpicture}    \begin{axis}[        xlabel=Werkelijke Afstand (cm),        ylabel=Relatieve fout tov gewachte afstand (\%)]    \addplot[color=red,mark=x] coordinates {
+	(5,40.00)
+	(10,30.00)
+	(20,15.00)
+	(40,2.50)
+	(60,1.67)
+   };    \end{axis}\end{tikzpicture}
+   \label{chart:sonarDistance}
+\end{figure}
+
+Hierbij valt onmiddellijk op dat de sonar beduidend correcter meet op grotere afstand en een grotere fout laat optekenen bij kleinere. Aangezien deze metingen nagenoeg constant waren, kunnen we deze meetgegevens gebruiken om een functie of vertaaltabel te maken tussen de metingen van de sonarsensor en de re\"ele afstand.
+
+\subsection{Hoek}
+
+Een robot zal niet steeds loodrecht staan tov. een obstakel. Om na te gaan hoeveel de meetresultaten afwijken onder een hoek, hebben we een test gedaan waarbij we onder een hoek van 0, 5, 10, 15, 30 en 45 graden de gemeten afstand vergeleken met de werkelijke afstand. Figuur \ref{chart:sonarAngle} geeft de relatieve afwijking van de meting tov de werkelijkheid weer.
+
+\begin{figure}[htbp]
+   \centering
+   \caption{Test 2: Relatieve afwijking van de sonarsensor bij meting onder een hoek.}
+\begin{tikzpicture}    \begin{axis}[        xlabel=Werkelijke Afstand (cm),        ylabel=Relatieve fout tov gewachte afstand (\%),
+       legend style={draw=none}]    \addplot[color=red,mark=x,] coordinates {
+	(5,40.00)
+	(10,30.00)
+	(20,15.00)
+	(40,2.50)
+	(60,1.67)
+   };    \addplot[color=green,mark=x,] coordinates {
+	(5,42.00)
+	(10,32.00)
+	(20,12.00)
+	(40,3.50)
+	(60,2.00)
+   };    \addplot[color=blue,mark=x,] coordinates {
+	(5,44.00)
+	(10,34.00)
+	(20,19.00)
+	(40,3.50)
+	(60,2.67)
+   };    \addplot[color=yellow,mark=x,] coordinates {
+	(5,40.00)
+	(10,30.00)
+	(20,15.00)
+	(40,2.50)
+	(60,1.67)
+   };    \addplot[color=purple,mark=x,] coordinates {
+	(5,40.00)
+	(10,30.00)
+	(20,15.00)
+	(40,2.50)
+	(60,1.67)
+   };    \addplot[color=orange,mark=x,] coordinates {
+	(5,40.00)
+	(10,30.00)
+	(20,15.00)
+	(40,2.50)
+	(60,1.67)
+   };   \legend{$0^{\circ}$,$5^{\circ}$,$10^{\circ}$,$15^{\circ}$,$30^{\circ}$,$45^{\circ}$}    \end{axis}\end{tikzpicture}
+   \label{chart:sonarAngle}
+\end{figure}
+
+Uit de resultaten van de metingen met verschillende hoeken, leren we dat onder een hoek, groter dan ongeveer 40 graden de sonarsensor geen metingen meer kan doen. Anderzijds merken we dat de hoek ... TODO afwerken na invullen van gegevens in grafiek.
+
+\subsection{Rijden}
+
+We hebben een test opgesteld waarbij de robot op een afstand van een obstakel werd geplaatst en naar het obstakel toe reed. Hierbij registreerde de robot informatie van de tachometer en van de sonarsensor. Op basis van deze gegevens kunnen we de metingen van de sonar afstemmen op de afstand berekend door de tachometer. We hebben verschillende metingen voor deze test gedaan en de meetresultaten waren telkens ongeveer identiek. Ze vertoonden ook een typisch patroon, zoals weergegeven in figuur \ref{chart:sonarDrive}.
+
+\begin{figure}[htbp]
+   \centering
+   \caption{Test 3: Relatieve afwijking van de sonarsensor bij rijdende meting.}
+\begin{tikzpicture}    \begin{axis}[        xlabel=Werkelijke Afstand (cm),        ylabel=Relatieve fout tov gewachte afstand (\%),
+       legend style={draw=none}]    \addplot[color=red,mark=x,] coordinates {
+(188.50, 0.27)
+(185.78, 0.12)
+(182.73, 0.15)
+(179.68, 0.18)
+(176.60, 0.23)
+(173.55, 0.26)
+(170.54, 0.27)
+(167.46, 0.32)
+(164.41, 0.36)
+(161.36, 0.40)
+(158.28, 0.45)
+(155.18, 0.53)
+(152.18, 1.20)
+(149.08, 1.29)
+(146.05, 2.71)
+(142.97, 78.36)
+(139.92, 82.25)
+(136.84, 86.35)
+(133.79, 90.60)
+(130.74, 1.73)
+(127.66, 1.05)
+(124.58, 1.14)
+(121.55, 0.37)
+(118.48, 0.44)
+(115.42, 0.50)
+(112.35, 0.58)
+(109.32, 1.54)
+(106.27, 1.63)
+(103.19, 0.79)
+(100.16, 0.84)
+(97.08, 0.94)
+(94.01, -0.01)
+(90.98, 0.02)
+(87.90, 0.11)
+(84.85, 0.18)
+(81.80, 1.47)
+(78.72, 1.63)
+(75.67, 0.44)
+(72.61, 0.53)
+(69.56, 0.63)
+(66.51, 0.74)
+(63.43, 0.89)
+(60.40, 0.99)
+(57.35, 1.13)
+(54.30, -0.55)
+(51.20, -0.39)
+(48.15, -0.30)
+(45.09, -0.20)
+(42.02, -0.04)
+(38.96, 0.10)
+(35.93, 0.18)
+(32.83, 0.51)
+(29.78, 0.74)
+(26.73, -2.72)
+(23.68, 1.37)
+(20.62, 11.53)
+(17.57, 19.52)
+(14.52, 65.32)
+(11.44, 101.04)
+(8.41, 173.43)
+   };    \end{axis}\end{tikzpicture}
+   \label{chart:sonarDrive}
+\end{figure}
+
+De robot vertrok op 180cm van het obstakel. Zoals we reeds opmerkten in de voorgaande testen, is de sonar relatief nauwkeurig op grotere afstanden. Vanaf 30cm vergroot de fout aanzienlijk. Dat de fout vlak bij nul tot boven de 100\% gaat heeft hier natuurlijk te maken met de robot die tegen het obstakel rijdt.
+
+Maar er is een tweede piek die zich voordoet rond de 140 tot 130cm. Op deze afstand detecteert de sensor geen obstakels. We vermoeden dat er zich hier een eigenfrequentie optreedt en dat er golffronten samenvallen. Aangezien we voor de doelstellingen van de verschillende demo's geen informatie nodig hebben voor afstanden boven de 80cm, is dit fenomeen onbelangrijk voor ons.
+
+De meetwaarden van deze test waren omvangrijk in aantal. Ze werden dan ook met behulp van de Bluetooth verbinding doorgestuurd naar de PC voor verdere verwerking in een spreadsheet.
 
 \section{Resultaten van de demo en conclusies}
 
@@ -495,11 +672,33 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Demo 2c: Barcode}
 
+De doelstelling van de volgende demo is het detecteren van barcodes op een eenvoudig parcours en op basis van de informatie die deze barcodes aanbieden over het parcours, dit zo goed mogelijk rijden.
+
 \section{De robot}
+
+Voor het lezen van barcodes gebruiken we de grijswaardesensor. Deze is reeds op de robot gemonteerd, zoals besproken in sectie \ref{section:lichtsensor}. Ook de basissoftware om grijswaarden te registeren wordt opnieuw gebruikt.
 
 \section{De software}
 
+Het algoritme dat op basis van de gemeten grijswaarden barcodes detecteert doorloopt volgende stappen:
+
+\begin{enumerate}
+\item lees de genormaliseerde waarde van de grijswaardesensor
+\item indien de ge\"interpreteerde kleur bruin is, doe niets
+\item indien de ge\"interpreteerde kleur niet-bruin is, begin detectie van een barcode
+	\begin{enumerate}
+	\item indien de ge\"interpreteerde kleur niet-bruin is, bewaar deze data
+	\item indien de ge\"interpreteerde kleur bruin is, er minder dan drie niet-bruine waarden opgemeten zijn en er vijf bruin-waarden opgemeten zijn, stop dan de barcode detectie
+	\end{enumerate}
+\item verdeel de opgemeten waardes in 7 gelijke groepen.
+\item neem van elke groep het gemiddelde en vertaal de waarde naar wit of zwart
+\item vertaal de 7 wit of zwart waarden naar 1 en 0
+\item gebruik een tabel om de effectief gedetecteerde waarde om te zetten naar een gecorrigeerde mogelijke waarde, volgens de ge\"integreerde Hemming-code error-correctie
+\end{enumerate}
+
 \section{Testplan en resultaten}
+
+De verschillende barcodes werden meermaals door de robot gedetecteerd, zowel recht-rijdend als onder verschillende hoeken. Alle testen resulteerden in een correct gelezen barcode.
 
 \section{Resultaten van de demo en conclusies}
 
@@ -531,13 +730,58 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Werkverdeling}
 
-\section{Verantwoordelijkheden}
+Tabel \ref{tab:focus} geeft de focus van elk teamlid tot op heden weer. Tabel \ref{tab:tijdsregistratie} geeft de gepresteerde uren per week per teamlid weer.
 
-TODO
+\begin{longtable}{l l}
+\caption{Focus van elk team lid} \\ [0.5ex]
 
-\section{Tijdsregistratie}
+%This is the header for the first page of the table...
+\hline\hline
+Teamlid & Focus \\ [0.5ex]
+\hline 
+\endfirsthead
 
-TODO
+%This is the header for the remaining page(s) of the table...
+\multicolumn{2}{c}{{\tablename} \thetable{} -- Vervolg} \\[0.5ex]
+\hline \hline
+Teamlid & Focus \\ [0.5ex]
+\hline 
+\endhead
+Michiel 		& 	(Coordinator) Bluetooth communicatie, calibratie. \\
+Florian 		&	RobotAPI, lijnvolger, opvolgen unit testen. \\
+Ruben 		&	RobotAPI, veelhoek algoritme, muurvolger. \\
+Thomas 		&	RobotAPI, lichtsensor, barcodelezer. \\
+Daniel 		&	Testen, barcodelezer \\
+Christophe 	&	(Secretaris) Verslag, simulator, model \& navigator. \\
+\hline
+\label{tab:focus}
+\end{longtable}
+
+\begin{longtable}{l r r r r r r}
+\caption{Tijdsbesteding per team lid per week} \\ [0.5ex]
+
+%This is the header for the first page of the table...
+\hline\hline
+ & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\ [0.5ex]
+\hline 
+\endfirsthead
+
+%This is the header for the remaining page(s) of the table...
+\multicolumn{4}{c}{{\tablename} \thetable{} -- Vervolg} \\[0.5ex]
+\hline \hline
+ & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\ [0.5ex]
+\hline 
+\endhead
+totaal    & 54 & 37 & 41 & 38 & 34 & 75 \\
+\hline
+week 1 & 10 & 10 & 10 & 10 & 10 & 15 \\
+week 2 & 9 & 7 & 8 & 7 & 9 & 16 \\
+week 3 & 8 & 8 & 8 & 8 & 5 & 12 \\
+week 4 & 9 & 7 & 5 & 8 & 5 & 17 \\
+week 5\footnote{Week 5 is nog bezig ten tijde van inlevering verslag.} & 18 & 5 & 10 & 5 & 5 & 15 \\
+\hline
+\label{tab:tijdsregistratie}
+\end{longtable}
 
 \chapter{Analyse}
 
@@ -546,17 +790,16 @@ Dit deel wordt later toegevoegd.
 \appendix
 
 \chapter{Software}
-
-TODO
-
 \label{appendix:software}
+
 \section{Bluetooth}
+\label{appendix:bluetooth}
 
 Dit deel wordt later toegevoegd.
 
 \section{Klasse Diagrammen}
 
-TODO
+Dit deel wordt later toegevoegd.
 
 \section{Overzicht Methodes}
 
@@ -588,13 +831,11 @@ Dit deel wordt later toegevoegd.
 
 \begin{longtable}{r l l c}
 \caption{Work Breakdown Structure} \\ [0.5ex]
-
 %This is the header for the first page of the table...
 \hline\hline
 \# & Omschrijving & Verantwoordelijke & Milestone \\ [0.5ex]
 \hline 
 \endfirsthead
-
 %This is the header for the remaining page(s) of the table...
 \multicolumn{4}{c}{{\tablename} \thetable{} -- Vervolg} \\[0.5ex]
 \hline \hline
