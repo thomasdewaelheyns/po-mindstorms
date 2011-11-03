@@ -1,28 +1,39 @@
 package penoplatinum.sensor;
 
 import lejos.nxt.LCD;
+import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.movement.IMovement;
 
 public class Muurvolger {
     private UltrasonicSensor ultra;
     public IMovement move;
-    
-    private int isLeft = 1;
-    public int toClose = 20;
-    public int toFar   = 30;
-    public int angleClose= 20;
-    public int angleFar = 15;
     public int turnAngle=45;
-    public int SAMPLES = 5;
-    public int MAX=128;
-    public double dist=0.20;
-    public boolean debug=true;
+    private Motor vert;
+    private int isLeft = -1;
+    
+    private int toClose = 30;
+    private int toFar   = 40;
+    private int WALLFORWARD = 50;
+    
+    private int angleClose= 10;
+    private int angleFar = 10;
+    private int angleTurn = 10;
+    private int angleLook = 90;
+    
+    private double dist=0.10;
 
-    public Muurvolger(UltrasonicSensor ultra, IMovement m) {
+    private int SAMPLES = 5;
+    private int MAX=128;
+    
+    public boolean debug=true;
+    public boolean cont = true;
+
+    public Muurvolger(UltrasonicSensor ultra, IMovement m, Motor v) {
         this.ultra = ultra;
         isLeft = askSensorDirection();
         move=m;
+        vert=v;
     }
 
     public final int askSensorDirection() {
@@ -60,49 +71,7 @@ public class Muurvolger {
         move.TurnOnSpotCCW(-isLeft * 90); //move back forward
         move.MoveStraight(dist);
     }
-}
-package penoplatinum.sensor;
-
-import lejos.nxt.LCD;
-import lejos.nxt.Motor;
-import lejos.nxt.UltrasonicSensor;
-import penoplatinum.movement.IMovement;
-
-public class Muurvolger {
-    private UltrasonicSensor ultra;
-    public IMovement move;
-    private Motor vert;
-    private int isLeft = -1;
-    
-    private int toClose = 30;
-    private int toFar   = 40;
-    private int WALLFORWARD = 50;
-    
-    private int angleClose= 10;
-    private int angleFar = 10;
-    private int angleTurn = 10;
-    private int angleLook = 90;
-    
-    private double dist=0.10;
-
-    private int SAMPLES = 5;
-    private int MAX=128;
-    
-    public boolean debug=true;
-    public boolean cont = true;
-
-    public Muurvolger(UltrasonicSensor ultra, IMovement m, Motor v) {
-        this.ultra = ultra;
-        isLeft = askSensorDirection();
-        move=m;
-        vert=v;
-    }
-
-    public final int askSensorDirection() {
-        return -1;	//+-1
-    }
-
-    public void run() {
+    public void run2(){ //oude versie door merge
         while(cont){
             double avg = 0;
             for(int i=0;i<SAMPLES;i++){
@@ -141,8 +110,6 @@ public class Muurvolger {
             vert.rotate(-isLeft * angleLook);
             move.MoveStraight(dist);
         }
-    }
-    public void runLoodrecht(){
         
     }
     
