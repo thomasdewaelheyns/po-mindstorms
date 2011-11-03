@@ -40,7 +40,7 @@ public class SonarTest {
             if (Button.RIGHT.isPressed()) {
                 orientSonarHead(sens, Motor.A);
             } else if (Button.ENTER.isPressed()) {
-                
+
 
                 for (int j = 0; j < 5; j++) {
                     Utils.Log("Start test");
@@ -135,14 +135,14 @@ public class SonarTest {
         mov.Stop();
     }
 
-    public void orientSonarHead(UltrasonicSensor sens, Motor m) throws IOException {
+    public void orientSonarHead(UltrasonicSensor sens, Motor m) {
         rotateSonarToClosest(sens, m, -180, 180, 200);
         rotateSonarToClosest(sens, m, -30, 30, 40);
         rotateSonarToClosest(sens, m, -10, 10, 10);
 
     }
 
-    public void rotateSonarToClosest(UltrasonicSensor sens, Motor m, int startAngle, int stopAngle, int speed) throws IOException {
+    public void rotateSonarToClosest(UltrasonicSensor sens, Motor m, int startAngle, int stopAngle, int speed) {
         int minTacho = Integer.MIN_VALUE;
         int maxTacho = Integer.MIN_VALUE;
         int minDistance = Integer.MAX_VALUE;

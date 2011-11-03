@@ -38,27 +38,9 @@ public class PacketBuilder {
                     int available;
                     int packetHeaderSize = 4 + 2; // Identifier + (short) size
                     while (receiving) {
-                        /*while ((available = inputStream.available()) < packetHeaderSize && available >= 0) { // wait for packet header
-                        Utils.Sleep(20); //TODO: frequency
-                        }
-                        if (available < 0) {
-                        Utils.Log("Available Smaller than one!");
-                        continue;
-                        }*/
-
                         int identifier = inputStream.readInt();
                         int size = inputStream.readShort();
-
-                        /*while ((available = inputStream.available()) < size && available >= 0) { // wait for packet header
-                        Utils.Sleep(20); //TODO: frequency
-                        }
-                        if (available < 0) {
-                        Utils.Log("Available Smaller than one!");
-                        continue;
-                        }*/
-
                         inputStream.read(buffer, 0, size);
-
                         receiver.onPacketReceived(identifier, buffer, size);
 
 

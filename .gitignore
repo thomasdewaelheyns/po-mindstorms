@@ -7,3 +7,6 @@ build.properties
 !Robot/buildWindows/build.xml
 !Robot/buildWindows/build.properties
 */dist/*
+
+/Client/logs/*
+/Client/testOutput/*

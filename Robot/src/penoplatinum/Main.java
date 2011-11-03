@@ -2,29 +2,49 @@ package penoplatinum;
 
 import lejos.nxt.*;
 import penoplatinum.movement.RotationMovement;
-import penoplatinum.sensor.SonarTest;
+import penoplatinum.sensor.MuurVolgerTest;
 
 public class Main {
-    
+
     public static void main(String[] args) throws Exception {
-        //RobotBluetoothTest test = new RobotBluetoothTest();
-        SonarTest test = new SonarTest();
-        //test.testBluetoothLogging();
 
-        //test.distanceTest(new UltrasonicSensor(SensorPort.S3));
-        //SonarTest.testGetDistanceDuration(new UltrasonicSensor(SensorPort.S3));
-        //test.calibrateSonar(new UltrasonicSensor(SensorPort.S3));
+        Thread t = new Thread(new Runnable() {
 
-        test.orientSonarHead(new UltrasonicSensor(SensorPort.S3), Motor.A);
+            public void run() {
+                
+                MuurVolgerTest.testPerpendicular();
+                //RobotBluetoothTest test = new RobotBluetoothTest();
+                //SonarTest test = new SonarTest();
+                //test.testBluetoothLogging();
+
+                //test.distanceTest(new UltrasonicSensor(SensorPort.S3));
+                //SonarTest.testGetDistanceDuration(new UltrasonicSensor(SensorPort.S3));
+                //test.calibrateSonar(new UltrasonicSensor(SensorPort.S3));
+
+                //test.orientSonarHead(new UltrasonicSensor(SensorPort.S3), Motor.A);
+            }
+        });
+
+        t.setDaemon(true);
+        
+        t.start();
+        
+        
+        while (!Button.ESCAPE.isPressed()) {
+            Utils.Sleep(500);
+        }
+        System.exit(0);
+
+
     }
     static int hoeken = 3;
     static int distance = 40;
     static int pos = 0;
-    
+
     public static void selectVeelhoek() {
-        
+
         Veelhoek veelhoek = new Veelhoek(new RotationMovement());
-        
+
         int[] p = new int[]{2, 5};
         while (true) {
             LCD.clear();

@@ -18,18 +18,18 @@ public class RotationMovement implements IMovement {
     }
 
     public void MoveStraight(double distance, boolean block) {
+        Utils.Log("Straightx");
         distance *= 1000;
         distance /= 0.99;
         int r = (int) (distance * 360 / WIELOMTREK);
-        motorLeft.setSpeed(SPEEDFORWARD);
-        motorRight.setSpeed(SPEEDFORWARD);
+        changeMotorSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
         motorRight.rotate(r, !block);
     }
 
     public void TurnOnSpotCCW(double angle) {
-        motorLeft.setSpeed(SPEEDTURN);
-        motorRight.setSpeed(SPEEDTURN);
+        Utils.Log("Turn");
+        changeMotorSpeed(SPEEDTURN);
         angle /= 0.99;
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
         motorLeft.rotate(h, true);
@@ -43,6 +43,20 @@ public class RotationMovement implements IMovement {
         } else {
             motorLeft.rotate(h);
         }
+    }
+
+    public void changeMotorSpeed(int speed) {
+        if (motorLeft.getSpeed() != speed) {
+            Utils.Log("Changing speed!");
+            // Accelerate from 0
+            Stop();
+            //Wait for regulator to regulate
+            Utils.Sleep(200);
+        }
+
+        motorLeft.setSpeed(speed);
+        motorRight.setSpeed(speed);
+
     }
 
     public void CalibrateWheelCircumference() {

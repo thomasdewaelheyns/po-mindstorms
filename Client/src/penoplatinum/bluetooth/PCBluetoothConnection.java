@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import java.util.HashMap;
 import lejos.pc.comm.NXTComm;
+import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
@@ -29,15 +30,11 @@ public class PCBluetoothConnection implements IConnection {
             Utils.Sleep(1000);
         }
         Utils.Log("Connected!");
-        /*try {
-        outputStream.writeInt(82);
-        outputStream.flush();
-        } catch (IOException ex) {
-        Logger.getLogger(PCBluetoothConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-
 
         // Connected to NXJ, perform packet ID synchronization here (possible optimization)
+
+
+
 
         createPacketBuilder();
 
@@ -88,16 +85,24 @@ public class PCBluetoothConnection implements IConnection {
             inputStream = null;
 
             NXTConnector conn = new NXTConnector();
-            NXTInfo[] infos = conn.getNXTInfos();
+            NXTInfo[] infos = conn.search(null, null, NXTCommFactory.ALL_PROTOCOLS);
 
             NXTInfo lejosInfo = null;
 
             for (NXTInfo inf : infos) {
-                if (inf.name.equals("NXJ Platinum")) {
-                    lejosInfo = inf;
-
-                }
+                /*if (inf.name.equals("NXJ Platinum")) {
+                lejosInfo = inf;
+                
+                }*/
             }
+
+            if (infos.length == 1) {
+                lejosInfo = infos[0];
+            } else if (infos.length > 1) {
+                Utils.Log("Multiple possible connections found, aborting!");
+                return false;
+            }
+
             if (lejosInfo == null) {
                 Utils.Log("Platinum not found!");
                 return false;
@@ -112,14 +117,14 @@ public class PCBluetoothConnection implements IConnection {
 
                 @Override
                 public void logEvent(Throwable thrwbl) {
+                    Utils.Log("CommLog errror!");
                     Utils.Log(thrwbl.toString());
+                    thrwbl.printStackTrace();
                 }
             };
             conn.addLogListener(listener);
 
-
-            conn.addLogListener(null);
-            boolean connected = conn.connectTo(NXTComm.PACKET);
+            boolean connected = conn.connectTo(lejosInfo, NXTComm.PACKET);
             open = (connected ? conn.getNXTComm() : null);
 
             if (connected) {
@@ -131,6 +136,7 @@ public class PCBluetoothConnection implements IConnection {
         } catch (Exception e) {
 
             Utils.Log(e.toString());
+            e.printStackTrace();
             return false;
         }
 

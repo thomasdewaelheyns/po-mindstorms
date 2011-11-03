@@ -130,18 +130,5 @@ public class PCBluetoothTest {
         
     }
     
-    @Test
-    public void testFileLogging() throws IOException {
-        PCBluetoothConnection conn = new PCBluetoothConnection();
-        conn.initializeConnection();
-        
-        
-        RemoteFileLogger logger = new RemoteFileLogger(conn, 672631252, "RobotLog", new File("logs"));
-        logger.startLogging();
-        
-        while (true) {
-            Utils.Sleep(1000);            
-        }
-        
-    }
+  
 }
