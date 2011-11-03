@@ -139,13 +139,13 @@ public class Dashboard extends JPanel {
   }
  
   private void renderLightValueLabel(Graphics2D g2d) {
-    this.drawCenteredText( g2d, "" + this.lightValue, Color.green, 
+    this.drawCenteredText( g2d, "" + this.lightValue, Color.red, 
                            50, 0, 200, 200 );
   }
   
   private void renderBarcode(Graphics2D g2d) {
     if( this.barcode >= 0 ) {
-      this.drawCenteredText( g2d, this.getBarcode(), Color.blue, 
+      this.drawCenteredText( g2d, this.getBarcode(), new Color(44,89,156), 
                              350, 50, 150, 32 );
     }
   }
