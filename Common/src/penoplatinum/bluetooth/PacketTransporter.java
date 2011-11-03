@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import penoplatinum.Utils;
 
 /**
  *
@@ -50,7 +51,7 @@ public class PacketTransporter implements IPacketTransporter {
                 try {
                     receivedQueue.wait();
                 } catch (InterruptedException ex) {
-                    System.out.println("ReceivePacketException");
+                    Utils.Log("ReceivePacketException");
                 }
             }
 
@@ -64,6 +65,7 @@ public class PacketTransporter implements IPacketTransporter {
     }
 
     private void updateReceiveStream(Packet p) {
+        
         ByteArrayInputStream strm = new ByteArrayInputStream(p.Dgram);
         receiveStream = new DataInputStream(strm);
     }

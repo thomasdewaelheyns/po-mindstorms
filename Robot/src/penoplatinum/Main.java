@@ -1,28 +1,30 @@
 package penoplatinum;
 
-import java.io.IOException;
 import lejos.nxt.*;
-import penoplatinum.bluetooth.RobotBluetoothTest;
 import penoplatinum.movement.RotationMovement;
+import penoplatinum.sensor.SonarTest;
 
 public class Main {
+    
+    public static void main(String[] args) throws Exception {
+        //RobotBluetoothTest test = new RobotBluetoothTest();
+        SonarTest test = new SonarTest();
+        //test.testBluetoothLogging();
 
-    public static void main(String[] args) {
-        RobotBluetoothTest test = new RobotBluetoothTest();
-        try {
-            test.testSendSpeed();
-        } catch (IOException ex) {
-            Utils.Log("AAIAOOO");
-        }
+        //test.distanceTest(new UltrasonicSensor(SensorPort.S3));
+        //SonarTest.testGetDistanceDuration(new UltrasonicSensor(SensorPort.S3));
+        //test.calibrateSonar(new UltrasonicSensor(SensorPort.S3));
+
+        test.orientSonarHead(new UltrasonicSensor(SensorPort.S3), Motor.A);
     }
     static int hoeken = 3;
     static int distance = 40;
     static int pos = 0;
-
+    
     public static void selectVeelhoek() {
-
+        
         Veelhoek veelhoek = new Veelhoek(new RotationMovement());
-
+        
         int[] p = new int[]{2, 5};
         while (true) {
             LCD.clear();

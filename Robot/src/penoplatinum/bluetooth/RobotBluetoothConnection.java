@@ -34,16 +34,6 @@ public class RobotBluetoothConnection implements IConnection {
 
         IPacketReceiver r = null;
 
-        /*while (true) {
-            try {
-                while (stri.available() == 0) {
-                    Utils.Sleep(20);
-                }
-                System.out.println(stri.readInt());
-            } catch (IOException ex) {
-            }
-        }*/
-
 
         builder = new PacketBuilder(stro, stri, new IPacketReceiver() {
 
@@ -62,7 +52,7 @@ public class RobotBluetoothConnection implements IConnection {
     }
 
     private boolean connect() {
-        System.out.println("Connecting.");
+        Utils.Log("Connecting.");
         conn = Bluetooth.waitForConnection(5000, NXTConnection.PACKET);
         if (conn == null) {
             stri = null;
@@ -72,7 +62,7 @@ public class RobotBluetoothConnection implements IConnection {
         }
         stri = conn.openDataInputStream();
         stro = conn.openDataOutputStream();
-        System.out.println("Connected: " + conn.getAddress());
+        Utils.Log("Connected: " + conn.getAddress());
         return true;
     }
 

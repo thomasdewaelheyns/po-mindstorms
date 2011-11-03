@@ -1,6 +1,7 @@
 package penoplatinum.movement;
 
 import lejos.nxt.*;
+import penoplatinum.Utils;
 
 public class RotationMovement implements IMovement {
 
@@ -15,6 +16,7 @@ public class RotationMovement implements IMovement {
     public void MoveStraight(double distance) {
         MoveStraight(distance, true);
     }
+
     public void MoveStraight(double distance, boolean block) {
         distance *= 1000;
         distance /= 0.99;
@@ -28,7 +30,7 @@ public class RotationMovement implements IMovement {
     public void TurnOnSpotCCW(double angle) {
         motorLeft.setSpeed(SPEEDTURN);
         motorRight.setSpeed(SPEEDTURN);
-        angle /=0.99;
+        angle /= 0.99;
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, false);
@@ -95,5 +97,12 @@ public class RotationMovement implements IMovement {
     public void Stop() {
         motorLeft.stop();
         motorRight.stop();
+    }
+
+    /**
+     * Returns the average tacho count of the 2 motors
+     */
+    public float getAverageTacho() {
+        return (motorLeft.getTachoCount() + motorRight.getTachoCount()) / 2f;
     }
 }

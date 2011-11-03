@@ -5,7 +5,7 @@ import lejos.nxt.LCD;
 import penoplatinum.movement.IMovement;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Sound;
-import penoplatinum.movement.Utils;
+import penoplatinum.Utils;
 
 public class LijnVolgerRuben {
     IMovement m;

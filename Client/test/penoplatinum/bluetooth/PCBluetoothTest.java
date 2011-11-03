@@ -6,6 +6,7 @@ package penoplatinum.bluetooth;
  */
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,7 +66,7 @@ public class PCBluetoothTest {
                 outputStream.writeInt(43);
                 outputStream.flush();
                 
-                System.out.println("Received: " + inputStream.readInt());
+                Utils.Log("Received: " + inputStream.readInt());
                 
                 
             } catch (IOException ex) {
@@ -123,11 +124,24 @@ public class PCBluetoothTest {
     @Test
     public void testSendSpeed() throws IOException {
         PCBluetoothConnection conn = new PCBluetoothConnection();
-        Utils.Log("Initializeing");
         conn.initializeConnection();
-        Utils.Log("Done");
         penoplatinum.bluetooth.BluetoothPerformanceTests test = new BluetoothPerformanceTests();
         test.testSendSpeed_Send(conn);
+        
+    }
+    
+    @Test
+    public void testFileLogging() throws IOException {
+        PCBluetoothConnection conn = new PCBluetoothConnection();
+        conn.initializeConnection();
+        
+        
+        RemoteFileLogger logger = new RemoteFileLogger(conn, 672631252, "RobotLog", new File("logs"));
+        logger.startLogging();
+        
+        while (true) {
+            Utils.Sleep(1000);            
+        }
         
     }
 }

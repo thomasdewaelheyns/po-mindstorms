@@ -15,11 +15,11 @@ public class PacketBuilder {
     private DataInputStream inputStream;
     private final IPacketReceiver receiver;
 
-    public PacketBuilder(DataOutputStream outputStream, DataInputStream inputStream,IPacketReceiver receiver) {
+    public PacketBuilder(DataOutputStream outputStream, DataInputStream inputStream, IPacketReceiver receiver) {
         this.outputStream = outputStream;
         this.inputStream = inputStream;
         this.receiver = receiver;
-        
+
     }
     /**
      * Readonly, only write in main thread
@@ -39,48 +39,50 @@ public class PacketBuilder {
                     int packetHeaderSize = 4 + 2; // Identifier + (short) size
                     while (receiving) {
                         /*while ((available = inputStream.available()) < packetHeaderSize && available >= 0) { // wait for packet header
-                            Utils.Sleep(20); //TODO: frequency
+                        Utils.Sleep(20); //TODO: frequency
                         }
                         if (available < 0) {
-                            Utils.Log("Available Smaller than one!");
-                            continue;
+                        Utils.Log("Available Smaller than one!");
+                        continue;
                         }*/
 
                         int identifier = inputStream.readInt();
                         int size = inputStream.readShort();
 
                         /*while ((available = inputStream.available()) < size && available >= 0) { // wait for packet header
-                            Utils.Sleep(20); //TODO: frequency
+                        Utils.Sleep(20); //TODO: frequency
                         }
                         if (available < 0) {
-                            Utils.Log("Available Smaller than one!");
-                            continue;
+                        Utils.Log("Available Smaller than one!");
+                        continue;
                         }*/
-                        
+
                         inputStream.read(buffer, 0, size);
-                        
+
                         receiver.onPacketReceived(identifier, buffer, size);
-                        
+
 
                     }
                 } catch (IOException ex) {
                     Utils.Log("Receive error!");
-                    Utils.Log(ex.toString());
+                    if (ex.toString() != null) {
+                        Utils.Log(ex.toString());
+                    }
                 }
 
             }
         });
+        t.setDaemon(true);
         t.start();
     }
 
     /**
      * Not entirely implemented
      */
-    public void stopReceiving()
-    {
+    public void stopReceiving() {
         receiving = false;
     }
-    
+
     public void sendPacket(int packetIdentifier, byte[] dgram) {
         try {
             //Utils.Log("Send packet." + packetIdentifier);

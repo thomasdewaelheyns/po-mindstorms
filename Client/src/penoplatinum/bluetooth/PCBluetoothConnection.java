@@ -6,7 +6,9 @@ import java.io.IOException;
 
 import java.util.HashMap;
 import lejos.pc.comm.NXTComm;
+import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
+import lejos.pc.comm.NXTInfo;
 import penoplatinum.Utils;
 
 public class PCBluetoothConnection implements IConnection {
@@ -81,14 +83,53 @@ public class PCBluetoothConnection implements IConnection {
 
     private boolean connect() {
         try {
+
+            outputStream = null;
+            inputStream = null;
+
             NXTConnector conn = new NXTConnector();
+            NXTInfo[] infos = conn.getNXTInfos();
+
+            NXTInfo lejosInfo = null;
+
+            for (NXTInfo inf : infos) {
+                if (inf.name.equals("NXJ Platinum")) {
+                    lejosInfo = inf;
+
+                }
+            }
+            if (lejosInfo == null) {
+                Utils.Log("Platinum not found!");
+                return false;
+            }
+
+            lejos.pc.comm.NXTCommLogListener listener = new NXTCommLogListener() {
+
+                @Override
+                public void logEvent(String string) {
+                    Utils.Log(string);
+                }
+
+                @Override
+                public void logEvent(Throwable thrwbl) {
+                    Utils.Log(thrwbl.toString());
+                }
+            };
+            conn.addLogListener(listener);
+
+
+            conn.addLogListener(null);
             boolean connected = conn.connectTo(NXTComm.PACKET);
             open = (connected ? conn.getNXTComm() : null);
 
-            outputStream = (connected ? new DataOutputStream(open.getOutputStream()) : null);
-            inputStream = (connected ? new DataInputStream(open.getInputStream()) : null);
+            if (connected) {
+                outputStream = new DataOutputStream(open.getOutputStream());
+                inputStream = new DataInputStream(open.getInputStream());
+            }
+
             return connected;
         } catch (Exception e) {
+
             Utils.Log(e.toString());
             return false;
         }
@@ -101,6 +142,4 @@ public class PCBluetoothConnection implements IConnection {
         } catch (IOException ex) {
         }
     }
-
-    
 }

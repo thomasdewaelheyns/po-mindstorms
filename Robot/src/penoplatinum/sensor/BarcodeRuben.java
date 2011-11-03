@@ -5,8 +5,8 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Sound;
+import penoplatinum.Utils;
 import penoplatinum.movement.IMovement;
-import penoplatinum.movement.Utils;
 
 public class BarcodeRuben {
     private final int SAMPLES = 5;
