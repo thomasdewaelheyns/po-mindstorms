@@ -2,6 +2,7 @@ package penoplatinum;
 
 import lejos.nxt.*;
 import penoplatinum.movement.RotationMovement;
+import penoplatinum.sensor.LineFollowerFlorian;
 import penoplatinum.sensor.MuurVolgerTest;
 
 public class Main {
@@ -11,8 +12,9 @@ public class Main {
         Thread t = new Thread(new Runnable() {
 
             public void run() {
-                
-                MuurVolgerTest.testPerpendicular();
+                LineFollowerFlorian abc = new LineFollowerFlorian();
+                abc.ActionLineFollower();
+//                MuurVolgerTest.testPerpendicular();
                 //RobotBluetoothTest test = new RobotBluetoothTest();
                 //SonarTest test = new SonarTest();
                 //test.testBluetoothLogging();

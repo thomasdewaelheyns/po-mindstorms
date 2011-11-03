@@ -33,7 +33,7 @@ public class RotationMovement implements IMovement {
         angle /= 0.99;
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
         motorLeft.rotate(h, true);
-        motorRight.rotate(-h, false);
+        motorRight.rotate(-h, true);
     }
 
     public void TurnAroundWheel(double angle, boolean aroundLeft) {
