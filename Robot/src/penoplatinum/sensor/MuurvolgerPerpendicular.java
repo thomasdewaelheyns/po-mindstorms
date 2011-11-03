@@ -27,16 +27,16 @@ public class MuurvolgerPerpendicular {
         int rotateEnd = 145;
 
         forwardTacho = verticalMotor.getTachoCount();
-        Motor.A.setSpeed(80);
+        Motor.A.setSpeed(250);
         Motor.A.rotate(rotateStart);
         while (cont) {
             Motor.A.rotate(rotateEnd - rotateStart, true);
             while (Motor.A.isMoving()) {
                 updateMinimum();
             }
-            correctAngle();
-            clearMinimum();
-            movement.MoveStraight(10, false);
+            //correctAngle();
+            //clearMinimum();
+            //movement.MoveStraight(10, false);
 
             Motor.A.rotate(rotateStart - rotateEnd, true);
             while (Motor.A.isMoving()) {
@@ -47,15 +47,54 @@ public class MuurvolgerPerpendicular {
             movement.MoveStraight(10, false);
         }
     }
+    private int[] robotCorrections = new int[]{0, 0, 0, 5, 20, 5, 0, 0, 0};
+    private float correctionResolution = 45 / 2f;
 
     private void updateMinimum() {
         UltrasonicSensor sens = ultra;
 
-        Motor m = Motor.A;
+        Motor m = verticalMotor;
 
         int dist = sens.getDistance();
-        //Utils.Log(dist + "");
         int tacho = m.getTachoCount();
+
+
+        // Correct the distance to distances from the robot
+
+        float angle = tacho - forwardTacho;
+
+        float factor = 90 - angle;
+        factor /= correctionResolution;
+        if (factor < 0) {
+            factor = 0;
+        }
+        if (factor >= robotCorrections.length - 1) {
+            factor = robotCorrections.length - 1 - 0.0001f;
+        }
+
+        int start = (int) factor;
+        float lerp = factor - start;
+
+        //Utils.Log("angle: " + angle);
+        //Utils.Log("Factor: " + factor);
+        float correction = robotCorrections[ start] * (1 - lerp) + robotCorrections[start + 1] * lerp;
+
+        /*if (angle < 90 && angle > -90) {
+        //Utils.Log("Correction: " + correction);
+        Utils.Log("WEE: " + correction);
+        //Utils.Log(dist + "");
+        }*/
+
+
+
+
+
+        //correction = 0;
+
+        dist -= correction;
+
+        Utils.Log("C: " + correction + "A: " + angle + "D: " + dist);
+
         if (dist < minDistance) {
             minDistance = dist;
             minTacho = tacho;
@@ -70,10 +109,14 @@ public class MuurvolgerPerpendicular {
 
         int targetAngle = 90;
 
-        if (minDistance < 30) {
-            targetAngle +=20;
+        if (minDistance < 20) {
+            Utils.Log("To close");
+            targetAngle += 20;
         } else if (minDistance > 50) {
-            targetAngle -=20;
+            Utils.Log("Too far");
+            targetAngle -= 20;
+        } else {
+            Utils.Log("Normal");
         }
 
 
@@ -89,9 +132,15 @@ public class MuurvolgerPerpendicular {
         //Normalize (0 is forwardTacho)
         correctedMinTacho -= forwardTacho;
         Utils.Log(correctedMinTacho + "");
+        final int correction = -(targetAngle - correctedMinTacho);
+        Utils.Log("Target: " + targetAngle);
+        Utils.Log("Correction: " + correction);
 
+        if (correction < 4) {
+            return;
+        }
 
-        movement.TurnOnSpotCCW(-(targetAngle - correctedMinTacho));
+        movement.TurnOnSpotCCW(correction);
     }
 
     private void clearMinimum() {

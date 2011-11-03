@@ -18,7 +18,8 @@ public class RotationMovement implements IMovement {
     }
 
     public void MoveStraight(double distance, boolean block) {
-        Utils.Log("Straightx");
+        //distance = 0;
+        ///Utils.Log("Straight");
         distance *= 1000;
         distance /= 0.99;
         int r = (int) (distance * 360 / WIELOMTREK);
@@ -28,7 +29,8 @@ public class RotationMovement implements IMovement {
     }
 
     public void TurnOnSpotCCW(double angle) {
-        Utils.Log("Turn");
+        //angle = 0;
+        //Utils.Log("Turn");
         changeMotorSpeed(SPEEDTURN);
         angle /= 0.99;
         int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK);
@@ -47,7 +49,7 @@ public class RotationMovement implements IMovement {
 
     public void changeMotorSpeed(int speed) {
         if (motorLeft.getSpeed() != speed) {
-            Utils.Log("Changing speed!");
+            //Utils.Log("Changing speed!");
             // Accelerate from 0
             Stop();
             //Wait for regulator to regulate
