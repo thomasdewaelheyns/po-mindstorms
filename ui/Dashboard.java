@@ -19,8 +19,8 @@ public class Dashboard extends JPanel {
 
   private int lightValue = 0;
   private int lightColor = 0;
-  private int barcode    = 0;
-  private int direction  = 0;
+  private int barcode    = -1;
+  private int direction  = -1;
 
   private Polygon greyTriangle;
   private Polygon colorTriangle;
@@ -60,8 +60,10 @@ public class Dashboard extends JPanel {
   {
     this.lightValue = lightValue;
     this.lightColor = lightColor;
+
     this.barcode    = barcode;
     this.direction  = direction;
+
     this.repaint();
   }
   
@@ -129,7 +131,9 @@ public class Dashboard extends JPanel {
   }
 
   private void renderBarcode(Graphics2D g2d) {
-    g2d.drawString(this.getBarcode(), 350, 132);
+    if( this.barcode > 0 ) {
+      g2d.drawString(this.getBarcode(), 350, 132);
+    }
   }
 
   private String getBarcode() {
@@ -148,8 +152,11 @@ public class Dashboard extends JPanel {
       case UIView.GO_RIGHT:
         this.renderImage(g2d, this.goRight, 350, 200 );
         break;
-      default:
+      case UIView.GO_FORWARD:
         this.renderImage(g2d, this.goForward, 350, 200 );
+        break;      
+      default:
+        // do nothing
     }
   }
   

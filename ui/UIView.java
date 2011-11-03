@@ -6,6 +6,8 @@
  * Author: Team Platinum
  */
 public interface UIView {
+  public static int NONE=-1;
+
   public static int BLACK=0;
   public static int WHITE=1;
   public static int BROWN=3;
@@ -13,6 +15,8 @@ public interface UIView {
   public static int GO_FORWARD=0;
   public static int GO_LEFT=1;
   public static int GO_RIGHT=2;
+
+  public void update( int lightValue, int lightColor );
   
   public void update( int lightValue, int lightColor, 
                       int barcode, int direction );

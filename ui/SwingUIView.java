@@ -37,4 +37,8 @@ public class SwingUIView extends JFrame implements UIView {
   {
     this.dashboard.update( lightValue, lightColor, barcode, direction );
   }
+
+  public void update( int lightValue, int lightColor ) {
+    this.dashboard.update( lightValue, lightColor, UIView.NONE, UIView.NONE );
+  }
 }
