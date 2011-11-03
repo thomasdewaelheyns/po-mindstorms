@@ -17,18 +17,27 @@ import java.net.URL;
 
 public class Dashboard extends JPanel {
 
-  private int lightValue = 0;
-  private int lightColor = 0;
-  private int barcode    = -1;
-  private int direction  = -1;
+  // light sensor
+  private int lightValue =  0;
+  private int lightColor =  0;
 
   private Polygon greyTriangle;
   private Polygon colorTriangle;
+
+  // sonar sensor
+  private double angle      = -1;
+  private int    distance   = -1;
+
+  private Image robot;
   
+  // barcode
+  private int barcode    = -1;
+  private int direction  = -1;
+
   private Image goForward;
   private Image goLeft;
   private Image goRight;
-  
+
   private Font font;
   
   public Dashboard() {
@@ -38,15 +47,16 @@ public class Dashboard extends JPanel {
   
   private void setupWidgets() {
     this.greyTriangle  = new Polygon( new int[]{100,200,100},
-                                      new int[]{100,100,200}, 3);
+                                      new int[]{ 50, 50,150}, 3);
     this.colorTriangle = new Polygon( new int[]{200,200,100},
-                                      new int[]{100,200,200}, 3);
+                                      new int[]{ 50,150,150}, 3);
   }
   
   private void setupImages() {
     this.goForward = this.setupImage("go-forward");
     this.goLeft    = this.setupImage("go-left");
     this.goRight   = this.setupImage("go-right");
+    this.robot     = this.setupImage("robot150");
   }
   
   private Image setupImage(String name) {
@@ -55,15 +65,23 @@ public class Dashboard extends JPanel {
     return ii.getImage();    
   }
   
-  public void update( int lightValue, int lightColor, 
-                      int barcode, int direction )
-  {
+  public void updateLight( int lightValue, int lightColor ) {
     this.lightValue = lightValue;
     this.lightColor = lightColor;
+    this.repaint();
+  }
 
+  public void updateBarcode( int barcode, int direction ) {
     this.barcode    = barcode;
     this.direction  = direction;
+    this.repaint();
+  }
 
+  // angle is expressed in degrees zero-based facing north
+  // convert it to radians and make it zero-based facing east
+  public void updateSonar( int angle, int distance ) {
+    this.angle    = Math.toRadians(angle + 90);
+    this.distance = distance;
     this.repaint();
   }
   
@@ -75,6 +93,7 @@ public class Dashboard extends JPanel {
     this.renderLightValue(g2d);
     this.renderBarcode(g2d);
     this.renderDirection(g2d);
+    this.renderSonar(g2d);
 
     Toolkit.getDefaultToolkit().sync();
     g.dispose();
@@ -112,27 +131,31 @@ public class Dashboard extends JPanel {
   }
  
   private void renderLightValueLabel(Graphics2D g2d) {
-
+    this.drawCenteredText( g2d, "" + this.lightValue, Color.green, 
+                           50, 0, 200, 200 );
+  }
+  
+  private void drawCenteredText(Graphics2D g2d, String text, Color color,
+                                int x, int y,
+                                int width, int height ) {
     FontMetrics fm   = g2d.getFontMetrics(this.font);
-    java.awt.geom.Rectangle2D rect = 
-      fm.getStringBounds(""+this.lightValue, g2d);
+    java.awt.geom.Rectangle2D rect = fm.getStringBounds(text, g2d);
 
     int textHeight = (int)(rect.getHeight()); 
     int textWidth  = (int)(rect.getWidth());
-    int panelHeight= 200;
-    int panelWidth = 200;
 
     // Center text horizontally and vertically
-    int x = (panelWidth  - textWidth)  / 2;
-    int y = (panelHeight - textHeight) / 2  + fm.getAscent();
+    x += (width  - textWidth)  / 2;
+    y += (height - textHeight) / 2  + fm.getAscent();
 
-    g2d.setPaint(Color.green);
-    g2d.drawString(""+this.lightValue, 50+x, 50+y);
+    g2d.setPaint(color);
+    g2d.drawString(text, x, y);
   }
 
   private void renderBarcode(Graphics2D g2d) {
-    if( this.barcode > 0 ) {
-      g2d.drawString(this.getBarcode(), 350, 132);
+    if( this.barcode >= 0 ) {
+      this.drawCenteredText( g2d, this.getBarcode(), Color.blue, 
+                             350, 50, 150, 32 );
     }
   }
 
@@ -147,13 +170,13 @@ public class Dashboard extends JPanel {
   private void renderDirection(Graphics2D g2d) {
     switch(this.direction) {
       case UIView.GO_LEFT : 
-        this.renderImage(g2d, this.goLeft, 350, 200 );
+        this.renderImage(g2d, this.goLeft, 350, 100 );
         break;
       case UIView.GO_RIGHT:
-        this.renderImage(g2d, this.goRight, 350, 200 );
+        this.renderImage(g2d, this.goRight, 350, 100 );
         break;
       case UIView.GO_FORWARD:
-        this.renderImage(g2d, this.goForward, 350, 200 );
+        this.renderImage(g2d, this.goForward, 350, 100 );
         break;      
       default:
         // do nothing
@@ -164,5 +187,20 @@ public class Dashboard extends JPanel {
     AffineTransform affineTransform = new AffineTransform(); 
     affineTransform.setToTranslation( x, y );
     g2d.drawImage( image, affineTransform, this );
+  }
+  
+  private void renderSonar(Graphics2D g2d) {
+    if( this.angle >= 0 ) {
+      this.renderImage(g2d, this.robot, 75, 275 );
+      int d = (int)this.distance / 2;
+      d = d > 200 ? 200 : d;
+      int x = 150+(int)(Math.cos(this.angle)*d);
+      int y = 350-(int)(Math.sin(this.angle)*d);
+      g2d.setStroke(new BasicStroke(4F));
+      g2d.setColor(Color.red);
+      g2d.draw(new Line2D.Float(150, 350, x, y ));
+      this.drawCenteredText( g2d, ""+this.distance, Color.red, 
+                             x, y, 100, 32 );
+    }
   }
 }

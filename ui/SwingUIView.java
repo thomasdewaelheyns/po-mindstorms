@@ -32,13 +32,15 @@ public class SwingUIView extends JFrame implements UIView {
     this.setVisible(true);
   }
   
-  public void update( int lightValue, int lightColor, 
-                      int barcode, int direction )
-  {
-    this.dashboard.update( lightValue, lightColor, barcode, direction );
+  public void updateLight( int lightValue, int lightColor ) {
+    this.dashboard.updateLight( lightValue, lightColor );
   }
 
-  public void update( int lightValue, int lightColor ) {
-    this.dashboard.update( lightValue, lightColor, UIView.NONE, UIView.NONE );
+  public void updateBarcode( int barcode, int direction ) {
+    this.dashboard.updateBarcode( barcode, direction );
+  }
+  
+  public void updateSonar( int angle, int value ) {
+    this.dashboard.updateSonar( angle, value );
   }
 }

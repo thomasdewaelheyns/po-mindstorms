@@ -16,8 +16,7 @@ public interface UIView {
   public static int GO_LEFT=1;
   public static int GO_RIGHT=2;
 
-  public void update( int lightValue, int lightColor );
-  
-  public void update( int lightValue, int lightColor, 
-                      int barcode, int direction );
+  public void updateLight  ( int lightValue, int lightColor );
+  public void updateSonar  ( int angle,      int distance );
+  public void updateBarcode( int barcode,    int direction );
 }
