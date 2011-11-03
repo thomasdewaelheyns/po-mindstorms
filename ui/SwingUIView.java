@@ -1,8 +1,10 @@
 /**
  * SwingUIView
  * 
- * Implementation of UIView using Swing to setup a visual 
- * representation of the UIEnvironment.
+ * Implementation of UIView using Swing to setup a visual representation of 
+ * the information provided by the robot.
+ * This view implements an Swing-based window, on which a dashboard is
+ * projected.
  * 
  * Author: Team Platinum
  */

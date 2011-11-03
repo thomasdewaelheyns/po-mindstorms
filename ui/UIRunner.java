@@ -1,6 +1,8 @@
 /**
  * UIRunner
  * 
+ * Demo Runner for the UI
+ * 
  * Author: Team Platinum
  */
 
@@ -8,6 +10,7 @@ class UIRunner {
 
   public static void main(String[] args) {
     UIView ui = new SwingUIView();
+
     // simulate event loop
     while(true) {
       ui.updateLight(600, UIView.BROWN);

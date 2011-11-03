@@ -1,6 +1,11 @@
 /**
  * Dashboard
  * 
+ * GUI showing information about sensors:
+ * - lightsensor value and interpretation
+ * - sonarsensor angle and distance
+ * - barcode and barcode interpretation
+ * 
  * Author: Team Platinum
  */
 
@@ -65,15 +70,10 @@ public class Dashboard extends JPanel {
     return ii.getImage();    
   }
   
+  // lightsensor value (0-1024), color interpretation (white, black or brown)
   public void updateLight( int lightValue, int lightColor ) {
     this.lightValue = lightValue;
     this.lightColor = lightColor;
-    this.repaint();
-  }
-
-  public void updateBarcode( int barcode, int direction ) {
-    this.barcode    = barcode;
-    this.direction  = direction;
     this.repaint();
   }
 
@@ -82,6 +82,14 @@ public class Dashboard extends JPanel {
   public void updateSonar( int angle, int distance ) {
     this.angle    = Math.toRadians(angle + 90);
     this.distance = distance;
+    this.repaint();
+  }
+
+  // barcode is a number of which the bitstring represents the barcode
+  // direction is the action the robot will perform based on this barcode
+  public void updateBarcode( int barcode, int direction ) {
+    this.barcode    = barcode;
+    this.direction  = direction;
     this.repaint();
   }
   
@@ -135,23 +143,6 @@ public class Dashboard extends JPanel {
                            50, 0, 200, 200 );
   }
   
-  private void drawCenteredText(Graphics2D g2d, String text, Color color,
-                                int x, int y,
-                                int width, int height ) {
-    FontMetrics fm   = g2d.getFontMetrics(this.font);
-    java.awt.geom.Rectangle2D rect = fm.getStringBounds(text, g2d);
-
-    int textHeight = (int)(rect.getHeight()); 
-    int textWidth  = (int)(rect.getWidth());
-
-    // Center text horizontally and vertically
-    x += (width  - textWidth)  / 2;
-    y += (height - textHeight) / 2  + fm.getAscent();
-
-    g2d.setPaint(color);
-    g2d.drawString(text, x, y);
-  }
-
   private void renderBarcode(Graphics2D g2d) {
     if( this.barcode >= 0 ) {
       this.drawCenteredText( g2d, this.getBarcode(), Color.blue, 
@@ -182,13 +173,7 @@ public class Dashboard extends JPanel {
         // do nothing
     }
   }
-  
-  private void renderImage(Graphics2D g2d, Image image, int x, int y) {
-    AffineTransform affineTransform = new AffineTransform(); 
-    affineTransform.setToTranslation( x, y );
-    g2d.drawImage( image, affineTransform, this );
-  }
-  
+
   private void renderSonar(Graphics2D g2d) {
     if( this.angle >= 0 ) {
       this.renderImage(g2d, this.robot, 75, 275 );
@@ -203,4 +188,28 @@ public class Dashboard extends JPanel {
                              x, y, 100, 32 );
     }
   }
+  
+  private void drawCenteredText(Graphics2D g2d, String text, Color color,
+                                int x, int y,
+                                int width, int height ) {
+    FontMetrics fm   = g2d.getFontMetrics(this.font);
+    java.awt.geom.Rectangle2D rect = fm.getStringBounds(text, g2d);
+
+    int textHeight = (int)(rect.getHeight()); 
+    int textWidth  = (int)(rect.getWidth());
+
+    // Center text horizontally and vertically
+    x += (width  - textWidth)  / 2;
+    y += (height - textHeight) / 2  + fm.getAscent();
+
+    g2d.setPaint(color);
+    g2d.drawString(text, x, y);
+  }
+
+  private void renderImage(Graphics2D g2d, Image image, int x, int y) {
+    AffineTransform affineTransform = new AffineTransform(); 
+    affineTransform.setToTranslation( x, y );
+    g2d.drawImage( image, affineTransform, this );
+  }
+  
 }
