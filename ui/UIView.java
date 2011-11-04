@@ -18,6 +18,11 @@ public interface UIView {
   public static int GO_LEFT=1;
   public static int GO_RIGHT=2;
 
+  // unique id's for each of the supported sensors
+  public static int LIGHT   = 1;
+  public static int SONAR   = 2;
+  public static int BARCODE = 3;
+
   // update methods for sensor information:
   // lightsensor provides a lightValue (0-1024)
   // the robot translates this value to a lightColor (black,white or brown)
