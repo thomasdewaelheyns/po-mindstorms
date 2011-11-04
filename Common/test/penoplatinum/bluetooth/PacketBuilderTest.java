@@ -70,6 +70,11 @@ public class PacketBuilderTest {
                 success[0] = true;
 
             }
+
+            @Override
+            public void onError(Exception ex) {
+                //TODO:
+            }
         };
 
         PacketBuilder builder = new PacketBuilder(outputStream, inputStream, iPacketReceiver);

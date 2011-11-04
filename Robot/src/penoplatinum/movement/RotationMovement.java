@@ -11,20 +11,20 @@ public class RotationMovement implements IMovement {
     public final int WIELAFSTAND = 113;//112mm
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
-
     private boolean movementDisabled;
 
     public void setMovementDisabled(boolean movementDisabled) {
         this.movementDisabled = movementDisabled;
     }
-    
-    
+
     public void MoveStraight(double distance) {
         MoveStraight(distance, true);
     }
 
     public void MoveStraight(double distance, boolean block) {
-        if (movementDisabled) return;
+        if (movementDisabled) {
+            return;
+        }
         //distance = 0;
         ///Utils.Log("Straight");
         distance *= 1000;
@@ -37,17 +37,19 @@ public class RotationMovement implements IMovement {
     }
 
     public void TurnOnSpotCCW(double angle) {
-        if (movementDisabled) return;
+        if (movementDisabled) {
+            return;
+        }
         //angle = 0;
         //Utils.Log("Turn");
         changeMotorSpeed(SPEEDTURN);
         angle /= 0.99;
-		//TODO: for barcode second rotate needs a false
-		//TODO: int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
-		//		Different formula in barcode???
-sqmdfqsdf
-        int h = (int) (angle * 2 * Math.PI * WIELAFSTANDMIDDEN / WIELOMTREK); 
-        LCD.drawString(""+h, 0, 2);
+        //TODO: for barcode second rotate needs a false
+        //TODO: int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
+        //		Different formula in barcode???
+
+        int h = (int) (angle * 2 * Math.PI * WIELAFSTAND / WIELOMTREK);
+        LCD.drawString("" + h, 0, 2);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, true);
         //TODO: ??? h=Math.abs(h);
@@ -131,7 +133,6 @@ sqmdfqsdf
         motorRight.stop();
     }
 
-
     public boolean isStopped() {
         return (!motorLeft.isMoving() && !motorRight.isMoving());
     }
@@ -141,5 +142,9 @@ sqmdfqsdf
      */
     public float getAverageTacho() {
         return (motorLeft.getTachoCount() + motorRight.getTachoCount()) / 2f;
+    }
+
+    public void TurnOnSpotCCW(double angle, boolean block) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

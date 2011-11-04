@@ -12,18 +12,6 @@ import java.io.PipedOutputStream;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.IPacketReceiver;
-import penoplatinum.bluetooth.IPacketReceiver;
-import penoplatinum.bluetooth.IPacketReceiver;
-import penoplatinum.bluetooth.IPacketTransporter;
-import penoplatinum.bluetooth.IPacketTransporter;
-import penoplatinum.bluetooth.IPacketTransporter;
-import penoplatinum.bluetooth.PacketBuilder;
-import penoplatinum.bluetooth.PacketBuilder;
-import penoplatinum.bluetooth.PacketBuilder;
 
 /**
  *
@@ -63,6 +51,11 @@ public class SimulatedConnection implements IConnection {
 
                 map.get(packetIdentifier).onPacketReceived(packetIdentifier, dgram, 0, size);
 
+            }
+
+            @Override
+            public void onError(Exception ex) {
+                //TODO: will probably not occur
             }
         });
     }
