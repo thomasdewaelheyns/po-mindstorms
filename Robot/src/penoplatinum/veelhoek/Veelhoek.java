@@ -1,4 +1,4 @@
-package penoplatinum;
+package penoplatinum.veelhoek;
 
 import lejos.nxt.*;
 import penoplatinum.movement.IMovement;
