@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTCommLogListener;
@@ -16,7 +18,7 @@ public class PCBluetoothConnection implements IConnection {
 
     private DataOutputStream outputStream;
     private DataInputStream inputStream;
-    private NXTComm open;
+    private NXTConnector open;
     private HashMap<Integer, IPacketTransporter> listenerMap = new HashMap<Integer, IPacketTransporter>();
     private PacketBuilder builder;
     /**
@@ -25,6 +27,14 @@ public class PCBluetoothConnection implements IConnection {
     private boolean receiving;
 
     public void initializeConnection() {
+        
+        if (open != null)
+            try {
+            open.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PCBluetoothConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         while (!connect()) {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
@@ -43,6 +53,11 @@ public class PCBluetoothConnection implements IConnection {
     }
 
     private void createPacketBuilder() {
+        
+        if (builder != null)
+            builder.stopReceiving();
+        
+        
         builder = new PacketBuilder(outputStream, inputStream, new IPacketReceiver() {
 
             @Override
@@ -53,6 +68,13 @@ public class PCBluetoothConnection implements IConnection {
                 }
                 t.onPacketReceived(packetIdentifier, dgram, 0, size);
 
+            }
+
+            @Override
+            public void onError(Exception ex) {
+                //WARNING!!! DANGEROUS MULTITHREADING, FIX USING DEDICATED CONNECT THREAD
+                initializeConnection();
+                
             }
         });
     }
@@ -125,7 +147,7 @@ public class PCBluetoothConnection implements IConnection {
             conn.addLogListener(listener);
 
             boolean connected = conn.connectTo(lejosInfo, NXTComm.PACKET);
-            open = (connected ? conn.getNXTComm() : null);
+            open = conn;
 
             if (connected) {
                 outputStream = new DataOutputStream(open.getOutputStream());

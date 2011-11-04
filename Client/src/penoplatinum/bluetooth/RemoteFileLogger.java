@@ -20,42 +20,53 @@ public class RemoteFileLogger {
 
     Thread fileThread;
 
-    public RemoteFileLogger(IConnection conn, int packetIdentifier, String baseFilename, File directory) {
+    public RemoteFileLogger(IConnection conn, int Utils, String baseFilename, final File directory) {
         directory.mkdirs();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd.HHmmss");
+        final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd.HHmmss");
 
-        File file = new File(directory.getAbsoluteFile() + "/" + baseFilename + format.format(new Date()) + ".txt");
-        PrintStream fs = null;
-        try {
-            fs = new PrintStream(file);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(RemoteFileLogger.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        
 
-        if (fs == null) {
-            return;
-        }
 
-        final PrintStream fsFinal = fs;
+
 
         int testNum = 0;
 
-        final PacketTransporter t = new PacketTransporter(conn);
-        conn.RegisterTransporter(t, packetIdentifier);
+        final PacketTransporter pt = new PacketTransporter(conn);
+        conn.RegisterTransporter(pt, penoplatinum.Utils.PACKETID_LOG);
+        conn.RegisterTransporter(pt, penoplatinum.Utils.PACKETID_STARTLOG);
 
-        
 
         fileThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
+                PrintStream fs = null;
                 while (true) {
-                    int id = t.ReceivePacket();
-                    Scanner scanner = new Scanner(t.getReceiveStream()); //TODO: GC
-                    String s;
-                    s = scanner.nextLine();
-                    fsFinal.println(s);
+                    int id = pt.ReceivePacket();
+                    Scanner scanner = new Scanner(pt.getReceiveStream()); //TODO: GC
+                    
+                    if (id == penoplatinum.Utils.PACKETID_LOG) {
+                        String s;
+                        s = scanner.nextLine();
+                        fs.println(s);
+                    } else if (id == penoplatinum.Utils.PACKETID_STARTLOG) {
+                        String baseFilename = scanner.nextLine();
+                        if (baseFilename.length() == 0)
+                            baseFilename = "DEFAULT";
+                        if (baseFilename.length()> 100)
+                            baseFilename = baseFilename.substring(0,100);
+                        
+                        
+                        File file = new File(directory.getAbsoluteFile() + "/" + baseFilename + format.format(new Date()) + ".txt");
+                        try {
+                            fs = new PrintStream(file);
+                        } catch (FileNotFoundException ex) {
+                            Logger.getLogger(RemoteFileLogger.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
                 }
             }
         });

@@ -50,6 +50,7 @@ public class PacketBuilder {
                     if (ex.toString() != null) {
                         Utils.Log(ex.toString());
                     }
+                    receiver.onError(ex);
                 }
 
             }

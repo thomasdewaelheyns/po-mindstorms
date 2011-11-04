@@ -12,6 +12,7 @@ import penoplatinum.bluetooth.PacketTransporter;
 public class Utils {
 
     public final static int PACKETID_LOG = 672631252;
+    public final static int PACKETID_STARTLOG = 356356545;
     private final static Object logLock = new Object();
     private static PacketTransporter logTransporter;
     private static PrintStream logPrintStream;
@@ -40,17 +41,27 @@ public class Utils {
     }
 
     /**
-     * TODO: add a filename that can be logged to!
      * @param conn 
      */
     public static void EnableRemoteLogging(IConnection conn) {
+        EnableRemoteLogging(conn,"RobotLog");
+    }
+
+    /**
+     * TODO: add a filename that can be logged to!
+     * @param conn 
+     */
+    public static void EnableRemoteLogging(IConnection conn, String logname) {
 
         PacketTransporter t = new PacketTransporter(conn);
         conn.RegisterTransporter(t, PACKETID_LOG);
+        conn.RegisterTransporter(t, PACKETID_STARTLOG);
 
         synchronized (logLock) {
             logTransporter = t;
             logPrintStream = new PrintStream(logTransporter.getSendStream());
+            logPrintStream.println(logname);
+            t.SendPacket(PACKETID_STARTLOG);
         }
 
 

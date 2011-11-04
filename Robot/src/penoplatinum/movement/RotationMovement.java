@@ -13,11 +13,19 @@ public class RotationMovement implements IMovement {
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
 
+    private boolean movementDisabled;
+
+    public void setMovementDisabled(boolean movementDisabled) {
+        this.movementDisabled = movementDisabled;
+    }
+    
+    
     public void MoveStraight(double distance) {
         MoveStraight(distance, true);
     }
 
     public void MoveStraight(double distance, boolean block) {
+        if (movementDisabled) return;
         //distance = 0;
         ///Utils.Log("Straight");
         distance *= 1000;
@@ -29,6 +37,7 @@ public class RotationMovement implements IMovement {
     }
 
     public void TurnOnSpotCCW(double angle) {
+        if (movementDisabled) return;
         //angle = 0;
         //Utils.Log("Turn");
         changeMotorSpeed(SPEEDTURN);

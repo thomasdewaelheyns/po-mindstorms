@@ -1,5 +1,6 @@
 package penoplatinum.sensor;
 
+import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.Utils;
@@ -45,6 +46,9 @@ public class MuurvolgerPerpendicular {
             correctAngle();
             clearMinimum();
             movement.MoveStraight(10, false);
+            
+            if (Button.ENTER.isPressed())
+                Button.LEFT.waitForPressAndRelease();
         }
     }
     private int[] robotCorrections = new int[]{0, 0, 0, 5, 20, 5, 0, 0, 0};

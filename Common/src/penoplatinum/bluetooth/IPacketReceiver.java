@@ -11,4 +11,5 @@ package penoplatinum.bluetooth;
 public interface IPacketReceiver {
 
     void onPacketReceived(int packetIdentifier, byte[] dgram, int size);
+    void onError(Exception ex);
 }

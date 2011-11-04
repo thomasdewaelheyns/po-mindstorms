@@ -45,6 +45,10 @@ public class RobotBluetoothConnection implements IConnection {
 
                 t.onPacketReceived(packetIdentifier, dgram, 0, size);
             }
+
+            public void onError(Exception ex) {
+                //TODO
+            }
         });
 
         builder.startReceiving();

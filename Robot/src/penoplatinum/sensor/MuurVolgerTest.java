@@ -27,6 +27,8 @@ public class MuurVolgerTest {
         test.orientSonarHead(sens, Motor.A);
         Button.waitForPress();
         
+        mov.setMovementDisabled(true);
+        
         mov.SPEEDFORWARD = 250;
         mov.SPEEDTURN = 120;
         
