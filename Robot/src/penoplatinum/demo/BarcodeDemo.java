@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.demo;
 
 /**
@@ -9,5 +5,8 @@ package penoplatinum.demo;
  * @author MHGameWork
  */
 public class BarcodeDemo {
-    
+
+    public static void main(String[] args) throws Exception {
+        penoplatinum.barcode.Main.main(args);
+    }
 }

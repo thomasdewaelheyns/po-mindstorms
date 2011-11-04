@@ -5,7 +5,7 @@ import penoplatinum.Utils;
 
 public class RotationMovement implements IMovement {
 
-    public int SPEEDFORWARD = 125;
+    public int SPEEDFORWARD = 500;
     public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
     public final int WIELAFSTAND = 113;//112mm

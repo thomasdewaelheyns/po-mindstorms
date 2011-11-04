@@ -6,7 +6,6 @@ package penoplatinum.barcode;
 
 import lejos.nxt.*;
 import penoplatinum.movement.RotationMovement;
-import penoplatinum.sensor.CalibratieTurnOnSpot;
 
 /**
  *
@@ -19,7 +18,7 @@ public class Main {
         LightSensorRobot sensor = new LightSensorRobot(SensorPort.S1);
         sensor.calibrate();
 
-        CalibratieTurnOnSpot c = new CalibratieTurnOnSpot(sensor, m);
+        //CalibratieTurnOnSpot c = new CalibratieTurnOnSpot(sensor, m);
         //c.run();
         //Button.waitForPress();
 

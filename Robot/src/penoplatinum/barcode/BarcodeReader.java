@@ -1,7 +1,7 @@
 package penoplatinum.barcode;
 
 import java.util.ArrayList;
-import lejos.nxt.*;
+import penoplatinum.Utils;
 
 public class BarcodeReader {
 

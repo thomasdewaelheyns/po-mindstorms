@@ -2,6 +2,7 @@ package penoplatinum.barcode;
 
 import penoplatinum.movement.*;
 import lejos.nxt.*;
+import penoplatinum.Utils;
 
 /**
  *

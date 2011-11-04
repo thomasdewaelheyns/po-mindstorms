@@ -5,6 +5,7 @@
 package penoplatinum.barcode;
 
 import lejos.nxt.*;
+import penoplatinum.Utils;
 
 /**
  *
