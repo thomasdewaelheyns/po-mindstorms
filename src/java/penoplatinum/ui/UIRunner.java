@@ -64,7 +64,7 @@ class UIRunner implements UICommandHandler {
           this.ui.clearConsole();
           break;
         default:
-          System.err.println( "Unknown msgType received: " + msgType );
+          this.ui.addConsoleLog( "Unknown msgType received: " + msgType );
       }
     }
   }
@@ -73,22 +73,25 @@ class UIRunner implements UICommandHandler {
     this.msgType = this.endpoint.ReceivePacket();
     Scanner s = new Scanner(this.endpoint.getReceiveStream());
     this.msg = s.nextLine();
-    System.err.println( "received (" + this.msgType + ") : " + this.msg );
+    this.ui.addConsoleLog( "received (" + this.msgType + ") : " + this.msg );
   }
   
+  // handle commands originating in the UI
   public void handle(String command) {
     if( "connect".equals(command) ) {
-      System.err.println( "TODO: execute \"connect\" on robot" );
+      this.ui.addConsoleLog( "TODO: execute \"connect\" on robot" );
     } else if( "calibrate".equals(command) ) {
-      System.err.println( "TODO: execute \"calbrate\" on robot" );
+      this.ui.addConsoleLog( "TODO: execute \"calbrate\" on robot" );
     } else if( "line".equals(command) ) {
-      System.err.println( "TODO: execute \"line\" on robot" );
+      this.ui.addConsoleLog( "TODO: execute \"line\" on robot" );
+    } else if( "ok".equals(command) ) {
+      this.ui.addConsoleLog( "TODO: execute \"ok\" on robot" );
     } else if( "wall".equals(command) ) {
-      System.err.println( "TODO: execute \"wall\" on robot" );
+      this.ui.addConsoleLog( "TODO: execute \"wall\" on robot" );
     } else if( "barcode".equals(command) ) {
-      System.err.println( "TODO: execute \"barcode\" on robot" );
+      this.ui.addConsoleLog( "TODO: execute \"barcode\" on robot" );
     } else {
-      System.err.println( "Unknown command from GUI: " + command );
+      this.ui.addConsoleLog( "Unknown command from GUI: " + command );
     }
   }
   

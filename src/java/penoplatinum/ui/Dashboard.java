@@ -50,7 +50,7 @@ public class Dashboard extends JPanel {
   }
   
   private void setupCanvas() {
-    this.setPreferredSize( new Dimension( 620, 440 ) );
+    this.setPreferredSize( new Dimension( 680, 440 ) );
     this.setBackground(Color.white);
   }
   
