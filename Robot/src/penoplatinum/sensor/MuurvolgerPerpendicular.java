@@ -1,10 +1,14 @@
 package penoplatinum.sensor;
 
+import java.io.PrintStream;
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.Utils;
+import penoplatinum.bluetooth.IConnection;
+import penoplatinum.bluetooth.PacketTransporter;
 import penoplatinum.movement.IMovement;
+import penoplatinum.ui.UIView;
 
 public class MuurvolgerPerpendicular {
 
@@ -16,11 +20,19 @@ public class MuurvolgerPerpendicular {
     private int maxTacho = Integer.MIN_VALUE;
     private int minDistance = Integer.MAX_VALUE;
     private int forwardTacho = Integer.MIN_VALUE;
+    private PrintStream printStream;
+    PacketTransporter endpoint;
 
-    public MuurvolgerPerpendicular(UltrasonicSensor ultra, IMovement m, Motor v) {
+    public MuurvolgerPerpendicular(UltrasonicSensor ultra, IMovement m, Motor v, IConnection connection) {
         this.ultra = ultra;
         movement = m;
         verticalMotor = v;
+        endpoint = new PacketTransporter(connection);
+        connection.RegisterTransporter(endpoint, UIView.SONAR);
+
+        printStream = new PrintStream(endpoint.getSendStream());
+
+
     }
 
     public void run() {
@@ -46,9 +58,10 @@ public class MuurvolgerPerpendicular {
             correctAngle();
             clearMinimum();
             movement.MoveStraight(10, false);
-            
-            if (Button.ENTER.isPressed())
+
+            if (Button.ENTER.isPressed()) {
                 Button.LEFT.waitForPressAndRelease();
+            }
         }
     }
     private int[] robotCorrections = new int[]{0, 0, 0, 5, 20, 5, 0, 0, 0};
@@ -95,9 +108,11 @@ public class MuurvolgerPerpendicular {
 
         //correction = 0;
 
-        dist -= correction;
+        //dist -= correction;
 
-        Utils.Log("C: " + correction + "A: " + angle + "D: " + dist);
+        sendSonarPacket(angle, dist);
+
+        //Utils.Log("C: " + correction + "A: " + angle + "D: " + dist);
 
         if (dist < minDistance) {
             minDistance = dist;
@@ -107,6 +122,11 @@ public class MuurvolgerPerpendicular {
             maxTacho = tacho;
         }
 
+    }
+
+    private void sendSonarPacket(float angle, int distance) {
+        printStream.println(angle + "," + distance);
+        endpoint.SendPacket(UIView.SONAR);
     }
 
     private void correctAngle() {

@@ -3,6 +3,7 @@ package penoplatinum.barcode;
 import penoplatinum.movement.*;
 import lejos.nxt.*;
 import penoplatinum.Utils;
+import penoplatinum.ui.UIView;
 
 /**
  *
@@ -42,6 +43,9 @@ public class readerThread extends Thread {
     }
 
     private void driveParcour(int commando) {
+        
+        int uiViewDirection = -1;
+        
         switch (commando) {
             case 0:
                 if (lineFollower) {
@@ -54,43 +58,38 @@ public class readerThread extends Thread {
                 }
                 break;
             case 1:
+                uiViewDirection = UIView.GO_FORWARD;
                 // rechtdoor rijden
                 break;
             case 2:
+                uiViewDirection = UIView.GO_FORWARD;
                 // helling omhoog
                 break;
             case 3:
                 move.MoveStraight(0.325, true);
-                //Utils.Sleep(200);
                 move.TurnOnSpotCCW(90);
-                //Utils.Sleep(200);
+                uiViewDirection = UIView.GO_RIGHT;
+                
                 break;
             case 4:
                 // helling naar beneden
+                uiViewDirection = UIView.GO_FORWARD;
                 break;
             case 6:
                 move.MoveStraight(0.325, true);
-                //Utils.Sleep(200);
                 move.TurnOnSpotCCW(-90);
-                //Utils.Sleep(200);
                 break;
             case 9:
                 move.MoveStraight(0.20, true);
-                //Utils.Sleep(200);
                 move.TurnOnSpotCCW(180);
-                //Utils.Sleep(200);
                 break;
             case 12:
                 move.MoveStraight(0.20, true);
-                //Utils.Sleep(200);
                 move.TurnOnSpotCCW(180);
-                //Utils.Sleep(200);
                 break;
             case 14:
                 move.MoveStraight(0.20, true);
-                //Utils.Sleep(200);
                 move.TurnOnSpotCCW(180);
-                //Utils.Sleep(200);
                 break;
         }
     }

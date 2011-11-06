@@ -45,15 +45,11 @@ public class RotationMovement implements IMovement {
         changeMotorSpeed(SPEEDTURN);
         angle /= 0.99;
         //TODO: for barcode second rotate needs a false
-        //TODO: int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
-        //		Different formula in barcode???
 
-        int h = (int) (angle * 2 * Math.PI * WIELAFSTAND / WIELOMTREK);
+        int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
         LCD.drawString("" + h, 0, 2);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, true);
-        //TODO: ??? h=Math.abs(h);
-        //TODO: ??? Utils.Sleep(h * 1050 / SPEEDTURN); //1000ms/s + 10% foutmarge
     }
 
     public void TurnAroundWheel(double angle, boolean aroundLeft) {

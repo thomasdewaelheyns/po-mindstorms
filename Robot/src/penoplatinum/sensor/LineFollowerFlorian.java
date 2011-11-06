@@ -3,11 +3,15 @@
  */
 package penoplatinum.sensor;
 
+import java.io.PrintStream;
 import lejos.nxt.*;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import penoplatinum.Utils;
+import penoplatinum.bluetooth.IConnection;
+import penoplatinum.bluetooth.PacketTransporter;
 import penoplatinum.movement.RotationMovement;
+import penoplatinum.ui.UIView;
 
 /**
  * This class is meant to be used as a controller for line following. It is based upon the fact we can use a light intensity sensor
@@ -26,9 +30,14 @@ public class LineFollowerFlorian {
     private int WHITEVAL;
     private int BROWNVAL;
     private int BLACKVAL;
-    private final int SAMPLES = 5;
+    PrintStream printStream;
+    PacketTransporter lightTransporter;
 
-    public LineFollowerFlorian() {
+    public LineFollowerFlorian(IConnection conn) {
+        lightTransporter = new PacketTransporter(conn);
+        conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
+        printStream = new PrintStream(lightTransporter.getSendStream());
+
     }
 
     public void calibrate() {
@@ -73,12 +82,14 @@ public class LineFollowerFlorian {
 
         LCD.clear();
     }
-    public void changeSpeed(int speed ){
-        agent.SPEEDFORWARD=speed;
-        agent.SPEEDTURN=160;
-                
+
+    public void changeSpeed(int speed) {
+        agent.SPEEDFORWARD = speed;
+        agent.SPEEDTURN = 160;
+
 
     }
+
     public void ActionLineFollower() {
         calibrate();
         changeSpeed(280);
@@ -93,14 +104,14 @@ public class LineFollowerFlorian {
     }
 
     public void LineFinder() {
-        int[] rotates = new int[]{-3,8,-15,50, -95, 50 + 120, 240, 720};
+        int[] rotates = new int[]{-3, 8, -15, 50, -95, 50 + 120, 240, 720};
         int pos = 0;
         System.out.println("FindLine");
         agent.Stop();
         while (isColor(Color.Brown)) {
             if (stopped()) {
                 agent.TurnOnSpotCCW(rotates[pos++]);
-                
+
 //                (!lastLineWasWhite ? rightDirection : -rightDirection)
             }
         }
@@ -108,12 +119,25 @@ public class LineFollowerFlorian {
     }
 
     public int getLightValue() {
+        final int SAMPLES = 1;
+
         int avg = 0;
         for (int i = 0; i < SAMPLES; i++) {
             avg += light.readValue();
         }
-        LCD.drawString(avg / SAMPLES + "   ", 0, 0);
-        return avg / SAMPLES;
+        avg /= SAMPLES;
+
+
+        printStream.print(avg);
+        printStream.print(",");
+
+        printStream.print(getCurrentColor(avg).toUIViewColor());
+        printStream.println();
+        
+        lightTransporter.SendPacket(UIView.LIGHT);
+
+        LCD.drawString(avg + "   ", 0, 0);
+        return avg;
     }
 
     public boolean stopped() {
@@ -144,11 +168,26 @@ public class LineFollowerFlorian {
 //        return val > (BLACKVAL + BROWNVAL) / 2;
 //    }
 //    
-    public enum Color{
-        Black,White,Brown; 
 
+    public enum Color {
+
+        Black, White, Brown;
+
+        public int toUIViewColor() {
+            switch (this) {
+                case Black:
+                    return UIView.BLACK;
+                case Brown:
+                    return UIView.BROWN;
+                case White:
+                    return UIView.WHITE;
+                default:
+                    throw new RuntimeException("THE IMPOSSIBLE IS POSSIBLE!");
+            }
+        }
     }
-    public boolean isColor(Color col,double val) {
+
+    public boolean isColor(Color col, double val) {
         switch (col) {
             case Brown:
                 return val > (BLACKVAL + BROWNVAL) / 2 && val < (WHITEVAL + BROWNVAL) / 2;
@@ -156,8 +195,8 @@ public class LineFollowerFlorian {
                 return val < (BLACKVAL + BROWNVAL) / 2;
             case White:
                 return val > (WHITEVAL + BROWNVAL) / 2;
-            
-            
+
+
         }
         throw new AssertionError("Unknown op: " + this);
     }
@@ -165,16 +204,20 @@ public class LineFollowerFlorian {
     public boolean isColor(Color col) {
         return isColor(col, getLightValue());
     }
+
     public Color getCurrentColor() {
-        if (isColor(Color.Brown)) {
+        return getCurrentColor(getLightValue());
+    }
+
+    public Color getCurrentColor(int val) {
+        if (isColor(Color.Brown, val)) {
             return Color.Brown;
         }
-        if (isColor(Color.Black)) {
+        if (isColor(Color.Black, val)) {
             return Color.Black;
         }
         return Color.White;
-        
-    
-}
-      
+
+
+    }
 }
