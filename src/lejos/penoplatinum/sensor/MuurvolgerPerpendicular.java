@@ -40,19 +40,19 @@ public class MuurvolgerPerpendicular {
         int rotateEnd = 145;
 
         forwardTacho = verticalMotor.getTachoCount();
-        Motor.A.setSpeed(250);
-        Motor.A.rotate(rotateStart);
+        verticalMotor.setSpeed(500);
+        rotateSonar(rotateStart,true);
         while (cont) {
-            Motor.A.rotate(rotateEnd - rotateStart, true);
-            while (Motor.A.isMoving()) {
+            rotateSonar(rotateEnd - rotateStart, true);
+            while (verticalMotor.isMoving()) {
                 updateMinimum();
             }
             //correctAngle();
             //clearMinimum();
             //movement.MoveStraight(10, false);
 
-            Motor.A.rotate(rotateStart - rotateEnd, true);
-            while (Motor.A.isMoving()) {
+            rotateSonar(rotateStart - rotateEnd, true);
+            while (verticalMotor.isMoving()) {
                 updateMinimum();
             }
             correctAngle();
@@ -64,10 +64,6 @@ public class MuurvolgerPerpendicular {
             }
         }
     }
-    
-    
-    
-    
     private int[] robotCorrections = new int[]{0, 0, 0, 5, 20, 5, 0, 0, 0};
     private float correctionResolution = 45 / 2f;
 
@@ -98,16 +94,13 @@ public class MuurvolgerPerpendicular {
 
         //Utils.Log("angle: " + angle);
         //Utils.Log("Factor: " + factor);
+        float correction = robotCorrections[ start] * (1 - lerp) + robotCorrections[start + 1] * lerp;
 
         /*if (angle < 90 && angle > -90) {
         //Utils.Log("Correction: " + correction);
         Utils.Log("WEE: " + correction);
         //Utils.Log(dist + "");
         }*/
-
-
-
-
 
         //correction = 0;
 
@@ -128,11 +121,12 @@ public class MuurvolgerPerpendicular {
     }
 
     private void sendSonarPacket(float angle, int distance) {
-        printStream.println(angle + "," + distance);
+        printStream.println((int)(angle/5) + "," + distance);
         endpoint.SendPacket(UIView.SONAR);
     }
 
     private void correctAngle() {
+
         int targetAngle = 90;
 
         if (minDistance < 20) {
@@ -145,11 +139,14 @@ public class MuurvolgerPerpendicular {
             Utils.Log("Normal");
         }
 
+
+
+
         Utils.Log(minDistance + "");
         if (minDistance > 80) {
             return;
         }
-        Motor m = Motor.A;
+        Motor m = verticalMotor;
         int correctedMinTacho = (minTacho + maxTacho) / 2;
 
         //Normalize (0 is forwardTacho)
@@ -159,6 +156,10 @@ public class MuurvolgerPerpendicular {
         Utils.Log("Target: " + targetAngle);
         Utils.Log("Correction: " + correction);
 
+//        if (correction < 4) {
+//            return;
+//        }
+
         movement.TurnOnSpotCCW(correction);
     }
 
@@ -167,4 +168,10 @@ public class MuurvolgerPerpendicular {
         maxTacho = Integer.MIN_VALUE;
         minDistance = Integer.MAX_VALUE;
     }
+    
+    private void rotateSonar(int angle,boolean flag)
+    {
+        verticalMotor.rotate(angle*5,flag);
+    }
+    
 }

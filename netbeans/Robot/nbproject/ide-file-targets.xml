@@ -6,8 +6,18 @@
             <property name="main.class" value="${run.class}"/>
         </ant>
     </target>
-
     <target name="compile-selected-files-in-src">
         <ant antfile="build.xml" target="compile"/>
+    </target>
+    <!-- TODO: edit the following target according to your needs -->
+    <!-- (more info: http://www.netbeans.org/kb/articles/freeform-config.html#runsingle) -->
+    <target name="run-selected-file-in-lejos">
+        <fail unless="run.class">Must set property 'run.class'</fail>
+        <ant antfile="build.xml" inheritall="false" target="link"/>
+        <java classname="${run.class}" failonerror="true" fork="true">
+            <classpath>
+                <pathelement path="../Client/build/classes;classes.jar"/>
+            </classpath>
+        </java>
     </target>
 </project>

@@ -19,7 +19,7 @@ public class MuurVolgerTest {
 
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
         conn.initializeConnection();
-        Utils.EnableRemoteLogging(conn);
+//        Utils.EnableRemoteLogging(conn);
 
         SonarTest test = new SonarTest();
         final UltrasonicSensor sens = new UltrasonicSensor(SensorPort.S2);
@@ -27,9 +27,9 @@ public class MuurVolgerTest {
         test.orientSonarHead(sens, Motor.A);
         Button.waitForPress();
 
-        mov.setMovementDisabled(true);
+//        mov.setMovementDisabled(true);
 
-        mov.SPEEDFORWARD = 250;
+        mov.SPEEDFORWARD = 350;
         mov.SPEEDTURN = 120;
 
         MuurvolgerPerpendicular v = new MuurvolgerPerpendicular(sens, mov, Motor.A, conn);

@@ -136,9 +136,9 @@ public class SonarTest {
     }
 
     public void orientSonarHead(UltrasonicSensor sens, Motor m) {
-        rotateSonarToClosest(sens, m, -180, 180, 200);
-        rotateSonarToClosest(sens, m, -30, 30, 40);
-        rotateSonarToClosest(sens, m, -10, 10, 10);
+        rotateSonarToClosest(sens, m, -135*5, 135*5, 200*5);
+        rotateSonarToClosest(sens, m, -150, 150, 200);
+        rotateSonarToClosest(sens, m, -50, 50, 50);
 
     }
 
