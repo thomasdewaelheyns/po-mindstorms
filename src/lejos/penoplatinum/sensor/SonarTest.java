@@ -33,15 +33,12 @@ public class SonarTest {
         Utils.EnableRemoteLogging(conn);
 
         Motor.A.setSpeed(50);
-
         int[] rotates = new int[]{-45, -30, -15, -10, -5, 0, 5, 10, 15, 30, 45};
 
         while (!Button.ESCAPE.isPressed()) {
             if (Button.RIGHT.isPressed()) {
                 orientSonarHead(sens, Motor.A);
             } else if (Button.ENTER.isPressed()) {
-
-
                 for (int j = 0; j < 5; j++) {
                     Utils.Log("Start test");
                     Motor.A.rotate(rotates[0]);
@@ -55,20 +52,11 @@ public class SonarTest {
                     }
                     Motor.A.rotate(-rotates[rotates.length - 1]);
                 }
-
-
             }
         }
-
-
-
-
     }
 
     public static void testGetDistanceDuration(UltrasonicSensor sens) {
-
-
-
         while (!Button.ESCAPE.isPressed()) {
             if (Button.ENTER.isPressed()) {
                 Utils.Log("Starting!");
@@ -109,10 +97,6 @@ public class SonarTest {
                 driveAndSample(20);
             }
         }
-
-
-
-
     }
 
     public void driveAndSample(int minDistance) throws IOException {
@@ -126,20 +110,15 @@ public class SonarTest {
             t.getSendStream().writeFloat(tacho);
             t.getSendStream().writeInt(sensor);
             t.SendPacket(samplePacket);
-
-
             Utils.Sleep(500);
-
-
         }
         mov.Stop();
     }
 
     public void orientSonarHead(UltrasonicSensor sens, Motor m) {
-        rotateSonarToClosest(sens, m, -135*5, 135*5, 200*5);
-        rotateSonarToClosest(sens, m, -150, 150, 200);
-        rotateSonarToClosest(sens, m, -50, 50, 50);
-
+        rotateSonarToClosest(sens, m, -135, 135, 200);
+        rotateSonarToClosest(sens, m, -30, 30, 40);
+        rotateSonarToClosest(sens, m, -10, 10, 10);
     }
 
     public void rotateSonarToClosest(UltrasonicSensor sens, Motor m, int startAngle, int stopAngle, int speed) {

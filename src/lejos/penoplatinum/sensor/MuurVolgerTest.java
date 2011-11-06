@@ -4,7 +4,6 @@ import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
-import penoplatinum.Utils;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.movement.RotationMovement;
 
@@ -29,7 +28,7 @@ public class MuurVolgerTest {
 
 //        mov.setMovementDisabled(true);
 
-        mov.SPEEDFORWARD = 350;
+        mov.SPEEDFORWARD = 180;
         mov.SPEEDTURN = 120;
 
         MuurvolgerPerpendicular v = new MuurvolgerPerpendicular(sens, mov, Motor.A, conn);
