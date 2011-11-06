@@ -1,6 +1,6 @@
 RM=rm -f
 
-TARGETS=UIRunner.class
+TARGETS=ConsoleRunner.class
 CP=../../:../../../../../lejos_nxj/lib/pccomm.jar
 
 JAVAC=javac -cp ${CP}

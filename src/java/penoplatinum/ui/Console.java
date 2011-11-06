@@ -1,9 +1,9 @@
 package penoplatinum.ui;
 
 /**
- * UIRunner
+ * Console
  * 
- * Runner for the UI
+ * Console for our robot
  * 
  * Author: Team Platinum
  */
@@ -12,14 +12,14 @@ import penoplatinum.bluetooth.*;
 import penoplatinum.ui.*;
 import java.util.Scanner;
 
-class UIRunner implements UICommandHandler {
+public class Console implements UICommandHandler {
   UIView ui;
   PacketTransporter endpoint;
   
   int msgType;
   String msg;
 
-  public UIRunner() {
+  public Console() {
     this.setupUI();
   }
   
@@ -93,9 +93,5 @@ class UIRunner implements UICommandHandler {
     } else {
       this.ui.addConsoleLog( "Unknown command from GUI: " + command );
     }
-  }
-  
-  public static void main(String[] args) {
-    new UIRunner();
   }
 }

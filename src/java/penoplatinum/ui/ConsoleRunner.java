@@ -1,13 +1,14 @@
+package penoplatinum.ui;
+
 /**
- * demo2
+ * ConsoleRunner
+ * 
+ * Runner for our Console
  * 
  * Author: Team Platinum
  */
 
-
-import penoplatinum.ui.*;
-
-class demo2 {
+class ConsoleRunner {
   public static void main(String[] args) {
     new Console();
   }
