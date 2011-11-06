@@ -16,6 +16,8 @@ project. To try these implementations follow these instructions:
 
 Visit http://lejos.sourceforge.net/nxj-downloads.php and download an SDK for your environment. Unpack the SDK in a subdirectory alongside this repository.
 
+Use version 8.5beta!
+
 ./lejos_nxj
 ./po-mindstorms
 
