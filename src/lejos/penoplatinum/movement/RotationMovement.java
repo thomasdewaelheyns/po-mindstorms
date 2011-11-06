@@ -37,19 +37,20 @@ public class RotationMovement implements IMovement {
     }
 
     public void TurnOnSpotCCW(double angle) {
+        TurnOnSpotCCW(angle, true);
+    }
+
+    public void TurnOnSpotCCW(double angle, boolean block) {
         if (movementDisabled) {
             return;
         }
-        //angle = 0;
-        //Utils.Log("Turn");
         changeMotorSpeed(SPEEDTURN);
         angle /= 0.99;
-        //TODO: for barcode second rotate needs a false
 
         int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
         LCD.drawString("" + h, 0, 2);
         motorLeft.rotate(h, true);
-        motorRight.rotate(-h, true);
+        motorRight.rotate(-h, !block);
     }
 
     public void TurnAroundWheel(double angle, boolean aroundLeft) {
@@ -138,9 +139,5 @@ public class RotationMovement implements IMovement {
      */
     public float getAverageTacho() {
         return (motorLeft.getTachoCount() + motorRight.getTachoCount()) / 2f;
-    }
-
-    public void TurnOnSpotCCW(double angle, boolean block) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

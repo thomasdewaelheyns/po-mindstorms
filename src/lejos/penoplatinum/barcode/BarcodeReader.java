@@ -13,6 +13,12 @@ public class BarcodeReader {
     private int startCounter;
     private BarcodeData interpreter;
 
+    private int lastRawRead;
+
+    public int getLastRawRead() {
+        return lastRawRead;
+    }
+    
     public BarcodeReader(iLightSensor sensor) {
         interpreter = new BarcodeData();
         this.lightSensor = sensor;
@@ -45,6 +51,7 @@ public class BarcodeReader {
                         code.remove(code.size()-1);
                     }
                     int temp = interpreter.translate(code);
+                    lastRawRead = temp;
                     if(temp==-1){
                         return -1;
                     }

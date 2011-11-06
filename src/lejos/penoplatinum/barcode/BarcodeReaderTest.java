@@ -20,8 +20,9 @@ public class BarcodeReaderTest {
     private boolean isReadingBarcode;
     boolean continueWhile;
     public BarcodeReaderTest(){
-        this.lightSensor = new LightSensor(SensorPort.S1, true);
-        isReadingBarcode = false;
+        throw new RuntimeException();
+        //this.lightSensor = new LightSensor(SensorPort.S1, true);
+        //isReadingBarcode = false;
     }
     
     

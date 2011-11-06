@@ -12,10 +12,6 @@ import java.io.PipedOutputStream;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.IPacketReceiver;
-import penoplatinum.bluetooth.IPacketTransporter;
-import penoplatinum.bluetooth.PacketBuilder;
 
 /**
  *

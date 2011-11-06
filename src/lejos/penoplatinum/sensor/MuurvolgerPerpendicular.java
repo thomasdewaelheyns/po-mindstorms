@@ -94,7 +94,6 @@ public class MuurvolgerPerpendicular {
 
         //Utils.Log("angle: " + angle);
         //Utils.Log("Factor: " + factor);
-        float correction = robotCorrections[ start] * (1 - lerp) + robotCorrections[start + 1] * lerp;
 
         /*if (angle < 90 && angle > -90) {
         //Utils.Log("Correction: " + correction);
@@ -130,7 +129,6 @@ public class MuurvolgerPerpendicular {
     }
 
     private void correctAngle() {
-
         int targetAngle = 90;
 
         if (minDistance < 20) {
@@ -142,9 +140,6 @@ public class MuurvolgerPerpendicular {
         } else {
             Utils.Log("Normal");
         }
-
-
-
 
         Utils.Log(minDistance + "");
         if (minDistance > 80) {
@@ -159,10 +154,6 @@ public class MuurvolgerPerpendicular {
         final int correction = -(targetAngle - correctedMinTacho);
         Utils.Log("Target: " + targetAngle);
         Utils.Log("Correction: " + correction);
-
-        if (correction < 4) {
-            return;
-        }
 
         movement.TurnOnSpotCCW(correction);
     }

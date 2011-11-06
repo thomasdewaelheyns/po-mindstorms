@@ -11,7 +11,7 @@ import penoplatinum.movement.RotationMovement;
 public class MuurVolgerTest {
 
     public static void test() {
-        Muurvolger m = new Muurvolger(new UltrasonicSensor(SensorPort.S3), new RotationMovement(), Motor.A);
+        Muurvolger m = new Muurvolger(new UltrasonicSensor(SensorPort.S2), new RotationMovement(), Motor.A);
         m.run();
     }
 
@@ -22,7 +22,7 @@ public class MuurVolgerTest {
         Utils.EnableRemoteLogging(conn);
 
         SonarTest test = new SonarTest();
-        final UltrasonicSensor sens = new UltrasonicSensor(SensorPort.S3);
+        final UltrasonicSensor sens = new UltrasonicSensor(SensorPort.S2);
         final RotationMovement mov = new RotationMovement();
         test.orientSonarHead(sens, Motor.A);
         Button.waitForPress();

@@ -127,8 +127,11 @@ public class LineFollowerFlorian {
         }
         avg /= SAMPLES;
 
+        
 
-        printStream.print(avg);
+        float rawValue = light.getNormalizedLightValue(); // I know, this is confusing
+        
+        printStream.print(rawValue);
         printStream.print(",");
 
         printStream.print(getCurrentColor(avg).toUIViewColor());
