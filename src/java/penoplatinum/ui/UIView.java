@@ -21,9 +21,11 @@ public interface UIView {
   public static int GO_RIGHT=2;
 
   // unique id's for each of the supported sensors
-  public static int LIGHT   = 323962144;
-  public static int SONAR   = 721955983;
-  public static int BARCODE = 414143066;
+  public static int LIGHT    = 323962144;
+  public static int SONAR    = 721955983;
+  public static int BARCODE  = 414143066;
+  public static int LOG      = 849201923;
+  public static int CLEARLOG = 901838492;
 
   // update methods for sensor information:
   // lightsensor provides a lightValue (0-1024)
@@ -34,4 +36,11 @@ public interface UIView {
   public void updateSonar  ( int angle,      int distance );
   // the robot can detect barcodes, which are interpreted as a direction
   public void updateBarcode( int barcode,    int direction );
+
+  // we provide a console-view, which represents the console of the robot
+  public void addConsoleLog( String line );
+  public void clearConsole();
+  
+  // actions from the UI that need to be handled
+  public UIView setCommandHandler(UICommandHandler handler);
 }

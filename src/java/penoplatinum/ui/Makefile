@@ -15,7 +15,7 @@ run: ${TARGETS}
 
 %.class: %.java
 	@echo "*** building ${<:.class=}"
-	${JAVAC} $<
+	@${JAVAC} $<
 
 test:
 	@( cd t; make test )

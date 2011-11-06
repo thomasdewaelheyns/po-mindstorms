@@ -44,8 +44,14 @@ public class Dashboard extends JPanel {
   private Font font;
   
   public Dashboard() {
+    this.setupCanvas();
     this.setupWidgets();
     this.setupImages();
+  }
+  
+  private void setupCanvas() {
+    this.setPreferredSize( new Dimension( 620, 440 ) );
+    this.setBackground(Color.white);
   }
   
   private void setupWidgets() {
