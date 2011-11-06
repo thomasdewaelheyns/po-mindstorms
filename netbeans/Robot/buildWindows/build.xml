@@ -7,7 +7,7 @@
   <!-- set properties for this build -->
     <property environment = "env"/>
     <property file="build.properties"/>
-    <property name="src" location="src"/>
+    <property name="src" location="../../src/lejos"/>
     <property name="build" location="build"/>
     <property name="program" value="PlatinumWindows"/>
     <property name="main.class" value="penoplatinum.Main"/>
@@ -22,7 +22,7 @@
         description="compile the source " >
     <!-- Compile the java code from ${src} to ${build}  -->
         <mkdir dir="${build}"/>
-        <javac srcdir="${src}" destdir="${build}" classpath="${basedir}/../Common/build/classes">
+        <javac srcdir="${src}" destdir="${build}" classpath="${basedir}/../Client/build/classes">
             
             <bootclasspath>
                 <pathelement location="${nxj.classes.home}/lib/classes.jar"/>
@@ -37,7 +37,7 @@
             <arg value="--bootclasspath"/>
             <arg path="${nxj.classes.jar}" />
             <arg value="--classpath"/>
-            <arg path="${build};${basedir}/../Common/build/classes" />
+            <arg path="${build};${basedir}/../Client/build/classes" />
             <arg value="--writeorder" />
             <arg value="LE" />
             <arg value="${main.class}"/>
