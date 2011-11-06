@@ -2,11 +2,13 @@
 build/
 build.xml
 build.properties
-*/nbproject/private/
-*/nbproject/build-impl.xml
-!Robot/buildWindows/build.xml
-!Robot/buildWindows/build.properties
+/netbeans/*/nbproject/private/
+/netbeans/*/nbproject/build-impl.xml
+/netbeans/*/nbproject/build-impl.xml*
+!/netbeans/Robot/buildWindows/build.xml
+!/netbeans/Robot/buildWindows/build.properties
 */dist/*
 
-/Client/logs/*
-/Client/testOutput/*
+/netbeans/Client/logs/*
+/netbeans/Client/testOutput/*
+/netbeans/Client/dist/

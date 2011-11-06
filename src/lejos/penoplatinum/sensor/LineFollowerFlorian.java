@@ -20,7 +20,7 @@ import penoplatinum.ui.UIView;
  */
 public class LineFollowerFlorian {
 
-    final LightSensor light = new LightSensor(SensorPort.S1, true);
+    final LightSensor light = new LightSensor(SensorPort.S4, true);
     final RotationMovement agent = new RotationMovement();
     int rightDirection;
     double LineThresHold;

@@ -1,0 +1,43 @@
+This repository contains software developed for a Computer Science course,
+aiming to construct and program an autonomous Mindstorms robot, capable of
+finding its way on a unknown track outlined by marker-lines and walls.
+It's a group project I conducted with 5 fellow students:
+- Michiel Huygen
+- Florian
+- Ruben Lepauw
+- Daniel Denil
+- Thomas 
+- Christophe Van Ginneken
+
+We have developed robot implementations for three demo's and one final
+project. To try these implementations follow these instructions:
+
++ Get a copy of the Lejos SDK
+
+Visit http://lejos.sourceforge.net/nxj-downloads.php and download an SDK for your environment. Unpack the SDK in a subdirectory alongside this repository.
+
+./lejos_nxj
+./po-mindstorms
+
++ Prepare bluetooth connections
+
+Consult the Lejos documentation to setup a paired bluetooth connection between
+your pc and your robot.
+
++ Build, upload and run the demo's
+
+$ cd po-mindstorms/demos
+$ make clean run PROJECT=demo1 NAME=robot-name
+
+Follow the instructions on the screen of the robot.
+
+$ cd po-mindstorms/demos
+$ make clean run PROJECT=demo2 NAME=robot-name
+$ cd ../console
+$ make clean run PROJECT=demo2
+
+Use the console GUI to start any of the three sub-demo's.
+
++ NetBeans
+
+We have also provided an integrated NetBeans project in src/nbproject.

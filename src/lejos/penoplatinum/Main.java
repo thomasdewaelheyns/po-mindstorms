@@ -1,5 +1,6 @@
 package penoplatinum;
 
+import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.sensor.LineFollowerFlorian;
 
 public class Main {
@@ -8,7 +9,9 @@ public class Main {
         RobotRunner.Run(new Runnable() {
             
             public void run() {
-                LineFollowerFlorian abc = new LineFollowerFlorian();
+                RobotBluetoothConnection conn = new RobotBluetoothConnection();
+                conn.initializeConnection();
+                LineFollowerFlorian abc = new LineFollowerFlorian(conn);
                 abc.ActionLineFollower();
 //                MuurVolgerTest.testPerpendicular();
                 //RobotBluetoothTest test = new RobotBluetoothTest();

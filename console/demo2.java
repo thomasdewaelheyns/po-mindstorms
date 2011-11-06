@@ -1,37 +1,30 @@
-package penoplatinum.ui;
-
 /**
- * UIRunner
- * 
- * Runner for the UI
+ * demo2
  * 
  * Author: Team Platinum
  */
 
 import penoplatinum.bluetooth.*;
-import java.util.Scanner;
+import penoplatinum.Utils;
+import java.io.IOException;
 
-class UIRunner {
+class demo2 {
   public static void main(String[] args) {
     UIView ui = new SwingUIView();
 
-    
-    //SimulatedConnection connection = new SimulatedConnection();// use a simulated connection
-    PCBluetoothConnection connection = new PCBluetoothConnection();
+    // use a simulated connection
+    SimulatedConnection connection = new SimulatedConnection();
     PacketTransporter endpoint = new PacketTransporter(connection);
-    connection.RegisterTransporter(endpoint, UIView.LIGHT);
-    connection.RegisterTransporter(endpoint, UIView.SONAR);
-    connection.RegisterTransporter(endpoint, UIView.BARCODE);
-    
-    
     
     while( true ) {
       int msgType = endpoint.ReceivePacket();
-      Scanner s = new Scanner(endpoint.getReceiveStream());
       // the msg consists of 2 integer values separated by a semi-colon
       String msg = "";
-      msg = s.nextLine();
-        
+      try {
+        msg = endpoint.getReceiveStream().readUTF();
+      } catch( IOException e ) {
+        System.err.println( e );
+      } 
       System.err.println( "received (" + msgType + ") : " + msg );
       String[] values;
       switch(msgType) {

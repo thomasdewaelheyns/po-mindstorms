@@ -16,9 +16,13 @@
                     <encoding>UTF-8</encoding>
                 </source-folder>
                 <source-folder>
-                    <label>src</label>
+                    <label>..\..\src\lejos</label>
+                    <location>../../src/lejos</location>
+                </source-folder>
+                <source-folder>
+                    <label>..\..\src\lejos</label>
                     <type>java</type>
-                    <location>src</location>
+                    <location>../../src/lejos</location>
                     <encoding>UTF-8</encoding>
                 </source-folder>
             </folders>
@@ -66,8 +70,8 @@
             <view>
                 <items>
                     <source-folder style="packages">
-                        <label>src</label>
-                        <location>src</location>
+                        <label>..\..\src\lejos</label>
+                        <location>../../src/lejos</location>
                     </source-folder>
                     <source-file>
                         <location>build.xml</location>
@@ -84,8 +88,8 @@
         </general-data>
         <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
             <compilation-unit>
-                <package-root>src</package-root>
-                <classpath mode="compile">classes.jar;../Common/dist/Common.jar</classpath>
+                <package-root>../../src/lejos</package-root>
+                <classpath mode="compile">../Client/build/classes;classes.jar</classpath>
                 <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>
