@@ -3,10 +3,10 @@ aiming to construct and program an autonomous Mindstorms robot, capable of
 finding its way on a unknown track outlined by marker-lines and walls.
 It's a group project I conducted with 5 fellow students:
 - Michiel Huygen
-- Florian
-- Ruben Lepauw
+- Florian Hendrickx
+- Ruben Lapauw
 - Daniel Denil
-- Thomas 
+- Thomas De Waelheyns
 - Christophe Van Ginneken
 
 We have developed robot implementations for three demo's and one final
@@ -40,4 +40,4 @@ Use the console GUI to start any of the three sub-demo's.
 
 + NetBeans
 
-We have also provided an integrated NetBeans project in src/nbproject.
+We have also provided an integrated NetBeans project in nbproject.

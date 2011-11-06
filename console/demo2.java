@@ -5,6 +5,7 @@
  */
 
 import penoplatinum.bluetooth.*;
+import penoplatinum.ui.*;
 import penoplatinum.Utils;
 import java.io.IOException;
 

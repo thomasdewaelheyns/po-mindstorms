@@ -1,5 +1,5 @@
 LEJOS_HOME=../../lejos_nxj
-CP=./:../src/Common/src:./src/Common/test:../src/Client/src:../src/Robot/src
+CP=./:../src/java:../src/lejos
 CC=${LEJOS_HOME}/bin/nxjc -cp ${CP}
 NAME=NXT
 SEND=${LEJOS_HOME}/bin/nxj -cp ${CP} -b -n ${NAME}
