@@ -35,17 +35,17 @@ Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, bouwen wij een aut
 
 Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen ivm het werken in team verband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
 
-Parallel met het verplicht te volgen traject van meerdere demo sessies, kiezen we voor een traject waarbij het uiteindelijke doel van het project wordt voorop gesteld: een volledig onbekend traject autonoom afleggen. Hiertoe hebben we na een korte analyse interfaces afgesproken, waar beide trajecten zich aan houden, om een integratie mogelijk te maken.
+Parallel met het verplicht te volgen traject van meerdere demo sessies, kiezen we voor een traject waarbij het uiteindelijke doel van het project voorop wordt gesteld: een volledig onbekend traject autonoom afleggen. Hiertoe hebben we na een korte analyse interfaces afgesproken, waar beide trajecten zich aan houden, om een vlotte integratie mogelijk te maken.
 
 \bigskip
 
-(De samenvatting wordt later verder aangevuld met belangrijke aspecten die tijdens het verdere verloop van het project naar voor treden.)
+Nota: De samenvatting wordt later verder aangevuld met belangrijke aspecten die tijdens het verdere verloop van het project naar voor treden.
 
 \end{abstract}
 
 \chapter{Inleiding}
 
-De tussentijdse demo sessies helpen om de technologie stapsgewijs te verkennen. Echter geen van deze tussenstappen is rechtstreeks inzetbaar bij het effectieve doel: het autonoom rijden van een onbekend traject.
+De tussentijdse demos helpen om de technologie stapsgewijs te verkennen. Geen van deze tussenstappen is echter rechtstreeks inzetbaar bij het effectieve doel: het autonoom rijden van een onbekend traject.
 
 We kiezen er voor om ons team op te splitsen en twee verschillende trajecten te volgen: \'e\'en dat zich toelegt op het optimaal implementeren van de tussentijdse opdrachten en \'e\'en dat er voor zorgt dat een volledige architectuur uitgewerkt wordt die ons zal toelaten om de eindopdracht optimaal te realiseren.
 
@@ -53,7 +53,7 @@ Op basis van een architectuur studie werden de componenten van de eindoplossing 
 
 \section{Architectuur}
 
-De architectuur die we zullen implementeren in dit project richt zich op het realiseren van een robuuste oplossing. Echter niet alleen op het vlak van de autonome robot, maar ook op het volledige framework er rond dat we opbouwen op de PC. Figuur \ref{fig:architectuur} geeft de algemene architectuur weer. We belichten vervolgens de architectuur van uit het oogpunt van beide omgevingen waar de oplossing zal actief zijn: de robot en de PC.
+De architectuur die we zullen implementeren in dit project richt zich op het realiseren van een robuuste oplossing; zowel op het vlak van de autonome robot als ook op het volledige framework er rond dat we opbouwen op de PC. Figuur \ref{fig:architectuur} geeft de algemene architectuur weer. We belichten vervolgens de architectuur vanuit het oogpunt van beide omgevingen waar de oplossing zal actief zijn: de robot en de PC.
 
 \begin{figure}[htbp]
    \centering
@@ -64,7 +64,7 @@ De architectuur die we zullen implementeren in dit project richt zich op het rea
 
 \subsection{Robot}
 
-De robot biedt een technische API die toegang verleent tot de motoren en sensoren. We kiezen er voor om een eigen RobotAPI te cre\"eren die abstractie maakt van de technische API. Dit zal ons toelaten om een simulatieomgeving te bouwen met een andere implementatie van dezelfde interface. Zo'n simulatieomgeving zal ons vervolgens toelaten om de logica die moet ontwikkeld worden voor de eindoplossing onafhankelijk van de fysieke robot te testen. 
+De robot biedt een technische API die toegang verleent tot de motoren en sensoren. We kiezen er voor om een eigen RobotAPI te introduceren die abstractie maakt van de technische API. Deze zal ons toelaten een andere implementatie te maken, die binnen een gesimuleerde omgeving gebruikt kan worden. Met deze omgeving kunnen we de logica van de robot ontwikkelen, zonder een fysieke robot.
 
 Een tweede belangrijke component binnen de robot, wordt de “Main Event Loop”\footnote{\url{http://en.wikipedia.org/wiki/Event_loop}}. We hergebruiken hier een term die uit de wereld van de grafische gebruikers interfaces komt, maar zeer goed weergeeft wat hier gebeurt. De Main Event Loop doorloopt eindeloos 5 stappen: 
 
@@ -76,17 +76,17 @@ Een tweede belangrijke component binnen de robot, wordt de “Main Event Loop”\foo
 \item voer de acties uit door middel van de robot API
 \end{enumerate}
 
-Het model is een interne voorstellingsvorm van de wereld waarin de robot zich begint. Aan het begin van de Event Loop, zal dit model leeg zijn, of eerder volledig onbekend. Gaandeweg zal op basis van de input van de sensoren dit model gevoed worden en zal een wereldbeeld ontstaan met verschillende graden van zekerheid.
+Het model is een interne voorstellingsvorm van de wereld waarin de robot zich bevindt. Aan het begin van de Event Loop, zal dit model leeg zijn, of eerder volledig onbekend. Gaandeweg zal op basis van de input van de sensoren dit model gevoed worden en zal een wereldbeeld ontstaan met verschillende graden van zekerheid.
 
-De navigator consulteert vervolgens dit model om de volgende actie te bepalen en implementeert op deze manier het "doel" van de robot. Deze acties worden uitgedrukt in de taal van de RobotAPI en bestaan uit functionele opdrachten zoals beweeg $x$ meter vooruit of draai $x$ graden. De analogie met de copiloot/navigator gaat hier volledig op.
+De navigator consulteert vervolgens dit model om de volgende actie te bepalen en implementeert op deze manier het "doel" van de robot. Deze acties worden uitgedrukt in de taal van de RobotAPI en bestaan uit functionele opdrachten zoals beweeg $x$ meter vooruit of draai $x$ graden. 
 
 Naast de Main Event Loop, voorzien we een tweede onafhankelijke Event Loop, namelijk voor de communicatie met de PC. Deze geschiedt via Bluetooth. De redenen om deze gescheiden te houden zijn triviaal: enerzijds willen we de werking van de robot zelf niet onnodig in gevaar brengen met een proces dat kan falen. Anderzijds zal ook de frequentie waarop beide processen opereren niet gelijk lopen.
 
-Een voorbeeld hiervan is de stroom van informatie die de lichtsensoren of sonar zullen aanbieden. Het volledig overzenden van deze gegevens kan eventueel niet mogelijk en niet wenselijk zijn.
+Een voorbeeld hiervan is de stroom van informatie die de lichtsensoren of sonar zullen aanbieden. Het volledig overzenden van deze gegevens kan eventueel niet mogelijk (te veel voor de beschikbare bandbreedte) of niet wenselijk (onnuttige informatie) zijn.
 
 \subsection{PC}
 
-Op de PC wordt alle communicatie met de robot verzorgd langs een zgn. Robot Agent. We voorzien deze laag om de robuustheid van de oplossing te verhogen. Door het beperken van de synchrone code, verlagen we het risico dat externe factoren de communicatie met de robot verstoren. We denken hierbij aan het rechtstreeks koppelen van de communicatie aan een gebruikersinterface.
+Op de PC wordt alle communicatie met de robot verzorgd langs een zgn. Robot Agent. Deze extra laag zal de robuustheid van de oplossing verhogen, door het beperken van synchroon uitgevoerde code. We denken hierbij aan het rechtstreeks koppelen van de communicatie aan een gebruikersinterface.
 
 We zijn van mening dat het louter verzenden en visualiseren van informatie over de werking van de robot een verlies aan mogelijkheden zou betekenen. Onze strategie, met een simulatieomgeving, toont al snel aan dat deze informatie kan helpen bij het onderzoek naar optimale navigator-logica.
 
@@ -102,13 +102,13 @@ Deze laatste kan dan opnieuw gerealiseerd worden gebruikmakend van standaard com
 
 \subsection{Interactie}
 
-De architectuur (figuur \ref{fig:architectuur}) voorziet ook de mogelijkheid om commando's te sturen naar de robot. Aan de robot-kant zullen de meeste van de componenten handelingen registreren bij de communicatie component. Op deze manier kunnen de commando's door de communicatie component uitgevoerd worden op de geregistreerde handelingen op de componenten. Dit stelt ons in staat om op generieke manier interactief de software van de robot te ondervragen, zonder specifieke code te moeten voorzien.
+De architectuur (figuur \ref{fig:architectuur}) voorziet eveneens de mogelijkheid om commando's te sturen naar de robot. Aan de robot-kant zullen de meeste van de componenten handelingen registreren bij de communicatie component. Op deze manier kunnen de commando's door de communicatie component uitgevoerd worden op de geregistreerde handelingen op de componenten. Dit stelt ons in staat om op generieke manier interactief de software van de robot te ondervragen, zonder specifieke code te moeten voorzien.
 
 \section{Functionele Analyse}
 
 In de functionele analyse bepalen we in hoofdzaak de interfaces die gerespecteerd dienen te worden in de twee trajecten. Op basis van deze afspraken kunnen beide trajecten integreren en in elkaar opgaan.
 
-Twee interfaces dienen zich aan: de Robot interface en de RobotAPI interface. De eerste bepaalt hier de robot opgebouwd en aangesproken kan worden door zijn omgeving. Dit kan een programma zijn dat op de robot uitgevoerd wordt, of dit kan onze simulatieomgeving zijn. Ook op niveau van de RobotAPI moet deze mogelijkheid beschikbaar zijn.
+Twee interfaces worden voorzien: de Robot interface en de RobotAPI interface. De eerste bepaalt hoe de robot opgebouwd en aangesproken kan worden door zijn omgeving. Dit kan een programma zijn dat op de robot uitgevoerd wordt, of dit kan een simulatieomgeving zijn. Ook op niveau van de RobotAPI moet deze mogelijkheid beschikbaar zijn.
 
 \begin{figure}[htbp]
    \centering
@@ -125,11 +125,11 @@ De doelstelling van de eerste demo is het rijden van een veelhoek op basis van h
 
 \section{De robot}
 
-Het ontwerp van de robot voor de eerste opdracht is het basismodel van de Mindstorms kit die we ter beschikking kregen. Gegeven het korte tijdsbestek was het belangrijker om snel ervaring op te doen met de robot. Deze ervaring kan informatie verschaffen aan het lange termijn traject.
+Het ontwerp van de robot voor de eerste opdracht is het basismodel van de Mindstorms kit die we ter beschikking kregen. Gegeven het korte tijdsbestek was het belangrijker om snel ervaring op te doen met de robot. Deze ervaring kan eveneens informatie verschaffen aan het lange termijn traject.
  
 \section{De software}
  
-De Lejos API biedt twee mogelijkheden om de motoren aan te sturen: op basis van tijd en op basis van de omwentelingen van de wielen. Intu\"itief waren we overtuigd dat de methode op basis van omwentelingen de meest betrouwbare moest zijn. Maar we moeten dit kunnen aantonen.
+De Lejos API biedt twee mogelijkheden om de motoren aan te sturen: op basis van tijd en op basis van de omwentelingen van de wielen. Intu\"itief waren we overtuigd dat de methode op basis van omwentelingen de meest betrouwbare moest zijn.
 
 Wat betreft de rij-technische mogelijkheden, kiezen we voor twee onafhankelijke bewegingen: het rechtdoor rijden (vooruit of achteruit) en het ter plekke draaien. Dit is enerzijds een noodzaak voor de opdracht, maar is tevens de eenvoudigste te hanteren en betrouwbaarste methode. Het draaien tijdens het rijden gaat gepaard met noodzakelijke slip- en schuifbewegingen, wat de berekenbaarheid sterk kan be"invloeden.
 
@@ -141,9 +141,9 @@ In beide gevallen is er nog een parameter die bepalend kan zijn: de rotatiesnelh
 
 De implementatie die omwentelingen telt is afhankelijk van de omtrek van de wielen. De theoretische omtrek van het wiel kan berekend worden op basis van de diameter (56mm) en bedraagt 175,93mm.
 
-Naast de theoretische bepaling van de omtrek hebben we ook software voorzien die deze omtrek bepaalt op basis van een zgn. zelf-calibratie. Hierbij laten we de robot rijden, voorzien van een frontale druksensor, tot hij een obstakel raakt. Op dit ogenblik stop de robot. Vervolgens nemen we de blokkade weg en zal de robot na enkele seconden zelf verder rijden tot het volgende obstakel. Op basis van de getelde omwentelingen en de vaste afstand tussen beide obstakels, kan de robot vervolgens zelf exact de omtrek van het wiel bepalen.
+Naast de theoretische bepaling van de omtrek voorzien we ook software die deze omtrek bepaalt op basis van een zgn. zelf-calibratie. Hierbij laten we de robot rijden, voorzien van een frontale druksensor, tot hij een obstakel raakt. Op dit ogenblik stop de robot. Vervolgens nemen we de blokkade weg en zal de robot na enkele seconden zelf verder rijden tot het volgende obstakel. Op basis van de getelde omwentelingen en de vaste afstand tussen beide obstakels, kan de robot vervolgens zelf exact de omtrek van het wiel bepalen.
 
-De waarde die op deze manier werd vastgesteld was 175mm. We hebben deze gebruikt als initi\"ele waarde.
+De waarde die op deze manier werd vastgesteld was 175mm. Deze werd gebruikt als initi\"ele waarde.
 
 \subsubsection{Test 1: met een vaste snelheid verschillende afstanden rijden}
 
@@ -201,7 +201,7 @@ Op basis van de resultaten, werd de wielomtrek met 1\% verkleind. Figuur \ref{ch
 
 Bij het uitvoeren van verkennende testen hadden we reeds vastgesteld dat het vertrekken, stoppen en de snelheid van de motoren een beduidende invloed hadden op de stabiliteit van de robot. Met deze tweede test willen we op zoek gaan naar een optimale snelheid/precisie verhouding.
 
-We lieten de robot telkens 5 maal een afstand van 20cm afleggen bij variërende motorsnelheden: 125, 250, 500, 750 en 1000. Vervolgens  berekenden we de realtieve afwijking. De resultaten van deze test zijn opgenomen in figuur \ref{chart:test2}.
+We lieten de robot telkens 5 maal een afstand van 20cm afleggen bij vari\"erende motorsnelheden: 125, 250, 500, 750 en 1000. Vervolgens  berekenden we de relatieve afwijking. De resultaten van deze test zijn opgenomen in figuur \ref{chart:test2}.
 
 \begin{figure}
 	\caption{Test 2 : Relatieve afwijking bij variabele snelheden}
@@ -228,7 +228,7 @@ We lieten de robot telkens 5 maal een afstand van 20cm afleggen bij variërende m
 
 Uit de resultaten besloten we dat 250 graden per seconde ons de meest betrouwbare snelheid gaf.
 
-Met deze snelheid werden vervolgens opnieuw verschillende afstanden gereden. De resultaten bevestigde de eerder gevonden foutenmarge van ongeveer 1\%.
+Met deze snelheid werden vervolgens opnieuw verschillende afstanden gereden. De resultaten bevestigden de eerder gevonden foutmarge van ongeveer 1\%.
 
 Dat de kwaliteit van de Lego onderdelen van groot belang kan zijn, bleek toen het omwisselen van twee wielen een oplossing bleek te zijn voor een grote afwijking naar \'e\'en bepaalde kant.
 
@@ -238,7 +238,7 @@ Het ter plekke draaien is ook gebaseerd op de wielomtrek, echter nu in combinati
 
 Om de nauwkeurigheid van het ter plekke draaien te bepalen, lieten we de robot 5 maal een zelfde hoek draaien. Hierbij varieerden we de hoeken als volgt: 15, 30, 45, 60 en 90 graden. Opnieuw keken we naar de eindopgave. We verwachten niet dat we met de robot veel hoeken groter dan 90 graden gaan moeten maken. Voor de veelhoek-opdracht, is dit normaal niet het geval, met een spreekwoordelijke uitzondering voor een driehoek.
 
-Ook voor deze test wilden we de parameter snelheid in beschouwing nemen. Uit de eerste resultaten bleek snel dat een snelheid hoger dan de eerder vastgestelde 250 graden per seconde niet accepteerbare afwijkingen opleverde. We hebben deze testen verder niet weerhouden.
+Ook voor deze test wilden we de parameter snelheid in beschouwing nemen. Uit de eerste resultaten bleek snel dat een snelheid hoger dan de eerder vastgestelde 250 graden per seconde niet accepteerbare afwijkingen opleverde. Deze testen werden niet weerhouden.
 
 De resultaten voor de verschillende hoeken zijn weergegeven in figuur \ref{chart:test3}.
 
@@ -265,11 +265,11 @@ De resultaten voor de verschillende hoeken zijn weergegeven in figuur \ref{chart
 	\end{tikzpicture}
 \end{figure}
 
-De resultaten bevestigden het vermoeden dat de fout groter is bij kleinere hoeken. De resultaten bij 60 en 90 graden zijn dan weer positief met het oog op het rijden van een parcours met typisch die soort hoeken.
+De resultaten bevestigen het vermoeden dat de meetfout groter is bij kleinere hoeken. De resultaten bij 60 en 90 graden zijn dan weer positief in het kader van de einddoelstelling, waar het parcours typisch hiermee opgebouwd wordt.
 
 \subsubsection{Conclusie ivm omwentelingen}
 
-Met een snelheid van 250 en een bijstelling van de omtrek van het wiel met 1\% zou de robot, volgens onze metingen vrij precies een willekeurige veelhoek moeten kunnen rijden.
+Met een snelheid van 250 graden per seconde en een bijstelling van de omtrek van het wiel met 1\% zou de robot, volgens onze metingen, vrij precies een willekeurige veelhoek moeten kunnen rijden.
 
 Dit werd bevestigd bij het toepassen van deze implementatie voor het rijden van een veelhoek. Hierbij werden testen gedaan waarbij achtereenvolgens een 3, 4, 5, 6, 10 en 15-hoek werd gereden met een zijde van 20 of 30 cm. De 3, 4, 5 en 6-hoeken waren nagenoeg perfect. Bij de 10 en 15 hoek merkten we de (toen nog niet bijgewerkte) fout van 1\% op.
 
@@ -290,7 +290,7 @@ Het aansturen van de motoren op basis van tijd bleek geen valabel alternatief te
 
 Tijdens de demo werd gevraagd om een veelhoek van eigen keuze te rijden. We kozen een driehoek met een zijde van 40cm. De afwijking van het startpunt bedroeg ongeveer 10cm. De tweede veelhoek die opgegeven werd was een tienhoek met een zijde van 20cm. De afwijking van het startpunt bedroeg ongeveer 30cm.
 
-De resultaten van de demo weken sterk af van de eerder opgetekende waarden. Na enig onderzoek moesten we concluderen dat de vervuilen van de wielen de oorzaak was.
+De resultaten van de demo weken sterk af van de eerder opgetekende waarden. Uit onderzoek bleek dat het vuil worden van de wielen de oorzaak was.
 
 Figuur \ref{chart:vervuiling} toont de evolutie van de afwijking tijdens de eerste vijf veelhoeken, gereden met init\"ieel gekuiste wielen. We merken op dat in deze grootorde van gereden veelhoeken de fout sterk stijgt. Figuur \ref{chart:vervuiling2} toont de relatieve afwijking bij 5, 10, 15, 20, 25, en 30 gereden veelhoeken.
 
@@ -347,34 +347,30 @@ Aangezien dit een specifiek probleem voor het constant rijden van veelhoeken is 
 
 \chapter{Demo 2a: Lijnvolger}
 
-De doelstelling van de volgende demo is het volgen van een ononderbroken lijn. Deze lijn kan wit of zwart zijn en is uitgezet op bruine panelen.
+De doelstelling van de tweede demo is het volgen van een ononderbroken lijn. Deze lijn kan wit of zwart zijn en is uitgezet op bruine panelen.
 
 \section{De robot}
 \label{section:lichtsensor}
 
-Voor het volgen van een lijn maken we gebruik van een grijswaardesensor. Deze werd vooraan op de robot bevestigd.
-
-Tijdens het onderzoek voor de verschillende onderdelen van demo 2, is het ontwerp van de robot in zijn geheel ge"evolueerd. De belangrijkste aanpassing is het omkeren van de rijrichting, waarbij het zwenkwiel vooraan komt te staan en we dus een achterwiel aangedreven robot bekomen.
-
-De belangrijkste reden voor deze aanpassing, was een probleem bij het oprijden van een helling. Met de nieuwe opbouw kan de grijswaardesensor dichter bij de as geplaatst worden, waardoor deze zich sneller opnieuw in een juiste hoek tov. de ondergrond zal bevinden. Ook de NXT brick werd in een horizontale positie geplaatst, waardoor montage van alle sensoren en motoren eenvoudiger werd.
+Voor het volgen van een lijn maken we gebruik van een grijswaardesensor. Deze werd vooraan op de robot bevestigd. Om de sensoren makkelijker en beter te kunnen bevestigen, werd de robot structureel anders opgebouwd.
 
 \section{De software}
 
-Voor deze demo diende software ontwikkeld te worden die de robot in staat stelt om een lijn autonoom te volgen. De meetresultaten van de grijswaardesensor dienen tevens verzonden te worden via Bluetooth naar een PC, waar ze gevisualiseerd moeten worden. De ontwikkeling voor robot en PC worden in dit deel verder toegelicht. De communicatie component wordt in bijlage \ref{appendix:bluetooth} in detail besproken.
+Voor deze demo diende software ontwikkeld te worden die de robot in staat stelt om een lijn autonoom te volgen. De meetresultaten van de grijswaardesensor dienen tevens verzonden te worden via Bluetooth naar een PC, waar ze gevisualiseerd  worden. De ontwikkelingen voor robot en PC worden in dit deel verder toegelicht. De communicatie component wordt in bijlage \ref{appendix:bluetooth} in detail besproken.
 
 \subsection{Robot}
 
-De grijswaardesensor kan gekalibreerd worden, waarna deze genormaliseerde waarden terug geeft van 0 tot 1024\footnote{Re\"ele waarden liggen typisch tussen 145 voor een meting in een donkere omgeving en 890 in klaar zonlicht.}. Voor het kalibreren kunnen een donker en licht waarde aan de Lejos API gegeven worden, welke dan gebruikt worden om de genormaliseerde waarden op af te stemmen.
+De grijswaardesensor kan gekalibreerd worden, waarna deze genormaliseerde waarden terug geeft van 0 tot 1024\footnote{Re\"ele waarden liggen typisch tussen 145 voor een meting in een donkere omgeving en 890 in klaar zonlicht.}. Voor het kalibreren kunnen een donker- en lichtwaarde aan de Lejos API gegeven worden, welke dan gebruikt worden om de genormaliseerde waarden op af te stemmen.
 
-Het algoritme van de robot is zeer eenvoudig gehouden, om de betrouwbaarheid te bevorderen. De volgende stappen worden in een oneindige lust uitgevoerd:
+Het algoritme van de robot is zeer eenvoudig gehouden, om de betrouwbaarheid te bevorderen. De volgende stappen worden in een oneindige lus uitgevoerd:
 
 \begin{enumerate}
 \item lees de genormaliseerde waarde van de grijswaardesensor
 \item bepaal of de gemeten grijswaarde overeenstemt met een lijn; indien ja, rij verder rechtdoor
-\item indien niet (meer) op een lijn, zoek een lijn door ter plekke te draaien in steeds groeiende hoeken tot een lijn gevonden is
+\item indien niet (meer) op een lijn, zoek een lijn door ter plekke heen en weer te draaien in steeds groeiende hoeken tot een lijn gevonden is
 \end{enumerate}
 
-Voor dit algoritme werd de manier waarop de Lejos API aangesproken werd ook gewijzigd. Voor het rijden van veelhoeken werd aan de Lejos API de opdracht gegeven om een bepaald aantal omwentelingen te doen. Vervolgens werd er gewacht om een synchrone verwerking te simuleren voor onze software. Met de introductie van sensoren en de nood om acties te ondernemen voor een bepaalde afstand bereikt is, is deze synchrone verwerking verwijderd en zal de controle onmiddellijk teruggegeven worden aan de controleren applicatie, in dit geval het lijnvolger algoritme.
+Voor dit algoritme werd de manier waarop de Lejos API aangesproken werd gewijzigd. Voor het rijden van veelhoeken werd aan de Lejos API de opdracht gegeven om een bepaald aantal omwentelingen te doen. Vervolgens werd er gewacht om een synchrone verwerking te simuleren voor onze software. Met de introductie van sensoren en de nood om acties te ondernemen voor een bepaalde afstand bereikt is, werd deze synchrone verwerking verwijderd en zal de controle onmiddellijk teruggegeven worden aan de controleren applicatie, in dit geval het lijnvolger algoritme.
 
 \subsection{PC}
 
@@ -398,7 +394,7 @@ Met de grijswaardesensor willen we drie kleuren kunnen onderscheiden: bruin, wit
 We hebben met verschillende sets van kalibratiewaarden telkens 12 metingen gedaan van bruin, wit en zwart. Voor elk van deze meetwaarden hebben we vervolgens het gemiddelde berekend en de relatieve afwijking van elk van de gemeten waarden. Figuren \ref{chart:bruin}, \ref{chart:wit} en \ref{chart:zwart} geven respectievelijk de resultaten voor bruin, wit en zwart weer.
 
 \begin{figure}
-	\caption{Relatieve afwijking tov. gemiddelde gemeten grijswaarde voor bruin}
+	\caption{Relatieve afwijking t.o.v. gemiddelde gemeten grijswaarde voor bruin}
 	\label{chart:bruin}
 	\vspace{10pt}	
 	\centering
@@ -419,7 +415,7 @@ We hebben met verschillende sets van kalibratiewaarden telkens 12 metingen gedaa
 \end{figure}
 
 \begin{figure}
-	\caption{Relatieve afwijking tov. gemiddelde gemeten grijswaarde voor wit}
+	\caption{Relatieve afwijking t.o.v. gemiddelde gemeten grijswaarde voor wit}
 	\label{chart:wit}
 	\vspace{10pt}	
 	\centering
@@ -440,7 +436,7 @@ We hebben met verschillende sets van kalibratiewaarden telkens 12 metingen gedaa
 \end{figure}
 
 \begin{figure}
-	\caption{Relatieve afwijking tov. gemiddelde gemeten grijswaarde voor zwart}
+	\caption{Relatieve afwijking t.o.v. gemiddelde gemeten grijswaarde voor zwart}
 	\label{chart:zwart}
 	\vspace{10pt}	
 	\centering
@@ -491,7 +487,7 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Demo 2b: Muurvolger}
 
-De doelstelling van de volgende demo is het volgen van een ononderbroken muur.
+De doelstelling van de derde demo is het volgen van een ononderbroken muur.
 
 \section{De robot}
 
@@ -499,7 +495,7 @@ Voor het volgen van een muur dient de sonarsensor gebruikt te worden. We hebben 
 
 \section{De software}
 
-Het algoritme dat we toepassen om een muur te volgen berust op het feit dat de kortste afstand tussen de robot en de muur steeds de lijn is die loodrecht op de muur staat. Het doel van de robot is om zichzelf ook loodrecht tov. deze lijn te positioneren en zo evenwijdig met de muur te bewegen. Figuur \ref{fig:muurvolgerAlgoritme} illustreert dit principe.
+Het algoritme dat we toepassen om een muur te volgen berust op het feit dat de kortste afstand tussen de robot en de muur steeds de lijn is die loodrecht op de muur staat. Het doel van de robot is om zichzelf ook loodrecht t.o.v. deze lijn te positioneren en zo evenwijdig met de muur te bewegen. Figuur \ref{fig:muurvolgerAlgoritme} illustreert dit principe.
 
 \begin{figure}[htbp]
    \centering
@@ -508,7 +504,7 @@ Het algoritme dat we toepassen om een muur te volgen berust op het feit dat de k
    \includegraphics[width=80mm]{resources/muurvolger.png}
 \end{figure}
 
-Dankzij de richtbare sonar, kan de robot zowel de afstand tot de te volgen muur meten als voor zich controleren of er geen muur, ten gevolge van een hoek in het parcours, volgt. De robot zal de sonar dus constant heen en weer laten bewegen om deze twee meetpunten te controleren.
+Dankzij de richtbare sonar, kan de robot zowel de afstand tot de te volgen muur meten als voor zich controleren of er geen muur is, ten gevolge van een hoek in het parcours. De robot zal de sonar dus constant heen en weer laten bewegen om deze twee punten te controleren.
 
 De implementatie van dit principe zal gebeuren aan de hand van een aparte thread die de constante beweging van de sonar regelt en meetwaarden ter beschikking stelt van de thread die het volgen van de muur implementeert. Initieel zal een zoekroutine voorzien worden om na te gaan of er een muur links of rechts dient gevolgd te worden.
 
@@ -520,7 +516,7 @@ In tegenstelling tot het rijden en de lichtsensor, verliepen de testen voor de s
 
 \subsection{Afstand}
 
-In een eerste test bepaalden we de absolute afwijking op een afstandsmeting van 1 tot 60cm. Figuur \ref{chart:sonarDistance} geeft de relatieve fout weer op de gemeten afstanden.
+In een eerste test bepaalden we de afwijking op een afstandsmeting van 1 tot 60cm. Figuur \ref{chart:sonarDistance} geeft de relatieve fout weer op de gemeten afstanden.
 
 \begin{figure}[htbp]
    \centering
@@ -539,7 +535,7 @@ Hierbij valt onmiddellijk op dat de sonar beduidend correcter meet op grotere af
 
 \subsection{Hoek}
 
-Een robot zal niet steeds loodrecht staan tov. een obstakel. Om na te gaan hoeveel de meetresultaten afwijken onder een hoek, hebben we een test gedaan waarbij we onder een hoek van 0, 5, 10, 15, 30 en 45 graden de gemeten afstand vergeleken met de werkelijke afstand. Figuur \ref{chart:sonarAngle} geeft de relatieve afwijking van de meting tov de werkelijkheid weer.
+Een robot zal niet steeds loodrecht staan t.o.v. een obstakel. Om na te gaan hoeveel de meetresultaten afwijken onder een hoek, hebben we een test gedaan waarbij we onder een hoek van 0, 5, 10, 15, 30 en 45 graden de gemeten afstand vergeleken met de werkelijke afstand. Figuur \ref{chart:sonarAngle} geeft de relatieve afwijking van de meting tov de werkelijkheid weer.
 
 \begin{figure}[htbp]
    \centering
@@ -552,44 +548,34 @@ Een robot zal niet steeds loodrecht staan tov. een obstakel. Om na te gaan hoeve
 	(40,2.50)
 	(60,1.67)
    };    \addplot[color=green,mark=x,] coordinates {
-	(5,42.00)
-	(10,32.00)
-	(20,12.00)
-	(40,3.50)
-	(60,2.00)
+	(20,16.55)
+	(40,1.01)
+	(60,1.28)
    };    \addplot[color=blue,mark=x,] coordinates {
-	(5,44.00)
-	(10,34.00)
-	(20,19.00)
-	(40,3.50)
-	(60,2.67)
+	(20,16.21)
+	(40,-0.15)
+	(60,0.12)
    };    \addplot[color=yellow,mark=x,] coordinates {
-	(5,40.00)
-	(10,30.00)
-	(20,15.00)
-	(40,2.50)
-	(60,1.67)
+	(20,14.95)
+	(40,-1.79)
+	(60,-1.8)
    };    \addplot[color=purple,mark=x,] coordinates {
-	(5,40.00)
-	(10,30.00)
-	(20,15.00)
-	(40,2.50)
-	(60,1.67)
+	(20,3.92)
+	(40,-11.23)
+	(60,-10.51)
    };    \addplot[color=orange,mark=x,] coordinates {
-	(5,40.00)
-	(10,30.00)
-	(20,15.00)
-	(40,2.50)
-	(60,1.67)
+	(20,-11.61)
+	(40,-25.36)
+	(60,-24.81)
    };   \legend{$0^{\circ}$,$5^{\circ}$,$10^{\circ}$,$15^{\circ}$,$30^{\circ}$,$45^{\circ}$}    \end{axis}\end{tikzpicture}
    \label{chart:sonarAngle}
 \end{figure}
 
-Uit de resultaten van de metingen met verschillende hoeken, leren we dat onder een hoek, groter dan ongeveer 40 graden de sonarsensor geen metingen meer kan doen. Anderzijds merken we dat de hoek ... TODO afwerken na invullen van gegevens in grafiek.
+Na het verwerken van de meetresultaten van de meting onder een hoek, hebben we besloten om deze test opnieuw uit te voeren. De resultaten doen vermoeden dat er een structurele fout is opgetreden. Er was echter geen tijd meer voor het inleveren van het verslag om deze test opnieuw uit te voeren. Dit zal in een volgende fase bijgewerkt worden.
 
 \subsection{Rijden}
 
-We hebben een test opgesteld waarbij de robot op een afstand van een obstakel werd geplaatst en naar het obstakel toe reed. Hierbij registreerde de robot informatie van de tachometer en van de sonarsensor. Op basis van deze gegevens kunnen we de metingen van de sonar afstemmen op de afstand berekend door de tachometer. We hebben verschillende metingen voor deze test gedaan en de meetresultaten waren telkens ongeveer identiek. Ze vertoonden ook een typisch patroon, zoals weergegeven in figuur \ref{chart:sonarDrive}.
+Een test werd gedaan waarbij de robot op een afstand van een obstakel werd geplaatst en naar het obstakel toe reed. Hierbij registreerde de robot informatie van de tachometer en van de sonarsensor. Op basis van deze gegevens kunnen we de metingen van de sonar afstemmen op de afstand berekend door de tachometer. We hebben verschillende metingen voor deze test gedaan en de meetresultaten waren telkens ongeveer identiek. Ze vertoonden ook een typisch patroon, zoals weergegeven in figuur \ref{chart:sonarDrive}.
 
 \begin{figure}[htbp]
    \centering
@@ -672,11 +658,11 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Demo 2c: Barcode}
 
-De doelstelling van de volgende demo is het detecteren van barcodes op een eenvoudig parcours en op basis van de informatie die deze barcodes aanbieden over het parcours, dit zo goed mogelijk rijden.
+De doelstelling van de vierde demo is het detecteren van barcodes op een eenvoudig parcours. Op basis van de informatie die deze barcodes aanbieden moet de robot zijn weg vinden naar de volgende barcode en zo het parcours 1 keer afleggen.
 
 \section{De robot}
 
-Voor het lezen van barcodes gebruiken we de grijswaardesensor. Deze is reeds op de robot gemonteerd, zoals besproken in sectie \ref{section:lichtsensor}. Ook de basissoftware om grijswaarden te registeren wordt opnieuw gebruikt.
+Voor het lezen van barcodes gebruiken we de grijswaardesensor. Deze is reeds op de robot gemonteerd, zoals besproken in sectie \ref{section:lichtsensor}. Eveneens de basissoftware om grijswaarden te registeren wordt opnieuw gebruikt.
 
 \section{De software}
 
@@ -693,7 +679,7 @@ Het algoritme dat op basis van de gemeten grijswaarden barcodes detecteert doorl
 \item verdeel de opgemeten waardes in 7 gelijke groepen.
 \item neem van elke groep het gemiddelde en vertaal de waarde naar wit of zwart
 \item vertaal de 7 wit of zwart waarden naar 1 en 0
-\item gebruik een tabel om de effectief gedetecteerde waarde om te zetten naar een gecorrigeerde mogelijke waarde, volgens de ge\"integreerde Hemming-code error-correctie
+\item gebruik een tabel om de effectief gedetecteerde waarde om te zetten naar een gecorrigeerde mogelijke waarde, volgens de ge\"integreerde Hamming-code error-correctie
 \end{enumerate}
 
 \section{Testplan en resultaten}
@@ -750,7 +736,7 @@ Teamlid & Focus \\ [0.5ex]
 Michiel 		& 	(Coordinator) Bluetooth communicatie, calibratie. \\
 Florian 		&	RobotAPI, lijnvolger, opvolgen unit testen. \\
 Ruben 		&	RobotAPI, veelhoek algoritme, muurvolger. \\
-Thomas 		&	RobotAPI, lichtsensor, barcodelezer. \\
+Thomas 		&	RobotAPI, lichtsensor, barcodelezer, UI \\
 Daniel 		&	Testen, barcodelezer \\
 Christophe 	&	(Secretaris) Verslag, simulator, model \& navigator. \\
 \hline
@@ -772,13 +758,13 @@ Christophe 	&	(Secretaris) Verslag, simulator, model \& navigator. \\
  & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\ [0.5ex]
 \hline 
 \endhead
-totaal    & 54 & 37 & 41 & 38 & 34 & 75 \\
+totaal    & 57 & 38 & 41 & 38 & 34 & 78 \\
 \hline
 week 1 & 10 & 10 & 10 & 10 & 10 & 15 \\
 week 2 & 9 & 7 & 8 & 7 & 9 & 16 \\
 week 3 & 8 & 8 & 8 & 8 & 5 & 12 \\
 week 4 & 9 & 7 & 5 & 8 & 5 & 17 \\
-week 5\footnote{Week 5 is nog bezig ten tijde van inlevering verslag.} & 18 & 5 & 10 & 5 & 5 & 15 \\
+week 5\footnote{Week 5 is nog bezig ten tijde van inlevering verslag.} & 21 & 6 & 10 & 5 & 5 & 18 \\
 \hline
 \label{tab:tijdsregistratie}
 \end{longtable}
@@ -798,6 +784,7 @@ Dit deel wordt later toegevoegd.
 Dit deel wordt later toegevoegd.
 
 \section{Klasse Diagrammen}
+\label{appendix:classDiagrams}
 
 Dit deel wordt later toegevoegd.
 
@@ -850,10 +837,10 @@ Dit deel wordt later toegevoegd.
 1.5	& uitvoeren alle tests, metingen,...			& Ruben, Daniel		& \\
 2	& implementatie veelhoek oplossing		& Ruben				& Demo 1 \\
 3	& ontwikkeling LCD menu				& Thomas				& \\
-4	& verslag voorbereiden					& Christophe			& \\
-4.1	& voor demo 1							&					& Demo 1 \\
-4.2	& voor demo 2							& 					& Demo 2 \\
-4.3	& voor finale demo						&					& Finale \\
+4	& verslag voorbereiden					& 					& \\
+4.1	& voor demo 1							& Christophe			& Demo 1 \\
+4.2	& voor demo 2							& Christophe			& Demo 2 \\
+4.3	& voor finale demo						& Christophe			& Finale \\
 5	& ontwikkeling communicatie component		&					& \\		
 5.1	& ontwikkeling communicatie thread			&					& \\
 5.1.1	& ontwikkeling log kanaal					& Ruben				& Demo 2 \\
