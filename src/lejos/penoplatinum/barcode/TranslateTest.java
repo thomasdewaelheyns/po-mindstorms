@@ -4,7 +4,6 @@ package penoplatinum.barcode;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.util.ArrayList;
 
 /**
@@ -51,10 +50,11 @@ public class TranslateTest {
     }
 
     public void testTranslate() {
-        BarcodeData interpreter = new BarcodeData();
-
-
-        System.out.print("" + interpreter.translate(barcodeInput));
+        throw new RuntimeException("Not Implemented");
+//        BarcodeData interpreter = new BarcodeData();
+//
+//
+//        System.out.print("" + interpreter.translate(barcodeInput));
     }
 
     public void testReader() {
@@ -67,13 +67,15 @@ public class TranslateTest {
         for (int i = 15; i < 14 + barcodeInput.size(); i++) {
             input[i] = barcodeInput.get(i - 15).byteValue();
         }
-        for (int i = input.length - 15; i <  input.length; i++) {
+        for (int i = input.length - 15; i < input.length; i++) {
             input[i] = (70);
         }
 
-        BarcodeReader reader = new BarcodeReader(new lightSensorSim(input));
+        throw new RuntimeException("Not Implemented!");
 
-        System.out.print(""+reader.read());
+//        BarcodeReader reader = new BarcodeReader(new LightSensorSim(input));
+//
+//        System.out.print(""+reader.read());
 
     }
 }

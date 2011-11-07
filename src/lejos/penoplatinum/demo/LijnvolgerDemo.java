@@ -6,6 +6,7 @@ package penoplatinum.demo;
 
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.sensor.LineFollowerFlorian;
+import penoplatinum.sensor.WrappedLightSensor;
 
 /**
  *
@@ -14,7 +15,7 @@ import penoplatinum.sensor.LineFollowerFlorian;
 public class LijnvolgerDemo {
     public static void main(String[] args) {
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
-        LineFollowerFlorian follower = new LineFollowerFlorian(conn);
+        LineFollowerFlorian follower = new LineFollowerFlorian(new WrappedLightSensor(conn));
         follower.ActionLineFollower();
     }
 }

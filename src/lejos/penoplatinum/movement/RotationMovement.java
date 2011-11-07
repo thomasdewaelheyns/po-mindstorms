@@ -4,11 +4,12 @@ import lejos.nxt.*;
 import penoplatinum.Utils;
 
 public class RotationMovement implements IMovement {
+    public static double CCW_afwijking = 1.01;
 
     public int SPEEDFORWARD = 500;
     public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
-    public final int WIELAFSTAND = 113;//112mm
+    public final int WIELAFSTAND = 160;//112mm
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
     private boolean movementDisabled;
@@ -44,8 +45,13 @@ public class RotationMovement implements IMovement {
         if (movementDisabled) {
             return;
         }
+        //angle = 0;
+        //Utils.Log("Turn");
         changeMotorSpeed(SPEEDTURN);
-        angle /= 0.99;
+        angle *= CCW_afwijking;
+        //TODO: for barcode second rotate needs a false
+        //TODO: int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
+        //		Different formula in barcode???
 
         int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
         LCD.drawString("" + h, 0, 2);

@@ -26,6 +26,7 @@ public interface UIView {
   public static int BARCODE  = 414143066;
   public static int LOG      = 849201923;
   public static int CLEARLOG = 901838492;
+  public static int COMMAND = 901838492;
 
   // update methods for sensor information:
   // lightsensor provides a lightValue (0-1024)

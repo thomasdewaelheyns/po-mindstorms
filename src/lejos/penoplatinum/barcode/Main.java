@@ -5,8 +5,10 @@
 package penoplatinum.barcode;
 
 import lejos.nxt.*;
+import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.movement.RotationMovement;
+import penoplatinum.sensor.WrappedLightSensor;
 
 /**
  *
@@ -19,12 +21,22 @@ public class Main {
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
         conn.initializeConnection();
         RotationMovement m = new RotationMovement();
-        LightSensorRobot sensor = new LightSensorRobot(SensorPort.S4);
+
+        WrappedLightSensor sensor = new WrappedLightSensor(conn);
+
+//        LightSensorRobot sensor = new LightSensorRobot(SensorPort.S4);
         sensor.calibrate();
 
         //CalibratieTurnOnSpot c = new CalibratieTurnOnSpot(sensor, m);
         //c.run();
         //Button.waitForPress();
+
+        runBarcodeDemo(conn, sensor);
+
+
+    }
+
+    public static void runBarcodeDemo(IConnection conn, WrappedLightSensor sensor) {
 
         BarcodeDemoThread reader = new BarcodeDemoThread(new BarcodeReader(sensor), true, conn);
         reader.start();
@@ -41,6 +53,5 @@ public class Main {
             }
             while (Button.readButtons() != 0);
         }
-
     }
 }

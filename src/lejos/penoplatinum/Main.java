@@ -1,5 +1,6 @@
 package penoplatinum;
 
+import penoplatinum.demo.SensorDemo;
 import penoplatinum.sensor.MuurVolgerTest;
 
 public class Main {
@@ -9,13 +10,15 @@ public class Main {
 
             public void run() {
                 try {
+                     
+                    SensorDemo.main(null);
                     //BarcodeDemo.main(null);
 
                     /*RobotBluetoothConnection conn = new RobotBluetoothConnection();
                     conn.initializeConnection();
                     LineFollowerFlorian abc = new LineFollowerFlorian(conn);
                     abc.ActionLineFollower();*/
-                    MuurVolgerTest.testPerpendicular();
+//                    MuurVolgerTest.testPerpendicular();
                     //RobotBluetoothTest test = new RobotBluetoothTest();
                     //SonarTest test = new SonarTest();
                     //test.testBluetoothLogging();

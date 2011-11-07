@@ -7,10 +7,10 @@ package penoplatinum.barcode;
 
 
 /**
- *
+ * //TODO: reimplement
  * @author Thomas
  */
-public interface iLightSensor {
+public interface ILightSensor {
 
     byte readValue();
     

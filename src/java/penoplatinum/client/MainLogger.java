@@ -20,7 +20,7 @@ public class MainLogger {
         conn.initializeConnection();
 
 
-        RemoteFileLogger logger = new RemoteFileLogger(conn, 672631252, "RobotLog", new File("logs"));
+        RemoteFileLogger logger = new RemoteFileLogger(conn, "RobotLog", new File("logs"));
         logger.startLogging();
 
         while (true) {

@@ -2,10 +2,12 @@ package penoplatinum.barcode;
 
 import java.util.ArrayList;
 import penoplatinum.Utils;
+import penoplatinum.sensor.WrappedLightSensor;
+import penoplatinum.sensor.WrappedLightSensor.Color;
 
 public class BarcodeReader {
 
-    private final iLightSensor lightSensor;
+    private final WrappedLightSensor lightSensor;
     //Less is black, more is brown
     private boolean isReadingBarcode;
     boolean continueWhile;
@@ -19,8 +21,8 @@ public class BarcodeReader {
         return lastRawRead;
     }
     
-    public BarcodeReader(iLightSensor sensor) {
-        interpreter = new BarcodeData();
+    public BarcodeReader(WrappedLightSensor sensor) {
+        interpreter = new BarcodeData(sensor);
         this.lightSensor = sensor;
         isReadingBarcode = false;
     }
@@ -33,7 +35,7 @@ public class BarcodeReader {
         this.isReadingBarcode = false;
         while (continueWhile) {
             int test = this.lightSensor.readValue();
-            if (!LightSensorRobot.isBrown(test)) {
+            if (! lightSensor.isColor(Color.Brown,test)) {
                 isReadingBarcode = true;
                 counter = 0;
                 startCounter++;
