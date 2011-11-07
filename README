@@ -43,3 +43,10 @@ Use the console GUI to start any of the three sub-demo's.
 + NetBeans
 
 We have also provided an integrated NetBeans project in nbproject.
+
++ Simulator
+
+To allow multiple team members to construct and test robot logic, we're also creating a simulator.
+
+$ cd po-mindstorms/src/java/po-mindstorms.simulator
+$ make clean run
