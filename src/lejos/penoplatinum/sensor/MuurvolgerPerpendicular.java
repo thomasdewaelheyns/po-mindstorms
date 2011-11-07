@@ -38,11 +38,14 @@ public class MuurvolgerPerpendicular {
         int rotateEnd = 145;
         forwardTacho = verticalMotor.getTachoCount();
 
-        verticalMotor.setSpeed(700);
-        rotateSonar(rotateStart, true);
+        int startTacho = forwardTacho + rotateStart;
+        int endTacho = forwardTacho + rotateEnd;
+
+        verticalMotor.setSpeed(100);
+        verticalMotor.rotateTo(startTacho, false);
         while (cont) {
 
-            verticalMotor.rotate(rotateEnd - rotateStart, true);
+            verticalMotor.rotateTo(endTacho,true);
             while (verticalMotor.isMoving()) {
                 updateMinimum();
             }
@@ -50,7 +53,7 @@ public class MuurvolgerPerpendicular {
             clearMinimum();
             movement.MoveStraight(10, false);
 
-            verticalMotor.rotate(rotateStart - rotateEnd, true);
+            verticalMotor.rotateTo(startTacho, true);
             while (verticalMotor.isMoving()) {
                 updateMinimum();
             }
@@ -68,9 +71,7 @@ public class MuurvolgerPerpendicular {
         int dist = ultra.getDistance();
         int tacho = verticalMotor.getTachoCount();
 
-        float angle = tacho - forwardTacho;
 
-        sendSonarPacket(angle, dist);
         if (dist < minDistance) {
             minDistance = dist;
             minTacho = tacho;
@@ -78,6 +79,12 @@ public class MuurvolgerPerpendicular {
         if (dist == minDistance) {
             maxTacho = tacho;
         }
+
+
+
+        float angle = tacho - forwardTacho;
+        sendSonarPacket(-angle, dist);
+
 
     }
 
@@ -89,15 +96,15 @@ public class MuurvolgerPerpendicular {
     private void correctAngle() {
         int targetAngle = 90;
 
-        if (minDistance < 15) {
+        if (minDistance < 20) {
             Utils.Log("To close");
             targetAngle += 20;
-        } else if (minDistance > 30) {
+        } else if (minDistance > 40) {
             Utils.Log("Too far");
             targetAngle -= 20;
-        } else if (minDistance < 10) {
-            Utils.Log("Against wall");
-            targetAngle -= 180;
+//        } else if (minDistance < 10) {
+//            Utils.Log("Against wall");
+//            targetAngle -= 180;
         } else {
             Utils.Log("Normal");
         }
@@ -108,7 +115,7 @@ public class MuurvolgerPerpendicular {
         //Normalize (0 is forwardTacho)
         correctedMinTacho -= forwardTacho;
         Utils.Log(correctedMinTacho + "");
-        int correction = targetAngle - correctedMinTacho / cogMultiplier;
+        int correction = targetAngle - correctedMinTacho / cogMultiplier; /// change sign back to -
         Utils.Log("Target: " + targetAngle);
         Utils.Log("Correction: " + correction);
 
