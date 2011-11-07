@@ -8,7 +8,7 @@ package penoplatinum.ui;
  * Author: Team Platinum
  */
 public interface UIView {
-  public static int NONE=-1;
+  public static int NONE=-1000;
 
   // detected color
   public static int BLACK=0;

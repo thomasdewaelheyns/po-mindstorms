@@ -28,7 +28,7 @@ public class Dashboard extends JPanel {
   private Polygon colorTriangle;
 
   // sonar sensor
-  private double angle      = -1;
+  private double angle      = UIView.NONE;
   private int    distance   = -1;
 
   private Image robot;
@@ -179,18 +179,21 @@ public class Dashboard extends JPanel {
   }
 
   private void renderSonar(Graphics2D g2d) {
-    if( this.angle >= 0 ) {
-      this.renderImage(g2d, this.robot, 75, 275 );
-      int d = (int)this.distance / 2;
-      d = d > 200 ? 200 : d;
-      int x = 150+(int)(Math.cos(this.angle)*d);
-      int y = 350-(int)(Math.sin(this.angle)*d);
-      g2d.setStroke(new BasicStroke(4F));
-      g2d.setColor(Color.red);
-      g2d.draw(new Line2D.Float(150, 350, x, y ));
-      this.drawCenteredText( g2d, ""+this.distance, Color.red, 
-                             x, y, 100, 32 );
+    if( this.angle == UIView.NONE ) { return; }
+    if( this.angle < 0 ) {
+      double temp = ( this.angle + 360 ) % 360;
+      this.angle = (int)temp;
     }
+    this.renderImage(g2d, this.robot, 75, 275 );
+    int d = (int)this.distance / 2;
+    d = d > 200 ? 200 : d;
+    int x = 150+(int)(Math.cos(this.angle)*d);
+    int y = 350-(int)(Math.sin(this.angle)*d);
+    g2d.setStroke(new BasicStroke(4F));
+    g2d.setColor(Color.red);
+    g2d.draw(new Line2D.Float(150, 350, x, y ));
+    this.drawCenteredText( g2d, ""+this.distance, Color.red, 
+                           x, y, 100, 32 );
   }
   
   private void drawCenteredText(Graphics2D g2d, String text, Color color,
