@@ -12,3 +12,4 @@ build.properties
 /netbeans/Client/logs/*
 /netbeans/Client/testOutput/*
 /netbeans/Client/dist/
+/netbeans/RobotLogs/*

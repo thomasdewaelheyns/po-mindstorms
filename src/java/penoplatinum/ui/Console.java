@@ -24,6 +24,9 @@ public class Console implements UICommandHandler {
 
     public Console() {
         this.setupUI();
+        this.setupBluetooth();
+        this.startEventLoop();
+        
     }
 
     private void setupUI() {
@@ -39,6 +42,7 @@ public class Console implements UICommandHandler {
         connection.RegisterTransporter(this.endpoint, UIView.BARCODE);
         connection.RegisterTransporter(this.endpoint, UIView.LOG);
         connection.RegisterTransporter(this.endpoint, UIView.CLEARLOG);
+        connection.RegisterTransporter(this.endpoint, UIView.COMMAND);
 
         endpointWrite = new PrintStream(endpoint.getSendStream());
 
@@ -46,7 +50,6 @@ public class Console implements UICommandHandler {
         final UIView ui = this.ui;
         
         RemoteFileLogger logger = new RemoteFileLogger(connection, "RobotLog", new File("../RobotLogs"));
-        logger.startLogging();
         logger.setOutputStream(new IRemoteLoggerCallback() {
 
             @Override
@@ -54,13 +57,17 @@ public class Console implements UICommandHandler {
                 ui.addConsoleLog(message);
             }
         });
+        logger.startLogging();
+    
 
     }
 
     private void startEventLoop() {
         String[] values;
         while (true) {
+            
             this.receive();
+            System.out.println(this.msgType + " : " + this.msg);
             switch (this.msgType) {
                 case UIView.LIGHT:
                     values = this.msg.split(",");
@@ -93,15 +100,12 @@ public class Console implements UICommandHandler {
         this.msgType = this.endpoint.ReceivePacket();
         Scanner s = new Scanner(this.endpoint.getReceiveStream());
         this.msg = s.nextLine();
-        this.ui.addConsoleLog("received (" + this.msgType + ") : " + this.msg);
+        //this.ui.addConsoleLog("received (" + this.msgType + ") : " + this.msg);
     }
 
     // handle commands originating in the UI
     public void handle(String command) {
         if (command.equals("connect")) {
-            if (connection == null) {
-                setupBluetooth();
-            }
             //TODO: correctly disconnect
             connection.initializeConnection();
             return;

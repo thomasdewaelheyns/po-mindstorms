@@ -18,20 +18,20 @@ public class Main {
 
     public static void main(String[] Args) {
 
-        RobotBluetoothConnection conn = new RobotBluetoothConnection();
-        conn.initializeConnection();
-        RotationMovement m = new RotationMovement();
-
-        WrappedLightSensor sensor = new WrappedLightSensor(conn);
-
-//        LightSensorRobot sensor = new LightSensorRobot(SensorPort.S4);
-        sensor.calibrate();
-
-        //CalibratieTurnOnSpot c = new CalibratieTurnOnSpot(sensor, m);
-        //c.run();
-        //Button.waitForPress();
-
-        runBarcodeDemo(conn, sensor);
+//        RobotBluetoothConnection conn = new RobotBluetoothConnection();
+//        conn.initializeConnection();
+//        RotationMovement m = new RotationMovement();
+//
+//        WrappedLightSensor sensor = new WrappedLightSensor(conn);
+//
+////        LightSensorRobot sensor = new LightSensorRobot(SensorPort.S4);
+//        sensor.calibrate();
+//
+//        //CalibratieTurnOnSpot c = new CalibratieTurnOnSpot(sensor, m);
+//        //c.run();
+//        //Button.waitForPress();
+//
+//        runBarcodeDemo(conn, sensor);
 
 
     }

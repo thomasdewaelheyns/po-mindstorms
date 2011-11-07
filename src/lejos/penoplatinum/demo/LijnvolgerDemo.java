@@ -14,8 +14,8 @@ import penoplatinum.sensor.WrappedLightSensor;
  */
 public class LijnvolgerDemo {
     public static void main(String[] args) {
-        RobotBluetoothConnection conn = new RobotBluetoothConnection();
-        LineFollowerFlorian follower = new LineFollowerFlorian(new WrappedLightSensor(conn));
-        follower.ActionLineFollower();
+//        RobotBluetoothConnection conn = new RobotBluetoothConnection();
+//        LineFollowerFlorian follower = new LineFollowerFlorian(new WrappedLightSensor(conn), null);
+//        follower.ActionLineFollower();
     }
 }

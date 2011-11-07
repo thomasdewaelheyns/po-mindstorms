@@ -156,7 +156,7 @@ public class Dashboard extends JPanel {
 
   private String getBarcode() {
     String bits = "";
-    for( int i=0; i<8; i++ ) {
+    for( int i=0; i<7; i++ ) {
       bits += (( this.barcode & (1<<i) ) != 0) ? "1" : "0";
     }
     return bits;

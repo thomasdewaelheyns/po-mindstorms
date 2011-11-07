@@ -21,12 +21,12 @@ public interface UIView {
   public static int GO_RIGHT=2;
 
   // unique id's for each of the supported sensors
-  public static int LIGHT    = 323962144;
-  public static int SONAR    = 721955983;
-  public static int BARCODE  = 414143066;
-  public static int LOG      = 849201923;
-  public static int CLEARLOG = 901838492;
-  public static int COMMAND = 901838492;
+  public final static int LIGHT    = 323962144;
+  public final static int SONAR    = 721955983;
+  public final static int BARCODE  = 414143066;
+  public final static int LOG      = 849201923;
+  public final static int CLEARLOG = 901838492;
+  public final static int COMMAND  = 874809864;
 
   // update methods for sensor information:
   // lightsensor provides a lightValue (0-1024)

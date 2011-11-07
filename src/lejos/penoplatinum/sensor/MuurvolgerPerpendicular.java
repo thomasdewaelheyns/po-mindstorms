@@ -64,6 +64,10 @@ public class MuurvolgerPerpendicular {
             }
         }
     }
+    
+    
+    
+    
     private int[] robotCorrections = new int[]{0, 0, 0, 5, 20, 5, 0, 0, 0};
     private float correctionResolution = 45 / 2f;
 

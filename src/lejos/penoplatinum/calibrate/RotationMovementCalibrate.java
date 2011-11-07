@@ -2,6 +2,7 @@ package penoplatinum.calibrate;
 
 import lejos.nxt.Button;
 import lejos.nxt.Sound;
+import penoplatinum.Utils;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.WrappedLightSensor;
 
@@ -32,12 +33,12 @@ public class RotationMovementCalibrate {
                 blackNext = true;
             }
         }
-        System.out.println(turnCount + " " + executeCount);
+        Utils.Log(turnCount + " " + executeCount);
         double afwijkingTeller = executeCount * 180;
         double afwijkingNoemer = executeCount * 180 + (turnCount - executeCount) * angle;
         double afwijking = afwijkingTeller / afwijkingNoemer;
-        System.out.println("" + afwijking);
+        Utils.Log("" + afwijking);
         mov.CCW_afwijking *= afwijking;
-        System.out.println("mov: "+mov.CCW_afwijking);
+        Utils.Log("mov: "+mov.CCW_afwijking);
     }
 }

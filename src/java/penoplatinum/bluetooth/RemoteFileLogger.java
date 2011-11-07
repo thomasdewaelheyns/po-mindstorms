@@ -20,15 +20,17 @@ public class RemoteFileLogger {
 
     Thread fileThread;
     IRemoteLoggerCallback outputStream;
+    private final File directory;
+    private final PacketTransporter pt;
 
     public void setOutputStream(IRemoteLoggerCallback outputStream) {
         this.outputStream = outputStream;
     }
 
     public RemoteFileLogger(IConnection conn, String baseFilename, final File directory) {
-        directory.mkdirs();
 
-        final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd.HHmmss");
+
+        
 
 
 
@@ -38,22 +40,31 @@ public class RemoteFileLogger {
 
         int testNum = 0;
 
-        final PacketTransporter pt = new PacketTransporter(conn);
+        pt = new PacketTransporter(conn);
         conn.RegisterTransporter(pt, penoplatinum.Utils.PACKETID_LOG);
         conn.RegisterTransporter(pt, penoplatinum.Utils.PACKETID_STARTLOG);
+        this.directory = directory;
+        directory.mkdirs();
 
 
+
+
+
+
+    }
+
+    public void startLogging() {
         
-
-
+        final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd.HHmmss");
+        final IRemoteLoggerCallback extraOutputStream = outputStream;
         fileThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 PrintStream fs = null;
                 while (true) {
-                    IRemoteLoggerCallback extraOutputStream = RemoteFileLogger.this.outputStream;
                     
+
                     int id = pt.ReceivePacket();
                     Scanner scanner = new Scanner(pt.getReceiveStream()); //TODO: GC
 
@@ -93,10 +104,6 @@ public class RemoteFileLogger {
         fileThread.setName("RemoteFileLogger");
         fileThread.setDaemon(true);
 
-
-    }
-
-    public void startLogging() {
         fileThread.start();
 
     }

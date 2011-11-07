@@ -1,7 +1,6 @@
 package penoplatinum.sensor;
 
 import java.io.PrintStream;
-import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
@@ -15,36 +14,39 @@ import penoplatinum.ui.UIView;
 public class WrappedLightSensor implements ILightSensor {
 
     final LightSensor light = new LightSensor(SensorPort.S4, true);
-    private int WHITEVAL;
-    private int BROWNVAL;
-    private int BLACKVAL;
+    private int WHITEVAL = 100;
+    private int BROWNVAL = 58;
+    private int BLACKVAL = 1;
     private int blackBorder;
     private int whiteBorder;
     PrintStream printStream;
     PacketTransporter lightTransporter;
+    private final PacketTransporter commandTransporter;
 
-    public WrappedLightSensor(IConnection conn) {
-        if (conn == null) {
-            return;
+    public WrappedLightSensor(IConnection conn, PacketTransporter commandTransporter) {
+        if (conn != null) {
+            lightTransporter = new PacketTransporter(conn);
+            conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
+            printStream = new PrintStream(lightTransporter.getSendStream());
+
         }
-        lightTransporter = new PacketTransporter(conn);
-        conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
-        printStream = new PrintStream(lightTransporter.getSendStream());
 
+        updateBorders();
+        this.commandTransporter = commandTransporter;
     }
 
     public void calibrate() {
         // calibreer de lage waarde.
-        System.out.println("Zet de sensor op zwart en druk enter.");
-        Button.ENTER.waitForPressAndRelease();
+        Utils.Log("Zet de sensor op zwart en druk enter.");
+        commandTransporter.ReceivePacket();
         LCD.drawInt(light.readValue(), 1, 0);
         light.calibrateLow();
         Sound.beep();
         Utils.Sleep(1000);
 
         // calibreer de hoge waarde
-        System.out.println("Zet de sensor op wit en druk enter.");
-        Button.ENTER.waitForPressAndRelease();
+        Utils.Log("Zet de sensor op wit en druk enter.");
+        commandTransporter.ReceivePacket();
         LCD.drawInt(light.readValue(), 3, 0);
         light.calibrateHigh();
         WHITEVAL = light.readValue();
@@ -52,14 +54,14 @@ public class WrappedLightSensor implements ILightSensor {
         Utils.Sleep(1000);
 
 
-        System.out.println("Zet de sensor op zwart en druk enter.");
-        Button.ENTER.waitForPressAndRelease();
+        Utils.Log("Zet de sensor op zwart en druk enter.");
+        commandTransporter.ReceivePacket();
         BLACKVAL = light.readValue();
         Sound.beep();
         Utils.Sleep(1000);
 
-        System.out.println("Zet de sensor op bruin en druk enter.");
-        Button.ENTER.waitForPressAndRelease();
+        Utils.Log("Zet de sensor op bruin en druk enter.");
+        commandTransporter.ReceivePacket();
         LCD.drawInt(light.readValue(), 3, 0);
         BROWNVAL = light.readValue();
         Sound.beep();
@@ -68,6 +70,9 @@ public class WrappedLightSensor implements ILightSensor {
         LCD.clear();
 
         updateBorders();
+
+        Utils.Log(BLACKVAL + "," + BROWNVAL + "," + WHITEVAL);
+
 
     }
 
@@ -82,9 +87,9 @@ public class WrappedLightSensor implements ILightSensor {
         int ret = light.readValue();
         float rawValue = light.getNormalizedLightValue(); // I know, this is confusing
 
-
+        //Utils.Log(ret + "");
         if (printStream != null) {
-            printStream.print(rawValue);
+            printStream.print((int) rawValue);
             printStream.print(",");
 
             printStream.print(getCurrentColor(ret).toUIViewColor());
@@ -123,7 +128,7 @@ public class WrappedLightSensor implements ILightSensor {
 
         switch (col) {
             case Brown:
-                return val > blackBorder && val < whiteBorder;
+                return val >= blackBorder && val <= whiteBorder;
             case Black:
                 return val < blackBorder;
             case White:

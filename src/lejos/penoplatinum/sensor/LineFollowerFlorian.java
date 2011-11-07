@@ -1,6 +1,7 @@
 package penoplatinum.sensor;
 
 import penoplatinum.Utils;
+import penoplatinum.bluetooth.PacketTransporter;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.WrappedLightSensor.Color;
 
@@ -11,7 +12,7 @@ import penoplatinum.sensor.WrappedLightSensor.Color;
  */
 public class LineFollowerFlorian {
 
-    final RotationMovement agent = new RotationMovement();
+    final RotationMovement movement = new RotationMovement();
     int rightDirection;
     double LineThresHold;
     double platformThresHold;
@@ -21,43 +22,46 @@ public class LineFollowerFlorian {
     private int BROWNVAL;
     private int BLACKVAL;
     private WrappedLightSensor lightSensor;
+    private final PacketTransporter commandTransporter;
 
-    public LineFollowerFlorian(WrappedLightSensor sensor) {
+    public LineFollowerFlorian(WrappedLightSensor sensor, PacketTransporter commandTransporter) {
         this.lightSensor = sensor;
+        this.commandTransporter = commandTransporter;
     }
 
     public void changeSpeed(int speed) {
-        agent.SPEEDFORWARD = speed;
-        agent.SPEEDTURN = 160;
+        movement.SPEEDFORWARD = speed;
+        movement.SPEEDTURN = 160;
     }
 
     public void ActionLineFollower() {
         changeSpeed(280);
 
-        while (true) {
+        while (commandTransporter.ReceiveAvailablePacket() == -1) {
             if (lightSensor.isColor(Color.Brown)) {
-                LineFinder();
+                findLine();
             }
-            agent.MoveStraight(1.0, false);
+            movement.MoveStraight(1.0, false);
             lastLineWasWhite = lightSensor.isColor(Color.White);
             Utils.Sleep(100);
         }
+        movement.Stop();
     }
 
-    public void LineFinder() {
-        int[] rotates = new int[]{-3, 8, -15, 50, -95, 50 + 120, 240, 720};
+    public void findLine() {
+        int[] rotates = new int[]{-10, 20, -130, 240, -720};
         int pos = 0;
-        System.out.println("FindLine");
-        agent.Stop();
+        Utils.Log("FindLine");
+        movement.Stop();
         while (lightSensor.isColor(Color.Brown)) {
             if (stopped()) {
-                agent.TurnOnSpotCCW(rotates[pos++]);
+                movement.TurnOnSpotCCW(rotates[pos++], false);
             }
         }
-        System.out.println("FoundLine");
+        Utils.Log("FoundLine");
     }
 
     public boolean stopped() {
-        return !agent.motorLeft.isMoving() && !agent.motorRight.isMoving();
+        return !movement.motorLeft.isMoving() && !movement.motorRight.isMoving();
     }
 }
