@@ -23,6 +23,7 @@ public class RotationMovement implements IMovement {
     }
 
     public void MoveStraight(double distance, boolean block) {
+        
         if (movementDisabled) {
             return;
         }
@@ -54,7 +55,6 @@ public class RotationMovement implements IMovement {
         //		Different formula in barcode???
 
         int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
-        LCD.drawString("" + h, 0, 2);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, !block);
     }

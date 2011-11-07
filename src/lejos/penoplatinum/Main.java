@@ -1,7 +1,6 @@
 package penoplatinum;
 
 import penoplatinum.demo.SensorDemo;
-import penoplatinum.sensor.MuurVolgerTest;
 
 public class Main {
 

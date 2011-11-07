@@ -23,33 +23,66 @@ public class MuurvolgerPerpendicular {
     private final int cogMultiplier = 1;
     private PrintStream printStream;
     PacketTransporter endpoint;
+    private boolean isRight = false;
+    private final PacketTransporter commandTransporter;
 
-    public MuurvolgerPerpendicular(UltrasonicSensor ultra, IMovement m, Motor v, IConnection connection) {
+    public MuurvolgerPerpendicular(UltrasonicSensor ultra, IMovement m, Motor v, IConnection connection,PacketTransporter commandTransporter) {
         this.ultra = ultra;
         movement = m;
         verticalMotor = v;
         endpoint = new PacketTransporter(connection);
         connection.RegisterTransporter(endpoint, UIView.SONAR);
         printStream = new PrintStream(endpoint.getSendStream());
+        this.commandTransporter = commandTransporter;
     }
 
     public void run() {
-        int rotateStart = -10;
-        int rotateEnd = 145;
+        
+        verticalMotor.setSpeed(300);
+        
         forwardTacho = verticalMotor.getTachoCount();
+
+        verticalMotor.rotateTo(forwardTacho - 45, false);
+        verticalMotor.rotateTo(forwardTacho + 45, true);
+        while (verticalMotor.isMoving()) {
+            updateMinimum();
+        }
+        verticalMotor.rotateTo(forwardTacho, false);
+
+        int wallPos = (minTacho + maxTacho) / 2 - forwardTacho;
+
+        isRight = wallPos > 0;
+
+
+
+
+
+
+
+
+
+        int rotateStart = 0;
+        int rotateEnd = 145;
+
+        if (!isRight) {
+            rotateStart = -145;
+            rotateEnd = 0;
+        }
+
 
         int startTacho = forwardTacho + rotateStart;
         int endTacho = forwardTacho + rotateEnd;
 
-        verticalMotor.setSpeed(100);
+        
         verticalMotor.rotateTo(startTacho, false);
-        while (cont) {
-
-            verticalMotor.rotateTo(endTacho,true);
+        while (commandTransporter.ReceiveAvailablePacket() == -1) {
+            Utils.Log("StartTacho" + verticalMotor.getTachoCount() + " : " + endTacho);
+            verticalMotor.rotateTo(endTacho, true);
             while (verticalMotor.isMoving()) {
                 updateMinimum();
             }
-            correctAngle();
+            Utils.Log("EndTacho" + verticalMotor.getTachoCount());
+            //correctAngle();
             clearMinimum();
             movement.MoveStraight(10, false);
 
@@ -57,6 +90,7 @@ public class MuurvolgerPerpendicular {
             while (verticalMotor.isMoving()) {
                 updateMinimum();
             }
+
             correctAngle();
             clearMinimum();
             movement.MoveStraight(10, false);
@@ -65,7 +99,11 @@ public class MuurvolgerPerpendicular {
                 Button.LEFT.waitForPressAndRelease();
             }
         }
+        
+        movement.Stop();
     }
+    
+    
 
     private void updateMinimum() {
         int dist = ultra.getDistance();
@@ -96,9 +134,9 @@ public class MuurvolgerPerpendicular {
     private void correctAngle() {
         int targetAngle = 90;
 
-        if (minDistance < 20) {
+        if (minDistance < 25) { // was changed from 20
             Utils.Log("To close");
-            targetAngle += 20;
+            targetAngle += 30;
         } else if (minDistance > 40) {
             Utils.Log("Too far");
             targetAngle -= 20;
@@ -108,18 +146,64 @@ public class MuurvolgerPerpendicular {
         } else {
             Utils.Log("Normal");
         }
+
+        if (!isRight) {
+            targetAngle = -targetAngle;
+        }
+
+
+
+
+
+
         Utils.Log(minDistance + "");
 
+        Utils.Log("ForwardTacho: " + forwardTacho);
+        Utils.Log("Tachos: " + minTacho + "," + maxTacho);
+
         int correctedMinTacho = (minTacho + maxTacho) / 2;
+
+        Utils.Log("Mean: " + correctedMinTacho);
+
 
         //Normalize (0 is forwardTacho)
         correctedMinTacho -= forwardTacho;
         Utils.Log(correctedMinTacho + "");
+
+
+
+        if (correctedMinTacho < 30) {
+            if (minDistance > 30) {
+
+                if (isRight) {
+                    movement.TurnOnSpotCCW(-50);
+                } else {
+                    movement.TurnOnSpotCCW(50);
+                }
+                return;
+            }
+        }
+
+
+
+
+
+
+
         int correction = targetAngle - correctedMinTacho / cogMultiplier; /// change sign back to -
         Utils.Log("Target: " + targetAngle);
         Utils.Log("Correction: " + correction);
 
-        movement.TurnOnSpotCCW(correction);
+
+
+
+
+
+        if (Math.abs(correction) < 10) {
+            return;
+        }
+
+        movement.TurnOnSpotCCW(correction); // TODO : maybe /2
     }
 
     private void clearMinimum() {

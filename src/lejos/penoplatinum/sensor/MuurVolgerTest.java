@@ -31,7 +31,7 @@ public class MuurVolgerTest {
         mov.SPEEDFORWARD = 180;
         mov.SPEEDTURN = 120;
 
-        MuurvolgerPerpendicular v = new MuurvolgerPerpendicular(sens, mov, Motor.A, conn);
+        MuurvolgerPerpendicular v = new MuurvolgerPerpendicular(sens, mov, Motor.A, conn,null);
         v.run();
     }
 }

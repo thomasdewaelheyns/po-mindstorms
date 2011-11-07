@@ -40,7 +40,7 @@ public class SensorDemo {
                 connection.RegisterTransporter(commandTransporter, UIView.COMMAND);
 
                 WrappedLightSensor readout = new WrappedLightSensor(connection, commandTransporter);
-                final UltrasonicSensor sens = new UltrasonicSensor(SensorPort.S2);
+                final UltrasonicSensor sens = new UltrasonicSensor(SensorPort.S3);
 
                 BarcodeDemoThread t = new BarcodeDemoThread(new BarcodeReader(readout), Boolean.TRUE, connection);
 
@@ -77,7 +77,7 @@ public class SensorDemo {
                         mov.SPEEDFORWARD = 250;
                         mov.SPEEDTURN = 120;
 
-                        MuurvolgerPerpendicular v = new MuurvolgerPerpendicular(sens, mov, Motor.A, connection);
+                        
                         v.run();
                     } else if (cmd.equals("line")) {
                         Utils.Log("Starting lijnvolger.");
