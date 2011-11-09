@@ -77,8 +77,8 @@ public class SensorDemo {
                         mov.SPEEDFORWARD = 250;
                         mov.SPEEDTURN = 120;
 
-                        
-                        v.run();
+                        // TODO: fix this : 
+                        // v.run();
                     } else if (cmd.equals("line")) {
                         Utils.Log("Starting lijnvolger.");
                         LineFollowerFlorian florian = new LineFollowerFlorian(readout, commandTransporter);
