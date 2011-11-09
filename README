@@ -48,5 +48,5 @@ We have also provided an integrated NetBeans project in nbproject.
 
 To allow multiple team members to construct and test robot logic, we're also creating a simulator.
 
-$ cd po-mindstorms/src/java/po-mindstorms.simulator
+$ cd po-mindstorms/src/java/penoplatinum/simulator
 $ make clean run
