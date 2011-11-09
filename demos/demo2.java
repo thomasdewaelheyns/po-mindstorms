@@ -11,11 +11,14 @@
  */
 package penoplatinum.demo;
 
-import penoplatinum.veelhoek.Veelhoek;
-import penoplatinum.movement.RotationMovement;
+import penoplatinum.demo.SensorDemo;
 
 public class demo2 {
   public static void main(String[] args) {
-    // TODO
+    try {
+      SensorDemo.main(null);
+    } catch (Exception e) {
+      System.out.println(e);
+    }
   }
 }
