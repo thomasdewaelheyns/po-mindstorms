@@ -1,7 +1,7 @@
 RM=rm -f
 PROJECT=demo2
 TARGETS=${PROJECT}.class
-CP=./:../src/java:../src/lejos
+CP=./:../src/java:../src/lejos:../../lejos_nxj/lib/pccomm.jar
 
 JAVAC=javac -cp ${CP}
 JAVA=java -cp ${CP}
