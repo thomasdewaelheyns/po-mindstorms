@@ -25,16 +25,25 @@ public class PCBluetoothConnection implements IConnection {
      * Readonly, only write in main thread
      */
     private boolean receiving;
+    private boolean connected;
+
+    public boolean isConnected() {
+        return connected;
+    }
 
     public void initializeConnection() {
-        
-        if (open != null)
-            try {
-            open.close();
-        } catch (IOException ex) {
-            Logger.getLogger(PCBluetoothConnection.class.getName()).log(Level.SEVERE, null, ex);
+        if (isConnected()) {
+            close();
         }
-        
+
+        if (open != null) {
+            try {
+                open.close();
+            } catch (IOException ex) {
+                Logger.getLogger(PCBluetoothConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         while (!connect()) {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
@@ -49,15 +58,17 @@ public class PCBluetoothConnection implements IConnection {
         createPacketBuilder();
 
         builder.startReceiving();
+        connected = true;
 
     }
 
     private void createPacketBuilder() {
-        
-        if (builder != null)
+
+        if (builder != null) {
             builder.stopReceiving();
-        
-        
+        }
+
+
         builder = new PacketBuilder(outputStream, inputStream, new IPacketReceiver() {
 
             @Override
@@ -73,8 +84,8 @@ public class PCBluetoothConnection implements IConnection {
             @Override
             public void onError(Exception ex) {
                 //WARNING!!! DANGEROUS MULTITHREADING, FIX USING DEDICATED CONNECT THREAD
-                initializeConnection();
-                
+                //initializeConnection();
+
             }
         });
     }
@@ -113,17 +124,14 @@ public class PCBluetoothConnection implements IConnection {
 
             for (NXTInfo inf : infos) {
                 if (inf.name.equals("NXJ Platinum")) {
-                lejosInfo = inf;
-                
+                    lejosInfo = inf;
+
                 }
             }
 
-            
-            if (lejosInfo != null)
-            {
-                
-            }
-            else if (infos.length == 1) {
+
+            if (lejosInfo != null) {
+            } else if (infos.length == 1) {
                 lejosInfo = infos[0];
             } else if (infos.length > 1) {
                 Utils.Log("Multiple possible connections found, aborting!");
@@ -150,7 +158,6 @@ public class PCBluetoothConnection implements IConnection {
                 }
             };
             conn.addLogListener(listener);
-
             boolean connected = conn.connectTo(lejosInfo, NXTComm.PACKET);
             open = conn;
 
@@ -170,9 +177,18 @@ public class PCBluetoothConnection implements IConnection {
     }
 
     private void close() {
-        try {
-            open.close();
-        } catch (IOException ex) {
+        if (open != null) {
+            try {
+                open.close();
+            } catch (IOException ex) {
+            }
+
         }
+        open = null;
+        if (builder != null) {
+            builder.stopReceiving();
+
+        }
+        builder = null;
     }
 }

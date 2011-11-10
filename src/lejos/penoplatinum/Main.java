@@ -1,7 +1,6 @@
 package penoplatinum;
 
-import lejos.nxt.Sound;
-import penoplatinum.demo.SensorDemo;
+import lejos.nxt.Button;
 
 public class Main {
 
@@ -10,8 +9,9 @@ public class Main {
 
             public void run() {
                 try {
-                     Sound.playNote(Sound.PIANO, 440, 2000);
-                   // SensorDemo.main(null);
+                    Utils.Log("Started!");
+                    Button.waitForPress();
+                    // SensorDemo.main(null);
                     //BarcodeDemo.main(null);
 
                     /*RobotBluetoothConnection conn = new RobotBluetoothConnection();

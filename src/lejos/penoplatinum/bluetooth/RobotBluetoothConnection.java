@@ -10,6 +10,7 @@ import penoplatinum.Utils;
 
 /**
  * Responsible for sending and receiving bluetooth packets on the PC
+ * TODO: fix threading
  * 
  */
 public class RobotBluetoothConnection implements IConnection {
@@ -20,11 +21,27 @@ public class RobotBluetoothConnection implements IConnection {
     //private HashMap<Integer, BluetoothPacketTransporter> listenerMap = new HashMap<Integer, BluetoothPacketTransporter>();
     private ArrayList<TransporterItem> transporterItems = new ArrayList<TransporterItem>();
     private PacketBuilder builder;
+    private boolean connected;
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public boolean isConnectionCorrupt() {
+        if (builder == null) {
+            return false;
+        }
+        return builder.isErrorOccured();
+    }
 
     public RobotBluetoothConnection() {
     }
 
     public void initializeConnection() {
+        if (isConnected()) {
+            Utils.Log("Already connected!");
+            return;
+        }
         while (!connect()) {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
@@ -47,16 +64,22 @@ public class RobotBluetoothConnection implements IConnection {
             }
 
             public void onError(Exception ex) {
+                Utils.Log("PacketBuilder error!");
+
                 //TODO
             }
         });
 
         builder.startReceiving();
+
+
+        connected = true;
+
     }
 
     private boolean connect() {
         Utils.Log("Connecting.");
-        conn = Bluetooth.waitForConnection(5000, NXTConnection.PACKET);
+        conn = Bluetooth.waitForConnection(3000, NXTConnection.PACKET);
         if (conn == null) {
             stri = null;
             stro = null;
@@ -67,6 +90,18 @@ public class RobotBluetoothConnection implements IConnection {
         stro = conn.openDataOutputStream();
         Utils.Log("Connected: " + conn.getAddress());
         return true;
+    }
+
+    public void close() {
+        connected = false;
+        if (builder != null) {
+            builder.stopReceiving();
+        }
+        builder = null;
+        if (conn != null) {
+            conn.close();
+        }
+        conn = null;
     }
 
     public void RegisterTransporter(IPacketTransporter transporter, int packetIdentifier) {
@@ -86,6 +121,11 @@ public class RobotBluetoothConnection implements IConnection {
     }
 
     public void SendPacket(IPacketTransporter transporter, int packetIdentifier, byte[] dgram) {
+
+        if (!isConnected()) {
+            Utils.Log("No connection! Packet discarded");
+            return;
+        }
         //TODO: remove security check for speed
         IPacketTransporter t = null;
 

@@ -14,6 +14,15 @@ public class PacketBuilder {
     private DataOutputStream outputStream;
     private DataInputStream inputStream;
     private final IPacketReceiver receiver;
+    private boolean errorOccured;
+
+    public synchronized boolean isErrorOccured() {
+        return errorOccured;
+    }
+
+    public synchronized void setErrorOccured(boolean errorOccured) {
+        this.errorOccured = errorOccured;
+    }
 
     public PacketBuilder(DataOutputStream outputStream, DataInputStream inputStream, IPacketReceiver receiver) {
         this.outputStream = outputStream;
@@ -50,6 +59,7 @@ public class PacketBuilder {
                     if (ex.toString() != null) {
                         Utils.Log(ex.toString());
                     }
+                    setErrorOccured(true);
                     receiver.onError(ex);
                 }
 
@@ -63,7 +73,7 @@ public class PacketBuilder {
      * Not entirely implemented
      */
     public void stopReceiving() {
-        receiving = false;
+        receiving = false; // TODO: WARNING! MAYBE NOT THREAD SAFE
     }
 
     public void sendPacket(int packetIdentifier, byte[] dgram) {
@@ -75,6 +85,7 @@ public class PacketBuilder {
             outputStream.flush();
             //TODO: flush??
         } catch (IOException ex) {
+            setErrorOccured(true);
             Utils.Log("Send error!");
             if (ex.getMessage() != null) {
                 Utils.Log(ex.getMessage());
