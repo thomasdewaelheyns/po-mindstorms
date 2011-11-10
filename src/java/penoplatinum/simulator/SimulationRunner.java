@@ -1,12 +1,14 @@
 package penoplatinum.simulator;
 
+import penoplatinum.Utils;
+
 /**
  * SimulationRunner
  * 
  * Constructs a robot and course, sets up the Simulator and starts the
  * simulation.
  * 
- * Future improvment: Use DI (Spring,...) framework to externalize the wiring.
+ * Future improvement: Use DI (Spring,...) framework to externalize the wiring.
  *
  * Author: Team Platinum
  */
@@ -15,7 +17,7 @@ class SimulationRunner {
 
   public static void main(String[] args) {
     // setup the robot
-    Robot robot = new BumperNavigatorRobot();
+    Robot robot = new BumperNavigatorRobot2Sensor();
 
     // construct a course
     Map map = new Map(4)
@@ -97,6 +99,7 @@ class SimulationRunner {
     simulator.useMap   (map);
     // put the robot at position 50 cm from top, 50 cm from left, in an
     // angle of 33 degrees, with 0 degrees pointing north
+    Utils.Sleep(10000);
     simulator.putRobotAt (robot, 150, 150, 33);
 
     // give robot instructions through the communication layer

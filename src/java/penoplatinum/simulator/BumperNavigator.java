@@ -37,6 +37,11 @@ public class BumperNavigator implements Navigator {
     // backup procedure
     if( this.status == BumperNavigator.DRIVE && this.model.isStuck() ) {
       System.out.println( "Whoops, I bumped into something..." );
+      if(this.model.getSensorValue(Model.S1)>25){
+        
+      } else if(this.model.getSensorValue(Model.S2)>25){
+        
+      }
       return this.backup();
     }
 

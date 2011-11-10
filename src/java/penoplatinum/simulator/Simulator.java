@@ -158,6 +158,7 @@ class Simulator {
         if( this.steps-- > 0 ) {
           this.positionX += this.dx;
           this.positionY -= this.dy;
+          
           // TODO: fix this to be correct towards actual change
           this.lastChangeM1 = 1;
           this.lastChangeM2 = 1;
@@ -204,12 +205,24 @@ class Simulator {
   private void updateFrontPushSensors() {
     int lengthRobot = 20;
     
-    int distance = this.getFreeFrontDistance();
+    //int distance = this.getFreeFrontDistance();
+    int touch1Degrees = 45;
+    int angle = (this.getAngle()+touch1Degrees)%360; 
+    int distance = this.getFreeFrontDistance(angle);
 
     if( distance < lengthRobot / 2 ) {
       this.sensorValues[Model.S1] = 50;
     } else {
       this.sensorValues[Model.S1] = 0;
+    }
+    int touch2Degrees = 315;
+    angle = (this.getAngle()+touch2Degrees)%360;
+    distance = this.getFreeFrontDistance(angle);
+
+    if( distance < lengthRobot / 2 ) {
+      this.sensorValues[Model.S2] = 50;
+    } else {
+      this.sensorValues[Model.S2] = 0;
     }
         
     this.sensorValues[Model.M1] = this.lastChangeM1;
@@ -227,6 +240,9 @@ class Simulator {
    * Determine the distance to the first obstacle in direct line of sight
    */
   private int getFreeFrontDistance() {
+    return getFreeFrontDistance(this.getAngle());
+  }  
+private int getFreeFrontDistance(int angle) {
     int distance = 0;
     
     // determine tile coordinates we're on
@@ -238,10 +254,10 @@ class Simulator {
     int y = (int)this.positionY % Simulator.tileSize;
 
     // find distance to first wall in line of sight
-    distance = (int)Math.round(this.findHitDistance(left, top, x, y, 0));
+    distance = (int)Math.round(this.findHitDistanceAngle(angle, left, top, x, y));
 
     System.out.println( (int)(x) + ", " + (int)(y) + " @ " + 
-                        ((this.direction + 90) % 360) + " | " + distance );
+                        ((this.direction + 90) % 360) + " | " + distance +" & " +angle);
     
     return distance;
   }
@@ -261,29 +277,38 @@ class Simulator {
    * to the next tile and recusively try to find the hist-distance
    */
   private double findHitDistance(int left, int top, int x, int y, double d) {
+    int angle = this.getAngle();
+    return d+findHitDistanceAngle(angle, left, top, x, y);
+  }
+  
+  private double findHitDistanceAngle(int angle, int left, int top, int x, int y) {
+    //TODO possible index out of bound exceptions if map not walled in
+    
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this baring
-    Point hit = Tile.findHitPoint(x,y, this.getAngle(), Simulator.tileSize);
-    
-    // distance from the starting point to the hit-point on this tile
-    double dist = Tile.getDistance(x, y, hit);
+    double dist = 0;
+    while (true) {
+      Point hit = Tile.findHitPoint(x, y, angle, Simulator.tileSize);
 
-    // if we don't have a wall on this tile at this baring, move to the next
-    // at the same baring, starting at the hit point on the tile
-    Tile tile   = this.map.get(left, top);
-    int  baring = Tile.getHitWall(hit, Simulator.tileSize);
-    if( ! tile.hasWall(baring) ) {
-      int nextLeft = left + Baring.moveLeft(baring), 
-          nextTop  = top  + Baring.moveTop(baring),
-          nextX    = hit.x == 0 ? Simulator.tileSize : 
-                   ( hit.x == Simulator.tileSize ? 0 : hit.x ),
-          nextY    = hit.y == 0 ? Simulator.tileSize : 
-                   ( hit.y == Simulator.tileSize ? 0 : hit.y );
-      // recursively find more distance on the next tile
-      dist = this.findHitDistance(nextLeft, nextTop, nextX, nextY, dist );
+      // distance from the starting point to the hit-point on this tile
+      dist += Tile.getDistance(x, y, hit);
+
+      // if we don't have a wall on this tile at this baring, move to the next
+      // at the same baring, starting at the hit point on the tile
+      Tile tile = this.map.get(left, top);
+      int baring = Tile.getHitWall(hit, Simulator.tileSize);
+      if (tile.hasWall(baring)) {
+        break;
+      }
+      left = left + Baring.moveLeft(baring);
+      top = top + Baring.moveTop(baring);
+      x = hit.x == 0 ? Simulator.tileSize
+        : (hit.x == Simulator.tileSize ? 0 : hit.x);
+      y = hit.y == 0 ? Simulator.tileSize
+        : (hit.y == Simulator.tileSize ? 0 : hit.y);
+
     }
-    
-    return d + dist;
+    return dist;
   }
 
   /**
