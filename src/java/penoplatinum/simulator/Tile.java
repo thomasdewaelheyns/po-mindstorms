@@ -11,7 +11,9 @@ package penoplatinum.simulator;
  * 
  * wall switches
  *   4 bits : N E S W
- * line switches
+ * white line switches
+ *   4 bits : N E S W
+ * black line switches
  *   4 bits : N E S W
  * barcode
  *   4 bits : barcode is hex number 1..F
@@ -19,7 +21,7 @@ package penoplatinum.simulator;
  *   3 bits : none, N, E, S or W
  * narrowing orientation
  *   3 bits : none, N, E, S or W
- * total = 18 bits, 14 spare for future additional information (ramp,...)
+ * total = 22 bits, 10 spare for future additional information (ramp,...)
  *
  *  Author: Team Platinum
  */
@@ -27,6 +29,9 @@ package penoplatinum.simulator;
 import java.awt.Point;
 
 public class Tile {
+  public static int WHITE = 0;
+  public static int BLACK = 1;
+
   private int data;
   
   public Tile() {
@@ -150,62 +155,64 @@ public class Tile {
   }
 
   /* Lines */
-  public Tile setLine(int location) { 
-    this.setBit(location + 4);
+  public Tile setLine(int location, int color) { 
+    this.setBit(location + 4 + color);
     return this;
   }
   
   public Tile unsetLine(int location)  { 
-    this.unsetBit(location + 4);
+    this.unsetBit(location + 4 + Tile.WHITE);
+    this.unsetBit(location + 4 + Tile.BLACK);
     return this;
   }
   
   public Boolean hasLine(int location) {
-    return this.hasBit(location + 4);
+    return this.hasBit(location + 4 + Tile.WHITE) 
+        || this.hasBit(location + 4 + Tile.BLACK);
   }
   
   /* Barcode */
   public Tile withBarcode( int code ) {
-    this.setBits( 8, 4, code );
+    this.setBits( 12, 4, code );
     return this;
   }
 
   public Tile unwithBarcode() {
-    this.unsetBits( 8, 4 );
+    this.unsetBits( 12, 4 );
     return this;
   }
 
   public int getBarcode() {
-    return this.getBits(8,4);
+    return this.getBits(12,4);
   }
   
   public Tile withBarcodeLocation( int location ) {
-    this.setBits( 12, 3, location + 1 );
+    this.setBits( 16, 3, location + 1 );
     return this;
   }
 
   public Tile unwithBarcodeLocation() {
-    this.unsetBits( 12, 3 );
+    this.unsetBits( 16, 3 );
     return this;
   }
 
   public int getBarcodeLocation() {
-    return this.getBits(12,3) - 1;
+    return this.getBits(16,3) - 1;
   }
   
   /* Narrowing */
   public Tile setNarrowingOrientation( int orientation ) { 
-    this.setBits( 15, 3, orientation + 1 );
+    this.setBits( 19, 3, orientation + 1 );
     return this;
   }
   
   public Tile unsetNarrowingOrientation()  { 
-    this.unsetBits(15, 3);
+    this.unsetBits(19, 3);
     return this;
   }
   
   public int getNarrowingOrientation() {
-    return this.getBits(15,3) - 1;
+    return this.getBits(19,3) - 1;
   }
 
   /* representations */

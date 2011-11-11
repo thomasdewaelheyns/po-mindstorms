@@ -197,6 +197,11 @@ class Simulator {
    *       this is shared with the Model in a way (for now)
    */
   private void updateSensorValues() {
+    this.updateFrontPushSensors();
+    this.updateLightSensor();
+  }
+  
+  private void updateFrontPushSensors() {
     int lengthRobot = 20;
     
     int distance = this.getFreeFrontDistance();
@@ -209,6 +214,13 @@ class Simulator {
         
     this.sensorValues[Model.M1] = this.lastChangeM1;
     this.sensorValues[Model.M2] = this.lastChangeM2;
+  }
+  
+  private void updateLightSensor() {
+    // TODO: check lines
+    // TODO: check barcodes
+    // probably == a getColor() method
+    
   }
   
   /**
