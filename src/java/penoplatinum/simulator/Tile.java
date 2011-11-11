@@ -30,7 +30,7 @@ import java.awt.Point;
 
 public class Tile {
   public static int WHITE = 0;
-  public static int BLACK = 1;
+  public static int BLACK = 4;
 
   private int data;
   
@@ -155,12 +155,12 @@ public class Tile {
   }
 
   /* Lines */
-  public Tile setLine(int location, int color) { 
+  public Tile withLine(int location, int color) { 
     this.setBit(location + 4 + color);
     return this;
   }
   
-  public Tile unsetLine(int location)  { 
+  public Tile withoutLine(int location)  { 
     this.unsetBit(location + 4 + Tile.WHITE);
     this.unsetBit(location + 4 + Tile.BLACK);
     return this;
@@ -174,7 +174,7 @@ public class Tile {
   public Boolean hasLine(int location, int color) {
     return this.hasBit(location + 4 + color);
   }
-  
+
   /* Barcode */
   public Tile withBarcode( int code ) {
     this.setBits( 12, 4, code );

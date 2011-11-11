@@ -47,38 +47,49 @@ public class TileTest extends TestCase {
   
   public void testNorthLine() {
     Tile tile = this.createEmptyTile();
-    tile.setLine(Baring.N, Tile.WHITE);
+    tile.withLine(Baring.N, Tile.WHITE);
     assertEquals("00001000000000000000000000000000", tile.toString() ); 
     assertTrue(tile.hasLine(Baring.N));
-    tile.unsetLine(Baring.N);
+    tile.withoutLine(Baring.N);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testEastLine() {
     Tile tile = this.createEmptyTile();
-    tile.setLine(Baring.E, Tile.WHITE);
+    tile.withLine(Baring.E, Tile.WHITE);
     assertEquals("00000100000000000000000000000000", tile.toString() ); 
     assertTrue(tile.hasLine(Baring.E));
-    tile.unsetLine(Baring.E);
+    tile.withoutLine(Baring.E);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testSouthLine() {
     Tile tile = this.createEmptyTile();
-    tile.setLine(Baring.S, Tile.WHITE);
+    tile.withLine(Baring.S, Tile.WHITE);
     assertEquals("00000010000000000000000000000000", tile.toString() ); 
     assertTrue(tile.hasLine(Baring.S));
-    tile.unsetLine(Baring.S);
+    tile.withoutLine(Baring.S);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testWestLine() {
     Tile tile = this.createEmptyTile();
-    tile.setLine(Baring.W, Tile.WHITE);
+    tile.withLine(Baring.W, Tile.WHITE);
     assertEquals("00000001000000000000000000000000", tile.toString() ); 
     assertTrue(tile.hasLine(Baring.W));
-    tile.unsetLine(Baring.W);
+    tile.withoutLine(Baring.W);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
+  }
+  
+  public void testCombinationOfLines() {
+    Tile tile = this.createEmptyTile();
+    tile.withLine(Baring.N, Tile.WHITE);
+    tile.withLine(Baring.W, Tile.WHITE);
+    assertEquals("00001001000000000000000000000000", tile.toString() );
+    assertTrue(tile.hasLine(Baring.N));
+    assertTrue(tile.hasLine(Baring.N, Tile.WHITE));
+    assertFalse(tile.hasLine(Baring.N, Tile.BLACK));
+    assertFalse(tile.hasLine(Baring.S));
   }
   
   public void testBarcode() {

@@ -121,7 +121,41 @@ public class Board extends JPanel {
   }
 
   private void renderLines(Graphics2D g2d, Tile tile, int left, int top) {
-    // TODO
+    // lines are 1cm wide = 2px
+    // lines are 20cm out of the walls = 40px
+    int width, offset;
+    if( tile.hasLine(Baring.N) ) {
+      g2d.setColor(tile.hasLine(Baring.N, Tile.WHITE) ? 
+                   this.WHITE : this.BLACK);
+      width = 158; offset = 0;
+      if( tile.hasLine(Baring.W) ) {  width -= 40; offset += 40; }
+      if( tile.hasLine(Baring.E) ) {  width -= 40; }
+      g2d.fill(new Rectangle(160*(left-1)+offset, 160*(top-1)+40, width, 2));
+    }
+    if( tile.hasLine(Baring.E) ) {
+      g2d.setColor(tile.hasLine(Baring.E, Tile.WHITE) ? 
+                   this.WHITE : this.BLACK);
+      width = 158; offset = 0;
+      if( tile.hasLine(Baring.N) ) {  width -= 40; offset += 40; }
+      if( tile.hasLine(Baring.S) ) {  width -= 40; }
+      g2d.fill(new Rectangle(160*(left)-44, 160*(top-1)+offset, 2, width));
+    }
+    if( tile.hasLine(Baring.S) ) {
+      g2d.setColor(tile.hasLine(Baring.S, Tile.WHITE) ? 
+                   this.WHITE : this.BLACK);
+      width = 158; offset = 0;
+      if( tile.hasLine(Baring.W) ) {  width -= 40; offset += 40; }
+      if( tile.hasLine(Baring.E) ) {  width -= 40; }
+      g2d.fill(new Rectangle(160*(left-1)+offset, 160*(top)-44, width, 2));
+    }
+    if( tile.hasLine(Baring.W) ) {
+      g2d.setColor(tile.hasLine(Baring.W, Tile.WHITE) ? 
+                   this.WHITE : this.BLACK);
+      width = 158; offset = 0;
+      if( tile.hasLine(Baring.N) ) {  width -= 40; offset += 40; }
+      if( tile.hasLine(Baring.S) ) {  width -= 40; }
+      g2d.fill(new Rectangle(160*(left-1)+40, 160*(top-1)+offset, 2, width));
+    }
   }
 
   private void renderBarcode(Graphics2D g2d, Tile tile, int left, int top) {
