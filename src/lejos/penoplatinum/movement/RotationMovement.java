@@ -3,9 +3,9 @@ package penoplatinum.movement;
 import lejos.nxt.*;
 import penoplatinum.Utils;
 
-public class RotationMovement implements IMovement {
-    public static double CCW_afwijking = 1.01;
+public class RotationMovement {
 
+    public static double CCW_afwijking = 1.01;
     public int SPEEDFORWARD = 500;
     public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
@@ -18,61 +18,57 @@ public class RotationMovement implements IMovement {
         this.movementDisabled = movementDisabled;
     }
 
-    public void MoveStraight(double distance) {
-        MoveStraight(distance, true);
+    public void driveForward()
+    {
+        motorLeft.forward();
+        motorRight.forward();
     }
-
-    public void MoveStraight(double distance, boolean block) {
-        
+    public void driveBackward()
+    {
+        motorLeft.backward();;
+        motorRight.backward();
+    }
+    
+    public void driveDistance(double distance) {
         if (movementDisabled) {
             return;
         }
-        //distance = 0;
-        ///Utils.Log("Straight");
         distance *= 1000;
         distance /= 0.99;
         int r = (int) (distance * 360 / WIELOMTREK);
-        changeMotorSpeed(SPEEDFORWARD);
+        setSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
-        motorRight.rotate(r, !block);
-        //TODO: sleep here???  Utils.Sleep(r * 1050 / SPEEDFORWARD); //1000ms/s + 10% foutmarge
+        motorRight.rotate(r, true);
     }
 
-    public void TurnOnSpotCCW(double angle) {
-        TurnOnSpotCCW(angle, true);
+    /**
+     * This function blocks until movement is complete
+     * TODO: WARNING: spins this thread! Preferable use this in a single thread, eg the main thread 
+     */
+    public void waitForMovementComplete() {
+        while (motorLeft.isMoving()) {
+            Utils.Sleep(20);
+        }
     }
 
-    public void TurnOnSpotCCW(double angle, boolean block) {
+    public void turnCCW(double angle) {
         if (movementDisabled) {
             return;
         }
-        //angle = 0;
-        //Utils.Log("Turn");
-        changeMotorSpeed(SPEEDTURN);
+        setSpeed(SPEEDTURN);
         angle *= CCW_afwijking;
-        //TODO: for barcode second rotate needs a false
-        //TODO: int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
-        //		Different formula in barcode???
 
         int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
         motorLeft.rotate(h, true);
-        motorRight.rotate(-h, !block);
+        motorRight.rotate(-h, true);
     }
 
-    public void TurnAroundWheel(double angle, boolean aroundLeft) {
-        int h = (int) (angle * 2 * Math.PI * WIELAFSTAND / WIELOMTREK);
-        if (aroundLeft) {
-            motorRight.rotate(h);
-        } else {
-            motorLeft.rotate(h);
-        }
-    }
-
-    public void changeMotorSpeed(int speed) {
-        if (motorLeft.getSpeed() != speed) {
-            //Utils.Log("Changing speed!");
+    public void setSpeed(int speed) {
+        if (Math.abs( motorLeft.getSpeed() - speed) > 150) {
+            //TODO: implement better acceleration in this class
+            //Utils.Log("Large speed difference!");
             // Accelerate from 0
-            Stop();
+            stop();
             //Wait for regulator to regulate
             Utils.Sleep(200);
         }
@@ -82,56 +78,7 @@ public class RotationMovement implements IMovement {
 
     }
 
-    public void CalibrateWheelCircumference() {
-        TouchSensor sensor = new TouchSensor(SensorPort.S4);
-
-
-        System.out.println("Incoming");
-        motorLeft.setSpeed(SPEEDFORWARD);
-        motorRight.setSpeed(SPEEDFORWARD);
-        motorLeft.forward();
-        motorRight.forward();
-
-        while (!sensor.isPressed()) {
-        }
-
-        System.out.println("Starting in 3 second");
-        motorLeft.stop();
-        motorRight.stop();
-        Utils.Sleep(3000);
-
-        System.out.println("Weeeeee");
-
-        motorLeft.setSpeed(SPEEDFORWARD);
-        motorRight.setSpeed(SPEEDFORWARD);
-        motorLeft.forward();
-        motorRight.forward();
-
-        int tachoL = motorLeft.getTachoCount();
-        int tachoR = motorRight.getTachoCount();
-        while (!sensor.isPressed()) {
-        }
-        System.out.println("Auch!");
-
-        motorLeft.stop();
-        motorRight.stop();
-
-        int diffL = motorLeft.getTachoCount() - tachoL;
-        int diffR = motorRight.getTachoCount() - tachoR;
-
-        System.out.println(diffL);
-        System.out.println(diffR);
-
-        System.out.println(1600 * 360 / diffL);
-        System.out.println(1600 * 360 / diffR);
-        Button.waitForPress();
-
-    }
-
-    public void CalibrateWheelDistance() {
-    }
-
-    public void Stop() {
+    public void stop() {
         motorLeft.stop();
         motorRight.stop();
     }

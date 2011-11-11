@@ -14,7 +14,7 @@ public class RotationMovementTest {
             Button.waitForPress();
             Utils.Sleep(1000);
             for (int j = 0; j < 5; j++) {
-                mov.MoveStraight(distances[i]);
+                mov.driveDistance(distances[i]);
                 Utils.Sleep(3000);
 
             }
@@ -33,7 +33,7 @@ public class RotationMovementTest {
             Utils.Sleep(1000);
             for (int j = 0; j < 5; j++) {
                 mov.SPEEDFORWARD = speeds[i];
-                mov.MoveStraight(distance);
+                mov.driveDistance(distance);
                 Utils.Sleep(3000);
 
             }
@@ -54,7 +54,7 @@ public class RotationMovementTest {
             Button.waitForPress();
             Utils.Sleep(1000);
             for (int j = 0; j < 5; j++) {
-                mov.TurnOnSpotCCW(a);
+                mov.turnCCW(a);
                 Utils.Sleep(3000);
             }
         }
@@ -74,7 +74,7 @@ public class RotationMovementTest {
             Utils.Sleep(1000);
             for (int j = 0; j < 5; j++) {
                 mov.SPEEDTURN = speed;
-                mov.TurnOnSpotCCW(angle);
+                mov.turnCCW(angle);
                 Utils.Sleep(3000);
             }
         }

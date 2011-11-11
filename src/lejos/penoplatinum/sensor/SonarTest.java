@@ -104,7 +104,7 @@ public class SonarTest {
         int sensor = Integer.MAX_VALUE;
         float tacho;
         while (minDistance < sensor) {
-            mov.MoveStraight(2, false);
+            mov.driveDistance(2);
             tacho = mov.getAverageTacho();
             sensor = sens.getDistance();
             t.getSendStream().writeFloat(tacho);
@@ -112,7 +112,7 @@ public class SonarTest {
             t.SendPacket(samplePacket);
             Utils.Sleep(500);
         }
-        mov.Stop();
+        mov.stop();
     }
 
     public void orientSonarHead(UltrasonicSensor sens, Motor m) {

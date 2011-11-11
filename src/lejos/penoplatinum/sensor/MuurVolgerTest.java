@@ -9,11 +9,6 @@ import penoplatinum.movement.RotationMovement;
 
 public class MuurVolgerTest {
 
-    public static void test() {
-        Muurvolger m = new Muurvolger(new UltrasonicSensor(SensorPort.S2), new RotationMovement(), Motor.A);
-        m.run();
-    }
-
     public static void testPerpendicular() {
 
         RobotBluetoothConnection conn = new RobotBluetoothConnection();

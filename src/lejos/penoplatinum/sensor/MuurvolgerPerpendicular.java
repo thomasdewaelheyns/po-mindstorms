@@ -7,13 +7,13 @@ import lejos.nxt.UltrasonicSensor;
 import penoplatinum.Utils;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.PacketTransporter;
-import penoplatinum.movement.IMovement;
+import penoplatinum.movement.RotationMovement;
 import penoplatinum.ui.UIView;
 
 public class MuurvolgerPerpendicular {
 
     private UltrasonicSensor ultra;
-    public IMovement movement;
+    public RotationMovement movement;
     private Motor verticalMotor;
     public boolean cont = true;
     private int minTacho = Integer.MIN_VALUE;
@@ -26,7 +26,7 @@ public class MuurvolgerPerpendicular {
     private boolean isRight = false;
     private final PacketTransporter commandTransporter;
 
-    public MuurvolgerPerpendicular(UltrasonicSensor ultra, IMovement m, Motor v, IConnection connection,PacketTransporter commandTransporter) {
+    public MuurvolgerPerpendicular(UltrasonicSensor ultra, RotationMovement m, Motor v, IConnection connection,PacketTransporter commandTransporter) {
         this.ultra = ultra;
         movement = m;
         verticalMotor = v;
@@ -84,7 +84,7 @@ public class MuurvolgerPerpendicular {
             Utils.Log("EndTacho" + verticalMotor.getTachoCount());
             //correctAngle();
             clearMinimum();
-            movement.MoveStraight(10, false);
+            movement.driveDistance(10);
 
             verticalMotor.rotateTo(startTacho, true);
             while (verticalMotor.isMoving()) {
@@ -93,14 +93,14 @@ public class MuurvolgerPerpendicular {
 
             correctAngle();
             clearMinimum();
-            movement.MoveStraight(10, false);
+            movement.driveDistance(10);
 
             if (Button.ENTER.isPressed()) {
                 Button.LEFT.waitForPressAndRelease();
             }
         }
         
-        movement.Stop();
+        movement.stop();
     }
     
     
@@ -176,9 +176,9 @@ public class MuurvolgerPerpendicular {
             if (minDistance > 30) {
 
                 if (isRight) {
-                    movement.TurnOnSpotCCW(-50);
+                    movement.turnCCW(-50);
                 } else {
-                    movement.TurnOnSpotCCW(50);
+                    movement.turnCCW(50);
                 }
                 return;
             }
@@ -203,7 +203,7 @@ public class MuurvolgerPerpendicular {
             return;
         }
 
-        movement.TurnOnSpotCCW(correction); // TODO : maybe /2
+        movement.turnCCW(correction); // TODO : maybe /2
     }
 
     private void clearMinimum() {

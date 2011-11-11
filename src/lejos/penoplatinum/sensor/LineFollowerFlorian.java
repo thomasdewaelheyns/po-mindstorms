@@ -16,11 +16,7 @@ public class LineFollowerFlorian {
     int rightDirection;
     double LineThresHold;
     double platformThresHold;
-    private boolean lastLineWasWhite;
     boolean LineType;
-    private int WHITEVAL;
-    private int BROWNVAL;
-    private int BLACKVAL;
     private WrappedLightSensor lightSensor;
     private final PacketTransporter commandTransporter;
 
@@ -41,27 +37,23 @@ public class LineFollowerFlorian {
             if (lightSensor.isColor(Color.Brown)) {
                 findLine();
             }
-            movement.MoveStraight(1.0, false);
-            lastLineWasWhite = lightSensor.isColor(Color.White);
+            movement.driveDistance(1.0);
             Utils.Sleep(100);
         }
-        movement.Stop();
+        movement.stop();
     }
 
     public void findLine() {
         int[] rotates = new int[]{-10, 20, -130, 240, -720};
         int pos = 0;
         Utils.Log("FindLine");
-        movement.Stop();
+        movement.stop();
         while (lightSensor.isColor(Color.Brown)) {
-            if (stopped()) {
-                movement.TurnOnSpotCCW(rotates[pos++], false);
+            if (movement.isStopped()) {
+                movement.turnCCW(rotates[pos++]);
             }
         }
         Utils.Log("FoundLine");
     }
 
-    public boolean stopped() {
-        return !movement.motorLeft.isMoving() && !movement.motorRight.isMoving();
-    }
 }
