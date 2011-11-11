@@ -83,46 +83,46 @@ public class TileTest extends TestCase {
   
   public void testBarcode() {
     Tile tile = this.createEmptyTile();
-    tile.setBarcode(15);
+    tile.withBarcode(15);
     assertEquals("00000000111100000000000000000000", tile.toString() ); 
     assertEquals(15, tile.getBarcode());
-    tile.unsetBarcode();
+    tile.unwithBarcode();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
   
   public void testBarcodeLocationNorth() {
     Tile tile = this.createEmptyTile();
-    tile.setBarcodeLocation(Baring.N);
+    tile.withBarcodeLocation(Baring.N);
     assertEquals("00000000000010000000000000000000", tile.toString() ); 
     assertEquals(Baring.N, tile.getBarcodeLocation());
-    tile.unsetBarcodeLocation();
+    tile.unwithBarcodeLocation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testBarcodeLocationEast() {
     Tile tile = this.createEmptyTile();
-    tile.setBarcodeLocation(Baring.E);
+    tile.withBarcodeLocation(Baring.E);
     assertEquals("00000000000001000000000000000000", tile.toString() ); 
     assertEquals(Baring.E, tile.getBarcodeLocation());
-    tile.unsetBarcodeLocation();
+    tile.unwithBarcodeLocation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testBarcodeLocationSouth() {
     Tile tile = this.createEmptyTile();
-    tile.setBarcodeLocation(Baring.S);
+    tile.withBarcodeLocation(Baring.S);
     assertEquals("00000000000011000000000000000000", tile.toString() ); 
     assertEquals(Baring.S, tile.getBarcodeLocation());
-    tile.unsetBarcodeLocation();
+    tile.unwithBarcodeLocation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testBarcodeLocationWest() {
     Tile tile = this.createEmptyTile();
-    tile.setBarcodeLocation(Baring.W);
+    tile.withBarcodeLocation(Baring.W);
     assertEquals("00000000000000100000000000000000", tile.toString() ); 
     assertEquals(Baring.W, tile.getBarcodeLocation());
-    tile.unsetBarcodeLocation();
+    tile.unwithBarcodeLocation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
   

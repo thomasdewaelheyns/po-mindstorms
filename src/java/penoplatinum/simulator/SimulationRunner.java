@@ -18,11 +18,26 @@ class SimulationRunner {
     Robot robot = new BumperNavigatorRobot();
 
     // construct a course
-    Map map = new Map(4);
-    map.add(new Tile(9)) .add(new Tile(5)).add(new Tile(5)).add(new Tile(3))
-       .add(new Tile(12)).add(new Tile(5)).add(new Tile(3)).add(new Tile(10))
-       .add(new Tile(9)) .add(new Tile(5)).add(new Tile(6)).add(new Tile(10))
-       .add(new Tile(12)).add(new Tile(5)).add(new Tile(5)).add(new Tile(6));
+    Map map = new Map(4)
+      .add(new Tile( 9).withBarcode(Barcode.Right)  .withBarcodeLocation(Baring.S) )
+      .add(new Tile( 5).withBarcode(Barcode.Forward).withBarcodeLocation(Baring.W) )
+      .add(new Tile( 5).withBarcode(Barcode.Forward).withBarcodeLocation(Baring.W) )
+      .add(new Tile( 3).withBarcode(Barcode.Right)  .withBarcodeLocation(Baring.W) )
+       // row 2
+      .add(new Tile(12).withBarcode(Barcode.Right)  .withBarcodeLocation(Baring.E) )
+      .add(new Tile( 5).withBarcode(Barcode.Forward).withBarcodeLocation(Baring.E) )
+      .add(new Tile( 3).withBarcode(Barcode.Left)   .withBarcodeLocation(Baring.S) )
+      .add(new Tile(10).withBarcode(Barcode.Forward).withBarcodeLocation(Baring.N) )
+       // row 3
+      .add(new Tile( 9).withBarcode(Barcode.Right)  .withBarcodeLocation(Baring.S) )
+      .add(new Tile( 5).withBarcode(Barcode.Forward).withBarcodeLocation(Baring.W) )
+      .add(new Tile( 6).withBarcode(Barcode.Left)   .withBarcodeLocation(Baring.W) )
+      .add(new Tile(10).withBarcode(Barcode.Forward).withBarcodeLocation(Baring.N) )
+       // row 4
+      .add(new Tile(12).withBarcode(Barcode.Right)  .withBarcodeLocation(Baring.E) )
+      .add(new Tile( 5).withBarcode(Barcode.Forward).withBarcodeLocation(Baring.E) )
+      .add(new Tile( 5).withBarcode(Barcode.Forward).withBarcodeLocation(Baring.E) )
+      .add(new Tile( 6).withBarcode(Barcode.Right)  .withBarcodeLocation(Baring.N) );
 
     // Future implementation
     // Map map = Map.fromFile("map.txt");  // load a map from a file

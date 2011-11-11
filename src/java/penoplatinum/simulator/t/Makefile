@@ -1,5 +1,5 @@
 JUNIT_JAR=/usr/share/java/junit.jar
-CP=.:../:${JUNIT_JAR}
+CP=.:../../../:${JUNIT_JAR}
 
 JAVAC=javac -cp ${CP}
 JAVA=java -cp ${CP}

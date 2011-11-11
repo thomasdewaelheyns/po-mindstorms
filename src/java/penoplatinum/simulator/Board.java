@@ -31,6 +31,9 @@ public class Board extends JPanel {
   private BufferedImage background;
   private BufferedImage trail;
   
+  private static Color BLACK = new Color(100,100,100);
+  private static Color WHITE = new Color(200,200,200);
+
   public Board() {
     this.setupCanvas();
     this.setupImages();
@@ -105,13 +108,50 @@ public class Board extends JPanel {
     g.dispose();
   }    
   
-  private void renderTile(Graphics2D g2d, Tile tile, int left, int top ) {
+  private void renderTile(Graphics2D g2d, Tile tile, int left, int top) {
     // tile = 80 cm, scale = 2px/cm
     // background
     g2d.setColor(new Color(205,165,100));
     g2d.fill(new Rectangle(160*(left-1), 160*(top-1), 160, 160));
     
-    // walls
+    this.renderLines    ( g2d, tile, left, top );
+    this.renderBarcode  ( g2d, tile, left, top );
+    this.renderNarrowing( g2d, tile, left, top );
+    this.renderWalls    ( g2d, tile, left, top );
+  }
+
+  private void renderLines(Graphics2D g2d, Tile tile, int left, int top) {
+    // TODO
+  }
+
+  private void renderBarcode(Graphics2D g2d, Tile tile, int left, int top) {
+    // every bar of the barcode has a 2cm width = 4px
+    for( int line=0; line<7; line++ ) {
+      g2d.setColor( (tile.getBarcode() & (1<<line) ) != 0 ?
+                    this.BLACK : this.WHITE );
+
+      switch( tile.getBarcodeLocation() ) {
+        case Baring.N:
+          g2d.fill(new Rectangle(160*(left-1), 160*(top-1)+4*(line), 160, 4));
+          break;
+        case Baring.E:
+          g2d.fill(new Rectangle(160*(left)-4*(line+1), 160*(top-1), 4, 160));
+          break;
+        case Baring.S:
+          g2d.fill(new Rectangle(160*(left-1), 160*(top)-4*(line+1), 160, 4));
+          break;
+        case Baring.W:
+          g2d.fill(new Rectangle(160*(left-1)+4*line, 160*(top-1)+4, 4, 160));
+          break;
+      }
+    }
+  }
+
+  private void renderNarrowing(Graphics2D g2d, Tile tile, int left, int top) {
+    // TODO
+  }
+
+  private void renderWalls(Graphics2D g2d, Tile tile, int left, int top) {
     // walls are 2cm width = 4px
     g2d.setColor(new Color(100,53,38));
     if( tile.hasWall(Baring.N) ) {
@@ -126,15 +166,6 @@ public class Board extends JPanel {
     if( tile.hasWall(Baring.W) ) {
       g2d.fill(new Rectangle(160*(left-1), 160*(top-1), 4, 160));
     }
-    
-    // lines
-    // TODO
-    
-    // barcode
-    // TODO
-    
-    // narrowing
-    // TODO
   }
 
   private void renderRobot(Graphics2D g2d) { 

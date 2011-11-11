@@ -165,12 +165,12 @@ public class Tile {
   }
   
   /* Barcode */
-  public Tile setBarcode( int code ) {
+  public Tile withBarcode( int code ) {
     this.setBits( 8, 4, code );
     return this;
   }
 
-  public Tile unsetBarcode() {
+  public Tile unwithBarcode() {
     this.unsetBits( 8, 4 );
     return this;
   }
@@ -179,12 +179,12 @@ public class Tile {
     return this.getBits(8,4);
   }
   
-  public Tile setBarcodeLocation( int location ) {
+  public Tile withBarcodeLocation( int location ) {
     this.setBits( 12, 3, location + 1 );
     return this;
   }
 
-  public Tile unsetBarcodeLocation() {
+  public Tile unwithBarcodeLocation() {
     this.unsetBits( 12, 3 );
     return this;
   }
