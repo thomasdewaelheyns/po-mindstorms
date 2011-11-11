@@ -167,8 +167,12 @@ public class Tile {
   }
   
   public Boolean hasLine(int location) {
-    return this.hasBit(location + 4 + Tile.WHITE) 
-        || this.hasBit(location + 4 + Tile.BLACK);
+    return this.hasLine(location, Tile.WHITE) 
+        || this.hasLine(location, Tile.BLACK);
+  }
+
+  public Boolean hasLine(int location, int color) {
+    return this.hasBit(location + 4 + color);
   }
   
   /* Barcode */
