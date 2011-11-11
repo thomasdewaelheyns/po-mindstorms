@@ -6,7 +6,6 @@ package penoplatinum;
 
 import lejos.nxt.Motor;
 import lejos.nxt.TouchSensor;
-import penoplatinum.movement.AngieCalibrationData;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.RotatingSonarSensor;
 import penoplatinum.sensor.WrappedLightSensor;

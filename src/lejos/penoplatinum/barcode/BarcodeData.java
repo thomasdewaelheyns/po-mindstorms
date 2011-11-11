@@ -1,7 +1,6 @@
 package penoplatinum.barcode;
 
 import java.util.ArrayList;
-import penoplatinum.Utils;
 import penoplatinum.sensor.WrappedLightSensor;
 
 public class BarcodeData {
@@ -14,14 +13,6 @@ public class BarcodeData {
     }
     
     public int translate(ArrayList<Integer> list) {
-//        StringBuilder buf = new StringBuilder();
-//        Utils.Log("Translate array");
-//        for (int i = 0; i < list.size(); i++) {
-//            buf.append(list.get(i));
-//            buf.append(" ");
-//        }
-//        Utils.Log(buf.toString());
-//        Utils.Log("End Array");
         
         if(list.size()<7){return -1;}
         int val = 0;

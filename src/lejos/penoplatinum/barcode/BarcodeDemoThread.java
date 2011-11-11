@@ -6,6 +6,7 @@ import lejos.nxt.*;
 import penoplatinum.Utils;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.sensor.WrappedLightSensor;
 import penoplatinum.ui.UIView;
 
 /**
@@ -153,5 +154,29 @@ public class BarcodeDemoThread extends Thread {
         printStream.println(direction);
         Utils.Log(UIView.BARCODE + "");
         transporter.SendPacket(UIView.BARCODE);
+    }
+
+    /**
+     * NOT USED
+     * @param conn
+     * @param sensor 
+     */
+    public static void runBarcodeDemo(IConnection conn, WrappedLightSensor sensor) {
+
+        BarcodeDemoThread reader = new BarcodeDemoThread(new BarcodeReader(sensor), true, conn);
+        reader.start();
+        while (true) {
+            int read = Button.readButtons();
+            if ((read & 1) != 0) {
+                reader.lineFollower = !reader.lineFollower;
+                System.out.println("" + reader.lineFollower);
+            }
+            if ((read & 2) != 0) {
+                reader.codeReader.continueWhile = false;
+                reader.continueThread = false;
+                break;
+            }
+            while (Button.readButtons() != 0);
+        }
     }
 }

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.movement;
+package penoplatinum;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
@@ -12,6 +12,7 @@ import lejos.nxt.TouchSensor;
 import lejos.util.Stopwatch;
 import penoplatinum.Angie;
 import penoplatinum.Utils;
+import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.WrappedLightSensor;
 
 /**
