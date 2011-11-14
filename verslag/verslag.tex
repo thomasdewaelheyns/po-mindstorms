@@ -458,7 +458,7 @@ We hebben met verschillende sets van kalibratiewaarden telkens 12 metingen gedaa
 
 De resultaten tonen aan dat met verschillende kalibraties, de resultaten voor elk van de kleuren binnen vergelijkbare bereiken liggen. Voor zwart dient opgemerkt te worden dat hier in verhouding tot bruin en wit, veel grotere relatieve afwijkingen optreden. We kunnen dit toeschrijven aan het vuil worden of slijten, waaraan zwart het meest onderhevig is.
 
-Voor het bepalen van de waarden waarbinnen we besluiten of een kleur bruin, wit of zwart is, bekijken we de resultaten in absolute vorm over alle metingen heen. Figuur \ref{chart:kleuren} illustreert de bereiken van de drie verschillende kleuren. Hierbij merken we op, dat ofschoon zwart een grotere potenti‘le relatieve afwijking kent, dit in praktijk geen probleem zal opleveren. Het bereik van de metingen voor zwart ligt ver van het bereik van bruin en wit. Deze twee laatsten daarentegen hebben wel minima en maxima die in elkaars buurt liggen en potentieel kunnen zorgen voor "valse positieven" in beide richtingen. 
+Voor het bepalen van de waarden waarbinnen we besluiten of een kleur bruin, wit of zwart is, bekijken we de resultaten in absolute vorm over alle metingen heen. Figuur \ref{chart:kleuren} illustreert de bereiken van de drie verschillende kleuren. Hierbij merken we op, dat ofschoon zwart een grotere potenti\"ele relatieve afwijking kent, dit in praktijk geen probleem zal opleveren. Het bereik van de metingen voor zwart ligt ver van het bereik van bruin en wit. Deze twee laatsten daarentegen hebben wel minima en maxima die in elkaars buurt liggen en potentieel kunnen zorgen voor "valse positieven" in beide richtingen. 
 
 \begin{figure}
 	\caption{Absolute gemeten waarden voor wit, bruin en zwart}
@@ -521,13 +521,19 @@ In een eerste test bepaalden we de afwijking op een afstandsmeting van 1 tot 60c
 \begin{figure}[htbp]
    \centering
    \caption{Test 1: Relatieve afwijking van de sonarsensor tov de te meten afstand.}
-\begin{tikzpicture}    \begin{axis}[        xlabel=Werkelijke Afstand (cm),        ylabel=Relatieve fout tov gewachte afstand (\%)]    \addplot[color=red,mark=x] coordinates {
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel=Werkelijke Afstand (cm),
+        ylabel=Relatieve fout tov gewachte afstand (\%)]
+    \addplot[color=red,mark=x] coordinates {
 	(5,40.00)
 	(10,30.00)
 	(20,15.00)
 	(40,2.50)
 	(60,1.67)
-   };    \end{axis}\end{tikzpicture}
+   };
+    \end{axis}
+\end{tikzpicture}
    \label{chart:sonarDistance}
 \end{figure}
 
@@ -540,34 +546,46 @@ Een robot zal niet steeds loodrecht staan t.o.v. een obstakel. Om na te gaan hoe
 \begin{figure}[htbp]
    \centering
    \caption{Test 2: Relatieve afwijking van de sonarsensor bij meting onder een hoek.}
-\begin{tikzpicture}    \begin{axis}[        xlabel=Werkelijke Afstand (cm),        ylabel=Relatieve fout tov gewachte afstand (\%),
-       legend style={draw=none}]    \addplot[color=red,mark=x,] coordinates {
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel=Werkelijke Afstand (cm),
+        ylabel=Relatieve fout tov gewachte afstand (\%),
+       legend style={draw=none}]
+    \addplot[color=red,mark=x,] coordinates {
 	(5,40.00)
 	(10,30.00)
 	(20,15.00)
 	(40,2.50)
 	(60,1.67)
-   };    \addplot[color=green,mark=x,] coordinates {
+   };
+    \addplot[color=green,mark=x,] coordinates {
 	(20,16.55)
 	(40,1.01)
 	(60,1.28)
-   };    \addplot[color=blue,mark=x,] coordinates {
+   };
+    \addplot[color=blue,mark=x,] coordinates {
 	(20,16.21)
 	(40,-0.15)
 	(60,0.12)
-   };    \addplot[color=yellow,mark=x,] coordinates {
+   };
+    \addplot[color=yellow,mark=x,] coordinates {
 	(20,14.95)
 	(40,-1.79)
 	(60,-1.8)
-   };    \addplot[color=purple,mark=x,] coordinates {
+   };
+    \addplot[color=purple,mark=x,] coordinates {
 	(20,3.92)
 	(40,-11.23)
 	(60,-10.51)
-   };    \addplot[color=orange,mark=x,] coordinates {
+   };
+    \addplot[color=orange,mark=x,] coordinates {
 	(20,-11.61)
 	(40,-25.36)
 	(60,-24.81)
-   };   \legend{$0^{\circ}$,$5^{\circ}$,$10^{\circ}$,$15^{\circ}$,$30^{\circ}$,$45^{\circ}$}    \end{axis}\end{tikzpicture}
+   };
+   \legend{$0^{\circ}$,$5^{\circ}$,$10^{\circ}$,$15^{\circ}$,$30^{\circ}$,$45^{\circ}$}
+    \end{axis}
+\end{tikzpicture}
    \label{chart:sonarAngle}
 \end{figure}
 
@@ -580,8 +598,12 @@ Een test werd gedaan waarbij de robot op een afstand van een obstakel werd gepla
 \begin{figure}[htbp]
    \centering
    \caption{Test 3: Relatieve afwijking van de sonarsensor bij rijdende meting.}
-\begin{tikzpicture}    \begin{axis}[        xlabel=Werkelijke Afstand (cm),        ylabel=Relatieve fout tov gewachte afstand (\%),
-       legend style={draw=none}]    \addplot[color=red,mark=x,] coordinates {
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel=Werkelijke Afstand (cm),
+        ylabel=Relatieve fout tov gewachte afstand (\%),
+       legend style={draw=none}]
+    \addplot[color=red,mark=x,] coordinates {
 (188.50, 0.27)
 (185.78, 0.12)
 (182.73, 0.15)
@@ -642,7 +664,9 @@ Een test werd gedaan waarbij de robot op een afstand van een obstakel werd gepla
 (14.52, 65.32)
 (11.44, 101.04)
 (8.41, 173.43)
-   };    \end{axis}\end{tikzpicture}
+   };
+    \end{axis}
+\end{tikzpicture}
    \label{chart:sonarDrive}
 \end{figure}
 
