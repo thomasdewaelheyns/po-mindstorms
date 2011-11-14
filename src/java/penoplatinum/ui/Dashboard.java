@@ -31,6 +31,10 @@ public class Dashboard extends JPanel {
   private double angle      = UIView.NONE;
   private int    distance   = -1;
 
+  // touch sensor
+  private boolean touchOne= false;
+  private boolean touchTwo= false;
+          
   private Image robot;
   
   // barcode
@@ -110,6 +114,7 @@ public class Dashboard extends JPanel {
     this.renderBarcode(g2d);
     this.renderDirection(g2d);
     this.renderSonar(g2d);
+    this.renderPushSensors(g2d);
 
     Toolkit.getDefaultToolkit().sync();
     g.dispose();
@@ -204,6 +209,15 @@ public class Dashboard extends JPanel {
     g2d.draw(new Line2D.Float(150, 350, x, y ));
     this.drawCenteredText( g2d, ""+this.distance, Color.red, 
                            x, y, 100, 32 );
+  }
+  
+  private void renderPushSensors(Graphics2D g2d){
+      g2d.setColor((this.touchOne)?
+              Color.GREEN : Color.RED);
+      g2d.draw(new Rectangle(50, 500, 40, 10));
+      g2d.setColor((this.touchTwo)?
+              Color.GREEN : Color.RED);
+      g2d.draw(new Rectangle(110, 500, 40, 10));
   }
   
   private void drawCenteredText(Graphics2D g2d, String text, Color color,
