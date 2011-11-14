@@ -76,7 +76,7 @@ public class VeelhoekDemo {
         double hoek = 360.0 / numberAngles;
         for (int i = 0; i < numberAngles; i++) {
             movement.driveDistance(edgeLength);
-            movement.turnCCW(hoek);
+            movement.turnAngle(hoek);
         }
         Motor.B.stop();
         Motor.C.stop();

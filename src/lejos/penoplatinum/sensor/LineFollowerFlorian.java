@@ -50,7 +50,7 @@ public class LineFollowerFlorian {
         movement.stop();
         while (lightSensor.isColor(Color.Brown)) {
             if (movement.isStopped()) {
-                movement.turnCCW(rotates[pos++]);
+                movement.turnAngle(rotates[pos++]);
             }
         }
         Utils.Log("FoundLine");

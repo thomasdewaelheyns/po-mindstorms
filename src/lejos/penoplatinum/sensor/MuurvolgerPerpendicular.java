@@ -176,9 +176,9 @@ public class MuurvolgerPerpendicular {
             if (minDistance > 30) {
 
                 if (isRight) {
-                    movement.turnCCW(-50);
+                    movement.turnAngle(-50);
                 } else {
-                    movement.turnCCW(50);
+                    movement.turnAngle(50);
                 }
                 return;
             }
@@ -203,7 +203,7 @@ public class MuurvolgerPerpendicular {
             return;
         }
 
-        movement.turnCCW(correction); // TODO : maybe /2
+        movement.turnAngle(correction); // TODO : maybe /2
     }
 
     private void clearMinimum() {

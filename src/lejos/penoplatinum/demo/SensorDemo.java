@@ -46,6 +46,12 @@ public class SensorDemo {
 
                 boolean barcodeRunning = false;
 
+                final RotationMovement mov = new RotationMovement();
+
+                mov.SPEEDFORWARD = 250;
+                mov.SPEEDTURN = 120;
+                MuurvolgerPerpendicular muurvolger = new MuurvolgerPerpendicular(sens, mov, Motor.A, connection, commandTransporter);
+
 
                 while (true) {
                     commandTransporter.ReceivePacket();
@@ -71,14 +77,8 @@ public class SensorDemo {
                         Utils.Log("Calibratie voltooid!");
 
                     } else if (cmd.equals("wall")) {
-
-                        final RotationMovement mov = new RotationMovement();
-
-                        mov.SPEEDFORWARD = 250;
-                        mov.SPEEDTURN = 120;
-
                         // TODO: fix this : 
-                        // v.run();
+                        muurvolger.run();
                     } else if (cmd.equals("line")) {
                         Utils.Log("Starting lijnvolger.");
                         LineFollowerFlorian florian = new LineFollowerFlorian(readout, commandTransporter);

@@ -9,9 +9,6 @@ import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
 import lejos.nxt.TouchSensor;
-import lejos.util.Stopwatch;
-import penoplatinum.Angie;
-import penoplatinum.Utils;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.WrappedLightSensor;
 
@@ -109,17 +106,44 @@ public class RobotCalibrator {
                 angie.getMotorRight().stop();
                 i++;
             }
-            if (i == 1)
-            {
+            if (i == 1) {
                 //Only one motor was stopped, correction occured
                 noCorrection = false;
             }
         }
-        
+
         return noCorrection;
     }
 
-    public static void calibrateCCW(RotationMovement mov, WrappedLightSensor light) {
+    /**
+     * Returns the number of tacho's required for the motor's to turn, to achieve a given precision for the robot's rotation
+     * @param requiredAccuracy Require this method to calibrate to given maximum degrees error
+     */
+    public void calculateTurnTachos(float requiredAccuracy) {
+
+
+        // This is the error in degrees when turning 360 degrees using this calibration method
+        int angular360error = 10;
+
+        int required360s = (int) (angular360error / requiredAccuracy);
+
+        while (required360s > 0) {
+            if (angie.getMovement().isStopped()) {
+                angie.getMovement().turnAngle(10000);
+            }
+        }
+
+        int totalTachos = 0; //TODO: result of calibration
+
+        float tachosPerDegree = totalTachos / 360 / required360s;
+
+
+
+        RotationMovement mov = angie.getMovement();
+        WrappedLightSensor light = angie.getLight();
+
+
+
         mov.CCW_afwijking = 1;
 
         Button.waitForPress();
@@ -134,7 +158,7 @@ public class RobotCalibrator {
                     break;
                 }
                 executeCount += 2;
-                mov.turnCCW(360.0);
+                mov.turnAngle(360.0);
             }
             if (blackNext && !light.isColor(WrappedLightSensor.Color.Brown)) {
                 turnCount++;
@@ -151,5 +175,28 @@ public class RobotCalibrator {
         Utils.Log("" + afwijking);
         mov.CCW_afwijking *= afwijking;
         Utils.Log("mov: " + mov.CCW_afwijking);
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public float measureTachosPerMeter(int numberTimes) {
+        final int panelsize = 80;
+        
+        angie.getMovement().driveForward();
+        waitUntilBarcodeEnd();
+        float startTacho = angie.getMovement().getAverageTacho();
+        waitUntilBarcodeEnd();
+        float endTacho = angie.getMovement().getAverageTacho();
+        
+        angie.getMovement().driveBackward();
+
+        return (endTacho - startTacho) / panelsize;
+    }
+
+    private void waitUntilBarcodeEnd() {
+        
+        
     }
 }

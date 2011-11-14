@@ -18,17 +18,16 @@ public class RotationMovement {
         this.movementDisabled = movementDisabled;
     }
 
-    public void driveForward()
-    {
+    public void driveForward() {
         motorLeft.forward();
         motorRight.forward();
     }
-    public void driveBackward()
-    {
-        motorLeft.backward();;
+
+    public void driveBackward() {
+        motorLeft.backward();
         motorRight.backward();
     }
-    
+
     public void driveDistance(double distance) {
         if (movementDisabled) {
             return;
@@ -51,20 +50,37 @@ public class RotationMovement {
         }
     }
 
-    public void turnCCW(double angle) {
+    public void turnAngle(double angleCCW) {
         if (movementDisabled) {
             return;
         }
         setSpeed(SPEEDTURN);
-        angle *= CCW_afwijking;
+        angleCCW *= CCW_afwijking;
 
-        int h = (int) (angle * Math.PI * WIELAFSTAND / WIELOMTREK);
+        int h = (int) (angleCCW * Math.PI * WIELAFSTAND / WIELOMTREK);
         motorLeft.rotate(h, true);
         motorRight.rotate(-h, true);
     }
 
+    public void turn(boolean ccw) {
+        if (movementDisabled) {
+            return;
+        }
+        setSpeed(SPEEDTURN);
+        if (ccw) {
+            motorLeft.forward();
+            motorRight.backward();
+        } else {
+
+            motorRight.forward();
+            motorLeft.backward();
+        }
+
+
+    }
+
     public void setSpeed(int speed) {
-        if (Math.abs( motorLeft.getSpeed() - speed) > 150) {
+        if (Math.abs(motorLeft.getSpeed() - speed) > 150) {
             //TODO: implement better acceleration in this class
             //Utils.Log("Large speed difference!");
             // Accelerate from 0

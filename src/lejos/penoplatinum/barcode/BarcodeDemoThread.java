@@ -74,14 +74,14 @@ public class BarcodeDemoThread extends Thread {
         switch (commando) {
             case 0:
                 if (lineFollower) {
-                    movement.turnCCW(60);
+                    movement.turnAngle(60);
                     movement.waitForMovementComplete();
                 }
                 Utils.Log("LineFix");
                 break;
             case 15:
                 if (lineFollower) {
-                    movement.turnCCW(-60);
+                    movement.turnAngle(-60);
                     movement.waitForMovementComplete();
                 }
                 Utils.Log("LineFix");
@@ -99,7 +99,7 @@ public class BarcodeDemoThread extends Thread {
                 sendBarcodePacket(UIView.GO_LEFT);
                 movement.driveDistance(0.325);
                 movement.waitForMovementComplete();
-                movement.turnCCW(90);
+                movement.turnAngle(90);
                 movement.waitForMovementComplete();
                 break;
             case 4:
@@ -110,28 +110,28 @@ public class BarcodeDemoThread extends Thread {
                 sendBarcodePacket(UIView.GO_RIGHT);
                 movement.driveDistance(0.325);
                 movement.waitForMovementComplete();
-                movement.turnCCW(-90);
+                movement.turnAngle(-90);
                 movement.waitForMovementComplete();
                 break;
 
             case 9:
                 movement.driveDistance(0.20);
                 movement.waitForMovementComplete();
-                movement.turnCCW(180);
+                movement.turnAngle(180);
                 movement.waitForMovementComplete();
                 Utils.Log("Wrong direction");
                 break;
             case 12:
                 movement.driveDistance(0.20);
                 movement.waitForMovementComplete();
-                movement.turnCCW(180);
+                movement.turnAngle(180);
                 movement.waitForMovementComplete();
                 Utils.Log("Wrong direction");
                 break;
             case 14:
                 movement.driveDistance(0.20);
                 movement.waitForMovementComplete();
-                movement.turnCCW(180);
+                movement.turnAngle(180);
                 movement.waitForMovementComplete();
                 Utils.Log("Wrong direction");
                 break;
