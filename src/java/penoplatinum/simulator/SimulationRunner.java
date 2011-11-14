@@ -101,7 +101,6 @@ class SimulationRunner {
     simulator.useMap   (map);
     // put the robot at position 50 cm from top, 50 cm from left, in an
     // angle of 33 degrees, with 0 degrees pointing north
-    Utils.Sleep(10000);
     simulator.putRobotAt (robot, 150, 150, 33);
 
     // give robot instructions through the communication layer

@@ -125,10 +125,8 @@ class Simulator {
   }
   
   public Simulator turnMotorTo(int angle){
-    int direction = (angle>=0?1: -1);
-    angle *= direction;
-    this.dSonar = angle;
-    this.stepsSonar = angle;
+    this.dSonar = (angle>=0?1: -1);
+    this.stepsSonar = angle*(angle>=0?1: -1);
     return this;
   }
   
@@ -196,7 +194,7 @@ class Simulator {
     if(this.stepsSonar-->0){
       this.sensorValues[Model.M3]+=this.dSonar;
     }
-    
+    //System.out.println(((int)this.sensorValues[Model.M3])+" "+((int)this.sensorValues[Model.S3]));
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
 
@@ -278,8 +276,8 @@ private int getFreeFrontDistance(int angle) {
     // find distance to first wall in line of sight
     distance = (int)Math.round(this.findHitDistanceAngle(angle, left, top, x, y));
 
-    System.out.println( (int)(x) + ", " + (int)(y) + " @ " + 
-                        ((this.direction + 90) % 360) + " | " + distance +" & " +angle);
+    /*System.out.println( (int)(x) + ", " + (int)(y) + " @ " + 
+                        ((this.direction + 90) % 360) + " | " + distance +" & " +angle);/**/
     
     return distance;
   }
