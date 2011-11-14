@@ -177,10 +177,10 @@ public class Dashboard extends JPanel {
       case UIView.GO_FORWARD:
         this.renderImage(g2d, this.goForward, 350, 100 );
         break;      
-      case UIView.UPHILL;
+      case UIView.UPHILL:
           this.renderImage(g2d, this.upHill, 350, 100 );
           break;
-      case UIView.DOWNHILL;
+      case UIView.DOWNHILL:
           this.renderImage(g2d, this.downHill, 350, 100);
           break;
       default:
