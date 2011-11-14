@@ -46,6 +46,7 @@ public class Dashboard extends JPanel {
   private Image goRight;
   private Image upHill;
   private Image downHill;
+  private Image uTurn;
 
   private Font font;
   
@@ -74,6 +75,7 @@ public class Dashboard extends JPanel {
     this.upHill    = this.setupImage("uphill");
     this.downHill  = this.setupImage("downhill");
     this.robot     = this.setupImage("robot150");
+    this.uTurn     = this.setupImage("u-turn");
   }
   
   private Image setupImage(String name) {
@@ -188,6 +190,10 @@ public class Dashboard extends JPanel {
       case UIView.DOWNHILL:
           this.renderImage(g2d, this.downHill, 350, 100);
           break;
+      case UIView.U_TURN:
+          this.renderImage(g2d, this.uTurn, 350, 100);
+          break;
+              
       default:
         // do nothing
     }
@@ -214,10 +220,10 @@ public class Dashboard extends JPanel {
   private void renderPushSensors(Graphics2D g2d){
       g2d.setColor((this.touchOne)?
               Color.GREEN : Color.RED);
-      g2d.draw(new Rectangle(50, 500, 40, 10));
+      g2d.draw(new Rectangle(50, 260, 40, 10));
       g2d.setColor((this.touchTwo)?
               Color.GREEN : Color.RED);
-      g2d.draw(new Rectangle(110, 500, 40, 10));
+      g2d.draw(new Rectangle(110, 260, 40, 10));
   }
   
   private void drawCenteredText(Graphics2D g2d, String text, Color color,
