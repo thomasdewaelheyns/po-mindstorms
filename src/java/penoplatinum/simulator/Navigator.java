@@ -20,4 +20,5 @@ public interface Navigator {
   public int     nextAction();
   public double  getDistance();
   public double  getAngle();
+  public Navigator setModel(Model m);
 }

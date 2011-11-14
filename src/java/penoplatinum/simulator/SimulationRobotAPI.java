@@ -12,9 +12,11 @@ package penoplatinum.simulator;
 public class SimulationRobotAPI implements RobotAPI {
 
   private Simulator simulator;
+  private boolean lastWasPositive = true;
 
   public void setSimulator( Simulator simulator ) {
     this.simulator = simulator;
+    simulator.turnMotorToBlocking(135);
   }
 
   public void move( double distance ) {
@@ -28,9 +30,22 @@ public class SimulationRobotAPI implements RobotAPI {
   public void stop() {
     this.simulator.stopRobot();
   }
+  
+  private void restartSonarMotor(){
+    if(!simulator.sonarMotorIsMoving()){
+      int angle = (lastWasPositive?-270:270);
+      simulator.turnMotorTo(angle);
+      lastWasPositive = !lastWasPositive;
+    }
+  }
 
   public int[] getSensorValues() {
-    return this.simulator.getSensorValues();
+    int[] out = new int[this.simulator.getSensorValues().length];
+    restartSonarMotor();
+    for(int i=0;i<out.length;i++){
+        out[i] = (int) this.simulator.getSensorValues()[i];
+    }
+    return out;
   }
 
 }

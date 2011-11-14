@@ -44,4 +44,9 @@ public class DriveStopNavigator implements Navigator {
   public double getAngle() {
     return 0;
   }
+
+  @Override
+  public Navigator setModel(Model m) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

@@ -20,14 +20,9 @@ public class FrontPushModelProcessor extends ModelProcessor {
   }
 
   public void work() {
-    int value = this.model.getSensorValue(Model.S1); // front push sensor
-    value += this.model.getSensorValue(Model.S2);
-    // value above 25, means it was pushed
-    if( value > 25 ) {
-      this.model.markStuck();
-    } else if( this.model.isStuck() ) {
-      this.model.markNotStuck();
-    }
+    boolean left = this.model.getSensorValue(Model.S1) > 25; // front push sensor
+    boolean right = this.model.getSensorValue(Model.S2) > 25;
+    this.model.markStuck(left, right);
   }
 
 }

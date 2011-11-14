@@ -13,15 +13,15 @@ package penoplatinum.simulator;
 public class Model {
 
   // shorthands mapping the sensors/numbers to their technical ports
-  public static final int S1 = 0;
-  public static final int S2 = 1;
-  public static final int S3 = 2;
-  public static final int S4 = 3;
-  public static final int M1 = 4;
-  public static final int M2 = 5;
-  public static final int M3 = 6;
+  public static final int M1 = 0;
+  public static final int M2 = 1;
+  public static final int M3 = 2;
+  public static final int S1 = 3;
+  public static final int S2 = 4;
+  public static final int S3 = 5;
+  public static final int S4 = 6;
   
-  // the raw data of the 7 sensor: sensors 1, 2, 3, 4 and three for the motors
+  // the raw data of the 7 sensor: three motors and sensors 1, 2, 3, 4
   private int[] sensors = new int[7];
   
   // processors are chained using a Decorator pattern
@@ -34,7 +34,8 @@ public class Model {
   //private Map map;
   
   // flag indicating the robot is stuck, ModelProcessors determine this
-  private Boolean stuck = false;
+  private Boolean stuckLeft = false;
+  private Boolean stuckRight = false;
 
   /**
    * Sets the (top-level) processor
@@ -84,21 +85,43 @@ public class Model {
    * marks that the robot is currently stuck
    */
   public void markStuck() {
-    this.stuck = true;
+    this.stuckLeft = true;
+    this.stuckRight = true;
+  }
+  public void markStuck(boolean left, boolean right){
+    this.stuckLeft = left;
+    this.stuckRight = right;
   }
 
   /**
    * marks that the robot is (no longer) stuck
    */
   public void markNotStuck() {
-    this.stuck = false;
+    this.stuckLeft = false;
+    this.stuckRight = false;
+  }
+  
+  public void markStuckLeft() {
+    this.stuckLeft = true;
+    this.stuckRight = false;
+  }
+  
+  public void markStuckRight() {
+    this.stuckLeft = false;
+    this.stuckRight = true;
   }
 
   /**
    * indicates wheter the robot is currently stuck
    */
   public Boolean isStuck() {
-    return this.stuck;
+    return this.stuckLeft || this.stuckRight;
+  }
+  public Boolean isStuckLeft() {
+    return this.stuckLeft;
+  }
+  public Boolean isStuckRight() {
+    return this.stuckRight;
   }
   
   public Boolean isMoving() {

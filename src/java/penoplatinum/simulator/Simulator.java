@@ -29,10 +29,12 @@ class Simulator {
   private double positionY;       //   expressed in X,Y coordinates
   private double direction;       //   and a direction its facing
   
-  private int[] sensorValues = new int[7]; // the current state of the sensors
+  private double[] sensorValues = new double[7]; // the motorSpeeds and the sensorValues
 
   private int steps;              // the number of steps still to do
   private double dx, dy, dr;      // the difference for x, y and rotation
+  private int dSonar;
+  private int stepsSonar;
   
   private int currentMovement;    // movement that is being stepped
   private int lastChangeM1 = 0;    // the last change on Motor 1
@@ -43,7 +45,7 @@ class Simulator {
   public Simulator() {
     this.setupSimulationEnvironment();
   }
-
+  
   /**
    * The simulation environment provides an implementation of the RobotAPI
    * and RobotAgent which are wired to the Simulator. This allows any default
@@ -122,6 +124,14 @@ class Simulator {
     return this;
   }
   
+  public Simulator turnMotorTo(int angle){
+    int direction = (angle>=0?1: -1);
+    angle *= direction;
+    this.dSonar = angle;
+    this.stepsSonar = angle;
+    return this;
+  }
+  
   public Simulator turnRobot( double angle ) {
     this.currentMovement = Navigator.TURN;
     
@@ -183,6 +193,9 @@ class Simulator {
       default:
         // do nothing
     }
+    if(this.stepsSonar-->0){
+      this.sensorValues[Model.M3]+=this.dSonar;
+    }
     
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
@@ -206,28 +219,37 @@ class Simulator {
     int lengthRobot = 20;
     
     //int distance = this.getFreeFrontDistance();
-    int touch1Degrees = 45;
-    int angle = (this.getAngle()+touch1Degrees)%360; 
-    int distance = this.getFreeFrontDistance(angle);
-
-    if( distance < lengthRobot / 2 ) {
-      this.sensorValues[Model.S1] = 50;
-    } else {
-      this.sensorValues[Model.S1] = 0;
-    }
-    int touch2Degrees = 315;
-    angle = (this.getAngle()+touch2Degrees)%360;
-    distance = this.getFreeFrontDistance(angle);
-
-    if( distance < lengthRobot / 2 ) {
-      this.sensorValues[Model.S2] = 50;
-    } else {
-      this.sensorValues[Model.S2] = 0;
-    }
+    calculateBumberSensor(45, lengthRobot, Model.S1);
+    calculateBumberSensor(315, lengthRobot, Model.S2);
+    
+    calculateSonarSensor(Model.S3);
         
     this.sensorValues[Model.M1] = this.lastChangeM1;
     this.sensorValues[Model.M2] = this.lastChangeM2;
   }
+  
+  private void calculateSonarSensor(int sensorPort){
+    int angle = (int) sensorValues[Model.M3]+getAngle();
+    angle %= 360;
+    if(angle<0){
+      angle+=360;
+    }
+    int distance = this.getFreeFrontDistance(angle);
+    this.sensorValues[sensorPort] = distance;
+  }
+  
+  
+  private void calculateBumberSensor(int touch1Degrees, int lengthRobot, int sensorPort) {
+    int angle = (this.getAngle()+touch1Degrees)%360; 
+    int distance = this.getFreeFrontDistance(angle);
+
+    if( distance < lengthRobot / 2 ) {
+      this.sensorValues[sensorPort] = 50;
+    } else {
+      this.sensorValues[sensorPort] = 0;
+    }
+  }
+
   
   private void updateLightSensor() {
     // TODO: check lines
@@ -274,7 +296,7 @@ private int getFreeFrontDistance(int angle) {
   /**
    * determines the distance to the first hit wall at the current baring.
    * if the hit is not on a wall on the current tile, we follow the baring
-   * to the next tile and recusively try to find the hist-distance
+   * to the next tile and recursively try to find the hist-distance
    */
   private double findHitDistance(int left, int top, int x, int y, double d) {
     int angle = this.getAngle();
@@ -344,8 +366,15 @@ private int getFreeFrontDistance(int angle) {
     return this;
   }
   
-  public int[] getSensorValues() {
+  public double[] getSensorValues() {
     return this.sensorValues;
   }
 
+  public boolean sonarMotorIsMoving(){
+    return stepsSonar>0;
+  }
+
+  void turnMotorToBlocking(int angle) {
+    this.sensorValues[Model.M3]+=angle;    
+  }
 }

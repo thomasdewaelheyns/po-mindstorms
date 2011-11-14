@@ -46,4 +46,9 @@ public class VeelhoekNavigator implements Navigator {
   public double getAngle() {
     return this.turnAngle;
   }
+
+  @Override
+  public Navigator setModel(Model m) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

@@ -13,15 +13,20 @@ public class BumperNavigator2Sensor implements Navigator {
   public static final int NONE   = 0;
   public static final int DRIVE  = 1;
   public static final int BACKUP = 2;
-  public static final int BACKUP_OTHER = 3;
-  public static final int TURN   = 4;
-  public static final int TURN_OTHER = 5;
-
+  public static final int TURN  = 4;
+  
   private Model model;
   private int   status = BumperNavigator2Sensor.NONE;
+  private Boolean lastStuckLeft;
 
   public BumperNavigator2Sensor( Model model ) {
     this.model = model;
+  }
+  public BumperNavigator2Sensor() {
+  }
+  public Navigator setModel(Model m){
+    model = m;
+    return this;
   }
 
   public Boolean reachedGoal() {
@@ -41,29 +46,21 @@ public class BumperNavigator2Sensor implements Navigator {
     
     // if we're driving and the model indicates we're stuck, we start the
     // backup procedure
-    if( this.status == BumperNavigator2Sensor.DRIVE && this.model.isStuck() ) {
-      System.out.println( "Whoops, I bumped into something..." );
-      if(this.model.getSensorValue(Model.S1)>25){
-        System.out.println("BumberTurn");
-        return this.backup();
-      } else if(this.model.getSensorValue(Model.S2)>25){
-        System.out.println("BumberTurnOther");
-        return this.backupOther();
-      }
+    if( this.status == BumperNavigator2Sensor.DRIVE && this.model.isStuckLeft() ) {
+      System.out.println( "Whoops, I bumped into something on my left side..." );
+        return this.backup(true);
+    }
+    if( this.status == BumperNavigator2Sensor.DRIVE && this.model.isStuckRight() ) {
+      System.out.println( "Whoops, I bumped into something on my left side..." );
+        return this.backup(false);
     }
 
     // if we're backing up but are no longer moving, time to turn
     if( this.status == BumperNavigator2Sensor.BACKUP && ! this.model.isMoving() ) {
       return this.turnAway();
     }
-    if( this.status == BumperNavigator2Sensor.BACKUP_OTHER && ! this.model.isMoving() ) {
-      return this.turnAway();
-    }
     // if we're turning away but are no longer moving, time to drive again
     if( this.status == BumperNavigator2Sensor.TURN && ! this.model.isMoving() ) {
-      return this.drive();
-    }
-    if( this.status == BumperNavigator2Sensor.TURN_OTHER && ! this.model.isMoving() ) {
       return this.drive();
     }
 
@@ -76,29 +73,26 @@ public class BumperNavigator2Sensor implements Navigator {
     return Navigator.MOVE;
   }
 
-  private int backup() {
+  private int backup(Boolean turnLeft) {
     this.status = BumperNavigator2Sensor.BACKUP;
-    return Navigator.MOVE;
-  }
-  private int backupOther() {
-    this.status = BumperNavigator2Sensor.BACKUP_OTHER;
+    this.lastStuckLeft = turnLeft;
     return Navigator.MOVE;
   }
 
   private int turnAway() {
-    if(this.status == BumperNavigator2Sensor.BACKUP){
+    if(lastStuckLeft){
       this.status = BumperNavigator2Sensor.TURN;
     } else {
-      this.status = BumperNavigator2Sensor.TURN_OTHER;
+      this.status = BumperNavigator2Sensor.TURN;
     }
     return Navigator.TURN;
   }
 
   public double getDistance() {
-    return this.status == BumperNavigator2Sensor.DRIVE ? 100 : -0.02;
+    return (this.status == BumperNavigator2Sensor.DRIVE ? 100 : -0.02);
   }
 
   public double getAngle() {
-    return (this.status == BumperNavigator2Sensor.TURN ? -81 : 80);
+    return (lastStuckLeft ? -81 : 80);
   }
 }

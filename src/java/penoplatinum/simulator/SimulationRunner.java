@@ -17,7 +17,9 @@ class SimulationRunner {
 
   public static void main(String[] args) {
     // setup the robot
-    Robot robot = new BumperNavigatorRobot2Sensor();
+    //Navigator n = new BumperNavigator2Sensor();
+    Navigator n = new SonarNavigator();
+    Robot robot = new NavigatorRobot(n);
 
     // construct a course
     Map map = new Map(4)
