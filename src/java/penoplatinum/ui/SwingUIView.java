@@ -13,6 +13,7 @@ package penoplatinum.ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import penoplatinum.simulator.Board;
 
 public class SwingUIView extends JFrame implements UIView, ActionListener {
 
@@ -22,6 +23,10 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
     private Dashboard dashboard;
     // we provide a console to display log-lines, received from the robot
     private JTextArea console;
+    // the board on which the map is constructed
+    private Board board;
+    // the layout of our UI
+    private GroupLayout layout;
     // we need an implementation of UICommandHandler to pass back UI-induced
     // commands to the robot
     private UICommandHandler commandHandler;
@@ -29,14 +34,28 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
     public SwingUIView() {
         this.setupContentPane();
         this.setupDashboard();
+        this.setupMapView();
         this.setupControlButtons();
         this.setupConsole();
         this.setupWindow();
+        this.layout.setHorizontalGroup(
+                this.layout.createSequentialGroup()
+                    .addComponent(dashboard)
+                    .addComponent(board)
+        );
+        this.layout.setVerticalGroup(
+                this.layout.createParallelGroup()
+                .addComponent(dashboard)
+                .addComponent(board)
+        );
     }
 
     private void setupContentPane() {
         this.content = getContentPane();
-        this.content.setLayout(new FlowLayout());
+        this.layout = new GroupLayout(content);
+        this.content.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
     }
 
     private void setupDashboard() {
@@ -67,9 +86,15 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
         this.content.add(scrollPane);
     }
 
+    private void setupMapView() {
+        this.board = new Board();
+        JScrollPane scrollPane = new JScrollPane(this.board);
+        this.content.add(scrollPane);
+    }
+       
     private void setupWindow() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(700, 640);
+        this.setSize(1360, 650);
         this.setLocationRelativeTo(null);
         this.setTitle("aNGie Console");
         this.setResizable(false);
@@ -107,6 +132,17 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
             }
         });
     }
+    
+    public void updateTouch(final int position, final boolean pressed) {
+        final JTextArea c = this.console;
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                SwingUIView.this.dashboard.updateTouch(position, pressed);
+            }
+        });
+    }
+    
 
     /**
      * This function is thread safe!

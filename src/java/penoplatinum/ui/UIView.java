@@ -40,6 +40,8 @@ public interface UIView {
   public void updateSonar  ( int angle,      int distance );
   // the robot can detect barcodes, which are interpreted as a direction
   public void updateBarcode( int barcode,    int direction );
+  // the robot detects wether the touch sensors are pressed,
+  public void updateTouch(int position, boolean pressed);
 
   // we provide a console-view, which represents the console of the robot
   public void addConsoleLog( String line );

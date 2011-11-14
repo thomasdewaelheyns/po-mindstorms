@@ -57,7 +57,7 @@ public class Dashboard extends JPanel {
   }
   
   private void setupCanvas() {
-    this.setPreferredSize( new Dimension( 680, 440 ) );
+    this.setPreferredSize( new Dimension( 680, 400 ) );
     this.setBackground(Color.white);
   }
   
@@ -105,6 +105,21 @@ public class Dashboard extends JPanel {
     this.barcode    = barcode;
     this.direction  = direction;
     this.repaint();
+  }
+  
+  // position expects 1 for left and 2 for right pushsensor.
+  // pressed indecates wether the sensor is pressed or not.
+  public void updateTouch(int position, boolean pressed){
+      switch(position){
+          case 1:
+              this.touchOne = pressed;
+              break;
+          case 2:
+              this.touchTwo = pressed;
+              break;   
+          default:    
+      }
+      this.repaint();    
   }
   
   public void paint(Graphics g) {
@@ -219,11 +234,11 @@ public class Dashboard extends JPanel {
   
   private void renderPushSensors(Graphics2D g2d){
       g2d.setColor((this.touchOne)?
-              Color.GREEN : Color.RED);
-      g2d.draw(new Rectangle(50, 260, 40, 10));
+              Color.RED : Color.GREEN);
+      g2d.fill(new Rectangle(50, 220, 40, 10));
       g2d.setColor((this.touchTwo)?
-              Color.GREEN : Color.RED);
-      g2d.draw(new Rectangle(110, 260, 40, 10));
+              Color.RED : Color.GREEN);
+      g2d.fill(new Rectangle(130, 220, 40, 10));
   }
   
   private void drawCenteredText(Graphics2D g2d, String text, Color color,
