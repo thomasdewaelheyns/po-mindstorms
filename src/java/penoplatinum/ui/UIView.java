@@ -19,6 +19,8 @@ public interface UIView {
   public static int GO_FORWARD=0;
   public static int GO_LEFT=1;
   public static int GO_RIGHT=2;
+  public static int UPHILL=3;
+  public static int DOWNHILL=4;
 
   // unique id's for each of the supported sensors
   public final static int LIGHT    = 323962144;

@@ -40,6 +40,8 @@ public class Dashboard extends JPanel {
   private Image goForward;
   private Image goLeft;
   private Image goRight;
+  private Image upHill;
+  private Image downHill;
 
   private Font font;
   
@@ -65,6 +67,8 @@ public class Dashboard extends JPanel {
     this.goForward = this.setupImage("go-forward");
     this.goLeft    = this.setupImage("go-left");
     this.goRight   = this.setupImage("go-right");
+    this.upHill    = this.setupImage("uphill");
+    this.downHill  = this.setupImage("downhill");
     this.robot     = this.setupImage("robot150");
   }
   
@@ -173,6 +177,12 @@ public class Dashboard extends JPanel {
       case UIView.GO_FORWARD:
         this.renderImage(g2d, this.goForward, 350, 100 );
         break;      
+      case UIView.UPHILL;
+          this.renderImage(g2d, this.upHill, 350, 100 );
+          break;
+      case UIView.DOWNHILL;
+          this.renderImage(g2d, this.downHill, 350, 100);
+          break;
       default:
         // do nothing
     }
