@@ -211,34 +211,37 @@ class Simulator {
    */
   private void updateSensorValues() {
     this.updateFrontPushSensors();
+    this.updateSonar();
+    this.updateMotors();
     this.updateLightSensor();
   }
   
   private void updateFrontPushSensors() {
     int lengthRobot = 20;
-    
-    calculateBumberSensor(45, lengthRobot, Model.S1);
-    calculateBumberSensor(315, lengthRobot, Model.S2);
-    
-    calculateSonarSensor(Model.S3);
-        
+    this.calculateBumperSensor(45,  lengthRobot, Model.S1);
+    this.calculateBumperSensor(315, lengthRobot, Model.S2);
+  }
+  
+  private void updateSonar() {
+    int angle = ((int)this.sensorValues[Model.M3] + this.getAngle() + 360) % 360;
+    int distance = this.getFreeDistance(angle);
+    this.sensorValues[Model.S3] = distance;
+  }
+  
+  private void updateMotors() {
     this.sensorValues[Model.M1] = this.lastChangeM1;
     this.sensorValues[Model.M2] = this.lastChangeM2;
   }
   
-  private void calculateSonarSensor(int sensorPort){
-    int angle = (int) sensorValues[Model.M3]+getAngle();
-    angle %= 360;
-    if(angle<0){
-      angle+=360;
-    }
-    int distance = this.getFreeDistance(angle);
-    this.sensorValues[sensorPort] = distance;
+  private void updateLightSensor() {
+    // TODO: check lines
+    // TODO: check barcodes
+    // probably == a getColor() method
+
   }
-  
-  
-  private void calculateBumberSensor(int touch1Degrees, int lengthRobot, int sensorPort) {
-    int angle = (this.getAngle()+touch1Degrees)%360; 
+
+  private void calculateBumperSensor(int angle, int lengthRobot, int sensorPort) {
+    angle = ( this.getAngle() + angle ) % 360; 
     int distance = this.getFreeDistance(angle);
 
     if( distance < lengthRobot / 2 ) {
@@ -246,14 +249,6 @@ class Simulator {
     } else {
       this.sensorValues[sensorPort] = 0;
     }
-  }
-
-  
-  private void updateLightSensor() {
-    // TODO: check lines
-    // TODO: check barcodes
-    // probably == a getColor() method
-    
   }
   
   // determine the distance to the first obstacle in direct line of sight 
