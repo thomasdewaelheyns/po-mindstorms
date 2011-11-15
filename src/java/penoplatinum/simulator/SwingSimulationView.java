@@ -28,7 +28,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
   private void setupWindow() {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // by default we're 2 tiles by 2 (of 160px with 2px/cm
-    this.setSize( 2 * 160, 2 * 160 );
+    this.setSize( 2 * 160, 2 * 160 + 22 );
     this.setLocationRelativeTo(null);
     this.setTitle("Simulator");
     this.setResizable(false);
@@ -38,7 +38,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
   public void showMap(Map map) {
     this.board.showMap(map);
     // a tile is 80cm in reality, we apply a scale of 2px/cm
-    this.setSize(map.getWidth() * 160, map.getHeight() * 160 );
+    this.setSize(map.getWidth() * 160, map.getHeight() * 160 + 22 );
   }
   
   public void updateRobot( int x, int y, int direction ) {
