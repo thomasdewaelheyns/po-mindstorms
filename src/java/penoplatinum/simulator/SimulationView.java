@@ -10,4 +10,5 @@ package penoplatinum.simulator;
 public interface SimulationView {
   public void showMap(Map map);
   public void updateRobot( int x, int y, int direction );
+  public void log(String msg);
 }

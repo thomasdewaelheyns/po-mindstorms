@@ -28,7 +28,8 @@ class Simulator {
 
   private static double totalMovement = 0;
 
-  private SimulationView view;    // a view to display the simulation
+  // a view to display the simulation, by default it does nothing
+  private SimulationView view = new SilentSimulationView();
   private Map map;                // the map that the robot will run on
   private SimulationRobotAPI   robotAPI;    // the API used to access hardware
   private SimulationRobotAgent robotAgent;  // the communication layer
@@ -74,9 +75,6 @@ class Simulator {
    */
   public Simulator displayOn(SimulationView view) {
     this.view = view;
-    if( this.map != null ) {
-      this.view.showMap(map);
-    }
     return this;
   }
 
@@ -86,9 +84,6 @@ class Simulator {
    */
   public Simulator useMap(Map map) {
     this.map = map;
-    if( this.view != null ) {
-      this.view.showMap(map);
-    }
     return this;
   }
   
@@ -230,11 +225,11 @@ class Simulator {
   }
   
   private void reportMovementStatistics() {
-    System.out.println();
-    System.out.println( "Total Distance = " + this.totalMovement + "cm" );
-    System.out.println( "Visited Tiles  = " + this.visitedTiles.size() );
-    double fitness = 1 / ( this.visitedTiles.size() / this.totalMovement );
-    System.out.println( "Fitness        = " + fitness );
+    this.view.log("");
+    this.view.log( "Total Distance = " + this.totalMovement + "cm" );
+    this.view.log( "Visited Tiles  = " + this.visitedTiles.size() );
+    double fitness = this.totalMovement / this.visitedTiles.size();
+    this.view.log( "Fitness        = " + fitness );
   }
   
   /**
@@ -380,14 +375,15 @@ class Simulator {
    * agent.
    */
   public Simulator run() {
+    this.view.showMap(this.map);
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
     while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
       this.robot.step();
       this.step();
     }
-    System.out.println();
-    System.out.println( "Visited All Tiles:" );
+    this.view.log( "" );
+    this.view.log( "Visited All Tiles:" );
     this.reportMovementStatistics();
     return this;
   }
