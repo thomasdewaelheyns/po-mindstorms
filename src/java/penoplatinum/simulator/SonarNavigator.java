@@ -16,9 +16,6 @@ public class SonarNavigator implements Navigator {
   private Model   model;
   private int     angle = 0;
   
-  // let's introduce some non-determinism
-  Random randomGenerator = new Random();
-
   // we use the model to read out raw sensor values for the sonar :
   // distance and angle
   public SonarNavigator setModel(Model model){
@@ -61,8 +58,9 @@ public class SonarNavigator implements Navigator {
         this.angle = 135;
       }
 
+      // let's introduce some non-determinism:
       // randomly turn left or right
-      this.angle *= (this.randomGenerator.nextInt(2)-1);
+      this.angle *= ( Math.random() < 0.5 ? -1 : 1 );
 
       return this.angle != 0 ? Navigator.TURN : Navigator.MOVE;
     }
