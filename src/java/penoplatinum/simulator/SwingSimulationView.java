@@ -44,10 +44,12 @@ public class SwingSimulationView extends JFrame implements SimulationView {
   public void updateRobot( int x, int y, int direction ) {
     // apply the scale of 2px/cm
     this.board.updateRobot( x * 2, y * 2, direction );
-    try { 
-      Thread.sleep(10);
-    } catch( InterruptedException e ) {
-      System.err.println( e );
-    }
+    // This Thread.sleep() causes "hickups" 90% of the calls run ok, but in 
+    // some cases it "hangs" for about a second ?!
+    // try {
+    //   Thread.sleep(10);
+    // } catch( InterruptedException e ) {
+    //   System.err.println( e );
+    // }
   }
 }

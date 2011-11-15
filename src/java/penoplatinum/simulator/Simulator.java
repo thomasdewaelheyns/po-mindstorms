@@ -191,10 +191,11 @@ class Simulator {
       default:
         // do nothing
     }
-    if(this.stepsSonar-->0){
-      this.sensorValues[Model.M3]+=this.dSonar;
+
+    // update the sonar motor
+    if( this.stepsSonar-- > 0 ){
+      this.sensorValues[Model.M3] += this.dSonar;
     }
-    //System.out.println(((int)this.sensorValues[Model.M3])+" "+((int)this.sensorValues[Model.S3]));
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
 
@@ -216,7 +217,6 @@ class Simulator {
   private void updateFrontPushSensors() {
     int lengthRobot = 20;
     
-    //int distance = this.getFreeFrontDistance();
     calculateBumberSensor(45, lengthRobot, Model.S1);
     calculateBumberSensor(315, lengthRobot, Model.S2);
     
@@ -232,14 +232,14 @@ class Simulator {
     if(angle<0){
       angle+=360;
     }
-    int distance = this.getFreeFrontDistance(angle);
+    int distance = this.getFreeDistance(angle);
     this.sensorValues[sensorPort] = distance;
   }
   
   
   private void calculateBumberSensor(int touch1Degrees, int lengthRobot, int sensorPort) {
     int angle = (this.getAngle()+touch1Degrees)%360; 
-    int distance = this.getFreeFrontDistance(angle);
+    int distance = this.getFreeDistance(angle);
 
     if( distance < lengthRobot / 2 ) {
       this.sensorValues[sensorPort] = 50;
@@ -256,13 +256,9 @@ class Simulator {
     
   }
   
-  /**
-   * Determine the distance to the first obstacle in direct line of sight
-   */
-  private int getFreeFrontDistance() {
-    return getFreeFrontDistance(this.getAngle());
-  }  
-private int getFreeFrontDistance(int angle) {
+  // determine the distance to the first obstacle in direct line of sight 
+  // under a given angle
+  private int getFreeDistance(int angle) {
     int distance = 0;
     
     // determine tile coordinates we're on
@@ -274,11 +270,8 @@ private int getFreeFrontDistance(int angle) {
     int y = (int)this.positionY % Simulator.tileSize;
 
     // find distance to first wall in line of sight
-    distance = (int)Math.round(this.findHitDistanceAngle(angle, left, top, x, y));
+    distance = this.findHitDistance(angle, left, top, x, y);
 
-    /*System.out.println( (int)(x) + ", " + (int)(y) + " @ " + 
-                        ((this.direction + 90) % 360) + " | " + distance +" & " +angle);/**/
-    
     return distance;
   }
   
@@ -296,39 +289,35 @@ private int getFreeFrontDistance(int angle) {
    * if the hit is not on a wall on the current tile, we follow the baring
    * to the next tile and recursively try to find the hist-distance
    */
-  private double findHitDistance(int left, int top, int x, int y, double d) {
-    int angle = this.getAngle();
-    return d+findHitDistanceAngle(angle, left, top, x, y);
-  }
-  
-  private double findHitDistanceAngle(int angle, int left, int top, int x, int y) {
-    //TODO possible index out of bound exceptions if map not walled in
-    
+  private int findHitDistance(int angle, int left, int top, int x, int y) {
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this baring
     double dist = 0;
-    while (true) {
-      Point hit = Tile.findHitPoint(x, y, angle, Simulator.tileSize);
+    int baring;
+    Tile tile;
+    Point hit;
+    do {
+      hit = Tile.findHitPoint(x, y, angle, Simulator.tileSize);
 
       // distance from the starting point to the hit-point on this tile
       dist += Tile.getDistance(x, y, hit);
 
       // if we don't have a wall on this tile at this baring, move to the next
       // at the same baring, starting at the hit point on the tile
-      Tile tile = this.map.get(left, top);
-      int baring = Tile.getHitWall(hit, Simulator.tileSize);
-      if (tile.hasWall(baring)) {
-        break;
-      }
+      // FIXME: throws OutOfBoundException, because we appear to be moving
+      //        through walls.
+      tile = this.map.get(left, top);
+      baring = Tile.getHitWall(hit, Simulator.tileSize);
+
       left = left + Baring.moveLeft(baring);
-      top = top + Baring.moveTop(baring);
+      top  = top  + Baring.moveTop(baring);
       x = hit.x == 0 ? Simulator.tileSize
         : (hit.x == Simulator.tileSize ? 0 : hit.x);
       y = hit.y == 0 ? Simulator.tileSize
         : (hit.y == Simulator.tileSize ? 0 : hit.y);
+    } while(! tile.hasWall(baring));
 
-    }
-    return dist;
+    return (int)Math.round(dist);
   }
 
   /**
@@ -369,10 +358,6 @@ private int getFreeFrontDistance(int angle) {
   }
 
   public boolean sonarMotorIsMoving(){
-    return stepsSonar>0;
-  }
-
-  void turnMotorToBlocking(int angle) {
-    this.sensorValues[Model.M3]+=angle;    
+    return this.stepsSonar > 0;
   }
 }

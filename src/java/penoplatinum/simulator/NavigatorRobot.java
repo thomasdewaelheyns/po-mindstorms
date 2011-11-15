@@ -1,16 +1,11 @@
 package penoplatinum.simulator;
 
 /**
- * BumperNavigatorRobot
+ * NavigatorRobot
  * 
- * This robot drives in a straight line and stops when its front-push-sensor
- * is triggered, it then turns an angle and tries to continue its journey.
+ * General purpose Navigator-based Robot implementation.
  *  
  * Author: Team Platinum
- * 
- * TODO: most of this class can be extracted to an abstract RobotBase class.
- *       the logic in the constructor and the processCommand will remain, 
- *       defining the "personality" of the robot ;-)
  */
 
 class NavigatorRobot implements Robot {
@@ -20,19 +15,25 @@ class NavigatorRobot implements Robot {
   private Model     model;
   
   public NavigatorRobot() {
-    // setup a model with the required ModelProcessors
-    this.model     = new Model();
-    this.model.setProcessor( new FrontPushModelProcessor() );
-    // setup the navigator using the same model
-    this.navigator = new SonarNavigator( this.model );
+    this.setupModel();
   }
+
   public NavigatorRobot(Navigator navigator) {
+    this();
+    this.useNavigator(navigator);
+  }
+  
+  private void setupModel() {
     // setup a model with the required ModelProcessors
     this.model     = new Model();
     this.model.setProcessor( new FrontPushModelProcessor() );
+  }
+  
+  public Robot useNavigator(Navigator navigator) {
     // setup the navigator using the same model
     this.navigator = navigator;
     this.navigator.setModel(this.model);
+    return this;
   }
 
   public void useRobotAPI( RobotAPI api ) {
@@ -62,11 +63,10 @@ class NavigatorRobot implements Robot {
     // ask the navigator what to do next
     switch( this.navigator.nextAction() ) {
       case Navigator.MOVE:
-        System.out.println("Moving: "+this.navigator.getDistance());
         this.api.move(this.navigator.getDistance());
         break;
       case Navigator.TURN:
-        System.out.println("Turning: "+this.navigator.getAngle());
+        System.out.println( "Turning: " + this.navigator.getAngle() );
         this.api.turn(this.navigator.getAngle());
         break;
       case Navigator.STOP:

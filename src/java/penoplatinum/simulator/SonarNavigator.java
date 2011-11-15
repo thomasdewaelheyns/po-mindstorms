@@ -1,64 +1,74 @@
 package penoplatinum.simulator;
 
 /**
- * BumperNavigator
+ * SonarNavigator
  * 
- * This Navigator implementation drives until it "bumps" into something. It
- * then turns an angle and tries to continue its journey.
+ * This Navigator implementation uses the sonar to avoid obstacles in front
+ * of him.
  * 
  * Author: Team Platinum
  */
 
-public class SonarNavigator implements Navigator {
-  public static final int NONE   = 0;
-  public static final int DRIVE  = 1;
-  public static final int BACKUP = 2;
-  public static final int TURN  = 4;
-  
-  private Model model;
-  private int   status = Navigator.NONE;
-  private int   angle = 0;
+import java.util.Random;
 
-  public SonarNavigator( Model model ) {
+public class SonarNavigator implements Navigator {  
+  private Boolean idle = true;
+  private Model   model;
+  private int     angle = 0;
+  
+  // let's introduce some non-determinism
+  Random randomGenerator = new Random();
+
+  // we use the model to read out raw sensor values for the sonar :
+  // distance and angle
+  public SonarNavigator setModel(Model model){
     this.model = model;
-  }
-  public SonarNavigator(){
-  }
-  public SonarNavigator setModel(Model m){
-    this.model = m;
     return this;
   }
 
+  // keep on going, forever ;-)
   public Boolean reachedGoal() {
     return false;
   }
 
-  
-  //TODO Enum? gebruiken
-  //TODO Andere richting draaien
-  
+  // if the motor of the sonar sensor is currently facing forward/0 degrees:
+  // 1) continue moving if the distance is still more than 50
+  // 2) if the distance is only 40, turn a little
+  // 3) if the distance is only 30, turn more
+  // 4) if the distance is only 20, turn 90 degrees
   public int nextAction() {
-    // start driving ...
-    if(model.getSensorValue(Model.M3)==0){
-      System.out.println(model.getSensorValue(Model.S3));
-      if(model.getSensorValue(Model.S3)>50){
-        return Navigator.MOVE;
-      }
-      if(model.getSensorValue(Model.S3)>40){
-        angle = 5;
-        return Navigator.TURN;
-      }
-      if(model.getSensorValue(Model.S3)>30){
-        angle = -50;
-        return Navigator.TURN;
-      }
-      if(model.getSensorValue(Model.S3)>20){
-        int angle = 90;
-        return Navigator.TURN;
-      }
-      
+    // start moving
+    if( this.idle ) { 
+      this.idle = false;
+      return Navigator.MOVE;
     }
-    // if we're driving and we haven't bumped into something ... carry on
+
+    // check is we're blocked in the (near) future and turn away to avoid it
+    int direction = model.getSensorValue(Model.M3);
+    int distance  = model.getSensorValue(Model.S3);
+
+    // look straight ahead and determine angle to apply to turn away
+    if(direction == Baring.N){
+      if( distance > 50 ) {
+        this.angle = 0;
+      } else if( distance > 40 ) {
+        this.angle = 5;
+      } else if( distance > 30 ) {
+        this.angle = 50;
+      } else if( distance > 20 ) {
+        this.angle = 90;
+      } else {
+        this.angle = 135;
+      }
+
+      // randomly turn left or right
+      this.angle *= (this.randomGenerator.nextInt(2)-1);
+
+      return this.angle != 0 ? Navigator.TURN : Navigator.MOVE;
+    }
+
+
+    // if we're driving and we aren't avoiding anything
     return Navigator.NONE;
   }
 

@@ -17,9 +17,8 @@ class SimulationRunner {
 
   public static void main(String[] args) {
     // setup the robot
-    //Navigator n = new BumperNavigator2Sensor();
-    Navigator n = new SonarNavigator();
-    Robot robot = new NavigatorRobot(n);
+    Navigator navigator = new SonarNavigator();
+    Robot     robot     = new NavigatorRobot(navigator);
 
     // construct a course
     Map map = new Map(4)
@@ -99,12 +98,12 @@ class SimulationRunner {
     Simulator simulator = new Simulator();
     simulator.displayOn(new SwingSimulationView());
     simulator.useMap   (map);
-    // put the robot at position 50 cm from top, 50 cm from left, in an
+    // put the robot at position 150 cm from top, 150 cm from left, in an
     // angle of 33 degrees, with 0 degrees pointing north
     simulator.putRobotAt (robot, 150, 150, 33);
 
     // give robot instructions through the communication layer
-    // simulator.send( "22;0.05" ); // run polygon with 22 vertexes of 5cm
+    // simulator.send( "start" );
 
     // start the simulator and enjoy the ride
     simulator.run();

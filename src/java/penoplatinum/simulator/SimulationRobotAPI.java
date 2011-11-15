@@ -12,11 +12,10 @@ package penoplatinum.simulator;
 public class SimulationRobotAPI implements RobotAPI {
 
   private Simulator simulator;
-  private boolean lastWasPositive = true;
+  private int sonarAngle = 270;
 
   public void setSimulator( Simulator simulator ) {
     this.simulator = simulator;
-    simulator.turnMotorToBlocking(135);
   }
 
   public void move( double distance ) {
@@ -31,21 +30,24 @@ public class SimulationRobotAPI implements RobotAPI {
     this.simulator.stopRobot();
   }
   
-  private void restartSonarMotor(){
-    if(!simulator.sonarMotorIsMoving()){
-      int angle = (lastWasPositive?-270:270);
-      simulator.turnMotorTo(angle);
-      lastWasPositive = !lastWasPositive;
-    }
-  }
-
   public int[] getSensorValues() {
+    // we inject the sweeping behaviour of the sonar at this point, because
+    // it allows us to simulate an autonous thread without requiring one.
+    this.restartSonarMotor();
+
+    // put all sensorvalues in an array and return them
     int[] out = new int[this.simulator.getSensorValues().length];
-    restartSonarMotor();
     for(int i=0;i<out.length;i++){
         out[i] = (int) this.simulator.getSensorValues()[i];
     }
     return out;
+  }
+
+  private void restartSonarMotor(){
+    if( ! simulator.sonarMotorIsMoving() ) {
+      this.sonarAngle *= -1;
+      simulator.turnMotorTo(this.sonarAngle);
+    }
   }
 
 }
