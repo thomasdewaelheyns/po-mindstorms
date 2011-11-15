@@ -22,8 +22,8 @@ ${BUILD_DIR}:
 	@mkdir ${BUILD_DIR}
 
 images: ${BUILD_DIR}
-	mkdir -p ${BUILD_DIR}/penoplatinum/simulator/
-	cp -r images ${BUILD_DIR}/penoplatinum/simulator/
+	@mkdir -p ${BUILD_DIR}/penoplatinum/simulator/
+	@cp -r images ${BUILD_DIR}/penoplatinum/simulator/
 
 test:
 	@( cd t; make test )
