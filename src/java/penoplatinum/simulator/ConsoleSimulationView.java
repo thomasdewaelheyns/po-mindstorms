@@ -13,8 +13,8 @@ public class ConsoleSimulationView implements SimulationView {
     System.out.println( "Robot is at " + x + "," + y + " / " + direction );
   }
 
-    @Override
-    public void showMap(Map map) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+  public void showMap(Map map) {
+    // this method is intentionally left blank
+    // no map required on console ;-)
+  }
 }
