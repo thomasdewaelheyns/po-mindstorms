@@ -354,6 +354,15 @@ De doelstelling van de tweede demo is het volgen van een ononderbroken lijn. Dez
 
 Voor het volgen van een lijn maken we gebruik van een grijswaardesensor. Deze werd vooraan op de robot bevestigd. Om de sensoren makkelijker en beter te kunnen bevestigen, werd de robot structureel anders opgebouwd.
 
+Het nieuwe design, voorgesteld in figuur \ref{fig:redesignRobot}, voorziet een opbouw waarmee een derde motor toegevoegd werd om een beweegbare sonar te realiseren. Daarnaast werden ook reeds twee druksensoren voorzien vooraan links en rechts van de robot.
+
+\begin{figure}[htbp]
+   \centering
+   \caption{Redesign van het robotontwerp met alle benodigde sensoren.}
+   \label{fig:redesignRobot}
+   \includegraphics[width=150mm]{resources/aNGie.jpg}
+\end{figure}
+
 \section{De software}
 
 Voor deze demo diende software ontwikkeld te worden die de robot in staat stelt om een lijn autonoom te volgen. De meetresultaten van de grijswaardesensor dienen tevens verzonden te worden via Bluetooth naar een PC, waar ze gevisualiseerd  worden. De ontwikkelingen voor robot en PC worden in dit deel verder toegelicht. De communicatie component wordt in bijlage \ref{appendix:bluetooth} in detail besproken.
@@ -391,74 +400,9 @@ De User Interface bevat geen logica om enige conclusie te trekken en visualiseer
 
 Met de grijswaardesensor willen we drie kleuren kunnen onderscheiden: bruin, wit en zwart. De grijswaardesensor zal typisch verschillende waarden geven binnen een bepaald bereik voor elk van de kleuren. Het kalibreren van de lichtsensor zal bepalend zijn voor de nauwkeurigheid van deze bereiken.
 
-We hebben met verschillende sets van kalibratiewaarden telkens 12 metingen gedaan van bruin, wit en zwart. Voor elk van deze meetwaarden hebben we vervolgens het gemiddelde berekend en de relatieve afwijking van elk van de gemeten waarden. Figuren \ref{chart:bruin}, \ref{chart:wit} en \ref{chart:zwart} geven respectievelijk de resultaten voor bruin, wit en zwart weer.
+We hebben met verschillende sets van kalibratiewaarden telkens 12 metingen gedaan van bruin, wit en zwart. Voor het bepalen van de waarden waarbinnen we besluiten of een kleur bruin, wit of zwart is, bekijken we de resultaten in absolute vorm over alle metingen heen. Figuur \ref{chart:kleuren} illustreert de bereiken van de drie verschillende kleuren.
 
-\begin{figure}
-	\caption{Relatieve afwijking t.o.v. gemiddelde gemeten grijswaarde voor bruin}
-	\label{chart:bruin}
-	\vspace{10pt}	
-	\centering
-	
-	\tikzset{external/remake next}
-	\begin{tikzpicture}
-		\begin{axis}[xmin=0,xmax=4,ymin=-8, ymax=8,
-			xtick={1,2,3,4},xticklabels={1,2,3},
-	      		xlabel={Kalibratie set},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
-			]
-			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
-			\boxplot{1}{-0.34}{-1.68}{2.36}{-7.07}{5.05}
-			\boxplot{2}{-1.68}{-3.03}{2.69}{-7.07}{7.74}
-			\boxplot{3}{-0.11}{-1.44}{1.55}{-6.77}{5.22}
-		\end{axis}
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}
-	\caption{Relatieve afwijking t.o.v. gemiddelde gemeten grijswaarde voor wit}
-	\label{chart:wit}
-	\vspace{10pt}	
-	\centering
-	
-	\tikzset{external/remake next}
-	\begin{tikzpicture}
-		\begin{axis}[xmin=0,xmax=4,ymin=-16, ymax=20,
-			xtick={1,2,3,4},xticklabels={1,2,3},
-	      		xlabel={Kalibratie set},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
-			]
-			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
-			\boxplot{1}{-0.49}{-3.66}{2.44}{-10.24}{16.10}
-			\boxplot{2}{-0.66}{-3.38}{3.29}{-9.06}{8.73}
-			\boxplot{3}{1.82}{-9.85}{4.55}{-15.56}{19.21}
-		\end{axis}
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}
-	\caption{Relatieve afwijking t.o.v. gemiddelde gemeten grijswaarde voor zwart}
-	\label{chart:zwart}
-	\vspace{10pt}	
-	\centering
-	
-	\tikzset{external/remake next}
-	\begin{tikzpicture}
-		\begin{axis}[xmin=0,xmax=4,ymin=-600, ymax=490,
-			xtick={1,2,3,4},xticklabels={1,2,3},
-	      		xlabel={Kalibratie set},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
-			]
-			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
-			\boxplot{1}{68}{-256}{200}{-580}{476}
-			\boxplot{2}{-26.15}{-90.77}{38.46}{-210.77}{269.23}
-			\boxplot{3}{0}{-100}{78.57}{-228.57}{257.14}
-		\end{axis}
-	\end{tikzpicture}
-\end{figure}
-
-De resultaten tonen aan dat met verschillende kalibraties, de resultaten voor elk van de kleuren binnen vergelijkbare bereiken liggen. Voor zwart dient opgemerkt te worden dat hier in verhouding tot bruin en wit, veel grotere relatieve afwijkingen optreden. We kunnen dit toeschrijven aan het vuil worden of slijten, waaraan zwart het meest onderhevig is.
-
-Voor het bepalen van de waarden waarbinnen we besluiten of een kleur bruin, wit of zwart is, bekijken we de resultaten in absolute vorm over alle metingen heen. Figuur \ref{chart:kleuren} illustreert de bereiken van de drie verschillende kleuren. Hierbij merken we op, dat ofschoon zwart een grotere potenti\"ele relatieve afwijking kent, dit in praktijk geen probleem zal opleveren. Het bereik van de metingen voor zwart ligt ver van het bereik van bruin en wit. Deze twee laatsten daarentegen hebben wel minima en maxima die in elkaars buurt liggen en potentieel kunnen zorgen voor "valse positieven" in beide richtingen. 
+Hierbij merken we op dat het bereik van de metingen voor zwart ver ligt van het bereik van bruin en wit. Deze twee laatsten daarentegen hebben wel minima en maxima die in elkaars buurt liggen en potentieel kunnen zorgen voor "valse positieven" in beide richtingen.
 
 \begin{figure}
 	\caption{Absolute gemeten waarden voor wit, bruin en zwart}
