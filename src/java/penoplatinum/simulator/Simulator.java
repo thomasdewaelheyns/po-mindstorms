@@ -107,26 +107,26 @@ class Simulator {
     this.currentMovement = Navigator.MOVE;
     
     // our direction 0 is pointing North
-    double rads = Math.toRadians(this.direction + 90);
+    double rads = Math.toRadians(this.getAngle());
 
-    // convert from distance in meters to cm
-    int distance = (int)(movement * 100.0);
+    // convert from distance in meters to 1/25 cm
+    int distance = (int)(movement * 400.0);
     int direction = 1;
     if( distance < 0 ) {
       direction = -1;
       distance *= -1;
     }
 
-    this.dx    = Math.cos(rads) * direction;
-    this.dy    = Math.sin(rads) * direction;
+    this.dx    = Math.cos(rads) / 4 * direction;
+    this.dy    = Math.sin(rads) / 4 * direction;
     this.steps = distance;
     
     return this;
   }
   
   public Simulator turnMotorTo(int angle){
-    this.dSonar = (angle>=0?1: -1);
-    this.stepsSonar = angle*(angle>=0?1: -1);
+    this.dSonar = ( angle >= 0 ? 1 : -1 );
+    this.stepsSonar = angle * this.dSonar;
     return this;
   }
   
