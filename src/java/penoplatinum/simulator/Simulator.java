@@ -18,6 +18,8 @@ class Simulator {
   private static int tileSize = 80;  // our tiles are 80cm
   private static int scale    = 2;   // 1cm = 2px
   
+  private static double movementStep = 0.25; // steps of 1/4 cm
+
   private SimulationView view;    // a view to display the simulation
   private Map map;                // the map that the robot will run on
   private SimulationRobotAPI   robotAPI;    // the API used to access hardware
@@ -110,15 +112,15 @@ class Simulator {
     double rads = Math.toRadians(this.getAngle());
 
     // convert from distance in meters to 1/25 cm
-    int distance = (int)(movement * 400.0);
+    int distance = (int)(movement * ( 100.0 / this.movementStep ) );
     int direction = 1;
     if( distance < 0 ) {
       direction = -1;
       distance *= -1;
     }
 
-    this.dx    = Math.cos(rads) / 4 * direction;
-    this.dy    = Math.sin(rads) / 4 * direction;
+    this.dx    = Math.cos(rads) * this.movementStep * direction;
+    this.dy    = Math.sin(rads) * this.movementStep * direction;
     this.steps = distance;
     
     return this;
