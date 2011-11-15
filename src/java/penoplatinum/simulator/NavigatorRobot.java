@@ -66,7 +66,6 @@ class NavigatorRobot implements Robot {
         this.api.move(this.navigator.getDistance());
         break;
       case Navigator.TURN:
-        System.out.println( "Turning: " + this.navigator.getAngle() );
         this.api.turn(this.navigator.getAngle());
         break;
       case Navigator.STOP:

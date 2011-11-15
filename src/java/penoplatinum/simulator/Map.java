@@ -29,6 +29,10 @@ public class Map {
     return (int)Math.ceil(this.tiles.size() / 1.0 / this.width);
   }
   
+  public int getTileCount() {
+    return this.tiles.size();
+  }
+  
   /**
    * adds a tile to the end of the list. based on width left,top coordinates
    * are applied to retrieve them later. this method is used to add a stream

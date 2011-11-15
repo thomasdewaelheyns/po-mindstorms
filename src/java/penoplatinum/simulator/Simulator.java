@@ -11,14 +11,22 @@ package penoplatinum.simulator;
  * 
  * Author: Team Platinum
  */
- 
+
+import java.lang.System;
 import java.awt.Point;
+import java.util.List;
+import java.util.ArrayList;
  
 class Simulator {
   private static int tileSize = 80;  // our tiles are 80cm
   private static int scale    = 2;   // 1cm = 2px
   
-  private static double movementStep = 0.25; // steps of 1/4 cm
+  private static double movementStep = 0.25;      // steps of 1/4 cm
+  private long   startTime;                // start time in millis
+  private List<Point> visitedTiles = new ArrayList<Point>();
+  private long   lastStatisticsReport = 0; // time of last stat report
+
+  private static double totalMovement = 0;
 
   private SimulationView view;    // a view to display the simulation
   private Map map;                // the map that the robot will run on
@@ -172,6 +180,8 @@ class Simulator {
           // TODO: fix this to be correct towards actual change
           this.lastChangeM1 = 1;
           this.lastChangeM2 = 1;
+
+          this.trackMovementStatistics();
         }
         break;
       case Navigator.TURN:
@@ -203,6 +213,28 @@ class Simulator {
 
     // always refresh our SimulationView
     this.refreshView();
+  }
+  
+  private void trackMovementStatistics() {
+    this.totalMovement += this.movementStep;
+    Point tile = this.getCurrentTileCoordinates();
+    if( ! this.visitedTiles.contains(tile) ) {
+      this.visitedTiles.add(tile);
+    }
+    // report the statistics every 2 seconds
+    long current = System.currentTimeMillis();
+    if( current - this.lastStatisticsReport > 2000 ) {
+      this.lastStatisticsReport = current;
+      this.reportMovementStatistics();
+    }
+  }
+  
+  private void reportMovementStatistics() {
+    System.out.println();
+    System.out.println( "Total Distance = " + this.totalMovement + "cm" );
+    System.out.println( "Visited Tiles  = " + this.visitedTiles.size() );
+    double fitness = 1 / ( this.visitedTiles.size() / this.totalMovement );
+    System.out.println( "Fitness        = " + fitness );
   }
   
   /**
@@ -258,18 +290,24 @@ class Simulator {
   private int getFreeDistance(int angle) {
     int distance = 0;
     
-    // determine tile coordinates we're on
-    int left = (int)Math.floor(this.positionX / Simulator.tileSize) + 1;
-    int top  = (int)Math.floor(this.positionY / Simulator.tileSize) + 1;
+    Point tile = this.getCurrentTileCoordinates();
 
     // determine position within tile
     int x = (int)this.positionX % Simulator.tileSize;
     int y = (int)this.positionY % Simulator.tileSize;
 
     // find distance to first wall in line of sight
-    distance = this.findHitDistance(angle, left, top, x, y);
+    distance = this.findHitDistance(angle, (int)tile.getX(), (int)tile.getY(),
+                                    x, y);
 
     return distance;
+  }
+
+  private Point getCurrentTileCoordinates() {
+    // determine tile coordinates we're on
+    int left = (int)Math.floor(this.positionX / Simulator.tileSize) + 1;
+    int top  = (int)Math.floor(this.positionY / Simulator.tileSize) + 1;
+    return new Point(left,top);
   }
   
   /**
@@ -342,12 +380,21 @@ class Simulator {
    * agent.
    */
   public Simulator run() {
+    this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
-    while( ! this.robot.reachedGoal() ) {
+    while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
       this.robot.step();
       this.step();
     }
+    System.out.println();
+    System.out.println( "Visited All Tiles:" );
+    this.reportMovementStatistics();
     return this;
+  }
+  
+  // once our robot has visited all tiles on the map, we're done.
+  private Boolean reachedGoal() {
+    return this.visitedTiles.size() >= this.map.getTileCount();
   }
   
   public double[] getSensorValues() {
