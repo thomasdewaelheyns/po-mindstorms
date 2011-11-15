@@ -228,8 +228,11 @@ class Simulator {
     this.view.log("");
     this.view.log( "Total Distance = " + this.totalMovement + "cm" );
     this.view.log( "Visited Tiles  = " + this.visitedTiles.size() );
-    double fitness = this.totalMovement / this.visitedTiles.size();
-    this.view.log( "Fitness        = " + fitness );
+    this.view.log( "Fitness        = " + this.getFitness() );
+  }
+  
+  public double getFitness() {
+    return this.totalMovement / this.visitedTiles.size();
   }
   
   /**

@@ -8,10 +8,12 @@ BUILD_DIR=build
 JAVAC=javac -cp ${CP} -d build
 JAVA=java -cp ${BUILD_DIR}
 
-
 all: ${TARGETS}
 
 run: ${TARGETS} images
+	@${JAVA} penoplatinum.simulator.${<:.class=}
+
+benchmark: BenchmarkRunner.class
 	@${JAVA} penoplatinum.simulator.${<:.class=}
 
 %.class: %.java ${BUILD_DIR}
