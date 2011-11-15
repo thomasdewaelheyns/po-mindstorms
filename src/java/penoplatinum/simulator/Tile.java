@@ -29,13 +29,23 @@ package penoplatinum.simulator;
 import java.awt.Point;
 
 public class Tile {
+  public static Tile S_E = new Tile(221337);
+  public static Tile W_E = new Tile(266325);
+  public static Tile W_S = new Tile(286771);
+  public static Tile E_N = new Tile(155852);
+  public static Tile E_W = new Tile(135253);
+  public static Tile S_W = new Tile(208947);
+  public static Tile N_S = new Tile(69802);
+  public static Tile W_N = new Tile(274534);
+  public static Tile N_W = new Tile(90214);
+  
   public static int WHITE = 0;
   public static int BLACK = 4;
 
   private int data;
   
   public Tile() {
-    this.data = 0x0;
+    this.data = 0;
   }
   
   public Tile( int data ) {
