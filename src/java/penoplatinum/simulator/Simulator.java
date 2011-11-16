@@ -285,7 +285,7 @@ private void updateLightSensor() {
         Tile currentTile = map.get(left, top);
 //    return currentTile.getLightValue(lightSensorPoint)
         // TODO: check lines
-        int yposition = (int) (y+LIGHTSENSOR_DISTANCE*Math.cos(direction));
+        int yposition = (int) (y+LIGHTSENSOR_DISTANCE*-Math.cos(direction));
         int xposition = (int) (x+LIGHTSENSOR_DISTANCE*Math.sin(direction));
         
         System.out.println(""+ xposition +"     "  +  yposition + "");

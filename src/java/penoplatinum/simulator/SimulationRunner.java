@@ -17,7 +17,7 @@ class SimulationRunner {
 
   public static void main(String[] args) {
     // setup the robot
-    Navigator navigator = new SonarNavigator();
+    Navigator navigator = new LineFollowerNavigator();
     Robot     robot     = new NavigatorRobot(navigator);
 
     // construct a course
@@ -37,7 +37,7 @@ class SimulationRunner {
     simulator.useMap   (map);
     // put the robot at position 150 cm from top, 150 cm from left, in an
     // angle of 33 degrees, with 0 degrees pointing north
-    simulator.putRobotAt (robot, 160, 40, 0);
+    simulator.putRobotAt (robot, 20, 60, 0);
 
     // give robot instructions through the communication layer
     // simulator.send( "start" );
