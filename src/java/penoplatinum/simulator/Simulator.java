@@ -24,10 +24,13 @@ class Simulator {
   private static int tileSize = 80;  // our tiles are 80cm
   private static int scale    = 2;   // 1cm = 2px
   
-  private static double movementStep = 0.25;      // steps of 1/4 cm
-  private long   startTime;                // start time in millis
+  // distance to the lightsensor-position
+  private final int LIGHTSENSOR_DISTANCE = 10;
+  
+  private static double movementStep = 0.25;  // steps of 1/4 cm
+  private long   startTime;                   // start time in millis
   private List<Point> visitedTiles = new ArrayList<Point>();
-  private long   lastStatisticsReport = 0; // time of last stat report
+  private long   lastStatisticsReport = 0;    // time of last stat report
 
   private static double totalMovement = 0;
 
@@ -43,7 +46,8 @@ class Simulator {
   private double positionY;       //   expressed in X,Y coordinates
   private double direction;       //   and a direction its facing
   
-  private double[] sensorValues = new double[7]; // the motorSpeeds and the sensorValues
+  // the motorSpeeds and the sensorValues
+  private double[] sensorValues = new double[7];
 
   private int steps;              // the number of steps still to do
   private double dx, dy, dr;      // the difference for x, y and rotation
@@ -55,8 +59,6 @@ class Simulator {
   private int lastChangeM2 = 0;    // the last change on Motor 2
   private int lastChangeM3 = 0;    // the last change on Motor 3
   
-  private final int LIGHTSENSOR_DISTANCE =10;//radius to the lightsensorposition
-
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
     this.setupSimulationEnvironment();
@@ -270,131 +272,137 @@ class Simulator {
     this.sensorValues[Model.M2] = this.lastChangeM2;
   }
   
-private void updateLightSensor() {
+  private void updateLightSensor() {
+    // determine tile coordinates we're on
+    // TODO also used in getFreeFrontDistance Refactoring
+    int left = (int) Math.floor(this.positionX / Simulator.tileSize) + 1;
+    int top = (int) Math.floor(this.positionY / Simulator.tileSize) + 1;
 
-//      determine tile coordinates we're on( TODO also used in getFreeFrontDistance Refactoring...)
-        int left = (int) Math.floor(this.positionX / Simulator.tileSize) + 1;
-        int top = (int) Math.floor(this.positionY / Simulator.tileSize) + 1;
+    // determine position within tile
+    int x = (int) (this.positionX % Simulator.tileSize)*2;
+    int y = (int) (this.positionY % Simulator.tileSize)*2;
 
-//     determine position within tile
-        int x = (int) (this.positionX % Simulator.tileSize)*2;
-        int y = (int) (this.positionY % Simulator.tileSize)*2;
+    // determine Light Sensor Position
+    Tile currentTile = map.get(left, top);
 
+    // TODO: check lines
+    int yposition = (int) (y+LIGHTSENSOR_DISTANCE*-Math.cos(direction));
+    int xposition = (int) (x+LIGHTSENSOR_DISTANCE*Math.sin(direction));
 
-//    determine Light Sensor Position
-        Tile currentTile = map.get(left, top);
-//    return currentTile.getLightValue(lightSensorPoint)
-        // TODO: check lines
-        int yposition = (int) (y+LIGHTSENSOR_DISTANCE*-Math.cos(direction));
-        int xposition = (int) (x+LIGHTSENSOR_DISTANCE*Math.sin(direction));
-        
-        System.out.println(""+ xposition +"     "  +  yposition + "");
-        
-        Color currentColor = getLineColor(xposition, yposition, currentTile);
-        
-        if(getRobotOnBarcode(xposition, yposition, currentTile)){
-            currentColor = getBarcodeColor(xposition,yposition,currentTile);
-        }
-        // TODO: check barcodes
+    System.out.println(""+ xposition +"     "  +  yposition + "");
 
-        if(currentColor == Color.WHITE){
-            this.sensorValues[Model.S4]= 100;
-        } 
-        else if(currentColor== Color.BLACK){
-            this.sensorValues[Model.S4]=0;
-        }
-        else
-            this.sensorValues[Model.S4]=70;
-        // update waarden in sensors
+    Color currentColor = getLineColor(xposition, yposition, currentTile);
 
-
+    if(getRobotOnBarcode(xposition, yposition, currentTile)){
+      currentColor = getBarcodeColor(xposition,yposition,currentTile);
     }
-    //return the Color from the Barcode
-    public Color getBarcodeColor(int x, int y, Tile currentTile){
-        // normalisatie.
-        int relativePosition= 0;
-        switch(currentTile.getBarcodeLocation()){
-            case Baring.N: relativePosition = y/Board.BARCODE_PIXEL_WIDTH;break;
-            case Baring.S: relativePosition = (Board.TILE_WIDTH_AND_LENGTH-y)/Board.BARCODE_PIXEL_WIDTH;break;
-            case Baring.E: relativePosition = (Board.TILE_WIDTH_AND_LENGTH -x)/Board.BARCODE_PIXEL_WIDTH;break;
-            case Baring.W: relativePosition = x/Board.BARCODE_PIXEL_WIDTH;break;        
-        }
-        return ((currentTile.getBarcode() & (1<<relativePosition) )!= 0 ? Color.BLACK : Color.WHITE );
+
+    if(currentColor == Color.WHITE){
+      this.sensorValues[Model.S4]= 100;
+    } else if(currentColor== Color.BLACK){
+      this.sensorValues[Model.S4]=0;
+    } else {
+      this.sensorValues[Model.S4]=70;
     }
-        
+  }
+  //return the Color from the Barcode
+  public Color getBarcodeColor(int x, int y, Tile currentTile){
+    // normalisatie.
+    int relativePosition= 0;
+    switch(currentTile.getBarcodeLocation()){
+      case Baring.N:
+        relativePosition = y/Board.BARCODE_PIXEL_WIDTH;
+        break;
+      case Baring.S:
+        relativePosition = (Board.TILE_WIDTH_AND_LENGTH-y) 
+                           / Board.BARCODE_PIXEL_WIDTH;
+        break;
+      case Baring.E:
+        relativePosition = (Board.TILE_WIDTH_AND_LENGTH -x)
+                           / Board.BARCODE_PIXEL_WIDTH;
+        break;
+      case Baring.W:
+        relativePosition = x / Board.BARCODE_PIXEL_WIDTH;
+        break;
+    }
+    return ((currentTile.getBarcode() & (1<<relativePosition) ) != 0 ?
+            Color.BLACK : Color.WHITE );
+  }
     
-    // check if the robot is on a barcode
-    public boolean getRobotOnBarcode(int x, int y,Tile currentTile ) {
-       
-        switch(currentTile.getBarcodeLocation()){
-            case Baring.N: return y<28 ? true : false;
-            case Baring.E: return x>132 ? true : false;
-            case Baring.S: return y>132 ? true : false;
-            case Baring.W: return x<28 ? true : false;
-        }
-        return false;  
+  // check if the robot is on a barcode
+  public boolean getRobotOnBarcode(int x, int y,Tile currentTile ) {
+    switch(currentTile.getBarcodeLocation()){
+      case Baring.N: return y<28;
+      case Baring.E: return x>132;
+      case Baring.S: return y>132;
+      case Baring.W: return x<28;
+    }
+    return false;  
+  }
+
+  public Color getLineColor(int x, int y, Tile currentTile) {
+    // check WEST and EAST  
+    Color currentColor = new Color(205, 165, 100);
+    Set firstLineValues = new HashSet<Integer>();
+    Set secondLineValues = new HashSet<Integer>();
+
+    for (int i = 0; i < (Board.LINE_PIXEL_WIDTH - 1); i++) {
+      firstLineValues.add(Board.LINE_ORIGIN + i);
     }
 
-    public Color getLineColor(int x, int y, Tile currentTile) {
-
-        //check WEST and EAST  
-        Color currentColor = new Color(205, 165, 100);
-        Set firstLineValues = new HashSet<Integer>();
-        Set secondLineValues = new HashSet<Integer>();
-        for (int i = 0; i < (Board.LINE_PIXEL_WIDTH - 1); i++) {
-            firstLineValues.add(Board.LINE_ORIGIN + i);
-        }
-
-        for (int i = 0; i < (Board.LINE_PIXEL_WIDTH - 1); i++) {
-            secondLineValues.add(Board.LINE_ORIGIN + (Board.TILE_WIDTH_AND_LENGTH - Board.LINE_ORIGIN * 2) + i);
-        }
-
-        if (firstLineValues.contains(x)) {
-            
-            if (currentTile.hasLine(Baring.W)) {
-                currentColor = currentTile.hasLine(Baring.W, Tile.WHITE) ? Color.WHITE : Color.BLACK;
-                currentColor = resetColorForTurnY(currentTile, y, currentColor);
-            }
-        }
-        if (secondLineValues.contains(x)) {
-            if (currentTile.hasLine(Baring.E)) {
-                currentColor = currentTile.hasLine(Baring.E, Tile.WHITE) ? Color.WHITE : Color.BLACK;
-                currentColor = resetColorForTurnY(currentTile, y, currentColor);
-            }
-        }
-        if (firstLineValues.contains(y)) {
-            if (currentTile.hasLine(Baring.N)) {
-                currentColor = currentTile.hasLine(Baring.N, Tile.WHITE) ? Color.WHITE : Color.BLACK;
-                currentColor = resetColorForTurnX(currentTile, x, currentColor);
-            }
-        }
-        if (secondLineValues.contains(y)) {
-            if (currentTile.hasLine(Baring.S)) {
-                currentColor = currentTile.hasLine(Baring.S, Tile.WHITE) ? Color.WHITE : Color.BLACK;
-                currentColor = resetColorForTurnX(currentTile, x, currentColor);
-            }
-        }
-        return currentColor;
+    for (int i = 0; i < (Board.LINE_PIXEL_WIDTH - 1); i++) {
+      secondLineValues.add(Board.LINE_ORIGIN + Board.TILE_WIDTH_AND_LENGTH 
+                           - ( 2 * Board.LINE_ORIGIN ) + i);
     }
+
+    if (firstLineValues.contains(x)) {
+
+      if (currentTile.hasLine(Baring.W)) {
+        currentColor = currentTile.hasLine(Baring.W, Tile.WHITE) ? 
+                       Color.WHITE : Color.BLACK;
+        currentColor = resetColorForTurnY(currentTile, y, currentColor);
+      }
+    }
+    if (secondLineValues.contains(x)) {
+      if (currentTile.hasLine(Baring.E)) {
+        currentColor = currentTile.hasLine(Baring.E, Tile.WHITE) ?
+                       Color.WHITE : Color.BLACK;
+        currentColor = resetColorForTurnY(currentTile, y, currentColor);
+      }
+    }
+    if (firstLineValues.contains(y)) {
+      if (currentTile.hasLine(Baring.N)) {
+        currentColor = currentTile.hasLine(Baring.N, Tile.WHITE) ?
+                       Color.WHITE : Color.BLACK;
+        currentColor = resetColorForTurnX(currentTile, x, currentColor);
+      }
+    }
+    if (secondLineValues.contains(y)) {
+      if (currentTile.hasLine(Baring.S)) {
+        currentColor = currentTile.hasLine(Baring.S, Tile.WHITE) ?
+                       Color.WHITE : Color.BLACK;
+        currentColor = resetColorForTurnX(currentTile, x, currentColor);
+      }
+    }
+    return currentColor;
+  }
     
-    private Color resetColorForTurnX(Tile currentTile, int x, Color currentColor) {
-        if (currentTile.hasLine(Baring.W) && x < 40) {
-            currentColor = new Color(205, 165, 100);
-        }
-        if (currentTile.hasLine(Baring.E) && x > 120) {
-            currentColor = new Color(205, 165, 100);
-        }
-        return currentColor;
+  private Color resetColorForTurnX(Tile tile, int x, Color color) {
+    if(   tile.hasLine(Baring.W) && x < 40
+       || tile.hasLine(Baring.E) && x > 120)
+    {
+      return new Color(205, 165, 100);
     }
-    private Color resetColorForTurnY(Tile currentTile, int y, Color currentColor) {
-        if (currentTile.hasLine(Baring.N) && y < 40) {
-            currentColor = new Color(205, 165, 100);
-        }
-        if (currentTile.hasLine(Baring.S) && y > 120) {
-            currentColor = new Color(205, 165, 100);
-        }
-        return currentColor;
+    return color;
+  }
+
+  private Color resetColorForTurnY(Tile tile, int y, Color color) {
+    if(    tile.hasLine(Baring.N) && y < 40
+        || tile.hasLine(Baring.S) && y > 120) {
+      return new Color(205, 165, 100);
     }
+    return color;
+  }
 
   private void calculateBumperSensor(int angle, int lengthRobot, int sensorPort) {
     angle = ( this.getAngle() + angle ) % 360; 

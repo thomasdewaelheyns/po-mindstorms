@@ -1,7 +1,5 @@
 package penoplatinum.simulator;
 
-import lejos.robotics.Color;
-
 /*
  * LineFollowerNavigator
  * 
