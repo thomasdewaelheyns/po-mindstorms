@@ -21,10 +21,14 @@ import javax.swing.*;
 import java.net.URL;
 
 public class Board extends JPanel {
-    static final int LINE_ORIGIN = 40;
-    static final int TILE_WIDTH_AND_LENGTH = 160;
-    static final int LINE_PIXEL_WIDTH = 2;
-    static final int BARCODE_PIXEL_WIDTH = 4;
+  static final int LINE_ORIGIN           = 40;
+  static final int TILE_WIDTH_AND_LENGTH = 160;
+  static final int LINE_PIXEL_WIDTH      = 2;
+  static final int BARCODE_PIXEL_WIDTH   = 4;
+
+  private static Color BLACK = new Color(100,100,100);
+  private static Color WHITE = new Color(200,200,200);
+
   private Image robot;
   private Map map;
   private int direction = 0;
@@ -34,9 +38,6 @@ public class Board extends JPanel {
   private BufferedImage background;
   private BufferedImage trail;
   
-  private static Color BLACK = new Color(100,100,100);
-  private static Color WHITE = new Color(200,200,200);
-
   public Board() {
     this.setupCanvas();
     this.setupImages();
@@ -115,7 +116,10 @@ public class Board extends JPanel {
     // tile = 80 cm, scale = 2px/cm
     // background
     g2d.setColor(new Color(205,165,100));
-    g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1), TILE_WIDTH_AND_LENGTH*(top-1), TILE_WIDTH_AND_LENGTH,TILE_WIDTH_AND_LENGTH));
+    g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1), 
+                           TILE_WIDTH_AND_LENGTH*(top-1),
+                           TILE_WIDTH_AND_LENGTH,
+                           TILE_WIDTH_AND_LENGTH));
     
     this.renderLines    ( g2d, tile, left, top );
     this.renderBarcode  ( g2d, tile, left, top );
@@ -123,6 +127,8 @@ public class Board extends JPanel {
     this.renderWalls    ( g2d, tile, left, top );
   }
 
+  // TODO: refactor this method, it's way to long and it feels like it 
+  //       contains repetitive code
   private void renderLines(Graphics2D g2d, Tile tile, int left, int top) {
     // lines are 1cm wide = 2px
     // lines are 20cm out of the walls = 40px
@@ -131,33 +137,64 @@ public class Board extends JPanel {
       g2d.setColor(tile.hasLine(Baring.N, Tile.WHITE) ? 
                    this.WHITE : this.BLACK);
       width = 158; offset = 0;
-      if( tile.hasLine(Baring.W) ) {  width -= LINE_ORIGIN; offset += LINE_ORIGIN; }
-      if( tile.hasLine(Baring.E) ) {  width -= LINE_ORIGIN; }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+offset, TILE_WIDTH_AND_LENGTH*(top-1)+LINE_ORIGIN, width, LINE_PIXEL_WIDTH));
+      if( tile.hasLine(Baring.W) ) { 
+        width  -= LINE_ORIGIN;
+        offset += LINE_ORIGIN;
+      }
+      if( tile.hasLine(Baring.E) ) {
+        width -= LINE_ORIGIN;
+      }
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+offset,
+                             TILE_WIDTH_AND_LENGTH*(top-1)+LINE_ORIGIN,
+                             width,
+                             LINE_PIXEL_WIDTH));
     }
     if( tile.hasLine(Baring.E) ) {
       g2d.setColor(tile.hasLine(Baring.E, Tile.WHITE) ? 
                    this.WHITE : this.BLACK);
       width = 158; offset = 0;
-      if( tile.hasLine(Baring.N) ) {  width -= LINE_ORIGIN; offset += LINE_ORIGIN; }
-      if( tile.hasLine(Baring.S) ) {  width -= LINE_ORIGIN; }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4 -LINE_ORIGIN, TILE_WIDTH_AND_LENGTH*(top-1)+offset,LINE_PIXEL_WIDTH, width));
+      if( tile.hasLine(Baring.N) ) {
+        width  -= LINE_ORIGIN;
+        offset += LINE_ORIGIN;
+      }
+      if( tile.hasLine(Baring.S) ) {
+        width -= LINE_ORIGIN;
+      }
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4 -LINE_ORIGIN,
+                             TILE_WIDTH_AND_LENGTH*(top-1)+offset,
+                             LINE_PIXEL_WIDTH,
+                             width));
     }
     if( tile.hasLine(Baring.S) ) {
       g2d.setColor(tile.hasLine(Baring.S, Tile.WHITE) ? 
                    this.WHITE : this.BLACK);
       width = 158; offset = 0;
-      if( tile.hasLine(Baring.W) ) {  width -= LINE_ORIGIN; offset += LINE_ORIGIN; }
-      if( tile.hasLine(Baring.E) ) {  width -= LINE_ORIGIN; }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+offset, TILE_WIDTH_AND_LENGTH*(top)-4 -LINE_ORIGIN, width,LINE_PIXEL_WIDTH));
+      if( tile.hasLine(Baring.W) ) {
+        width  -= LINE_ORIGIN;
+        offset += LINE_ORIGIN; }
+      if( tile.hasLine(Baring.E) ) {
+        width -= LINE_ORIGIN;
+      }
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+offset,
+                             TILE_WIDTH_AND_LENGTH*(top)-4 -LINE_ORIGIN,
+                             width,
+                             LINE_PIXEL_WIDTH));
     }
     if( tile.hasLine(Baring.W) ) {
       g2d.setColor(tile.hasLine(Baring.W, Tile.WHITE) ? 
                    this.WHITE : this.BLACK);
       width = 158; offset = 0;
-      if( tile.hasLine(Baring.N) ) {  width -= LINE_ORIGIN; offset += LINE_ORIGIN; }
-      if( tile.hasLine(Baring.S) ) {  width -= LINE_ORIGIN; }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+LINE_ORIGIN, TILE_WIDTH_AND_LENGTH*(top-1)+offset,LINE_PIXEL_WIDTH, width));
+      if( tile.hasLine(Baring.N) ) {
+        width -= LINE_ORIGIN;
+        offset += LINE_ORIGIN;
+      }
+      if( tile.hasLine(Baring.S) ) {
+        width -= LINE_ORIGIN;
+      }
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+LINE_ORIGIN,
+                             TILE_WIDTH_AND_LENGTH*(top-1)+offset,
+                             LINE_PIXEL_WIDTH,
+                             width));
     }
   }
 
@@ -169,16 +206,28 @@ public class Board extends JPanel {
 
       switch( tile.getBarcodeLocation() ) {
         case Baring.N:
-          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1), TILE_WIDTH_AND_LENGTH*(top-1)+4*(line), TILE_WIDTH_AND_LENGTH, BARCODE_PIXEL_WIDTH));
+          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
+                                 TILE_WIDTH_AND_LENGTH*(top-1)+4*(line),
+                                 TILE_WIDTH_AND_LENGTH,
+                                 BARCODE_PIXEL_WIDTH));
           break;
         case Baring.E:
-          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4*(line+1), TILE_WIDTH_AND_LENGTH*(top-1), BARCODE_PIXEL_WIDTH, TILE_WIDTH_AND_LENGTH));
+          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4*(line+1),
+                                 TILE_WIDTH_AND_LENGTH*(top-1),
+                                 BARCODE_PIXEL_WIDTH,
+                                 TILE_WIDTH_AND_LENGTH));
           break;
         case Baring.S:
-          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1), TILE_WIDTH_AND_LENGTH*(top)-4*(line+1), TILE_WIDTH_AND_LENGTH, BARCODE_PIXEL_WIDTH));
+          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
+                                 TILE_WIDTH_AND_LENGTH*(top)-4*(line+1),
+                                 TILE_WIDTH_AND_LENGTH,
+                                 BARCODE_PIXEL_WIDTH));
           break;
         case Baring.W:
-          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+4*line, TILE_WIDTH_AND_LENGTH*(top-1)+4, BARCODE_PIXEL_WIDTH, TILE_WIDTH_AND_LENGTH));
+          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+4*line,
+                                 TILE_WIDTH_AND_LENGTH*(top-1)+4,
+                                 BARCODE_PIXEL_WIDTH,
+                                 TILE_WIDTH_AND_LENGTH));
           break;
       }
     }
@@ -192,16 +241,28 @@ public class Board extends JPanel {
     // walls are 2cm width = 4px
     g2d.setColor(new Color(100,53,38));
     if( tile.hasWall(Baring.N) ) {
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1), TILE_WIDTH_AND_LENGTH*(top-1), TILE_WIDTH_AND_LENGTH, 4));
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
+                             TILE_WIDTH_AND_LENGTH*(top-1),
+                             TILE_WIDTH_AND_LENGTH,
+                             4));
     }
     if( tile.hasWall(Baring.E) ) {
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4, TILE_WIDTH_AND_LENGTH*(top-1), 4, TILE_WIDTH_AND_LENGTH));
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4,
+                             TILE_WIDTH_AND_LENGTH*(top-1),
+                             4,
+                             TILE_WIDTH_AND_LENGTH));
     }
     if( tile.hasWall(Baring.S) ) {
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1), TILE_WIDTH_AND_LENGTH*(top)-4, TILE_WIDTH_AND_LENGTH, 4));
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
+                             TILE_WIDTH_AND_LENGTH*(top)-4,
+                             TILE_WIDTH_AND_LENGTH,
+                             4));
     }
     if( tile.hasWall(Baring.W) ) {
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),TILE_WIDTH_AND_LENGTH*(top-1), 4, TILE_WIDTH_AND_LENGTH));
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
+                             TILE_WIDTH_AND_LENGTH*(top-1),
+                             4,
+                             TILE_WIDTH_AND_LENGTH));
     }
   }
 
