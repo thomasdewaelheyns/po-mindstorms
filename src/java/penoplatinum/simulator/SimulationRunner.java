@@ -37,7 +37,7 @@ class SimulationRunner {
     simulator.useMap   (map);
     // put the robot at position 150 cm from top, 150 cm from left, in an
     // angle of 33 degrees, with 0 degrees pointing north
-    simulator.putRobotAt (robot, 150, 150, 33);
+    simulator.putRobotAt (robot, 160, 40, 0);
 
     // give robot instructions through the communication layer
     // simulator.send( "start" );
