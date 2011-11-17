@@ -263,9 +263,13 @@ class Simulator {
   }
   
   private void updateSonar() {
-    int angle = ((int)this.sensorValues[Model.M3] + this.getAngle() + 360) % 360;
-    int distance = this.getFreeDistance(angle);
-    this.sensorValues[Model.S3] = distance;
+    int angle = (int) this.sensorValues[Model.M3] + this.getAngle();
+    int minimum = this.getFreeDistance((angle+36)%360);
+    for (int i = -15; i < 16; i++) {
+      int distance = this.getFreeDistance((angle+i+360)%360);
+      minimum = Math.min(minimum, distance);
+    }
+    this.sensorValues[Model.S3] = minimum;
   }
   
   private void updateMotors() {
@@ -514,10 +518,14 @@ class Simulator {
     this.view.showMap(this.map);
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
-    while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
+    //while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
+     while(true){
         //System.out.println("" + this.sensorValues[Model.S4]+"");
           this.robot.step();
           this.step();
+          if(dSonar == 1000){
+            break;
+          }
     }
     this.view.log( "" );
     this.view.log( "Visited All Tiles:" );

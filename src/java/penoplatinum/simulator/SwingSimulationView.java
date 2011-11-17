@@ -48,7 +48,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     // This Thread.sleep() causes "hickups" 90% of the calls run ok, but in 
     // some cases it "hangs" for about a second ?!
      try {
-       Thread.sleep(10);
+       Thread.sleep(1);
      } catch( InterruptedException e ) {
        System.err.println( e );
     }

@@ -13,6 +13,7 @@ public class SimulationRobotAPI implements RobotAPI {
 
   private Simulator simulator;
   private int sonarAngle = 270;
+  private boolean first = true;
 
   public void setSimulator( Simulator simulator ) {
     this.simulator = simulator;
@@ -45,8 +46,14 @@ public class SimulationRobotAPI implements RobotAPI {
 
   private void restartSonarMotor(){
     if( ! simulator.sonarMotorIsMoving() ) {
-      this.sonarAngle *= -1;
-      simulator.turnMotorTo(this.sonarAngle);
+      if(first){
+        //initialise sonarhead to start moving
+        first = false;
+        simulator.turnMotorTo(sonarAngle/2);
+      } else {
+        this.sonarAngle *= -1;
+        simulator.turnMotorTo(this.sonarAngle);
+      }
     }
   }
 

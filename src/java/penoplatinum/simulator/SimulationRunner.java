@@ -17,7 +17,8 @@ class SimulationRunner {
 
   public static void main(String[] args) {
     // setup the robot
-    Navigator navigator = new LineFollowerNavigator();
+    //Navigator navigator = new LineFollowerNavigator();
+    Navigator navigator = new SonarNavigator();
     Robot     robot     = new NavigatorRobot(navigator);
 
     // construct a course

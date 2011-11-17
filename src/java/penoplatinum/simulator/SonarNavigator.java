@@ -8,17 +8,20 @@ package penoplatinum.simulator;
  * 
  * Author: Team Platinum
  */
-
 import java.util.Random;
 
-public class SonarNavigator implements Navigator {  
-  private Boolean idle = true;
-  private Model   model;
-  private int     angle = 0;
-  
+public class SonarNavigator implements Navigator {
+
+  private Boolean special = true;
+  private Model model;
+  private double distance = 0;
+  private int angle = 0;
+  private boolean lastSweepChanged = false;
+  private int nextInstruction = Navigator.NONE;
+
   // we use the model to read out raw sensor values for the sonar :
   // distance and angle
-  public SonarNavigator setModel(Model model){
+  public SonarNavigator setModel(Model model) {
     this.model = model;
     return this;
   }
@@ -28,45 +31,30 @@ public class SonarNavigator implements Navigator {
     return false;
   }
 
-  // if the motor of the sonar sensor is currently facing forward/0 degrees:
-  // 1) continue moving if the distance is still more than 50
-  // 2) if the distance is only 40, turn a little
-  // 3) if the distance is only 30, turn more
-  // 4) if the distance is only 20, turn 90 degrees
   public int nextAction() {
-    // start moving
-    if( this.idle ) { 
-      this.idle = false;
+    if(this.model.isMoving()){ //finish movement
+      return Navigator.NONE;
+    }
+    if(nextInstruction == Navigator.MOVE){ //after turn start moving forward
+      nextInstruction = Navigator.NONE;
       return Navigator.MOVE;
     }
-
-    // check is we're blocked in the (near) future and turn away to avoid it
-    int direction = model.getSensorValue(Model.M3);
-    int distance  = model.getSensorValue(Model.S3);
-
-    // look straight ahead and determine angle to apply to turn away
-    if(direction == Baring.N){
-      if( distance > 50 ) {
-        this.angle = 0;
-      } else if( distance > 40 ) {
-        this.angle = 5;
-      } else if( distance > 30 ) {
-        this.angle = 50;
-      } else if( distance > 20 ) {
-        this.angle = 90;
-      } else {
-        this.angle = 135;
+    
+    if(lastSweepChanged != this.model.hasSweepChanged()){ //after moving forward restart
+      lastSweepChanged = this.model.hasSweepChanged();
+      int[] values = this.model.getSweepValues();
+      angle = values[3];
+      distance  = values[2];
+      if(values[0]<35 && Math.abs(values[1])<90){
+        int diff = (values[3]-values[1]+360)%360;
+        angle = (diff>180? -30: 30);
+        nextInstruction = Navigator.MOVE;
+        return Navigator.TURN;
       }
-
-      // let's introduce some non-determinism:
-      // randomly turn left or right
-      this.angle *= ( Math.random() < 0.5 ? -1 : 1 );
-
-      return this.angle != 0 ? Navigator.TURN : Navigator.MOVE;
-    }
-
-
-    // if we're driving and we aren't avoiding anything
+      nextInstruction = Navigator.MOVE;
+      return Navigator.TURN;
+    } 
+    //if last sweep is still busy or this took very long and the original sweep restarted, wait.
     return Navigator.NONE;
   }
 

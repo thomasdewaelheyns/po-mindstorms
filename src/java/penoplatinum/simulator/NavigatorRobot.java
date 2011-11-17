@@ -26,7 +26,8 @@ class NavigatorRobot implements Robot {
   private void setupModel() {
     // setup a model with the required ModelProcessors
     this.model     = new Model();
-    this.model.setProcessor( new FrontPushModelProcessor() );
+    ModelProcessor sonar = new SonarModelProcessor();
+    this.model.setProcessor( new FrontPushModelProcessor(sonar) );
   }
   
   public Robot useNavigator(Navigator navigator) {
