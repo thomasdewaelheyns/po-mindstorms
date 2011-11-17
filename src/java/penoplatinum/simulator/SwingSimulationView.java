@@ -47,11 +47,11 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     this.board.updateRobot( x * 2, y * 2, direction );
     // This Thread.sleep() causes "hickups" 90% of the calls run ok, but in 
     // some cases it "hangs" for about a second ?!
-    // try {
-    //   Thread.sleep(10);
-    // } catch( InterruptedException e ) {
-    //   System.err.println( e );
-    // }
+     try {
+       Thread.sleep(10);
+     } catch( InterruptedException e ) {
+       System.err.println( e );
+    }
   }
   
   public void log( String msg ) {

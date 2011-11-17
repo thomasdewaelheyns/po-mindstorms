@@ -146,11 +146,12 @@ class Simulator {
     this.currentMovement = Navigator.TURN;
     
     // turn in steps of 3 degrees
-    this.dr   = 3.0;
+    this.dr   = 1.0;
     this.steps = (int)(Math.abs(angle) / this.dr);
+    
     // if the angle is negative, move clock-wise
     if( angle < 0 ) {
-      this.dr = -3.0;
+      this.dr = -1.0;
     }
 
     return this;
@@ -286,10 +287,10 @@ class Simulator {
     Tile currentTile = map.get(left, top);
 
     // TODO: check lines
-    int yposition = (int) (y+LIGHTSENSOR_DISTANCE*-Math.cos(direction));
-    int xposition = (int) (x+LIGHTSENSOR_DISTANCE*Math.sin(direction));
+    int yposition = (int) (y-LIGHTSENSOR_DISTANCE*Math.cos(Math.toRadians(direction)));
+    int xposition = (int) (x-LIGHTSENSOR_DISTANCE*Math.sin(Math.toRadians(direction)));
 
-    System.out.println(""+ xposition +"     "  +  yposition + "");
+    //System.out.println(x+" "+y+": "+ xposition +" "  +  yposition + "");
 
     Color currentColor = getLineColor(xposition, yposition, currentTile);
 
@@ -330,7 +331,7 @@ class Simulator {
   }
     
   // check if the robot is on a barcode
-  public boolean getRobotOnBarcode(int x, int y,Tile currentTile ) {
+  public boolean getRobotOnBarcode(int x, int y, Tile currentTile ) {
     switch(currentTile.getBarcodeLocation()){
       case Baring.N: return y<28;
       case Baring.E: return x>132;
@@ -514,9 +515,9 @@ class Simulator {
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
     while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
-        System.out.println("" + this.sensorValues[Model.S4]+"");
-      this.robot.step();
-      this.step();
+        //System.out.println("" + this.sensorValues[Model.S4]+"");
+          this.robot.step();
+          this.step();
     }
     this.view.log( "" );
     this.view.log( "Visited All Tiles:" );

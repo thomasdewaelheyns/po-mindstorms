@@ -9,11 +9,10 @@ package penoplatinum.simulator;
  */
 public class LineFollowerNavigator implements Navigator {
 
-    private Boolean idle = true;
     private Model model;
     private int angle = -120;
-    private int[] rotates = new int[]{-5, 10, -20, 30, -35, 40, -50, 60, -70, 80, -90, 100, -110, 120, -130, 140, -150, 160, -170, 180, -190, 200, -210, 220, -230, 240, -250, 260, -270, 280, -290, 300};
-    private int timesturned = 0;
+    private int[] rotates = new int[]{-20, 120, -720};
+    private int timesTurned = 0;
 
     @Override
     //no goal just drive
@@ -23,34 +22,25 @@ public class LineFollowerNavigator implements Navigator {
 
     @Override
     public int nextAction() {
-        //start
-        if (this.idle) {
-            this.idle = false;
-            return Navigator.MOVE;
-        }
-        //get the color we are on
         int lightValue = model.getSensorValue(Model.S4);
-        //
-        if (lightValue == 100 || lightValue == 0) {
-            timesturned = 0;
-            return Navigator.MOVE;
-        } else {
-//            try {
-//                angle = (int) rotates[timesturned];
-//            } catch (IndexOutOfBoundsException e) {
-//                timesturned = 0;
-//                angle = (int) rotates[timesturned];
-//            }
-            timesturned++;
-            if(timesturned == angle/3){
-                angle = angle*-2;
-                timesturned = 0;
+        if (lightValue < 30 || lightValue > 85) {
+            if (timesTurned > 0) {
+                System.out.println("Found line: " + lightValue);
             }
-            return Navigator.TURN;
+            timesTurned = 0;
+            return Navigator.MOVE;
         }
-        
-
-
+        if (model.isMoving()) {
+            if(model.isTurning()){
+                return Navigator.NONE;
+            } else {
+                return Navigator.STOP;
+            }
+        }
+        angle = rotates[timesTurned] + (timesTurned > 0 ? -rotates[timesTurned - 1] : 0);
+        System.out.println("Stopped, change direction, angle: "+angle);
+        timesTurned++;
+        return Navigator.TURN;
     }
 
     @Override
