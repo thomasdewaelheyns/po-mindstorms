@@ -39,4 +39,14 @@ public class Baring {
     }
     return move;
   }
+  
+  // returns the neighbour line that influences a position in two ways
+  public static int getLeftNeighbour(int baring) {
+    return baring == Baring.N || baring == Baring.S ? Baring.W : Baring.N;
+  }
+
+  // returns the neighbour line that influences a position in one ways
+  public static int getRightNeighbour(int baring) {
+    return baring == Baring.N || baring == Baring.S ? Baring.E : Baring.S;
+  }
 }

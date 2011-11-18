@@ -113,11 +113,10 @@ public class Board extends JPanel {
   }    
   
   private void renderTile(Graphics2D g2d, Tile tile, int left, int top) {
-    // tile = 80 cm, scale = 2px/cm
     // background
     g2d.setColor(new Color(205,165,100));
-    g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1), 
-                           TILE_WIDTH_AND_LENGTH*(top-1),
+    g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH * (left-1), 
+                           TILE_WIDTH_AND_LENGTH * (top-1),
                            TILE_WIDTH_AND_LENGTH,
                            TILE_WIDTH_AND_LENGTH));
     
@@ -127,74 +126,49 @@ public class Board extends JPanel {
     this.renderWalls    ( g2d, tile, left, top );
   }
 
-  // TODO: refactor this method, it's way to long and it feels like it 
-  //       contains repetitive code
   private void renderLines(Graphics2D g2d, Tile tile, int left, int top) {
-    // lines are 1cm wide = 2px
-    // lines are 20cm out of the walls = 40px
-    int width, offset;
-    if( tile.hasLine(Baring.N) ) {
-      g2d.setColor(tile.hasLine(Baring.N, Tile.WHITE) ? 
-                   this.WHITE : this.BLACK);
-      width = 158; offset = 0;
-      if( tile.hasLine(Baring.W) ) { 
+    this.renderLine(g2d, tile, left, top, Baring.N);
+    this.renderLine(g2d, tile, left, top, Baring.E);
+    this.renderLine(g2d, tile, left, top, Baring.S);
+    this.renderLine(g2d, tile, left, top, Baring.W);
+  }
+  
+  // TODO: further refactor this code, the switch is still ugly as hell ;-)
+  private void renderLine(Graphics2D g2d, Tile tile, int left, int top, int line) {
+    if( tile.hasLine(line) ) {
+      g2d.setColor(tile.hasLine(line, Tile.WHITE) ? this.WHITE : this.BLACK);
+      int width = 158, offset = 0;
+      if( tile.hasLine(Baring.getLeftNeighbour(line) ) ) {
         width  -= LINE_ORIGIN;
         offset += LINE_ORIGIN;
       }
-      if( tile.hasLine(Baring.E) ) {
+      if( tile.hasLine(Baring.getRightNeighbour(line) ) ) {
         width -= LINE_ORIGIN;
       }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+offset,
-                             TILE_WIDTH_AND_LENGTH*(top-1)+LINE_ORIGIN,
-                             width,
-                             LINE_PIXEL_WIDTH));
-    }
-    if( tile.hasLine(Baring.E) ) {
-      g2d.setColor(tile.hasLine(Baring.E, Tile.WHITE) ? 
-                   this.WHITE : this.BLACK);
-      width = 158; offset = 0;
-      if( tile.hasLine(Baring.N) ) {
-        width  -= LINE_ORIGIN;
-        offset += LINE_ORIGIN;
+      int dLeft = left - 1, dTop  = top  - 1, dX = 0, dY = 0, w = 0, h = 0;
+      switch(line) {
+        case Baring.N:
+          w = width; h=LINE_PIXEL_WIDTH;
+          dX = offset; dY = LINE_ORIGIN;
+          break;
+        case Baring.S:
+          w = width; h=LINE_PIXEL_WIDTH;
+          dX = offset; dY = -1 * ( 4 + LINE_ORIGIN );
+          dTop = top;          
+          break;
+        case Baring.E:
+          w = LINE_PIXEL_WIDTH; h=width;
+          dX = -1 * ( 4 + LINE_ORIGIN );  dY = offset;
+          dLeft = left;
+          break;
+        case Baring.W:
+          w = LINE_PIXEL_WIDTH; h=width;
+          dX = LINE_ORIGIN; dY = offset;
       }
-      if( tile.hasLine(Baring.S) ) {
-        width -= LINE_ORIGIN;
-      }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4 -LINE_ORIGIN,
-                             TILE_WIDTH_AND_LENGTH*(top-1)+offset,
-                             LINE_PIXEL_WIDTH,
-                             width));
-    }
-    if( tile.hasLine(Baring.S) ) {
-      g2d.setColor(tile.hasLine(Baring.S, Tile.WHITE) ? 
-                   this.WHITE : this.BLACK);
-      width = 158; offset = 0;
-      if( tile.hasLine(Baring.W) ) {
-        width  -= LINE_ORIGIN;
-        offset += LINE_ORIGIN; }
-      if( tile.hasLine(Baring.E) ) {
-        width -= LINE_ORIGIN;
-      }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+offset,
-                             TILE_WIDTH_AND_LENGTH*(top)-4 -LINE_ORIGIN,
-                             width,
-                             LINE_PIXEL_WIDTH));
-    }
-    if( tile.hasLine(Baring.W) ) {
-      g2d.setColor(tile.hasLine(Baring.W, Tile.WHITE) ? 
-                   this.WHITE : this.BLACK);
-      width = 158; offset = 0;
-      if( tile.hasLine(Baring.N) ) {
-        width -= LINE_ORIGIN;
-        offset += LINE_ORIGIN;
-      }
-      if( tile.hasLine(Baring.S) ) {
-        width -= LINE_ORIGIN;
-      }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+LINE_ORIGIN,
-                             TILE_WIDTH_AND_LENGTH*(top-1)+offset,
-                             LINE_PIXEL_WIDTH,
-                             width));
+      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH * dLeft + dX,
+                             TILE_WIDTH_AND_LENGTH * dTop  + dY,
+                             w,
+                             h));
     }
   }
 
