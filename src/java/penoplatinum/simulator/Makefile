@@ -1,6 +1,6 @@
 RM=rm -rf
 
-TARGETS=SimulationRunner.class
+TARGETS=SimulationRunner.class SonarNavigator.class
 LIBS=:../../../../lib/commons-cli-1.2.jar
 CP=../../:${LIBS}
 
