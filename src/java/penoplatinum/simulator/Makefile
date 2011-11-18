@@ -13,6 +13,11 @@ OPTIONS=
 
 all: ${TARGETS}
 
+linefollower:
+	@${MAKE} clean run OPTIONS="-n penoplatinum.simulator.LineFollowerNavigator -p 100,100,180"
+sonar:
+	@${MAKE} clean run OPTIONS="-n penoplatinum.simulator.SonarNavigator"
+
 run: ${TARGETS} images
 	@${JAVA} penoplatinum.simulator.${<:.class=} ${OPTIONS}
 
