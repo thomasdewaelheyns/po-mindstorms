@@ -1,17 +1,20 @@
 RM=rm -rf
 
 TARGETS=SimulationRunner.class
-CP=../../
+LIBS=:../../../../lib/commons-cli-1.2.jar
+CP=../../:${LIBS}
 
 BUILD_DIR=build
 
-JAVAC=javac -cp ${CP} -d build
-JAVA=java -cp ${BUILD_DIR}
+JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
+JAVA=java -cp ${BUILD_DIR}:${LIBS}
+
+OPTIONS=
 
 all: ${TARGETS}
 
 run: ${TARGETS} images
-	@${JAVA} penoplatinum.simulator.${<:.class=}
+	@${JAVA} penoplatinum.simulator.${<:.class=} ${OPTIONS}
 
 benchmark: BenchmarkRunner.class
 	@${JAVA} penoplatinum.simulator.${<:.class=}
