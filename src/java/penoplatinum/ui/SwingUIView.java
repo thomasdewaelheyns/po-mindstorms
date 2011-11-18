@@ -13,6 +13,7 @@ package penoplatinum.ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import penoplatinum.simulator.Board;
 
 public class SwingUIView extends JFrame implements UIView, ActionListener {
@@ -27,6 +28,8 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
     private Board board;
     // the layout of our UI
     private GroupLayout layout;
+    // a list of all the buttons
+    private ArrayList<JButton> buttons = new ArrayList();
     // we need an implementation of UICommandHandler to pass back UI-induced
     // commands to the robot
     private UICommandHandler commandHandler;
@@ -38,16 +41,7 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
         this.setupControlButtons();
         this.setupConsole();
         this.setupWindow();
-        this.layout.setHorizontalGroup(
-                this.layout.createSequentialGroup()
-                    .addComponent(dashboard)
-                    .addComponent(board)
-        );
-        this.layout.setVerticalGroup(
-                this.layout.createParallelGroup()
-                .addComponent(dashboard)
-                .addComponent(board)
-        );
+        this.setupLayout();
     }
 
     private void setupContentPane() {
@@ -67,9 +61,7 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
         this.addButton("Connecteer", "connect");
         this.addButton("Calibreer", "calibrate");
         this.addButton("Ok", "ok");
-        this.addButton("Volg lijn", "line");
-        this.addButton("Volg muur", "wall");
-        this.addButton("Volg barcodes", "barcode");
+        this.addButton("Start programma", "run");
     }
 
     private void addButton(String label, String command) {
@@ -77,6 +69,7 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
         button.setActionCommand(command);
         button.addActionListener(this);
         this.content.add(button);
+        this.buttons.add(button);
     }
 
     private void setupConsole() {
@@ -99,6 +92,39 @@ public class SwingUIView extends JFrame implements UIView, ActionListener {
         this.setTitle("aNGie Console");
         this.setResizable(false);
         this.setVisible(true);
+    }
+    
+    private void setupLayout() {
+        this.layout.setHorizontalGroup(
+                this.layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(dashboard)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(buttons.get(0))   // afschuwelijke uitbreidbaarheid maar ik zie niet direct een alternatief
+                            .addComponent(buttons.get(1))
+                            .addComponent(buttons.get(2))
+                            .addComponent(buttons.get(3))
+                        )
+                        .addComponent(this.console)
+                     )
+                    .addGap(10)
+                    .addComponent(board)
+        );
+        this.layout.setVerticalGroup(
+                this.layout.createParallelGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(dashboard)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                            .addComponent(buttons.get(0))
+                            .addComponent(buttons.get(1))
+                            .addComponent(buttons.get(2))
+                            .addComponent(buttons.get(3))
+                        )
+                        .addComponent(this.console)
+                    )
+                    .addComponent(board)
+        );
+        layout.linkSize(SwingConstants.HORIZONTAL, dashboard, console);
     }
 
     public void updateLight(final int lightValue, final int lightColor) {
