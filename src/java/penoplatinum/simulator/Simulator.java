@@ -348,8 +348,8 @@ class Simulator {
   public Color getLineColor(int x, int y, Tile currentTile) {
     // check WEST and EAST  
     Color currentColor = new Color(205, 165, 100);
-    Set firstLineValues = new HashSet<Integer>();
-    Set secondLineValues = new HashSet<Integer>();
+    Set<Integer> firstLineValues = new HashSet<Integer>();
+    Set<Integer> secondLineValues = new HashSet<Integer>();
 
     for (int i = 0; i < (Board.LINE_PIXEL_WIDTH - 1); i++) {
       firstLineValues.add(Board.LINE_ORIGIN + i);
