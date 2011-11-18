@@ -43,14 +43,17 @@ public class Tile {
   private static int startNarrowing       = startBarcodeLocation + 3;
 
   // Lines and corners are divided into two sets for white and black
-  public static int WHITE = 0;
-  public static int BLACK = 4;
+  public static int NO_COLOR = -1;
+  public static int WHITE    = 0;
+  public static int BLACK    = 4;
   
   // logical measurements of a Tile, these are equal to the actual dimensions
   public static int SIZE               = 80;
   public static int LINE_OFFSET        = 20;
   public static int LINE_WIDTH         =  1;
   public static int BARCODE_LINE_WIDTH =  2;
+  public static int BARCODE_LINES      =  7;
+  public static int BARCODE_WIDTH      = BARCODE_LINES * BARCODE_LINE_WIDTH;
 
   // internal representation of a Tile using a 32bit int
   private int data;
@@ -313,5 +316,104 @@ public class Tile {
   private int getBits(int start, int length) {
     int mask = ( 1 << length ) - 1;
     return ( ( this.data >> start ) & mask );
+  }
+  
+  // get the logical color at position x,y
+  public int getColorAt(int x, int y) {
+    int color = this.getBarcodeColor (x,y);
+    if( color == Tile.NO_COLOR ) { System.out.print( " line " ); color = this.getLineColor  (x,y); }
+    if( color == Tile.NO_COLOR ) { System.out.print( " corner " ); color = this.getCornerColor(x,y); }
+    System.out.println( color );
+    return color;
+  }
+
+  // return the Color from the Barcode
+  public int getBarcodeColor(int x, int y) {
+    if( ! this.robotIsOnBarcode(x,y) ) { return Tile.NO_COLOR; }
+    int line = 0;
+    switch(this.getBarcodeLocation()){
+      case Baring.N: line = y;             break;
+      case Baring.S: line = Tile.SIZE - y; break;
+      case Baring.E: line = Tile.SIZE - x; break;
+      case Baring.W: line = x;             break;
+    }
+    line /= Tile.BARCODE_LINE_WIDTH;
+    return ( (this.getBarcode() & (1 << line) ) != 0 ?
+            Tile.BLACK : Tile.WHITE );
+  }
+
+  // check if the robot is on a barcode
+  private boolean robotIsOnBarcode(int x, int y) {
+    switch(this.getBarcodeLocation()){
+      case Baring.N: return y < Tile.BARCODE_WIDTH - 1;
+      case Baring.E: return x > Tile.SIZE - Tile.BARCODE_WIDTH;
+      case Baring.S: return y > Tile.SIZE - Tile.BARCODE_WIDTH;
+      case Baring.W: return x < Tile.BARCODE_WIDTH - 1;
+    }
+    return false;
+  }
+
+  private int getLineColor(int x, int y) {
+    int color = Tile.NO_COLOR;
+
+    // determine which line might be hit
+    int position = Baring.NONE;
+    if( y == Tile.LINE_OFFSET && this.hasLine(Baring.N) ) { 
+      position = Baring.N;
+    }
+    if( x == Tile.SIZE - Tile.LINE_OFFSET && this.hasLine(Baring.E) ) { 
+      position = Baring.E;
+    }
+    if( y == Tile.SIZE - Tile.LINE_OFFSET && this.hasLine(Baring.S) ) { 
+      position = Baring.S;
+    }
+    if( x == Tile.LINE_OFFSET && this.hasLine(Baring.W) ) { 
+      position = Baring.W;
+    }    
+    
+    // if the line forms a corner with a related line, we need to limit the 
+    // scope of the line
+    if( ( ( position == Baring.N || position == Baring.S ) && (
+            ( this.hasLine(Baring.W) && x < Tile.LINE_OFFSET )
+            ||
+            ( this.hasLine(Baring.E) && x > Tile.SIZE - Tile.LINE_OFFSET ) ) )
+        || 
+        ( ( position == Baring.E || position == Baring.W ) && (
+          ( this.hasLine(Baring.N) && y < Tile.LINE_OFFSET )
+          ||
+          ( this.hasLine(Baring.S) && y > Tile.SIZE - Tile.LINE_OFFSET ) ) ) )
+    {
+      position = Baring.NONE;
+    }
+    
+    // check color of hit
+    if(position != Baring.NONE && this.hasLine(position)) {
+      if(this.hasLine(position, Tile.WHITE))      { color = Tile.WHITE; }
+      else if(this.hasLine(position, Tile.BLACK)) { color = Tile.BLACK; }
+    }
+      
+    return color;
+  }
+
+  private int getCornerColor(int x, int y) {
+    int color = Tile.NO_COLOR;
+
+    // determine which corner might be hit
+    int position = Baring.NONE;
+    if( x <= Tile.LINE_OFFSET ) {
+      if( y == Tile.LINE_OFFSET )                  { position = Baring.NW; }
+      else if( y == Tile.SIZE - Tile.LINE_OFFSET ) { position = Baring.SW; }
+    } else if( x >= Tile.SIZE - Tile.LINE_OFFSET ) {
+      if( y == Tile.LINE_OFFSET )                  { position = Baring.NE; }
+      else if( y == Tile.SIZE - Tile.LINE_OFFSET ) { position = Baring.SE; }
+    }
+    
+    // check color of hit
+    if(position != Baring.NONE && this.hasCorner(position)) {
+      if(this.hasCorner(position, Tile.WHITE))      { color = Tile.WHITE; }
+      else if(this.hasCorner(position, Tile.BLACK)) { color = Tile.BLACK; }
+    }
+      
+    return color;
   }
 }

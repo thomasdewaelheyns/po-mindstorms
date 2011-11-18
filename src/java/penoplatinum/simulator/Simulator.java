@@ -21,8 +21,6 @@ import java.util.HashSet;
 import java.util.Set;
  
 class Simulator {
-  public static int scale    = 2;   // 1cm = 2px
-  
   // distance to the lightsensor-position
   private final int LIGHTSENSOR_DISTANCE = 10;
   
@@ -53,7 +51,7 @@ class Simulator {
   private int dSonar;
   private int stepsSonar;
   
-  private int currentMovement;    // movement that is being stepped
+  private int currentMovement;     // movement that is being stepped
   private int lastChangeM1 = 0;    // the last change on Motor 1
   private int lastChangeM2 = 0;    // the last change on Motor 2
   private int lastChangeM3 = 0;    // the last change on Motor 3
@@ -282,158 +280,23 @@ class Simulator {
     double rads = Math.toRadians(direction);
     int x  = (int)(pos.getX() - LIGHTSENSOR_DISTANCE * Math.sin(rads));
     int y  = (int)(pos.getY() - LIGHTSENSOR_DISTANCE * Math.cos(rads));
-    // TODO: remove these pixel-based checks and make them logical
-    int pX = x * Board.SCALE;
-    int pY = y * Board.SCALE;
 
-    // TODO: move all hit-tests to Tile class !!!
-    // result: color = this.getCurrentTile().getColor(x,y);
-    Tile tile = this.getCurrentTile();
+    // if we go beyond the boundaries of this tile, move to the next and
+    // adapt the x,y coordinates on the new tile
+    int dx=0, dy=0;
+    if( x < 0         ) { dx = -1; x += Tile.SIZE; }
+    if( x > Tile.SIZE ) { dx = +1; x -= Tile.SIZE; }
+    if( y < 0         ) { dy = -1; y += Tile.SIZE; }
+    if( y > Tile.SIZE ) { dy = +1; y -= Tile.SIZE; }
+    // get correct tile
+    Point tilePos = this.getCurrentTileCoordinates();
+    Tile tile = this.map.get((int)tilePos.getX()+dx, (int)tilePos.getY()+dy);
+
+    int color = tile.getColorAt(x,y);
     
-    Color color = Color.RED;
-    // barcodes lie on top
-    if( this.getRobotOnBarcode(pX, pY, tile) ){
-      color = this.getBarcodeColor(pX, pY, tile);
-    } else {
-      // at the bottom there are lines
-      color = this.getLineColor(pX, pY, tile);
-      if( color == Color.RED ) {
-        color = this.getCornerColor(x, y, tile);
-      }
-    }
-    
-    // TODO: add Random changes
+    // TODO: add random abberations
     this.sensorValues[Model.S4] =
-        color == Color.WHITE ? 100 : ( color == Color.BLACK ? 0 : 70 );
-  }
-  
-  private Color getCornerColor(int x, int y, Tile tile) {
-    Color color = Board.BROWN;
-
-    //    +-------------+
-    //    |__|       |__|
-    //    |             |
-    //    |__         __|
-    //    |  |       |  |
-    //    +-------------+
-    
-    // determine which corner might be hit
-    int position = Baring.NONE;
-    if( x <= Tile.LINE_OFFSET ) {
-      if( y == Tile.LINE_OFFSET )                  { position = Baring.NW; }
-      else if( y == Tile.SIZE - Tile.LINE_OFFSET ) { position = Baring.SW; }
-    } else if( x >= Tile.SIZE - Tile.LINE_OFFSET ) {
-      if( y == Tile.LINE_OFFSET )                  { position = Baring.NE; }
-      else if( y == Tile.SIZE - Tile.LINE_OFFSET ) { position = Baring.SE; }
-    }
-    
-    // check color of hit
-    if(position != Baring.NONE && tile.hasCorner(position)) {
-      if(tile.hasCorner(position, Tile.WHITE))      { color = Color.WHITE; }
-      else if(tile.hasCorner(position, Tile.BLACK)) { color = Color.BLACK; }
-    }
-      
-    return color;
-  }
-  
-  // return the Color from the Barcode
-  public Color getBarcodeColor(int x, int y, Tile currentTile){
-    // normalisatie.
-    int relativePosition= 0;
-    switch(currentTile.getBarcodeLocation()){
-      case Baring.N:
-        relativePosition = y/Board.BARCODE_LINE_WIDTH;
-        break;
-      case Baring.S:
-        relativePosition = (Board.TILE_SIZE-y) 
-                           / Board.BARCODE_LINE_WIDTH;
-        break;
-      case Baring.E:
-        relativePosition = (Board.TILE_SIZE -x)
-                           / Board.BARCODE_LINE_WIDTH;
-        break;
-      case Baring.W:
-        relativePosition = x / Board.BARCODE_LINE_WIDTH;
-        break;
-    }
-    return ((currentTile.getBarcode() & (1<<relativePosition) ) != 0 ?
-            Color.BLACK : Color.WHITE );
-  }
-    
-  // check if the robot is on a barcode
-  public boolean getRobotOnBarcode(int x, int y, Tile currentTile ) {
-    switch(currentTile.getBarcodeLocation()){
-      case Baring.N: return y<28;
-      case Baring.E: return x>132;
-      case Baring.S: return y>132;
-      case Baring.W: return x<28;
-    }
-    return false;  
-  }
-
-  public Color getLineColor(int x, int y, Tile currentTile) {
-    // check WEST and EAST  
-    Color currentColor = Board.BROWN;
-    Set<Integer> firstLineValues = new HashSet<Integer>();
-    Set<Integer> secondLineValues = new HashSet<Integer>();
-
-    for (int i = 0; i < (Board.LINE_WIDTH - 1); i++) {
-      firstLineValues.add(Board.LINE_OFFSET + i);
-    }
-
-    for (int i = 0; i < (Board.LINE_WIDTH - 1); i++) {
-      secondLineValues.add(Board.LINE_OFFSET + Board.TILE_SIZE 
-                           - ( 2 * Board.LINE_OFFSET ) + i);
-    }
-
-    if (firstLineValues.contains(x)) {
-
-      if (currentTile.hasLine(Baring.W)) {
-        currentColor = currentTile.hasLine(Baring.W, Tile.WHITE) ? 
-                       Color.WHITE : Color.BLACK;
-        currentColor = resetColorForTurnY(currentTile, y, currentColor);
-      }
-    }
-    if (secondLineValues.contains(x)) {
-      if (currentTile.hasLine(Baring.E)) {
-        currentColor = currentTile.hasLine(Baring.E, Tile.WHITE) ?
-                       Color.WHITE : Color.BLACK;
-        currentColor = resetColorForTurnY(currentTile, y, currentColor);
-      }
-    }
-    if (firstLineValues.contains(y)) {
-      if (currentTile.hasLine(Baring.N)) {
-        currentColor = currentTile.hasLine(Baring.N, Tile.WHITE) ?
-                       Color.WHITE : Color.BLACK;
-        currentColor = resetColorForTurnX(currentTile, x, currentColor);
-      }
-    }
-    if (secondLineValues.contains(y)) {
-      if (currentTile.hasLine(Baring.S)) {
-        currentColor = currentTile.hasLine(Baring.S, Tile.WHITE) ?
-                       Color.WHITE : Color.BLACK;
-        currentColor = resetColorForTurnX(currentTile, x, currentColor);
-      }
-    }
-    return currentColor;
-  }
-    
-  private Color resetColorForTurnX(Tile tile, int x, Color color) {
-    if(   tile.hasLine(Baring.W) && x < 40
-       || tile.hasLine(Baring.E) && x > 120)
-    {
-      return Board.BROWN;
-    }
-    return color;
-  }
-
-  private Color resetColorForTurnY(Tile tile, int y, Color color) {
-    if(    tile.hasLine(Baring.N) && y < 40
-        || tile.hasLine(Baring.S) && y > 120)
-    {
-      return Board.BROWN;
-    }
-    return color;
+      color == Tile.WHITE ? 100 : ( color == Tile.BLACK ? 0 : 70 );
   }
 
   private void calculateBumperSensor(int angle, int lengthRobot, int sensorPort) {
@@ -518,10 +381,8 @@ class Simulator {
 
       left = left + Baring.moveLeft(baring);
       top  = top  + Baring.moveTop(baring);
-      x = hit.x == 0 ? Tile.SIZE
-        : (hit.x == Tile.SIZE ? 0 : hit.x);
-      y = hit.y == 0 ? Tile.SIZE
-        : (hit.y == Tile.SIZE ? 0 : hit.y);
+      x = hit.x == 0 ? Tile.SIZE : (hit.x == Tile.SIZE ? 0 : hit.x);
+      y = hit.y == 0 ? Tile.SIZE : (hit.y == Tile.SIZE ? 0 : hit.y);
     } while(! tile.hasWall(baring));
 
     return (int)Math.round(dist);
