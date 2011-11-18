@@ -131,6 +131,11 @@ public class Board extends JPanel {
     this.renderLine(g2d, tile, left, top, Baring.E);
     this.renderLine(g2d, tile, left, top, Baring.S);
     this.renderLine(g2d, tile, left, top, Baring.W);
+
+    this.renderCorner(g2d, tile, left, top, Baring.NE);
+    this.renderCorner(g2d, tile, left, top, Baring.SE);
+    this.renderCorner(g2d, tile, left, top, Baring.SW);
+    this.renderCorner(g2d, tile, left, top, Baring.NW);
   }
   
   // TODO: further refactor this code, the switch is still ugly as hell ;-)
@@ -169,6 +174,46 @@ public class Board extends JPanel {
                              TILE_WIDTH_AND_LENGTH * dTop  + dY,
                              w,
                              h));
+    }
+  }
+
+  private void renderCorner(Graphics2D g2d, Tile tile, int left, int top, int corner) {
+    if( tile.hasCorner(corner) ) {
+      g2d.setColor(tile.hasCorner(corner, Tile.WHITE) ? this.WHITE : this.BLACK);
+      int offsetLeftH = 0, offsetTopH = 0, 
+          offsetLeftV = 0, offsetTopV = 0;
+      switch(corner) {
+        case Baring.NE: 
+          offsetLeftH = offsetLeftV = TILE_WIDTH_AND_LENGTH - LINE_ORIGIN;
+          offsetTopH  = LINE_ORIGIN;
+          offsetTopV  = 0;
+          break;
+        case Baring.SE:
+          offsetLeftH = offsetLeftV = TILE_WIDTH_AND_LENGTH - LINE_ORIGIN;
+          offsetTopH  = offsetTopV  = TILE_WIDTH_AND_LENGTH - LINE_ORIGIN;
+          break;
+        case Baring.SW:
+          offsetLeftH = 0;
+          offsetLeftV = LINE_ORIGIN;
+          offsetTopH  = offsetTopV  = TILE_WIDTH_AND_LENGTH - LINE_ORIGIN;
+          break;
+        case Baring.NW:
+          offsetLeftH = 0;
+          offsetTopH  = LINE_ORIGIN;
+          offsetLeftV = LINE_ORIGIN;
+          offsetTopV  = 0;
+          break;
+      }
+      int tileLeft = TILE_WIDTH_AND_LENGTH * ( left - 1 );
+      int tileTop  = TILE_WIDTH_AND_LENGTH * ( top  - 1 );
+
+      // horizontal
+      g2d.fill(new Rectangle( tileLeft + offsetLeftH, tileTop  + offsetTopH,
+                              LINE_ORIGIN, LINE_PIXEL_WIDTH ));
+      // vertical
+      g2d.fill(new Rectangle( tileLeft + offsetLeftV, tileTop  + offsetTopV,
+                              LINE_PIXEL_WIDTH, LINE_ORIGIN ));                             
+      
     }
   }
 

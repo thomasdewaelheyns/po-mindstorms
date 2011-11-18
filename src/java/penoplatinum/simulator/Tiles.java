@@ -70,11 +70,11 @@ public class Tiles {
     .withBarcode(Barcode.Right)         .putBarcodeAt(Baring.N)
     .withWall   (Baring.S)              .withWall    (Baring.E)
     .withLine   (Baring.S,  Tile.BLACK) .withLine    (Baring.E, Tile.BLACK)
-    .withCorner (Baring.SW, Tile.WHITE);
+    .withCorner (Baring.NW, Tile.WHITE);
   
   public static Tile W_N = new Tile()  
     .withBarcode(Barcode.Left)          .putBarcodeAt(Baring.W)
     .withWall   (Baring.S)              .withWall    (Baring.E)
     .withLine   (Baring.S,  Tile.WHITE) .withLine    (Baring.E, Tile.WHITE)
-    .withCorner (Baring.SW, Tile.BLACK);
+    .withCorner (Baring.NW, Tile.BLACK);
 }
