@@ -321,9 +321,8 @@ public class Tile {
   // get the logical color at position x,y
   public int getColorAt(int x, int y) {
     int color = this.getBarcodeColor (x,y);
-    if( color == Tile.NO_COLOR ) { System.out.print( " line " ); color = this.getLineColor  (x,y); }
-    if( color == Tile.NO_COLOR ) { System.out.print( " corner " ); color = this.getCornerColor(x,y); }
-    System.out.println( color );
+    if( color == Tile.NO_COLOR ) { color = this.getLineColor  (x,y); }
+    if( color == Tile.NO_COLOR ) { color = this.getCornerColor(x,y); }
     return color;
   }
 
