@@ -21,20 +21,31 @@ import javax.swing.*;
 import java.net.URL;
 
 public class Board extends JPanel {
-  static final int LINE_ORIGIN           = 40;
-  static final int TILE_WIDTH_AND_LENGTH = 160;
-  static final int LINE_PIXEL_WIDTH      = 2;
-  static final int BARCODE_PIXEL_WIDTH   = 4;
+  // Tiles are defined in logical dimensions, comparable to cm in reality
+  public static final int SCALE = 2;
+  
+  // sizes in pixel format
+  public static final int LINE_OFFSET        = Tile.LINE_OFFSET * Board.SCALE;
+  public static final int TILE_SIZE          = Tile.SIZE        * Board.SCALE;
+  public static final int LINE_WIDTH         = Tile.LINE_WIDTH  * Board.SCALE;
+  public static final int BARCODE_LINE_WIDTH = Tile.BARCODE_LINE_WIDTH * Board.SCALE;
 
-  private static Color BLACK = new Color(100,100,100);
-  private static Color WHITE = new Color(200,200,200);
+  // colors on the board
+  public static final Color BLACK      = new Color(100,100,100);
+  public static final Color WHITE      = new Color(200,200,200);
+  public static final Color BROWN      = new Color(205,165,100);
+  public static final Color DARK_BROWN = new Color(100, 53, 38);
 
-  private Image robot;
+  // a Map of Tiles
   private Map map;
-  private int direction = 0;
+
+  // position and direction of robot 
   private int x = 0;
   private int y = 0;
+  private int direction = 0;
   
+  // cached images
+  private Image robot;
   private BufferedImage background;
   private BufferedImage trail;
   
@@ -77,8 +88,8 @@ public class Board extends JPanel {
   }
 
   private BufferedImage createBuffer() {
-    int w = this.map.getWidth() * TILE_WIDTH_AND_LENGTH;
-    int h = this.map.getHeight() * TILE_WIDTH_AND_LENGTH;
+    int w = this.map.getWidth() * TILE_SIZE;
+    int h = this.map.getHeight() * TILE_SIZE;
     return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
   }
 
@@ -114,12 +125,9 @@ public class Board extends JPanel {
   
   private void renderTile(Graphics2D g2d, Tile tile, int left, int top) {
     // background
-    g2d.setColor(new Color(205,165,100));
-    g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH * (left-1), 
-                           TILE_WIDTH_AND_LENGTH * (top-1),
-                           TILE_WIDTH_AND_LENGTH,
-                           TILE_WIDTH_AND_LENGTH));
-    
+    g2d.setColor(Board.BROWN);
+    g2d.fill(new Rectangle(TILE_SIZE * (left-1), TILE_SIZE * (top-1),
+                           TILE_SIZE, TILE_SIZE));
     this.renderLines    ( g2d, tile, left, top );
     this.renderBarcode  ( g2d, tile, left, top );
     this.renderNarrowing( g2d, tile, left, top );
@@ -144,34 +152,34 @@ public class Board extends JPanel {
       g2d.setColor(tile.hasLine(line, Tile.WHITE) ? this.WHITE : this.BLACK);
       int width = 158, offset = 0;
       if( tile.hasLine(Baring.getLeftNeighbour(line) ) ) {
-        width  -= LINE_ORIGIN;
-        offset += LINE_ORIGIN;
+        width  -= LINE_OFFSET;
+        offset += LINE_OFFSET;
       }
       if( tile.hasLine(Baring.getRightNeighbour(line) ) ) {
-        width -= LINE_ORIGIN;
+        width -= LINE_OFFSET;
       }
       int dLeft = left - 1, dTop  = top  - 1, dX = 0, dY = 0, w = 0, h = 0;
       switch(line) {
         case Baring.N:
-          w = width; h=LINE_PIXEL_WIDTH;
-          dX = offset; dY = LINE_ORIGIN;
+          w = width; h = LINE_WIDTH;
+          dX = offset; dY = LINE_OFFSET;
           break;
         case Baring.S:
-          w = width; h=LINE_PIXEL_WIDTH;
-          dX = offset; dY = -1 * ( 4 + LINE_ORIGIN );
+          w = width; h = LINE_WIDTH;
+          dX = offset; dY = -1 * ( 4 + LINE_OFFSET );
           dTop = top;          
           break;
         case Baring.E:
-          w = LINE_PIXEL_WIDTH; h=width;
-          dX = -1 * ( 4 + LINE_ORIGIN );  dY = offset;
+          w = LINE_WIDTH; h=width;
+          dX = -1 * ( 4 + LINE_OFFSET );  dY = offset;
           dLeft = left;
           break;
         case Baring.W:
-          w = LINE_PIXEL_WIDTH; h=width;
-          dX = LINE_ORIGIN; dY = offset;
+          w = LINE_WIDTH; h=width;
+          dX = LINE_OFFSET; dY = offset;
       }
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH * dLeft + dX,
-                             TILE_WIDTH_AND_LENGTH * dTop  + dY,
+      g2d.fill(new Rectangle(TILE_SIZE * dLeft + dX,
+                             TILE_SIZE * dTop  + dY,
                              w,
                              h));
     }
@@ -179,40 +187,37 @@ public class Board extends JPanel {
 
   private void renderCorner(Graphics2D g2d, Tile tile, int left, int top, int corner) {
     if( tile.hasCorner(corner) ) {
-      g2d.setColor(tile.hasCorner(corner, Tile.WHITE) ? this.WHITE : this.BLACK);
+      g2d.setColor( tile.hasCorner(corner, Tile.WHITE) ? 
+                      this.WHITE : this.BLACK );
       int offsetLeftH = 0, offsetTopH = 0, 
           offsetLeftV = 0, offsetTopV = 0;
       switch(corner) {
         case Baring.NE: 
-          offsetLeftH = offsetLeftV = TILE_WIDTH_AND_LENGTH - LINE_ORIGIN;
-          offsetTopH  = LINE_ORIGIN;
-          offsetTopV  = 0;
+          offsetLeftH = offsetLeftV = TILE_SIZE - LINE_OFFSET;
+          offsetTopH  = LINE_OFFSET;  offsetTopV  = 0;
           break;
         case Baring.SE:
-          offsetLeftH = offsetLeftV = TILE_WIDTH_AND_LENGTH - LINE_ORIGIN;
-          offsetTopH  = offsetTopV  = TILE_WIDTH_AND_LENGTH - LINE_ORIGIN;
+          offsetLeftH = offsetLeftV = TILE_SIZE - LINE_OFFSET;
+          offsetTopH  = offsetTopV  = TILE_SIZE - LINE_OFFSET;
           break;
         case Baring.SW:
-          offsetLeftH = 0;
-          offsetLeftV = LINE_ORIGIN;
-          offsetTopH  = offsetTopV  = TILE_WIDTH_AND_LENGTH - LINE_ORIGIN;
+          offsetLeftH = 0;  offsetLeftV = LINE_OFFSET;
+          offsetTopH  = offsetTopV  = TILE_SIZE - LINE_OFFSET;
           break;
         case Baring.NW:
-          offsetLeftH = 0;
-          offsetTopH  = LINE_ORIGIN;
-          offsetLeftV = LINE_ORIGIN;
-          offsetTopV  = 0;
+          offsetLeftH = 0; offsetLeftV = LINE_OFFSET;
+          offsetTopV  = 0; offsetTopH  = LINE_OFFSET;
           break;
       }
-      int tileLeft = TILE_WIDTH_AND_LENGTH * ( left - 1 );
-      int tileTop  = TILE_WIDTH_AND_LENGTH * ( top  - 1 );
+      int tileLeft = TILE_SIZE * ( left - 1 );
+      int tileTop  = TILE_SIZE * ( top  - 1 );
 
       // horizontal
       g2d.fill(new Rectangle( tileLeft + offsetLeftH, tileTop  + offsetTopH,
-                              LINE_ORIGIN, LINE_PIXEL_WIDTH ));
+                              LINE_OFFSET, LINE_WIDTH ));
       // vertical
       g2d.fill(new Rectangle( tileLeft + offsetLeftV, tileTop  + offsetTopV,
-                              LINE_PIXEL_WIDTH, LINE_ORIGIN ));                             
+                              LINE_WIDTH, LINE_OFFSET ));                             
       
     }
   }
@@ -225,28 +230,28 @@ public class Board extends JPanel {
 
       switch( tile.getBarcodeLocation() ) {
         case Baring.N:
-          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
-                                 TILE_WIDTH_AND_LENGTH*(top-1)+4*(line),
-                                 TILE_WIDTH_AND_LENGTH,
-                                 BARCODE_PIXEL_WIDTH));
+          g2d.fill(new Rectangle(TILE_SIZE*(left-1),
+                                 TILE_SIZE*(top-1)+4*(line),
+                                 TILE_SIZE,
+                                 BARCODE_LINE_WIDTH));
           break;
         case Baring.E:
-          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4*(line+1),
-                                 TILE_WIDTH_AND_LENGTH*(top-1),
-                                 BARCODE_PIXEL_WIDTH,
-                                 TILE_WIDTH_AND_LENGTH));
+          g2d.fill(new Rectangle(TILE_SIZE*(left)-4*(line+1),
+                                 TILE_SIZE*(top-1),
+                                 BARCODE_LINE_WIDTH,
+                                 TILE_SIZE));
           break;
         case Baring.S:
-          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
-                                 TILE_WIDTH_AND_LENGTH*(top)-4*(line+1),
-                                 TILE_WIDTH_AND_LENGTH,
-                                 BARCODE_PIXEL_WIDTH));
+          g2d.fill(new Rectangle(TILE_SIZE*(left-1),
+                                 TILE_SIZE*(top)-4*(line+1),
+                                 TILE_SIZE,
+                                 BARCODE_LINE_WIDTH));
           break;
         case Baring.W:
-          g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1)+4*line,
-                                 TILE_WIDTH_AND_LENGTH*(top-1)+4,
-                                 BARCODE_PIXEL_WIDTH,
-                                 TILE_WIDTH_AND_LENGTH));
+          g2d.fill(new Rectangle(TILE_SIZE*(left-1)+4*line,
+                                 TILE_SIZE*(top-1)+4,
+                                 BARCODE_LINE_WIDTH,
+                                 TILE_SIZE));
           break;
       }
     }
@@ -258,30 +263,30 @@ public class Board extends JPanel {
 
   private void renderWalls(Graphics2D g2d, Tile tile, int left, int top) {
     // walls are 2cm width = 4px
-    g2d.setColor(new Color(100,53,38));
+    g2d.setColor(Board.DARK_BROWN);
     if( tile.hasWall(Baring.N) ) {
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
-                             TILE_WIDTH_AND_LENGTH*(top-1),
-                             TILE_WIDTH_AND_LENGTH,
+      g2d.fill(new Rectangle(TILE_SIZE*(left-1),
+                             TILE_SIZE*(top-1),
+                             TILE_SIZE,
                              4));
     }
     if( tile.hasWall(Baring.E) ) {
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left)-4,
-                             TILE_WIDTH_AND_LENGTH*(top-1),
+      g2d.fill(new Rectangle(TILE_SIZE*(left)-4,
+                             TILE_SIZE*(top-1),
                              4,
-                             TILE_WIDTH_AND_LENGTH));
+                             TILE_SIZE));
     }
     if( tile.hasWall(Baring.S) ) {
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
-                             TILE_WIDTH_AND_LENGTH*(top)-4,
-                             TILE_WIDTH_AND_LENGTH,
+      g2d.fill(new Rectangle(TILE_SIZE*(left-1),
+                             TILE_SIZE*(top)-4,
+                             TILE_SIZE,
                              4));
     }
     if( tile.hasWall(Baring.W) ) {
-      g2d.fill(new Rectangle(TILE_WIDTH_AND_LENGTH*(left-1),
-                             TILE_WIDTH_AND_LENGTH*(top-1),
+      g2d.fill(new Rectangle(TILE_SIZE*(left-1),
+                             TILE_SIZE*(top-1),
                              4,
-                             TILE_WIDTH_AND_LENGTH));
+                             TILE_SIZE));
     }
   }
 

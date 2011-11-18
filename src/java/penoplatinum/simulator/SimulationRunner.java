@@ -110,7 +110,7 @@ class SimulationRunner {
         setupComplete = true;
       }
     } catch( ParseException exp ) {
-      System.out.println( "ERROR:" + exp.getMessage() );
+      System.err.println( "ERROR:" + exp.getMessage() );
       SimulationRunner.showHelpFor(options);
     }
 

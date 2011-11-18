@@ -45,6 +45,12 @@ public class Tile {
   // Lines and corners are divided into two sets for white and black
   public static int WHITE = 0;
   public static int BLACK = 4;
+  
+  // logical measurements of a Tile, these are equal to the actual dimensions
+  public static int SIZE               = 80;
+  public static int LINE_OFFSET        = 20;
+  public static int LINE_WIDTH         =  1;
+  public static int BARCODE_LINE_WIDTH =  2;
 
   // internal representation of a Tile using a 32bit int
   private int data;

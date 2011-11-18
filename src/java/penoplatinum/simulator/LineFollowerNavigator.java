@@ -24,9 +24,6 @@ public class LineFollowerNavigator implements Navigator {
     public int nextAction() {
         int lightValue = model.getSensorValue(Model.S4);
         if (lightValue < 30 || lightValue > 85) {
-            if (timesTurned > 0) {
-                System.out.println("Found line: " + lightValue);
-            }
             timesTurned = 0;
             return Navigator.MOVE;
         }
@@ -38,7 +35,6 @@ public class LineFollowerNavigator implements Navigator {
             }
         }
         angle = rotates[timesTurned] + (timesTurned > 0 ? -rotates[timesTurned - 1] : 0);
-        System.out.println("Stopped, change direction, angle: "+angle);
         timesTurned++;
         return Navigator.TURN;
     }

@@ -11,37 +11,37 @@ public class TileTest extends TestCase {
   
   public void testNorthWall() {
     Tile tile = this.createEmptyTile();
-    tile.setWall(Baring.N);
+    tile.withWall(Baring.N);
     assertEquals("10000000000000000000000000000000", tile.toString() ); 
     assertTrue(tile.hasWall(Baring.N));
-    tile.unsetWall(Baring.N);
+    tile.withoutWall(Baring.N);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testEastWall() {
     Tile tile = this.createEmptyTile();
-    tile.setWall(Baring.E);
+    tile.withWall(Baring.E);
     assertEquals("01000000000000000000000000000000", tile.toString() ); 
     assertTrue(tile.hasWall(Baring.E));
-    tile.unsetWall(Baring.E);
+    tile.withoutWall(Baring.E);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testSouthWall() {
     Tile tile = this.createEmptyTile();
-    tile.setWall(Baring.S);
+    tile.withWall(Baring.S);
     assertEquals("00100000000000000000000000000000", tile.toString() ); 
     assertTrue(tile.hasWall(Baring.S));
-    tile.unsetWall(Baring.S);
+    tile.withoutWall(Baring.S);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testWestWall() {
     Tile tile = this.createEmptyTile();
-    tile.setWall(Baring.W);
+    tile.withWall(Baring.W);
     assertEquals("00010000000000000000000000000000", tile.toString() ); 
     assertTrue(tile.hasWall(Baring.W));
-    tile.unsetWall(Baring.W);
+    tile.withoutWall(Baring.W);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
   

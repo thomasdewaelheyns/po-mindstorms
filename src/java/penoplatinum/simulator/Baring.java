@@ -7,14 +7,15 @@ package penoplatinum.simulator;
  */
 
 public class Baring {
-  public static final int N  = 0;
-  public static final int E  = 1;
-  public static final int S  = 2;
-  public static final int W  = 3;
-  public static final int NE = 4;
-  public static final int SE = 5;
-  public static final int SW = 6;
-  public static final int NW = 7;
+  public static final int NONE = -1;
+  public static final int N    =  0;
+  public static final int E    =  1;
+  public static final int S    =  2;
+  public static final int W    =  3;
+  public static final int NE   =  4;
+  public static final int SE   =  5;
+  public static final int SW   =  6;
+  public static final int NW   =  7;
 
   // returns the move in left/right direction given a baring
   public static int moveLeft(int baring) {

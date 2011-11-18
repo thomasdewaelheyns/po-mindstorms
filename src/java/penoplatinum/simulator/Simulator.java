@@ -21,8 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
  
 class Simulator {
-  private static int tileSize = 80;  // our tiles are 80cm
-  private static int scale    = 2;   // 1cm = 2px
+  public static int scale    = 2;   // 1cm = 2px
   
   // distance to the lightsensor-position
   private final int LIGHTSENSOR_DISTANCE = 10;
@@ -278,56 +277,83 @@ class Simulator {
   }
   
   private void updateLightSensor() {
-    // determine tile coordinates we're on
-    // TODO also used in getFreeFrontDistance Refactoring
-    int left = (int) Math.floor(this.positionX / Simulator.tileSize) + 1;
-    int top = (int) Math.floor(this.positionY / Simulator.tileSize) + 1;
+    // determine position of light-sensor
+    Point pos  = this.getCurrentOnTileCoordinates();
+    double rads = Math.toRadians(direction);
+    int x  = (int)(pos.getX() - LIGHTSENSOR_DISTANCE * Math.sin(rads));
+    int y  = (int)(pos.getY() - LIGHTSENSOR_DISTANCE * Math.cos(rads));
+    // TODO: remove these pixel-based checks and make them logical
+    int pX = x * Board.SCALE;
+    int pY = y * Board.SCALE;
 
-    // determine position within tile
-    int x = (int) (this.positionX % Simulator.tileSize)*2;
-    int y = (int) (this.positionY % Simulator.tileSize)*2;
-
-    // determine Light Sensor Position
-    Tile currentTile = map.get(left, top);
-
-    // TODO: check lines
-    int yposition = (int) (y-LIGHTSENSOR_DISTANCE*Math.cos(Math.toRadians(direction)));
-    int xposition = (int) (x-LIGHTSENSOR_DISTANCE*Math.sin(Math.toRadians(direction)));
-
-    //System.out.println(x+" "+y+": "+ xposition +" "  +  yposition + "");
-
-    Color currentColor = getLineColor(xposition, yposition, currentTile);
-
-    if(getRobotOnBarcode(xposition, yposition, currentTile)){
-      currentColor = getBarcodeColor(xposition,yposition,currentTile);
-    }
-
-    if(currentColor == Color.WHITE){
-      this.sensorValues[Model.S4]= 100;
-    } else if(currentColor== Color.BLACK){
-      this.sensorValues[Model.S4]=0;
+    // TODO: move all hit-tests to Tile class !!!
+    // result: color = this.getCurrentTile().getColor(x,y);
+    Tile tile = this.getCurrentTile();
+    
+    Color color = Color.RED;
+    // barcodes lie on top
+    if( this.getRobotOnBarcode(pX, pY, tile) ){
+      color = this.getBarcodeColor(pX, pY, tile);
     } else {
-      this.sensorValues[Model.S4]=70;
+      // at the bottom there are lines
+      color = this.getLineColor(pX, pY, tile);
+      if( color == Color.RED ) {
+        color = this.getCornerColor(x, y, tile);
+      }
     }
+    
+    // TODO: add Random changes
+    this.sensorValues[Model.S4] =
+        color == Color.WHITE ? 100 : ( color == Color.BLACK ? 0 : 70 );
   }
-  //return the Color from the Barcode
+  
+  private Color getCornerColor(int x, int y, Tile tile) {
+    Color color = Board.BROWN;
+
+    //    +-------------+
+    //    |__|       |__|
+    //    |             |
+    //    |__         __|
+    //    |  |       |  |
+    //    +-------------+
+    
+    // determine which corner might be hit
+    int position = Baring.NONE;
+    if( x <= Tile.LINE_OFFSET ) {
+      if( y == Tile.LINE_OFFSET )                  { position = Baring.NW; }
+      else if( y == Tile.SIZE - Tile.LINE_OFFSET ) { position = Baring.SW; }
+    } else if( x >= Tile.SIZE - Tile.LINE_OFFSET ) {
+      if( y == Tile.LINE_OFFSET )                  { position = Baring.NE; }
+      else if( y == Tile.SIZE - Tile.LINE_OFFSET ) { position = Baring.SE; }
+    }
+    
+    // check color of hit
+    if(position != Baring.NONE && tile.hasCorner(position)) {
+      if(tile.hasCorner(position, Tile.WHITE))      { color = Color.WHITE; }
+      else if(tile.hasCorner(position, Tile.BLACK)) { color = Color.BLACK; }
+    }
+      
+    return color;
+  }
+  
+  // return the Color from the Barcode
   public Color getBarcodeColor(int x, int y, Tile currentTile){
     // normalisatie.
     int relativePosition= 0;
     switch(currentTile.getBarcodeLocation()){
       case Baring.N:
-        relativePosition = y/Board.BARCODE_PIXEL_WIDTH;
+        relativePosition = y/Board.BARCODE_LINE_WIDTH;
         break;
       case Baring.S:
-        relativePosition = (Board.TILE_WIDTH_AND_LENGTH-y) 
-                           / Board.BARCODE_PIXEL_WIDTH;
+        relativePosition = (Board.TILE_SIZE-y) 
+                           / Board.BARCODE_LINE_WIDTH;
         break;
       case Baring.E:
-        relativePosition = (Board.TILE_WIDTH_AND_LENGTH -x)
-                           / Board.BARCODE_PIXEL_WIDTH;
+        relativePosition = (Board.TILE_SIZE -x)
+                           / Board.BARCODE_LINE_WIDTH;
         break;
       case Baring.W:
-        relativePosition = x / Board.BARCODE_PIXEL_WIDTH;
+        relativePosition = x / Board.BARCODE_LINE_WIDTH;
         break;
     }
     return ((currentTile.getBarcode() & (1<<relativePosition) ) != 0 ?
@@ -347,17 +373,17 @@ class Simulator {
 
   public Color getLineColor(int x, int y, Tile currentTile) {
     // check WEST and EAST  
-    Color currentColor = new Color(205, 165, 100);
+    Color currentColor = Board.BROWN;
     Set<Integer> firstLineValues = new HashSet<Integer>();
     Set<Integer> secondLineValues = new HashSet<Integer>();
 
-    for (int i = 0; i < (Board.LINE_PIXEL_WIDTH - 1); i++) {
-      firstLineValues.add(Board.LINE_ORIGIN + i);
+    for (int i = 0; i < (Board.LINE_WIDTH - 1); i++) {
+      firstLineValues.add(Board.LINE_OFFSET + i);
     }
 
-    for (int i = 0; i < (Board.LINE_PIXEL_WIDTH - 1); i++) {
-      secondLineValues.add(Board.LINE_ORIGIN + Board.TILE_WIDTH_AND_LENGTH 
-                           - ( 2 * Board.LINE_ORIGIN ) + i);
+    for (int i = 0; i < (Board.LINE_WIDTH - 1); i++) {
+      secondLineValues.add(Board.LINE_OFFSET + Board.TILE_SIZE 
+                           - ( 2 * Board.LINE_OFFSET ) + i);
     }
 
     if (firstLineValues.contains(x)) {
@@ -396,15 +422,16 @@ class Simulator {
     if(   tile.hasLine(Baring.W) && x < 40
        || tile.hasLine(Baring.E) && x > 120)
     {
-      return new Color(205, 165, 100);
+      return Board.BROWN;
     }
     return color;
   }
 
   private Color resetColorForTurnY(Tile tile, int y, Color color) {
     if(    tile.hasLine(Baring.N) && y < 40
-        || tile.hasLine(Baring.S) && y > 120) {
-      return new Color(205, 165, 100);
+        || tile.hasLine(Baring.S) && y > 120)
+    {
+      return Board.BROWN;
     }
     return color;
   }
@@ -426,22 +453,32 @@ class Simulator {
     int distance = 0;
     
     Point tile = this.getCurrentTileCoordinates();
-
-    // determine position within tile
-    int x = (int)this.positionX % Simulator.tileSize;
-    int y = (int)this.positionY % Simulator.tileSize;
+    Point pos  = this.getCurrentOnTileCoordinates();
 
     // find distance to first wall in line of sight
-    distance = this.findHitDistance(angle, (int)tile.getX(), (int)tile.getY(),
-                                    x, y);
+    distance = this.findHitDistance( angle,
+                                     (int)tile.getX(), (int)tile.getY(),
+                                     (int)pos.getX(),  (int)pos.getY());
 
     return distance;
+  }
+  
+  private Tile getCurrentTile() {
+    Point tile = this.getCurrentTileCoordinates();
+    return this.map.get((int)tile.getX(), (int)tile.getY());
   }
 
   private Point getCurrentTileCoordinates() {
     // determine tile coordinates we're on
-    int left = (int)Math.floor(this.positionX / Simulator.tileSize) + 1;
-    int top  = (int)Math.floor(this.positionY / Simulator.tileSize) + 1;
+    int left = (int)Math.floor(this.positionX / Tile.SIZE) + 1;
+    int top  = (int)Math.floor(this.positionY / Tile.SIZE) + 1;
+    return new Point(left,top);
+  }
+
+  private Point getCurrentOnTileCoordinates() {
+    // determine tile coordinates on the tile we're on
+    int left = (int)this.positionX % Tile.SIZE;
+    int top  = (int)this.positionY % Tile.SIZE;
     return new Point(left,top);
   }
   
@@ -467,7 +504,7 @@ class Simulator {
     Tile tile;
     Point hit;
     do {
-      hit = Tile.findHitPoint(x, y, angle, Simulator.tileSize);
+      hit = Tile.findHitPoint(x, y, angle, Tile.SIZE);
 
       // distance from the starting point to the hit-point on this tile
       dist += Tile.getDistance(x, y, hit);
@@ -477,14 +514,14 @@ class Simulator {
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
       tile = this.map.get(left, top);
-      baring = Tile.getHitWall(hit, Simulator.tileSize);
+      baring = Tile.getHitWall(hit, Tile.SIZE);
 
       left = left + Baring.moveLeft(baring);
       top  = top  + Baring.moveTop(baring);
-      x = hit.x == 0 ? Simulator.tileSize
-        : (hit.x == Simulator.tileSize ? 0 : hit.x);
-      y = hit.y == 0 ? Simulator.tileSize
-        : (hit.y == Simulator.tileSize ? 0 : hit.y);
+      x = hit.x == 0 ? Tile.SIZE
+        : (hit.x == Tile.SIZE ? 0 : hit.x);
+      y = hit.y == 0 ? Tile.SIZE
+        : (hit.y == Tile.SIZE ? 0 : hit.y);
     } while(! tile.hasWall(baring));
 
     return (int)Math.round(dist);
@@ -520,7 +557,6 @@ class Simulator {
     this.robotAgent.run();
     //while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
      while(true){
-        //System.out.println("" + this.sensorValues[Model.S4]+"");
           this.robot.step();
           this.step();
           if(dSonar == 1000){

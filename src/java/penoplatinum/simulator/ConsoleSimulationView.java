@@ -10,7 +10,7 @@ package penoplatinum.simulator;
  */
 public class ConsoleSimulationView implements SimulationView {
   public void updateRobot( int x, int y, int direction ) {
-    System.out.println( "Robot is at " + x + "," + y + " / " + direction );
+    this.log( "Robot is at " + x + "," + y + " / " + direction );
   }
 
   public void showMap(Map map) {
@@ -18,8 +18,7 @@ public class ConsoleSimulationView implements SimulationView {
     // no map required on console ;-)
   }
 
-    @Override
-    public void log(String msg) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+  public void log(String msg) {
+    System.out.println( msg );
+  }
 }
