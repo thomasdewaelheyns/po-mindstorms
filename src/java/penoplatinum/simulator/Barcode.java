@@ -12,4 +12,5 @@ public class Barcode {
   public static final int Left        = 3;
   public static final int ForwardDown = 4;
   public static final int Right       = 6;
+  public static final int None        = -1;
 }

@@ -35,6 +35,6 @@ abstract public class ModelProcessor {
     }
   }
 
-  abstract void work();
+  protected abstract void work();
 
 }

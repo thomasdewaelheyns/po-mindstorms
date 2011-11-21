@@ -59,6 +59,8 @@ public class Model {
     
   private int[] sweepValues = new int[4];
   private boolean sweepChanged = true;
+    
+    private int barcode;
 
   // sets the (top-level) processor
   public void setProcessor(ModelProcessor processor) {
@@ -197,4 +199,12 @@ public class Model {
     this.sweepChanged = false;
     return this.sweepValues.clone(); //TODO: WARNING GC
   }
+    
+    public int getBarcode(){
+        return this.barcode;
+    }
+    
+    public void setBarcode(int barcode){
+        this.barcode = barcode;
+    }
 }
