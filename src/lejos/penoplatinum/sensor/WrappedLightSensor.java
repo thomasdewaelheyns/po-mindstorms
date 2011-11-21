@@ -13,7 +13,7 @@ import penoplatinum.ui.UIView;
 
 public class WrappedLightSensor implements ILightSensor {
 
-    final LightSensor light = new LightSensor(SensorPort.S4, true);
+    final LightSensor light;
     private int WHITEVAL = 100;
     private int BROWNVAL = 58;
     private int BLACKVAL = 1;
@@ -23,7 +23,15 @@ public class WrappedLightSensor implements ILightSensor {
     PacketTransporter lightTransporter;
     private final PacketTransporter commandTransporter;
 
+    /**
+     * TODO: remove this misery
+     * @param conn
+     * @param commandTransporter 
+     */
     public WrappedLightSensor(IConnection conn, PacketTransporter commandTransporter) {
+        //TODO: move out the sensorport
+        light = new LightSensor(SensorPort.S4, true);
+        
         if (conn != null) {
             lightTransporter = new PacketTransporter(conn);
             conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
