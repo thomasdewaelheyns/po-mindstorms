@@ -21,7 +21,8 @@ public class BarcodeReader {
     }
 
     public BarcodeReader(WrappedLightSensor sensor) {
-        interpreter = new BarcodeData(sensor);
+        //TODO: this needs refactoring
+        interpreter = new BarcodeData(null);
         this.lightSensor = sensor;
         isReadingBarcode = false;
     }
