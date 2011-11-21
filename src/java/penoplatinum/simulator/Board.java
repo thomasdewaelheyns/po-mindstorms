@@ -25,8 +25,9 @@ public class Board extends JPanel {
   public static final int SCALE = 2;
   
   // sizes in pixel format
-  public static final int LINE_OFFSET        = Tile.LINE_OFFSET * Board.SCALE;
+  public static final int LINE_OFFSET        = (Tile.LINE_OFFSET * Board.SCALE);
   public static final int TILE_SIZE          = Tile.SIZE        * Board.SCALE;
+  public static final int LINE_OFFSET2        = (Tile.LINE_OFFSET * Board.SCALE)+2;
   public static final int LINE_WIDTH         = Tile.LINE_WIDTH  * Board.SCALE;
   public static final int BARCODE_LINE_WIDTH = Tile.BARCODE_LINE_WIDTH * Board.SCALE;
 
@@ -148,40 +149,39 @@ public class Board extends JPanel {
   
   // TODO: further refactor this code, the switch is still ugly as hell ;-)
   private void renderLine(Graphics2D g2d, Tile tile, int left, int top, int line) {
-    if( tile.hasLine(line) ) {
+    if (tile.hasLine(line)) {
       g2d.setColor(tile.hasLine(line, Tile.WHITE) ? this.WHITE : this.BLACK);
-      int width = 158, offset = 0;
-      if( tile.hasLine(Baring.getLeftNeighbour(line) ) ) {
-        width  -= LINE_OFFSET;
+      int length = TILE_SIZE, offset = 0;
+      if (tile.hasLine(Baring.getLeftNeighbour(line)) || tile.hasLine(Baring.getRightNeighbour(line))) {
+        length -= LINE_OFFSET;
+      }
+      if (tile.hasLine(Baring.getLeftNeighbour(line))) {
         offset += LINE_OFFSET;
       }
-      if( tile.hasLine(Baring.getRightNeighbour(line) ) ) {
-        width -= LINE_OFFSET;
-      }
-      int dLeft = left - 1, dTop  = top  - 1, dX = 0, dY = 0, w = 0, h = 0;
+      int x = 0, y = 0, dX = 0, dY = 0;
       switch(line) {
         case Baring.N:
-          w = width; h = LINE_WIDTH;
-          dX = offset; dY = LINE_OFFSET;
+          dX = length; dY = LINE_WIDTH;
+          x = offset; y = LINE_OFFSET;
           break;
         case Baring.S:
-          w = width; h = LINE_WIDTH;
-          dX = offset; dY = -1 * ( 4 + LINE_OFFSET );
-          dTop = top;          
+          dX = length; dY = LINE_WIDTH;
+          x = offset; y = TILE_SIZE - LINE_OFFSET - LINE_WIDTH;
           break;
         case Baring.E:
-          w = LINE_WIDTH; h=width;
-          dX = -1 * ( 4 + LINE_OFFSET );  dY = offset;
-          dLeft = left;
+          dX = LINE_WIDTH; dY=length;
+          x = TILE_SIZE- LINE_OFFSET - LINE_WIDTH;  y = offset;
           break;
         case Baring.W:
-          w = LINE_WIDTH; h=width;
-          dX = LINE_OFFSET; dY = offset;
+          dX = LINE_WIDTH; dY=length;
+          x = LINE_OFFSET; y = offset;
       }
-      g2d.fill(new Rectangle(TILE_SIZE * dLeft + dX,
-                             TILE_SIZE * dTop  + dY,
-                             w,
-                             h));
+      
+      int dLeft = left - 1, dTop  = top  - 1;
+      g2d.fill(new Rectangle(TILE_SIZE * dLeft + x,
+                             TILE_SIZE * dTop  + y,
+                             dX,
+                             dY));
     }
   }
 
@@ -193,16 +193,17 @@ public class Board extends JPanel {
           offsetLeftV = 0, offsetTopV = 0;
       switch(corner) {
         case Baring.NE: 
-          offsetLeftH = offsetLeftV = TILE_SIZE - LINE_OFFSET;
+          offsetLeftH = offsetLeftV = TILE_SIZE - LINE_OFFSET - LINE_WIDTH;
           offsetTopH  = LINE_OFFSET;  offsetTopV  = 0;
           break;
         case Baring.SE:
-          offsetLeftH = offsetLeftV = TILE_SIZE - LINE_OFFSET;
-          offsetTopH  = offsetTopV  = TILE_SIZE - LINE_OFFSET;
+          offsetLeftH = offsetLeftV = TILE_SIZE - LINE_OFFSET - LINE_WIDTH;
+          offsetTopH  = offsetTopV  = TILE_SIZE - LINE_OFFSET - LINE_WIDTH;
           break;
         case Baring.SW:
           offsetLeftH = 0;  offsetLeftV = LINE_OFFSET;
-          offsetTopH  = offsetTopV  = TILE_SIZE - LINE_OFFSET;
+          offsetTopH  = TILE_SIZE - LINE_OFFSET - LINE_WIDTH;
+          offsetTopV = TILE_SIZE - LINE_OFFSET - LINE_WIDTH;
           break;
         case Baring.NW:
           offsetLeftH = 0; offsetLeftV = LINE_OFFSET;
@@ -214,10 +215,10 @@ public class Board extends JPanel {
 
       // horizontal
       g2d.fill(new Rectangle( tileLeft + offsetLeftH, tileTop  + offsetTopH,
-                              LINE_OFFSET, LINE_WIDTH ));
+                              LINE_OFFSET+LINE_WIDTH, LINE_WIDTH ));
       // vertical
       g2d.fill(new Rectangle( tileLeft + offsetLeftV, tileTop  + offsetTopV,
-                              LINE_WIDTH, LINE_OFFSET ));                             
+                              LINE_WIDTH, LINE_OFFSET+LINE_WIDTH));                             
       
     }
   }
