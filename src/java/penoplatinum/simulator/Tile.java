@@ -372,17 +372,21 @@ public class Tile {
     
     // if the line forms a corner with a related line, we need to limit the 
     // scope of the line
-    if( ( ( position == Baring.N || position == Baring.S ) && (
-            ( this.hasLine(Baring.W) && x < Tile.LINE_OFFSET )
-            ||
-            ( this.hasLine(Baring.E) && x > Tile.SIZE - Tile.LINE_OFFSET ) ) )
-        || 
-        ( ( position == Baring.E || position == Baring.W ) && (
-          ( this.hasLine(Baring.N) && y < Tile.LINE_OFFSET )
-          ||
-          ( this.hasLine(Baring.S) && y > Tile.SIZE - Tile.LINE_OFFSET ) ) ) )
-    {
-      position = Baring.NONE;
+    if (position == Baring.N || position == Baring.S){
+      if(this.hasLine(Baring.W) && x < Tile.LINE_OFFSET){
+        position = Baring.NONE;
+      }        
+      if(this.hasLine(Baring.E) && x > Tile.SIZE - Tile.LINE_OFFSET) {
+        position = Baring.NONE;
+      }
+    }
+    if ((position == Baring.E || position == Baring.W)) {
+      if (this.hasLine(Baring.N) && y < Tile.LINE_OFFSET){
+        position = Baring.NONE;
+      }
+      if (this.hasLine(Baring.S) && y > Tile.SIZE - Tile.LINE_OFFSET) {
+        position = Baring.NONE;
+      }
     }
     
     // check color of hit
@@ -399,14 +403,29 @@ public class Tile {
 
     // determine which corner might be hit
     int position = Baring.NONE;
-    if( x <= Tile.LINE_OFFSET ) {
-      if( y == Tile.LINE_OFFSET )                  { position = Baring.NW; }
-      else if( y == Tile.SIZE - Tile.LINE_OFFSET ) { position = Baring.SW; }
-    } else if( x >= Tile.SIZE - Tile.LINE_OFFSET ) {
-      if( y == Tile.LINE_OFFSET )                  { position = Baring.NE; }
-      else if( y == Tile.SIZE - Tile.LINE_OFFSET ) { position = Baring.SE; }
+    if (x < Tile.LINE_OFFSET) {
+      
+      if (onLine(y, Tile.LINE_OFFSET))                                      {position = Baring.NW;}
+      else if (onLine(y, Tile.SIZE - Tile.LINE_OFFSET - Tile.LINE_WIDTH ))  {position = Baring.SW;}
+      
+    } else if (x > Tile.SIZE - Tile.LINE_OFFSET) {
+      
+      if (onLine(y, Tile.LINE_OFFSET))                                      {position = Baring.NE;}
+      else if (onLine(y, Tile.SIZE - Tile.LINE_OFFSET - Tile.LINE_WIDTH ))  {position = Baring.SE;}
+      
+    } else if (onLine(x, Tile.LINE_OFFSET)) {
+      
+      if (y < Tile.LINE_OFFSET || onLine(y, Tile.LINE_OFFSET))              {position = Baring.NW;}
+      else if (y >= Tile.SIZE - Tile.LINE_OFFSET 
+              || onLine(y, Tile.SIZE - Tile.LINE_OFFSET-Tile.LINE_WIDTH))   {position = Baring.NE;}
+      
+    } else if (onLine(x, Tile.SIZE - Tile.LINE_OFFSET - Tile.LINE_WIDTH)) {
+      
+      if (y < Tile.LINE_OFFSET || onLine(y, Tile.LINE_OFFSET))              {position = Baring.SW;}
+      else if (y >= Tile.SIZE - Tile.LINE_OFFSET 
+              || onLine(y, Tile.SIZE - Tile.LINE_OFFSET-Tile.LINE_WIDTH))   {position = Baring.SE;}
+      
     }
-    
     // check color of hit
     if(position != Baring.NONE && this.hasCorner(position)) {
       if(this.hasCorner(position, Tile.WHITE))      { color = Tile.WHITE; }
@@ -414,5 +433,10 @@ public class Tile {
     }
       
     return color;
+  }
+
+  public boolean onLine(int y, int offset) {
+    return y >= offset
+               && y < offset+Tile.LINE_WIDTH;
   }
 }

@@ -12,17 +12,15 @@ package penoplatinum.simulator;
  * Author: Team Platinum
  */
 
-import java.awt.Color;
 import java.lang.System;
 import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
  
 class Simulator {
   // distance to the lightsensor-position
   private final int LIGHTSENSOR_DISTANCE = 10;
+  private final int LENGTH_ROBOT = 10;
   
   private static double movementStep = 0.25;  // steps of 1/4 cm
   private long   startTime;                   // start time in millis
@@ -174,9 +172,18 @@ class Simulator {
     switch( this.currentMovement ) {
       case Navigator.MOVE:
         if( this.steps-- > 0 ) {
-          this.positionX += this.dx;
-          this.positionY -= this.dy;
-          
+          if(hasTile(this.positionX + this.dx, this.positionY+this.dy)) {
+            if(!goesThroughWallX(this.positionX, this.positionY, this.dx)){
+              this.positionX += this.dx;
+            } else {
+              System.out.println("WallX");
+            }
+            if(!goesThroughWallY(this.positionX, this.positionY, this.dy)){
+              this.positionY -= this.dy;
+            } else {
+              System.out.println("WallY");
+            }
+          }
           // TODO: fix this to be correct towards actual change
           this.lastChangeM1 = 1;
           this.lastChangeM2 = 1;
@@ -254,9 +261,8 @@ class Simulator {
   }
   
   private void updateFrontPushSensors() {
-    int lengthRobot = 20;
-    this.calculateBumperSensor(45,  lengthRobot, Model.S1);
-    this.calculateBumperSensor(315, lengthRobot, Model.S2);
+    this.calculateBumperSensor(45,  LENGTH_ROBOT, Model.S1);
+    this.calculateBumperSensor(315, LENGTH_ROBOT, Model.S2);
   }
   
   private void updateSonar() {
@@ -389,9 +395,9 @@ class Simulator {
   }
 
   /**
-   * Allows the end-user to send commands throught the communication layer
+   * Allows the end-user to send commands through the communication layer
    * to the Robot. In the real world this is done through the RobotAgent,
-   * which here is being provided and controled by the Simulator.
+   * which here is being provided and controlled by the Simulator.
    */
   public Simulator send( String cmd ) {
     this.robotAgent.receive( cmd );
@@ -441,5 +447,38 @@ class Simulator {
 
   public boolean sonarMotorIsMoving(){
     return this.stepsSonar > 0;
+  }
+
+  private boolean hasTile(double positionX, double positionY) {
+    int x = (int) positionX / Tile.SIZE + 1;
+    int y = (int) positionY / Tile.SIZE + 1;
+    return map.exists(x, y);
+  }
+
+
+  private boolean goesThroughWallX(double positionX, double positionY, double dx) {
+    double posXOnTile = positionX % Tile.SIZE;
+    int tileX = (int) positionX / Tile.SIZE + 1;
+    int tileY = (int) positionY / Tile.SIZE + 1;
+    if (this.map.get(tileX, tileY).hasWall(Baring.W) && dx<0 && (posXOnTile + dx < LENGTH_ROBOT)) {
+      return true;
+    }
+    if (this.map.get(tileX, tileY).hasWall(Baring.E) && dx>0 && (posXOnTile + dx > Tile.SIZE - LENGTH_ROBOT)) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean goesThroughWallY(double positionX, double positionY, double dy) {
+    double posYOnTile = positionY % Tile.SIZE;
+    int tileX = (int) positionX / Tile.SIZE + 1;
+    int tileY = (int) positionY / Tile.SIZE + 1;
+    if (this.map.get(tileX, tileY).hasWall(Baring.N) && dy>0 && (posYOnTile - dy < LENGTH_ROBOT)) {
+      return true;
+    }
+    if (this.map.get(tileX, tileY).hasWall(Baring.S) && dy<0 && (posYOnTile - dy > Tile.SIZE - LENGTH_ROBOT)) {
+      return true;
+    }
+    return false;
   }
 }

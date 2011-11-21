@@ -56,4 +56,16 @@ public class Map {
   public Tile get( int left, int top ) {
     return this.tiles.get( ( ( top - 1 ) * this.width ) + ( left - 1 ) );
   }
+  
+  /**
+   * returns true if the tile exists at position left, top 
+   * indexed from 1 (one)
+   */
+  public Boolean exists(int left, int top){
+    int pos = ( ( top - 1 ) * this.width ) + (left - 1);
+    if (pos < 0 && pos >= this.tiles.size()) {
+      return false;
+    }
+    return this.tiles.get( pos ) != null;
+  }
 }
