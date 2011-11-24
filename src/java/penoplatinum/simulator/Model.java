@@ -60,7 +60,7 @@ public class Model {
   private int[] sweepValues = new int[4];
   private boolean sweepChanged = true;
     
-    private int barcode;
+    private int barcode = -1;
 
   // sets the (top-level) processor
   public void setProcessor(ModelProcessor processor) {

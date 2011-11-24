@@ -1,5 +1,7 @@
 package penoplatinum.simulator;
 
+import penoplatinum.navigator.BarcodeModelProcessor1;
+
 import penoplatinum.Utils;
 
 /**
@@ -28,8 +30,12 @@ public class NavigatorRobot implements Robot {
   private void setupModel() {
     // setup a model with the required ModelProcessors
     this.model     = new Model();
-    ModelProcessor sonar = new SonarModelProcessor();
-    this.model.setProcessor( new FrontPushModelProcessor(sonar) );
+    
+    ModelProcessor barcode = new BarcodeModelProcessor1();
+    barcode.setModel(model);
+    ModelProcessor sonar = new SonarModelProcessor(barcode);
+    ModelProcessor frontPush = new FrontPushModelProcessor(sonar);
+    this.model.setProcessor(frontPush);
 //    this.model.setProcessor( new FrontPushModelProcessor() );
   }
   

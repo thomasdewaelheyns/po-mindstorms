@@ -240,8 +240,7 @@ public class Board extends JPanel {
   private void renderBarcode(Graphics2D g2d, Tile tile, int left, int top) {
     // every bar of the barcode has a 2cm width = 4px
     for( int line=0; line<7; line++ ) {
-      g2d.setColor( (tile.getBarcode() & (1<<line) ) != 0 ?
-                    this.BLACK : this.WHITE );
+      g2d.setColor(tile.getBarcodeLine(line)==Tile.BLACK ? this.BLACK : this.WHITE);
 
       switch( tile.getBarcodeLocation() ) {
         case Baring.N:

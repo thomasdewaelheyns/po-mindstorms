@@ -31,6 +31,7 @@ package penoplatinum.simulator;
  */
 
 import java.awt.Point;
+import penoplatinum.navigator.BarcodeDataNav;
 
 public class Tile {
   // these are the positions in the bitstring where relevant information
@@ -233,7 +234,11 @@ public class Tile {
   }
 
   public int getBarcode() {
-    return this.getBits(Tile.startBarcode,4);
+    return BarcodeDataNav.expand[this.getBits(Tile.startBarcode,4)];
+  }
+  public int getBarcodeLine(int line){
+      return (this.getBarcode() & (1<<(Tile.BARCODE_LINES-line-1)) ) == 0 ?
+                    Tile.BLACK : Tile.WHITE;
   }
 
   public Tile putBarcodeAt( int location ) {
@@ -338,8 +343,7 @@ public class Tile {
       case Baring.W: line = x;             break;
     }
     line /= Tile.BARCODE_LINE_WIDTH;
-    return ( (this.getBarcode() & (1 << line) ) != 0 ?
-            Tile.BLACK : Tile.WHITE );
+    return getBarcodeLine(line);
   }
 
   // check if the robot is on a barcode
