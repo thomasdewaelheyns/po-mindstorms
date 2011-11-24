@@ -56,9 +56,12 @@ public class Map {
   /**
    * returns a tile at position left, top. first row/column are 1 (one)
    */
-  public Tile get( int left, int top ) {
+  public Tile get(int left, int top) {
     return this.tiles.get(getPosition(left, top));
   }
+  /*public Tile get(int left, int top, int level){
+    return get(left, top);
+  }/**/
 
   private int getPosition(int left, int top) {
     return ((top - 1) * this.width) + (left - 1);
@@ -68,6 +71,9 @@ public class Map {
    * returns true if the tile exists at position left, top 
    * indexed from 1 (one)
    */
+  /*public Boolean exists(int left, int top, int level){
+    return exists(left, top);
+  }/**/
   public Boolean exists(int left, int top){
     int pos = getPosition(left, top);
     if (pos < 0 && pos >= this.tiles.size()) {

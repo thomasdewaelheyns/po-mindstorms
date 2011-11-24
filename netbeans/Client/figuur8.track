@@ -1,0 +1,20 @@
+3 5 3
+
+RCorner.N RCorner.E None.N 
+Straight.N UpRamp.S None.N 
+RCorner.W Straight.W LCorner.N 
+None.N DnRamp.S Straight.N 
+None.N LCorner.S LCorner.E 
+
+None.N None.N None.N 
+None.N None.N None.N 
+None.N Straight.S None.N 
+None.N None.N None.N 
+None.N None.N None.N 
+
+None.N None.N None.N 
+None.N None.N None.N 
+None.N None.N None.N 
+None.N None.N None.N 
+None.N None.N None.N 
+

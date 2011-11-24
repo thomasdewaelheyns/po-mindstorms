@@ -17,8 +17,9 @@ public class Map3D extends Map {
   private int height; //Z
   private List<Tile> tiles;
 
-  public Map3D(int width, int height) {
+  public Map3D(int length, int width) {
     super();
+    this.length = length;
     this.width = width;
     this.tiles = new ArrayList<Tile>();
   }
@@ -28,6 +29,9 @@ public class Map3D extends Map {
   }
 
   public int getHeight() {
+    return this.length;
+  }
+  public int getHeightZ(){
     return this.height;
   }
 
@@ -72,6 +76,12 @@ public class Map3D extends Map {
     return get(left-1, top-1, 0);
   }
   public Tile get(int x, int y, int z) {
+    if(getPosition(x, y, z)<0){
+      return Tiles.NONE;
+    }
+    if(getPosition(x, y, z)>=tiles.size()){
+      return Tiles.NONE;
+    }
     return this.tiles.get(getPosition(x, y, z));
   }
 
@@ -80,7 +90,7 @@ public class Map3D extends Map {
    * indexed from 1 (one)
    */
   public Boolean exists (int left, int top){
-    return exists(left-1, top-1);
+    return exists(left-1, top-1, 0);
   }
   public Boolean exists(int x, int y, int z) {
     int pos = getPosition(x, y, z);

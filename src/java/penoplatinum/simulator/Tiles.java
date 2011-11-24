@@ -77,4 +77,9 @@ public class Tiles {
     .withWall   (Baring.S)              .withWall    (Baring.E)
     .withLine   (Baring.S,  Tile.WHITE) .withLine    (Baring.E, Tile.WHITE)
     .withCorner (Baring.NW, Tile.BLACK);
+  public static Tile NONE = new Tile()
+          .withWall(Baring.N)
+          .withWall(Baring.E)
+          .withWall(Baring.S)
+          .withWall(Baring.W);
 }

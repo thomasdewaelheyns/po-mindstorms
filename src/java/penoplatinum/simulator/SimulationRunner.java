@@ -1,6 +1,12 @@
 package penoplatinum.simulator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.cli.*;
+import penoplatinum.map.MapFactory;
 
 /**
  * SimulationRunner
@@ -19,18 +25,42 @@ class SimulationRunner {
   
   public SimulationRunner() {
     this.simulator = new Simulator();
-    this.createMap();
+    useMap(defaultMap());
+  }
+  
+  public SimulationRunner(Map m) {
+    this.simulator = new Simulator();
+    this.simulator.useMap(m);
+  }
+  
+  public final SimulationRunner useMap(Map m){
+    this.simulator.useMap(m);
+    return this;
+  }
+  public SimulationRunner useMap(String file){
+    Map m = defaultMap();
+    if(!file.equals("defaultMap")){
+      File f = new File(file);
+      try {
+        Scanner sc = new Scanner(f);
+        MapFactory fact = new MapFactory();
+        m = fact.getMap(sc);
+      } catch (FileNotFoundException ex) {
+        System.err.println("File not found, using default map!");
+      }
+    }
+    return useMap(m);
   }
   
   // TODO: create MapFactory with support to load files
   //       add option to provide map file
-  private void createMap() {
+  private Map defaultMap() {
     Map map = new Map(4)
       .add(Tiles.S_E) .add(Tiles.W_E) .add(Tiles.W_E) .add(Tiles.W_S)
       .add(Tiles.E_N) .add(Tiles.E_W) .add(Tiles.S_W) .add(Tiles.N_S)
       .add(Tiles.S_E) .add(Tiles.W_E) .add(Tiles.W_N) .add(Tiles.N_S)
       .add(Tiles.E_N) .add(Tiles.E_W) .add(Tiles.E_W) .add(Tiles.N_W);
-    this.simulator.useMap(map);
+    return map;
   }
   
   public SimulationRunner useUI() {
@@ -94,6 +124,8 @@ class SimulationRunner {
                                               "default=" + defaultNavigator );
     options.addOption( "p", "put",      true, "put robot at x,y,direction. " +
                                               "default=" + defaultPosition  );
+    options.addOption( "m", "mapFile",true, "use mapfile. " +
+                                              "default=defaultMap");
 
     CommandLineParser parser = new GnuParser();
     try {
@@ -107,6 +139,8 @@ class SimulationRunner {
         runner.useNavigator( line.getOptionValue( "navigator", 
                                                   defaultNavigator ) );
         runner.putRobotAt( line.getOptionValue( "put", defaultPosition ) );
+        
+        runner.useMap(line.getOptionValue("mapFile", "defaultMap"));
 
         setupComplete = true;
       }
