@@ -16,6 +16,9 @@ public class Map {
   
   private List<Tile> tiles;
   
+  protected Map(){
+  }
+  
   public Map(int width) {
     this.width = width;
     this.tiles = new ArrayList<Tile>();
@@ -46,7 +49,7 @@ public class Map {
   // adds a tile at a given position. left,top 1-based
   public Map put( Tile tile, int left, int top ) {
     // TODO if useful
-    // this.tiles.set( ( top * this.width ) + left, tile );
+    this.tiles.set(getPosition(left, top), tile );
     return this;
   }
   
@@ -54,7 +57,11 @@ public class Map {
    * returns a tile at position left, top. first row/column are 1 (one)
    */
   public Tile get( int left, int top ) {
-    return this.tiles.get( ( ( top - 1 ) * this.width ) + ( left - 1 ) );
+    return this.tiles.get(getPosition(left, top));
+  }
+
+  private int getPosition(int left, int top) {
+    return ((top - 1) * this.width) + (left - 1);
   }
   
   /**
@@ -62,7 +69,7 @@ public class Map {
    * indexed from 1 (one)
    */
   public Boolean exists(int left, int top){
-    int pos = ( ( top - 1 ) * this.width ) + (left - 1);
+    int pos = getPosition(left, top);
     if (pos < 0 && pos >= this.tiles.size()) {
       return false;
     }
