@@ -15,11 +15,14 @@ public interface RobotAPI {
   public void move( double distance );
   
   // turns the robot on its spot by an angle expressed in degrees
-  public void turn( double angle );
-  
+  public void turn( int angle );
+
   // stop the robot immediately
   public void stop();
   
   // returns the current values for the sensors
   public int[] getSensorValues();
+  
+  // sets the speed for one of the motors
+  public void setSpeed(int motor, int speed);
 }

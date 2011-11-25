@@ -19,14 +19,18 @@ import java.util.ArrayList;
  
 class Simulator {
   // distance to the lightsensor-position
-  private final int LIGHTSENSOR_DISTANCE = 10;
-  private final int LENGTH_ROBOT = 10;
+  private static final double LIGHTSENSOR_DISTANCE = 10.0; // 10cm from center
+  private static final double LENGTH_ROBOT         = 10.0;
+  private static final double WHEEL_SIZE           = 17.5; // circumf. in cm
+  private static final double WHEEL_BASE           = 16.0; // wheeldist. in cm
   
-  private static double movementStep = 0.25;  // steps of 1/4 cm
-  private long   startTime;                   // start time in millis
-  private List<Point> visitedTiles = new ArrayList<Point>();
-  private long   lastStatisticsReport = 0;    // time of last stat report
-
+  // determines how much time is passed with every step of the simulator
+  private double timeSlice = 0.02;
+  
+  // used for statistics
+  private long          startTime;                 // start time in millis
+  private List<Point>   visitedTiles = new ArrayList<Point>();
+  private long          lastStatisticsReport = 0;  // time of last stat report
   private static double totalMovement = 0;
 
   // a view to display the simulation, by default it does nothing
@@ -39,26 +43,40 @@ class Simulator {
 
   private double positionX;       // the position of the robot in the world
   private double positionY;       //   expressed in X,Y coordinates
-  private double direction;       //   and a direction its facing
+  private double direction;       //   and a direction it's facing
   
   // the motorSpeeds and the sensorValues
   private double[] sensorValues = new double[7];
+
+  private Motor[] motors = new Motor[3];
+  private int prevLeft  = 0;
+  private int prevRight = 0;
+  private int prevSonar = 0;
 
   private int steps;              // the number of steps still to do
   private double dx, dy, dr;      // the difference for x, y and rotation
   private int dSonar;
   private int stepsSonar;
   
-  private int currentMovement;     // movement that is being stepped
-  private int lastChangeM1 = 0;    // the last change on Motor 1
-  private int lastChangeM2 = 0;    // the last change on Motor 2
-  private int lastChangeM3 = 0;    // the last change on Motor 3
-  
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
+    this.setupVirtualRobot();
     this.setupSimulationEnvironment();
   }
   
+  // setup internal representation of the robot
+  private void setupVirtualRobot() {
+    this.setupMotors();
+  }
+
+  // this needs to be in sync with the "reality" ;-)
+  // TODO: externalize the speed configuration of the different motors
+  private void setupMotors() {
+    this.motors[Model.M1] = new Motor().setLabel("L");  // these two need to be running
+    this.motors[Model.M2] = new Motor().setLabel("R");  // at the same speed
+    this.motors[Model.M3] = new Motor().setLabel("S");  // this is the sonar
+  }
+
   /**
    * The simulation environment provides an implementation of the RobotAPI
    * and RobotAgent which are wired to the Simulator. This allows any default
@@ -88,6 +106,12 @@ class Simulator {
     this.map = map;
     return this;
   }
+
+  
+  public Simulator setSpeed(int motor, int speed) {
+    this.motors[motor].setSpeed(speed);
+    return this;
+  }
   
   /**
    * A robot is put on the map - as in the real world - on a certain place
@@ -96,7 +120,7 @@ class Simulator {
    * the RobotAgent to interact with the robot.
    */
   public Simulator putRobotAt(Robot robot, int x, int y, int direction) {
-    this.robot = robot;
+    this.robot     = robot;
     this.positionX = x;
     this.positionY = y;
     this.direction = direction;
@@ -110,111 +134,80 @@ class Simulator {
     return this;
   }
   
+  // called by the implementation of the RobotAPI
   public Simulator moveRobot( double movement ) {
-    this.currentMovement = Navigator.MOVE;
-    
-    // our direction 0 is pointing North
-    double rads = Math.toRadians(this.getAngle());
-
-    // convert from distance in meters to 1/25 cm
-    int distance = (int)(movement * ( 100.0 / this.movementStep ) );
-    int direction = 1;
-    if( distance < 0 ) {
-      direction = -1;
-      distance *= -1;
-    }
-
-    this.dx    = Math.cos(rads) * this.movementStep * direction;
-    this.dy    = Math.sin(rads) * this.movementStep * direction;
-    this.steps = distance;
-    
+    // calculate the tacho count we need to do to reach this movement
+    int tacho = (int)( movement / Simulator.WHEEL_SIZE * 360 );
+    this.motors[Model.M1].rotateBy(tacho);
+    this.motors[Model.M2].rotateBy(tacho);
     return this;
   }
   
-  public Simulator turnMotorTo(int angle){
-    this.dSonar = ( angle >= 0 ? 1 : -1 );
-    this.stepsSonar = angle * this.dSonar;
-    return this;
-  }
-  
-  public Simulator turnRobot( double angle ) {
-    this.currentMovement = Navigator.TURN;
-    
-    // turn in steps of 3 degrees
-    this.dr   = 1.0;
-    this.steps = (int)(Math.abs(angle) / this.dr);
-    
-    // if the angle is negative, move clock-wise
-    if( angle < 0 ) {
-      this.dr = -1.0;
-    }
+  // called by the implementation of the RobotAPI
+  public Simulator turnRobot( int angle ) {
+    // calculate anmount of tacho needed to perform a turn by angle
+    double dist = Math.PI * Simulator.WHEEL_BASE / 360 * angle;
+    int tacho = (int)( dist / Simulator.WHEEL_SIZE * 360);
 
+    // let both motor's rotate the same tacho but in opposite direction
+    this.motors[Model.M1].rotateBy(tacho);
+    this.motors[Model.M2].rotateBy(tacho * -1);
     return this;
   }
-  
+
+  // called by the implementation of the RobotAPI
   public Simulator stopRobot() {
-    this.currentMovement = Navigator.STOP;
+    this.motors[Model.M1].stop();
+    this.motors[Model.M2].stop();
+    return this;
+  }
+  
+  // low-level access method to a motor
+  public Simulator rotateMotorTo(int motor, int tacho) {
+    this.motors[motor].rotateTo(tacho);
     return this;
   }
 
+  // at the end of a step, refresh the visual representation of our world
   private void refreshView() {
     this.view.updateRobot( (int)this.positionX, (int)this.positionY,
                            (int)this.direction );
   }
   
-  /**
-   * Performs the next step in the movement currently executed by the robot
-   */ 
+  // performs the next step in the movement currently executed by the robot
   private void step() {
-    this.lastChangeM1 = 0;
-    this.lastChangeM2 = 0;
-    // process the next step in the movement that is currently being performed
-    switch( this.currentMovement ) {
-      case Navigator.MOVE:
-        if( this.steps-- > 0 ) {
-          if(hasTile(this.positionX + this.dx, this.positionY+this.dy)) {
-            if(!goesThroughWallX(this.positionX, this.positionY, this.dx)){
-              this.positionX += this.dx;
-            } else {
-              System.out.println("WallX");
-            }
-            if(!goesThroughWallY(this.positionX, this.positionY, this.dy)){
-              this.positionY -= this.dy;
-            } else {
-              System.out.println("WallY");
-            }
-          }
-          // TODO: fix this to be correct towards actual change
-          this.lastChangeM1 = 1;
-          this.lastChangeM2 = 1;
+    // let all motors know that another timeslice has passed
+    this.motors[Model.M1].tick(this.timeSlice);
+    this.motors[Model.M2].tick(this.timeSlice);
+    this.motors[Model.M3].tick(this.timeSlice);
+    
+    // based on the motor's (new) angle's determine the displacement
+    int changeLeft  = this.motors[Model.M1].getValue() - this.prevLeft;
+    int changeRight = this.motors[Model.M2].getValue() - this.prevRight;
 
-          this.trackMovementStatistics();
-        }
-        break;
-      case Navigator.TURN:
-        if( this.steps-- > 0 ) {
-          this.direction = this.direction + this.dr;
-          if( this.direction < 0 ) {
-            this.direction += 360;
-          }
-          this.direction %= 360;
-          // TODO: fix this to be correct towards dimensions of robot
-          this.lastChangeM1 = 1;
-          this.lastChangeM2 = -1;
-        }
-        break;
-      case Navigator.STOP:
-        this.currentMovement = Navigator.NONE;
-        break;
-      case Navigator.NONE:
-      default:
-        // do nothing
+    if( changeLeft == changeRight ) {
+      // we're moving in one direction 
+      double  d = Simulator.WHEEL_SIZE / 360 * changeRight;
+      double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
+      double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
+      this.positionX += dx;
+      this.positionY -= dy;
+      this.trackMovementStatistics(d);
+    } else if( changeLeft == changeRight * -1 ) {
+      // we're turning
+      double d = Simulator.WHEEL_SIZE / 360 * changeLeft;
+      double dr = ( d / ( Math.PI * Simulator.WHEEL_BASE ) ) * 360;
+      this.direction += dr;
+    } else {
+      // hell froze over
+      System.err.println( "ERROR: inconsistent motor behaviour." );
     }
 
-    // update the sonar motor
-    if( this.stepsSonar-- > 0 ){
-      this.sensorValues[Model.M3] += this.dSonar;
-    }
+    // keep track of the (new) current motor angles
+    this.prevLeft  = this.motors[Model.M1].getValue();
+    this.prevRight = this.motors[Model.M2].getValue();
+    this.prevSonar = this.motors[Model.M3].getValue();
+
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
 
@@ -222,8 +215,8 @@ class Simulator {
     this.refreshView();
   }
   
-  private void trackMovementStatistics() {
-    this.totalMovement += this.movementStep;
+  private void trackMovementStatistics(double movement) {
+    this.totalMovement += movement;
     Point tile = this.getCurrentTileCoordinates();
     if( ! this.visitedTiles.contains(tile) ) {
       this.visitedTiles.add(tile);
@@ -266,7 +259,7 @@ class Simulator {
   }
   
   private void updateSonar() {
-    int angle = (int) this.sensorValues[Model.M3] + this.getAngle();
+    int angle = (int)this.sensorValues[Model.M3] + this.getAngle();
     int minimum = this.getFreeDistance((angle+36)%360);
     for (int i = -15; i < 16; i++) {
       int distance = this.getFreeDistance((angle+i+360)%360);
@@ -276,8 +269,9 @@ class Simulator {
   }
   
   private void updateMotors() {
-    this.sensorValues[Model.M1] = this.lastChangeM1;
-    this.sensorValues[Model.M2] = this.lastChangeM2;
+    this.sensorValues[Model.M1] = this.motors[Model.M1].getValue();
+    this.sensorValues[Model.M2] = this.motors[Model.M2].getValue();
+    this.sensorValues[Model.M3] = this.motors[Model.M3].getValue();
   }
   
   private void updateLightSensor() {
@@ -305,7 +299,7 @@ class Simulator {
       color == Tile.WHITE ? 100 : ( color == Tile.BLACK ? 0 : 70 );
   }
 
-  private void calculateBumperSensor(int angle, int lengthRobot, int sensorPort) {
+  private void calculateBumperSensor(int angle, double lengthRobot, int sensorPort) {
     angle = ( this.getAngle() + angle ) % 360; 
     int distance = this.getFreeDistance(angle);
 
@@ -325,11 +319,9 @@ class Simulator {
     Point pos  = this.getCurrentOnTileCoordinates();
 
     // find distance to first wall in line of sight
-    distance = this.findHitDistance( angle,
-                                     (int)tile.getX(), (int)tile.getY(),
-                                     (int)pos.getX(),  (int)pos.getY());
-
-    return distance;
+    return this.findHitDistance( angle,
+                                 (int)tile.getX(), (int)tile.getY(),
+                                 (int)pos.getX(),  (int)pos.getY());
   }
   
   private Tile getCurrentTile() {
@@ -422,13 +414,9 @@ class Simulator {
     this.view.showMap(this.map);
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
-    //while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
-     while(true){
-          this.robot.step();
-          this.step();
-          if(dSonar == 1000){
-            break;
-          }
+    while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
+      this.robot.step();
+      this.step();
     }
     this.view.log( "" );
     this.view.log( "Visited All Tiles:" );
@@ -446,7 +434,7 @@ class Simulator {
   }
 
   public boolean sonarMotorIsMoving(){
-    return this.stepsSonar > 0;
+    return this.motors[Model.M3].getValue() != this.prevSonar;
   }
 
   private boolean hasTile(double positionX, double positionY) {
@@ -455,30 +443,27 @@ class Simulator {
     return map.exists(x, y);
   }
 
-
   private boolean goesThroughWallX(double positionX, double positionY, double dx) {
     double posXOnTile = positionX % Tile.SIZE;
     int tileX = (int) positionX / Tile.SIZE + 1;
     int tileY = (int) positionY / Tile.SIZE + 1;
-    if (this.map.get(tileX, tileY).hasWall(Baring.W) && dx<0 && (posXOnTile + dx < LENGTH_ROBOT)) {
-      return true;
-    }
-    if (this.map.get(tileX, tileY).hasWall(Baring.E) && dx>0 && (posXOnTile + dx > Tile.SIZE - LENGTH_ROBOT)) {
-      return true;
-    }
-    return false;
+
+    return ( this.map.get(tileX, tileY).hasWall(Baring.W) 
+             && dx<0 && (posXOnTile + dx < LENGTH_ROBOT) )
+           ||
+           ( this.map.get(tileX, tileY).hasWall(Baring.E) 
+             && dx>0 && (posXOnTile + dx > Tile.SIZE - LENGTH_ROBOT ) );
   }
 
   private boolean goesThroughWallY(double positionX, double positionY, double dy) {
     double posYOnTile = positionY % Tile.SIZE;
     int tileX = (int) positionX / Tile.SIZE + 1;
     int tileY = (int) positionY / Tile.SIZE + 1;
-    if (this.map.get(tileX, tileY).hasWall(Baring.N) && dy>0 && (posYOnTile - dy < LENGTH_ROBOT)) {
-      return true;
-    }
-    if (this.map.get(tileX, tileY).hasWall(Baring.S) && dy<0 && (posYOnTile - dy > Tile.SIZE - LENGTH_ROBOT)) {
-      return true;
-    }
-    return false;
+
+    return ( this.map.get(tileX, tileY).hasWall(Baring.N) && 
+             dy>0 && (posYOnTile - dy < LENGTH_ROBOT) )
+           ||
+           ( this.map.get(tileX, tileY).hasWall(Baring.S) && 
+             dy<0 && (posYOnTile - dy > Tile.SIZE - LENGTH_ROBOT) );
   }
 }

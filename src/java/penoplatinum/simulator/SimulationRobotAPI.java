@@ -12,7 +12,7 @@ package penoplatinum.simulator;
 public class SimulationRobotAPI implements RobotAPI {
 
   private Simulator simulator;
-  private int sonarAngle = 270;
+  private int sonarAngle = 135;
   private boolean first = true;
 
   public void setSimulator( Simulator simulator ) {
@@ -23,7 +23,7 @@ public class SimulationRobotAPI implements RobotAPI {
     this.simulator.moveRobot( distance );
   }
 
-  public void turn( double angle ) {
+  public void turn( int angle ) {
     this.simulator.turnRobot( angle );
   }
 
@@ -43,18 +43,21 @@ public class SimulationRobotAPI implements RobotAPI {
     }
     return out;
   }
+  
+  public void setSpeed(int motor, int speed) {
+    this.simulator.setSpeed(motor, speed);
+  }
+  
+  private int prevSonarTacho = 0;
 
   private void restartSonarMotor(){
-    if( ! simulator.sonarMotorIsMoving() ) {
-      if(first){
-        //initialise sonarhead to start moving
-        first = false;
-        simulator.turnMotorTo(sonarAngle/2);
-      } else {
-        this.sonarAngle *= -1;
-        simulator.turnMotorTo(this.sonarAngle);
-      }
+    int currentTacho = (int)this.simulator.getSensorValues()[Model.M3];
+    // if the motor has finished its previous movement, sweep back ...
+    if( currentTacho == this.prevSonarTacho ) {
+      this.sonarAngle *= -1;
+      simulator.rotateMotorTo(Model.M3, this.sonarAngle);
     }
+    this.prevSonarTacho = currentTacho;
   }
 
 }

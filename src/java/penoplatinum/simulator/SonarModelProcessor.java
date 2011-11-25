@@ -24,28 +24,34 @@ public class SonarModelProcessor extends ModelProcessor {
     resetSweep();
   }
 
-  @Override
   public void work() {
-    if(Math.abs(this.model.getSensorValue(Model.M3))>90){
-      if(Math.abs(this.model.getSensorValue(Model.M3))==135){
-        this.model.setNewSweep(minimum, minAngle, maximum, maxAngle);
-        resetSweep();
+    int currentDistance = this.model.getSensorValue(Model.S3);
+    int currentAngle    = this.model.getSensorValue(Model.M3);
+    
+    // only record within -90 to 90 degrees
+    if( Math.abs(currentAngle) < 90 ) {
+      // keep track of maximum
+      if( currentDistance > this.maximum ) {
+        this.maximum  = currentDistance;
+        this.maxAngle = currentAngle;
       }
-      return;
+      // keep track of minumum
+      if( currentDistance < this.minimum ) {
+        this.minimum  = currentDistance;
+        this.minAngle = currentAngle;
+      }
     }
-    if(maximum<this.model.getSensorValue(Model.S3)){
-      maximum = this.model.getSensorValue(Model.S3);
-      maxAngle = this.model.getSensorValue(Model.M3);
+    
+    // report at end-points of sweep
+    if( Math.abs(currentAngle) >= 135 && this.minimum != Integer.MAX_VALUE ) {
+      this.model.setNewSweep( this.minimum, this.minAngle, 
+                              this.maximum, this.maxAngle );
+      this.resetSweep();
     }
-    if(minimum>this.model.getSensorValue(Model.S3)){
-      minimum = this.model.getSensorValue(Model.S3);
-      minAngle = this.model.getSensorValue(Model.M3);
-    }
-
   }
 
   private void resetSweep(){
-    minimum = Integer.MAX_VALUE;
-    maximum = Integer.MIN_VALUE;
+    this.minimum = Integer.MAX_VALUE;
+    this.maximum = Integer.MIN_VALUE;
   }
 }

@@ -39,6 +39,13 @@ public class NavigatorRobot implements Robot {
 
   public void useRobotAPI( RobotAPI api ) {
     this.api = api;
+    this.initAPI();
+  }
+  
+  // method to perform initializing actions when an API is available
+  private void initAPI() {
+    if( this.api == null ) { return; }
+    this.api.setSpeed(Model.M3, 500); // set sonar speed to double of default
   }
   
   public void processCommand( String cmd ) {
@@ -67,7 +74,7 @@ public class NavigatorRobot implements Robot {
         this.api.move(this.navigator.getDistance());
         break;
       case Navigator.TURN:
-        this.api.turn(this.navigator.getAngle());
+        this.api.turn((int)this.navigator.getAngle());
         break;
       case Navigator.STOP:
         this.api.stop();
