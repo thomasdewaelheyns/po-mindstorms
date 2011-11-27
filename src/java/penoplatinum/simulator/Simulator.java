@@ -255,9 +255,9 @@ class Simulator {
    *       this is shared with the Model in a way (for now)
    */
   private void updateSensorValues() {
+    this.updateMotors();
     this.updateFrontPushSensors();
     this.updateSonar();
-    this.updateMotors();
     this.updateLightSensor();
   }
   
