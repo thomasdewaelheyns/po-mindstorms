@@ -20,7 +20,7 @@ public class SonarModelProcessor extends ModelProcessor {
   private List<Integer> distances = new ArrayList<Integer>();
   private List<Integer> blurred   = new ArrayList<Integer>();
   private List<Integer> angles    = new ArrayList<Integer>();
-  private int blurFactor = 2;
+  private int blurFactor = 1;
   
   public void work() {
     // if we changed direction
