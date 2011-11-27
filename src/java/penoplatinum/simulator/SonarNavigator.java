@@ -49,7 +49,7 @@ public class SonarNavigator implements Navigator {
       int[] values = this.model.getSonarValues();
 
       // if we're close to a frontal object, avoid with big turn
-      if( values[0] < 35 && Math.abs(values[1]) < 50 ) {
+      if( values[0] < 35 && Math.abs(values[1]) < 90 ) {
         int diff = ( values[3] - values[1] + 360 ) % 360;
         this.angle = diff > 180 ? -30 : 30;
         System.out.println( "AVOID: -> " + this.angle + "(min: " + values[0] + " / " + values[1] + ")" + "(max: " + values[2] + " / " + values[3] + ")" );
