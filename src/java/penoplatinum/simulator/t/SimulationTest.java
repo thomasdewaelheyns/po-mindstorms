@@ -18,6 +18,8 @@ public class SimulationTest extends TestCase implements GoalDecider {
     // the run call needs to be separate, else this.simulation is not set yet      
     this.simulation.run();
     List<Integer> dist = this.simulation.getRobot().getModel().getDistances();
+    // handy to test with visual view (FIXME: integrate this better)
+    // try { Thread.sleep(100000); } catch(Exception e) {}
     assertEquals( 60, (int)dist.get(0) );
   }
 

@@ -268,11 +268,12 @@ class Simulator {
   
   private void updateSonar() {
     int angle = (int)this.sensorValues[Model.M3] + this.getAngle();
-    int minimum = this.getFreeDistance((angle+36)%360);
-    for (int i = -15; i < 16; i++) {
-      int distance = this.getFreeDistance((angle+i+360)%360);
-      minimum = Math.min(minimum, distance);
-    }
+    int minimum = this.getFreeDistance((angle+360)%360);
+    // TODO: reintroduce - removed to find Sonar detection bug (xtof)
+    // for (int i = -15; i < 16; i++) {
+    //   int distance = this.getFreeDistance((angle+i+360)%360);
+    //   minimum = Math.min(minimum, distance);
+    // }
     this.sensorValues[Model.S3] = minimum;
   }
   
