@@ -20,7 +20,9 @@ public class SimulationTest extends TestCase implements GoalDecider {
     List<Integer> dist = this.simulation.getRobot().getModel().getDistances();
     // handy to test with visual view (FIXME: integrate this better)
     // try { Thread.sleep(100000); } catch(Exception e) {}
-    assertEquals( 60, (int)dist.get(0) );
+    assertEquals(  61, (int)dist.get(1) );
+    assertEquals(  93, (int)dist.get(5) );
+    assertEquals( 150, (int)dist.get(9) );
   }
 
   public Boolean reachedGoal() {
