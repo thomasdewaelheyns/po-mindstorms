@@ -12,8 +12,9 @@ package penoplatinum.simulator;
 public class SimulationRobotAPI implements RobotAPI {
 
   private Simulator simulator;
-  private int sonarAngle = 135;
-  private boolean first = true;
+  private int sonarAngle = 90;   // the sonar moves from - to + this angle
+  private int prevSonarTacho = 0;
+
 
   public void setSimulator( Simulator simulator ) {
     this.simulator = simulator;
@@ -48,8 +49,6 @@ public class SimulationRobotAPI implements RobotAPI {
     this.simulator.setSpeed(motor, speed);
   }
   
-  private int prevSonarTacho = 0;
-
   private void restartSonarMotor(){
     int currentTacho = (int)this.simulator.getSensorValues()[Model.M3];
     // if the motor has finished its previous movement, sweep back ...

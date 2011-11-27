@@ -14,13 +14,15 @@ public class LineFollowerNavigator implements Navigator {
     private int[] rotates = new int[]{-20, 120, -720};
     private int timesTurned = 0;
 
-    @Override
-    //no goal just drive
+    public LineFollowerNavigator setControler(GoalDecider controler) {
+      return this;
+    }
+
+    // no goal just drive
     public Boolean reachedGoal() {
         return false;
     }
 
-    @Override
     public int nextAction() {
         int lightValue = model.getSensorValue(Model.S4);
         if (lightValue < 30 || lightValue > 85) {

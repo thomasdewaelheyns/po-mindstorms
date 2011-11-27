@@ -20,13 +20,14 @@ public class SonarNavigator implements Navigator {
   private double distance = 0;
   private int    angle = 0;
 
-  // a local cache of the next action
-  private int nextInstruction = Navigator.NONE;
-
   // we use the model to read out raw sensor values for the sonar :
   // distance and angle
   public SonarNavigator setModel(Model model) {
     this.model = model;
+    return this;
+  }
+
+  public SonarNavigator setControler(GoalDecider controler) {
     return this;
   }
 
@@ -36,40 +37,44 @@ public class SonarNavigator implements Navigator {
   }
 
   public int nextAction() {
-    // always finish moving before doing anything else
-    if( this.model.isMoving() ) {
+    // always finish turning before doing anything else
+    if( this.model.isTurning() ) {
       return Navigator.NONE;
     }
     
-    // after turn, start moving forward    
-    if( this.nextInstruction == Navigator.MOVE ) {
-      this.nextInstruction = Navigator.NONE;
-      return Navigator.MOVE;
-    }
-    
-    // after moving forward restart
-    if( this.model.hasSweepChanged() ) {
-      int[] values = this.model.getSweepValues();
-      // normally we keep try to turn and move in the direction of the farest
-      // point that has been detected by the sonar
-      this.angle    = values[3];
-      this.distance = values[2];
-      // BUT if straight ahead is closer than 35cm ... TURN AWAY QUICKLY !
-      if( values[0] < 35 && Math.abs(values[1]) < 90 ) {
+    // moving can be interrupted by a turn
+    // a turn is made when we detect a better direction to a far away place
+    // a possible better direction comes from a new set of sonar values
+    if( this.model.hasUpdatedSonarValues() ) {
+      int[] values = this.model.getSonarValues();
+
+      // if we're close to a frontal object, avoid with big turn
+      if( values[0] < 35 && Math.abs(values[1]) < 50 ) {
         int diff = ( values[3] - values[1] + 360 ) % 360;
         this.angle = diff > 180 ? -30 : 30;
+        System.out.println( "AVOID: -> " + this.angle + "(min: " + values[0] + " / " + values[1] + ")" + "(max: " + values[2] + " / " + values[3] + ")" );
+        return Navigator.TURN;
       }
-      this.nextInstruction = Navigator.MOVE;
-      return Navigator.TURN;
+
+      // normally we keep try to turn and move in the direction of the farest
+      // point that has been detected by the sonar
+      // but only when the difference between our current angle and the new
+      // one is bigger than 25
+      // if( Math.abs(values[3]-this.angle) > 25 ) {
+      //   this.angle    = values[3] > 25 ? 25 : values[3];
+      //   this.distance = values[2];
+      //   System.out.println( "IMPROVE: " + this.angle );
+      //   return Navigator.TURN;
+      // }
     }
 
-    // if last sweep is still busy or this took very long and the original
-    // sweep restarted, wait.
-    return Navigator.NONE;
+    // if everything else fails ...
+    // we keep moving ahead
+    return Navigator.MOVE;
   }
 
   public double getDistance() {
-    return 5;
+    return 1000;
   }
 
   public double getAngle() {

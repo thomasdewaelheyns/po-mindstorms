@@ -56,6 +56,10 @@ public class NavigatorRobot implements Robot {
     return this.model.toString();
   }
   
+  public Model getModel() {
+    return this.model;
+  }
+  
   public String getNavigatorState() {
     return this.navigator.toString();
   }

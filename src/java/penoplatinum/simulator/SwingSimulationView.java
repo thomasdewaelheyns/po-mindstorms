@@ -10,6 +10,7 @@ package penoplatinum.simulator;
  */
 
 import javax.swing.JFrame;
+import java.util.List;
 
 public class SwingSimulationView extends JFrame implements SimulationView {
   
@@ -42,15 +43,16 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     this.setSize(map.getWidth() * 160, map.getHeight() * 160 + 22 );
   }
   
-  public void updateRobot( int x, int y, int direction ) {
-    // apply the scale of 2px/cm
-    this.board.updateRobot( x * 2, y * 2, direction );
-    // This Thread.sleep() causes "hickups" 90% of the calls run ok, but in 
-    // some cases it "hangs" for about a second ?!
-     try {
-       Thread.sleep(1);
-     } catch( InterruptedException e ) {
-       System.err.println( e );
+  public void updateRobot( int x, int y, int direction,
+                           List<Integer> values, List<Integer> angles )
+  {
+    this.board.updateRobot( x, y, direction, values, angles );
+    
+    // pass on control for a little while
+    try {
+      Thread.sleep(10);
+    } catch( InterruptedException e ) {
+      System.err.println( e );
     }
   }
   

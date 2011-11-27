@@ -9,18 +9,21 @@ package penoplatinum.simulator;
  */
 
 import javax.swing.JFrame;
+import java.util.List;
 
 public class SilentSimulationView implements SimulationView {
   
   public void showMap(Map map) {
-    // this method is intentionally blank
+    // this method is intentionally left blank
   }
   
-  public void updateRobot( int x, int y, int direction ) {
-    // this method is intentionally blank
+  public void updateRobot( int x, int y, int direction,
+                           List<Integer> values, List<Integer> angles )
+  {
+    // this method is intentionally left blank
   }
   
   public void log( String msg ) {
-    // this method is intentionally blank
+    // this method is intentionally left blank
   }
 }

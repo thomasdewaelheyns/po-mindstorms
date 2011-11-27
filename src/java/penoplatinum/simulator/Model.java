@@ -9,6 +9,10 @@ package penoplatinum.simulator;
  * 
  * Author: Team Platinum
  */
+
+import java.util.List;
+import java.util.ArrayList;
+
 public class Model {
   // shorthands mapping the sensors/numbers to their technical ports
   public static final int M1 = 0; // right motor
@@ -35,6 +39,10 @@ public class Model {
   // flag indicating the robot is stuck, ModelProcessors determine this
   private Boolean stuckLeft = false;
   private Boolean stuckRight = false;
+
+  // storage for Distance values/angles
+  private List<Integer> distances = new ArrayList<Integer>();
+  private List<Integer> angles    = new ArrayList<Integer>();
     
   private int[] sweepValues = new int[4];
   private boolean sweepChanged = true;
@@ -53,6 +61,22 @@ public class Model {
     this.prevSensors = this.sensors.clone();
     this.sensors = values;
     this.process();
+  }
+
+  // method to update a set of distances and angles
+  public void updateDistances( List<Integer> distances, 
+                               List<Integer> angles )
+  {
+    this.distances = distances;
+    this.angles    = angles;
+  }
+
+  public List<Integer> getDistances() {
+    return this.distances;
+  }
+  
+  public List<Integer> getAngles() {
+    return this.angles;
   }
 
   /**
@@ -145,11 +169,13 @@ public class Model {
 
   // indicates whether the sweep-values have changed since the last time
   // they are consulted
-  public boolean hasSweepChanged(){
+  public boolean hasUpdatedSonarValues(){
     return this.sweepChanged;
   }
     
-  public int[] getSweepValues(){
+  // TODO: refactor this to more function name about extrema
+  //       or separate methods to get extrema
+  public int[] getSonarValues(){
     this.sweepChanged = false;
     return this.sweepValues.clone();
   }

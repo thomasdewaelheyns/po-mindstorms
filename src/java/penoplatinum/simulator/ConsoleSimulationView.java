@@ -8,8 +8,13 @@ package penoplatinum.simulator;
  * 
  * Author: Team Platinum
  */
+
+import java.util.List;
+
 public class ConsoleSimulationView implements SimulationView {
-  public void updateRobot( int x, int y, int direction ) {
+  public void updateRobot( int x, int y, int direction,
+                           List<Integer> distances, List<Integer> angles )
+  {
     this.log( "Robot is at " + x + "," + y + " / " + direction );
   }
 

@@ -45,6 +45,10 @@ public class Board extends JPanel {
   private int y = 0;
   private int direction = 0;
   
+  // sonar information
+  private List<Integer> distances;
+  private List<Integer> angles;
+  
   // cached images
   private Image robot;
   private BufferedImage background;
@@ -94,18 +98,26 @@ public class Board extends JPanel {
     return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
   }
 
-  public void updateRobot( int x, int y, int direction ) {
-    this.x = x;
-    this.y = y;
+  public void updateRobot( int x, int y, int direction,
+                           List<Integer> values, List<Integer> angles )
+  {
+    // position and direction of robot
+    this.x = x * Board.SCALE;
+    this.y = y * Board.SCALE;
     this.direction = direction;
-    this.extendTrail(x, y);
+
+    // all sonar values
+    this.distances = values;
+    this.angles    = angles;
+
+    this.trackMovement();
     this.repaint();
   }
   
-  private void extendTrail(int x, int y) { 
+  private void trackMovement() {
     Graphics2D g2d = this.trail.createGraphics();
-    g2d.setColor(Color.blue);
-    g2d.drawLine( x, y, x, y );
+    g2d.setColor(Color.yellow);
+    g2d.drawLine( this.x, this.y, this.x, this.y );
   }
 
   public void paint(Graphics g) {
@@ -119,6 +131,8 @@ public class Board extends JPanel {
       g2d.drawImage( this.trail, null, 0, 0 );
     }
     this.renderRobot(g2d);
+    
+    this.renderSonar(g2d);
 
     Toolkit.getDefaultToolkit().sync();
     g.dispose();
@@ -297,6 +311,17 @@ public class Board extends JPanel {
     affineTransform.setToTranslation( this.x - 20, this.y - 20 );
     affineTransform.rotate( -1 * Math.toRadians(this.direction), 20, 20 ); 
     g2d.drawImage( this.robot, affineTransform, this );
+  }
+  
+  private void renderSonar(Graphics2D g2d) {
+    if( this.distances == null ) { return; }
+    for( int i=0; i<this.distances.size()-1; i++ ) {
+      int angle = (int)(this.angles.get(i)) + this.direction;
+      double rads = Math.toRadians(angle+90);
+      int dx = (int)(Math.cos(rads) * this.distances.get(i)) * Board.SCALE;
+      int dy = (int)(Math.sin(rads) * this.distances.get(i)) * Board.SCALE;
+      g2d.draw(new Line2D.Float(this.x, this.y, this.x + dx, this.y - dy));
+    }
   }
   
 }

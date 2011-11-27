@@ -12,7 +12,6 @@ package penoplatinum.simulator;
  */
 
 public interface Robot {
-
   /**
    * we allow the RobotAPI to be set externally. this allows for reusing the
    * same robot, both in the real world as in the Simulator
@@ -31,6 +30,8 @@ public interface Robot {
    */
   public String getModelState();
   public String getNavigatorState();
+
+  public Model getModel();
 
   /**
    * in this method, the robot performs one step of its event loop. in this

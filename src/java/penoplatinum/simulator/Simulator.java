@@ -18,6 +18,12 @@ import java.util.List;
 import java.util.ArrayList;
  
 class Simulator {
+  // the Simulator can run until different goals are reached
+  public static final int GOAL_ONE_LAP      = 1;
+  public static final int GOAL_SET_BY_ROBOT = 2;
+
+  private int goal = GOAL_SET_BY_ROBOT;
+  
   // distance to the lightsensor-position
   private static final double LIGHTSENSOR_DISTANCE = 10.0; // 10cm from center
   private static final double LENGTH_ROBOT         = 10.0;
@@ -171,7 +177,9 @@ class Simulator {
   // at the end of a step, refresh the visual representation of our world
   private void refreshView() {
     this.view.updateRobot( (int)this.positionX, (int)this.positionY,
-                           (int)this.direction );
+                           (int)this.direction,
+                           this.robot.getModel().getDistances(),
+                           this.robot.getModel().getAngles() );
   }
   
   // performs the next step in the movement currently executed by the robot
@@ -225,7 +233,7 @@ class Simulator {
     long current = System.currentTimeMillis();
     if( current - this.lastStatisticsReport > 2000 ) {
       this.lastStatisticsReport = current;
-      this.reportMovementStatistics();
+      //this.reportMovementStatistics();
     }
   }
   
@@ -329,14 +337,14 @@ class Simulator {
     return this.map.get((int)tile.getX(), (int)tile.getY());
   }
 
-  private Point getCurrentTileCoordinates() {
+  public Point getCurrentTileCoordinates() {
     // determine tile coordinates we're on
     int left = (int)Math.floor(this.positionX / Tile.SIZE) + 1;
     int top  = (int)Math.floor(this.positionY / Tile.SIZE) + 1;
     return new Point(left,top);
   }
 
-  private Point getCurrentOnTileCoordinates() {
+  public Point getCurrentOnTileCoordinates() {
     // determine tile coordinates on the tile we're on
     int left = (int)this.positionX % Tile.SIZE;
     int top  = (int)this.positionY % Tile.SIZE;
@@ -414,19 +422,24 @@ class Simulator {
     this.view.showMap(this.map);
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
-    while( ! this.robot.reachedGoal() && ! this.reachedGoal() ) {
+    while( ! this.reachedGoal() ) {
       this.robot.step();
       this.step();
     }
     this.view.log( "" );
-    this.view.log( "Visited All Tiles:" );
     this.reportMovementStatistics();
     return this;
   }
   
   // once our robot has visited all tiles on the map, we're done.
   private Boolean reachedGoal() {
-    return this.visitedTiles.size() >= this.map.getTileCount();
+    switch(this.goal) {
+      case Simulator.GOAL_ONE_LAP:
+        return this.visitedTiles.size() >= this.map.getTileCount();
+      case Simulator.GOAL_SET_BY_ROBOT:
+      default:
+        return this.robot.reachedGoal();
+    }
   }
   
   public double[] getSensorValues() {
