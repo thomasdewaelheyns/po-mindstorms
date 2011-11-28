@@ -37,13 +37,13 @@ public class RobotRunner {
             public void run() {
                 Thread bluetoothThread = getBluetoothConnectThread();
                 bluetoothThread.start();
-                
-                while (!connection.isConnected()) {
-                    Utils.Sleep(100);
-                }
+
+//                while (!connection.isConnected()) {
+//                    Utils.Sleep(100);
+//                }
                 Utils.Log("Hi!");
                 runnable.run();
-                
+
             }
         });
 
@@ -52,7 +52,7 @@ public class RobotRunner {
 
 
 
-
+        //Utils.Log("WaitForDone!");        Button.waitForPress();
         while (!Button.ESCAPE.isPressed() && t.isAlive()) {
             Utils.Sleep(500);
         }

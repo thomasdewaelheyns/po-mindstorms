@@ -20,6 +20,15 @@ public class Motor implements Tickable, Sensor {
 
   private int direction    =   Motor.FORWARD;
 
+  public int getDirection() {
+    return direction;
+  }
+  
+  public boolean isMoving()
+  {
+    return targetTacho != null;
+  }
+
   public Motor setLabel(String label) {
     this.label = label;
     return this;

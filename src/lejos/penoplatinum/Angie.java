@@ -16,9 +16,10 @@ import penoplatinum.simulator.RobotAPI;
 
 /**
  * Responsible for providing access to the hardware of the robot
+ * TODO: WARNING, WHEN CHANGIN PORTS THIS ENTIRE CLASS MUST BE CHECKED
  * @author MHGameWork
  */
-public class Angie implements RobotAPI{
+public class Angie implements RobotAPI {
 
     private Motor motorLeft;
     private Motor motorRight;
@@ -28,36 +29,36 @@ public class Angie implements RobotAPI{
     private RotatingSonarSensor sonar;
     private AngieCalibrationData calibrationData;
     private RotationMovement movement;
-    
     private static final int sensorNumberTouchLeft = Model.S2;
     private static final int sensorNumberTouchRight = Model.S1;
     private static final int sensorNumberLight = Model.S4;
     private static final int sensorNumberSonar = Model.S3;
-    private static final int sensorNumberMotorLeft = Model.M2;
-    private static final int sensorNumberMotorRight = Model.M3;
-    private static final int sensorNumberMotorSonar = Model.M1;
-    
-    
-    public Angie()
-    {
-        
+    private static final int sensorNumberMotorLeft = Model.M1;
+    private static final int sensorNumberMotorRight = Model.M2;
+    private static final int sensorNumberMotorSonar = Model.M3;
+
+    public Angie() {
+
         motorLeft = Motor.B;
         motorRight = Motor.C;
-        
+
         touchLeft = new TouchSensor(SensorPort.S2);
-        touchLeft = new TouchSensor(SensorPort.S1);
+        touchRight = new TouchSensor(SensorPort.S1);
         light = new WrappedLightSensor(null, null);
+        light.calibrate();
         sonar = new RotatingSonarSensor(Motor.A, new UltrasonicSensor(SensorPort.S3));
-        
+
+        calibrationData = new AngieCalibrationData();
+        movement = new RotationMovement();
+
+        //TODO: WARNING: Depedency inconsistent between Angie and RotationMovement
+
     }
 
-    
-    public void step()
-    {
+    public void step() {
         sonar.updateSonarMovement();
     }
-    
-    
+
     public RotationMovement getMovement() {
         return movement;
     }
@@ -104,17 +105,61 @@ public class Angie implements RobotAPI{
 
     public int[] getSensorValues() {
         //TODO: GC
-        int[] values = new int[4+3];
+        int[] values = new int[Model.SENSORVALUES_NUM];
         values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
         values[sensorNumberMotorRight] = motorRight.getTachoCount();
         values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
+
+
+        values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
+        values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
+        values[sensorNumberLight] = light.getLightValue();
+        values[sensorNumberSonar] = (int) sonar.getDistance();
         
-       
-        values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255:0;
-        values[sensorNumberTouchRight] = touchRight.isPressed() ? 255:0;
-        values[sensorNumberLight] =  light.getLightValue();
-        values[sensorNumberSonar] = (int)sonar.getDistance();
-        
+        //TODO: change on port change
+        values[Model.MS3] = getMotorState(Motor.A);
+        values[Model.MS1] = getMotorState(Motor.B);
+        values[Model.MS2] = getMotorState(Motor.C);
+
+
+
         return values;
+    }
+
+    private int getMotorState(Motor m) {
+        if (!m.isMoving() || m.isStopped() || m.isFloating()) {
+            return Model.MOTORSTATE_STOPPED;
+        }
+        if (m.isForward()) {
+            return Model.MOTORSTATE_FORWARD;
+        }
+        if (m.isBackward()) {
+            return Model.MOTORSTATE_BACKWARD;
+        }
+
+        m.isStopped();
+        
+        
+        throw new RuntimeException("I M P O S S I B L E !");
+    }
+
+    public void turn(int angle) {
+        getMovement().turnAngle(angle);
+    }
+
+    public void setSpeed(int motor, int speed) {
+
+        switch (motor) {
+            case Model.M3:
+                Motor.A.setSpeed(speed);
+                break;
+            case Model.M1:
+                Motor.B.setSpeed(speed);
+                break;
+            case Model.M2:
+                Motor.C.setSpeed(speed);
+                break;
+        }
+
     }
 }

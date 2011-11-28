@@ -1,6 +1,7 @@
 package penoplatinum.sensor;
 
 import java.io.PrintStream;
+import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
@@ -46,7 +47,8 @@ public class WrappedLightSensor implements ILightSensor {
     public void calibrate() {
         // calibreer de lage waarde.
         Utils.Log("Zet de sensor op zwart en druk enter.");
-        commandTransporter.ReceivePacket();
+//        commandTransporter.ReceivePacket();
+        Button.waitForPress();
         LCD.drawInt(light.readValue(), 1, 0);
         light.calibrateLow();
         Sound.beep();
@@ -54,7 +56,8 @@ public class WrappedLightSensor implements ILightSensor {
 
         // calibreer de hoge waarde
         Utils.Log("Zet de sensor op wit en druk enter.");
-        commandTransporter.ReceivePacket();
+//        commandTransporter.ReceivePacket();
+        Button.waitForPress();
         LCD.drawInt(light.readValue(), 3, 0);
         light.calibrateHigh();
         WHITEVAL = light.readValue();
@@ -63,13 +66,15 @@ public class WrappedLightSensor implements ILightSensor {
 
 
         Utils.Log("Zet de sensor op zwart en druk enter.");
-        commandTransporter.ReceivePacket();
+//        commandTransporter.ReceivePacket();
+        Button.waitForPress();
         BLACKVAL = light.readValue();
         Sound.beep();
         Utils.Sleep(1000);
 
         Utils.Log("Zet de sensor op bruin en druk enter.");
-        commandTransporter.ReceivePacket();
+//        commandTransporter.ReceivePacket();
+        Button.waitForPress();
         LCD.drawInt(light.readValue(), 3, 0);
         BROWNVAL = light.readValue();
         Sound.beep();
@@ -91,10 +96,8 @@ public class WrappedLightSensor implements ILightSensor {
 
     public int getLightValue() {
 
-
         int ret = light.readValue();
         float rawValue = light.getNormalizedLightValue(); // I know, this is confusing
-
         //Utils.Log(ret + "");
         if (printStream != null) {
             printStream.print((int) rawValue);

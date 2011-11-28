@@ -52,7 +52,7 @@ class Simulator {
   private double direction;       //   and a direction it's facing
   
   // the motorSpeeds and the sensorValues
-  private double[] sensorValues = new double[7];
+  private double[] sensorValues = new double[Model.SENSORVALUES_NUM];
 
   private Motor[] motors = new Motor[3];
   private int prevLeft  = 0;
@@ -142,6 +142,7 @@ class Simulator {
   
   // called by the implementation of the RobotAPI
   public Simulator moveRobot( double movement ) {
+    movement*=100;
     // calculate the tacho count we need to do to reach this movement
     int tacho = (int)( movement / Simulator.WHEEL_SIZE * 360 );
     this.motors[Model.M1].rotateBy(tacho);
@@ -282,7 +283,25 @@ class Simulator {
     this.sensorValues[Model.M1] = this.motors[Model.M1].getValue();
     this.sensorValues[Model.M2] = this.motors[Model.M2].getValue();
     this.sensorValues[Model.M3] = this.motors[Model.M3].getValue();
+    this.sensorValues[Model.MS1] = getMotorState(motors[0]);
+    this.sensorValues[Model.MS2] = getMotorState(motors[1]);
+    this.sensorValues[Model.MS3] = getMotorState(motors[2]);
   }
+  
+   private int getMotorState(Motor m) {
+    if (!m.isMoving()) {
+      return Model.MOTORSTATE_STOPPED;
+    }
+    if (m.getDirection() == Motor.FORWARD) {
+      return Model.MOTORSTATE_FORWARD;
+    }
+    if (m.getDirection() == Motor.BACKWARD) {
+      return Model.MOTORSTATE_BACKWARD;
+    }
+
+    throw new RuntimeException("I M P O S S I B L E !");
+  }
+
   
   private void updateLightSensor() {
     // determine position of light-sensor
@@ -309,6 +328,8 @@ class Simulator {
       color == Tile.WHITE ? 100 : ( color == Tile.BLACK ? 0 : 70 );
   }
 
+  
+  
   private void calculateBumperSensor(int angle, double lengthRobot, int sensorPort) {
     angle = ( this.getAngle() + angle ) % 360; 
     int distance = this.getFreeDistance(angle);

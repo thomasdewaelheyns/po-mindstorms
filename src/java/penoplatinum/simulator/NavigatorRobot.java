@@ -1,5 +1,7 @@
 package penoplatinum.simulator;
 
+import penoplatinum.Utils;
+
 /**
  * NavigatorRobot
  * 
@@ -26,8 +28,9 @@ public class NavigatorRobot implements Robot {
   private void setupModel() {
     // setup a model with the required ModelProcessors
     this.model     = new Model();
-    ModelProcessor sonar = new SonarModelProcessor();
-    this.model.setProcessor( new FrontPushModelProcessor(sonar) );
+    //ModelProcessor sonar = new SonarModelProcessor();
+    //this.model.setProcessor( new FrontPushModelProcessor(sonar) );
+    this.model.setProcessor( new FrontPushModelProcessor() );
   }
   
   public Robot useNavigator(Navigator navigator) {
@@ -69,9 +72,11 @@ public class NavigatorRobot implements Robot {
    * updates its model and asks the navigator what to do.
    */
   public void step() {
+    if (this.navigator == null)
+      Utils.Log("WARNING: no navigator set");
     // get sensor data and update the model (motors are sensors too)
     this.model.updateSensorValues( this.api.getSensorValues() );
-
+    
     // ask the navigator what to do next
     switch( this.navigator.nextAction() ) {
       case Navigator.MOVE:

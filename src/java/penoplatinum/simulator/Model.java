@@ -12,6 +12,7 @@ package penoplatinum.simulator;
 
 import java.util.List;
 import java.util.ArrayList;
+import penoplatinum.Utils;
 
 public class Model {
   // shorthands mapping the sensors/numbers to their technical ports
@@ -22,10 +23,22 @@ public class Model {
   public static final int S2 = 4;
   public static final int S3 = 5;
   public static final int S4 = 6;
+  public static final int MS1 = 7; // Motor state 1
+  public static final int MS2 = 8; // Motor state 1
+  public static final int MS3 = 9; // Motor state 1
+  
+  public static final int SENSORVALUES_NUM = 10; // number of sensorvalues 
+  
+  public static final int MOTORSTATE_FORWARD = 1;
+  public static final int MOTORSTATE_BACKWARD = 2;
+  public static final int MOTORSTATE_STOPPED = 3;
 
-  // the raw data of the 7 sensor: three motors and sensors 1, 2, 3, 4
-  private int[] sensors = new int[7];
-  private int[] prevSensors = new int[7];
+  /**
+   * the raw data of the sensors: three motors, sensors 1, 2, 3, 4 
+   * and the states of the three motors defined by the MOTORSTATE enumeration
+   */ 
+  private int[] sensors = new int[SENSORVALUES_NUM];
+  private int[] prevSensors = new int[SENSORVALUES_NUM];
 
   // processors are chained using a Decorator pattern
   private ModelProcessor processor;
@@ -58,7 +71,10 @@ public class Model {
    * processing of the new data.
    */
   public void updateSensorValues(int[] values) {
-    this.prevSensors = this.sensors.clone();
+    if (values.length != SENSORVALUES_NUM)
+      throw new RuntimeException("Invalid number of sensorvalues given!");
+    
+    this.prevSensors = this.sensors.clone(); //TODO: WARNING GC
     this.sensors = values;
     this.process();
   }
@@ -149,14 +165,16 @@ public class Model {
   }
 
   public Boolean isMoving() {
-    return this.sensors[Model.M1] != this.prevSensors[Model.M1] &&
-           this.sensors[Model.M2] != this.prevSensors[Model.M2];
+      return sensors[Model.MS1]!= MOTORSTATE_STOPPED || sensors[Model.MS2]!= MOTORSTATE_STOPPED;
+//    return this.sensors[Model.M1] != this.prevSensors[Model.M1] &&
+//           this.sensors[Model.M2] != this.prevSensors[Model.M2];
   }
 
   public Boolean isTurning() {
-    int changeLeft  = this.sensors[Model.M1] - this.prevSensors[Model.M1];
-    int changeRight = this.sensors[Model.M2] - this.prevSensors[Model.M2];
-    return changeLeft != 0 && changeLeft == changeRight * -1;
+      return isMoving() && (sensors[Model.MS1]!= sensors[Model.MS2]);
+//    int changeLeft  = this.sensors[Model.M1] - this.prevSensors[Model.M1];
+//    int changeRight = this.sensors[Model.M2] - this.prevSensors[Model.M2];
+//    return changeLeft != 0 && changeLeft == changeRight * -1;
   }
 
   public void setNewSweep(int min, int minA, int max, int maxA){
@@ -177,6 +195,6 @@ public class Model {
   //       or separate methods to get extrema
   public int[] getSonarValues(){
     this.sweepChanged = false;
-    return this.sweepValues.clone();
+    return this.sweepValues.clone(); //TODO: WARNING GC
   }
 }

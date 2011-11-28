@@ -25,13 +25,14 @@ public class AngieEventLoop {
     }
 
     public void useNavigator(Navigator navigator) {
+        this.navigatorRobot.useNavigator(navigator);
         this.navigator = navigator;
     }
 
     public void runEventLoop() {
         while (true) {
             step();
-            Utils.Log("I'm stuck! AAAAAAH");
+            Utils.Sleep(20);
         }
         
     }
@@ -39,7 +40,5 @@ public class AngieEventLoop {
     public void step() {
         angie.getSonar().updateSonarMovement();
         navigatorRobot.step();
-        
-        
     }
 }
