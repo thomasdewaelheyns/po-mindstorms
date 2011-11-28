@@ -24,6 +24,10 @@ public class SonarModelProcessor extends ModelProcessor {
   private List<Integer> angles    = new ArrayList<Integer>();
   private int blurFactor = 1;
   
+  public SonarModelProcessor( ModelProcessor nextProcessor ) {
+    super( nextProcessor );
+  }
+  
   public void work() {
     // if we changed direction
     if( this.changedDirection() ) {

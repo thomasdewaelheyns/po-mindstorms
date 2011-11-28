@@ -26,6 +26,7 @@ public class BarcodeModelProcessor1 extends ModelProcessor {
   
   private ColorInterpreter colorInterpreter;
     
+  
   public BarcodeModelProcessor1() {
     super();
     this.colorInterpreter = new ColorInterpreter();

@@ -1,5 +1,6 @@
 package penoplatinum.navigator;
 
+import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 
@@ -100,5 +101,10 @@ public class AllInOneNavigator implements Navigator {
     public AllInOneNavigator setModel(Model model) {
         this.model = model;
         return this;
+    }
+
+    @Override
+    public Navigator setControler(GoalDecider controler) {
+        return this; //TODO: check this
     }
 }
