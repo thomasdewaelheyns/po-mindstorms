@@ -320,7 +320,8 @@ public class Tile {
   
   // get the logical color at position x,y
   public int getColorAt(int x, int y) {
-    int color = this.getBarcodeColor (x,y);
+    int color = Tile.NO_COLOR;
+    //int color = this.getBarcodeColor (x,y);
     if( color == Tile.NO_COLOR ) { color = this.getLineColor  (x,y); }
     if( color == Tile.NO_COLOR ) { color = this.getCornerColor(x,y); }
     return color;
@@ -344,10 +345,10 @@ public class Tile {
   // check if the robot is on a barcode
   private boolean robotIsOnBarcode(int x, int y) {
     switch(this.getBarcodeLocation()){
-      case Baring.N: return y < Tile.BARCODE_WIDTH - 1;
+      case Baring.N: return y < Tile.BARCODE_WIDTH;
       case Baring.E: return x > Tile.SIZE - Tile.BARCODE_WIDTH;
       case Baring.S: return y > Tile.SIZE - Tile.BARCODE_WIDTH;
-      case Baring.W: return x < Tile.BARCODE_WIDTH - 1;
+      case Baring.W: return x < Tile.BARCODE_WIDTH;
     }
     return false;
   }
@@ -417,11 +418,11 @@ public class Tile {
       
       if (y < Tile.LINE_OFFSET || onLine(y, Tile.LINE_OFFSET))              {position = Baring.NW;}
       else if (y >= Tile.SIZE - Tile.LINE_OFFSET 
-              || onLine(y, Tile.SIZE - Tile.LINE_OFFSET-Tile.LINE_WIDTH))   {position = Baring.NE;}
+              || onLine(y, Tile.SIZE - Tile.LINE_OFFSET-Tile.LINE_WIDTH))   {position = Baring.SW;}
       
-    } else if (onLine(x, Tile.SIZE - Tile.LINE_OFFSET - Tile.LINE_WIDTH)) {
+    } else if (onLine(x, Tile.SIZE - Tile.LINE_OFFSET)) {
       
-      if (y < Tile.LINE_OFFSET || onLine(y, Tile.LINE_OFFSET))              {position = Baring.SW;}
+      if (y < Tile.LINE_OFFSET || onLine(y, Tile.LINE_OFFSET))              {position = Baring.NE;}
       else if (y >= Tile.SIZE - Tile.LINE_OFFSET 
               || onLine(y, Tile.SIZE - Tile.LINE_OFFSET-Tile.LINE_WIDTH))   {position = Baring.SE;}
       

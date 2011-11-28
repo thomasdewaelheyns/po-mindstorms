@@ -79,7 +79,7 @@ class SimulationRunner {
 
   public static void main(String[] args) {
     String defaultNavigator = "penoplatinum.simulator.SonarNavigator";
-    String defaultPosition  = "150,150,0";
+    String defaultPosition  = "150,150,270";
     
     SimulationRunner runner = new SimulationRunner();
     Boolean setupComplete = false;

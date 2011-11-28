@@ -11,9 +11,8 @@ public class LineFollowerNavigator implements Navigator {
 
     private Model model;
     private int angle = -120;
-    private int[] rotates = new int[]{-20, 120, -720};
+    private int[] rotates = new int[]{-10, 120, -720};
     private int timesTurned = 0;
-
     public LineFollowerNavigator setControler(GoalDecider controler) {
       return this;
     }
