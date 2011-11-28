@@ -1,0 +1,10 @@
+DROP DATABASE IF EXISTS robots;
+CREATE DATABASE robots;
+USE robots;
+
+CREATE TABLE logs (
+  id      INTEGER       PRIMARY KEY AUTO_INCREMENT,
+  ts      TIMESTAMP     DEFAULT NOW(),
+  robot   VARCHAR(50)   NOT NULL,
+  message VARCHAR(1000) NOT NULL
+);

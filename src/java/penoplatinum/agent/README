@@ -1,0 +1,26 @@
+To promote robustness, we don't connect our robot directly to any other
+source. We want all components to be completely atomic and only serve one
+goal. This also allows for easy reorganization to solve other problems. 
+
+This strategy is reflected in the way we deal with the interaction with the robot. 
+
+The different components are:
+
+- (Robot) Agent (see src/java/penoplatinum/agent)
+	a small Java program that terminates the bluetooth connection and delivers
+	all incoming packets to log4j.
+
+- log4j (see also: http://logging.apache.org/log4j/)
+	is a general purpose logging framework, we use it to insert all incoming
+	packets into a database and/or file. an example configuration is included
+
+- central database (see also: http://mysql.com)
+	we use a plain MySQL database server to store all packets.
+
+- JBoss application server (see also: http://www.jboss.org/)
+	to provide access to the recorded packets, we set up a standard application
+	server that connects to the database and answers REST style queries.
+
+- Console (see src/java/penoplatinum/ui)
+	different implementations of our console can connect to the application
+  server and receive information.
