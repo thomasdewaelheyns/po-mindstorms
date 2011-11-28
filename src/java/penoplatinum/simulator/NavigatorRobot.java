@@ -8,7 +8,7 @@ package penoplatinum.simulator;
  * Author: Team Platinum
  */
 
-class NavigatorRobot implements Robot {
+public class NavigatorRobot implements Robot {
 
   private RobotAPI  api;
   private Navigator navigator;

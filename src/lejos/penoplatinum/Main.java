@@ -1,6 +1,7 @@
 package penoplatinum;
 
 import lejos.nxt.Button;
+import penoplatinum.simulator.SonarNavigator;
 
 public class Main {
 
@@ -10,7 +11,12 @@ public class Main {
             public void run() {
                 try {
                     Utils.Log("Started!");
-                    Button.waitForPress();
+                    
+                    AngieEventLoop loop = new AngieEventLoop();
+                    loop.useNavigator(new SonarNavigator());
+
+                    loop.runEventLoop();
+                    
                     // SensorDemo.main(null);
                     //BarcodeDemo.main(null);
 

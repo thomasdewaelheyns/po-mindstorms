@@ -41,12 +41,14 @@ public class RobotRunner {
                 while (!connection.isConnected()) {
                     Utils.Sleep(100);
                 }
+                Utils.Log("Hi!");
                 runnable.run();
+                
             }
         });
 
         t.setDaemon(true);
-        t.start();
+        t.run();
 
 
 
