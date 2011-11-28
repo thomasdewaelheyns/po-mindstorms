@@ -18,6 +18,7 @@ public class AllInOneNavigator implements Navigator {
     
     //This is a bitmask
     public static final int DRIVE_TO_MIDDLE= 0;
+    public static final int DRIVE_DIRECTION_BACKWARD = 5;
     public static final int TURN = 1;
     public static final int LEFT = 2;
     public static final int ONE_EIGHTY = 3;
@@ -53,9 +54,18 @@ public class AllInOneNavigator implements Navigator {
         next = AllInOneNavigator.NONE;
         current = AllInOneNavigator.NONE;
         switch (barcode) {
+            case 0:
+                current |= 1<<AllInOneNavigator.DRIVE_DIRECTION_BACKWARD;
             case 3:
                 next |= 1<<AllInOneNavigator.LEFT;
             case 6:
+                next |= 1<<AllInOneNavigator.TURN;
+                current |= 1<<AllInOneNavigator.DRIVE_TO_MIDDLE;
+                System.out.println("Turn! "+next+", "+current);
+                return Navigator.MOVE;
+                
+            case 15:
+                current |= 1<<AllInOneNavigator.DRIVE_DIRECTION_BACKWARD;
                 next |= 1<<AllInOneNavigator.TURN;
                 current |= 1<<AllInOneNavigator.DRIVE_TO_MIDDLE;
                 System.out.println("Turn! "+next+", "+current);
@@ -67,7 +77,6 @@ public class AllInOneNavigator implements Navigator {
                 next |= 1<<AllInOneNavigator.TURN;
                 next |= 1<<AllInOneNavigator.ONE_EIGHTY;
                 return Navigator.MOVE;
-                
             case 1: //forward
             case 2: //forward
             case 4: //forward
@@ -78,15 +87,16 @@ public class AllInOneNavigator implements Navigator {
             case 10:
             case 11:
             case 13:
-            case 15:
             default:
                 return Navigator.MOVE;
         }
     }
     @Override
     public double getDistance() {
-        double distance = (((current>>AllInOneNavigator.DRIVE_TO_MIDDLE)&1)==1? 0.300 : 0.325);
-        return distance;
+        int direction = 1-((current>>AllInOneNavigator.DRIVE_DIRECTION_BACKWARD<<1)&2);
+        double distance = (((current>>AllInOneNavigator.DRIVE_TO_MIDDLE)&1)==1? 0.200 : 0.325);
+        //System.out.println("distance calculated: "+distance*direction);
+        return distance*direction;
     }
 
     @Override

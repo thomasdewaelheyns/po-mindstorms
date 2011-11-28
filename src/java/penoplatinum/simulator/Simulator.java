@@ -27,7 +27,12 @@ class Simulator {
   private static final double WHEEL_SIZE = 17.5; // circumf. in cm
   private static final double WHEEL_BASE = 16.0; // wheeldist. in cm
   // determines how much time is passed with every step of the simulator
+<<<<<<< HEAD
   private double timeSlice = 0.02;
+=======
+  private double timeSlice = 0.004;
+  
+>>>>>>> 406dfe5... Nieuwe BarcodeNavigator.java is nog niet af, GoalDecider? moet nog gemaakt worden, setter gemaakt worden. Zo verder moeten werken.
   // used for statistics
   private long startTime;                 // start time in millis
   private List<Point> visitedTiles = new ArrayList<Point>();
@@ -129,10 +134,18 @@ class Simulator {
   }
 
   // called by the implementation of the RobotAPI
+<<<<<<< HEAD
   public Simulator moveRobot(double movement) {
     movement *= 100;
     // calculate the tacho count we need to do to reach this movement
     int tacho = (int) (movement / Simulator.WHEEL_SIZE * 360);
+=======
+  public Simulator moveRobot( double movement ) {
+    movement*=100;
+      
+      // calculate the tacho count we need to do to reach this movement
+    int tacho = (int)( movement / Simulator.WHEEL_SIZE * 360 );
+>>>>>>> 406dfe5... Nieuwe BarcodeNavigator.java is nog niet af, GoalDecider? moet nog gemaakt worden, setter gemaakt worden. Zo verder moeten werken.
     this.motors[Model.M1].rotateBy(tacho);
     this.motors[Model.M2].rotateBy(tacho);
     return this;
@@ -204,7 +217,12 @@ class Simulator {
       this.direction += dr;
     } else {
       // hell froze over
+<<<<<<< HEAD
       System.err.println("ERROR: inconsistent motor behaviour.");
+=======
+      System.err.println( "ERROR: inconsistent motor behaviour." );
+      System.err.println( changeLeft+", "+changeRight );
+>>>>>>> 406dfe5... Nieuwe BarcodeNavigator.java is nog niet af, GoalDecider? moet nog gemaakt worden, setter gemaakt worden. Zo verder moeten werken.
     }
 
     // keep track of the (new) current motor angles
@@ -449,9 +467,14 @@ class Simulator {
     this.view.showMap(this.map);
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
+<<<<<<< HEAD
     while (!this.reachedGoal()) {
       this.robot.step();
+=======
+    while( ! this.reachedGoal() ) {
+>>>>>>> 406dfe5... Nieuwe BarcodeNavigator.java is nog niet af, GoalDecider? moet nog gemaakt worden, setter gemaakt worden. Zo verder moeten werken.
       this.step();
+      this.robot.step();
     }
     this.view.log("");
     this.reportMovementStatistics();

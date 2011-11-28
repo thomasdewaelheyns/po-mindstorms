@@ -12,6 +12,7 @@ package penoplatinum.simulator;
 
 import java.util.List;
 import java.util.ArrayList;
+import penoplatinum.navigator.Buffer;
 import penoplatinum.Utils;
 
 public class Model {
@@ -60,7 +61,11 @@ public class Model {
   private int[] sweepValues = new int[4];
   private boolean sweepChanged = true;
     
-    private int barcode = -1;
+  private int barcode = -1;
+  private int bufferSize = 10000;
+  
+  
+  private Buffer lightValueBuffer = new Buffer(bufferSize);
 
   // sets the (top-level) processor
   public void setProcessor(ModelProcessor processor) {
@@ -207,4 +212,8 @@ public class Model {
     public void setBarcode(int barcode){
         this.barcode = barcode;
     }
+     
+    public Buffer getLightValueBuffer(){
+        return this.lightValueBuffer;
+    }   
 }

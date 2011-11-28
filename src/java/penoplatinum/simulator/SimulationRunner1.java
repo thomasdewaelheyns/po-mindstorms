@@ -60,8 +60,8 @@ class SimulationRunner1 {
         direction = Integer.parseInt(parts[2]);   
     // put the robot
     if( this.navigator != null ) {
-      Robot robot = new NavigatorRobot(this.navigator);
-      this.simulator.putRobotAt(robot, x, y, direction);
+      Robot robot1 = new NavigatorRobot(this.navigator);
+      this.simulator.putRobotAt(robot1, x, y, direction);
     } else {
       System.err.println( "Please provide a navigator, then add a robot." );
     }
@@ -79,7 +79,7 @@ class SimulationRunner1 {
 
   public static void main(String[] args) {
     String defaultNavigator = "penoplatinum.navigator.AllInOneNavigator";
-    String defaultPosition  = "150,125,90";
+    String defaultPosition  = "175,125,90";
     
     SimulationRunner1 runner = new SimulationRunner1();
     Boolean setupComplete = false;

@@ -28,7 +28,8 @@ public class ColorInterpreter {
         if(this.model == null){
             return 70;
         }
-        return this.model.getSensorValue(this.model.S4);
+        Buffer temp = this.model.getLightValueBuffer();
+        return temp.get(temp.getSize()-1);
     }
 
     public byte readValue() {

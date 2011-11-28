@@ -10,7 +10,7 @@ public class BarcodeDataNav {
         
     }
     
-    public int translate(BarcodeBufferSubset list) {
+    public int translate(BufferSubset list) {
         if(list.size()<7){return -1;}
         int val = 0;
         for (int i = 0; i < 7; i++) {
