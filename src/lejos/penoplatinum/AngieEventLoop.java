@@ -32,7 +32,7 @@ public class AngieEventLoop {
     public void runEventLoop() {
         while (true) {
             step();
-            Utils.Sleep(20);
+            //Utils.Sleep(10);
         }
         
     }

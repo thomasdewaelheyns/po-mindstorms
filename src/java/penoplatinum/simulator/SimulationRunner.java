@@ -78,7 +78,7 @@ class SimulationRunner {
   }
 
   public static void main(String[] args) {
-    String defaultNavigator = "penoplatinum.simulator.SonarNavigator";
+    String defaultNavigator = "penoplatinum.navigators.SonarNavigator";
     String defaultPosition  = "150,150,270";
     
     SimulationRunner runner = new SimulationRunner();
@@ -86,6 +86,7 @@ class SimulationRunner {
     
     // process command line arguments
     Options options = new Options();
+    //options.addOption("m", "mapFactory", false, "testing");
     options.addOption( "h", "help",  false, "show this helpful information." );
     options.addOption( "q", "quiet", false, "don't show a user interface." );
 

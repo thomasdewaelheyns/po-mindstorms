@@ -116,7 +116,7 @@ public class Angie implements RobotAPI {
         int[] values = new int[Model.SENSORVALUES_NUM];
         values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
         values[sensorNumberMotorRight] = motorRight.getTachoCount();
-        values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
+        values[sensorNumberMotorSonar] = -sonar.getMotor().getTachoCount();
 
 
         values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
@@ -135,20 +135,21 @@ public class Angie implements RobotAPI {
     }
 
     private int getMotorState(Motor m) {
-        if (!m.isMoving() || m.isStopped() || m.isFloating()) {
-            return Model.MOTORSTATE_STOPPED;
+        for(int i=0;i<3; i++){
+            if (!m.isMoving() || m.isStopped() || m.isFloating()) {
+                return Model.MOTORSTATE_STOPPED;
+            }
+            if (m.isForward()) {
+                return Model.MOTORSTATE_FORWARD;
+            }
+            if (m.isBackward()) {
+                return Model.MOTORSTATE_BACKWARD;
+            }
         }
-        if (m.isForward()) {
-            return Model.MOTORSTATE_FORWARD;
-        }
-        if (m.isBackward()) {
-            return Model.MOTORSTATE_BACKWARD;
-        }
-
-        m.isStopped();
-        
-        
-        throw new RuntimeException("I M P O S S I B L E !");
+        Utils.Error("Syncronized??? "+(m.isMoving()?1:0)+","+(m.isForward()?1:0)+","+(m.isBackward()?1:0)+","+(m.isStopped()?1:0)+","+(m.isFloating()?1:0));
+        //1, 0, 0, 1, 0
+        Utils.Error("I M P O S S I B L E !");
+        return 0;
     }
 
     public void turn(int angle) {

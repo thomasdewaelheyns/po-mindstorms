@@ -49,6 +49,8 @@ public class NavigatorRobot implements Robot {
   private void initAPI() {
     if( this.api == null ) { return; }
     this.api.setSpeed(Model.M3, 500); // set sonar speed to double of default
+    this.api.setSpeed(Model.M2, 250); // set sonar speed to double of default
+    this.api.setSpeed(Model.M1, 250); // set sonar speed to double of default
   }
   
   public void processCommand( String cmd ) {

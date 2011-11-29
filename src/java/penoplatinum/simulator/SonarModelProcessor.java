@@ -17,6 +17,7 @@ import penoplatinum.Utils;
 public class SonarModelProcessor extends ModelProcessor {
   private Boolean direction;
   private int prevAngle     = 0;
+  private int middleTacho = 0;
   
   private List<Integer> distances = new ArrayList<Integer>();
   private List<Integer> blurred   = new ArrayList<Integer>();
@@ -26,6 +27,7 @@ public class SonarModelProcessor extends ModelProcessor {
   public void work() {
     // if we changed direction
     if( this.changedDirection() ) {
+      Utils.Log("Changed: "+this.distances.size());
       this.direction = this.getDirection();
       this.applyBlur();
       this.reportExtrema();
@@ -36,6 +38,7 @@ public class SonarModelProcessor extends ModelProcessor {
       this.distances.clear();
       this.angles.clear();
     }
+    
     // now record the new ping
     this.record();
     
@@ -43,13 +46,16 @@ public class SonarModelProcessor extends ModelProcessor {
   }
   
   private Boolean changedDirection() {
-    if( this.direction == null ) { this.direction = this.getDirection(); }
+    if( this.direction == null ) { this.direction = this.getDirection();}
+    if(this.getAngle() == this.prevAngle){
+      return false;
+    }
     return this.direction != this.getDirection();
   }
 
   // true  = -135 -> 135
   // false = -135 <- 135
-  private Boolean getDirection() {
+  private boolean getDirection() {
     return this.getAngle() > this.prevAngle;
   }
 
@@ -58,7 +64,6 @@ public class SonarModelProcessor extends ModelProcessor {
     int angle    = this.getAngle();
     this.distances.add(distance);
     this.angles.add(angle);
-    
   }
   
   private int getDistance() {
@@ -66,7 +71,7 @@ public class SonarModelProcessor extends ModelProcessor {
   }
 
   private int getAngle() {
-    return this.model.getSensorValue(Model.M3);
+    return this.model.getSensorValue(Model.M3)-middleTacho;
   }
   
   private void applyBlur() {
@@ -89,27 +94,15 @@ public class SonarModelProcessor extends ModelProcessor {
     
     for( int i=0; i<this.blurred.size(); i++ ) {
       int value = this.blurred.get(i);
-//      Utils.Log("data: " + value);
-//      Utils.Log(min + ", " + max);
-//      Utils.Sleep(2000);
       if( value >= max ) { max = value; maxIdx = i; }
       if( value <= min ) { min = value; minIdx = i; }
     }
-    
-    
-    // System.out.println("sweep :"  );
-    // System.out.println( this.blurred );
-    // System.out.println( this.angles );
-    // System.out.println( " == " + min + "(" + this.angles.get(minIdx) + ") / "+
-    //                              max + "(" + this.angles.get(maxIdx) + ")" );
-//    Utils.Log(this.blurred.size()+"");
-//    Utils.Log(this.angles.size()+"");
-//    Utils.Log(minIdx+"");
-//    Utils.Log(maxIdx+"");
-//    Utils.Sleep(10000);
     this.model.setNewSweep( min, this.angles.get(minIdx),
                             max, this.angles.get(maxIdx) );
   }
 
+  public void setMiddleTacho(int tacho){
+    this.middleTacho = tacho;
+  }
 }
 

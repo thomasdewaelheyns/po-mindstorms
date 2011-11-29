@@ -50,7 +50,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     
     // pass on control for a little while
     try {
-      Thread.sleep(10);
+      Thread.sleep(1);
     } catch( InterruptedException e ) {
       System.err.println( e );
     }

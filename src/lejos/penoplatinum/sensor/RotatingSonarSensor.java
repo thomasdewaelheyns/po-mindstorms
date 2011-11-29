@@ -27,8 +27,8 @@ public class RotatingSonarSensor {
             motor.resetTachoCount();
         }
         
-        startTacho = motor.getTachoCount() + 90;
-        endTacho = motor.getTachoCount() - 90;
+        startTacho = motor.getTachoCount() + 45;
+        endTacho = motor.getTachoCount() - 45;
     }
 
     public float getDistance() {

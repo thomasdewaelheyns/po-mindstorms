@@ -29,6 +29,7 @@ public class RobotRunner {
 
     private void start() {
 
+        Utils.EnableRemoteLogging(connection,"RobotRunner");
 
 
 
@@ -38,9 +39,9 @@ public class RobotRunner {
                 Thread bluetoothThread = getBluetoothConnectThread();
                 bluetoothThread.start();
 
-//                while (!connection.isConnected()) {
-//                    Utils.Sleep(100);
-//                }
+                while (!connection.isConnected()) {
+                    Utils.Sleep(100);
+                }
                 Utils.Log("Hi!");
                 runnable.run();
 

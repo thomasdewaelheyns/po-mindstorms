@@ -1,6 +1,5 @@
 package penoplatinum;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.PacketTransporter;
@@ -42,6 +41,7 @@ public class Utils {
 
   public static void Error(String message) {
     Utils.Log(message);
+    Utils.Sleep(20000);
     throw new RuntimeException(message);
   }
 
