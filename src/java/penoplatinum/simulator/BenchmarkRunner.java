@@ -1,5 +1,6 @@
 package penoplatinum.simulator;
 
+import penoplatinum.navigators.SonarNavigator;
 import penoplatinum.Utils;
 
 /**

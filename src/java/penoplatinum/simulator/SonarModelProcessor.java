@@ -12,6 +12,7 @@ package penoplatinum.simulator;
 
 import java.util.List;
 import java.util.ArrayList;
+import penoplatinum.Utils;
 
 public class SonarModelProcessor extends ModelProcessor {
   private Boolean direction;
@@ -57,6 +58,7 @@ public class SonarModelProcessor extends ModelProcessor {
     int angle    = this.getAngle();
     this.distances.add(distance);
     this.angles.add(angle);
+    
   }
   
   private int getDistance() {
@@ -79,23 +81,35 @@ public class SonarModelProcessor extends ModelProcessor {
   }
   
   private void reportExtrema() {
-    int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+    int min = 10000; //Integer.MAX_VALUE;
+    int max = -10000; //Integer.MIN_VALUE;
     int minIdx = -1, maxIdx = -1;
+    
+    if (blurred.size() == 0) return; //TODO:
     
     for( int i=0; i<this.blurred.size(); i++ ) {
       int value = this.blurred.get(i);
-      if( value < min ) { min = value; minIdx = i; }
-      if( value > max ) { max = value; maxIdx = i; }
+//      Utils.Log("data: " + value);
+//      Utils.Log(min + ", " + max);
+//      Utils.Sleep(2000);
+      if( value >= max ) { max = value; maxIdx = i; }
+      if( value <= min ) { min = value; minIdx = i; }
     }
+    
     
     // System.out.println("sweep :"  );
     // System.out.println( this.blurred );
     // System.out.println( this.angles );
     // System.out.println( " == " + min + "(" + this.angles.get(minIdx) + ") / "+
     //                              max + "(" + this.angles.get(maxIdx) + ")" );
-    
+//    Utils.Log(this.blurred.size()+"");
+//    Utils.Log(this.angles.size()+"");
+//    Utils.Log(minIdx+"");
+//    Utils.Log(maxIdx+"");
+//    Utils.Sleep(10000);
     this.model.setNewSweep( min, this.angles.get(minIdx),
                             max, this.angles.get(maxIdx) );
   }
 
 }
+

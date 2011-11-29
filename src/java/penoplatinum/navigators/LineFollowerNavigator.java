@@ -1,6 +1,9 @@
-package penoplatinum.simulator;
+package penoplatinum.navigators;
 
 import penoplatinum.Utils;
+import penoplatinum.simulator.GoalDecider;
+import penoplatinum.simulator.Model;
+import penoplatinum.simulator.Navigator;
 
 /*
  * LineFollowerNavigator

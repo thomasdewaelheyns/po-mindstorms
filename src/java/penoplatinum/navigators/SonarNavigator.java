@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.navigators;
 
 /**
  * SonarNavigator
@@ -8,7 +8,9 @@ package penoplatinum.simulator;
  * 
  * Author: Team Platinum
  */
-import java.util.Random;
+import penoplatinum.simulator.GoalDecider;
+import penoplatinum.simulator.Model;
+import penoplatinum.simulator.Navigator;
 
 public class SonarNavigator implements Navigator {
 

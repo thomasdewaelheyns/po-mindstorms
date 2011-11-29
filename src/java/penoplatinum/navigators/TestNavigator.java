@@ -1,4 +1,8 @@
-package penoplatinum.simulator;
+package penoplatinum.navigators;
+
+import penoplatinum.simulator.GoalDecider;
+import penoplatinum.simulator.Model;
+import penoplatinum.simulator.Navigator;
 
 /**
  * TestNavigator

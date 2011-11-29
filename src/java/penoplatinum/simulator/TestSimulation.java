@@ -1,5 +1,7 @@
 package penoplatinum.simulator;
 
+import penoplatinum.navigators.TestNavigator;
+
 /**
  * TestSimulation
  * 

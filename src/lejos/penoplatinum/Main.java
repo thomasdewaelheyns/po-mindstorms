@@ -2,7 +2,8 @@ package penoplatinum;
 
 import penoplatinum.navigators.DriveForwardBackward;
 import penoplatinum.navigators.TurnLeftRight;
-import penoplatinum.simulator.LineFollowerNavigator;
+import penoplatinum.navigators.LineFollowerNavigator;
+import penoplatinum.navigators.SonarNavigator;
 
 public class Main {
 
@@ -13,7 +14,7 @@ public class Main {
                 Utils.Log("Started!");
 
                 AngieEventLoop loop = new AngieEventLoop();
-                loop.useNavigator(new LineFollowerNavigator());
+                loop.useNavigator(new SonarNavigator());
 
                 loop.runEventLoop();
             }
