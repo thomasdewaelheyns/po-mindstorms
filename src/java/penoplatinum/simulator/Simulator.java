@@ -27,12 +27,7 @@ class Simulator {
   private static final double WHEEL_SIZE = 17.5; // circumf. in cm
   private static final double WHEEL_BASE = 16.0; // wheeldist. in cm
   // determines how much time is passed with every step of the simulator
-<<<<<<< HEAD
   private double timeSlice = 0.02;
-=======
-  private double timeSlice = 0.004;
-  
->>>>>>> 406dfe5... Nieuwe BarcodeNavigator.java is nog niet af, GoalDecider? moet nog gemaakt worden, setter gemaakt worden. Zo verder moeten werken.
   // used for statistics
   private long startTime;                 // start time in millis
   private List<Point> visitedTiles = new ArrayList<Point>();
@@ -134,18 +129,10 @@ class Simulator {
   }
 
   // called by the implementation of the RobotAPI
-<<<<<<< HEAD
   public Simulator moveRobot(double movement) {
     movement *= 100;
     // calculate the tacho count we need to do to reach this movement
-    int tacho = (int) (movement / Simulator.WHEEL_SIZE * 360);
-=======
-  public Simulator moveRobot( double movement ) {
-    movement*=100;
-      
-      // calculate the tacho count we need to do to reach this movement
-    int tacho = (int)( movement / Simulator.WHEEL_SIZE * 360 );
->>>>>>> 406dfe5... Nieuwe BarcodeNavigator.java is nog niet af, GoalDecider? moet nog gemaakt worden, setter gemaakt worden. Zo verder moeten werken.
+    int tacho = (int) (movement / WHEEL_SIZE * 360);
     this.motors[Model.M1].rotateBy(tacho);
     this.motors[Model.M2].rotateBy(tacho);
     return this;
@@ -154,8 +141,8 @@ class Simulator {
   // called by the implementation of the RobotAPI
   public Simulator turnRobot(int angle) {
     // calculate anmount of tacho needed to perform a turn by angle
-    double dist = Math.PI * Simulator.WHEEL_BASE / 360 * angle;
-    int tacho = (int) (dist / Simulator.WHEEL_SIZE * 360);
+    double dist = Math.PI * WHEEL_BASE / 360 * angle;
+    int tacho = (int) (dist / WHEEL_SIZE * 360);
 
     // let both motor's rotate the same tacho but in opposite direction
     this.motors[Model.M1].rotateBy(tacho);
@@ -178,8 +165,7 @@ class Simulator {
 
   // at the end of a step, refresh the visual representation of our world
   private void refreshView() {
-    this.view.updateRobot((int) this.positionX, (int) this.positionY,
-            (int) this.direction,
+    this.view.updateRobot((int)this.positionX, (int)this.positionY, (int)this.direction,
             this.robot.getModel().getDistances(),
             this.robot.getModel().getAngles());
   }
@@ -198,7 +184,7 @@ class Simulator {
 
     if (changeLeft == changeRight) {
       // we're moving in one direction 
-      double d = Simulator.WHEEL_SIZE / 360 * changeRight;
+      double d = WHEEL_SIZE / 360 * changeRight;
       double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
       double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
       if (hasTile(this.positionX + this.dx, this.positionY + this.dy)) {
@@ -212,17 +198,13 @@ class Simulator {
       this.trackMovementStatistics(d);
     } else if (changeLeft == changeRight * -1) {
       // we're turning
-      double d = Simulator.WHEEL_SIZE / 360 * changeLeft;
-      double dr = (d / (Math.PI * Simulator.WHEEL_BASE)) * 360;
+      double d = WHEEL_SIZE / 360 * changeLeft;
+      double dr = (d / (Math.PI * WHEEL_BASE)) * 360;
       this.direction += dr;
     } else {
       // hell froze over
-<<<<<<< HEAD
       System.err.println("ERROR: inconsistent motor behaviour.");
-=======
-      System.err.println( "ERROR: inconsistent motor behaviour." );
-      System.err.println( changeLeft+", "+changeRight );
->>>>>>> 406dfe5... Nieuwe BarcodeNavigator.java is nog niet af, GoalDecider? moet nog gemaakt worden, setter gemaakt worden. Zo verder moeten werken.
+      System.err.println(changeLeft + ", " + changeRight);
     }
 
     // keep track of the (new) current motor angles
@@ -384,15 +366,15 @@ class Simulator {
 
   public Point getCurrentTileCoordinates() {
     // determine tile coordinates we're on
-    int left = (int) Math.floor(this.positionX / Tile.SIZE) + 1;
-    int top = (int) Math.floor(this.positionY / Tile.SIZE) + 1;
+    int left = (int) (this.positionX / Tile.SIZE)+ 1;
+    int top = (int) (this.positionY / Tile.SIZE) + 1;
     return new Point(left, top);
   }
 
   public Point getCurrentOnTileCoordinates() {
     // determine tile coordinates on the tile we're on
-    int left = (int) this.positionX % Tile.SIZE;
-    int top = (int) this.positionY % Tile.SIZE;
+    int left = (int) (this.positionX % Tile.SIZE);
+    int top = (int) (this.positionY % Tile.SIZE);
     return new Point(left, top);
   }
 
@@ -467,12 +449,7 @@ class Simulator {
     this.view.showMap(this.map);
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
-<<<<<<< HEAD
     while (!this.reachedGoal()) {
-      this.robot.step();
-=======
-    while( ! this.reachedGoal() ) {
->>>>>>> 406dfe5... Nieuwe BarcodeNavigator.java is nog niet af, GoalDecider? moet nog gemaakt worden, setter gemaakt worden. Zo verder moeten werken.
       this.step();
       this.robot.step();
     }
