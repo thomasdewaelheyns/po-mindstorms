@@ -2,6 +2,7 @@ package penoplatinum.sensor;
 
 import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
+import penoplatinum.Utils;
 
 /**
  * Abstraction for a new type of sensor: a sonar mounted on top of a motor.
@@ -18,10 +19,15 @@ public class RotatingSonarSensor {
     public RotatingSonarSensor(Motor motor, UltrasonicSensor sensor) {
         this.motor = motor;
         this.sensor = sensor;
+        startTacho = motor.getTachoCount() + 90;
+        endTacho = motor.getTachoCount() - 90;
     }
 
     public float getDistance() {
-        return sensor.getDistance();
+        int dist = sensor.getDistance();
+
+        return dist;
+
     }
 
     public void updateSonarMovement() {
