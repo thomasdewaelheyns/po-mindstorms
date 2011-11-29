@@ -502,4 +502,7 @@ class Simulator {
            ( this.map.get(tileX, tileY).hasWall(Baring.S) && 
              dy<0 && (posYOnTile - dy > Tile.SIZE - LENGTH_ROBOT) );
   }
+
+  
+  
 }
