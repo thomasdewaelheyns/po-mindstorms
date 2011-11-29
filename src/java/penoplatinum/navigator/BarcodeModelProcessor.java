@@ -1,6 +1,7 @@
 package penoplatinum.navigator;
 
 import penoplatinum.navigator.ColorInterpreter.Color;
+import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.ModelProcessor;
 
@@ -44,6 +45,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
     @Override
   protected void work() {
     Buffer tempBuffer = this.model.getLightValueBuffer();
+    model.setBarcode(Barcode.None);
     switch(state){
         case WAITING:
             if(!colorInterpreter.isColor(Color.Brown)){
@@ -71,8 +73,8 @@ public class BarcodeModelProcessor extends ModelProcessor {
             System.out.println(tempBuffer.getBufferSubset().size());
             int barcode = interpreter.translate(tempBuffer.getBufferSubset());
             System.out.println("Barcode: "+barcode);
-            if(barcode == -1){
-                model.setBarcode(-1);
+            if(barcode == Barcode.None){
+                model.setBarcode(Barcode.None);
             } else {
                 int corrected = interpreter.correct(barcode);
                 model.setBarcode(corrected);
