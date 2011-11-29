@@ -17,7 +17,7 @@ import penoplatinum.map.MapFactory;
  * Author: Team Platinum
  */
  
-class SimulationRunner {
+public class SimulationRunner {
   
   private Simulator simulator;
   private Robot     robot;
