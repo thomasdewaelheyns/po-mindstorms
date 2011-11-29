@@ -1,7 +1,5 @@
 package penoplatinum.map;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.lang.String;
 import java.util.HashMap;
 import java.util.Scanner;

@@ -53,7 +53,7 @@ public class Angie implements RobotAPI {
         touchLeft = new TouchSensor(SensorPort.S2);
         touchRight = new TouchSensor(SensorPort.S1);
         light = new WrappedLightSensor(null, null);
-        //light.calibrate();
+        light.calibrate();
         sonar = new RotatingSonarSensor(Motor.A, new UltrasonicSensor(SensorPort.S3));
 
         calibrationData = new AngieCalibrationData();
