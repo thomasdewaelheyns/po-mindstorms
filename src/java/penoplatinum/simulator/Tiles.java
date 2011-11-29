@@ -82,4 +82,20 @@ public class Tiles {
           .withWall(Baring.E)
           .withWall(Baring.S)
           .withWall(Baring.W);
+  public static Tile N = new Tile()
+          .withWall(Baring.E)
+          .withWall(Baring.S)
+          .withWall(Baring.W);
+  public static Tile E = new Tile()
+          .withWall(Baring.N)
+          .withWall(Baring.S)
+          .withWall(Baring.W);
+  public static Tile S = new Tile()
+          .withWall(Baring.N)
+          .withWall(Baring.E)
+          .withWall(Baring.W);
+  public static Tile W = new Tile()
+          .withWall(Baring.N)
+          .withWall(Baring.E)
+          .withWall(Baring.S);
 }

@@ -56,6 +56,11 @@ public class MapFactory {
     tiles.put("Straight.S", Tiles.N_S);
     tiles.put("Straight.W", Tiles.E_W);
     
+    tiles.put("End.N", Tiles.N);
+    tiles.put("End.E", Tiles.E);
+    tiles.put("End.S", Tiles.S);
+    tiles.put("End.W", Tiles.W);
+    
   }
   
 }
