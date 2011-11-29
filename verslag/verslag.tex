@@ -37,6 +37,8 @@ Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome ro
 
 Parallel met het verplicht te volgen traject van meerdere demo sessies, kiezen we voor een traject waarbij het uiteindelijke doel van het project voorop wordt gesteld: een volledig onbekend traject autonoom afleggen. Hiertoe hebben we na een korte analyse interfaces afgesproken, waar beide trajecten zich aan houden, om een vlotte integratie mogelijk te maken.
 
+In het parallelle traject ontwikkelen we een simulator omgeving. Aan de hand van deze omgeving zijn we in staat om met meerdere teamleden in parallel een robot te ontwikkelen zonder nood aan een fysieke. Een tweede voordeel ligt in de snelheid waarmee een virtuele robot zich op een willekeurige parcours kan bewegen.
+
 \bigskip
 
 Nota: De samenvatting wordt later verder aangevuld met belangrijke aspecten die tijdens het verdere verloop van het project naar voor treden.
@@ -94,7 +96,7 @@ Aangezien we de informatie dus wensen te bewaren, willen we dit ook een centraal
 
 Deze architectuur heeft enkele bijkomende gevolgen. Zo wordt het bvb. mogelijk om gegevens van meerdere sessies simultaan te bekijken of kan met meerdere en/of verschillende gebruikersinterfaces gewerkt worden. Ook kan voor de realisatie van deze architectuur beroep gedaan worden op enkele standaarden, waardoor het cre"eren van nieuwe code tot een minimum beperkt wordt.
 
-Zo kan de Log Server ge"implementeert worden op basis van log4j\footnote{\url{http://logging.apache.org/log4j/}} en kan de aflevering van de inkomende communicatie volledig in configuratie gerealiseerd worden. De meest eenvoudige uitwerking kan bestaan uit het gebruiken van een syslog daemon, maar ook een relationele databank is triviaal.
+Zo kan de Log Server ge"implementeerd worden op basis van log4j\footnote{\url{http://logging.apache.org/log4j/}} en kan de aflevering van de inkomende communicatie volledig in configuratie gerealiseerd worden. De meest eenvoudige uitwerking kan bestaan uit het gebruiken van een syslog daemon, maar ook een relationele databank is triviaal.
 
 Verschillende types clients kunnen de gegevens uit de databank visualiseren: een Fat Client\footnote{\url{http://en.wikipedia.org/wiki/Fat_client}} ligt voor de hand, maar ook een web-applicatie of REST\footnote{\url{http://en.wikipedia.org/wiki/Representational_state_transfer}} service zijn goede opties.
 
@@ -123,7 +125,7 @@ De volledige klasse diagrammen zijn consulteerbaar in bijlage \ref{appendix:clas
 
 De doelstelling van de eerste demo is het rijden van een veelhoek op basis van het aantal hoeken en de lengte van een zijde. Precisie door middel van compensatie van de vast te stellen afwijkingen is hier van belang.
 
-\section{De robot}
+\section{Fysiek ontwerp}
 
 Het ontwerp van de robot voor de eerste opdracht is het basismodel van de Mindstorms kit die we ter beschikking kregen. Gegeven het korte tijdsbestek was het belangrijker om snel ervaring op te doen met de robot. Deze ervaring kan eveneens informatie verschaffen aan het lange termijn traject.
  
@@ -162,7 +164,7 @@ We lieten de robot telkens 5 maal de vooropgestelde afstand rijden en berekenden
 		\begin{axis}[xmin=0,xmax=5,ymin=-2.8, ymax=0.7,
 			xtick={1,2,3,4,5},xticklabels={20,40,60,80},
 	      		xlabel={Verwachte afstanden (cm)},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
+			ylabel={Relatieve afwijking tov verwachting},
 			]
 			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
 			\boxplot{1}{-0.5}{-0.5}{-0.5}{-0.5}{-0.5}
@@ -186,7 +188,7 @@ Op basis van de resultaten, werd de wielomtrek met 1\% verkleind. Figuur \ref{ch
 		\begin{axis}[xmin=0,xmax=5,ymin=-2.8, ymax=0.7,
 			xtick={1,2,3,4,5},xticklabels={20,40,60,80},
 	      		xlabel={Verwachte afstanden (cm)},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
+			ylabel={Relatieve afwijking tov verwachting},
 			]
 			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
 			\boxplot{1}{0}{-1.5}{0}{-1.5}{0}
@@ -214,7 +216,7 @@ We lieten de robot telkens 5 maal een afstand van 20cm afleggen bij vari\"erende
 		\begin{axis}[xmin=0,xmax=6,ymin=-9.3, ymax=0.7,
 			xtick={1,2,3,4,5,6},xticklabels={125,250,500,750,1000},
 	      		xlabel={Snelheid (graden/sec)},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
+			ylabel={Relatieve afwijking tov verwachting},
 			]
 			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
 			\boxplot{1}{-1.0}{-2.5}{0}{-2.5}{0.5}
@@ -253,7 +255,7 @@ De resultaten voor de verschillende hoeken zijn weergegeven in figuur \ref{chart
 		\begin{axis}[xmin=0,xmax=6,ymin=-14.5, ymax=27.5,
 			xtick={1,2,3,4,5,6},xticklabels={15,30,45,60,90},
 	      		xlabel={Verwachte hoek (graden)},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
+			ylabel={Relatieve afwijking tov verwachting},
 			]
 			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
 			\boxplot{1}{0}{0}{6.67}{-13.3}{26.67}
@@ -305,7 +307,7 @@ Figuur \ref{chart:vervuiling} toont de evolutie van de afwijking tijdens de eers
 		\begin{axis}[xmin=0,xmax=6,ymin=-1.5, ymax=7,
 			xtick={1,2,3,4,5,6},xticklabels={1,2,3,4,5},
 	      		xlabel={Aantal gereden veelhoeken},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
+			ylabel={Relatieve afwijking tov verwachting},
 			]
 			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
 			\boxplot{1}{0.7}{-0.1}{0.8}{1.0}{0.9}
@@ -328,7 +330,7 @@ Figuur \ref{chart:vervuiling} toont de evolutie van de afwijking tijdens de eers
 		\begin{axis}[xmin=0,xmax=7,ymin=0, ymax=14,
 			xtick={1,2,3,4,5,6,7},xticklabels={5,10,15,20,25,30},
 	      		xlabel={Aantal gereden veelhoeken},
-			ylabel={Relatieve afwijking tov verwachting (\%)},
+			ylabel={Relatieve afwijking tov verwachting},
 			]
 			%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
 			\boxplot{1}{5.7}{4.7}{6}{3.7}{6.2}
@@ -349,10 +351,10 @@ Aangezien dit een specifiek probleem voor het constant rijden van veelhoeken is 
 
 De doelstelling van de tweede demo is het volgen van een ononderbroken lijn. Deze lijn kan wit of zwart zijn en is uitgezet op bruine panelen.
 
-\section{De robot}
+\section{Fysiek ontwerp}
 \label{section:lichtsensor}
 
-Voor het volgen van een lijn maken we gebruik van een grijswaardesensor. Deze werd vooraan op de robot bevestigd. Om de sensoren makkelijker en beter te kunnen bevestigen, werd de robot structureel anders opgebouwd.
+Voor het volgen van een lijn maken we gebruik van een grijswaardesensor. Deze werd vooraan op de robot bevestigd. Om de sensoren makkelijker en beter te kunnen bevestigen, werd de robot voorzien van een nieuwe structurele opbouw.
 
 Het nieuwe design, voorgesteld in figuur \ref{fig:redesignRobot}, voorziet een opbouw waarmee een derde motor toegevoegd werd om een beweegbare sonar te realiseren. Daarnaast werden ook reeds twee druksensoren voorzien vooraan links en rechts van de robot.
 
@@ -389,7 +391,7 @@ Op de PC voorzien we een User Interface die een visuele voorstelling biedt van d
    \centering
    \caption{User Interface voor Demo 2.}
    \label{fig:demo2UI}
-   \includegraphics[width=150mm]{resources/demo2-ui.png}
+   \includegraphics[width=160mm]{resources/demo2-ui.png}
 \end{figure}
 
 Aan de linkerkant wordt de gemeten grijswaarde weergegeven: als getal, als grijswaarde en als ge\"interpreteerde kleur (bruin, wit of zwart). Aan de rechterkant wordt een eventueel gedetecteerde barcode gevisualiseerd, als ook een indicatie van de actie die de robot zal uitvoeren op basis van deze informatie.
@@ -427,13 +429,13 @@ Hierbij merken we op dat het bereik van de metingen voor zwart ver ligt van het 
 
 \section{Resultaten van de demo en conclusies}
 
-Dit deel wordt later toegevoegd.
+De robot volgde de lijn zoals we verwachtten. Tijdens het zoeken naar een lijn werd terecht opgemerkt dat de robot te snel stopte met draaien, waardoor hoeken in te veel aparte segmenten werden afgelegd. We waren ons aan het begin van de demo bewust van dit aspect, dat toe te wijzen is aan het feit dat we niet meer tijd genomen hadden om de verschillende instelbare waarden in detail te verfijnen. 
 
 \chapter{Demo 2b: Muurvolger}
 
 De doelstelling van de derde demo is het volgen van een ononderbroken muur.
 
-\section{De robot}
+\section{Fysiek ontwerp}
 
 Voor het volgen van een muur dient de sonarsensor gebruikt te worden. We hebben in ons ontwerp gekozen om de sonar te combineren met de derde motor om zo een richtbare sonar te bekomen, onafhankelijk van de ori\"entatie van de robot.
 
@@ -460,21 +462,21 @@ In tegenstelling tot het rijden en de lichtsensor, verliepen de testen voor de s
 
 \subsection{Afstand}
 
-In een eerste test bepaalden we de afwijking op een afstandsmeting van 1 tot 60cm. Figuur \ref{chart:sonarDistance} geeft de relatieve fout weer op de gemeten afstanden.
+In een eerste test bepaalden we de afwijking op een afstandsmeting van 1 tot 60cm. Figuur \ref{chart:sonarDistance} geeft de absolute fout weer op verschillende gemeten afstanden.
 
 \begin{figure}[htbp]
    \centering
-   \caption{Test 1: Relatieve afwijking van de sonarsensor tov de te meten afstand.}
+   \caption{Test 1: Absolute afwijking van de sonarsensor tov de te meten afstand.}
 \begin{tikzpicture}
     \begin{axis}[
         xlabel=Werkelijke Afstand (cm),
-        ylabel=Relatieve fout tov gewachte afstand (\%)]
+        ylabel=Absolute fout tov gewachte afstand (cm)]
     \addplot[color=red,mark=x] coordinates {
-	(5,40.00)
-	(10,30.00)
-	(20,15.00)
-	(40,2.50)
-	(60,1.67)
+	(5,2)
+	(10,3)
+	(20,3)
+	(40,1)
+	(60,1)
    };
     \end{axis}
 \end{tikzpicture}
@@ -485,170 +487,121 @@ Hierbij valt onmiddellijk op dat de sonar beduidend correcter meet op grotere af
 
 \subsection{Hoek}
 
-Een robot zal niet steeds loodrecht staan t.o.v. een obstakel. Om na te gaan hoeveel de meetresultaten afwijken onder een hoek, hebben we een test gedaan waarbij we onder een hoek van 0, 5, 10, 15, 30 en 45 graden de gemeten afstand vergeleken met de werkelijke afstand. Figuur \ref{chart:sonarAngle} geeft de relatieve afwijking van de meting tov de werkelijkheid weer.
-
-\begin{figure}[htbp]
-   \centering
-   \caption{Test 2: Relatieve afwijking van de sonarsensor bij meting onder een hoek.}
-\begin{tikzpicture}
-    \begin{axis}[
-        xlabel=Werkelijke Afstand (cm),
-        ylabel=Relatieve fout tov gewachte afstand (\%),
-       legend style={draw=none}]
-    \addplot[color=red,mark=x,] coordinates {
-	(5,40.00)
-	(10,30.00)
-	(20,15.00)
-	(40,2.50)
-	(60,1.67)
-   };
-    \addplot[color=green,mark=x,] coordinates {
-	(20,16.55)
-	(40,1.01)
-	(60,1.28)
-   };
-    \addplot[color=blue,mark=x,] coordinates {
-	(20,16.21)
-	(40,-0.15)
-	(60,0.12)
-   };
-    \addplot[color=yellow,mark=x,] coordinates {
-	(20,14.95)
-	(40,-1.79)
-	(60,-1.8)
-   };
-    \addplot[color=purple,mark=x,] coordinates {
-	(20,3.92)
-	(40,-11.23)
-	(60,-10.51)
-   };
-    \addplot[color=orange,mark=x,] coordinates {
-	(20,-11.61)
-	(40,-25.36)
-	(60,-24.81)
-   };
-   \legend{$0^{\circ}$,$5^{\circ}$,$10^{\circ}$,$15^{\circ}$,$30^{\circ}$,$45^{\circ}$}
-    \end{axis}
-\end{tikzpicture}
-   \label{chart:sonarAngle}
-\end{figure}
-
-Na het verwerken van de meetresultaten van de meting onder een hoek, hebben we besloten om deze test opnieuw uit te voeren. De resultaten doen vermoeden dat er een structurele fout is opgetreden. Er was echter geen tijd meer voor het inleveren van het verslag om deze test opnieuw uit te voeren. Dit zal in een volgende fase bijgewerkt worden.
+Een robot zal niet steeds loodrecht staan t.o.v. een obstakel. Het principe van de sonarsensor berust op weerkaatsing van uitgezonden golven. Vanaf een hoek van 45 graden, zullen deze golven niet meer teruggekaatst worden. Elementaire testen toonden dit aan.
 
 \subsection{Rijden}
 
-Een test werd gedaan waarbij de robot op een afstand van een obstakel werd geplaatst en naar het obstakel toe reed. Hierbij registreerde de robot informatie van de tachometer en van de sonarsensor. Op basis van deze gegevens kunnen we de metingen van de sonar afstemmen op de afstand berekend door de tachometer. We hebben verschillende metingen voor deze test gedaan en de meetresultaten waren telkens ongeveer identiek. Ze vertoonden ook een typisch patroon, zoals weergegeven in figuur \ref{chart:sonarDrive}.
+De robot zal hoofdzakelijk metingen doen terwijl hij rijdt. Het is daarom interessant om te weten of dit een grote impact heeft. Een test werd gedaan waarbij de robot op een afstand van een obstakel werd geplaatst en naar het obstakel toe reed. Hierbij registreerde de robot informatie van de tachometer en van de sonarsensor. Op basis van deze gegevens kunnen we de metingen van de sonar afstemmen op de afstand berekend door de tachometer. We hebben verschillende metingen voor deze test gedaan en de meetresultaten waren telkens ongeveer identiek. Ze vertoonden ook een typisch patroon, zoals weergegeven in figuur \ref{chart:sonarDrive}.
 
 \begin{figure}[htbp]
    \centering
-   \caption{Test 3: Relatieve afwijking van de sonarsensor bij rijdende meting.}
+   \caption{Test 3: Absolute fout van de sonarsensor bij rijdende meting.}
 \begin{tikzpicture}
     \begin{axis}[
         xlabel=Werkelijke Afstand (cm),
-        ylabel=Relatieve fout tov gewachte afstand (\%),
+        ylabel=Absolute fout tov verwachte afstand (cm),
        legend style={draw=none}]
     \addplot[color=red,mark=x,] coordinates {
-(188.50, 0.27)
-(185.78, 0.12)
-(182.73, 0.15)
-(179.68, 0.18)
-(176.60, 0.23)
-(173.55, 0.26)
-(170.54, 0.27)
-(167.46, 0.32)
-(164.41, 0.36)
-(161.36, 0.40)
-(158.28, 0.45)
-(155.18, 0.53)
-(152.18, 1.20)
-(149.08, 1.29)
-(146.05, 2.71)
-(142.97, 78.36)
-(139.92, 82.25)
-(136.84, 86.35)
-(133.79, 90.60)
-(130.74, 1.73)
-(127.66, 1.05)
-(124.58, 1.14)
-(121.55, 0.37)
-(118.48, 0.44)
-(115.42, 0.50)
-(112.35, 0.58)
-(109.32, 1.54)
-(106.27, 1.63)
-(103.19, 0.79)
-(100.16, 0.84)
-(97.08, 0.94)
-(94.01, -0.01)
-(90.98, 0.02)
-(87.90, 0.11)
-(84.85, 0.18)
-(81.80, 1.47)
-(78.72, 1.63)
-(75.67, 0.44)
-(72.61, 0.53)
-(69.56, 0.63)
-(66.51, 0.74)
-(63.43, 0.89)
-(60.40, 0.99)
-(57.35, 1.13)
-(54.30, -0.55)
-(51.20, -0.39)
-(48.15, -0.30)
-(45.09, -0.20)
-(42.02, -0.04)
-(38.96, 0.10)
-(35.93, 0.18)
-(32.83, 0.51)
-(29.78, 0.74)
-(26.73, -2.72)
-(23.68, 1.37)
-(20.62, 11.53)
-(17.57, 19.52)
-(14.52, 65.32)
-(11.44, 101.04)
-(8.41, 173.43)
+(188.50,0.50)
+(185.78,0.22)
+(182.73,0.27)
+(179.68,0.32)
+(176.60,0.40)
+(173.55,0.45)
+(170.54,0.46)
+(167.46,0.54)
+(164.41,0.59)
+(161.36,0.64)
+(158.28,0.72)
+(155.18,0.82)
+(152.18,1.82)
+(149.08,1.92)
+(146.05,3.95)
+(142.97,112.03)
+(139.92,115.08)
+(136.84,118.16)
+(133.79,121.21)
+(130.74,2.26)
+(127.66,1.34)
+(124.58,1.42)
+(121.55,0.45)
+(118.48,0.52)
+(115.42,0.58)
+(112.35,0.65)
+(109.32,1.68)
+(106.27,1.73)
+(103.19,0.81)
+(100.16,0.84)
+(97.08,0.92)
+(94.01,-0.01)
+(90.98,0.02)
+(87.90,0.10)
+(84.85,0.15)
+(81.80,1.20)
+(78.72,1.28)
+(75.67,0.33)
+(72.61,0.39)
+(69.56,0.44)
+(66.51,0.49)
+(63.43,0.57)
+(60.40,0.60)
+(57.35,0.65)
+(54.30,-0.30)
+(51.20,-0.20)
+(48.15,-0.15)
+(45.09,-0.09)
+(42.02,-0.02)
+(38.96,0.04)
+(35.93,0.07)
+(32.83,0.17)
+(29.78,0.22)
+(26.73,-0.73)
+(23.68,0.32)
+(20.62,2.38)
+(17.57,3.43)
+(14.52,9.48)
+(11.44,11.56)
+(8.41,14.59)
    };
     \end{axis}
 \end{tikzpicture}
    \label{chart:sonarDrive}
 \end{figure}
 
-De robot vertrok op 180cm van het obstakel. Zoals we reeds opmerkten in de voorgaande testen, is de sonar relatief nauwkeurig op grotere afstanden. Vanaf 30cm vergroot de fout aanzienlijk. Dat de fout vlak bij nul tot boven de 100\% gaat heeft hier natuurlijk te maken met de robot die tegen het obstakel rijdt.
+De robot vertrok op 180cm van het obstakel. Zoals we reeds opmerkten in de voorgaande testen, is de sonar relatief nauwkeurig op grotere afstanden. Vanaf 30cm vergroot de fout aanzienlijk.
 
-Maar er is een tweede piek die zich voordoet rond de 140 tot 130cm. Op deze afstand detecteert de sensor geen obstakels. We vermoeden dat er zich hier een eigenfrequentie optreedt en dat er golffronten samenvallen. Aangezien we voor de doelstellingen van de verschillende demo's geen informatie nodig hebben voor afstanden boven de 80cm, is dit fenomeen onbelangrijk voor ons.
+Er is een piek die zich voordoet rond de 130 tot 140cm. Op deze afstand detecteert de sensor geen obstakels. We vermoeden dat er zich hier een eigenfrequentie optreedt en dat er golffronten samenvallen. Aangezien we voor de doelstellingen van de verschillende demo's geen informatie nodig hebben voor afstanden boven de 80cm, is dit fenomeen onbelangrijk voor ons. Deze observatie werd door andere groepen bevestigd.
 
 De meetwaarden van deze test waren omvangrijk in aantal. Ze werden dan ook met behulp van de Bluetooth verbinding doorgestuurd naar de PC voor verdere verwerking in een spreadsheet.
 
 \section{Resultaten van de demo en conclusies}
 
-Dit deel wordt later toegevoegd.
+De robot was in staat om meerdere rondjes op het parcours te rijden. Het algoritme voorzag een robot die vooruitreed en veranderen slechts van richting op basis van een nieuwe volledige set van sonar-waarden. De tijd om een volledige "sweep" uit te voeren was echter soms te lang om tijdig van richting te veranderen om een obstakel te vermijden. Naar de finale demo toe willen we de verhouding tussen het rijden en het detecteren van obstakels met de sonar, verder verfijnen.
 
 \chapter{Demo 2c: Barcode}
 
 De doelstelling van de vierde demo is het detecteren van barcodes op een eenvoudig parcours. Op basis van de informatie die deze barcodes aanbieden moet de robot zijn weg vinden naar de volgende barcode en zo het parcours 1 keer afleggen.
 
-\section{De robot}
+\section{Fysiek ontwerp}
 
 Voor het lezen van barcodes gebruiken we de grijswaardesensor. Deze is reeds op de robot gemonteerd, zoals besproken in sectie \ref{section:lichtsensor}. Eveneens de basissoftware om grijswaarden te registeren wordt opnieuw gebruikt.
 
 \section{De software}
 
-Het algoritme dat op basis van de gemeten grijswaarden barcodes detecteert doorloopt volgende stappen:
+Het algoritme dat op basis van de gemeten grijswaarden barcodes doorloopt een oneindige lus, waarin steeds een genormaliseerde waarde van de grijdwaardesensor gelezen wordt. Op basis van de calibratiewaarden wordt deze waarde omgezet in een kleur: bruin, wit of zwart.
+
+Algemeen kent het algoritme twee grote statussen:
 
 \begin{enumerate}
-\item lees de genormaliseerde waarde van de grijswaardesensor
-\item indien de ge\"interpreteerde kleur bruin is, doe niets
-\item indien de ge\"interpreteerde kleur niet-bruin is, begin detectie van een barcode
-	\begin{enumerate}
-	\item indien de ge\"interpreteerde kleur niet-bruin is, bewaar deze data
-	\item indien de ge\"interpreteerde kleur bruin is, er minder dan drie niet-bruine waarden opgemeten zijn en er vijf bruin-waarden opgemeten zijn, stop dan de barcode detectie
-	\end{enumerate}
-\item verdeel de opgemeten waardes in 7 gelijke groepen.
-\item neem van elke groep het gemiddelde en vertaal de waarde naar wit of zwart
-\item vertaal de 7 wit of zwart waarden naar 1 en 0
-\item gebruik een tabel om de effectief gedetecteerde waarde om te zetten naar een gecorrigeerde mogelijke waarde, volgens de ge\"integreerde Hamming-code error-correctie
+\item Gewoon rijden, op zoek naar een barcode.
+\item Een gevonden barcode bepalen.
 \end{enumerate}
+
+Bij het zoeken naar een barcode worden bruine metingen genegeerd. Niet-bruine waarden brengt het algoritme in een status waarbij de gevonden barcode bepaald wordt. In die status worden alle niet-bruine waarden bewaard tot er opnieuw 5 bruinwaarden opgemeten zijn. Indien er minstens 3 niet-bruine waarden opgemeten zijn, wordt een barcode bepaald.
+
+Hiervoor worden de opgemeten waardes in 7 gelijke groepen verdeeld. Voor elk van deze groepen wordt het gemiddelde bepaald en vertaald naar wit of zwart. Deze 7 wit/zwart waarden kunnen vertaald worden naar een reeks van 1-en en 0-en, welke ge\"interpreteerd worden als een getal.
+
+Tot slot wordt aan de hand van een tabel de effectief gedetecteerde waarde omgezet naar een gecorrigeerde waarde volgens de Hamming-code error-correctie.
 
 \section{Testplan en resultaten}
 
@@ -656,13 +609,13 @@ De verschillende barcodes werden meermaals door de robot gedetecteerd, zowel rec
 
 \section{Resultaten van de demo en conclusies}
 
-Dit deel wordt later toegevoegd.
+De robot detecteerde de barcodes correct, behalve de barcodes die zich op een helling bevonden. Om dit probleem op te lossen moeten we het fysieke ontwerp van de robot verder verfijnen, zodat de hoek van de helling geen negatieve impact heeft op de positie van de grijswaardesensor.
 
 \chapter{Finale demonstratie}
 
 Dit deel wordt later toegevoegd.
 
-\section{De robot}
+\section{Fysiek ontwerp}
 
 Dit deel wordt later toegevoegd.
 
@@ -670,13 +623,12 @@ Dit deel wordt later toegevoegd.
 
 Dit deel wordt later toegevoegd.
 
-\section{Testplan en resultaten}
-
-Dit deel wordt later toegevoegd.
-
 \section{Resultaten van de demo en conclusies}
 
 Dit deel wordt later toegevoegd.
+
+
+
 
 \chapter{Het process}
 
