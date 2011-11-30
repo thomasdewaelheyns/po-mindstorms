@@ -34,11 +34,6 @@ public abstract class BaseAction {
   private float distance;
   private int angle;
 
-  public void start() {
-  }
-
-  public void end() {
-  }
 
   public abstract int getNextAction();
 

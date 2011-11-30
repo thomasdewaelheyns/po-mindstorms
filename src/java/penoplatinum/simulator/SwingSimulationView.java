@@ -31,6 +31,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     // by default we're 2 tiles by 2 (of 160px with 2px/cm
     this.setSize( 2 * 160, 2 * 160 + 22 );
     this.setLocationRelativeTo(null);
+    setLocation(0,0);
     this.setTitle("Simulator");
     this.setResizable(false);
     this.setVisible(true);

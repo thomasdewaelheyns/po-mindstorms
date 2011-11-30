@@ -1,6 +1,7 @@
 package penoplatinum.navigators;
 
 import penoplatinum.actions.ActionQueue;
+import penoplatinum.actions.AlignPerpendicularAction;
 import penoplatinum.actions.DriveForwardAction;
 import penoplatinum.actions.MoveAction;
 import penoplatinum.actions.TurnAction;
@@ -116,7 +117,7 @@ public class BehaviourNavigator implements Navigator {
       int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
       int rotation = diff > 180 ? -5 : 5;
       
-      queue.add(new TurnAction(model, rotation));
+      queue.add(new AlignPerpendicularAction(model).setIsNonInterruptable(true));
       //TODO: Create the correct barcode actions
       //      actionQueue.add(new TurnAction(model, -180));
     }
@@ -146,12 +147,17 @@ public class BehaviourNavigator implements Navigator {
     updateWallWarnings(); // process sensory data, if more complex should be modelprocessor
     processWorldEvents();
     
+    
+    if (queue.getCurrentAction().isComplete())    
+      queue.dequeue();
+    
     if (queue.getCurrentAction() == null) {
       // Add a driveForward action
       queue.add(new DriveForwardAction());
     }
     
-    return queue.nextNavigatorAction();
+    
+    return queue.getCurrentAction().getNextAction();
   }
   
   private void updateWallWarnings() {

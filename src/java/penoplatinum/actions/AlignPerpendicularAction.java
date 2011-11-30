@@ -19,6 +19,7 @@ public class AlignPerpendicularAction extends BaseAction {
     setAngle(0);
   }
   private boolean first = true;
+  private boolean oldSweepDone = false;
   private boolean correctionStarted = false;
 
   @Override
@@ -28,19 +29,25 @@ public class AlignPerpendicularAction extends BaseAction {
       getModel().getSonarValues(); // clear old sweep
       return Navigator.STOP;
     }
-    if (correctionStarted )
+    if (correctionStarted) {
       return Navigator.NONE;
+    }
 
     if (!getModel().hasUpdatedSonarValues()) {
       return Navigator.STOP;
     }
 
+    if (!oldSweepDone)
+    {
+      oldSweepDone = true;
+    }
+    
     int[] sonarValues = getModel().getSonarValues();
     int targetAngle;
     int currentAngle = sonarValues[1];
     //TODO: set target angle correctly
     targetAngle = 90;
-    setAngle(targetAngle - currentAngle);
+    setAngle(currentAngle - targetAngle);
 
     correctionStarted = true;
 
