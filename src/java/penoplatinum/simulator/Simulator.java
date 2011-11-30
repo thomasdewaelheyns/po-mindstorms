@@ -24,7 +24,7 @@ class Simulator {
   // distance to the lightsensor-position
   private static final double LIGHTSENSOR_DISTANCE = 10.0; // 10cm from center
   private static final double LENGTH_ROBOT = 10.0;
-  private static final double BUMPER_LENGTH_ROBOT = 18.0;
+  private static final double BUMPER_LENGTH_ROBOT = 11.0;
   private static final double WHEEL_SIZE = 17.5; // circumf. in cm
   private static final double WHEEL_BASE = 16.0; // wheeldist. in cm
   // determines how much time is passed with every step of the simulator
@@ -185,12 +185,12 @@ class Simulator {
       double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
       double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
       if (hasTile(this.positionX + dx, this.positionY + dy)) {
-        if (!goesThroughWallX(this.positionX, this.positionY, dx)) {
+        //if (!goesThroughWallX(this.positionX, this.positionY, dx)) {
           this.positionX += dx;
-        }
-        if (!goesThroughWallY(this.positionX, this.positionY, dy)) {
+        //}
+        //if (!goesThroughWallY(this.positionX, this.positionY, dy)) {
           this.positionY -= dy;
-        }
+        //}
       }
       this.trackMovementStatistics(d);
     } else if (changeLeft == changeRight * -1) {

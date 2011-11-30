@@ -4,6 +4,7 @@
  */
 package penoplatinum;
 
+import lejos.util.Stopwatch;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.NavigatorRobot;
 
@@ -30,11 +31,20 @@ public class AngieEventLoop {
     }
 
     public void runEventLoop() {
+        int count = 0;
+        int delta = 0;
         while (true) {
+            long start = System.nanoTime();
             step();
-//            Utils.Sleep(20);
+            delta += System.nanoTime() - start;
+            if (delta > 1000L * 1000 * 1000) {
+                System.out.println(count / (double) delta * 1000d * 1000d*1000d);
+                count = 0;
+                delta = 0;
+            }
+            count++;
         }
-        
+
     }
 
     public void step() {

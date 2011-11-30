@@ -58,7 +58,7 @@ public class MapFactory {
     tiles.put("End.E", Tiles.E);
     tiles.put("End.S", Tiles.S);
     tiles.put("End.W", Tiles.W);
-    
+   
   }
   
 }

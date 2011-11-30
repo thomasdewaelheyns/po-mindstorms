@@ -56,16 +56,6 @@ public class AlignPerpendicularAction extends BaseAction {
 
     setAngle(rotation);
 
-
-
-
-
-
-
-
-
-
-
     correctionStarted = true;
 
     return Navigator.TURN;

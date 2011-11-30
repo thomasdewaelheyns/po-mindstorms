@@ -1,6 +1,8 @@
 package penoplatinum.navigators;
 
+import penoplatinum.Utils;
 import penoplatinum.actions.ActionQueue;
+import penoplatinum.actions.AlignNotLineAction;
 import penoplatinum.actions.AlignPerpendicularAction;
 import penoplatinum.actions.DriveForwardAction;
 import penoplatinum.actions.MoveAction;
@@ -10,7 +12,6 @@ import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
-import penoplatinum.simulator.SimulationRunner;
 
 /**
  * TestNavigator
@@ -21,42 +22,42 @@ import penoplatinum.simulator.SimulationRunner;
  * Author: Team Platinum
  */
 public class BehaviourNavigator implements Navigator {
-  
+
   private float distance;
   private float angle;
   private ActionQueue queue = new ActionQueue();
-  
-  public static void main(String[] args) {
-    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,270";
-    SimulationRunner.main(lalala.split(" "));
-  }
-  
+
+//  public static void main(String[] args) {
+//    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,270";
+//    SimulationRunner.main(lalala.split(" "));
+//  }
   public BehaviourNavigator() {
     // Fill with initial action
 
     queue.add(new DriveForwardAction());
-    
+
   }
   private Model model;
   private GoalDecider controler = new GoalDecider() {
-    
+
     public Boolean reachedGoal() {
       return false;
     }
   };
-  
+
   private void processWorldEvents() {
     if (queue.getCurrentAction().isNonInterruptable()) {
       return;
     }
-    //checkLineEvent();
-    //checkProximityEvent();
+//
     checkBarcodeEvent();
-    //checkSonarCollisionEvent();
-    //checkCollisionEvent();
-    
+//    checkProximityEvent();
+    checkLineEvent();
+//    checkSonarCollisionEvent();
+    checkCollisionEvent();
+
   }
-  
+
   private void checkBarcodeEvent() {
     if (model.getBarcode() == Barcode.None) {
       return;
@@ -64,65 +65,68 @@ public class BehaviourNavigator implements Navigator {
     // Barcode detected
     queue.clearActionQueue();
     switch (model.getBarcode()) {
-      case -1:
       default:
+        Utils.Log("Unknown barcode: " + model.getBarcode());
         break;
       case 0:
       case 15:
         break;
       case 3:
-        queue.add(new MoveAction(model, 0.300f));
-        queue.add(new TurnAction(model, 90));
+        queue.add(new MoveAction(model, 0.150f));
+        queue.add(new TurnAction(model, 45));
+        queue.add(new MoveAction(model, 0.350f));
+        queue.add(new TurnAction(model, 45));
         break;
       case 6:
-        queue.add(new MoveAction(model, 0.300f));
-        queue.add(new TurnAction(model, -90));
+        queue.add(new MoveAction(model, 0.150f));
+        queue.add(new TurnAction(model, -45));
+        queue.add(new MoveAction(model, 0.350f));
+        queue.add(new TurnAction(model, -45));
         break;
       case 1:
       case 2:
       case 4:
+      case -1:
         break;
     }
-    if(queue.getCurrentAction() == null){
-      queue.add(new MoveAction(model, 0.0f));
+    if (queue.getCurrentAction() == null) {
+      queue.add(new DriveForwardAction());
     }
   }
-  
+
   private void checkLineEvent() {
     if (model.getLine() != Line.NONE) {
 
       // Line detected
       queue.clearActionQueue();
-      if (model.getLine() == Line.BLACK) {
-        queue.add(new MoveAction(model, -0.10f));
-        queue.add(new TurnAction(model, -30));
-      }
-      if (model.getLine() == Line.WHITE) {
-        queue.add(new MoveAction(model, -0.10f));
-        queue.add(new TurnAction(model, 30));
-      }
-      
+
+      int directionMultiplier = model.getLine() == Line.BLACK ? -1 : 1;
+
+      queue.add(new AlignNotLineAction(model, model.getLine() == Line.BLACK).setIsNonInterruptable(true));
+      queue.add(new MoveAction(model, 0.4f));
+      queue.add(new TurnAction(model,(int)( AlignNotLineAction.TARGET_ANGLE * directionMultiplier * 0.8f )));
+
       //TODO: line timeout?
     }
   }
-  
-  private void checkCollisionEvent(){
-    if(!model.isStuck()){
+
+  private void checkCollisionEvent() {
+    if (!model.isStuck()) {
       return;
     }
     queue.clearActionQueue();
-    if(model.isStuckLeft() && model.isStuckRight()){
-      queue.add(new MoveAction(model, -0.10f));
-      queue.add(new TurnAction(model, 180));
-    } else if(model.isStuckLeft()){
-      queue.add(new MoveAction(model, -0.10f));
-      queue.add(new TurnAction(model, -90));
+    if (model.isStuckLeft() && model.isStuckRight()) {
+      queue.add(new MoveAction(model, -0.10f).setIsNonInterruptable(true));
+      queue.add(new TurnAction(model, 180).setIsNonInterruptable(true));
+    } else if (model.isStuckLeft()) {
+      queue.add(new MoveAction(model, -0.10f).setIsNonInterruptable(true));
+      queue.add(new TurnAction(model, -90).setIsNonInterruptable(true));
     } else {
-      queue.add(new MoveAction(model, -0.10f));
-      queue.add(new TurnAction(model, 90));
+      queue.add(new MoveAction(model, -0.10f).setIsNonInterruptable(true));
+      queue.add(new TurnAction(model, 90).setIsNonInterruptable(true));
     }
   }
-  
+
   private void checkProximityEvent() {
     if (numProximityWallWarnings > OBSTACLE_DETECTION_THRESHOLD) {
       // Obstacle detected
@@ -131,74 +135,75 @@ public class BehaviourNavigator implements Navigator {
       //sonarValues[3]
       int angle = model.getSensorValue(Model.M3);
       int targetAngle = 90;
-      
+
       int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
       int rotation = diff > 180 ? -5 : 5;
-      
+
       queue.add(new TurnAction(model, rotation));
       //TODO: Create the correct barcode actions
       //      actionQueue.add(new TurnAction(model, -180));
     }
   }
-  
+
   private void checkSonarCollisionEvent() {
     if (numCollisionWallWarnings > OBSTACLE_DETECTION_THRESHOLD) {
       // Obstacle detected
       queue.clearActionQueue();
-      
+
       queue.add(new MoveAction(model, -.05f).setIsNonInterruptable(true));
-      
+
       int[] sonarValues = model.getSonarValues();
       //sonarValues[3]
       int angle = model.getSensorValue(Model.M3);
       int targetAngle = 90;
-      
+
       int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
       int rotation = diff > 180 ? -5 : 5;
-      
+
       queue.add(new AlignPerpendicularAction(model).setIsNonInterruptable(true));
+      queue.add(new MoveAction(model, .05f).setIsNonInterruptable(true));
       //TODO: Create the correct barcode actions
       //      actionQueue.add(new TurnAction(model, -180));
     }
   }
-  
+
   public BehaviourNavigator setModel(Model model) {
     this.model = model;
     return this;
   }
-  
+
   public BehaviourNavigator setControler(GoalDecider controler) {
     this.controler = controler;
     return this;
   }
-  
+
   public Boolean reachedGoal() {
     return this.controler.reachedGoal();
   }
   int numProximityWallWarnings;
-  private static final int PROXIMITY_WALL_AVOID_DISTANCE = 30;
+  private static final int PROXIMITY_WALL_AVOID_DISTANCE = 25;
   int numCollisionWallWarnings;
   private static final int COLLISION_WALL_AVOID_DISTANCE = 15;
   final int OBSTACLE_DETECTION_THRESHOLD = 3;
-  
+
   public int nextAction() {
-    
+
     updateWallWarnings(); // process sensory data, if more complex should be modelprocessor
     processWorldEvents();
-    
-    
-    if (queue.getCurrentAction().isComplete())    
+
+
+    if (queue.getCurrentAction().isComplete()) {
       queue.dequeue();
-    
+    }
+
     if (queue.getCurrentAction() == null) {
       // Add a driveForward action
       queue.add(new DriveForwardAction());
     }
-    
-    
+
     return queue.getCurrentAction().getNextAction();
   }
-  
+
   private void updateWallWarnings() {
     if (model.getSensorValue(Model.S3) < PROXIMITY_WALL_AVOID_DISTANCE) {
       numProximityWallWarnings++;
@@ -217,11 +222,11 @@ public class BehaviourNavigator implements Navigator {
       numCollisionWallWarnings = 0;
     }
   }
-  
+
   public double getDistance() {
     return queue.getCurrentAction() == null ? 1 : queue.getCurrentAction().getDistance();
   }
-  
+
   public double getAngle() {
     return queue.getCurrentAction() == null ? 0 : queue.getCurrentAction().getAngle();
   }

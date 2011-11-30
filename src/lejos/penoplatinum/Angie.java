@@ -29,8 +29,8 @@ public class Angie implements RobotAPI {
     private RotatingSonarSensor sonar;
     private AngieCalibrationData calibrationData;
     private RotationMovement movement;
-    private static final int sensorNumberTouchLeft = Model.S2;
-    private static final int sensorNumberTouchRight = Model.S1;
+    private static final int sensorNumberTouchLeft = Model.S1;
+    private static final int sensorNumberTouchRight = Model.S2;
     private static final int sensorNumberLight = Model.S4;
     private static final int sensorNumberSonar = Model.S3;
     private static final int sensorNumberMotorLeft = Model.M1;

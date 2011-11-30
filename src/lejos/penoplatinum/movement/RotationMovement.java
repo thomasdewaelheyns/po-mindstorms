@@ -84,9 +84,12 @@ public class RotationMovement {
             //TODO: implement better acceleration in this class
             //Utils.Log("Large speed difference!");
             // Accelerate from 0
-            stop();
+            
+            
+            //TODO: this was usefull! stop();
+            
             //Wait for regulator to regulate
-            Utils.Sleep(200);
+            //Utils.Sleep(200); //TODO: WARNING: removed
         }
 
         motorLeft.setSpeed(speed);

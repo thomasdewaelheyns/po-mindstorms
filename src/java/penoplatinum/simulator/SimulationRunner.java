@@ -25,7 +25,7 @@ public class SimulationRunner {
   
   public SimulationRunner() {
     this.simulator = new Simulator();
-    useMap(defaultMap());
+    useMap(defaultMap() );
   }
   
   public SimulationRunner(Map m) {
@@ -55,10 +55,21 @@ public class SimulationRunner {
   // TODO: create MapFactory with support to load files
   //       add option to provide map file
   private Map defaultMap() {
+    if (0 == 1)
+      return michielMap();
     Map map = new Map(4)
       .add(Tiles.S_E) .add(Tiles.W_E) .add(Tiles.W_E) .add(Tiles.W_S)
       .add(Tiles.E_N) .add(Tiles.E_W) .add(Tiles.S_W) .add(Tiles.N_S)
       .add(Tiles.S_E) .add(Tiles.W_E) .add(Tiles.W_N) .add(Tiles.N_S)
+      .add(Tiles.E_N) .add(Tiles.E_W) .add(Tiles.E_W) .add(Tiles.N_W);
+    return map;
+  }
+  
+  private Map michielMap(){
+    Map map = new Map(4)
+      .add(Tiles.S_E) .add(Tiles.W_E) .add(Tiles.W_E.withoutBarcodeLocation()) .add(Tiles.W_S)
+      .add(Tiles.E_N.withoutBarcodeLocation()) .add(Tiles.E_W) .add(Tiles.S_W) .add(Tiles.N_S.withoutBarcodeLocation())
+      .add(Tiles.S_E.withoutLine(Baring.N).withoutLine(Baring.W)) .add(Tiles.W_E) .add(Tiles.W_N.setNarrowingOrientation(Baring.W)) .add(Tiles.N_S)
       .add(Tiles.E_N) .add(Tiles.E_W) .add(Tiles.E_W) .add(Tiles.N_W);
     return map;
   }

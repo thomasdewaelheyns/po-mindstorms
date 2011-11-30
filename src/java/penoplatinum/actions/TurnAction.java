@@ -26,8 +26,6 @@ public class TurnAction extends BaseAction {
       first = false;
       return Navigator.TURN;
     }
-
-
     return Navigator.NONE;
   }
 
