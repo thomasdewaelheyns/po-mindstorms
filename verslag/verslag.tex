@@ -37,12 +37,7 @@ Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome ro
 
 Parallel met het verplicht te volgen traject van meerdere demo sessies, kiezen we voor een traject waarbij het uiteindelijke doel van het project voorop wordt gesteld: een volledig onbekend traject autonoom afleggen. Hiertoe hebben we na een korte analyse interfaces afgesproken, waar beide trajecten zich aan houden, om een vlotte integratie mogelijk te maken.
 
-In het parallelle traject ontwikkelen we een simulator omgeving. Aan de hand van deze omgeving zijn we in staat om met meerdere teamleden in parallel een robot te ontwikkelen zonder nood aan een fysieke. Een tweede voordeel ligt in de snelheid waarmee een virtuele robot zich op een willekeurige parcours kan bewegen.
-
-\bigskip
-
-Nota: De samenvatting wordt later verder aangevuld met belangrijke aspecten die tijdens het verdere verloop van het project naar voor treden.
-
+In het parallelle traject ontwikkelen we een simulator omgeving. Aan de hand van deze omgeving zijn we in staat om met meerdere teamleden in parallel een robot te ontwikkelen zonder nood aan een fysieke. Een tweede voordeel ligt in de snelheid waarmee een virtuele robot zich op een virtueel parcours kan bewegen, wat wachten tot een minimum beperkt. Tot slot is de flexibiliteit om met de debugger van een IDE door de logica van de robot te kunnen stappen van onschatbare waarde.
 \end{abstract}
 
 \chapter{Inleiding}
@@ -391,7 +386,7 @@ Op de PC voorzien we een User Interface die een visuele voorstelling biedt van d
    \centering
    \caption{User Interface voor Demo 2.}
    \label{fig:demo2UI}
-   \includegraphics[width=160mm]{resources/demo2-ui.png}
+   \includegraphics[width=150mm]{resources/demo2-ui.png}
 \end{figure}
 
 Aan de linkerkant wordt de gemeten grijswaarde weergegeven: als getal, als grijswaarde en als ge\"interpreteerde kleur (bruin, wit of zwart). Aan de rechterkant wordt een eventueel gedetecteerde barcode gevisualiseerd, als ook een indicatie van de actie die de robot zal uitvoeren op basis van deze informatie.
@@ -613,22 +608,81 @@ De robot detecteerde de barcodes correct, behalve de barcodes die zich op een he
 
 \chapter{Finale demonstratie}
 
-Dit deel wordt later toegevoegd.
+Tijdens de finale demonstratie moet de robot autonoom een onbekend parcours rijden. Hierbij kan gebruik gemaakt worden van alle sensoren. Op het parcours kunnen panelen voorkomen waar maximaal 1 sensor-waarneembare eigenschap weggenomen wordt.
 
 \section{Fysiek ontwerp}
 
-Dit deel wordt later toegevoegd.
+Het fysieke ontwerp van de robot is ongewijzigd gebleven sinds de vorige demo. We hadden tijdens die iteratie reeds de geplande aanpassingen gedaan. Een poging om een betere bevestiging van de lichtsensor te bekomen op basis van een parallellogram leverde geen noemenswaardige verbeteringen op. Met het oog op het rijden van een parcours beschouwen we het falen om een barcode te lezen als een eigenschap waar de robot bestand moet tegen zijn.
 
 \section{De software}
 
-Dit deel wordt later toegevoegd.
+Na de tussentijdse demo's zijn we voor het rijden van het parcours overgeschakeld op onze langere termijn strategie. Hiervoor werd een simulatieomgeving ontworpen om onafhankelijk van de fysieke robot te kunnen testen en experimenteren. We belichten de simulator kort, vooraleer we het eigenlijke huidige algoritme bespreken. Daarna bekijken we tevens kort het nieuwe logging framework en de nieuwe web-interface.
+
+\subsection{Simulator}
+
+Het ontwikkelen van software voor een door Lejos aangedreven Mindstorms robot, of eender welk ander "embedded" systeem, wordt typisch bemoeilijkt door de zeer beperkte toegankelijkheid van het systeem. Deze ontoegankelijkheid vertoont zich op verschillende vlakken: op fysiek vlak dient er steeds een nieuwe versie van de software overgebracht worden, moet de robot op een parcours geplaatst worden (dat eerst nog gebouwd moet worden), enz. Op vlak van software ontwikkeling is men niet in staat om normale ontwikkel-omgevingen te gebruiken en kan nauwelijks of met grote omwegen "gedebugged" worden.
+
+We hebben daarom gekozen om een simualtoieomgeving te cre\"eren waar we zelf alle controle over hebben en die de bovengenoemde problemen grotendeels oplost. Figuur \ref{fig:simulator} toont de simulator in actie.
+
+\begin{figure}[htbp]
+   \centering
+   \caption{Simulator in actie.}
+   \label{fig:simulator}
+   \includegraphics[width=150mm]{resources/simulator.png}
+\end{figure}
+
+De simulator stelt ons in staat om de exacte code die uiteindelijk op de robot zal gebruikt worden uit te voeren. Hierbij zal de simulatieomgeving de invoer voor de sensoren berekenen op basis van een voor gedefinieerd parcours. De acties van de robot, uitgedrukt in veranderingen van de motoren, worden ook door de simulatieomgeving opgepikt en vervolgens omgezet in realistische verplaatsingen op het parcours.
+
+\subsection{Model en Navigator}
+
+In de event loop op de robot worden de verschillende sensor-waarden uitgelezen en in het \texttt{Model} gestopt. Vervolgens verwerken \texttt{ModelProcessors} deze nieuwe waarden en voegen geaggregeerde informatie toe aan het model. Zo wordt informatie van de lichtsensor bijgehouden in een histogram, waarna barcodes of lijnen gedetecteerd kunnen worden.
+
+Op basis van deze uitgebreide informatie over zijn wereld, zal vervolgens de \texttt{navigator} bepalen welke actie er ondernomen dient te worden. Hierbij worden twee stappen ondernomen:
+
+\begin{enumerate}
+\item detecteren van events uit de wereld
+\item uitvoeren van acties die zich op de \texttt{ActionQueue} bevinden.
+\end{enumerate}
+
+Tijdens het detecteren van de events uit de wereld, bekijkt de Navigator de volgende mogelijke gebeurtenissen in volgorde:
+
+\begin{enumerate}
+\item detectie barcodes
+\item nabijheid van obstakels
+\item detectie van lijnen
+\item bijna-botsing situatie
+\item botsing situatie
+\end{enumerate}
+
+Indien \'e\'en van deze gebeurtenissen voorvalt, zal de Navigator de nodige acties op de \texttt{ActionQueue} plaatsen. Dit is een queue van acties die ondernomen moeten worden. Zo zal bvb. bij een botsing er eerst achteruit gereden worden en vervolgens gedraaid worden.
+
+De volgende acties staan ter beschikking van de Navigator:
+
+\begin{itemize}
+\item MoveAction
+\item TurnAction
+\item AlignPerpendicularAction
+\item MoveOffLineAction
+\end{itemize}
+
+Elk van deze acties kan tot slot in een niet-onderbreekbare staat gebracht worden, waardoor er geen nieuwe events kunnen gedetecteerd worden.
+
+\subsection{Logging en Web-interface}
+
+Naast de overschakeling naar de model-gedreven navigator, is ook de manier van het verwerken van feedback van de robot gewijzigd. De robot zendt nu de informatie uit het model en de navigator door naar de PC. Deze gegevens worden nu niet langer rechtstreeks getoond in een grafische gebruikersinterface, maar worden via het log4j logging framework zo snel mogelijk in een relationele databank opgeslagen. Aan de hand van een REST-ful web-service, aangeboden van op een JBoss applicatie server, wordt nu de informatie weergegeven op een HTML/CSS/Javascript-gebaseerde interface. Figuur \ref{fig:webclient} toont de nieuwe web interface.
+
+\begin{figure}[htbp]
+   \centering
+   \caption{De nieuwe webclient.}
+   \label{fig:webclient}
+   \includegraphics[width=150mm]{resources/webclient.png}
+\end{figure}
+
+De web interface tracht een getrouw beeld te geven van de informatie die zich op een bepaald moment in de software op de robot bevindt. Zo wordt het model en de navigator onafhankelijk voorgesteld. Binnen het model worden de verschillende sensoren weergegeven, met hun gemeten waarden, alsook de interpretatie ervan. De histogrammen van de licht- en sonar-sensoren, die in het model van de robot worden opgebouwd worden ook weergegeven in de interface.
 
 \section{Resultaten van de demo en conclusies}
 
 Dit deel wordt later toegevoegd.
-
-
-
 
 \chapter{Het process}
 
@@ -636,46 +690,40 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Werkverdeling}
 
-Tabel \ref{tab:focus} geeft de focus van elk teamlid tot op heden weer. Tabel \ref{tab:tijdsregistratie} geeft de gepresteerde uren per week per teamlid weer.
-
 \begin{longtable}{l l}
 \caption{Focus van elk team lid} \\ [0.5ex]
-
 %This is the header for the first page of the table...
 \hline\hline
 Teamlid & Focus \\ [0.5ex]
 \hline 
 \endfirsthead
-
 %This is the header for the remaining page(s) of the table...
 \multicolumn{2}{c}{{\tablename} \thetable{} -- Vervolg} \\[0.5ex]
 \hline \hline
 Teamlid & Focus \\ [0.5ex]
 \hline 
 \endhead
-Michiel 		& 	(Coordinator) Bluetooth communicatie, calibratie. \\
-Florian 		&	RobotAPI, lijnvolger, opvolgen unit testen. \\
-Ruben 		&	RobotAPI, veelhoek algoritme, muurvolger. \\
-Thomas 		&	RobotAPI, lichtsensor, barcodelezer, UI \\
-Daniel 		&	Testen, barcodelezer \\
-Christophe 	&	(Secretaris) Verslag, simulator, model \& navigator. \\
+Michiel 		& 	(Coordinator) Bluetooth communicatie, calibratie, finale navigator. \\
+Florian 		&	RobotAPI, lijnvolger, opvolgen unit testen, finale navigator. \\
+Ruben 		&	RobotAPI, veelhoek algoritme, muurvolger, sonar-navigator.\\
+Thomas 		&	RobotAPI, lichtsensor, barcode-lezer, fat client. \\
+Daniel 		&	Testen, barcode-lezer, fat client. \\
+Christophe 	&	(Secretaris) Verslag, simulator, model \& navigator, web-client. \\
 \hline
 \label{tab:focus}
 \end{longtable}
 
 \begin{longtable}{l r r r r r r}
-\caption{Tijdsbesteding per team lid per week} \\ [0.5ex]
-
+\caption{Tijdsbesteding per team lid per week} \\
 %This is the header for the first page of the table...
 \hline\hline
- & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\ [0.5ex]
+ & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\
 \hline 
 \endfirsthead
-
 %This is the header for the remaining page(s) of the table...
-\multicolumn{4}{c}{{\tablename} \thetable{} -- Vervolg} \\[0.5ex]
+\multicolumn{4}{c}{{\tablename} \thetable{} -- Vervolg} \\
 \hline \hline
- & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\ [0.5ex]
+ & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\
 \hline 
 \endhead
 totaal    & 121 & 90 & 91 & 76 & 78 & 128 \\
@@ -689,6 +737,8 @@ week 6  & 15 & 11 & 12 & 18 & 15 & 5 \\
 week 7 & 5 & 11 & 10 & 9 & 9 & 9 \\
 week 8 & 10 & 9 & 12 & 5 & 5 & 9 \\
 week 9 & 13 & 12 & 8 & 5 & 5 & 11\\
+week 10 \\
+week 11 \\
 \hline
 \label{tab:tijdsregistratie}
 \end{longtable}
