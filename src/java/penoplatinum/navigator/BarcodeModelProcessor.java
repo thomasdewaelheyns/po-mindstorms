@@ -15,6 +15,7 @@ import penoplatinum.simulator.ModelProcessor;
  * Author: Team Platinum
  */
 public class BarcodeModelProcessor extends ModelProcessor {
+  public static final int END_OF_BARCODE_BROWN_COUNT = 19;
 
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
@@ -59,8 +60,9 @@ public class BarcodeModelProcessor extends ModelProcessor {
           brownCounter++;
           if (brownCounter > 5 && tempBuffer.getCheckpointSize() < 3) {
             state = WAITING;
+            tempBuffer.unsetCheckPoint();
             System.out.println("STOP");
-          } else if (brownCounter > 19) {
+          } else if (brownCounter > END_OF_BARCODE_BROWN_COUNT) {
             state = INTERPRET;
           }
         } else {
@@ -69,8 +71,9 @@ public class BarcodeModelProcessor extends ModelProcessor {
         break;
       case INTERPRET:
         state = WAITING;
-        System.out.println(tempBuffer.getBufferSubset().size());
-        int barcode = interpreter.translate(tempBuffer.getBufferSubset());
+        tempBuffer.unsetCheckPoint();
+        System.out.println("Buffersize: " + tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size());
+        int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));
         System.out.println("Barcode: " + barcode);
 
         int corrected = barcode;

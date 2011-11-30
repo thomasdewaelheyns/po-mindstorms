@@ -53,7 +53,7 @@ public class Model {
   private boolean sweepChanged = true;
   private int barcode = -1;
   private Line line = Line.NONE;
-  private int bufferSize = 10000;
+  private int bufferSize = 2000;
   private Buffer lightValueBuffer = new Buffer(bufferSize);
 
   // sets the (top-level) processor

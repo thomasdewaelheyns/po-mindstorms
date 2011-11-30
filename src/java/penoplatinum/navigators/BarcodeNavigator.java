@@ -10,7 +10,7 @@ public class BarcodeNavigator implements Navigator{
     public static final double DRIVE_BACK_DISTANCE = 0.200;
     public static final double DRIVE_FORWARD_DISTANCE = 0.300;
     public static final double TURN_LEFT = 90;
-    public static final double TURN_RIGHT = 90;
+    public static final double TURN_RIGHT = -90;
     
     private int commandPosition = -1;
     private Command[] nextCommand = new Command[]{};

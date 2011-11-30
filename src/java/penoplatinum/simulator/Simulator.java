@@ -27,7 +27,7 @@ class Simulator {
   private static final double WHEEL_SIZE = 17.5; // circumf. in cm
   private static final double WHEEL_BASE = 16.0; // wheeldist. in cm
   // determines how much time is passed with every step of the simulator
-  private double timeSlice = 0.02;
+  private double timeSlice = 0.008;
   // used for statistics
   private long startTime;                 // start time in millis
   private List<Point> visitedTiles = new ArrayList<Point>();

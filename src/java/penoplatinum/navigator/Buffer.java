@@ -10,7 +10,7 @@ package penoplatinum.navigator;
 public class Buffer {
     
     private int start = 0;
-    private int startCheckpoint = 0;
+    private int startCheckpoint = -1;
     private int[] queue;
     private int maxElements;
     //private int defaultFiller = 60;
@@ -49,6 +49,11 @@ public class Buffer {
         startCheckpoint = start;
     }
     
+    //This guards for "DataOverflow", if no barcodes are found for a whole buffer.
+    public void unsetCheckPoint(){
+      startCheckpoint = -1;
+    }
+    
     public int getCheckPoint(){
         return startCheckpoint;
     }
@@ -63,5 +68,13 @@ public class Buffer {
     
     BufferSubset getBufferSubset(){
         return new BufferSubset(this, startCheckpoint, start, maxElements);
+    }
+    
+    BufferSubset getBufferSubset(int beforeEnd){
+        return new BufferSubset(this, startCheckpoint, (start+maxElements-beforeEnd)%maxElements, maxElements);
+    }
+    
+    public void removeLast(){
+      start = (start+maxElements-1)%maxElements;
     }
 }
