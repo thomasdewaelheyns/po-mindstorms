@@ -31,7 +31,6 @@ public class SonarModelProcessor extends ModelProcessor {
   public void work() {
     // if we changed direction
     if( this.changedDirection() ) {
-      Utils.Log("Changed: "+this.distances.size());
       this.direction = this.getDirection();
       this.applyBlur();
       this.reportExtrema();

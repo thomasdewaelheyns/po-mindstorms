@@ -51,7 +51,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
         if (!colorInterpreter.isColor(Color.Brown)) {
           state = RECORDING;
           tempBuffer.setCheckPoint();
-          System.out.println("RECORDING");
           brownCounter = 0;
         }
         break;
@@ -61,7 +60,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
           if (brownCounter > 5 && tempBuffer.getCheckpointSize() < 3) {
             state = WAITING;
             tempBuffer.unsetCheckPoint();
-            System.out.println("STOP");
           } else if (brownCounter > END_OF_BARCODE_BROWN_COUNT) {
             state = INTERPRET;
           }
@@ -70,9 +68,9 @@ public class BarcodeModelProcessor extends ModelProcessor {
         }
         break;
       case INTERPRET:
-        System.out.println("Buffersize: " + tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size());
+        //System.out.println("Buffersize: " + tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size());
         int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));
-        System.out.println("Barcode: " + barcode);
+        //System.out.println("Barcode: " + barcode);
         state = WAITING;
         tempBuffer.unsetCheckPoint();
 

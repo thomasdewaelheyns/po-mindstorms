@@ -11,6 +11,7 @@ import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.SimulationRunner;
+import sun.nio.cs.ext.ISCII91;
 
 /**
  * TestNavigator
@@ -52,7 +53,8 @@ public class BehaviourNavigator implements Navigator {
     //checkLineEvent();
     //checkProximityEvent();
     //checkBarcodeEvent();
-    checkSonarCollisionEvent();
+    //checkSonarCollisionEvent();
+    checkCollisionEvent();
     
   }
   
@@ -81,6 +83,23 @@ public class BehaviourNavigator implements Navigator {
       }
       
       //TODO: line timeout?
+    }
+  }
+  
+  private void checkCollisionEvent(){
+    if(!model.isStuck()){
+      return;
+    }
+    queue.clearActionQueue();
+    if(model.isStuckLeft() && model.isStuckRight()){
+      queue.add(new MoveAction(model, -0.10f));
+      queue.add(new TurnAction(model, 180));
+    } else if(model.isStuckLeft()){
+      queue.add(new MoveAction(model, -0.10f));
+      queue.add(new TurnAction(model, 90));
+    } else {
+      queue.add(new MoveAction(model, -0.10f));
+      queue.add(new TurnAction(model, -90));
     }
   }
   

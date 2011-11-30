@@ -24,6 +24,7 @@ class Simulator {
   // distance to the lightsensor-position
   private static final double LIGHTSENSOR_DISTANCE = 10.0; // 10cm from center
   private static final double LENGTH_ROBOT = 10.0;
+  private static final double BUMPER_LENGTH_ROBOT = 18.0;
   private static final double WHEEL_SIZE = 17.5; // circumf. in cm
   private static final double WHEEL_BASE = 16.0; // wheeldist. in cm
   // determines how much time is passed with every step of the simulator
@@ -185,7 +186,6 @@ class Simulator {
       double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
       if (hasTile(this.positionX + dx, this.positionY + dy)) {
         if (!goesThroughWallX(this.positionX, this.positionY, dx)) {
-          System.out.print(this.positionX+" "+ this.positionY+" "+dx+" ");
           this.positionX += dx;
         }
         if (!goesThroughWallY(this.positionX, this.positionY, dy)) {
@@ -255,8 +255,8 @@ class Simulator {
   }
 
   private void updateFrontPushSensors() {
-    this.calculateBumperSensor(45, LENGTH_ROBOT, Model.S1);
-    this.calculateBumperSensor(315, LENGTH_ROBOT, Model.S2);
+    this.calculateBumperSensor(45, Model.S1);
+    this.calculateBumperSensor(315, Model.S2);
   }
 
   private void updateSonar() {
@@ -331,11 +331,11 @@ class Simulator {
             color == Tile.WHITE ? 100 : (color == Tile.BLACK ? 0 : 70);
   }
 
-  private void calculateBumperSensor(int angle, double lengthRobot, int sensorPort) {
+  private void calculateBumperSensor(int angle, int sensorPort) {
     angle = (this.getAngle() + angle) % 360;
     int distance = this.getFreeDistance(angle);
 
-    if (distance < lengthRobot / 2) {
+    if (distance < BUMPER_LENGTH_ROBOT) {
       this.sensorValues[sensorPort] = 50;
     } else {
       this.sensorValues[sensorPort] = 0;
@@ -484,7 +484,6 @@ class Simulator {
     double posXOnTile = positionX % Tile.SIZE;
     int tileX = (int) positionX / Tile.SIZE + 1;
     int tileY = (int) positionY / Tile.SIZE + 1;
-    System.out.println(posXOnTile+" "+dx+" "+tileX+" "+tileY+" "+this.map.get(tileX, tileY).hasWall(Baring.W)+" "+this.map.get(tileX, tileY).hasWall(Baring.E));
     return (this.map.get(tileX, tileY).hasWall(Baring.W)
             && dx < 0 && (posXOnTile + dx < LENGTH_ROBOT))
             || (this.map.get(tileX, tileY).hasWall(Baring.E)
