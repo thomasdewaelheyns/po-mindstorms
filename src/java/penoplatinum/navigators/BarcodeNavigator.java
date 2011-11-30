@@ -1,5 +1,7 @@
-package penoplatinum.navigator;
+package penoplatinum.navigators;
 
+import penoplatinum.navigator.Command;
+import penoplatinum.navigator.Commands;
 import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;

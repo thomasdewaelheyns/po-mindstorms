@@ -1,4 +1,4 @@
-package penoplatinum.navigator;
+package penoplatinum.navigators;
 
 import penoplatinum.Utils;
 import penoplatinum.simulator.Barcode;

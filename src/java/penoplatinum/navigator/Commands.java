@@ -1,5 +1,6 @@
 package penoplatinum.navigator;
 
+import penoplatinum.navigators.BarcodeNavigator;
 import penoplatinum.simulator.Navigator;
 
 public class Commands {
