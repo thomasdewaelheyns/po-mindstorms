@@ -1,6 +1,7 @@
 package penoplatinum.navigators;
 
 import java.util.ArrayList;
+import penoplatinum.Utils;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Line;
@@ -20,8 +21,7 @@ public class BehaviourNavigator implements Navigator {
 
   private float distance;
   private float angle;
-  private int currentActionIndex;
-  private ArrayList<BaseAction> actionQueue = new ArrayList<BaseAction>();
+  private ActionQueue queue = new ActionQueue();
 
   public static void main(String[] args) {
     String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,180";
@@ -29,6 +29,10 @@ public class BehaviourNavigator implements Navigator {
   }
 
   public BehaviourNavigator() {
+    // Fill with initial action
+
+    queue.add(new DriveForwardAction());
+
   }
   private Model model;
   private GoalDecider controler = new GoalDecider() {
@@ -38,36 +42,61 @@ public class BehaviourNavigator implements Navigator {
     }
   };
 
-  private BaseAction getCurrentAction() {
-    // -1 means that the first action has not yet started
-
-    if (currentActionIndex >= actionQueue.size()) {
-      return null;
-    }
-
-    if (currentActionIndex == -1) {
-      currentActionIndex++;
-
-      if (currentActionIndex >= actionQueue.size()) {
-        return null;
-      }
-      actionQueue.get(currentActionIndex).start();
-    }
-    return actionQueue.get(currentActionIndex);
-  }
-
-  private void clearActionQueue() {
-    currentActionIndex = -1; // Note: this -1 is a cheat, check getcurrentaction
-    actionQueue.clear();
-  }
-
-  private void moveToNextAction() {
-    getCurrentAction().end();
-    currentActionIndex++;
-    if (getCurrentAction() == null) {
+  private void checkBarcodeEvent() {
+    if (0 == 0) {
       return;
     }
-    getCurrentAction().start();
+
+    if (model.getBarcode() != Barcode.None) {
+      // Barcode detected
+      queue.clearActionQueue();
+
+      //TODO: Create the correct barcode actions
+//      actionQueue.add(new TurnAction(model, -180));
+
+      queue.add(new DriveForwardAction());
+    }
+  }
+
+  private void checkLineEvent() {
+    if (model.getLine() != Line.NONE) {
+
+      // Line detected
+      queue.clearActionQueue();
+      if (model.getLine() == Line.BLACK) {
+        queue.add(new MoveAction(model, -0.10f));
+        queue.add(new TurnAction(model, -30));
+      }
+      if (model.getLine() == Line.WHITE) {
+        queue.add(new MoveAction(model, -0.10f));
+        queue.add(new TurnAction(model, 30));
+      }
+
+      queue.add(new DriveForwardAction());
+
+      //TODO: line timeout?
+    }
+  }
+
+  private void checkObstacleEvent() {
+    if (numWallWarnings > 3) {
+      // Obstacle detected
+      queue.clearActionQueue();
+      int[] sonarValues = model.getSonarValues();
+      //sonarValues[3]
+      int angle = model.getSensorValue(Model.M3);
+      int targetAngle = 90;
+
+      int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
+      int rotation = diff > 180 ? -5 : 5;
+
+      queue.add(new TurnAction(model, rotation));
+      //TODO: Create the correct barcode actions
+      //      actionQueue.add(new TurnAction(model, -180));
+      
+      queue.add(new DriveForwardAction());
+
+    }
   }
 
   public BehaviourNavigator setModel(Model model) {
@@ -89,56 +118,16 @@ public class BehaviourNavigator implements Navigator {
 
   public int nextAction() {
 
-    updateWallWarnings();
+    updateWallWarnings(); // process sensory data, if more complex should be modelprocessor
+    processWorldEvents();
 
-    if (model.getLine() != Line.NONE ) {
+    return queue.nextNavigatorAction();
+  }
 
-      // Line detected
-      clearActionQueue();
-      if (model.getLine() == Line.BLACK) {
-        actionQueue.add(new MoveAction(model, -0.10f));
-        actionQueue.add(new TurnAction(model, -30));
-      }
-      if (model.getLine() == Line.WHITE) {
-        actionQueue.add(new MoveAction(model, -0.10f));
-        actionQueue.add(new TurnAction(model, 30));
-      }
-      //TODO: line timeout?
-    }
-    if (numWallWarnings > 3 ) {
-      // Obstacle detected
-      clearActionQueue();
-      int[] sonarValues = model.getSonarValues();
-      //sonarValues[3]
-      int angle = model.getSensorValue(Model.M3);
-      int targetAngle = 90;
-
-      int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
-      int rotation = diff > 180 ? -5 : 5;
-
-      actionQueue.add(new TurnAction(model, rotation));
-      //TODO: Create the correct barcode actions
-      //      actionQueue.add(new TurnAction(model, -180));
-
-    }
-    if (model.getBarcode() != Barcode.None && false) {
-      // Barcode detected
-      clearActionQueue();
-      //TODO: Create the correct barcode actions
-//      actionQueue.add(new TurnAction(model, -180));
-
-    }
-
-    if (getCurrentAction() != null && getCurrentAction().isComplete()) {
-      moveToNextAction();
-    }
-
-    if (getCurrentAction() != null) {
-      return getCurrentAction().getNextAction();
-    }
-
-
-    return Navigator.MOVE;
+  private void processWorldEvents() {
+    checkLineEvent();
+    checkObstacleEvent();
+    checkBarcodeEvent();
   }
 
   private void updateWallWarnings() {
@@ -152,39 +141,86 @@ public class BehaviourNavigator implements Navigator {
     }
   }
 
-//  private void sortPriorities() {
-//    for (int i = 0; i < behaviours.size(); i++) {
-//      if (i == 0) {
-//        continue;
-//      }
-//
-//      if (behaviours.get(i - 1).getPriority() < behaviours.get(i).getPriority()) {
-//        Behaviour swap = behaviours.get(i);
-//        behaviours.set(i, behaviours.get(i - 1));
-//        behaviours.set(i - 1, swap);
-//        i--;
-//      } else {
-//        i++;
-//      }
-//    }
-//
-//  }
   public double getDistance() {
-    return getCurrentAction() == null ? 1 : getCurrentAction().getDistance();
+    return queue.getCurrentAction() == null ? 1 : queue.getCurrentAction().getDistance();
   }
 
   public double getAngle() {
-    return getCurrentAction() == null ? 0 : getCurrentAction().getAngle();
+    return queue.getCurrentAction() == null ? 0 : queue.getCurrentAction().getAngle();
   }
 
-  enum Behaviours {
+  class ActionQueue {
 
-    NONE, BARCODE, LINE, WALL, FORWARD
+    private int currentActionIndex;
+    private ArrayList<BaseAction> actionQueue = new ArrayList<BaseAction>();
+
+    private BaseAction getCurrentAction() {
+      // -1 means that the first action has not yet started
+      if (currentActionIndex >= actionQueue.size()) {
+        return null;
+      }
+
+      if (currentActionIndex == -1) {
+        currentActionIndex++;
+
+        if (currentActionIndex >= actionQueue.size()) {
+          return null;
+        }
+        actionQueue.get(currentActionIndex).start();
+      }
+      return actionQueue.get(currentActionIndex);
+    }
+
+    public void clearActionQueue() {
+      currentActionIndex = -1; // Note: this -1 is a cheat, check getcurrentaction
+      actionQueue.clear();
+    }
+
+    private void moveToNextAction() {
+      getCurrentAction().end();
+      currentActionIndex++;
+      if (getCurrentAction() == null) {
+        Utils.Error("Can't move to next action, queue is empty!!!");
+      }
+      getCurrentAction().start();
+    }
+
+    public void add(BaseAction action) {
+      actionQueue.add(action);
+    }
+
+    /**
+     * This performs one eventloop step in the queue
+     * @return 
+     */
+    public int nextNavigatorAction() {
+      if (getCurrentAction() == null) {
+        Utils.Error("Action Queue is empty!!!");
+      }
+      if (getCurrentAction().isComplete()) {
+        moveToNextAction();
+      }
+      return getCurrentAction().getNextAction();
+    }
   }
 
   abstract class BaseAction {
 
     private Model model;
+    private boolean isNonInterruptable;
+
+    public boolean isNonInterruptable() {
+      return isNonInterruptable;
+    }
+
+    public BaseAction setIsNonInterruptable(boolean isNonInterruptable) {
+      this.isNonInterruptable = isNonInterruptable;
+      return this;
+    }
+
+    public BaseAction() {
+      this.model = model;
+    }
 
     public BaseAction(Model model) {
       this.model = model;
@@ -272,6 +308,24 @@ public class BehaviourNavigator implements Navigator {
     @Override
     public boolean isComplete() {
       return !model.isMoving() && !first;
+    }
+  }
+
+  class DriveForwardAction extends BaseAction {
+
+    public DriveForwardAction() {
+      setDistance(1);
+      setAngle(0);
+    }
+
+    @Override
+    public int getNextAction() {
+      return Navigator.MOVE;
+    }
+
+    @Override
+    public boolean isComplete() {
+      return false; // Never complete!
     }
   }
 }
