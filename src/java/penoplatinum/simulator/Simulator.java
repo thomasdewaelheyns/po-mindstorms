@@ -48,10 +48,6 @@ class Simulator {
   private int prevLeft = 0;
   private int prevRight = 0;
   private int prevSonar = 0;
-  private int steps;              // the number of steps still to do
-  private double dx, dy, dr;      // the difference for x, y and rotation
-  private int dSonar;
-  private int stepsSonar;
 
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
@@ -187,11 +183,12 @@ class Simulator {
       double d = WHEEL_SIZE / 360 * changeRight;
       double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
       double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
-      if (hasTile(this.positionX + this.dx, this.positionY + this.dy)) {
-        if (!goesThroughWallX(this.positionX, this.positionY, this.dx)) {
+      if (hasTile(this.positionX + dx, this.positionY + dy)) {
+        if (!goesThroughWallX(this.positionX, this.positionY, dx)) {
+          System.out.print(this.positionX+" "+ this.positionY+" "+dx+" ");
           this.positionX += dx;
         }
-        if (!goesThroughWallY(this.positionX, this.positionY, this.dy)) {
+        if (!goesThroughWallY(this.positionX, this.positionY, dy)) {
           this.positionY -= dy;
         }
       }
@@ -487,7 +484,7 @@ class Simulator {
     double posXOnTile = positionX % Tile.SIZE;
     int tileX = (int) positionX / Tile.SIZE + 1;
     int tileY = (int) positionY / Tile.SIZE + 1;
-
+    System.out.println(posXOnTile+" "+dx+" "+tileX+" "+tileY+" "+this.map.get(tileX, tileY).hasWall(Baring.W)+" "+this.map.get(tileX, tileY).hasWall(Baring.E));
     return (this.map.get(tileX, tileY).hasWall(Baring.W)
             && dx < 0 && (posXOnTile + dx < LENGTH_ROBOT))
             || (this.map.get(tileX, tileY).hasWall(Baring.E)

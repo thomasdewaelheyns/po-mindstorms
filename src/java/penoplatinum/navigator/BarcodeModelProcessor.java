@@ -70,11 +70,11 @@ public class BarcodeModelProcessor extends ModelProcessor {
         }
         break;
       case INTERPRET:
-        state = WAITING;
-        tempBuffer.unsetCheckPoint();
         System.out.println("Buffersize: " + tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size());
         int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));
         System.out.println("Barcode: " + barcode);
+        state = WAITING;
+        tempBuffer.unsetCheckPoint();
 
         int corrected = barcode;
         if (barcode != Barcode.None) {
@@ -86,7 +86,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
           model.setLine(Line.WHITE);
         } else {
           model.setBarcode(corrected);
-
         }
 
     }
