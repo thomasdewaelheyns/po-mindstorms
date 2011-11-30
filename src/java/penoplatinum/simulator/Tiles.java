@@ -60,7 +60,7 @@ public class Tiles {
     .withLine   (Baring.N,  Tile.BLACK) .withLine    (Baring.E, Tile.BLACK)
     .withCorner (Baring.SW, Tile.WHITE);
   public static Tile W_S = new Tile()
-    //.withBarcode(Barcode.Right)         .putBarcodeAt(Baring.W)
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Baring.W)
     .withWall   (Baring.N)              .withWall    (Baring.E)
     .withLine   (Baring.N,  Tile.WHITE) .withLine    (Baring.E, Tile.WHITE)
     .withCorner (Baring.SW, Tile.BLACK);
