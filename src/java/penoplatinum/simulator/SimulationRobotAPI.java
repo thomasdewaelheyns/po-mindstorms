@@ -12,7 +12,7 @@ package penoplatinum.simulator;
 public class SimulationRobotAPI implements RobotAPI {
 
   private Simulator simulator;
-  private int sonarAngle = 45;   // the sonar moves from - to + this angle
+  private int sonarAngle = 90;   // the sonar moves from - to + this angle
   private int prevSonarTacho = 0;
 
 

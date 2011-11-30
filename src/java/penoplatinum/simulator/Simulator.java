@@ -268,7 +268,7 @@ class Simulator {
     //   int distance = this.getFreeDistance((angle+i+360)%360);
     //   minimum = Math.min(minimum, distance);
     // }
-    this.sensorValues[Model.S3] = minimum;
+    this.sensorValues[Model.S3] = minimum > 255 ? 255 : minimum;
   }
 
   private void updateMotors() {

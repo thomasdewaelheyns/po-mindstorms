@@ -37,17 +37,34 @@ public class AlignPerpendicularAction extends BaseAction {
       return Navigator.STOP;
     }
 
-    if (!oldSweepDone)
-    {
+    if (!oldSweepDone) {
       oldSweepDone = true;
+      return Navigator.STOP;
     }
-    
+
     int[] sonarValues = getModel().getSonarValues();
-    int targetAngle;
     int currentAngle = sonarValues[1];
     //TODO: set target angle correctly
-    targetAngle = 90;
-    setAngle(currentAngle - targetAngle);
+    int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
+    int targetAngle = diff > 180 ? 105 : -105;
+    final int rotation = currentAngle - targetAngle;
+    if (Math.abs(rotation) < 5) {
+      correctionStarted = true;
+      return Navigator.STOP;
+    }
+
+
+    setAngle(rotation);
+
+
+
+
+
+
+
+
+
+
 
     correctionStarted = true;
 
