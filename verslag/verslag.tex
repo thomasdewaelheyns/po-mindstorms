@@ -75,7 +75,7 @@ Een tweede belangrijke component binnen de robot, wordt de “Main Event Loop”\foo
 
 Het model is een interne voorstellingsvorm van de wereld waarin de robot zich bevindt. Aan het begin van de Event Loop, zal dit model leeg zijn, of eerder volledig onbekend. Gaandeweg zal op basis van de input van de sensoren dit model gevoed worden en zal een wereldbeeld ontstaan met verschillende graden van zekerheid.
 
-De navigator consulteert vervolgens dit model om de volgende actie te bepalen en implementeert op deze manier het "doel" van de robot. Deze acties worden uitgedrukt in de taal van de RobotAPI en bestaan uit functionele opdrachten zoals beweeg $x$ meter vooruit of draai $x$ graden. 
+De navigator consulteert vervolgens dit model om de volgende actie te bepalen en implementeert op deze manier het ``doel'' van de robot. Deze acties worden uitgedrukt in de taal van de RobotAPI en bestaan uit functionele opdrachten zoals beweeg $x$ meter vooruit of draai $x$ graden. 
 
 Naast de Main Event Loop, voorzien we een tweede onafhankelijke Event Loop, namelijk voor de communicatie met de PC. Deze geschiedt via Bluetooth. De redenen om deze gescheiden te houden zijn triviaal: enerzijds willen we de werking van de robot zelf niet onnodig in gevaar brengen met een proces dat kan falen. Anderzijds zal ook de frequentie waarop beide processen opereren niet gelijk lopen.
 
@@ -89,9 +89,9 @@ We zijn van mening dat het louter verzenden en visualiseren van informatie over 
 
 Aangezien we de informatie dus wensen te bewaren, willen we dit ook een centraal gegeven van onze architectuur maken. Opnieuw komt dit de robuustheid van de gehele oplossing ten goede. De focus zal komen te liggen op het optimaal opslaan van de gegevens. Het visualiseren ervan komt vervolgens neer op het opvragen ervan, wat opnieuw een asynchroon proces is.
 
-Deze architectuur heeft enkele bijkomende gevolgen. Zo wordt het bvb. mogelijk om gegevens van meerdere sessies simultaan te bekijken of kan met meerdere en/of verschillende gebruikersinterfaces gewerkt worden. Ook kan voor de realisatie van deze architectuur beroep gedaan worden op enkele standaarden, waardoor het cre"eren van nieuwe code tot een minimum beperkt wordt.
+Deze architectuur heeft enkele bijkomende gevolgen. Zo wordt het bvb. mogelijk om gegevens van meerdere sessies simultaan te bekijken of kan met meerdere en/of verschillende gebruikersinterfaces gewerkt worden. Ook kan voor de realisatie van deze architectuur beroep gedaan worden op enkele standaarden, waardoor het cre\"eren van nieuwe code tot een minimum beperkt wordt.
 
-Zo kan de Log Server ge"implementeerd worden op basis van log4j\footnote{\url{http://logging.apache.org/log4j/}} en kan de aflevering van de inkomende communicatie volledig in configuratie gerealiseerd worden. De meest eenvoudige uitwerking kan bestaan uit het gebruiken van een syslog daemon, maar ook een relationele databank is triviaal.
+Zo kan de Log Server ge\"implementeerd worden op basis van log4j\footnote{\url{http://logging.apache.org/log4j/}} en kan de aflevering van de inkomende communicatie volledig in configuratie gerealiseerd worden. De meest eenvoudige uitwerking kan bestaan uit het gebruiken van een syslog daemon, maar ook een relationele databank is triviaal.
 
 Verschillende types clients kunnen de gegevens uit de databank visualiseren: een Fat Client\footnote{\url{http://en.wikipedia.org/wiki/Fat_client}} ligt voor de hand, maar ook een web-applicatie of REST\footnote{\url{http://en.wikipedia.org/wiki/Representational_state_transfer}} service zijn goede opties.
 
@@ -399,7 +399,7 @@ Met de grijswaardesensor willen we drie kleuren kunnen onderscheiden: bruin, wit
 
 We hebben met verschillende sets van kalibratiewaarden telkens 12 metingen gedaan van bruin, wit en zwart. Voor het bepalen van de waarden waarbinnen we besluiten of een kleur bruin, wit of zwart is, bekijken we de resultaten in absolute vorm over alle metingen heen. Figuur \ref{chart:kleuren} illustreert de bereiken van de drie verschillende kleuren.
 
-Hierbij merken we op dat het bereik van de metingen voor zwart ver ligt van het bereik van bruin en wit. Deze twee laatsten daarentegen hebben wel minima en maxima die in elkaars buurt liggen en potentieel kunnen zorgen voor "valse positieven" in beide richtingen.
+Hierbij merken we op dat het bereik van de metingen voor zwart ver ligt van het bereik van bruin en wit. Deze twee laatsten daarentegen hebben wel minima en maxima die in elkaars buurt liggen en potentieel kunnen zorgen voor ``valse positieve'' in beide richtingen.
 
 \begin{figure}
 	\caption{Absolute gemeten waarden voor wit, bruin en zwart}
@@ -571,7 +571,7 @@ De meetwaarden van deze test waren omvangrijk in aantal. Ze werden dan ook met b
 
 \section{Resultaten van de demo en conclusies}
 
-De robot was in staat om meerdere rondjes op het parcours te rijden. Het algoritme voorzag een robot die vooruitreed en veranderen slechts van richting op basis van een nieuwe volledige set van sonar-waarden. De tijd om een volledige "sweep" uit te voeren was echter soms te lang om tijdig van richting te veranderen om een obstakel te vermijden. Naar de finale demo toe willen we de verhouding tussen het rijden en het detecteren van obstakels met de sonar, verder verfijnen.
+De robot was in staat om meerdere rondjes op het parcours te rijden. Het algoritme voorzag een robot die vooruitreed en veranderen slechts van richting op basis van een nieuwe volledige set van sonar-waarden. De tijd om een volledige ``sweep'' uit te voeren was echter soms te lang om tijdig van richting te veranderen om een obstakel te vermijden. Naar de finale demo toe willen we de verhouding tussen het rijden en het detecteren van obstakels met de sonar, verder verfijnen.
 
 \chapter{Demo 2c: Barcode}
 
@@ -608,7 +608,7 @@ De robot detecteerde de barcodes correct, behalve de barcodes die zich op een he
 
 \chapter{Finale demonstratie}
 
-Tijdens de finale demonstratie moet de robot autonoom een onbekend parcours rijden. Hierbij kan gebruik gemaakt worden van alle sensoren. Op het parcours kunnen panelen voorkomen waar maximaal 1 sensor-waarneembare eigenschap weggenomen wordt.
+Tijdens de finale demonstratie moet de robot autonoom een onbekend parcours rijden. Hierbij kan gebruik gemaakt worden van alle sensoren. Op het parcours kunnen panelen voorkomen waar maximaal \'e\'en sensor-waarneembare eigenschap weggenomen wordt.
 
 \section{Fysiek ontwerp}
 
@@ -620,9 +620,9 @@ Na de tussentijdse demo's zijn we voor het rijden van het parcours overgeschakel
 
 \subsection{Simulator}
 
-Het ontwikkelen van software voor een door Lejos aangedreven Mindstorms robot, of eender welk ander "embedded" systeem, wordt typisch bemoeilijkt door de zeer beperkte toegankelijkheid van het systeem. Deze ontoegankelijkheid vertoont zich op verschillende vlakken: op fysiek vlak dient er steeds een nieuwe versie van de software overgebracht worden, moet de robot op een parcours geplaatst worden (dat eerst nog gebouwd moet worden), enz. Op vlak van software ontwikkeling is men niet in staat om normale ontwikkel-omgevingen te gebruiken en kan nauwelijks of met grote omwegen "gedebugged" worden.
+Het ontwikkelen van software voor een door Lejos aangedreven Mindstorms robot, of eender welk ander ``embedded'' systeem, wordt typisch bemoeilijkt door de zeer beperkte toegankelijkheid van het systeem. Deze ontoegankelijkheid vertoont zich op verschillende vlakken: op fysiek vlak dient er steeds een nieuwe versie van de software overgebracht worden, moet de robot op een parcours geplaatst worden (dat eerst nog gebouwd moet worden), enz. Op vlak van software ontwikkeling is men niet in staat om normale ontwikkel-omgevingen te gebruiken en kan nauwelijks of met grote omwegen ``gedebugged'' worden.
 
-We hebben daarom gekozen om een simualtoieomgeving te cre\"eren waar we zelf alle controle over hebben en die de bovengenoemde problemen grotendeels oplost. Figuur \ref{fig:simulator} toont de simulator in actie.
+We hebben daarom gekozen om een simulatieomgeving te cre\"eren waar we zelf alle controle over hebben en die de bovengenoemde problemen grotendeels oplost. Figuur \ref{fig:simulator} toont de simulator in actie.
 
 \begin{figure}[htbp]
    \centering
@@ -631,13 +631,13 @@ We hebben daarom gekozen om een simualtoieomgeving te cre\"eren waar we zelf all
    \includegraphics[width=150mm]{resources/simulator.png}
 \end{figure}
 
-De simulator stelt ons in staat om de exacte code die uiteindelijk op de robot zal gebruikt worden uit te voeren. Hierbij zal de simulatieomgeving de invoer voor de sensoren berekenen op basis van een voor gedefinieerd parcours. De acties van de robot, uitgedrukt in veranderingen van de motoren, worden ook door de simulatieomgeving opgepikt en vervolgens omgezet in realistische verplaatsingen op het parcours.
+De simulator stelt ons in staat om de exacte code die uiteindelijk op de robot zal gebruikt worden uit te voeren. Hierbij zal de simulatieomgeving de invoer voor de sensoren berekenen op basis van een voor-gedefinieerd parcours. De acties van de robot, uitgedrukt in veranderingen van de motoren, worden ook door de simulatieomgeving opgepikt en vervolgens omgezet in realistische verplaatsingen op het parcours.
 
 \subsection{Model en Navigator}
 
-In de event loop op de robot worden de verschillende sensor-waarden uitgelezen en in het \texttt{Model} gestopt. Vervolgens verwerken \texttt{ModelProcessors} deze nieuwe waarden en voegen geaggregeerde informatie toe aan het model. Zo wordt informatie van de lichtsensor bijgehouden in een histogram, waarna barcodes of lijnen gedetecteerd kunnen worden.
+In de event loop op de robot worden de verschillende sensor-waarden uitgelezen en in het \texttt{Model} gestopt. Vervolgens verwerken \texttt{ModelProcessoren} deze nieuwe waarden en voegen geaggregeerde informatie toe aan het model. Zo wordt informatie van de lichtsensor bijgehouden in een histogram, waarna barcodes of lijnen gedetecteerd kunnen worden.
 
-Op basis van deze uitgebreide informatie over zijn wereld, zal vervolgens de \texttt{navigator} bepalen welke actie er ondernomen dient te worden. Hierbij worden twee stappen ondernomen:
+Op basis van deze uitgebreide informatie over zijn wereld, zal vervolgens de \texttt{Navigator} bepalen welke actie er ondernomen dient te worden. Hierbij worden twee stappen doorlopen:
 
 \begin{enumerate}
 \item detecteren van events uit de wereld
@@ -647,11 +647,11 @@ Op basis van deze uitgebreide informatie over zijn wereld, zal vervolgens de \te
 Tijdens het detecteren van de events uit de wereld, bekijkt de Navigator de volgende mogelijke gebeurtenissen in volgorde:
 
 \begin{enumerate}
-\item detectie barcodes
+\item detectie van barcodes
 \item nabijheid van obstakels
 \item detectie van lijnen
-\item bijna-botsing situatie
-\item botsing situatie
+\item bijna-botsing situaties
+\item botsing situaties
 \end{enumerate}
 
 Indien \'e\'en van deze gebeurtenissen voorvalt, zal de Navigator de nodige acties op de \texttt{ActionQueue} plaatsen. Dit is een queue van acties die ondernomen moeten worden. Zo zal bvb. bij een botsing er eerst achteruit gereden worden en vervolgens gedraaid worden.
