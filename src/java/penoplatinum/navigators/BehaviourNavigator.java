@@ -9,6 +9,7 @@ import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
+import penoplatinum.simulator.SimulationRunner;
 
 /**
  * TestNavigator
@@ -23,12 +24,11 @@ public class BehaviourNavigator implements Navigator {
   private float distance;
   private float angle;
   private ActionQueue queue = new ActionQueue();
-//
-//  public static void main(String[] args) {
-//    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,180";
-//    SimulationRunner.main(lalala.split(" "));
-//  }
 
+  public static void main(String[] args) {
+    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,180";
+    SimulationRunner.main(lalala.split(" "));
+  }
   public BehaviourNavigator() {
     // Fill with initial action
 
@@ -42,6 +42,12 @@ public class BehaviourNavigator implements Navigator {
       return false;
     }
   };
+
+  private void processWorldEvents() {
+    checkLineEvent();
+    checkObstacleEvent();
+    checkBarcodeEvent();
+  }
 
   private void checkBarcodeEvent() {
     if (0 == 0) {
@@ -94,7 +100,7 @@ public class BehaviourNavigator implements Navigator {
       queue.add(new TurnAction(model, rotation));
       //TODO: Create the correct barcode actions
       //      actionQueue.add(new TurnAction(model, -180));
-      
+
       queue.add(new DriveForwardAction());
 
     }
@@ -110,7 +116,6 @@ public class BehaviourNavigator implements Navigator {
     return this;
   }
 
-  // the external test-runner can determine the goal
   public Boolean reachedGoal() {
     return this.controler.reachedGoal();
   }
@@ -123,12 +128,6 @@ public class BehaviourNavigator implements Navigator {
     processWorldEvents();
 
     return queue.nextNavigatorAction();
-  }
-
-  private void processWorldEvents() {
-    checkLineEvent();
-    checkObstacleEvent();
-    checkBarcodeEvent();
   }
 
   private void updateWallWarnings() {
@@ -145,10 +144,7 @@ public class BehaviourNavigator implements Navigator {
   public double getDistance() {
     return queue.getCurrentAction() == null ? 1 : queue.getCurrentAction().getDistance();
   }
-
   public double getAngle() {
     return queue.getCurrentAction() == null ? 0 : queue.getCurrentAction().getAngle();
   }
-
-
 }
