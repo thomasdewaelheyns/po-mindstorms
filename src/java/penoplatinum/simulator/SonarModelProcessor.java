@@ -92,16 +92,19 @@ public class SonarModelProcessor extends ModelProcessor {
     int min = 10000; //Integer.MAX_VALUE;
     int max = -10000; //Integer.MIN_VALUE;
     int minIdx = -1, maxIdx = -1;
+    int minIdy = -1, maxIdy = -1;
     
     if (blurred.size() == 0) return; //TODO:
     
     for( int i=0; i<this.blurred.size(); i++ ) {
       int value = this.blurred.get(i);
-      if( value >= max ) { max = value; maxIdx = i; }
-      if( value <= min ) { min = value; minIdx = i; }
+      if( value > max ) { max = value; maxIdx = i; }
+      if( value < min ) { min = value; minIdx = i; }
+      if(value == max ) { maxIdy = i;}
+      if(value == min ) { minIdy = i;}
     }
-    this.model.setNewSweep( min, this.angles.get(minIdx),
-                            max, this.angles.get(maxIdx) );
+    this.model.setNewSweep( min, (this.angles.get(minIdx) + this.angles.get(minIdy))/2,
+                            max, (this.angles.get(maxIdx) + this.angles.get(minIdy))/2);
   }
 
   public void setMiddleTacho(int tacho){

@@ -28,7 +28,7 @@ public class BehaviourNavigator implements Navigator {
   private ActionQueue queue = new ActionQueue();
 
   public static void main(String[] args) {
-    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,180";
+    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,195";
     SimulationRunner.main(lalala.split(" "));
   }
 
