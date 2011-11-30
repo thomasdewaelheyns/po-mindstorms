@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>POC web client</title>
+  <link rel="stylesheet" type="text/css" href="client.css">
+</head>
+
+<body>
+  <h1>P&amp;O Computerwetenschappen - Team Platinum</h1>
+  <h2>aNGie's dashboard</h2>
+  
+  <div id="model" class="group">
+
+    <h3>Model</h3>
+
+    <div id="light" class="sensor">
+      <h4>Light Sensor</h4>
+      <div id="lightValue" style="background-color:rgb(75,75,75);color:rgb(">300</div>
+      <div id="lightColor" class="brown">BROWN</div>  
+      <canvas id="lightHistogram" width="150" height="70" class="light"></canvas>
+      <div id="barcode">barcode: 51</div>  
+    </div>
+
+    <div id="sonar" class="sensor">
+      <h4>Sonar Sensor</h4>
+      <div id="sonarValue">12,5 cm @ 35&deg;</div>
+      <canvas id="sonarHistogram" width="150" height="150" class="sonar"></canvas>
+    </div>
+
+    <div id="push" class="sensor">
+      <h4>Push Sensors</h4>
+      <div id="push-left" class="push active">PUSHED</div>
+      <div id="push-right" class="push inactive">OK</div>
+    </div>
+    
+    <div id="barcode" class="event"></div>
+    <div id="proximity" class="event"></div>
+    <div id="line" class="event"></div>
+    <div id="near-collision" class="event"></div>
+    <div id="collision" class="event"></div>
+  </div>
+  
+  <div id="navigator" class="group">
+
+    <h3>Navigator</h3>
+
+    <div id="event" class="action">
+      <h4>Event</h4>
+      <div id="eventKind" class="urgent">Collision</div>
+      <div id="eventSource">on Left Push Sensor</div>
+      <div id="eventAction" class="urgent">EVADE</div>
+      <div id="eventActionQueue">
+        <ol style="text-align:left;margin:0px;padding-left:15px;">
+          <li>MOVE backward / 10cm</li>
+          <li>TURN / -30&deg;</li>
+        </ol>
+      </div>
+    </div>
+
+    <div id="action" class="action">
+      <h4>Action</h4>
+      <div id="actionKind">MOVE backward</div>
+      <div id="actionParam">10cm</div>
+    </div>
+  </div>
+
+  <script src="client.js"></script>
+  <!--
+  activate update stream:  <script src="./stream"></script>
+  -->
+
+</body>
+</html>
