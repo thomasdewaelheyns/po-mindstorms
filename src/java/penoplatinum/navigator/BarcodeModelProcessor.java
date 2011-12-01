@@ -25,6 +25,12 @@ public class BarcodeModelProcessor extends ModelProcessor {
   private int brownCounter = 0;
   int state = WAITING;
   private ColorInterpreter colorInterpreter;
+  private long startTime;
+  private long stopTime;
+  public  double WIELOMTREK = 0.175;
+  //the length of a barcode strip
+  private double barcodeLength = 0.14;
+  private double motorSpeedMeter = 250*WIELOMTREK*60;
 
   public BarcodeModelProcessor() {
     super();
@@ -59,6 +65,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
     switch (state) {
       case WAITING:
         if (!colorInterpreter.isColor(Color.Brown)) {
+          this.startTime = System.nanoTime();
           state = RECORDING;
           tempBuffer.setCheckPoint();
           brownCounter = 0;
@@ -71,6 +78,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
             state = WAITING;
             tempBuffer.unsetCheckPoint();
           } else if (brownCounter > END_OF_BARCODE_BROWN_COUNT) {
+            this.stopTime = System.nanoTime();
             state = INTERPRET;
           }
         } else {
@@ -78,7 +86,8 @@ public class BarcodeModelProcessor extends ModelProcessor {
         }
         break;
       case INTERPRET:
-        System.out.println("Buffersize: " + tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size());
+        int barcodeSize = tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size();
+        System.out.println("Buffersize: " + barcodeSize);
         int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));
         System.out.println("Barcode: " + barcode / 8);
         state = WAITING;
@@ -89,6 +98,15 @@ public class BarcodeModelProcessor extends ModelProcessor {
           corrected = interpreter.correct(barcode);
         }
         model.setBarcode(corrected);
+        model.setBarcodeAngle(calculateAngle());
     }
+  }
+  
+  // returns degrees
+  public double calculateAngle(){
+   long timeDifference = this.stopTime-this.startTime;
+   double distanceTraveled = timeDifference*(10^9)*motorSpeedMeter;
+   double degree = Math.acos(barcodeLength/distanceTraveled)*(360/(2*Math.PI));
+   return degree;
   }
 }

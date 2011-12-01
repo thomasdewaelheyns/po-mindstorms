@@ -90,6 +90,18 @@ public class BehaviourNavigator implements Navigator {
         //queue.add(new MoveAction(model, 0.350f));
         //queue.add(new TurnAction(model, -45));
         break;
+        
+      case 5:
+      case 9:
+      case 10:
+      case 11:
+      case 12:
+      case 13:
+      case 14:
+        queue.add(new MoveAction(model, 0.15f));
+                        queue.add(new TurnAction(model, 180));
+        break;
+        
       case 1:
       case 2:
       case 4:

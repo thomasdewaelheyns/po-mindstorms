@@ -55,6 +55,7 @@ public class Model {
   private Line line = Line.NONE;
   private int bufferSize = 2000;
   private Buffer lightValueBuffer = new Buffer(bufferSize);
+  private double barcodeAngle = 90;
 
   // sets the (top-level) processor
   public void setProcessor(ModelProcessor processor) {
@@ -211,5 +212,14 @@ public class Model {
 
   public void setLine(Line line) {
     this.line = line;
+  }
+  
+  
+  public void setBarcodeAngle(double angle){
+    this.barcodeAngle = angle;
+  }
+  
+  public double getBarcodeAngle(){
+    return this.barcodeAngle;
   }
 }
