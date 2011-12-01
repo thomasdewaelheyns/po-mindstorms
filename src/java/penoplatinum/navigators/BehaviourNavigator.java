@@ -26,11 +26,12 @@ public class BehaviourNavigator implements Navigator {
   private float distance;
   private float angle;
   private ActionQueue queue = new ActionQueue();
-
-//  public static void main(String[] args) {
-//    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,270";
-//    SimulationRunner.main(lalala.split(" "));
-//  }
+ 
+  /*public static void main(String[] args) {
+    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,180";
+    SimulationRunner.main(lalala.split(" "));
+  }/**/
+  
   public BehaviourNavigator() {
     // Fill with initial action
 
@@ -49,6 +50,7 @@ public class BehaviourNavigator implements Navigator {
     if (queue.getCurrentAction().isNonInterruptable()) {
       return;
     }
+
 //
     checkBarcodeEvent();
 //    checkProximityEvent();
@@ -109,6 +111,8 @@ public class BehaviourNavigator implements Navigator {
       queue.add(new AlignNotLineAction(model, model.getLine() == Line.BLACK).setIsNonInterruptable(true));
       queue.add(new MoveAction(model, 0.3f));
       queue.add(new TurnAction(model,(int)( AlignNotLineAction.TARGET_ANGLE * directionMultiplier * 0.8f )));
+      model.setLine(Line.NONE);
+      
 
       //TODO: line timeout?
     }

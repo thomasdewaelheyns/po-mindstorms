@@ -33,6 +33,8 @@ public class BarcodeModelProcessor extends ModelProcessor {
 
   public BarcodeModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
+    this.colorInterpreter = new ColorInterpreter();
+    interpreter = new BarcodeDataNav(colorInterpreter);
   }
 
   @Override
@@ -78,14 +80,14 @@ public class BarcodeModelProcessor extends ModelProcessor {
         if (barcode != Barcode.None) {
           corrected = interpreter.correct(barcode);
         }
-        if (corrected == 0) {
+        /*if (corrected == 0) {
           model.setLine(Line.BLACK);
         } else if (corrected == 15) {
           model.setLine(Line.WHITE);
         } else {
           model.setBarcode(corrected);
-        }
-
+        }/**/
+        model.setBarcode(corrected);
     }
   }
 }

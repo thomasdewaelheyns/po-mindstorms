@@ -34,7 +34,8 @@ public class NavigatorRobot implements Robot {
             new FrontPushModelProcessor(
             new SonarModelProcessor(
             new BarcodeModelProcessor(
-    ))));
+            new LineModelProcessor(
+    )))));
     
     this.model.setProcessor(histoBuilder);
   }
