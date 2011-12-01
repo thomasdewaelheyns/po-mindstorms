@@ -49,6 +49,6 @@ public class AngieEventLoop {
 
     public void step() {
         angie.getSonar().updateSonarMovement();
-        navigatorRobot.step();
+        //navigatorRobot.step();
     }
 }

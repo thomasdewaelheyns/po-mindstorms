@@ -23,7 +23,7 @@ class Simulator {
   public static final int GOAL_SET_BY_ROBOT = 2;
   private int goal = GOAL_SET_BY_ROBOT;
   // distance to the lightsensor-position
-  private static final double LIGHTSENSOR_DISTANCE = 10.0; // 10cm from center
+  private static final double LIGHTSENSOR_DISTANCE = 5.0; // 10cm from center
   private static final double LENGTH_ROBOT = 10.0;
   private static final double BUMPER_LENGTH_ROBOT = 11.0;
   private static final double WHEEL_SIZE = 17.5; // circumf. in cm
@@ -269,7 +269,7 @@ class Simulator {
     //   int distance = this.getFreeDistance((angle+i+360)%360);
     //   minimum = Math.min(minimum, distance);
     // }
-    this.sensorValues[Model.S3] = minimum > 255 ? 255 : minimum;
+    this.sensorValues[Model.S3] = minimum > 90 ? 255 : minimum;
   }
 
   private void updateMotors() {
@@ -448,7 +448,6 @@ class Simulator {
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
     while (!this.reachedGoal()) {
-      Utils.Sleep(4);
       this.step();
       this.robot.step();
     }

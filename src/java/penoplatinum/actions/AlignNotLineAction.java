@@ -52,7 +52,7 @@ public class AlignNotLineAction extends BaseAction {
           lineStartFound = true;
         }
       } else {
-        if (!colors.isColor(ColorInterpreter.Color.Brown)) {
+        if (colors.isColor(ColorInterpreter.Color.Brown)) {
           // End found!
           sweeping = false;
 

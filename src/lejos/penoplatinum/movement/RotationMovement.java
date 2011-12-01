@@ -35,7 +35,7 @@ public class RotationMovement {
         distance *= 1000;
         distance /= 0.99;
         int r = (int) (distance * 360 / WIELOMTREK);
-        setSpeed(SPEEDFORWARD);
+        //setSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
         motorRight.rotate(r, true);
     }
@@ -54,7 +54,7 @@ public class RotationMovement {
         if (movementDisabled) {
             return;
         }
-        setSpeed(SPEEDTURN);
+        //setSpeed(SPEEDTURN);
         angleCCW *= CCW_afwijking;
 
         int h = (int) (angleCCW * Math.PI * WIELAFSTAND / WIELOMTREK);

@@ -46,14 +46,14 @@ public class BehaviourNavigator implements Navigator {
   };
 
   private void processWorldEvents() {
-    Utils.Log(model.getSensorValue(Model.S4) + "");
+  //Utils.Log(model.getSensorValue(Model.S4) + "");
     if (queue.getCurrentAction().isNonInterruptable()) {
       return;
     }
 
 //
-    checkBarcodeEvent();
-//    checkProximityEvent();
+//    checkBarcodeEvent();
+    checkProximityEvent();
     checkLineEvent();
 //    checkSonarCollisionEvent();
     checkCollisionEvent();
@@ -90,7 +90,7 @@ public class BehaviourNavigator implements Navigator {
         //queue.add(new MoveAction(model, 0.350f));
         //queue.add(new TurnAction(model, -45));
         break;
-        
+
       case 5:
       case 9:
       case 10:
@@ -99,9 +99,9 @@ public class BehaviourNavigator implements Navigator {
       case 13:
       case 14:
         queue.add(new MoveAction(model, 0.15f));
-                        queue.add(new TurnAction(model, 180));
+        queue.add(new TurnAction(model, 180));
         break;
-        
+
       case 1:
       case 2:
       case 4:
@@ -126,7 +126,6 @@ public class BehaviourNavigator implements Navigator {
     queue.add(new AlignNotLineAction(model, model.getLine() == Line.BLACK).setIsNonInterruptable(true));
     queue.add(new MoveAction(model, 0.3f));
     //queue.add(new TurnAction(model, (int) (AlignNotLineAction.TARGET_ANGLE * directionMultiplier * 0.8f)));
-    model.setLine(Line.NONE);
 
 
     //TODO: line timeout?
@@ -152,19 +151,26 @@ public class BehaviourNavigator implements Navigator {
   }
 
   private void checkProximityEvent() {
-    if (numProximityWallWarnings <= OBSTACLE_DETECTION_THRESHOLD) {
+    if (numProximityWallWarnings <= OBSTACLE_DETECTION_THRESHOLD || proximityOrientTimeout > 0) {
       return;
     }
     Utils.Log("EVENT: Proximity");
     // Obstacle detected
-    queue.clearActionQueue();
     int[] sonarValues = model.getSonarValues();
-    //sonarValues[3]
-    int angle = model.getSensorValue(Model.M3);
-    int targetAngle = 90;
 
-    int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
-    int rotation = diff > 180 ? -5 : 5;
+    //sonarValues[3]
+
+    int angle = model.getSensorValue(Model.M3);
+    if (Math.abs(angle) > 20) {
+      return;
+    }
+
+    //int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
+    int rotation = angle > 0 ? -5 : 5;
+
+    queue.clearActionQueue();
+    proximityOrientTimeout = 20;
+
 
     queue.add(new TurnAction(model, rotation));
     //TODO: Create the correct barcode actions
@@ -186,6 +192,7 @@ public class BehaviourNavigator implements Navigator {
     //sonarValues[3]
     int angle = model.getSensorValue(Model.M3);
     int targetAngle = 90;
+
 
     int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
     int rotation = diff > 180 ? -5 : 5;
@@ -210,10 +217,11 @@ public class BehaviourNavigator implements Navigator {
     return this.controler.reachedGoal();
   }
   int numProximityWallWarnings;
-  private static final int PROXIMITY_WALL_AVOID_DISTANCE = 25;
+  private static final int PROXIMITY_WALL_AVOID_DISTANCE = 35;
   int numCollisionWallWarnings;
   private static final int COLLISION_WALL_AVOID_DISTANCE = 15;
   final int OBSTACLE_DETECTION_THRESHOLD = 3;
+  int proximityOrientTimeout = 0;
 
   public int nextAction() {
 
@@ -234,6 +242,10 @@ public class BehaviourNavigator implements Navigator {
   }
 
   private void updateWallWarnings() {
+    proximityOrientTimeout--;
+    if (proximityOrientTimeout < 0) {
+      proximityOrientTimeout = 0;
+    }
     if (model.getSensorValue(Model.S3) < PROXIMITY_WALL_AVOID_DISTANCE) {
       numProximityWallWarnings++;
     } else {

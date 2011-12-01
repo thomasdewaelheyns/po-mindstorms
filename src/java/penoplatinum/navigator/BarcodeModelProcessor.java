@@ -30,7 +30,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
   public  double WIELOMTREK = 0.175;
   //the length of a barcode strip
   private double barcodeLength = 0.14;
-  private double motorSpeedMeter = 250*WIELOMTREK*60;
+  private double motorSpeedMeter = 250*WIELOMTREK*60; //TODO: is this hardcoded?
 
   public BarcodeModelProcessor() {
     super();

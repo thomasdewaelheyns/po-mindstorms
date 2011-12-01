@@ -52,7 +52,7 @@ public class WrappedLightSensor implements ILightSensor {
         LCD.drawInt(light.readValue(), 1, 0);
         light.calibrateLow();
         Sound.beep();
-        Utils.Sleep(1000);
+        Utils.Sleep(250);
 
         // calibreer de hoge waarde
         Utils.Log("Zet de sensor op wit en druk enter.");
@@ -62,7 +62,7 @@ public class WrappedLightSensor implements ILightSensor {
         light.calibrateHigh();
         WHITEVAL = light.readValue();
         Sound.beep();
-        Utils.Sleep(1000);
+        Utils.Sleep(250);
 
 
         Utils.Log("Zet de sensor op zwart en druk enter.");
@@ -70,7 +70,7 @@ public class WrappedLightSensor implements ILightSensor {
         Button.waitForPress();
         BLACKVAL = light.readValue();
         Sound.beep();
-        Utils.Sleep(1000);
+        Utils.Sleep(250);
 
         Utils.Log("Zet de sensor op bruin en druk enter.");
 //        commandTransporter.ReceivePacket();
@@ -78,7 +78,7 @@ public class WrappedLightSensor implements ILightSensor {
         LCD.drawInt(light.readValue(), 3, 0);
         BROWNVAL = light.readValue();
         Sound.beep();
-        Utils.Sleep(1000);
+        Utils.Sleep(250);
 
         LCD.clear();
 
