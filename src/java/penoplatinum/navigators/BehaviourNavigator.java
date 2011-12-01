@@ -72,16 +72,20 @@ public class BehaviourNavigator implements Navigator {
       case 15:
         break;
       case 3:
-        queue.add(new MoveAction(model, 0.150f));
-        queue.add(new TurnAction(model, 45));
-        queue.add(new MoveAction(model, 0.350f));
-        queue.add(new TurnAction(model, 45));
+                queue.add(new MoveAction(model, 0.30f));
+                        queue.add(new TurnAction(model, 90));
+//        queue.add(new MoveAction(model, 0.150f));
+//        queue.add(new TurnAction(model, 45));
+//        queue.add(new MoveAction(model, 0.350f));
+//        queue.add(new TurnAction(model, 45));
         break;
       case 6:
-        queue.add(new MoveAction(model, 0.150f));
-        queue.add(new TurnAction(model, -45));
-        queue.add(new MoveAction(model, 0.350f));
-        queue.add(new TurnAction(model, -45));
+        queue.add(new MoveAction(model, 0.30f));
+                        queue.add(new TurnAction(model, -90));
+//        queue.add(new MoveAction(model, 0.150f));
+//        queue.add(new TurnAction(model, -45));
+//        queue.add(new MoveAction(model, 0.350f));
+//        queue.add(new TurnAction(model, -45));
         break;
       case 1:
       case 2:
@@ -103,7 +107,7 @@ public class BehaviourNavigator implements Navigator {
       int directionMultiplier = model.getLine() == Line.BLACK ? -1 : 1;
 
       queue.add(new AlignNotLineAction(model, model.getLine() == Line.BLACK).setIsNonInterruptable(true));
-      queue.add(new MoveAction(model, 0.4f));
+      queue.add(new MoveAction(model, 0.3f));
       queue.add(new TurnAction(model,(int)( AlignNotLineAction.TARGET_ANGLE * directionMultiplier * 0.8f )));
 
       //TODO: line timeout?
