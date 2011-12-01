@@ -1,5 +1,6 @@
 package penoplatinum.navigator;
 
+import penoplatinum.Utils;
 import penoplatinum.navigator.ColorInterpreter.Color;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Line;
@@ -15,8 +16,8 @@ import penoplatinum.simulator.ModelProcessor;
  * Author: Team Platinum
  */
 public class BarcodeModelProcessor extends ModelProcessor {
-  public static final int END_OF_BARCODE_BROWN_COUNT = 10;
 
+  public static final int END_OF_BARCODE_BROWN_COUNT = 10;
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
@@ -46,8 +47,15 @@ public class BarcodeModelProcessor extends ModelProcessor {
   @Override
   protected void work() {
     Buffer tempBuffer = this.model.getLightValueBuffer();
-    model.setBarcode(Barcode.None); //TODO: incorporate in navigator  
-    model.setLine(Line.NONE);
+    model.setBarcode(Barcode.None);
+    if (model.isTurning()) {
+      if (state != WAITING) {
+        Utils.Log("Turning! Disabling measurement");
+      }
+
+      state = WAITING;
+      tempBuffer.unsetCheckPoint();
+    }
     switch (state) {
       case WAITING:
         if (!colorInterpreter.isColor(Color.Brown)) {
@@ -72,7 +80,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
       case INTERPRET:
         System.out.println("Buffersize: " + tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size());
         int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));
-        System.out.println("Barcode: " + barcode/8);
+        System.out.println("Barcode: " + barcode / 8);
         state = WAITING;
         tempBuffer.unsetCheckPoint();
 
@@ -80,13 +88,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
         if (barcode != Barcode.None) {
           corrected = interpreter.correct(barcode);
         }
-        /*if (corrected == 0) {
-          model.setLine(Line.BLACK);
-        } else if (corrected == 15) {
-          model.setLine(Line.WHITE);
-        } else {
-          model.setBarcode(corrected);
-        }/**/
         model.setBarcode(corrected);
     }
   }

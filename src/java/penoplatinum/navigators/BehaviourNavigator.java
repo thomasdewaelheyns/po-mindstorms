@@ -26,12 +26,11 @@ public class BehaviourNavigator implements Navigator {
   private float distance;
   private float angle;
   private ActionQueue queue = new ActionQueue();
- 
+
   /*public static void main(String[] args) {
-    String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,180";
-    SimulationRunner.main(lalala.split(" "));
+  String lalala = "-n penoplatinum.navigators.BehaviourNavigator -p 30,30,180";
+  SimulationRunner.main(lalala.split(" "));
   }/**/
-  
   public BehaviourNavigator() {
     // Fill with initial action
 
@@ -47,6 +46,7 @@ public class BehaviourNavigator implements Navigator {
   };
 
   private void processWorldEvents() {
+    Utils.Log(model.getSensorValue(Model.S4) + "");
     if (queue.getCurrentAction().isNonInterruptable()) {
       return;
     }
@@ -64,6 +64,7 @@ public class BehaviourNavigator implements Navigator {
     if (model.getBarcode() == Barcode.None) {
       return;
     }
+    Utils.Log("EVENT: Barcode");
     // Barcode detected
     queue.clearActionQueue();
     switch (model.getBarcode()) {
@@ -74,20 +75,20 @@ public class BehaviourNavigator implements Navigator {
       case 15:
         break;
       case 3:
-                queue.add(new MoveAction(model, 0.30f));
-                        queue.add(new TurnAction(model, 90));
-//        queue.add(new MoveAction(model, 0.150f));
-//        queue.add(new TurnAction(model, 45));
-//        queue.add(new MoveAction(model, 0.350f));
-//        queue.add(new TurnAction(model, 45));
+        queue.add(new MoveAction(model, 0.30f));
+        queue.add(new TurnAction(model, 90));
+        //queue.add(new MoveAction(model, 0.150f));
+        //queue.add(new TurnAction(model, 45));
+        //queue.add(new MoveAction(model, 0.350f));
+        //queue.add(new TurnAction(model, 45));
         break;
       case 6:
         queue.add(new MoveAction(model, 0.30f));
-                        queue.add(new TurnAction(model, -90));
-//        queue.add(new MoveAction(model, 0.150f));
-//        queue.add(new TurnAction(model, -45));
-//        queue.add(new MoveAction(model, 0.350f));
-//        queue.add(new TurnAction(model, -45));
+        queue.add(new TurnAction(model, -90));
+        //queue.add(new MoveAction(model, 0.150f));
+        //queue.add(new TurnAction(model, -45));
+        //queue.add(new MoveAction(model, 0.350f));
+        //queue.add(new TurnAction(model, -45));
         break;
       case 1:
       case 2:
@@ -101,27 +102,30 @@ public class BehaviourNavigator implements Navigator {
   }
 
   private void checkLineEvent() {
-    if (model.getLine() != Line.NONE) {
-
-      // Line detected
-      queue.clearActionQueue();
-
-      int directionMultiplier = model.getLine() == Line.BLACK ? -1 : 1;
-
-      queue.add(new AlignNotLineAction(model, model.getLine() == Line.BLACK).setIsNonInterruptable(true));
-      queue.add(new MoveAction(model, 0.3f));
-      queue.add(new TurnAction(model,(int)( AlignNotLineAction.TARGET_ANGLE * directionMultiplier * 0.8f )));
-      model.setLine(Line.NONE);
-      
-
-      //TODO: line timeout?
+    if (model.getLine() == Line.NONE) {
+      return;
     }
+    Utils.Log("EVENT: Line");
+    // Line detected
+    queue.clearActionQueue();
+
+    int directionMultiplier = model.getLine() == Line.BLACK ? -1 : 1;
+
+    queue.add(new AlignNotLineAction(model, model.getLine() == Line.BLACK).setIsNonInterruptable(true));
+    queue.add(new MoveAction(model, 0.3f));
+    //queue.add(new TurnAction(model, (int) (AlignNotLineAction.TARGET_ANGLE * directionMultiplier * 0.8f)));
+    model.setLine(Line.NONE);
+
+
+    //TODO: line timeout?
+
   }
 
   private void checkCollisionEvent() {
     if (!model.isStuck()) {
       return;
     }
+    Utils.Log("Collision event!");
     queue.clearActionQueue();
     if (model.isStuckLeft() && model.isStuckRight()) {
       queue.add(new MoveAction(model, -0.10f).setIsNonInterruptable(true));
@@ -136,43 +140,48 @@ public class BehaviourNavigator implements Navigator {
   }
 
   private void checkProximityEvent() {
-    if (numProximityWallWarnings > OBSTACLE_DETECTION_THRESHOLD) {
-      // Obstacle detected
-      queue.clearActionQueue();
-      int[] sonarValues = model.getSonarValues();
-      //sonarValues[3]
-      int angle = model.getSensorValue(Model.M3);
-      int targetAngle = 90;
-
-      int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
-      int rotation = diff > 180 ? -5 : 5;
-
-      queue.add(new TurnAction(model, rotation));
-      //TODO: Create the correct barcode actions
-      //      actionQueue.add(new TurnAction(model, -180));
+    if (numProximityWallWarnings <= OBSTACLE_DETECTION_THRESHOLD) {
+      return;
     }
+    Utils.Log("EVENT: Proximity");
+    // Obstacle detected
+    queue.clearActionQueue();
+    int[] sonarValues = model.getSonarValues();
+    //sonarValues[3]
+    int angle = model.getSensorValue(Model.M3);
+    int targetAngle = 90;
+
+    int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
+    int rotation = diff > 180 ? -5 : 5;
+
+    queue.add(new TurnAction(model, rotation));
+    //TODO: Create the correct barcode actions
+    //      actionQueue.add(new TurnAction(model, -180));
+
   }
 
   private void checkSonarCollisionEvent() {
-    if (numCollisionWallWarnings > OBSTACLE_DETECTION_THRESHOLD) {
-      // Obstacle detected
-      queue.clearActionQueue();
-
-      queue.add(new MoveAction(model, -.05f).setIsNonInterruptable(true));
-
-      int[] sonarValues = model.getSonarValues();
-      //sonarValues[3]
-      int angle = model.getSensorValue(Model.M3);
-      int targetAngle = 90;
-
-      int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
-      int rotation = diff > 180 ? -5 : 5;
-
-      queue.add(new AlignPerpendicularAction(model).setIsNonInterruptable(true));
-      queue.add(new MoveAction(model, .05f).setIsNonInterruptable(true));
-      //TODO: Create the correct barcode actions
-      //      actionQueue.add(new TurnAction(model, -180));
+    if (numCollisionWallWarnings <= OBSTACLE_DETECTION_THRESHOLD) {
+      return;
     }
+    Utils.Log("EVENT: SonarCollision");
+    // Obstacle detected
+    queue.clearActionQueue();
+
+    queue.add(new MoveAction(model, -.05f).setIsNonInterruptable(true));
+
+    int[] sonarValues = model.getSonarValues();
+    //sonarValues[3]
+    int angle = model.getSensorValue(Model.M3);
+    int targetAngle = 90;
+
+    int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
+    int rotation = diff > 180 ? -5 : 5;
+
+    queue.add(new AlignPerpendicularAction(model).setIsNonInterruptable(true));
+    queue.add(new MoveAction(model, .05f).setIsNonInterruptable(true));
+    //TODO: Create the correct barcode actions
+    //      actionQueue.add(new TurnAction(model, -180));
   }
 
   public BehaviourNavigator setModel(Model model) {

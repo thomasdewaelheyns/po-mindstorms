@@ -14,6 +14,7 @@ package penoplatinum.simulator;
 import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
+import penoplatinum.Utils;
 
 class Simulator {
   // the Simulator can run until different goals are reached
@@ -447,6 +448,7 @@ class Simulator {
     this.startTime = System.currentTimeMillis();
     this.robotAgent.run();
     while (!this.reachedGoal()) {
+      Utils.Sleep(4);
       this.step();
       this.robot.step();
     }
