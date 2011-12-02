@@ -13,7 +13,7 @@ public class Main {
                 Utils.Log("Started!");
 
                 AngieEventLoop loop = new AngieEventLoop();
-                loop.useNavigator(new TurnVerySmall());
+                loop.useNavigator(new BehaviourNavigator());
                 //loop.useNavigator(new TurnNavigator());
                 loop.runEventLoop();
             }

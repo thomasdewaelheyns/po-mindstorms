@@ -55,7 +55,7 @@ public class Model {
   private Line line = Line.NONE;
   private int bufferSize = 2000;
   private Buffer lightValueBuffer = new Buffer(bufferSize);
-  private double barcodeAngle = 90;
+  private double barcodeAngle = 0;
 
   // sets the (top-level) processor
   public void setProcessor(ModelProcessor processor) {

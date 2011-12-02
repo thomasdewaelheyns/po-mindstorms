@@ -41,6 +41,10 @@ public class LineModelProcessor extends ModelProcessor {
   @Override
   protected void work() {
     model.setLine(Line.NONE);
+     if (model.isTurning()) {
+
+      state = WAITING;
+    }
     switch (state) {
       case WAITING:
         if (!colorInterpreter.isColor(Color.Brown)) {
@@ -54,10 +58,10 @@ public class LineModelProcessor extends ModelProcessor {
       case RECORDING:
         if (colorInterpreter.isColor(Color.Brown)) {
           brownCounter++;
-          if (brownCounter > 5 && colorCounter < 3) {
+          if (brownCounter > 5 && colorCounter < 2) {
             state = WAITING;
             System.out.println("WAITING");
-          } else if (brownCounter > 5 && colorCounter >= 25) {
+          } else if (brownCounter > 5 && colorCounter >= 50) {
             state = WAITING;
             System.out.println("BARCODE");
           } else if (brownCounter > 5) {

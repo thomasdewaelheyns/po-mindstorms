@@ -3,9 +3,11 @@ package penoplatinum.navigators;
 import penoplatinum.Utils;
 import penoplatinum.actions.ActionQueue;
 import penoplatinum.actions.AlignNotLineAction;
+import penoplatinum.actions.AlignOnBarcodeAction;
 import penoplatinum.actions.AlignPerpendicularAction;
 import penoplatinum.actions.DriveForwardAction;
 import penoplatinum.actions.MoveAction;
+import penoplatinum.actions.StopAction;
 import penoplatinum.actions.TurnAction;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.GoalDecider;
@@ -52,29 +54,50 @@ public class BehaviourNavigator implements Navigator {
     }
 
 //
-    checkBarcodeEvent();
+    //checkBarcodeEvent();
 //    checkProximityEvent();
-//    checkLineEvent();
-//    checkSonarCollisionEvent();
+    checkLineEvent();
+    //checkSonarCollisionEvent();
     checkCollisionEvent();
 
   }
 
+  private double lastBarcodeAngle;
+  
   private void checkBarcodeEvent() {
+    final int minCorrectionAngle = 10;
+    if (model.getBarcodeAngle() > minCorrectionAngle) // special check
+    {
+      lastBarcodeAngle = model.getBarcodeAngle();
+      model.setBarcodeAngle(0); // Cheat
+      queue.clearActionQueue();
+      queue.add(new StopAction());
+      return;
+    }
     if (model.getBarcode() == Barcode.None) {
       return;
     }
     Utils.Log("EVENT: Barcode");
     // Barcode detected
+    
+    if (model.getBarcode() == 0 || model.getBarcode() == 15) {
+      //ignore lines
+      return;
+    }
+
     queue.clearActionQueue();
 
-    int angle = (int) Math.round(model.getBarcodeAngle());
+    int angle = (int) Math.round(lastBarcodeAngle);
+    lastBarcodeAngle = 0;
     int[] sonarValues = model.getSonarValues();
-    if (angle > 5) {
+    
+    if (angle > minCorrectionAngle) {
 //      int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
 //      int rotation = diff > 180 ? angle : -angle;
-      queue.add(new TurnAction(model, angle));
+      //queue.add(new MoveAction(model, 0.05f));
+      queue.add(new AlignOnBarcodeAction(model, angle));
     }
+    model.setBarcodeAngle(0);
 
     switch (model.getBarcode()) {
       default:
@@ -82,6 +105,7 @@ public class BehaviourNavigator implements Navigator {
         break;
       case 0:
       case 15:
+        Utils.Error("Not a line!!!! aAHAHAHAH");
         break;
       case 3:
         queue.add(new MoveAction(model, 0.20f));
@@ -228,12 +252,13 @@ public class BehaviourNavigator implements Navigator {
   int numProximityWallWarnings;
   private static final int PROXIMITY_WALL_AVOID_DISTANCE = 35;
   int numCollisionWallWarnings;
-  private static final int COLLISION_WALL_AVOID_DISTANCE = 15;
+  private static final int COLLISION_WALL_AVOID_DISTANCE = 10;
   final int OBSTACLE_DETECTION_THRESHOLD = 3;
   int proximityOrientTimeout = 0;
 
   public int nextAction() {
 
+//    Utils.Log(model.getSensorValue(Model.S4)+"");
     updateWallWarnings(); // process sensory data, if more complex should be modelprocessor
     processWorldEvents();
 
@@ -255,7 +280,7 @@ public class BehaviourNavigator implements Navigator {
     if (proximityOrientTimeout < 0) {
       proximityOrientTimeout = 0;
     }
-//    if (model.getSensorValue(Model.S3) < PROXIMITY_WALL_AVOID_DISTANCE) {
+    //if (model.getSensorValue(Model.S3) < PROXIMITY_WALL_AVOID_DISTANCE) {
     if (model.getSensorValue(Model.S3) < 35) {
       numProximityWallWarnings++;
     } else {

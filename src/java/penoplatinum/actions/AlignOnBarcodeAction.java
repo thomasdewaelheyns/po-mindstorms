@@ -14,10 +14,10 @@ import penoplatinum.simulator.Navigator;
  */
 public class AlignOnBarcodeAction extends BaseAction {
 
-  public static final int TARGET_ANGLE = 40;
-  public static final int SWEEP_ANGLE = 250;
+  public static double CCW_afwijking = 1.01;
   ColorInterpreter colors;
-  private int directionModifier;
+  public final int WIELOMTREK = 175; //mm
+  public final int WIELAFSTAND = 160;//112mm
   private final int correctionAngle;
 
   public AlignOnBarcodeAction(Model model, int correctionAngle) {
@@ -32,72 +32,44 @@ public class AlignOnBarcodeAction extends BaseAction {
   private boolean lineStartFound = false;
   private boolean sweeping = false;
   private boolean abort = false;
+  private int startTacho;
+  private int directionModifier;
 
   @Override
   public int getNextAction() {
+    if (correcting)
+    {
+      return Navigator.NONE;
+    }
     if (!started) {
       //Start!
-      setAngle(90 * (Math.random() > 0.5 ? 1 : -1));
+      directionModifier = -1;//(Math.random() > 0.5 ? 1 : -1);
+      setAngle(90 * directionModifier);
+      startTacho = getModel().getSensorValue(Model.M1);
       started = true;
       return Navigator.TURN;
     }
     if (!colors.isColor(ColorInterpreter.Color.Brown)) {
       // Found something!! turn other way
-
-      int diffTacho;
-      //TODO
-//      angleCCW *= CCW_afwijking;
-//
-//      int angle =  h / Math.PI / WIELAFSTAND*WIELOMTREK
-
+      
+      int diffTacho = getModel().getSensorValue(Model.M1) - startTacho;
+      int angle = (int) (diffTacho / Math.PI / WIELAFSTAND * WIELOMTREK);
+      setAngle((Math.abs(angle) + correctionAngle) * -directionModifier);
+      correcting = true;
+      return Navigator.TURN;
     }
     if (!getModel().isTurning()) {
-      setAngle(90 - correctionAngle);
+      setAngle((90 - correctionAngle) * -directionModifier);
+      correcting = true;
       return Navigator.TURN;
     }
 
-    if (0 == 0) {
-      return Navigator.NONE;
-    }
-
-
-    if (!lineStartFound && !sweeping) {
-      // Start sweep
-      setAngle(directionModifier * SWEEP_ANGLE);
-      sweeping = true;
-      return Navigator.TURN;
-    }
-    if (sweeping) {
-      if (!getModel().isMoving()) {
-        // Sweep ended, robot did not find a line end, just abort
-        abort = true;
-        return Navigator.STOP;
-      }
-
-      if (!lineStartFound) {
-        // Searching start
-        if (!colors.isColor(ColorInterpreter.Color.Brown)) {
-          // Start found!
-          lineStartFound = true;
-        }
-      } else {
-        if (colors.isColor(ColorInterpreter.Color.Brown)) {
-          // End found!
-          sweeping = false;
-
-          setAngle(TARGET_ANGLE * directionModifier);
-
-          return Navigator.TURN;
-        }
-      }
-    }
     return Navigator.NONE;
-
   }
 
   @Override
   public boolean isComplete() {
-    return (!getModel().isMoving() && !sweeping) || abort;
+    return !getModel().isMoving() && correcting;
 
   }
 }

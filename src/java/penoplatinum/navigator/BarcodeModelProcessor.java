@@ -3,7 +3,6 @@ package penoplatinum.navigator;
 import penoplatinum.Utils;
 import penoplatinum.navigator.ColorInterpreter.Color;
 import penoplatinum.simulator.Barcode;
-import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.ModelProcessor;
 
@@ -17,7 +16,7 @@ import penoplatinum.simulator.ModelProcessor;
  */
 public class BarcodeModelProcessor extends ModelProcessor {
 
-  public static final int END_OF_BARCODE_BROWN_COUNT = 10;
+  public static final int END_OF_BARCODE_BROWN_COUNT = 5; // Was 10
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
@@ -54,9 +53,9 @@ public class BarcodeModelProcessor extends ModelProcessor {
     Buffer tempBuffer = this.model.getLightValueBuffer();
     model.setBarcode(Barcode.None);
     if (model.isTurning()) {
-      if (state != WAITING) {
-        Utils.Log("Turning! Disabling measurement");
-      }
+//      if (state != WAITING) {
+//        Utils.Log("Turning! Disabling measurement");
+//      }
 
       state = WAITING;
       tempBuffer.unsetCheckPoint();
@@ -78,6 +77,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
             tempBuffer.unsetCheckPoint();
           } else if (brownCounter > END_OF_BARCODE_BROWN_COUNT) {
             this.endTacho = model.getAverageTacho();
+            model.setBarcodeAngle(calculateAngle());
             state = INTERPRET;
           }
         } else {
@@ -86,9 +86,9 @@ public class BarcodeModelProcessor extends ModelProcessor {
         break;
       case INTERPRET:
         int barcodeSize = tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size();
-        System.out.println("Buffersize: " + barcodeSize);
+//        System.out.println("Buffersize: " + barcodeSize);
         int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));
-        System.out.println("Barcode: " + barcode / 8);
+//        System.out.println("Barcode: " + barcode / 8);
         state = WAITING;
         tempBuffer.unsetCheckPoint();
 
@@ -97,7 +97,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
           corrected = interpreter.correct(barcode);
         }
         model.setBarcode(corrected);
-        model.setBarcodeAngle(calculateAngle());
+        
     }
   }
 
@@ -105,6 +105,8 @@ public class BarcodeModelProcessor extends ModelProcessor {
   public double calculateAngle() {
     float tachoDiff = this.endTacho - this.startTacho;
     float distanceTraveled = tachoDiff / 360 * WIELOMTREK;
+    if (barcodeLength > distanceTraveled)
+      distanceTraveled = barcodeLength;
     double degree = Math.acos(barcodeLength / distanceTraveled) * (360 / (2 * Math.PI));
     return degree;
   }
