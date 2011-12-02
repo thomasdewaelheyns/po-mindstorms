@@ -7,38 +7,32 @@
 </head>
 
 <body>
-  <h1>P&amp;O Computerwetenschappen - Team Platinum</h1>
-  <h2>aNGie's dashboard</h2>
-  
+  <h1>aNGie's dashboard</h1>
+  <h2>P&amp;O Computerwetenschappen - Team Platinum</h2>
+    
   <div id="model" class="group">
 
     <h3>Model</h3>
 
     <div id="light" class="sensor">
       <h4>Light Sensor</h4>
-      <div id="lightValue" style="background-color:rgb(75,75,75);color:rgb(">300</div>
-      <div id="lightColor" class="brown">BROWN</div>  
+      <div id="lightValue">---</div>
+      <div id="lightColor">---</div>  
       <canvas id="lightHistogram" width="150" height="70" class="light"></canvas>
-      <div id="barcode">barcode: 51</div>  
+      <div id="barcode">---</div>  
     </div>
 
     <div id="sonar" class="sensor">
       <h4>Sonar Sensor</h4>
-      <div id="sonarValue">12,5 cm @ 35&deg;</div>
+      <div id="sonarValue">---</div>
       <canvas id="sonarHistogram" width="150" height="150" class="sonar"></canvas>
     </div>
 
     <div id="push" class="sensor">
       <h4>Push Sensors</h4>
-      <div id="push-left" class="push active">PUSHED</div>
-      <div id="push-right" class="push inactive">OK</div>
+      <div id="push-left" class="push">---</div>
+      <div id="push-right" class="push">---</div>
     </div>
-    
-    <div id="barcode" class="event"></div>
-    <div id="proximity" class="event"></div>
-    <div id="line" class="event"></div>
-    <div id="near-collision" class="event"></div>
-    <div id="collision" class="event"></div>
   </div>
   
   <div id="navigator" class="group">
@@ -47,21 +41,16 @@
 
     <div id="event" class="action">
       <h4>Event</h4>
-      <div id="eventKind" class="urgent">Collision</div>
-      <div id="eventSource">on Left Push Sensor</div>
-      <div id="eventAction" class="urgent">EVADE</div>
-      <div id="eventActionQueue">
-        <ol style="text-align:left;margin:0px;padding-left:15px;">
-          <li>MOVE backward / 10cm</li>
-          <li>TURN / -30&deg;</li>
-        </ol>
-      </div>
+      <div id="eventKind" class="urgent">---</div>
+      <div id="eventSource">---</div>
+      <div id="eventAction" class="urgent">---</div>
+      <ol id="eventActionQueue" class="actionQueue"></ol>
     </div>
 
     <div id="action" class="action">
       <h4>Action</h4>
-      <div id="actionKind">MOVE backward</div>
-      <div id="actionParam">10cm</div>
+      <div id="actionKind">---</div>
+      <div id="actionArgument">---</div>
     </div>
   </div>
 
@@ -69,6 +58,22 @@
   <!--
   activate update stream:  <script src="./stream"></script>
   -->
+  <script>
+    // demo stream
+    update( 300, "brown", 1, -85, 255, false, false, "collision", "left push" );
+    update( 300, "brown", 2, -85, 255, false, false, "collision", "left push" );
+    update( 300, "brown", 3, -65, 255, false, false, "collision", "left push" );
+    update( 300, "brown", 4, -55, 255, false, false, "collision", "left push" );
+    update( 300, "white", 5, -45, 255, false, false, "collision", "left push" );
+    update( 300, "white", 6, -35, 255, false, false, "collision", "left push" );
+    update( 300, "brown", 7, -25, 255, false, false, "collision", "left push" );
+    update( 300, "brown", 8, -15, 255, false, false );
+    update( 300, "black", 6,  -5, 255, false, false );
+    update( 300, "black", 7,   5,  59, false, false );
+    update( 300, "black", 8,  15,  60, false, false );
+    update( 300, "brown", 6,  25,  65, false, false );
+    update( 300, "brown", 7,  35,  74, false, true , "collision", "left push", "EVADE", "MOVE backward (10)|TURN (-30)", "MOVE backward", "10cm" );
+  </script>
 
 </body>
 </html>

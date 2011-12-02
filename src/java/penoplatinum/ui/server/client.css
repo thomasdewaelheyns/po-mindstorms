@@ -63,6 +63,22 @@ DIV.sensor DIV.brown {
   color: rgb(97,47,34);
 }
 
+DIV.sensor DIV.white {
+  background-color: white;
+  color: black;
+}
+DIV.sensor DIV.black {
+  background-color: black;
+  color: #eee;
+}
+
+OL.actionQueue {
+  text-align:left;
+  margin:0px;
+  padding-left:35px;
+  font-size: 10pt;
+}
+
 CANVAS.light {
   border: 1px solid black;
   margin-left:25px;
