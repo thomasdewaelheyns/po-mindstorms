@@ -1,6 +1,11 @@
 package penoplatinum.simulator;
 
-import penoplatinum.navigator.BarcodeModelProcessor;
+import penoplatinum.modelprocessor.LineModelProcessor;
+import penoplatinum.modelprocessor.SonarModelProcessor;
+import penoplatinum.modelprocessor.HistogramModelProcessor;
+import penoplatinum.modelprocessor.ModelProcessor;
+import penoplatinum.modelprocessor.FrontPushModelProcessor;
+import penoplatinum.modelprocessor.BarcodeModelProcessor;
 
 import penoplatinum.Utils;
 

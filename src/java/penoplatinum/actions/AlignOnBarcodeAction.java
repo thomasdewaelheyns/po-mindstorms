@@ -4,7 +4,7 @@
  */
 package penoplatinum.actions;
 
-import penoplatinum.navigator.ColorInterpreter;
+import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 

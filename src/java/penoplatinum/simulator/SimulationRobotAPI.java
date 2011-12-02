@@ -65,4 +65,9 @@ public class SimulationRobotAPI implements RobotAPI {
 
     this.prevSonarTacho = currentTacho;
   }
+
+  @Override
+  public void beep() {
+    System.out.println("BEEP");
+  }
 }

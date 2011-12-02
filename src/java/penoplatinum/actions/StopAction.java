@@ -16,16 +16,25 @@ public class StopAction extends BaseAction {
     setDistance(0);
     setAngle(0);
   }
+  public StopAction(long lengthTime){
+    this();
+    this.lengthTime = lengthTime;
+  }
 
   boolean first = true;
+  long startTime = 0;
+  long lengthTime = 0;
   @Override
   public int getNextAction() {
-    first = false;
-    return Navigator.STOP;
+    if(first){
+      startTime = System.currentTimeMillis();
+      return Navigator.STOP;
+    }
+    return Navigator.NONE;
   }
 
   @Override
   public boolean isComplete() {
-    return !first; // Never complete!
+    return (startTime+lengthTime<System.currentTimeMillis()); // Never complete!
   }
 }

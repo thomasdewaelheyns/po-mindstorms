@@ -171,4 +171,8 @@ public class Angie implements RobotAPI {
         }
 
     }
+
+    public void beep() {
+        lejos.nxt.Sound.beep();
+    }
 }

@@ -1,8 +1,6 @@
 package penoplatinum;
 
 import penoplatinum.navigators.BehaviourNavigator;
-import penoplatinum.navigators.SonarNavigator;
-import penoplatinum.navigators.TurnVerySmall;
 
 public class Main {
 

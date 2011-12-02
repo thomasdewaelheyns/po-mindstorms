@@ -4,7 +4,6 @@
  */
 package penoplatinum;
 
-import lejos.util.Stopwatch;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.NavigatorRobot;
 
@@ -39,7 +38,7 @@ public class AngieEventLoop {
             step();
             delta += System.nanoTime() - start;
             if (delta > 1000L * 1000 * 1000) {
-                System.out.println(count / (double) delta * 1000d * 1000d*1000d);
+                //System.out.println(count / (double) delta * 1000d * 1000d*1000d);
                 count = 0;
                 delta = 0;
             }

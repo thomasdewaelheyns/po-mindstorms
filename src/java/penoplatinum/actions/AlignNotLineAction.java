@@ -4,7 +4,7 @@
  */
 package penoplatinum.actions;
 
-import penoplatinum.navigator.ColorInterpreter;
+import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 
@@ -14,7 +14,7 @@ import penoplatinum.simulator.Navigator;
  */
 public class AlignNotLineAction extends BaseAction {
 
-  public static final int TARGET_ANGLE = 40;
+  public static final int TARGET_ANGLE = 20;
   public static final int SWEEP_ANGLE = 250;
   ColorInterpreter colors;
   private int directionModifier;

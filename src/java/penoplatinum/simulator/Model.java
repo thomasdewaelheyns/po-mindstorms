@@ -9,9 +9,10 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.modelprocessor.ModelProcessor;
 import java.util.List;
 import java.util.ArrayList;
-import penoplatinum.navigator.Buffer;
+import penoplatinum.modelprocessor.Buffer;
 import penoplatinum.Utils;
 
 public class Model {

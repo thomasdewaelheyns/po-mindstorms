@@ -3,7 +3,6 @@ package penoplatinum.navigators;
 import penoplatinum.Utils;
 import penoplatinum.actions.ActionQueue;
 import penoplatinum.actions.AlignNotLineAction;
-import penoplatinum.actions.AlignOnBarcodeAction;
 import penoplatinum.actions.AlignPerpendicularAction;
 import penoplatinum.actions.DriveForwardAction;
 import penoplatinum.actions.MoveAction;
@@ -27,6 +26,7 @@ public class BehaviourNavigator implements Navigator {
 
   private float distance;
   private float angle;
+  private boolean proximityBlocked = false;
   private ActionQueue queue = new ActionQueue();
 
   /*public static void main(String[] args) {
@@ -47,6 +47,11 @@ public class BehaviourNavigator implements Navigator {
     }
   };
 
+  private void newEvent() {
+    queue.clearActionQueue();
+    proximityBlocked = false;
+  }
+
   private void processWorldEvents() {
     //Utils.Log(model.getSensorValue(Model.S4) + "");
     if (queue.getCurrentAction().isNonInterruptable()) {
@@ -54,50 +59,24 @@ public class BehaviourNavigator implements Navigator {
     }
 
 //
-    //checkBarcodeEvent();
-//    checkProximityEvent();
+    if(!proximityBlocked){
+      checkProximityEvent();
+    }
+    checkBarcodeEvent();
     checkLineEvent();
     //checkSonarCollisionEvent();
     checkCollisionEvent();
-
   }
 
   private double lastBarcodeAngle;
   
   private void checkBarcodeEvent() {
     final int minCorrectionAngle = 10;
-    if (model.getBarcodeAngle() > minCorrectionAngle) // special check
-    {
-      lastBarcodeAngle = model.getBarcodeAngle();
-      model.setBarcodeAngle(0); // Cheat
-      queue.clearActionQueue();
-      queue.add(new StopAction());
-      return;
-    }
     if (model.getBarcode() == Barcode.None) {
       return;
     }
     Utils.Log("EVENT: Barcode");
-    // Barcode detected
-    
-    if (model.getBarcode() == 0 || model.getBarcode() == 15) {
-      //ignore lines
-      return;
-    }
-
-    queue.clearActionQueue();
-
-    int angle = (int) Math.round(lastBarcodeAngle);
-    lastBarcodeAngle = 0;
-    int[] sonarValues = model.getSonarValues();
-    
-    if (angle > minCorrectionAngle) {
-//      int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
-//      int rotation = diff > 180 ? angle : -angle;
-      //queue.add(new MoveAction(model, 0.05f));
-      queue.add(new AlignOnBarcodeAction(model, angle));
-    }
-    model.setBarcodeAngle(0);
+    newEvent();
 
     switch (model.getBarcode()) {
       default:
@@ -105,23 +84,20 @@ public class BehaviourNavigator implements Navigator {
         break;
       case 0:
       case 15:
-        Utils.Error("Not a line!!!! aAHAHAHAH");
         break;
       case 3:
-        queue.add(new MoveAction(model, 0.20f));
-        queue.add(new TurnAction(model, 90));
-        //queue.add(new MoveAction(model, 0.150f));
-        //queue.add(new TurnAction(model, 45));
-        //queue.add(new MoveAction(model, 0.350f));
-        //queue.add(new TurnAction(model, 45));
+        proximityBlocked = true;
+        queue.add(new MoveAction(model, 0.150f));
+        queue.add(new TurnAction(model, 45));
+        queue.add(new MoveAction(model, 0.300f));
+        queue.add(new TurnAction(model, 45));
         break;
       case 6:
-        queue.add(new MoveAction(model, 0.20f));
-        queue.add(new TurnAction(model, -90));
-        //queue.add(new MoveAction(model, 0.150f));
-        //queue.add(new TurnAction(model, -45));
-        //queue.add(new MoveAction(model, 0.350f));
-        //queue.add(new TurnAction(model, -45));
+        proximityBlocked = true;
+        queue.add(new MoveAction(model, 0.150f));
+        queue.add(new TurnAction(model, -45));
+        queue.add(new MoveAction(model, 0.300f));
+        queue.add(new TurnAction(model, -45));
         break;
 
       case 5:
@@ -135,9 +111,14 @@ public class BehaviourNavigator implements Navigator {
         queue.add(new TurnAction(model, 180));
         break;
 
+      case 7: //Wip
+        queue.add(new MoveAction(model, 0.60f));
+        queue.add(new StopAction(100));
+        break;
       case 1:
       case 2:
       case 4:
+      case 8:
       case -1:
         break;
     }
@@ -146,23 +127,16 @@ public class BehaviourNavigator implements Navigator {
     }
   }
 
-  private void checkLineEvent() {
+  private void checkLineEvent() {  //Dit werkt goed
     if (model.getLine() == Line.NONE) {
       return;
     }
     Utils.Log("EVENT: Line");
     // Line detected
-    queue.clearActionQueue();
-
+    newEvent();
     int directionMultiplier = model.getLine() == Line.BLACK ? -1 : 1;
-
     queue.add(new AlignNotLineAction(model, model.getLine() == Line.BLACK).setIsNonInterruptable(true));
-    queue.add(new MoveAction(model, 0.3f));
-    //queue.add(new TurnAction(model, (int) (AlignNotLineAction.TARGET_ANGLE * directionMultiplier * 0.8f)));
-
-
-    //TODO: line timeout?
-
+    queue.add(new DriveForwardAction());
   }
 
   private void checkCollisionEvent() {
@@ -170,16 +144,16 @@ public class BehaviourNavigator implements Navigator {
       return;
     }
     Utils.Log("Collision event!");
-    queue.clearActionQueue();
+    newEvent();
     if (model.isStuckLeft() && model.isStuckRight()) {
       queue.add(new MoveAction(model, -0.10f).setIsNonInterruptable(true));
       queue.add(new TurnAction(model, 180).setIsNonInterruptable(true));
     } else if (model.isStuckLeft()) {
       queue.add(new MoveAction(model, -0.10f).setIsNonInterruptable(true));
-      queue.add(new TurnAction(model, -90).setIsNonInterruptable(true));
+      queue.add(new TurnAction(model, -80).setIsNonInterruptable(true));
     } else {
       queue.add(new MoveAction(model, -0.10f).setIsNonInterruptable(true));
-      queue.add(new TurnAction(model, 90).setIsNonInterruptable(true));
+      queue.add(new TurnAction(model, 80).setIsNonInterruptable(true));
     }
   }
 
@@ -201,7 +175,7 @@ public class BehaviourNavigator implements Navigator {
     int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
     int rotation = angle > 0 ? 10 : -10;
 
-    queue.clearActionQueue();
+    newEvent();
     proximityOrientTimeout = 0;
 
 
@@ -217,7 +191,7 @@ public class BehaviourNavigator implements Navigator {
     }
     Utils.Log("EVENT: SonarCollision");
     // Obstacle detected
-    queue.clearActionQueue();
+    newEvent();
 
     queue.add(new MoveAction(model, -.05f).setIsNonInterruptable(true));
 

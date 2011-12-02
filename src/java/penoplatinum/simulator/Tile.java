@@ -31,7 +31,7 @@ package penoplatinum.simulator;
  */
 
 import java.awt.Point;
-import penoplatinum.navigator.BarcodeDataNav;
+import penoplatinum.modelprocessor.BarcodeDataNav;
 
 public class Tile {
   // these are the positions in the bitstring where relevant information
