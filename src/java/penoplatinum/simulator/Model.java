@@ -13,6 +13,7 @@ import penoplatinum.modelprocessor.ModelProcessor;
 import java.util.List;
 import java.util.ArrayList;
 import penoplatinum.modelprocessor.Buffer;
+import penoplatinum.navigator.ColorInterpreter;
 
 public class Model {
   // shorthands mapping the sensors/numbers to their technical ports
@@ -20,10 +21,10 @@ public class Model {
   public static final int M1 = 0; // right motor
   public static final int M2 = 1; // left motor
   public static final int M3 = 2; // sonar motor
-  public static final int S1 = 3;
-  public static final int S2 = 4;
-  public static final int S3 = 5;
-  public static final int S4 = 6;
+  public static final int S1 = 3; // touch right
+  public static final int S2 = 4; // touch left
+  public static final int S3 = 5; // sonarsensor
+  public static final int S4 = 6; // lightsensor
   public static final int MS1 = 7; // Motor state 1
   public static final int MS2 = 8; // Motor state 1
   public static final int MS3 = 9; // Motor state 1
@@ -240,7 +241,18 @@ public class Model {
     this.lightCorruption = lightCorruption;
   }
   
-  
+  public String toString(){
+    int lightValue = this.getSensorValue(S4);
+    ColorInterpreter interpreter = new ColorInterpreter();
+    interpreter.setModel(this);
+    String interpretedColor = interpreter.getCurrentColor().toString();
+    int sonarAngle = this.getSensorValue(M3)+90;
+    int sonarDistance = getSensorValue(S3);
+    boolean pushLeft = this.getSensorValue(S2)==255; 
+    boolean pushRight = this.getSensorValue(S1)==255;
+    String model = lightValue + "," + interpretedColor + "," + sonarAngle + "," + sonarDistance + "," + pushLeft + "," + pushRight;
+    return model;     
+  }
   private boolean leftObstacle;
   private boolean rightObstacle;
 
