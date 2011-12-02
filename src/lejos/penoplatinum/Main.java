@@ -1,25 +1,36 @@
 package penoplatinum;
 
 import penoplatinum.navigators.BehaviourNavigator;
+import penoplatinum.navigators.SonarNavigator;
+import penoplatinum.navigators.TurnVerySmall;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Runnable runnable = new Runnable() {
 
-            public void run() {
-                Utils.Log("Started!");
+        final AngieEventLoop angie = new AngieEventLoop();
 
-                AngieEventLoop loop = new AngieEventLoop();
-                loop.useNavigator(new BehaviourNavigator());
-                //loop.useNavigator(new TurnNavigator());
-                loop.runEventLoop();
-            }
+        BluetoothConnection connection = new BluetoothConnection();
+        connection.initializeConnection();
+        final PacketTransporter transporter = new PacketTransporter(connection);
+        connection.RegisterTransporter(t, 123);
+        final PrintStream stream = new PrintStream(transporter.getSendStream());
+
+        Runnable communication = new Runnable() {
+          public void run() {
+            stream.println(angie.getState());
+            transpoter.SendPacket(123);            
+          }
+        }
+        communication.run();
+
+        Runnable robot = new Runnable() {
+          public void run() {
+            Utils.Log("Started!");
+            angie.useNavigator(new TurnVerySmall());
+            angie.runEventLoop();
+          }
         };
-
-
-        //RobotRunner.Run(runnable);
-        runnable.run();
-
+        robot.run();
     }
 }

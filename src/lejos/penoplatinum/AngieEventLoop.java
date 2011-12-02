@@ -16,6 +16,8 @@ public class AngieEventLoop {
     private NavigatorRobot navigatorRobot;
     private Angie angie;
     private Navigator navigator;
+    
+    private String lastState;
 
     public AngieEventLoop() {
         this.angie = new Angie();
@@ -28,6 +30,20 @@ public class AngieEventLoop {
     public void useNavigator(Navigator navigator) {
         this.navigatorRobot.useNavigator(navigator);
         this.navigator = navigator;
+    }
+    
+    private void cacheState() {
+      synchronized(this) {
+        this.lastState = 
+          this.navigatorRobot.getModelState() + "," +
+          this.navigatorRobot.getNavigatorState();
+      }
+    }
+
+    public String getState() {
+      synchronized(this) {
+        return this.lastState;
+      }
     }
 
     public void runEventLoop() {
@@ -43,6 +59,7 @@ public class AngieEventLoop {
                 delta = 0;
             }
             count++;
+            this.cacheState();
         }
 
     }
