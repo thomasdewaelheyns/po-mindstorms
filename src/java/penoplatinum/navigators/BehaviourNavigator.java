@@ -46,15 +46,15 @@ public class BehaviourNavigator implements Navigator {
   };
 
   private void processWorldEvents() {
-  //Utils.Log(model.getSensorValue(Model.S4) + "");
+    //Utils.Log(model.getSensorValue(Model.S4) + "");
     if (queue.getCurrentAction().isNonInterruptable()) {
       return;
     }
 
 //
-//    checkBarcodeEvent();
-    checkProximityEvent();
-    checkLineEvent();
+    checkBarcodeEvent();
+//    checkProximityEvent();
+//    checkLineEvent();
 //    checkSonarCollisionEvent();
     checkCollisionEvent();
 
@@ -67,6 +67,15 @@ public class BehaviourNavigator implements Navigator {
     Utils.Log("EVENT: Barcode");
     // Barcode detected
     queue.clearActionQueue();
+
+    int angle = (int) Math.round(model.getBarcodeAngle());
+    int[] sonarValues = model.getSonarValues();
+    if (angle > 5) {
+//      int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
+//      int rotation = diff > 180 ? angle : -angle;
+      queue.add(new TurnAction(model, angle));
+    }
+
     switch (model.getBarcode()) {
       default:
         Utils.Log("Unknown barcode: " + model.getBarcode());
@@ -75,7 +84,7 @@ public class BehaviourNavigator implements Navigator {
       case 15:
         break;
       case 3:
-        queue.add(new MoveAction(model, 0.30f));
+        queue.add(new MoveAction(model, 0.20f));
         queue.add(new TurnAction(model, 90));
         //queue.add(new MoveAction(model, 0.150f));
         //queue.add(new TurnAction(model, 45));
@@ -83,7 +92,7 @@ public class BehaviourNavigator implements Navigator {
         //queue.add(new TurnAction(model, 45));
         break;
       case 6:
-        queue.add(new MoveAction(model, 0.30f));
+        queue.add(new MoveAction(model, 0.20f));
         queue.add(new TurnAction(model, -90));
         //queue.add(new MoveAction(model, 0.150f));
         //queue.add(new TurnAction(model, -45));
@@ -161,15 +170,15 @@ public class BehaviourNavigator implements Navigator {
     //sonarValues[3]
 
     int angle = model.getSensorValue(Model.M3);
-    if (Math.abs(angle) > 20) {
+    if (Math.abs(angle) > 15) {
       return;
     }
 
-    //int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
-    int rotation = angle > 0 ? -5 : 5;
+    int diff = (sonarValues[3] - sonarValues[1] + 360) % 360;
+    int rotation = angle > 0 ? 10 : -10;
 
     queue.clearActionQueue();
-    proximityOrientTimeout = 20;
+    proximityOrientTimeout = 0;
 
 
     queue.add(new TurnAction(model, rotation));
@@ -246,7 +255,8 @@ public class BehaviourNavigator implements Navigator {
     if (proximityOrientTimeout < 0) {
       proximityOrientTimeout = 0;
     }
-    if (model.getSensorValue(Model.S3) < PROXIMITY_WALL_AVOID_DISTANCE) {
+//    if (model.getSensorValue(Model.S3) < PROXIMITY_WALL_AVOID_DISTANCE) {
+    if (model.getSensorValue(Model.S3) < 35) {
       numProximityWallWarnings++;
     } else {
       numProximityWallWarnings--;

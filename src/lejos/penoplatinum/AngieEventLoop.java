@@ -23,6 +23,7 @@ public class AngieEventLoop {
 
         navigatorRobot = new NavigatorRobot();
         navigatorRobot.useRobotAPI(angie);
+        
     }
 
     public void useNavigator(Navigator navigator) {
@@ -49,6 +50,6 @@ public class AngieEventLoop {
 
     public void step() {
         angie.getSonar().updateSonarMovement();
-        //navigatorRobot.step();
+        navigatorRobot.step();
     }
 }

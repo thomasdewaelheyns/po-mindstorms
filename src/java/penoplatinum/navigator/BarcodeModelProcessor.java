@@ -25,12 +25,11 @@ public class BarcodeModelProcessor extends ModelProcessor {
   private int brownCounter = 0;
   int state = WAITING;
   private ColorInterpreter colorInterpreter;
-  private long startTime;
-  private long stopTime;
-  public  double WIELOMTREK = 0.175;
+  private float startTacho;
+  private float endTacho;
+  public float WIELOMTREK = 0.175f;
   //the length of a barcode strip
-  private double barcodeLength = 0.14;
-  private double motorSpeedMeter = 250*WIELOMTREK*60; //TODO: is this hardcoded?
+  private float barcodeLength = 0.14f;
 
   public BarcodeModelProcessor() {
     super();
@@ -65,7 +64,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
     switch (state) {
       case WAITING:
         if (!colorInterpreter.isColor(Color.Brown)) {
-          this.startTime = System.nanoTime();
+          this.startTacho = model.getAverageTacho();
           state = RECORDING;
           tempBuffer.setCheckPoint();
           brownCounter = 0;
@@ -78,7 +77,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
             state = WAITING;
             tempBuffer.unsetCheckPoint();
           } else if (brownCounter > END_OF_BARCODE_BROWN_COUNT) {
-            this.stopTime = System.nanoTime();
+            this.endTacho = model.getAverageTacho();
             state = INTERPRET;
           }
         } else {
@@ -101,12 +100,12 @@ public class BarcodeModelProcessor extends ModelProcessor {
         model.setBarcodeAngle(calculateAngle());
     }
   }
-  
+
   // returns degrees
-  public double calculateAngle(){
-   long timeDifference = this.stopTime-this.startTime;
-   double distanceTraveled = timeDifference*(10^9)*motorSpeedMeter;
-   double degree = Math.acos(barcodeLength/distanceTraveled)*(360/(2*Math.PI));
-   return degree;
+  public double calculateAngle() {
+    float tachoDiff = this.endTacho - this.startTacho;
+    float distanceTraveled = tachoDiff / 360 * WIELOMTREK;
+    double degree = Math.acos(barcodeLength / distanceTraveled) * (360 / (2 * Math.PI));
+    return degree;
   }
 }

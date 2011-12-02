@@ -20,7 +20,6 @@ public class RotatingSonarSensor {
     public RotatingSonarSensor(Motor motor, UltrasonicSensor sensor) {
         this.motor = motor;
         this.sensor = sensor;
-        motor.regulateSpeed(false);
         motor.smoothAcceleration(false);
         
         if (motor.getTachoCount() != 0) {

@@ -16,6 +16,16 @@ public class RotationMovement {
 
     public void setMovementDisabled(boolean movementDisabled) {
         this.movementDisabled = movementDisabled;
+//        motorLeft.smoothAcceleration(false);
+//        motorLeft.regulateSpeed(false);
+//
+//        motorLeft.setPower(50);
+//
+//        motorRight.smoothAcceleration(false);
+//        motorRight.regulateSpeed(false);
+//
+//        motorRight.setPower(50);
+
     }
 
     public void driveForward() {
@@ -35,7 +45,7 @@ public class RotationMovement {
         distance *= 1000;
         distance /= 0.99;
         int r = (int) (distance * 360 / WIELOMTREK);
-        //setSpeed(SPEEDFORWARD);
+        setSpeed(SPEEDFORWARD);
         motorLeft.rotate(r, true);
         motorRight.rotate(r, true);
     }
@@ -54,7 +64,7 @@ public class RotationMovement {
         if (movementDisabled) {
             return;
         }
-        //setSpeed(SPEEDTURN);
+        setSpeed(SPEEDTURN);
         angleCCW *= CCW_afwijking;
 
         int h = (int) (angleCCW * Math.PI * WIELAFSTAND / WIELOMTREK);
@@ -84,10 +94,7 @@ public class RotationMovement {
             //TODO: implement better acceleration in this class
             //Utils.Log("Large speed difference!");
             // Accelerate from 0
-            
-            
             //TODO: this was usefull! stop();
-            
             //Wait for regulator to regulate
             //Utils.Sleep(200); //TODO: WARNING: removed
         }

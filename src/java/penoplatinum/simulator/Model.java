@@ -222,4 +222,13 @@ public class Model {
   public double getBarcodeAngle(){
     return this.barcodeAngle;
   }
+  
+   /**
+     * Returns the average tacho count of the 2 motors
+     */
+    public float getAverageTacho() {
+        return (getSensorValue(M1) + getSensorValue(M2)) / 2f;
+    }
+  
+  
 }
