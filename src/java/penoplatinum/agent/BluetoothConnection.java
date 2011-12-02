@@ -3,31 +3,32 @@ package penoplatinum.agent;
 /**
  * BluetoothConnection
  * 
- * Temporary local stub implementation.
+ * Functional wrapper around technical Bluetooth layer
  *
  * Author: Team Platinum
  */
 
 import java.io.*;
+import java.util.Scanner;
+
+import penoplatinum.bluetooth.*;
 
 public class BluetoothConnection {
-  private String name;
-  private BufferedReader br = 
-    new BufferedReader(new InputStreamReader(System.in));
+  private PCBluetoothConnection connection;
+  private PacketTransporter     endPoint;
+
   private String nextMsg = "";
 
-  public BluetoothConnection(String name) {
-    this.name = name;
+  public BluetoothConnection() {
+    this.connection = new PCBluetoothConnection();
+    this.endPoint   = new PacketTransporter(this.connection);
+    this.connection.RegisterTransporter(this.endPoint, 123);
   }
 
   public Boolean hasNext() {
-   try {
-       this.nextMsg = this.name + "','" + this.br.readLine();
-       return !this.nextMsg.equals( this.name + "','quit" );
-    } catch (IOException ioe) {
-       System.err.println("IO error reading from connection.");
-    }
-    return false;
+    if( this.endPoint.ReceiveAvailablePacket() == -1 ) { return false; }
+    this.nextMsg = new Scanner(this.endPoint.getReceiveStream()).nextLine();
+    return true;
   }
   
   public String getMessage() {

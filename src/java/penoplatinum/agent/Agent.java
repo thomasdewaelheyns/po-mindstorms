@@ -17,9 +17,9 @@ public class Agent {
   // the connection to the Robot
   BluetoothConnection source;
   
-  // connects to a Robot (by bluetooth name)
+  // connects to a Robot (by bluetooth name => currently ignored)
   public Agent connect(String name) {
-    this.source = new BluetoothConnection(name);
+    this.source = new BluetoothConnection();
     return this;
   }
   
