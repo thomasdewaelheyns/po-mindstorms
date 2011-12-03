@@ -25,8 +25,10 @@ public class Agent {
   
   // start a loop that continues to fetch and dispatch messages
   public void start() {
+    System.out.println( "Agent:> Starting logging..." );
     while( this.source.hasNext() ) {
-      log.info( source.getMessage() );
+      String msg = source.getMessage();
+      if( msg.length() > 10 ) { log.info( msg ); }
     }
   }
 }
