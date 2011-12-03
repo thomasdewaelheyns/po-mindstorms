@@ -38,34 +38,58 @@ public class RestServlet extends HttpServlet {
                          HttpServletResponse response ) 
            throws ServletException, IOException 
     {
+      response.setContentType("text/html");
       PrintWriter out = response.getWriter();
 
       // try to connect to the database
       if( ! this.connect() ) {
-        out.println( "error('failed to connect to DS');" );
+        out.println( "<script>parent.Dashboard.error('failed to connect to DS');</script>" );
         return;
       }
 
       try {
         System.out.println( "Starting stream..." );
-        out.println( "start();" );
+        out.println( "<script>parent.Dashboard.start();</script>" );
+        out.flush();
 
         // while we don't encounter any errors writing to the client...
-        while(!out.checkError()) {
+        while( ! out.checkError() ) {
           this.getNextBatch();
-          int id = -1; String ts, robot, message;
+          int id = -1, lightValue, barcode, sonarAngle, sonarDistance;
+          String ts, robot, lightColor, pushLeft, pushRight, event, source,
+                 plan, queue, action, argument;
           while(this.rs.next()) {
-            id      = rs.getInt(1);
-            ts      = rs.getString(2);
-            robot   = rs.getString(3);
-            message = rs.getString(4);
-            out.println( "update( '" + ts + "','" + message + "');" );
+            id            = rs.getInt(1);
+            ts            = rs.getString(2);
+            robot         = rs.getString(3);
+            lightValue    = rs.getInt(4);
+            lightColor    = rs.getString(5);
+            barcode       = rs.getInt(6);
+            sonarAngle    = rs.getInt(7);
+            sonarDistance = rs.getInt(8);
+            pushLeft      = rs.getBoolean(9)  ? "true" : "false";
+            pushRight     = rs.getBoolean(10) ? "true" : "false";
+            event         = rs.getString(11);
+            source        = rs.getString(12);
+            plan          = rs.getString(13);
+            queue         = rs.getString(14);
+            action        = rs.getString(15);
+            argument      = rs.getString(16);
+
+            out.println( "<script>parent.Dashboard.update( " +
+              "'" + ts + "','" + robot + "'," +
+              lightValue + ",'" + lightColor + "'," + barcode + "," +
+              sonarAngle + "," + sonarDistance + "," +
+              pushLeft + "," + pushRight + "," +
+              "'" + event + "','" + source + "'," +
+              "'" + plan + "','" + queue + "'," +
+              "'" + action + "','" + argument + "');</script>\n" );
           }
           out.print( " " ); // force output, causing exception when closed
           out.flush();      // flush to the browser for optimal UI experience
           this.rs.close();  // close this recordset
           if( id > this.last ) { this.last = id; } // keep track last sent id
-          Thread.sleep(1);  // and breath
+          Thread.sleep(30);  // and breath ...
         }
       } catch( Exception e ) {
         // nothing todo, it's in fact normal ending when client disconnects

@@ -4,11 +4,15 @@
   <meta charset="utf-8">
   <title>POC web client</title>
   <link rel="stylesheet" type="text/css" href="client.css">
+  <script src="client.js"></script>
 </head>
 
 <body>
-  <h1>aNGie's dashboard</h1>
-  <h2>P&amp;O Computerwetenschappen - Team Platinum</h2>
+  <h1>Dashboard <span id="timeStamp" style="float:right"></span></h1>
+  <h2>
+    P&amp;O Computerwetenschappen - Team <span id="robotName"></span>
+    <span id="queueStatus" style="float:right"></span>
+  </h2>
     
   <div id="model" class="group">
 
@@ -54,26 +58,7 @@
     </div>
   </div>
 
-  <script src="client.js"></script>
-  <!--
-  activate update stream:  <script src="./stream"></script>
-  -->
-  <script>
-    // demo stream
-    update( 300, "brown", 1, -85, 255, false, false, "collision", "left push" );
-    update( 300, "brown", 2, -85, 255, false, false, "collision", "left push" );
-    update( 300, "brown", 3, -65, 255, false, false, "collision", "left push" );
-    update( 300, "brown", 4, -55, 255, false, false, "collision", "left push" );
-    update( 300, "white", 5, -45, 255, false, false, "collision", "left push" );
-    update( 300, "white", 6, -35, 255, false, false, "collision", "left push" );
-    update( 300, "brown", 7, -25, 255, false, false, "collision", "left push" );
-    update( 300, "brown", 8, -15, 255, false, false );
-    update( 300, "black", 6,  -5, 255, false, false );
-    update( 300, "black", 7,   5,  59, false, false );
-    update( 300, "black", 8,  15,  60, false, false );
-    update( 300, "brown", 6,  25,  65, false, false );
-    update( 300, "brown", 7,  35,  74, false, true , "collision", "left push", "EVADE", "MOVE backward (10)|TURN (-30)", "MOVE backward", "10cm" );
-  </script>
-
+  <!-- activate JSONP stream ... -->
+  <iframe style="display=none;" src="./stream"></iframe>
 </body>
 </html>
