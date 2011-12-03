@@ -8,6 +8,7 @@ CREATE TABLE logs (
   robot         VARCHAR(50)   NOT NULL,
   lightValue    INTEGER,
   lightColor    VARCHAR(10),
+  barcode       INTEGER,
   sonarAngle    INTEGER,
   sonarDistance INTEGER,
   pushLeft      BIT,
