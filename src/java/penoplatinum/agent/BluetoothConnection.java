@@ -21,12 +21,13 @@ public class BluetoothConnection {
 
   public BluetoothConnection() {
     this.connection = new PCBluetoothConnection();
+    this.connection.initializeConnection();
     this.endPoint   = new PacketTransporter(this.connection);
     this.connection.RegisterTransporter(this.endPoint, 123);
   }
 
   public Boolean hasNext() {
-    if( this.endPoint.ReceiveAvailablePacket() == -1 ) { return false; }
+    this.endPoint.ReceivePacket();
     this.nextMsg = new Scanner(this.endPoint.getReceiveStream()).nextLine();
     return true;
   }
