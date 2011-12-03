@@ -15,7 +15,7 @@ WAR=${PROJECT}.war
 DS=db-ds.xml
 
 SRCS=*.java
-STATICS=client.*
+STATICS=client.* index.html
 
 BUILD_DIR=build
 

@@ -125,3 +125,11 @@ DIV#action.action DIV {
   padding-top: 35px;
   font-size: 16pt;
 }
+
+A.button {
+  display: block;
+  margin: 20px;
+  padding: 20px;
+  font-size: 20pt;
+  text-decoration: none;
+}
