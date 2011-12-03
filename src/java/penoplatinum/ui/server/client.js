@@ -104,15 +104,22 @@
     var opacity = 1;
     canvas.fillStyle = "black";
     canvas.fillRect(0,0,150,150);
-    for( var i=0; i<sonarHistogram.length; i++ ) {
-      var angle = sonarHistogram[i][0];
-      var dist  = sonarHistogram[i][1];
-      canvas.strokeStyle = "rgba(0,255,0," + opacity + ")";
+    for( var i=1; i<sonarHistogram.length; i++ ) {
+      var angle1 = sonarHistogram[i][0];
+      var dist1  = sonarHistogram[i][1];
+      var angle2 = sonarHistogram[i-1][0];
+      var dist2  = sonarHistogram[i-1][1];
       canvas.beginPath();
+      canvas.strokeStyle = "rgba(0,255,0," + opacity + ")";
+      canvas.fillStyle   = "rgba(0,255,0," + opacity + ")";
       canvas.moveTo(75,125);
-      canvas.lineTo(  75 - Math.sin((angle)/180*Math.PI) * dist, 
-      125 - Math.cos((angle)/180*Math.PI) * dist );
+      canvas.lineTo( 75 - Math.sin((angle1)/180*Math.PI) * dist1,
+                    125 - Math.cos((angle1)/180*Math.PI) * dist1 );
+      canvas.lineTo( 75 - Math.sin((angle2)/180*Math.PI) * dist2,
+                    125 - Math.cos((angle2)/180*Math.PI) * dist2 );
+      canvas.moveTo(75,125);
       canvas.stroke();
+      canvas.fill();
       opacity -= 0.1   ;
     }
   },
