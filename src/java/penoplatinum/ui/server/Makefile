@@ -15,6 +15,8 @@ WAR=${PROJECT}.war
 DS=db-ds.xml
 
 SRCS=*.java
+STATICS=client.*
+
 BUILD_DIR=build
 
 LIB_SERVLET=${JBOSS_INSTANCE}/lib/servlet-api.jar
@@ -29,6 +31,7 @@ compile-war: ${SRCS} ${BUILD_DIR}
 	@echo "*** compiling WAR"
 	@mkdir -p ${BUILD_DIR}/WEB-INF/classes
 	@cp web.xml ${BUILD_DIR}/WEB-INF
+	@cp ${STATICS} ${BUILD_DIR}
 	@${JAVAC} -classpath ${LIB_SERVLET} -d ${BUILD_DIR}/WEB-INF/classes ${SRCS}
 
 ${BUILD_DIR}:
