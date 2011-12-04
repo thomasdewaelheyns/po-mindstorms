@@ -450,6 +450,7 @@ class Simulator {
     while (!this.reachedGoal()) {
       this.step();
       this.robot.step();
+//      Utils.Sleep(3);
     }
     this.view.log("");
     this.reportMovementStatistics();

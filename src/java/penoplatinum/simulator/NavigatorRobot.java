@@ -8,6 +8,9 @@ import penoplatinum.modelprocessor.FrontPushModelProcessor;
 import penoplatinum.modelprocessor.BarcodeModelProcessor;
 
 import penoplatinum.Utils;
+import penoplatinum.modelprocessor.GapModelProcessor;
+import penoplatinum.modelprocessor.LightCorruptionModelProcessor;
+import penoplatinum.modelprocessor.ProximityModelProcessor;
 
 /**
  * NavigatorRobot
@@ -38,9 +41,12 @@ public class NavigatorRobot implements Robot {
             new HistogramModelProcessor(
             new FrontPushModelProcessor(
             new SonarModelProcessor(
+            new LightCorruptionModelProcessor(
+            new ProximityModelProcessor(
+            new GapModelProcessor(
             new BarcodeModelProcessor(
             new LineModelProcessor(
-    )))));
+    ))))))));
     
     this.model.setProcessor(histoBuilder);
   }

@@ -1,8 +1,6 @@
 package penoplatinum.modelprocessor;
 
 /**
- * FrontPushModelProcessor
- * 
  * Implements a modelProcessor that gathers the information of the SonarSweep
  * It records a complete sweep and at the end, pushes the information to the
  * model.

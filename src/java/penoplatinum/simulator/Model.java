@@ -13,7 +13,6 @@ import penoplatinum.modelprocessor.ModelProcessor;
 import java.util.List;
 import java.util.ArrayList;
 import penoplatinum.modelprocessor.Buffer;
-import penoplatinum.Utils;
 
 public class Model {
   // shorthands mapping the sensors/numbers to their technical ports
@@ -57,6 +56,7 @@ public class Model {
   private int bufferSize = 2000;
   private Buffer lightValueBuffer = new Buffer(bufferSize);
   private double barcodeAngle = 0;
+  private boolean lightCorruption = false;
 
   // sets the (top-level) processor
   public void setProcessor(ModelProcessor processor) {
@@ -98,6 +98,7 @@ public class Model {
    * the map.
    */
   private void process() {
+    setScanningLightData(false); // Resets this flag to false
     if (this.processor != null) {
       this.processor.process();
     }
@@ -230,6 +231,79 @@ public class Model {
     public float getAverageTacho() {
         return (getSensorValue(M1) + getSensorValue(M2)) / 2f;
     }
+
+  public boolean isLightDataCorrupt() {
+    return lightCorruption;
+  }
+
+  public void setLightCorruption(boolean lightCorruption) {
+    this.lightCorruption = lightCorruption;
+  }
   
+  
+  private boolean leftObstacle;
+  private boolean rightObstacle;
+
+  public boolean isLeftObstacle() {
+    return leftObstacle;
+  }
+
+  public void setLeftObstacle(boolean leftObstacle) {
+    this.leftObstacle = leftObstacle;
+  }
+
+  public boolean isRightObstacle() {
+    return rightObstacle;
+  }
+
+  public void setRightObstacle(boolean rightObstacle) {
+    this.rightObstacle = rightObstacle;
+  }
+  
+  
+  private boolean gapFound;
+  private int gapStartAngle;
+  private int gapEndAngle;
+
+  public int getGapEndAngle() {
+    return gapEndAngle;
+  }
+
+  public void setGapEndAngle(int gapEndAngle) {
+    this.gapEndAngle = gapEndAngle;
+  }
+
+  public boolean isGapFound() {
+    return gapFound;
+  }
+
+  public void setGapFound(boolean gapFound) {
+    this.gapFound = gapFound;
+  }
+
+  public int getGapStartAngle() {
+    return gapStartAngle;
+  }
+
+  public void setGapStartAngle(int gapStartAngle) {
+    this.gapStartAngle = gapStartAngle;
+  }
+  
+  
+  private boolean scanningLightData;
+
+  public boolean isScanningLightData() {
+    return scanningLightData;
+  }
+
+  /**
+   * This hints other parts of the robot that something is reading light data
+   * @param scanningLightData 
+   */
+  public void setScanningLightData(boolean scanningLightData) {
+    this.scanningLightData = scanningLightData;
+  }
+  
+    
   
 }

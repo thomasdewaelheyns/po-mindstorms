@@ -25,9 +25,10 @@ public class ColorInterpreter {
     }
     
     public int getLightValue() {
-        if(this.model == null){
-            return 70;
-        }
+      // SERIOUSLY????? trying to create amazing bugs?
+//        if(this.model == null){
+//            return 70;
+//        }
         Buffer temp = this.model.getLightValueBuffer();
         return temp.get(temp.getSize()-1);
     }

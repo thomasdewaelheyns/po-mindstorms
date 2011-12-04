@@ -13,7 +13,7 @@ import penoplatinum.simulator.Model;
  * @author Thomas
  */
 public class LineModelProcessor extends ModelProcessor {
-  
+
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
@@ -22,29 +22,30 @@ public class LineModelProcessor extends ModelProcessor {
   int state = WAITING;
   Color readingColor;
   private int colorCounter = 0;
-  
+
   public LineModelProcessor() {
     super();
     this.colorInterpreter = new ColorInterpreter();
   }
-  
+
   public LineModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
     this.colorInterpreter = new ColorInterpreter();
   }
-  
+
   @Override
   public void setModel(Model model) {
     super.setModel(model);
     colorInterpreter.setModel(model);
   }
-  
+  private int lightDataCorruption = 0;
+
   @Override
   protected void work() {
     model.setLine(Line.NONE);
-     if (model.isTurning()) {
-
+    if (model.isLightDataCorrupt()) {
       state = WAITING;
+
     }
     switch (state) {
       case WAITING:
@@ -65,7 +66,7 @@ public class LineModelProcessor extends ModelProcessor {
             state = WAITING;
           } else if (brownCounter > 10) {
             state = INTERPRET;
-            System.out.println("INTERPRET"+colorCounter);
+            System.out.println("INTERPRET" + colorCounter);
           }
         } else {
           colorCounter++;

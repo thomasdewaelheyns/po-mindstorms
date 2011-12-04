@@ -12,18 +12,32 @@ import penoplatinum.simulator.Navigator;
  */
 public class DriveForwardAction extends BaseAction {
 
-  public DriveForwardAction() {
+  public static final DriveForwardAction DRIVE_CONTINUOUS = new DriveForwardAction(false);
+  private final boolean singleStep;
+
+  /**
+   * When true, this action is complete after one eventloop step
+   * @param singleStep 
+   */
+  public DriveForwardAction(boolean singleStep) {
     setDistance(1);
     setAngle(0);
+    this.singleStep = singleStep;
   }
 
+  private boolean executed = false;
+  
   @Override
   public int getNextAction() {
+    executed = true;
     return Navigator.MOVE;
   }
 
   @Override
   public boolean isComplete() {
-    return false; // Never complete!
+    if (!singleStep) {
+      return false; // Never complete!
+    }
+    return executed;
   }
 }
