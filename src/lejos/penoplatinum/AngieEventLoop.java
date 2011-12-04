@@ -16,34 +16,35 @@ public class AngieEventLoop {
     private NavigatorRobot navigatorRobot;
     private Angie angie;
     private Navigator navigator;
-    
-    private String lastState;
+    private String lastState = "";
 
     public AngieEventLoop() {
         this.angie = new Angie();
 
         navigatorRobot = new NavigatorRobot();
         navigatorRobot.useRobotAPI(angie);
-        
+
     }
 
     public void useNavigator(Navigator navigator) {
         this.navigatorRobot.useNavigator(navigator);
         this.navigator = navigator;
     }
-    
+
     private void cacheState() {
-      synchronized(this) {
-        this.lastState = 
-          this.navigatorRobot.getModelState() + "," +
-          this.navigatorRobot.getNavigatorState();
-      }
+        synchronized (this) {
+
+            Utils.Log(this.navigatorRobot.getModelState());
+            this.lastState =
+                    this.navigatorRobot.getModelState() + ","
+                    + this.navigatorRobot.getNavigatorState();
+        }
     }
 
     public String getState() {
-      synchronized(this) {
-        return this.lastState;
-      }
+        synchronized (this) {
+            return this.lastState;
+        }
     }
 
     public void runEventLoop() {
@@ -54,7 +55,7 @@ public class AngieEventLoop {
             step();
             delta += System.nanoTime() - start;
             if (delta > 1000L * 1000 * 1000) {
-                //System.out.println(count / (double) delta * 1000d * 1000d*1000d);
+                System.out.println(count / (double) delta * 1000d * 1000d * 1000d);
                 count = 0;
                 delta = 0;
             }

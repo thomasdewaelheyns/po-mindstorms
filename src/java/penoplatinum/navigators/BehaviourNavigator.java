@@ -300,4 +300,11 @@ public class BehaviourNavigator implements Navigator {
   public double getAngle() {
     return queue.getCurrentAction() == null ? 0 : queue.getCurrentAction().getAngle();
   }
+
+  @Override
+  public String toString() {
+    return "\"collision\",\"left push sensor\", \"evade\", \"move backwardd (-10)|turn\", \"move backward\", \"10 cm\"";
+  }
+  
+  
 }

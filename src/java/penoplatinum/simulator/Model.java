@@ -257,7 +257,7 @@ public class Model {
     int sonarDistance = getSensorValue(S3);
     boolean pushLeft = this.getSensorValue(S2)==255; 
     boolean pushRight = this.getSensorValue(S1)==255;
-    String model = lightValue + "," + interpretedColor + "," + sonarAngle + "," + sonarDistance + "," + pushLeft + "," + pushRight;
+    String model = lightValue + ",\"" + interpretedColor.toLowerCase() + "\"," + sonarAngle + "," + sonarDistance + "," + pushLeft + "," + pushRight;
     return model;     
   }
   private boolean leftObstacle;

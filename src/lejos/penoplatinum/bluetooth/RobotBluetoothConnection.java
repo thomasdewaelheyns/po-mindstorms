@@ -79,7 +79,7 @@ public class RobotBluetoothConnection implements IConnection {
 
     private boolean connect() {
         Utils.Log("Connecting.");
-        conn = Bluetooth.waitForConnection(3000, NXTConnection.PACKET);
+        conn = Bluetooth.waitForConnection(5000, NXTConnection.PACKET);
         if (conn == null) {
             stri = null;
             stro = null;
