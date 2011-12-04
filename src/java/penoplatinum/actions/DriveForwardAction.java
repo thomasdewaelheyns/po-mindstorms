@@ -33,6 +33,11 @@ public class DriveForwardAction extends BaseAction {
     return Navigator.MOVE;
   }
 
+  public void reset()
+  {
+    executed = false;
+  }
+  
   @Override
   public boolean isComplete() {
     if (!singleStep) {

@@ -29,9 +29,11 @@ public class BehaviourNavigator implements Navigator {
   private ActionQueue queue = new ActionQueue();
   ColorInterpreter interpreter;
   
+  private DriveForwardAction driveForwardAction = new DriveForwardAction(true);
+  
   public BehaviourNavigator() {
     // Fill with initial action
-    queue.add(new DriveForwardAction(true));
+    queue.add(driveForwardAction);
     interpreter = new ColorInterpreter();
     
   }
@@ -60,7 +62,8 @@ public class BehaviourNavigator implements Navigator {
     }
     if (queue.getCurrentAction() == null) {
       queue.clearActionQueue();
-      queue.add(new DriveForwardAction(true)); //TODO: cache
+      driveForwardAction.reset();
+      queue.add(driveForwardAction);
     }
     
     return queue.getCurrentAction().getNextAction();
