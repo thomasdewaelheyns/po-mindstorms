@@ -9,7 +9,7 @@ import penoplatinum.Utils;
  * Constructs a robot and course, sets up the Simulator runs the simulations
  * and outputs the Fitness of this Robot on this course.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 class BenchmarkRunner {

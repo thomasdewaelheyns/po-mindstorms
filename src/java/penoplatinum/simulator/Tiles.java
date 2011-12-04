@@ -3,7 +3,7 @@ package penoplatinum.simulator;
 /**
  * Enumeration of commonly used Tiles
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public class Tiles {

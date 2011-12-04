@@ -5,7 +5,7 @@ package penoplatinum.ui;
  * 
  * Console for our robot
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 import java.io.File;
 import java.io.PrintStream;

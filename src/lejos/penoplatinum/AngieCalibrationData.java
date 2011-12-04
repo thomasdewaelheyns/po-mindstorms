@@ -6,7 +6,7 @@ package penoplatinum;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class AngieCalibrationData {
     /**

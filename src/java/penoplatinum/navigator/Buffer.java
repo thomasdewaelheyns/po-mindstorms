@@ -5,7 +5,8 @@
 package penoplatinum.navigator;
 
 /**
- *Buffer for the read lightValues
+ * Buffer for the read lightValues
+ * @author: Team Platinum
  */
 public class Buffer {
     

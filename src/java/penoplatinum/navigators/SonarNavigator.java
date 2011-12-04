@@ -6,7 +6,7 @@ package penoplatinum.navigators;
  * This Navigator implementation uses the sonar to avoid obstacles in front
  * of him.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 import penoplatinum.Utils;
 import penoplatinum.simulator.GoalDecider;

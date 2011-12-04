@@ -11,7 +11,7 @@ import penoplatinum.ui.UIView;
 
 /**
  *
- * @author Thomas
+ * @author: Team Platinum
  */
 public class BarcodeDemoThread extends Thread {
 

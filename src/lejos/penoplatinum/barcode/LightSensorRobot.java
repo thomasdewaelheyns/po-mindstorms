@@ -8,7 +8,7 @@ import lejos.nxt.*;
 
 /**
  *
- * @author Thomas
+ * @author: Team Platinum
  */
 public class LightSensorRobot implements ILightSensor {
 

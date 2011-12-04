@@ -6,7 +6,7 @@ package penoplatinum.simulator;
  * Defines an interface for components that are influenced by time. The 
  * Simulator will provide the elapsed time in seconds.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public interface Tickable {

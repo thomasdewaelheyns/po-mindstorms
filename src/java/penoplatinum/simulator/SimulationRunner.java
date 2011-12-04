@@ -14,7 +14,7 @@ import penoplatinum.map.MapFactory;
  * Constructs a robot and course, sets up the Simulator and starts the
  * simulation.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
  
 public class SimulationRunner {

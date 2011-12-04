@@ -5,7 +5,7 @@ import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.PacketTransporter;
 
 /**
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class Utils {
 

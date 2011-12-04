@@ -8,7 +8,7 @@ package penoplatinum.ui;
  * This view implements an Swing-based window, on which a dashboard is
  * projected.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 import javax.swing.*;
 import java.awt.*;

@@ -5,7 +5,7 @@ package penoplatinum.simulator;
  * 
  * Interface to decide if a goal has been reached.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public interface GoalDecider {

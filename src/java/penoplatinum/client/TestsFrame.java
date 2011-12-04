@@ -12,7 +12,7 @@ package penoplatinum.client;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class TestsFrame extends javax.swing.JFrame {
 

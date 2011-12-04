@@ -8,7 +8,7 @@ package penoplatinum.ui;
  * - sonarsensor angle and distance
  * - barcode and barcode interpretation
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 

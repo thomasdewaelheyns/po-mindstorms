@@ -14,6 +14,10 @@ import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
 import penoplatinum.Utils;
 
+/**
+ * 
+ * @author: Team Platinum
+ */
 public class PCBluetoothConnection implements IConnection {
 
     private DataOutputStream outputStream;

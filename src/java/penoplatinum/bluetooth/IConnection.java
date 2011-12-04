@@ -6,7 +6,7 @@ package penoplatinum.bluetooth;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public interface IConnection {
 

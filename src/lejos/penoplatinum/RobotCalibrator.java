@@ -14,7 +14,7 @@ import penoplatinum.sensor.WrappedLightSensor;
 
 /**
  * This class is responsible for determining the robot's calibration data.
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class RobotCalibrator {
 

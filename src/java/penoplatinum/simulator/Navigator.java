@@ -7,7 +7,7 @@ package penoplatinum.simulator;
  * true Navigator, the robot will constantly ask it what to do, until the
  * navigator indicates it has reached its goal.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public interface Navigator {

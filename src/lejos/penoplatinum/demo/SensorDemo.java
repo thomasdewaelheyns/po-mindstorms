@@ -11,7 +11,7 @@ import penoplatinum.barcode.BarcodeReader;
 import penoplatinum.bluetooth.PacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.movement.RotationMovement;
-import penoplatinum.sensor.LineFollowerFlorian;
+import penoplatinum.sensor.LineFollower;
 import penoplatinum.sensor.MuurvolgerPerpendicular;
 import penoplatinum.sensor.SonarTest;
 import penoplatinum.sensor.WrappedLightSensor;
@@ -19,7 +19,7 @@ import penoplatinum.ui.UIView;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class SensorDemo {
 
@@ -81,7 +81,7 @@ public class SensorDemo {
                         muurvolger.run();
                     } else if (cmd.equals("line")) {
                         Utils.Log("Starting lijnvolger.");
-                        LineFollowerFlorian florian = new LineFollowerFlorian(readout, commandTransporter);
+                        LineFollower florian = new LineFollower(readout, commandTransporter);
                         florian.ActionLineFollower();
                     } else if (cmd.equals("barcode")) {
                         if (!barcodeRunning) {

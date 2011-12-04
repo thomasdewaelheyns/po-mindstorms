@@ -6,7 +6,7 @@ package penoplatinum.simulator;
  * Board is the graphics canvas where we render our SimulationEnvironment on.
  * It understand the concept of a robot at a location and with a direction.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 import java.util.List;

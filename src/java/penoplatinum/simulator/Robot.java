@@ -8,7 +8,7 @@ package penoplatinum.simulator;
  * It offers access to all components of the robot, allowing the construction
  * of completely custom robots.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public interface Robot {

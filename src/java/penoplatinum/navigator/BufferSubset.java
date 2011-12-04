@@ -1,5 +1,9 @@
 package penoplatinum.navigator;
 
+/**
+ * 
+ * @author: Team Platinum
+ */
 public class BufferSubset {
     Buffer original;
     int start;

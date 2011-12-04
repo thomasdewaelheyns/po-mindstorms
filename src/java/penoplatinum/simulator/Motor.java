@@ -6,7 +6,7 @@ package penoplatinum.simulator;
  * A software version of a Motor. It allows for changing its value through
  * a series of "ticks" and provides its current value.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public class Motor implements Tickable, Sensor {

@@ -6,7 +6,7 @@ package penoplatinum.simulator;
  * Defines the abstracted methods to control a robot. It allows for different
  * implementations 
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public interface RobotAPI {

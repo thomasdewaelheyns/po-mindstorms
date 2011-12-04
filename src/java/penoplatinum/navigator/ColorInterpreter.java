@@ -8,7 +8,7 @@ import penoplatinum.simulator.Model;
 
 /**
  *
- * @author Daniel
+ * @author: Team Platinum
  */
 public class ColorInterpreter {
     

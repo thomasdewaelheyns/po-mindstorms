@@ -9,7 +9,7 @@ package penoplatinum.simulator;
  * 
  * Future Improvements: Add support for multiple robots
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 import java.awt.Point;
 import java.util.List;

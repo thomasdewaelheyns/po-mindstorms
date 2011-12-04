@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 
 /**
  * Writes text received from packets through a packettransporter to a file
+ * 
+ * @author: Team Platinum
  */
 public class RemoteFileLogger {
 

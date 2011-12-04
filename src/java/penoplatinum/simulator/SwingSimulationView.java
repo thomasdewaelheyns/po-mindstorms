@@ -6,7 +6,7 @@ package penoplatinum.simulator;
  * Implementation of SimulationView using Swing to setup a visual 
  * representation of the SimulationEnvironment.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 import javax.swing.JFrame;

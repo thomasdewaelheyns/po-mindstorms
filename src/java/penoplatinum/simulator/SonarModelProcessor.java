@@ -7,7 +7,7 @@ package penoplatinum.simulator;
  * It records a complete sweep and at the end, pushes the information to the
  * model.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 import java.util.List;

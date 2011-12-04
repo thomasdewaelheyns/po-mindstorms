@@ -9,7 +9,7 @@ import penoplatinum.simulator.Navigator;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class TurnAction extends BaseAction {
 

@@ -7,7 +7,7 @@ package penoplatinum.simulator;
  * pattern behavior, requiring extending concrete implementation to only
  * implement a single "work" method.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 abstract public class ModelProcessor {

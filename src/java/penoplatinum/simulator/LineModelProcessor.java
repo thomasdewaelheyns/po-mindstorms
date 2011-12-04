@@ -9,7 +9,7 @@ import penoplatinum.navigator.ColorInterpreter.Color;
 
 /**
  *
- * @author Thomas
+ * @author: Team Platinum
  */
 public class LineModelProcessor extends ModelProcessor {
   

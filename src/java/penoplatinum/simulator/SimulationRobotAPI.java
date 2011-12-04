@@ -6,7 +6,7 @@ package penoplatinum.simulator;
  * Implements the RobotAPI interface to track the robot's actions and return
  * this information to the Simulator.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 public class SimulationRobotAPI implements RobotAPI {
 

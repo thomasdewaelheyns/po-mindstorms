@@ -13,7 +13,7 @@ import penoplatinum.simulator.ModelProcessor;
  * Implements a ModelProcessor that detects frontpushes based on a central
  * front pushsensor.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 public class BarcodeModelProcessor extends ModelProcessor {
 

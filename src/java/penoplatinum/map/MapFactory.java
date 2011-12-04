@@ -8,6 +8,10 @@ import penoplatinum.simulator.Map3D;
 import penoplatinum.simulator.Tile;
 import penoplatinum.simulator.Tiles;
 
+/**
+ * 
+ * @author: Team Platinum
+ */
 public class MapFactory {
   HashMap<String, Tile> tiles = new HashMap<String, Tile>();
 

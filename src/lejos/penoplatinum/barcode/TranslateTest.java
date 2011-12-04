@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Thomas
+ * @author: Team Platinum
  */
 public class TranslateTest {
 

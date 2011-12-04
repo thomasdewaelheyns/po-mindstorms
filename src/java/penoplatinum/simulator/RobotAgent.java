@@ -8,7 +8,7 @@ package penoplatinum.simulator;
  * and Navigator and send this back to the PC. They also receive commands from
  * the PC and pass these to the robot they control.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public interface RobotAgent {

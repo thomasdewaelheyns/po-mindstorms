@@ -17,7 +17,7 @@ import penoplatinum.simulator.RobotAPI;
 /**
  * Responsible for providing access to the hardware of the robot
  * TODO: WARNING, WHEN CHANGIN PORTS THIS ENTIRE CLASS MUST BE CHECKED
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class Angie implements RobotAPI {
 

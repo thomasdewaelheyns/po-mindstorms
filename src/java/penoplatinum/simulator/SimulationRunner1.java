@@ -8,7 +8,7 @@ import org.apache.commons.cli.*;
  * Constructs a robot and course, sets up the Simulator and starts the
  * simulation.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
  
 class SimulationRunner1 {

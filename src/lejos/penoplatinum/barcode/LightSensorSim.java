@@ -2,7 +2,7 @@ package penoplatinum.barcode;
 
 /**
  *
- * @author Thomas
+ * @author: Team Platinum
  */
 public class LightSensorSim implements ILightSensor {
     private byte[] codeList;

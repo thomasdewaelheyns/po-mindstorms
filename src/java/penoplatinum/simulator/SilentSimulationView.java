@@ -5,7 +5,7 @@ package penoplatinum.simulator;
  * 
  * Implementation of SimulationView that outputs nothing.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 import javax.swing.JFrame;

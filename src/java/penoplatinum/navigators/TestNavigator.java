@@ -10,7 +10,7 @@ import penoplatinum.simulator.Navigator;
  * This Navigator implementation does nothing by itself. It can be controlled 
  * externaly. It can be used to test functionality.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public class TestNavigator implements Navigator {

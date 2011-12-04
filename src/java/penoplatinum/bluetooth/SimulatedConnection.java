@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class SimulatedConnection implements IConnection {
 

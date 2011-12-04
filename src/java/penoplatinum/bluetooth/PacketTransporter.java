@@ -13,7 +13,7 @@ import penoplatinum.Utils;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class PacketTransporter implements IPacketTransporter {
     

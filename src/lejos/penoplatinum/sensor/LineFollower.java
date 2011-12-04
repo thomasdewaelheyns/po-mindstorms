@@ -8,9 +8,9 @@ import penoplatinum.sensor.WrappedLightSensor.Color;
 /**
  * This class is meant to be used as a controller for line following. It is based upon the fact we can use a light intensity sensor
  * 
- * @author Florian
+ * @author: Team Platinum
  */
-public class LineFollowerFlorian {
+public class LineFollower {
 
     final RotationMovement movement = new RotationMovement();
     int rightDirection;
@@ -20,7 +20,7 @@ public class LineFollowerFlorian {
     private WrappedLightSensor lightSensor;
     private final PacketTransporter commandTransporter;
 
-    public LineFollowerFlorian(WrappedLightSensor sensor, PacketTransporter commandTransporter) {
+    public LineFollower(WrappedLightSensor sensor, PacketTransporter commandTransporter) {
         this.lightSensor = sensor;
         this.commandTransporter = commandTransporter;
     }

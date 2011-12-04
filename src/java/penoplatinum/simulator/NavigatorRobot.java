@@ -9,7 +9,7 @@ import penoplatinum.Utils;
  * 
  * General purpose Navigator-based Robot implementation.
  *  
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 public class NavigatorRobot implements Robot {
 

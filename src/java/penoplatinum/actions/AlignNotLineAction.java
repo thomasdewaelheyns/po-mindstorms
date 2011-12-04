@@ -10,7 +10,7 @@ import penoplatinum.simulator.Navigator;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class AlignNotLineAction extends BaseAction {
 

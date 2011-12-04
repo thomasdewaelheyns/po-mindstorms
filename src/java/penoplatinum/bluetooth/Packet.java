@@ -7,7 +7,7 @@ package penoplatinum.bluetooth;
 /**
  * Internal use, holds a packet
  * TODO: GC
- * @author MHGameWork
+ * @author: Team Platinum
  */
 class Packet {
     public int PacketIdentifier;

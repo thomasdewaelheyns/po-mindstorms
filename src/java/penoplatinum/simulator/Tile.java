@@ -27,7 +27,7 @@ package penoplatinum.simulator;
  *   3 bits : none, N, E, S or W
  * total = 30 bits, 2 spare for future additional information (ramp,...)
  *
- *  Author: Team Platinum
+ *  @author: Team Platinum
  */
 
 import java.awt.Point;

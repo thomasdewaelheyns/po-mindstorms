@@ -8,7 +8,7 @@ import penoplatinum.navigators.TestNavigator;
  * Constructs a robot and course, sets up the Simulator and starts the
  * simulation. All ready to test.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
  
 public class TestSimulation {

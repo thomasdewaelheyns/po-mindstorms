@@ -5,7 +5,7 @@ package penoplatinum.simulator;
  * 
  * Defines the interface for Viewers for the Simulator
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 import java.util.List;

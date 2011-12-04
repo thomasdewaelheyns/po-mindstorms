@@ -10,7 +10,7 @@ import penoplatinum.simulator.Navigator;
 
 /**
  * TODO: WARNING: UNSAFE CONSTANTS USED
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class AlignOnBarcodeAction extends BaseAction {
 

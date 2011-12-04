@@ -7,7 +7,7 @@ package penoplatinum.simulator;
  * It provides additional methods for the Simulator to set up links between
  * them.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public class SimulationRobotAgent implements RobotAgent {

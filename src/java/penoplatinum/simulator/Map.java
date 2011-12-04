@@ -5,7 +5,7 @@ package penoplatinum.simulator;
  * 
  * Class representing a Map of Tiles that represents the world of our robot.
  *
- *  Author: Team Platinum
+ *  @author: Team Platinum
  */
 
 import java.util.List;

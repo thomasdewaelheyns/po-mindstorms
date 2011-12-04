@@ -8,7 +8,7 @@ package penoplatinum.barcode;
 
 /**
  * //TODO: reimplement
- * @author Thomas
+ * @author: Team Platinum
  */
 public interface ILightSensor {
 

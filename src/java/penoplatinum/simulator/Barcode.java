@@ -3,7 +3,7 @@ package penoplatinum.simulator;
 /**
  * Enumeration of Barcodes
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public class Barcode {

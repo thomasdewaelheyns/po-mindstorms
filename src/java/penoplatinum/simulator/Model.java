@@ -7,7 +7,7 @@ package penoplatinum.simulator;
  * ModelProcessors the incoming (sensor-)data is processed and turned in a 
  * map. The Navigator can interrogate this map to decide where to go next.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 import java.util.List;
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ package penoplatinum.ui;
  * Defines the interface for handlers of commands that are executed through
  * the UI
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 public interface UICommandHandler {
   public void handle(String command);

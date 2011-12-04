@@ -12,7 +12,7 @@ import java.io.DataOutputStream;
  * You have to Register this transporter with this instance, for the types 
  * of packets you which to receive/send with this transporter
  * 
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public interface IPacketTransporter {
 

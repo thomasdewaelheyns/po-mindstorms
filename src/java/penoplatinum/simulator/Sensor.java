@@ -5,7 +5,7 @@ package penoplatinum.simulator;
  * 
  * Defines an interface for (querying) sensors.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 public interface Sensor {

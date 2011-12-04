@@ -5,7 +5,7 @@ package penoplatinum.ui;
  * 
  * Runner for our Console
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 class ConsoleRunner {

@@ -5,7 +5,7 @@ package penoplatinum.ui;
  * 
  * Defines the interface for Viewers for the UI
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 public interface UIView {
   public static int NONE=-1000;

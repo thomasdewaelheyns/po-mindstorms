@@ -1,5 +1,9 @@
 package penoplatinum.navigator;
 
+/**
+ * 
+ * @author: Team Platinum
+ */
 public class BarcodeDataNav {
     private final ColorInterpreter interpreter;
     public static byte[] expand = new byte[]{0,15,22,25,37,42,51,60,67,76,85,90,102,105,112,127};

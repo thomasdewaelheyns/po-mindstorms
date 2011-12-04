@@ -6,7 +6,7 @@ package penoplatinum.simulator;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public enum Line {
   NONE,BLACK,WHITE

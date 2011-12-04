@@ -9,7 +9,7 @@ import penoplatinum.Utils;
     
 /**
  *
- * @author Thomas
+ * @author: Team Platinum
  */
 public class BarcodeReaderTest {
     

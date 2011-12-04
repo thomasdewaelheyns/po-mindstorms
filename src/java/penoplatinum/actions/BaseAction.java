@@ -8,7 +8,7 @@ import penoplatinum.simulator.Model;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public abstract class BaseAction {
 

@@ -11,7 +11,7 @@ import penoplatinum.bluetooth.RemoteFileLogger;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class MainLogger {
 

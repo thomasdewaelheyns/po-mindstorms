@@ -11,7 +11,7 @@ import penoplatinum.movement.RotationMovement;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class VeelhoekDemo {
 

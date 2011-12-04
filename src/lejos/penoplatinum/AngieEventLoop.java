@@ -10,7 +10,7 @@ import penoplatinum.simulator.NavigatorRobot;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class AngieEventLoop {
 

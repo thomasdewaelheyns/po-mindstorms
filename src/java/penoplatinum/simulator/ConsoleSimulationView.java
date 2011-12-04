@@ -6,7 +6,7 @@ package penoplatinum.simulator;
  * Implementation of the SimulationView that displays the status of the 
  * Simulation on the console.
  * 
- * Author: Team Platinum
+ * @author: Team Platinum
  */
 
 import java.util.List;

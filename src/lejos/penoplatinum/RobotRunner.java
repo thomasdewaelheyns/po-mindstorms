@@ -11,7 +11,7 @@ import penoplatinum.bluetooth.RobotBluetoothConnection;
 
 /**
  *
- * @author MHGameWork
+ * @author: Team Platinum
  */
 public class RobotRunner {
 
