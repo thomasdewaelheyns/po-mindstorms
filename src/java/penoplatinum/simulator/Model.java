@@ -13,7 +13,7 @@ import penoplatinum.modelprocessor.ModelProcessor;
 import java.util.List;
 import java.util.ArrayList;
 import penoplatinum.modelprocessor.Buffer;
-import penoplatinum.navigator.ColorInterpreter;
+import penoplatinum.modelprocessor.ColorInterpreter;
 
 public class Model {
   // shorthands mapping the sensors/numbers to their technical ports
@@ -59,6 +59,14 @@ public class Model {
   private double barcodeAngle = 0;
   private boolean lightCorruption = false;
 
+  private ColorInterpreter interpreter;
+  
+  public Model()
+  {
+    interpreter = new ColorInterpreter();
+    interpreter.setModel(this);
+  }
+  
   // sets the (top-level) processor
   public void setProcessor(ModelProcessor processor) {
     this.processor = processor;
@@ -243,8 +251,7 @@ public class Model {
   
   public String toString(){
     int lightValue = this.getSensorValue(S4);
-    ColorInterpreter interpreter = new ColorInterpreter();
-    interpreter.setModel(this);
+    
     String interpretedColor = interpreter.getCurrentColor().toString();
     int sonarAngle = this.getSensorValue(M3)+90;
     int sonarDistance = getSensorValue(S3);
