@@ -5,7 +5,6 @@ import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.PacketTransporter;
 
 /**
- * TODO: put in shared project
  * @author MHGameWork
  */
 public class Utils {
