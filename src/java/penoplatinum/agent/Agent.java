@@ -28,7 +28,11 @@ public class Agent {
     System.out.println( "Agent:> Starting logging..." );
     while( this.source.hasNext() ) {
       String msg = source.getMessage();
-      if( msg.length() > 10 ) { log.info( msg ); }
+      try {
+        if( msg.length() > 10 ) { log.info( msg ); }
+      } catch( Exception e ) {
+        System.err.println( "failed to log message: " + msg );
+      }
     }
   }
 }
