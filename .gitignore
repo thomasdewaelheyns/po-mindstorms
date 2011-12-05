@@ -13,3 +13,4 @@ build.properties
 /netbeans/Client/testOutput/*
 /netbeans/Client/dist/
 /netbeans/RobotLogs/*
+/verslag/verslag.dvi
