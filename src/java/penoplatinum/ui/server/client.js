@@ -33,7 +33,7 @@
   },
 
   updateBarcode = function updateBarcode(barcode) {
-    updateHTML( "barcode", "barcode: " + barcode );
+    updateHTML( "barcode", "barcode: " + ( barcode > 0 ? barcode : "" ) );
   },
 
   updateSonar = function updateSonar(angle, distance) {
