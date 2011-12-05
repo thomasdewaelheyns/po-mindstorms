@@ -11,7 +11,12 @@
   <h1>Dashboard <span id="timeStamp" style="float:right"></span></h1>
   <h2>
     P&amp;O Computerwetenschappen - Team <span id="robotName"></span>
-    <span id="queueStatus" style="float:right"></span>
+    <span id="controls" style="float:right">
+      <input type="button" onclick="Dashboard.play();" value=">"/>
+      <input type="button" onclick="Dashboard.pause();" value="||"/>
+      <input type="button" onclick="Dashboard.step();" value="+"/>
+      <span id="queueStatus">(0)</span>
+    </span>
   </h2>
     
   <div id="model" class="group">

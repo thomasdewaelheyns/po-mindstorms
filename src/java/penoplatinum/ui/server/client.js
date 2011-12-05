@@ -4,6 +4,7 @@
   var
   
   queue = [],
+  streaming = true,
 
   lightHistogram = [],
   sonarHistogram = [],
@@ -146,7 +147,7 @@
     }
     updateHTML( "queueStatus", "(" + queue.length +")" );
     // schedule the next update in 10ms
-    setTimeout(processQueue, 10);
+    if( streaming ) { setTimeout(processQueue, 10); }
   }
 
   // then we define a public global namespace/object
@@ -184,10 +185,23 @@
     alert( "ERROR: " + msg );
   };
 
+  dashboard.play = function play() {
+    streaming = true;
+    processQueue();
+  };
+
+  dashboard.pause = function pause() {
+    streaming = false;
+  };
+
+  dashboard.step = function step() {
+    processQueue();
+  };
+
   // public method used by JSONP to start the stream
   dashboard.start = function start() {
     // start an event loop that processes the queue
-    processQueue();
+    dashboard.play();
   };
 
 }(window));
