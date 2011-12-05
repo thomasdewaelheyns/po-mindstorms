@@ -57,7 +57,7 @@ public class Streamer {
       // while we don't encounter any errors writing to the client...
       while( ! out.checkError() ) {
         this.getNextBatch();
-        int id = -1, lightValue, barcode, sonarAngle, sonarDistance;
+        int id = -1, lightValue, barcode, sonarAngle, sonarDistance, rate;
         String ts, robot, lightColor, pushLeft, pushRight, event, source,
           plan, queue, action, argument;
         while(this.rs.next()) {
@@ -77,6 +77,7 @@ public class Streamer {
           queue         = rs.getString(14);
           action        = rs.getString(15);
           argument      = rs.getString(16);
+          rate          = rs.getInt(17);
 
           out.println( "<script>parent.Dashboard.update( " +
             "'" + ts + "','" + robot + "'," +
@@ -85,7 +86,8 @@ public class Streamer {
             pushLeft + "," + pushRight + "," +
             "'" + event + "','" + source + "'," +
             "'" + plan + "','" + queue + "'," +
-            "'" + action + "','" + argument + "');</script>\n" );
+            "'" + action + "','" + argument + "'," +
+            rate + ");</script>\n" );
         }
         out.print( " " ); // force output, causing exception when closed
         out.flush();      // flush to the browser for optimal UI experience

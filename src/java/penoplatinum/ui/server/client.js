@@ -141,6 +141,8 @@
       updateEvent   ( update.navigatorEvent,  update.navigatorSource      );
       updatePlan    ( update.navigatorAction, update.navigatorActionQueue );
       updateAction  ( update.actionKind,      update.actionArgument       );
+      // rate
+      updateHTML( "rate", update.rate );
     }
     updateHTML( "queueStatus", "(" + queue.length +")" );
     // schedule the next update in 10ms
@@ -160,7 +162,8 @@
                                       pushLeft,        pushRight,
                                       navigatorEvent,  navigatorSource,
                                       navigatorAction, navigatorActionQueue,
-                                      actionKind,      actionArgument )
+                                      actionKind,      actionArgument,
+                                      rate )
   {
     // add the update to the queue ...
     queue.push( {
@@ -171,7 +174,8 @@
       pushLeft : pushLeft,               pushRight : pushRight,
       navigatorEvent : navigatorEvent,   navigatorSource : navigatorSource,
       navigatorAction : navigatorAction, navigatorActionQueue : navigatorActionQueue,
-      actionKind : actionKind,           actionArgument : actionArgument
+      actionKind : actionKind,           actionArgument : actionArgument,
+      rate:rate
     } );
   };
 
