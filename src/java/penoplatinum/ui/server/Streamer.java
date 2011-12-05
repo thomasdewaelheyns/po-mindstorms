@@ -137,7 +137,11 @@ public class Streamer {
     final String sql = "SELECT MAX(id) FROM logs;";
     try {
       this.rs = this.con.createStatement().executeQuery(sql);
-      if( this.rs.next() ) { return rs.getInt(1) - 2; }
+      if( this.rs.next() ) { 
+        int id = rs.getInt(1);
+        System.out.println( "LastID = " + id );
+        return id;
+      }
     } catch( Exception e ) {
       System.err.println( "Couldn't get last id... " + e );
     }
