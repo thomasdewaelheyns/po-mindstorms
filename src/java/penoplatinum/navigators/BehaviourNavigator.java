@@ -100,7 +100,7 @@ public class BehaviourNavigator implements Navigator {
     checkBarcodeEvent();
     checkLineEvent();
     //checkSonarCollisionEvent();
-    checkCollisionEvent();
+//    checkCollisionEvent();
   }
 //  private double lastBarcodeAngle;
 

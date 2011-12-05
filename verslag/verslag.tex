@@ -660,11 +660,16 @@ De volgende acties staan ter beschikking van de Navigator:
 \begin{itemize}
 \item MoveAction
 \item TurnAction
-\item AlignPerpendicularAction
-\item MoveOffLineAction
+\item StopAction
+\item DriveForwardAction
+\item MoveOffLineAction // de robot draait tot zijn lichtsensor terug aan de andere kant van de lijn is
 \end{itemize}
 
 Elk van deze acties kan tot slot in een niet-onderbreekbare staat gebracht worden, waardoor er geen nieuwe events kunnen gedetecteerd worden.
+
+Indien de robot geen acties meer in zijn queue heeft, gaat hij 'gap detection' gebruiken om zijn richting te bepalen. Als de robot met zijn sonar waarneemt dat hij in alle richtingen zal botsen, behalve in 1 duidelijk begrensde richting (the gap), dan zal de robot zich richting naar die gap.
+
+Als er uit alle voorgaande condities niets van besloten worden, rijdt de robot gewoon vooruit.
 
 \subsection{Logging en Web-interface}
 
