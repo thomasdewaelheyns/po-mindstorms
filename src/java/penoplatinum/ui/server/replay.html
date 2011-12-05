@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>POC web client</title>
+  <link rel="stylesheet" type="text/css" href="client.css">
+  <script src="client.js"></script>
+</head>
+
+<body>
+  <h1>Dashboard <span id="timeStamp" style="float:right"></span></h1>
+  <h2>
+    P&amp;O Computerwetenschappen - Team <span id="robotName"></span>
+    <span id="queueStatus" style="float:right"></span>
+  </h2>
+    
+  <div id="model" class="group">
+
+    <h3>Model</h3>
+
+    <div id="light" class="sensor">
+      <h4>Light Sensor</h4>
+      <div id="lightValue">---</div>
+      <div id="lightColor">---</div>  
+      <canvas id="lightHistogram" width="150" height="70" class="light"></canvas>
+      <div id="barcode">---</div>  
+    </div>
+
+    <div id="sonar" class="sensor">
+      <h4>Sonar Sensor</h4>
+      <div id="sonarValue">---</div>
+      <canvas id="sonarHistogram" width="150" height="150" class="sonar"></canvas>
+    </div>
+
+    <div id="push" class="sensor">
+      <h4>Push Sensors</h4>
+      <div id="push-left" class="push">---</div>
+      <div id="push-right" class="push">---</div>
+    </div>
+  </div>
+  
+  <div id="navigator" class="group">
+
+    <h3>Navigator</h3>
+
+    <div id="event" class="action">
+      <h4>Event</h4>
+      <div id="eventKind" class="urgent">---</div>
+      <div id="eventSource">---</div>
+      <div id="eventAction" class="urgent">---</div>
+      <ol id="eventActionQueue" class="actionQueue"></ol>
+    </div>
+
+    <div id="action" class="action">
+      <h4>Action</h4>
+      <div id="actionKind">---</div>
+      <div id="actionArgument">---</div>
+    </div>
+  </div>
+
+  <!-- activate JSONP stream ... -->
+  <iframe style="display=none;" src="./replay"></iframe>
+</body>
+</html>
