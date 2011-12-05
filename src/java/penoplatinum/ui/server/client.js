@@ -146,8 +146,8 @@
       updateHTML( "rate", update.rate );
     }
     updateHTML( "queueStatus", "(" + queue.length +")" );
-    // schedule the next update in 10ms
-    if( streaming ) { setTimeout(processQueue, 10); }
+    // schedule the next update in 30ms
+    if( streaming ) { setTimeout(processQueue, 30); }
   }
 
   // then we define a public global namespace/object
