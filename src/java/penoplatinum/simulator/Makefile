@@ -1,6 +1,6 @@
 RM=rm -rf
 
-TARGETS=SimulationRunner.class SonarNavigator.class LineFollowerNavigator.class
+TARGETS=SimulationRunner.class
 LIBS=:../../../../lib/commons-cli-1.2.jar
 CP=../../:${LIBS}
 
@@ -13,10 +13,14 @@ OPTIONS=
 
 all: ${TARGETS}
 
-linefollower:
-	@${MAKE} clean run OPTIONS="-n penoplatinum.simulator.LineFollowerNavigator -p 100,100,180"
-sonar:
-	@${MAKE} clean run OPTIONS="-n penoplatinum.simulator.SonarNavigator"
+behaviour: ../navigators/BehaviourNavigator.class
+	@${MAKE} run OPTIONS="-n penoplatinum.navigators.BehaviourNavigator -p 100,100,90"
+
+linefollower: ../navigators/LineFollowerNavigator.class
+	@${MAKE} run OPTIONS="-n penoplatinum.navigators.LineFollowerNavigator -p 100,100,180"
+
+sonar: ../navigators/SonarNavigator.class
+	@${MAKE} run OPTIONS="-n penoplatinum.navigators.SonarNavigator"
 
 run: ${TARGETS} images
 	@${JAVA} penoplatinum.simulator.${<:.class=} ${OPTIONS}
