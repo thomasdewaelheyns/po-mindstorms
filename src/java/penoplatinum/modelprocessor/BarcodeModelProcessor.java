@@ -28,24 +28,50 @@ public class BarcodeModelProcessor extends ModelProcessor {
   //the length of a barcode strip
   private float barcodeLength = 0.14f;
 
+  
+  /**
+   * The constructor in case the BarcodeModelProcessor is the last in a linked list of ModdelProcessors
+   * or when there is only one ModdelProcessor.
+   * A colorInterpreter is created.
+   */
   public BarcodeModelProcessor() {
     super();
     this.colorInterpreter = new ColorInterpreter();
     interpreter = new BarcodeDataNav(colorInterpreter);
   }
 
+  /**
+   * The constructor for when the BarcodeModelProcessor is not the last element in a
+   * linked list with at least 2 ModelProcessors
+   * A colorInterpreter is created.
+   * @param nextProcessor 
+   *        The next ModelProcessor in the linked list.
+   */
   public BarcodeModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
     this.colorInterpreter = new ColorInterpreter();
     interpreter = new BarcodeDataNav(colorInterpreter);
   }
 
+  /**
+   * Sets the model for all ModelProcessors
+   * @param model 
+   *        The model we are using.
+   */
   @Override
   public void setModel(Model model) {
     super.setModel(model);
     colorInterpreter.setModel(model);
   }
 
+  /**
+   * Every time work is called, a step is taken in the recognition of a barcode.
+   * The method checks if the Light Value data is corrupted due to (un-)expected
+   * movements. If the data is corrupted, the state of the method is set to
+   * waiting.
+   * 
+   * It then calls upon the function updateState(...) to further handle the recognition.
+   */
   @Override
   protected void work() {
     Buffer tempBuffer = this.model.getLightValueBuffer();
@@ -66,6 +92,19 @@ public class BarcodeModelProcessor extends ModelProcessor {
     }
   }
 
+  /**
+   * The switch case checks in which case the method is. The different states are:
+   * WAITING: the robot waits for a change in light values that could indicate the start
+   *          of a barcode.
+   * RECORDING: The robot suspects a barcode and starts recoding the values.
+   *            If the input doesn't meet special requirements, too long or unexpected values,
+   *            the recording ends and the state is set back to WAITING.
+   *            If the end of the line is detected, the state is set to INTERPRET
+   * INTERPRET: The recorded values are a barcode. In this state barcode is 
+   *            extracted from the information.
+   *            The state is set to WAITING.
+   * @param tempBuffer 
+   */
   private void updateState(Buffer tempBuffer) {
     switch (state) {
       case WAITING:
@@ -89,7 +128,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
         }
         break;
       case INTERPRET:
-        int barcodeSize = tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT).size();
         int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));
         setState(WAITING);
         tempBuffer.unsetCheckPoint();
@@ -103,7 +141,11 @@ public class BarcodeModelProcessor extends ModelProcessor {
     }
   }
 
-  // returns degrees
+  /**
+   * This method calculates the angle at which the robot drives over the barcode.
+   * @return 
+   *        Returns the angle in degrees as a double.
+   */
   public double calculateAngle() {
     float tachoDiff = this.endTacho - this.startTacho;
     float distanceTraveled = tachoDiff / 360 * WIELOMTREK;

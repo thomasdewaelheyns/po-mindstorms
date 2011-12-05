@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package penoplatinum.modelprocessor;
 
 import penoplatinum.simulator.Model;
@@ -25,24 +22,33 @@ public class ColorInterpreter {
   }
 
   public int getLightValue() {
-    // SERIOUSLY????? trying to create amazing bugs?
-//        if(this.model == null){
-//            return 70;
-//        }
     return model.getSensorValue(model.S4);
-//        Buffer temp = this.model.getLightValueBuffer();
-//        return temp.get(temp.getSize()-1);
   }
 
   public byte readValue() {
     return (byte) getLightValue();
   }
 
+  /**
+   * An enumeration of the Colors with values BLACK, WHITE and BROWN
+   */
   public enum Color {
 
     Black, White, Brown;
   }
 
+  /**
+   * Checks if the light value in the arguments is the Color from the
+   * arguments.
+   * 
+   * @param col
+   *        The Color we want to compare to the light value
+   * @param val
+   *        The light value we compare to the color
+   * @return 
+   *        Returns a true boolean if the val is the Color col
+   *        Else returns false boolean.
+   */
   public boolean isColor(Color col, double val) {
 
     switch (col) {
@@ -58,14 +64,34 @@ public class ColorInterpreter {
     throw new AssertionError("Unknown op: " + this);
   }
 
+  /**
+   * Checks if the current light value is the Color from the arguments.
+   * @param col
+   *        The Color we want to compare to the light value
+   * @return 
+   *        Returns a true boolean if the current light value is the Color col
+   *        Else returns false boolean.
+   */
   public boolean isColor(Color col) {
     return isColor(col, getLightValue());
   }
 
+  /**
+   * Checks what color the current light value is.
+   * @return 
+   *        Returns an enumeration value corresponding with the correct color.
+   */
   public Color getCurrentColor() {
     return getCurrentColor(getLightValue());
   }
 
+  /**
+   * Checks what color the given value is and returns it.
+   * @param val
+   *        The value we want to check.
+   * @return 
+   *        Returns an enumeration value corresponding with the correct color.
+   */
   public Color getCurrentColor(int val) {
     if (isColor(Color.Brown, val)) {
       return Color.Brown;
@@ -74,15 +100,17 @@ public class ColorInterpreter {
       return Color.Black;
     }
     return Color.White;
-
-
   }
 
+  /**
+   * Checks if the value is closest to white or black.
+   * @param value
+   *        The value we want to check
+   * @return 
+   *        Returns 0 when the val is closest to black.
+   *        Else returns 1 (closest to white)
+   */
   public int isBlackOrWhite(int value) {
-    if (value < ((blackBorder + whiteBorder) / 2)) {
-      return 0;
-    } else {
-      return 1;
-    }
+    return value < ((blackBorder + whiteBorder) / 2) ? 0 : 1;
   }
 }
