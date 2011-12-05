@@ -143,7 +143,7 @@
       updatePlan    ( update.navigatorAction, update.navigatorActionQueue );
       updateAction  ( update.actionKind,      update.actionArgument       );
       // rate
-      updateHTML( "rate", update.rate );
+      updateHTML( "rate", update.rate + "fps" );
     }
     updateHTML( "queueStatus", "(" + queue.length +")" );
     // schedule the next update in 30ms
