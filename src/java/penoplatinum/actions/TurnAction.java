@@ -41,6 +41,6 @@ public class TurnAction extends BaseAction {
 
   @Override
   public String getArgument() {
-    return getAngle() + "°";
+    return getAngle() + "deg";
   }
 }

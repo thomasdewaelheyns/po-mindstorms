@@ -65,6 +65,6 @@ public abstract class BaseAction {
   @Override
   public String toString() {
     String argument = getArgument();
-    return getKind() + argument == null ? "" : " (" + argument + ")";
+    return getKind() + (argument == null ? "" : " (" + argument + ")");
   }
 }

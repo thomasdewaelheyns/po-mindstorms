@@ -79,6 +79,6 @@ public class AlignOnBarcodeAction extends BaseAction {
 
   @Override
   public String getArgument() {
-    return correctionAngle + "°";
+    return correctionAngle + "deg";
   }
 }

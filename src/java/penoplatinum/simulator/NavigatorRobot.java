@@ -41,9 +41,9 @@ public class NavigatorRobot implements Robot {
             new HistogramModelProcessor(
             new FrontPushModelProcessor(
             new SonarModelProcessor(
-            new LightCorruptionModelProcessor(
-            new ProximityModelProcessor(
             new GapModelProcessor(
+            new ProximityModelProcessor(
+            new LightCorruptionModelProcessor(
             new BarcodeModelProcessor(
             new LineModelProcessor(
     ))))))));
@@ -68,9 +68,9 @@ public class NavigatorRobot implements Robot {
     if (this.api == null) {
       return;
     }
-    this.api.setSpeed(Model.M3, 500); // set sonar speed to double of default
-    this.api.setSpeed(Model.M2, 250); // set sonar speed to double of default
-    this.api.setSpeed(Model.M1, 250); // set sonar speed to double of default
+    this.api.setSpeed(Model.M3, 300); // set sonar speed to double of default
+    this.api.setSpeed(Model.M2, 100); // set sonar speed to double of default
+    this.api.setSpeed(Model.M1, 100); // set sonar speed to double of default
   }
 
   public void processCommand(String cmd) {

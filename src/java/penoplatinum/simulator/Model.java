@@ -58,15 +58,13 @@ public class Model {
   private Buffer lightValueBuffer = new Buffer(bufferSize);
   private double barcodeAngle = 0;
   private boolean lightCorruption = false;
-
   private ColorInterpreter interpreter;
-  
-  public Model()
-  {
+
+  public Model() {
     interpreter = new ColorInterpreter();
     interpreter.setModel(this);
   }
-  
+
   // sets the (top-level) processor
   public void setProcessor(ModelProcessor processor) {
     this.processor = processor;
@@ -208,8 +206,12 @@ public class Model {
   public int getBarcode() {
     return this.barcode;
   }
+  private int lastBarcode;
 
   public void setBarcode(int barcode) {
+    if (barcode != -1) {
+      lastBarcode = barcode;
+    }
     this.barcode = barcode;
   }
 
@@ -224,22 +226,21 @@ public class Model {
   public void setLine(Line line) {
     this.line = line;
   }
-  
-  
-  public void setBarcodeAngle(double angle){
+
+  public void setBarcodeAngle(double angle) {
     this.barcodeAngle = angle;
   }
-  
-  public double getBarcodeAngle(){
+
+  public double getBarcodeAngle() {
     return this.barcodeAngle;
   }
-  
-   /**
-     * Returns the average tacho count of the 2 motors
-     */
-    public float getAverageTacho() {
-        return (getSensorValue(M1) + getSensorValue(M2)) / 2f;
-    }
+
+  /**
+   * Returns the average tacho count of the 2 motors
+   */
+  public float getAverageTacho() {
+    return (getSensorValue(M1) + getSensorValue(M2)) / 2f;
+  }
 
   public boolean isLightDataCorrupt() {
     return lightCorruption;
@@ -248,17 +249,25 @@ public class Model {
   public void setLightCorruption(boolean lightCorruption) {
     this.lightCorruption = lightCorruption;
   }
-  
-  public String toString(){
+  private StringBuilder builder = new StringBuilder();
+
+  public String toString() {
     int lightValue = this.getSensorValue(S4);
-    
+
     String interpretedColor = interpreter.getCurrentColor().toString();
-    int sonarAngle = this.getSensorValue(M3)+90;
+    int sonarAngle = this.getSensorValue(M3) + 90;
     int sonarDistance = getSensorValue(S3);
-    boolean pushLeft = this.getSensorValue(S2)==255; 
-    boolean pushRight = this.getSensorValue(S1)==255;
-    String model = lightValue + ",\"" + interpretedColor.toLowerCase() + "\"," + sonarAngle + "," + sonarDistance + "," + pushLeft + "," + pushRight;
-    return model;     
+    boolean pushLeft = this.getSensorValue(S1) == 255;
+    boolean pushRight = this.getSensorValue(S2) == 255;
+
+    builder.delete(0, builder.length());
+    builder.append(lightValue).append(",\"").append(interpretedColor.toLowerCase()).append("\",\"").append(lastBarcode).append("\",").append(sonarAngle).append(',').append(sonarDistance).append(',').append(pushLeft).append(',').append(pushRight);
+    return builder.toString();
+
+
+//    String model = lightValue + ",\"" + interpretedColor.toLowerCase() + "\",\"" + lastBarcode + "\"," + sonarAngle 
+//            + "," + sonarDistance + "," + pushLeft + "," + pushRight;
+//    return model;
   }
   private boolean leftObstacle;
   private boolean rightObstacle;
@@ -278,8 +287,6 @@ public class Model {
   public void setRightObstacle(boolean rightObstacle) {
     this.rightObstacle = rightObstacle;
   }
-  
-  
   private boolean gapFound;
   private int gapStartAngle;
   private int gapEndAngle;
@@ -307,8 +314,6 @@ public class Model {
   public void setGapStartAngle(int gapStartAngle) {
     this.gapStartAngle = gapStartAngle;
   }
-  
-  
   private boolean scanningLightData;
 
   public boolean isScanningLightData() {
@@ -322,7 +327,4 @@ public class Model {
   public void setScanningLightData(boolean scanningLightData) {
     this.scanningLightData = scanningLightData;
   }
-  
-    
-  
 }

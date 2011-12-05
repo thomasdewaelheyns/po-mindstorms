@@ -55,12 +55,12 @@ public class BehaviourNavigator implements Navigator {
       queue.dequeue();
 
     }
-
+//
     if (queue.getCurrentAction() == null) {
       performGapMovement();
     }
     if (queue.getCurrentAction() == null) {
-      queue.clearActionQueue();
+      newEvent("Idle", "", "Drive");
       driveForwardAction.reset();
       queue.add(driveForwardAction);
     }
@@ -94,13 +94,13 @@ public class BehaviourNavigator implements Navigator {
     }
 
 //
-//    if (!proximityBlocked) {
-//      checkProximityEvent();
-//    }
+    if (!proximityBlocked) {
+      checkProximityEvent();
+    }
     checkBarcodeEvent();
     checkLineEvent();
     //checkSonarCollisionEvent();
-//    checkCollisionEvent();
+    checkCollisionEvent();
   }
 //  private double lastBarcodeAngle;
 
@@ -108,12 +108,12 @@ public class BehaviourNavigator implements Navigator {
     event = eventName;
     eventSource = source;
     eventAction = action;
-    Utils.Log("Event: " + eventName);
+//    Utils.Log("Event: " + eventName);
     queue.clearActionQueue();
     proximityBlocked = false;
   }
   private static final float barcodeLength = 0.16f;
-  private static final float totalDriveDistance = 0.45f;
+  private static final float totalDriveDistance = 0.35f;
   private static final float initialDriveDistance = 0.2f;
   private static final int firstRotateAngle = 30;
   private static final float diagonalDriveDistance = (totalDriveDistance - barcodeLength - initialDriveDistance)
@@ -136,19 +136,23 @@ public class BehaviourNavigator implements Navigator {
         newEvent("Barcode " + model.getBarcode(), "Lightsensor", "Turn left");
 
         proximityBlocked = true;
-        queue.add(new MoveAction(model, initialDriveDistance));
-        queue.add(new TurnAction(model, firstRotateAngle));
-        queue.add(new MoveAction(model, diagonalDriveDistance));
-        queue.add(new TurnAction(model, 90 - firstRotateAngle));
+        queue.add(new MoveAction(model, 0.25f));
+        queue.add(new TurnAction(model, 80));
+//        queue.add(new MoveAction(model, initialDriveDistance));
+//        queue.add(new TurnAction(model, firstRotateAngle));
+//        queue.add(new MoveAction(model, diagonalDriveDistance));
+//        queue.add(new TurnAction(model, 90 - firstRotateAngle));
         break;
       case 6:
         newEvent("Barcode " + model.getBarcode(), "Lightsensor", "Turn right");
 
         proximityBlocked = true;
-        queue.add(new MoveAction(model, initialDriveDistance));
-        queue.add(new TurnAction(model, -firstRotateAngle));
-        queue.add(new MoveAction(model, diagonalDriveDistance));
-        queue.add(new TurnAction(model, -(90 - firstRotateAngle)));
+        queue.add(new MoveAction(model, 0.25f));
+        queue.add(new TurnAction(model, -80));
+//        queue.add(new MoveAction(model, initialDriveDistance));
+//        queue.add(new TurnAction(model, -firstRotateAngle));
+//        queue.add(new MoveAction(model, diagonalDriveDistance));
+//        queue.add(new TurnAction(model, -(90 - firstRotateAngle)));
         break;
 
       case 5:
@@ -162,6 +166,7 @@ public class BehaviourNavigator implements Navigator {
 
         queue.add(new MoveAction(model, 0.15f));
         queue.add(new TurnAction(model, 180));
+        queue.add(new MoveAction(model, 0.30f));
         break;
 
       case 7: //Wip
@@ -304,6 +309,7 @@ public class BehaviourNavigator implements Navigator {
   String event;
   String eventSource;
   String eventAction;
+  StringBuilder builder = new StringBuilder();
 
   @Override
   public String toString() {
@@ -315,8 +321,21 @@ public class BehaviourNavigator implements Navigator {
 
     if (queue.getCurrentAction() != null) {
       currentAction = queue.getCurrentAction().getKind();
-      currentAction = queue.getCurrentAction().getArgument();
+      currentActionArgument = queue.getCurrentAction().getArgument();
+      if (currentActionArgument == null) {
+        currentActionArgument = "";
+      }
     }
-    return "\"" + event + "\",\"" + eventSource + "\", \"" + eventAction + "\", \"" + actionQueue + "\", \"" + currentAction + "\", \"" + currentActionArgument + "\"";
+    builder.delete(0, builder.length());
+    builder
+            .append('\"').append(event)
+            .append("\",\"").append(eventSource)
+            .append("\",\"").append(eventAction)
+            .append("\",\"").append(actionQueue)
+            .append("\",\"").append(currentAction).append("\",\"")
+            .append(currentActionArgument).append('\"');
+    return builder.toString();
+
+//    return "\"" + event + "\",\"" + eventSource + "\", \"" + eventAction + "\", \"" + actionQueue + "\", \"" + currentAction + "\", \"" + currentActionArgument + "\"";
   }
 }

@@ -45,6 +45,7 @@ public class ActionQueue {
       if (!first) {
         ret += "|";
       }
+      first = false;
       ret += actionQueue.get(i).toString();
     }
     return ret;

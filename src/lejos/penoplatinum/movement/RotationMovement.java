@@ -6,7 +6,7 @@ import penoplatinum.Utils;
 public class RotationMovement {
 
     public static double CCW_afwijking = 1.01;
-    public int SPEEDFORWARD = 500;
+    public int SPEEDFORWARD = 400;
     public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
     public final int WIELAFSTAND = 160;//112mm

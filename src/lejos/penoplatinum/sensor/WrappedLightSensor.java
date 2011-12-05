@@ -10,6 +10,7 @@ import penoplatinum.Utils;
 import penoplatinum.barcode.ILightSensor;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.ui.UIView;
 
 public class WrappedLightSensor implements ILightSensor {
@@ -92,6 +93,9 @@ public class WrappedLightSensor implements ILightSensor {
     private void updateBorders() {
         blackBorder = (BLACKVAL + BROWNVAL) / 2;
         whiteBorder = (WHITEVAL + BROWNVAL) / 2;
+        ColorInterpreter.blackBorder = blackBorder;
+        ColorInterpreter.whiteBorder = whiteBorder;
+        
     }
 
     public int getLightValue() {

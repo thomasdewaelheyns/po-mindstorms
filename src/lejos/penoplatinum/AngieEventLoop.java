@@ -34,20 +34,35 @@ public class AngieEventLoop {
     private void cacheState() {
         synchronized (this) {
 
-            Utils.Log(this.navigatorRobot.getModelState());
+//            Utils.Log(this.navigatorRobot.getModelState());
             this.lastState =
                     this.navigatorRobot.getModelState() + ","
-                    + this.navigatorRobot.getNavigatorState();
+                    + this.navigatorRobot.getNavigatorState() + "," + fps;
         }
     }
 
-    public String getState() {
-        synchronized (this) {
-            return this.lastState;
+    /**
+     * This method is thread safe, it invokes the eventloop to update the state
+     */
+    public String fetchState() throws InterruptedException {
+        synchronized (updateLock) {
+            updateStateInvoked = true;
+            while (updateStateInvoked) {
+                updateLock.wait();
+            }
+            return lastState;
         }
+        
     }
+    private Object updateLock = new Object();
+    private boolean updateStateInvoked;
 
+    private int fps;
+    
     public void runEventLoop() {
+
+
+
         int count = 0;
         int delta = 0;
         while (true) {
@@ -55,12 +70,23 @@ public class AngieEventLoop {
             step();
             delta += System.nanoTime() - start;
             if (delta > 1000L * 1000 * 1000) {
-                System.out.println(count / (double) delta * 1000d * 1000d * 1000d);
+                fps = (int)(count / (double) delta * 1000d * 1000d * 1000d);
+                System.out.println(fps);
                 count = 0;
                 delta = 0;
             }
             count++;
-            this.cacheState();
+
+            synchronized(updateLock)
+            {
+                if (updateStateInvoked)
+                {
+                    this.cacheState();
+                    updateStateInvoked =false;
+                    updateLock.notify();
+                }
+            }
+            Thread.yield();
         }
 
     }
