@@ -33,4 +33,14 @@ public class TurnAction extends BaseAction {
   public boolean isComplete() {
     return !getModel().isMoving() && !first;
   }
+
+  @Override
+  public String getKind() {
+    return "Turn";
+  }
+
+  @Override
+  public String getArgument() {
+    return getAngle() + "°";
+  }
 }

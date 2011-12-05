@@ -37,8 +37,7 @@ public class AlignOnBarcodeAction extends BaseAction {
 
   @Override
   public int getNextAction() {
-    if (correcting)
-    {
+    if (correcting) {
       return Navigator.NONE;
     }
     if (!started) {
@@ -51,7 +50,7 @@ public class AlignOnBarcodeAction extends BaseAction {
     }
     if (!colors.isColor(ColorInterpreter.Color.Brown)) {
       // Found something!! turn other way
-      
+
       int diffTacho = getModel().getSensorValue(Model.M1) - startTacho;
       int angle = (int) (diffTacho / Math.PI / WIELAFSTAND * WIELOMTREK);
       setAngle((Math.abs(angle) + correctionAngle) * -directionModifier);
@@ -71,5 +70,15 @@ public class AlignOnBarcodeAction extends BaseAction {
   public boolean isComplete() {
     return !getModel().isMoving() && correcting;
 
+  }
+
+  @Override
+  public String getKind() {
+    return "Align to barcode";
+  }
+
+  @Override
+  public String getArgument() {
+    return correctionAngle + "°";
   }
 }

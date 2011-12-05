@@ -71,4 +71,14 @@ public class AlignNotLineAction extends BaseAction {
     return (!getModel().isMoving() && !sweeping) || abort;
 
   }
+
+  @Override
+  public String getKind() {
+    return "Align to line";
+  }
+
+  @Override
+  public String getArgument() {
+    return directionModifier > 0 ? "CCW" : "CW";
+  }
 }

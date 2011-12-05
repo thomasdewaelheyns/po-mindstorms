@@ -34,7 +34,6 @@ public abstract class BaseAction {
   private float distance;
   private int angle;
 
-
   public abstract int getNextAction();
 
   public abstract boolean isComplete();
@@ -57,5 +56,15 @@ public abstract class BaseAction {
 
   protected Model getModel() {
     return model;
+  }
+
+  public abstract String getKind();
+
+  public abstract String getArgument();
+
+  @Override
+  public String toString() {
+    String argument = getArgument();
+    return getKind() + argument == null ? "" : " (" + argument + ")";
   }
 }

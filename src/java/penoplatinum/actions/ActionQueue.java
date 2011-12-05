@@ -5,7 +5,6 @@
 package penoplatinum.actions;
 
 import java.util.ArrayList;
-import penoplatinum.Utils;
 
 /**
  *
@@ -38,4 +37,16 @@ public class ActionQueue {
     actionQueue.add(action);
   }
 
+  @Override
+  public String toString() {
+    String ret = "";
+    boolean first = true;
+    for (int i = currentActionIndex; i < actionQueue.size(); i++) {
+      if (!first) {
+        ret += "|";
+      }
+      ret += actionQueue.get(i).toString();
+    }
+    return ret;
+  }
 }

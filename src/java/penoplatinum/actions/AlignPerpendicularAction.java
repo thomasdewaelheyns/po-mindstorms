@@ -66,4 +66,14 @@ public class AlignPerpendicularAction extends BaseAction {
     return !getModel().isMoving() && correctionStarted;
 
   }
+  
+   @Override
+  public String getKind() {
+     return "Align perpendicular";
+  }
+
+  @Override
+  public String getArgument() {
+    return null;
+  }
 }

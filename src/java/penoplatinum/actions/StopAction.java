@@ -37,4 +37,13 @@ public class StopAction extends BaseAction {
   public boolean isComplete() {
     return (startTime+lengthTime<System.currentTimeMillis()); // Never complete!
   }
+   @Override
+  public String getKind() {
+     return "Stop";
+  }
+
+  @Override
+  public String getArgument() {
+    return lengthTime + "ms";
+  }
 }

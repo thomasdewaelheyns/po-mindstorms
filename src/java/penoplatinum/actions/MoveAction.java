@@ -35,4 +35,13 @@ public class MoveAction extends BaseAction {
     return !getModel().isMoving() && !first;
 
   }
+   @Override
+  public String getKind() {
+     return "Move";
+  }
+
+  @Override
+  public String getArgument() {
+    return (int)(getDistance()*100) + "cm";
+  }
 }

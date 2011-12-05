@@ -45,4 +45,14 @@ public class DriveForwardAction extends BaseAction {
     }
     return executed;
   }
+  
+   @Override
+  public String getKind() {
+     return "Drive forward";
+  }
+
+  @Override
+  public String getArgument() {
+    return null;
+  }
 }
