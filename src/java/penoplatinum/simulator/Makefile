@@ -14,7 +14,7 @@ OPTIONS=
 all: ${TARGETS}
 
 behaviour: ../navigators/BehaviourNavigator.class
-	@${MAKE} run OPTIONS="-n penoplatinum.navigators.BehaviourNavigator -p 100,100,90"
+	@${MAKE} run OPTIONS="-n penoplatinum.navigators.BehaviourNavigator -p 100,100,90 -m finale.track"
 
 linefollower: ../navigators/LineFollowerNavigator.class
 	@${MAKE} run OPTIONS="-n penoplatinum.navigators.LineFollowerNavigator -p 100,100,180"

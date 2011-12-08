@@ -1,0 +1,7 @@
+6 5 1
+
+LCorner.W  Straight.W LCorner.N  None.N     None.n     None.N
+Straight.S RCorner.N  Cross			 Straight.E Straight.E RCorner.E
+Straight.S Straight.N Straight.N None.N     LCorner.W  RCorner.S 
+Straight.S Straight.N Straight.N LCorner.W  RCorner.S  None.N 
+LCorner.S  LCorner.E  RCorner.W  RCorner.S  None.N     None.N
