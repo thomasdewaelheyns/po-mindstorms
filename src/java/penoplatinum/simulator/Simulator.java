@@ -19,7 +19,7 @@ class Simulator {
   public static final double TIME_SLICE = 0.008;
 
   // a view to display the simulation, by default it does nothing
-  private SimulationView view = new SilentSimulationView();
+  SimulationView view = new SilentSimulationView();
   private Map map;                // the map that the robot will run on
   
   private SimulatedEntity robotEntity;
@@ -31,6 +31,7 @@ class Simulator {
   
   public void setSimulatedEntity(SimulatedEntity r){
     robotEntity = r;
+    r.useSimulator(this);
   }
 
   /**
@@ -149,7 +150,7 @@ class Simulator {
   }
 
   private void step() {
-    
+    robotEntity.step();
   }
 
   boolean hasTile(double positionX, double positionY) {

@@ -28,10 +28,12 @@ public class SimulatedEntity {
   private Simulator simulator;
 
   public SimulatedEntity(SimulationRobotAPI robotAPI, SimulationRobotAgent robotAgent, Robot robot) {
+    this.setupMotors();
     this.robotAPI = robotAPI;
     this.robotAgent = robotAgent;
     this.robot = robot;
-    this.setupMotors();
+    robotAPI.setSimulatedEntity(this);
+    robot.useRobotAPI(robotAPI);
   }
   
   public void useSimulator(Simulator simulator){
@@ -142,7 +144,7 @@ public class SimulatedEntity {
   }
 
   // performs the next step in the movement currently executed by the robot
-  private void step() {
+  void step() {
     // let all motors know that another timeslice has passed
 
     this.motors[Model.M1].tick(simulator.TIME_SLICE);
@@ -187,15 +189,16 @@ public class SimulatedEntity {
     this.updateSensorValues();
 
     // always refresh our SimulationView
-    robot.step();
     simulator.refreshView();
+    
+    robot.step();
   }
 
-  /**private void reportMovementStatistics() {
-    this.view.log("");
-    this.view.log("Total Distance = " + this.totalMovement + "cm");
-    this.view.log("Visited Tiles  = " + this.visitedTiles.size());
-    this.view.log("Fitness        = " + this.getFitness());
+  private void reportMovementStatistics() {
+    simulator.view.log("");
+    simulator.view.log("Total Distance = " + this.totalMovement + "cm");
+    //simulator.view.log("Visited Tiles  = " + this.visitedTiles.size());
+    //this.view.log("Fitness        = " + this.getFitness());
   }/*/
 
   /**
