@@ -1,7 +1,6 @@
 package penoplatinum.simulator;
 
 import penoplatinum.navigators.SonarNavigator;
-import penoplatinum.Utils;
 
 /**
  * BenchmarkRunner
@@ -35,7 +34,9 @@ class BenchmarkRunner {
     simulator.useMap   (map);
     // put the robot at position 150 cm from top, 150 cm from left, in an
     // angle of 33 degrees, with 0 degrees pointing north
-    simulator.putRobotAt (robot, 150, 150, 33);
+    SimulatedEntity s = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    s.setPostition(150, 150, 33);
+    simulator.setSimulatedEntity(s);
 
     // give robot instructions through the communication layer
     // simulator.send( "start" );
@@ -46,7 +47,7 @@ class BenchmarkRunner {
     simulator.run();
     
     System.out.println(" completed.");
-    System.out.println("Fitness = " + simulator.getFitness());
+    //System.out.println("Fitness = " + simulator.getFitness());
   }
 
 }

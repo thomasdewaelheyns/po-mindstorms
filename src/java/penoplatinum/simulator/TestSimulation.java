@@ -10,36 +10,38 @@ import penoplatinum.navigators.TestNavigator;
  * 
  * @author: Team Platinum
  */
- 
 public class TestSimulation {
-  
+
   private Simulator simulator;
-  private Robot     robot;
   private Navigator navigator;
-  
+  private Robot robot;
+  private SimulatedEntity entity;
+
   public TestSimulation() {
     this.simulator = new Simulator();
     // handy for debugging (FIXME: needs to be integrated better)
     // this.simulator.displayOn( new SwingSimulationView() );
     this.navigator = new TestNavigator();
-    this.robot     = new NavigatorRobot(this.navigator);
+    this.robot = new NavigatorRobot(this.navigator);
+    SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), this.robot);
+    simulator.setSimulatedEntity(entity);
   }
-  
+
   public TestSimulation setControler(GoalDecider controler) {
     this.navigator.setControler(controler);
     return this;
   }
-  
+
   public TestSimulation useMap(Map map) {
     this.simulator.useMap(map);
     return this;
   }
-  
+
   public TestSimulation putRobotAt(int x, int y, int direction) {
-    this.simulator.putRobotAt(robot, x, y, direction);
+    entity.setPostition(x, y, direction);
     return this;
   }
-  
+
   public TestSimulation run() {
     this.simulator.run();
     return this;
@@ -48,12 +50,12 @@ public class TestSimulation {
   public Simulator getSimulator() {
     return this.simulator;
   }
-
-  public Robot getRobot() {
-    return this.robot;
+  
+  public SimulatedEntity getSimulatedEntity(){
+    return entity;
   }
   
-  public Navigator getNavigator() {
-    return this.navigator;
+  public Robot getRobot(){
+    return this.robot;
   }
 }
