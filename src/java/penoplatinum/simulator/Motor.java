@@ -97,4 +97,9 @@ public class Motor implements Tickable, Sensor {
   public int getValue() {
     return (int)this.tacho;
   }
+
+  @Override
+  public void useSimulator(Simulator sim) {
+    // a motor does not need information from the world
+  }
 }

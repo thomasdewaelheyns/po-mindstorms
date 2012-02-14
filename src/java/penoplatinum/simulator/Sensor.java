@@ -12,5 +12,7 @@ public interface Sensor {
 
   // returns the current value of the sensor
   public int getValue();
+  
+  public void useSimulator(Simulator sim);
 
 }
