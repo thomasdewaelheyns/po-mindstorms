@@ -1,13 +1,18 @@
 RM=rm -rf
 
+LIB_DIR=../../../../lib
+LEJOS_DIR=../../../../../lejos_nxj
+
 TARGETS=AgentRunner.class
-JAR_CLI=../../../../lib/log4j-1.2.16.jar
-JAR_LOG4J=../../../../lib/mysql-connector-java-5.0.8-bin.jar
-JAR_MYSQL=../../../../lib/commons-cli-1.2.jar
-JAR_LEJOS=../../../../../lejos_nxj/lib/pccomm.jar
-JAR_BLUE=../../../../../lejos_nxj/3rdparty/lib/bluecove.jar
-LIBS=${JAR_CLI}:${JAR_LOG4J}:${JAR_MYSQL}:${JAR_LEJOS}:${JAR_BLUE}
-CP=../../:${LIBS}
+JAR_LOG4J=${LIB_DIR}/log4j-1.2.16.jar
+JAR_MYSQL=${LIB_DIR}/mysql-connector-java-5.0.8-bin.jar
+JAR_CLI=${LIB_DIR}/commons-cli-1.2.jar
+JAR_IO=${LIB_DIR}/commons-io-1.2.jar
+JAR_LEJOS=${LEJOS_DIR}/lib/pccomm.jar
+JAR_BLUE=${LEJOS_DIR}/3rdparty/lib/bluecove.jar
+JAR_RABBIT=${LIB_DIR}/rabbitmq-client.jar
+LIBS=${JAR_LOG4J}:${JAR_MYSQL}:${JAR_CLI}:${JAR_IO}:${JAR_LEJOS}:${JAR_BLUE}:${JAR_RABBIT}
+CP=.:../../:${LIBS}
 
 BUILD_DIR=build
 
@@ -18,6 +23,10 @@ MYSQL=/usr/local/mysql/bin/mysql -uplatinum -pplatinum
 
 OPTIONS=
 
+# argument that can be passed to the run target to setup different "ghost"
+# possible names are: red, pink, cyan and orange
+ME=pink
+
 all: ${TARGETS}
 
 db:
@@ -25,6 +34,9 @@ db:
 
 run: ${TARGETS} config
 	@${JAVA} penoplatinum.agent.${<:.class=} ${OPTIONS}
+
+run-mq: MQRunner.class
+	@${JAVA} penoplatinum.agent.MQRunner ${ME}
 
 %.class: %.java ${BUILD_DIR}
 	@echo "*** building ${<:.class=}"
