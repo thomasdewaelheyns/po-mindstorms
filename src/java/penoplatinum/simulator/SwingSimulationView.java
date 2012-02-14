@@ -10,7 +10,6 @@ package penoplatinum.simulator;
  */
 
 import javax.swing.JFrame;
-import java.util.List;
 
 public class SwingSimulationView extends JFrame implements SimulationView {
   
@@ -37,6 +36,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     this.setVisible(true);
   }
   
+  @Override
   public void showMap(Map map) {
     if( map == null ) { return; }
     this.board.showMap(map);
@@ -44,10 +44,10 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     this.setSize(map.getWidth() * 160, map.getHeight() * 160 + 22 );
   }
   
-  public void updateRobot( int x, int y, int direction,
-                           List<Integer> values, List<Integer> angles )
+  @Override
+  public void updateRobots()
   {
-    this.board.updateRobot( x, y, direction, values, angles );
+    this.board.updateRobots();
     
     // pass on control for a little while
     try {
@@ -57,7 +57,13 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     }
   }
   
+  @Override
   public void log( String msg ) {
     System.out.println( msg );
+  }
+
+  @Override
+  public void addRobot(ViewRobot r) {
+    board.addRobot(r);
   }
 }

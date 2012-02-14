@@ -10,15 +10,13 @@ package penoplatinum.simulator;
  */
 
 import java.util.List;
-import java.util.ArrayList;
 
 import java.awt.*; 
-import java.awt.geom.*; 
-import java.awt.event.*; 
 import java.awt.image.*; 
 import javax.swing.*; 
 
 import java.net.URL;
+import java.util.ArrayList;
 
 public class Board extends JPanel {
   // Tiles are defined in logical dimensions, comparable to cm in reality
@@ -40,19 +38,10 @@ public class Board extends JPanel {
   // a Map of Tiles
   private Map map;
 
-  // position and direction of robot 
-  private int x = 0;
-  private int y = 0;
-  private int direction = 0;
-  
-  // sonar information
-  private List<Integer> distances;
-  private List<Integer> angles;
-  
-  // cached images
-  private Image robot;
   private BufferedImage background;
   private BufferedImage trail;
+  
+  private List<ViewRobot> robots = new ArrayList<ViewRobot>();
   
   public Board() {
     this.setupCanvas();
@@ -67,7 +56,7 @@ public class Board extends JPanel {
   private void setupImages() {
     URL resource = this.getClass().getResource("./images/robot40.png");
     ImageIcon ii = new ImageIcon(resource);
-    this.robot = ii.getImage();
+    ViewRobot.robot = ii.getImage();
   }
   
   public void showMap( Map map ) {
@@ -97,29 +86,25 @@ public class Board extends JPanel {
     int h = this.map.getHeight() * TILE_SIZE;
     return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
   }
+  
+  public Board addRobot(ViewRobot robot){
+    robots.add(robot);
+    return this;
+  }
 
-  public void updateRobot( int x, int y, int direction,
-                           List<Integer> values, List<Integer> angles )
-  {
-    // position and direction of robot
-    this.x = x * Board.SCALE;
-    this.y = y * Board.SCALE;
-    this.direction = direction;
-
-    // all sonar values
-    this.distances = values;
-    this.angles    = angles;
-
-    this.trackMovement();
+  public void updateRobots() {
+    for(ViewRobot robot:robots){
+      this.trackMovement(robot);
+    }
     this.repaint();
   }
   
-  private void trackMovement() {
+  private void trackMovement(ViewRobot robot) {
     Graphics2D g2d = this.trail.createGraphics();
-    g2d.setColor(Color.yellow);
-    g2d.drawLine( this.x, this.y, this.x, this.y );
+    robot.trackMovement(g2d);
   }
 
+  @Override
   public void paint(Graphics g) {
     super.paint(g);
     Graphics2D g2d = (Graphics2D)g;
@@ -130,10 +115,11 @@ public class Board extends JPanel {
     if( this.trail != null ) {
       g2d.drawImage( this.trail, null, 0, 0 );
     }
-    this.renderRobot(g2d);
     
-    this.renderSonar(g2d);
-
+    for(ViewRobot robot : robots){
+      robot.renderRobot(g2d, this);
+      robot.renderSonar(g2d);
+    }
     Toolkit.getDefaultToolkit().sync();
     g.dispose();
   }    
@@ -304,23 +290,4 @@ public class Board extends JPanel {
     }
   }
 
-  private void renderRobot(Graphics2D g2d) { 
-    // render robot
-    AffineTransform affineTransform = new AffineTransform(); 
-    affineTransform.setToTranslation( this.x - 20, this.y - 20 );
-    affineTransform.rotate( -1 * Math.toRadians(this.direction), 20, 20 ); 
-    g2d.drawImage( this.robot, affineTransform, this );
-  }
-  
-  private void renderSonar(Graphics2D g2d) {
-    if( this.distances == null ) { return; }
-    for( int i=0; i<this.distances.size()-1; i++ ) {
-      int angle = (int)(this.angles.get(i)) + this.direction;
-      double rads = Math.toRadians(angle+90);
-      int dx = (int)(Math.cos(rads) * this.distances.get(i)) * Board.SCALE;
-      int dy = (int)(Math.sin(rads) * this.distances.get(i)) * Board.SCALE;
-      g2d.draw(new Line2D.Float(this.x, this.y, this.x + dx, this.y - dy));
-    }
-  }
-  
 }

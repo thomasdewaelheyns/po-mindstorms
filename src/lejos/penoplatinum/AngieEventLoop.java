@@ -60,9 +60,6 @@ public class AngieEventLoop {
     private int fps;
     
     public void runEventLoop() {
-
-
-
         int count = 0;
         int delta = 0;
         while (true) {

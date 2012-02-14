@@ -161,12 +161,12 @@ public class SimulatedEntity {
       double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
       double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
       if (simulator.hasTile(this.positionX + dx, this.positionY + dy)) {
-        //if (!simulator.goesThroughWallX(this.positionX, this.positionY, dx)) {
-        this.positionX += dx;
-        //}
-        //if (!simulator.goesThroughWallY(this.positionX, this.positionY, dy)) {
-        this.positionY -= dy;
-        //}
+        if (!simulator.goesThroughWallX(this, dx)) {
+          this.positionX += dx;
+        }
+        if (!simulator.goesThroughWallY(this, dy)) {
+          this.positionY -= dy;
+        }
       }
       this.trackMovementStatistics(d);
     } else if (changeLeft == changeRight * -1) {
@@ -189,7 +189,7 @@ public class SimulatedEntity {
     this.updateSensorValues();
 
     // always refresh our SimulationView
-    simulator.refreshView();
+    //simulator.refreshView();
     
     robot.step();
   }
@@ -270,7 +270,7 @@ public class SimulatedEntity {
       dx = -1;
       x += Tile.SIZE;
     }
-    if (x > Tile.SIZE) {
+    if (x >= Tile.SIZE) {
       dx = +1;
       x -= Tile.SIZE;
     }
@@ -278,7 +278,7 @@ public class SimulatedEntity {
       dy = -1;
       y += Tile.SIZE;
     }
-    if (y > Tile.SIZE) {
+    if (y >= Tile.SIZE) {
       dy = +1;
       y -= Tile.SIZE;
     }
@@ -330,5 +330,9 @@ public class SimulatedEntity {
   
   double getDir(){
     return direction;
+  }
+  
+  ViewRobot getRobotView(){
+    return new ViewRobot(this);
   }
 }

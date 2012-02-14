@@ -63,7 +63,7 @@ class SimulationRunner1 {
       Robot robot1 = new NavigatorRobot(this.navigator);
       SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
       entity.setPostition(x, y, direction);
-      simulator.setSimulatedEntity(entity);
+      simulator.addSimulatedEntity(entity);
     } else {
       System.err.println( "Please provide a navigator, then add a robot." );
     }

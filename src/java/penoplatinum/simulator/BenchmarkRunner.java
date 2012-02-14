@@ -36,7 +36,7 @@ class BenchmarkRunner {
     // angle of 33 degrees, with 0 degrees pointing north
     SimulatedEntity s = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     s.setPostition(150, 150, 33);
-    simulator.setSimulatedEntity(s);
+    simulator.addSimulatedEntity(s);
 
     // give robot instructions through the communication layer
     // simulator.send( "start" );

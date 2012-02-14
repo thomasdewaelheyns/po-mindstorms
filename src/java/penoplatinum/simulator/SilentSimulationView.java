@@ -8,7 +8,6 @@ package penoplatinum.simulator;
  * @author: Team Platinum
  */
 
-import javax.swing.JFrame;
 import java.util.List;
 
 public class SilentSimulationView implements SimulationView {
@@ -17,13 +16,17 @@ public class SilentSimulationView implements SimulationView {
     // this method is intentionally left blank
   }
   
-  public void updateRobot( int x, int y, int direction,
-                           List<Integer> values, List<Integer> angles )
-  {
+  public void log( String msg ) {
     // this method is intentionally left blank
   }
-  
-  public void log( String msg ) {
+
+  @Override
+  public void addRobot(ViewRobot r) {
+    // this method is intentionally left blank
+  }
+
+  @Override
+  public void updateRobots() {
     // this method is intentionally left blank
   }
 }

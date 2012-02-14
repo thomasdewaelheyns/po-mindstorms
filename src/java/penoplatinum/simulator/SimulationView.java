@@ -8,11 +8,9 @@ package penoplatinum.simulator;
  * @author: Team Platinum
  */
 
-import java.util.List;
-
 public interface SimulationView {
   public void showMap(Map map);
-  public void updateRobot( int x, int y, int direction,
-                           List<Integer> values, List<Integer> angles);
+  public void addRobot(ViewRobot r);
+  public void updateRobots();
   public void log(String msg);
 }

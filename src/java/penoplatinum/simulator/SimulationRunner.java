@@ -18,8 +18,7 @@ import penoplatinum.map.MapFactory;
 public class SimulationRunner {
   
   private Simulator simulator;
-  private Robot     robot;
-  private Navigator navigator;
+  private String navigator;
   
   public SimulationRunner() {
     this.simulator = new Simulator();
@@ -76,11 +75,16 @@ public class SimulationRunner {
     this.simulator.displayOn(new SwingSimulationView());
     return this;
   }
+  
+  public SimulationRunner useNavigator(String navigator){
+    this.navigator = navigator;
+    return this;
+  }
 
-  public SimulationRunner useNavigator(String navigator) {
+  public Navigator getNavigator() {
     try {
       Class theClass  = Class.forName(navigator);
-      this.navigator = (Navigator)theClass.newInstance();
+      return (Navigator)theClass.newInstance();
     } catch ( ClassNotFoundException ex ){
       System.err.println( ex + " Navigator class must be in class-path.");
     } catch( InstantiationException ex ){
@@ -88,7 +92,7 @@ public class SimulationRunner {
     } catch( IllegalAccessException ex ){
       System.err.println( ex + " Navigator class must have a no-arg constr.");
     }
-    return this;
+    return null;
   }
 
   public SimulationRunner putRobotAt(String position) {
@@ -99,10 +103,10 @@ public class SimulationRunner {
         direction = Integer.parseInt(parts[2]);   
     // put the robot
     if( this.navigator != null ) {
-      Robot robot = new NavigatorRobot(this.navigator);
+      Robot robot = new NavigatorRobot(getNavigator());
       SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
       entity.setPostition(x, y, direction);
-      simulator.setSimulatedEntity(entity);
+      simulator.addSimulatedEntity(entity);
     } else {
       System.err.println( "Please provide a navigator, then add a robot." );
     }
@@ -149,7 +153,13 @@ public class SimulationRunner {
 
         runner.useNavigator( line.getOptionValue( "navigator", 
                                                   defaultNavigator ) );
-        runner.putRobotAt( line.getOptionValue( "put", defaultPosition ) );
+        if(line.getOptionValues("put") == null){
+          runner.putRobotAt(defaultPosition);
+        } else {
+          for(String put : line.getOptionValues("put")){
+            runner.putRobotAt(put);
+          }
+        }
         
         runner.useMap(line.getOptionValue("mapFile", "defaultMap"));
 

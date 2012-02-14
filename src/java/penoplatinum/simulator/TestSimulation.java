@@ -24,7 +24,7 @@ public class TestSimulation {
     this.navigator = new TestNavigator();
     this.robot = new NavigatorRobot(this.navigator);
     SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), this.robot);
-    simulator.setSimulatedEntity(entity);
+    simulator.addSimulatedEntity(entity);
   }
 
   public TestSimulation setControler(GoalDecider controler) {

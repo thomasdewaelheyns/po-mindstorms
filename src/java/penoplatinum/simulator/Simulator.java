@@ -12,6 +12,8 @@ package penoplatinum.simulator;
  * @author: Team Platinum
  */
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 class Simulator {
   // the Simulator can run until different goals are reached
@@ -22,15 +24,16 @@ class Simulator {
   SimulationView view = new SilentSimulationView();
   private Map map;                // the map that the robot will run on
   
-  private SimulatedEntity robotEntity;
+  private List<SimulatedEntity> robotEntities = new ArrayList<SimulatedEntity>();
   
   
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
   }
   
-  public void setSimulatedEntity(SimulatedEntity r){
-    robotEntity = r;
+  public void addSimulatedEntity(SimulatedEntity r){
+    robotEntities.add(r);
+    view.addRobot(r.getRobotView());
     r.useSimulator(this);
   }
 
@@ -40,6 +43,9 @@ class Simulator {
    */
   public Simulator displayOn(SimulationView view) {
     this.view = view;
+    for(SimulatedEntity s:robotEntities){
+      view.addRobot(s.getRobotView());
+    }
     return this;
   }
 
@@ -107,7 +113,7 @@ class Simulator {
    * which here is being provided and controlled by the Simulator.
    */
   public Simulator send(String cmd) {
-    robotEntity.robotAgent.receive(cmd);
+    //robotEntities.robotAgent.receive(cmd);
     return this;
   }
 
@@ -122,13 +128,8 @@ class Simulator {
   }
 
   // at the end of a step, refresh the visual representation of our world
-  void refreshView() {
-    this.view.updateRobot(
-            (int)robotEntity.getPosX(), 
-            (int)robotEntity.getPosY(), 
-            (int)robotEntity.getDir(),
-            robotEntity.robot.getModel().getDistances(),
-            robotEntity.robot.getModel().getAngles());
+  private void refreshView() {
+    this.view.updateRobots();
   }
 
   /**
@@ -137,7 +138,9 @@ class Simulator {
    */
   public Simulator run() {
     this.view.showMap(this.map);
-    robotEntity.robotAgent.run();
+    for(SimulatedEntity s:robotEntities){
+      s.robotAgent.run();
+    }
     while (true) {
       this.step();
       if(false){
@@ -150,7 +153,10 @@ class Simulator {
   }
 
   private void step() {
-    robotEntity.step();
+    for(SimulatedEntity robotEntity : robotEntities){
+      robotEntity.step();
+    }
+    refreshView();
   }
 
   boolean hasTile(double positionX, double positionY) {
