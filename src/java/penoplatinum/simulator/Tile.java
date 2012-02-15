@@ -52,6 +52,7 @@ public class Tile {
   public static int SIZE               = 80;
   public static int LINE_OFFSET        = 20;
   public static int LINE_WIDTH         =  1;
+  public static int LINE_CROSS_WIDTH   =  2;
   public static int BARCODE_LINE_WIDTH =  2;
   public static int BARCODE_LINES      =  7;
   public static int BARCODE_WIDTH      = BARCODE_LINES * BARCODE_LINE_WIDTH;
@@ -325,12 +326,30 @@ public class Tile {
   
   // get the logical color at position x,y
   public int getColorAt(int x, int y) {
+    
+    if (isOnCenterCrossLine(x, y)) 
+      return Tile.WHITE;
+    
+    
 //    int color = Tile.NO_COLOR;
     int color = this.getBarcodeColor (x,y);
     if( color == Tile.NO_COLOR ) { color = this.getLineColor  (x,y); }
     if( color == Tile.NO_COLOR ) { color = this.getCornerColor(x,y); }
     return color;
   }
+  
+  private boolean isOnCenterCrossLine(int x, int y){
+    int start = Tile.SIZE/2 - Tile.LINE_CROSS_WIDTH/2;
+    int end = Tile.SIZE/2 + Tile.LINE_CROSS_WIDTH/2;
+    
+    if (start < x && x < end )
+      return true;
+    if (start < y && y < end )
+      return true;
+    
+    return false;
+  }
+  
 
   // return the Color from the Barcode
   public int getBarcodeColor(int x, int y) {
