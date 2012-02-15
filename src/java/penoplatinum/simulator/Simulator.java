@@ -14,6 +14,7 @@ package penoplatinum.simulator;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import penoplatinum.Utils;
 
 public class Simulator {
   // the Simulator can run until different goals are reached
@@ -157,6 +158,7 @@ public class Simulator {
       robotEntity.step();
     }
     refreshView();
+    
   }
 
   boolean hasTile(double positionX, double positionY) {

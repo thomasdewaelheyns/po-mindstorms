@@ -1,43 +1,34 @@
 package penoplatinum.simulator;
 
 import java.awt.Point;
-import penoplatinum.simulator.sensors.LightSensor;
-import penoplatinum.simulator.sensors.MotorState;
-import penoplatinum.simulator.sensors.Sonar;
-import penoplatinum.simulator.sensors.TouchSensor;
 
 public class SimulatedEntity {
 
   public final double LENGTH_ROBOT = 10.0;
   
-  public static final int NUMBER_OF_SENSORS = 10;
-  public static final double LIGHTSENSOR_DISTANCE = 10.0; // 10cm from center
-  public static final double BUMPER_LENGTH_ROBOT = 11.0;
-  public static final double WHEEL_SIZE = 17.5; // circumf. in cm
-  public static final double WHEEL_BASE = 16.0; // wheeldist. in cm
+  private static final double LIGHTSENSOR_DISTANCE = 10.0; // 10cm from center
+  private static final double BUMPER_LENGTH_ROBOT = 11.0;
+  private static final double WHEEL_SIZE = 17.5; // circumf. in cm
+  private static final double WHEEL_BASE = 16.0; // wheeldist. in cm
   private double positionX;       // the position of the robot in the world
   private double positionY;       //   expressed in X,Y coordinates
   private double direction;       //   and a direction it's facing
   private double totalMovement = 0;
   private long lastStatisticsReport = 0;  // time of last stat report
   // the motorSpeeds and the sensorValues
-  private int[] sensorValues = new int[NUMBER_OF_SENSORS];
+  private double[] sensorValues = new double[Model.SENSORVALUES_NUM];
   private Motor[] motors = new Motor[3];
-  private Sensor[] sensors = new Sensor[NUMBER_OF_SENSORS];
-  
-  /* Moved to SensorValues
   private int prevLeft = 0;
   private int prevRight = 0;
-  private int prevSonar = 0;/**/
+  private int prevSonar = 0;
   SimulationRobotAPI robotAPI;    // the API used to access hardware
   SimulationRobotAgent robotAgent;  // the communication layer
-  private Robot robot;            // the actual robot
+  Robot robot;            // the actual robot
   
   private Simulator simulator;
 
   public SimulatedEntity(SimulationRobotAPI robotAPI, SimulationRobotAgent robotAgent, Robot robot) {
     this.setupMotors();
-    this.setupSensors();
     this.robotAPI = robotAPI;
     this.robotAgent = robotAgent;
     this.robot = robot;
@@ -47,9 +38,6 @@ public class SimulatedEntity {
   
   public void useSimulator(Simulator simulator){
     this.simulator = simulator;
-    for(Sensor s : this.sensors){
-      s.useSimulator(simulator);
-    }
   }
 
   public void setPostition(double positionX, double positionY, double direction) {
@@ -61,28 +49,9 @@ public class SimulatedEntity {
   // this needs to be in sync with the "reality" ;-)
   // TODO: externalize the speed configuration of the different motors
   private void setupMotors() {
-    setupMotor("L", Model.M1, Model.MS1);
-    setupMotor("R", Model.M2, Model.MS2);
-    setupMotor("S", Model.M3, Model.MS3);
-  }
-  
-  private void setupMotor(String label, int tachoPort, int statePort){
-    this.motors[tachoPort] = new Motor().setLabel(label);  // these two need to be running
-    setSensor(tachoPort, this.motors[tachoPort]);
-    setSensor(statePort, new MotorState(this.motors[tachoPort]));
-  }
-  
-  private void setupSensors(){
-    setSensor(Model.S1, new TouchSensor(45));
-    setSensor(Model.S2, new TouchSensor(315));
-    setSensor(Model.S3, new Sonar());
-    setSensor(Model.S4, new LightSensor());
-  }
-  
-  private void setSensor(int port, Sensor sensor){
-    this.sensors[port] = sensor;
-    sensor.useSimulatedEntity(this);
-    sensor.useSimulator(simulator);
+    this.motors[Model.M1] = new Motor().setLabel("L");  // these two need to be running
+    this.motors[Model.M2] = new Motor().setLabel("R");  // at the same speed
+    this.motors[Model.M3] = new Motor().setLabel("S");  // this is the sonar
   }
 
   public SimulatedEntity setSpeed(int motor, int speed) {
@@ -103,10 +72,10 @@ public class SimulatedEntity {
     this.direction = direction;
 
     // we provide the robot with our SimulationAPI
-    this.getRobot().useRobotAPI(this.robotAPI);
+    this.robot.useRobotAPI(this.robotAPI);
 
     // we connect our SimulationRobotAgent to the robot
-    this.robotAgent.setRobot(this.getRobot());
+    this.robotAgent.setRobot(this.robot);
 
     return this;
   }
@@ -146,41 +115,21 @@ public class SimulatedEntity {
     return this;
   }
 
-  public double getPosX() {
-    return positionX;
-  }
-  
-  public double getPosY() {
-    return positionY;
-  }
-  
-  public double getDir(){
-    return direction;
-  }
-  
-  ViewRobot getRobotView(){
-    return new ViewRobot(this);
-  }
-  
-  public Robot getRobot() {
-    return robot;
-  }
-
   /**
    * Our internal representation of the baring uses zero pointing north.
    * Math functions use zero pointing east.
    * We also only want an angle from 0 to 359.
    */
-  public int getAngle() {
+  private int getAngle() {
     return (int) ((this.direction + 90) % 360);
   }
 
-  public int[] getSensorValues() {
+  public double[] getSensorValues() {
     return this.sensorValues;
   }
   
   public boolean sonarMotorIsMoving() {
-    return this.motors[Model.M3].getValue() != this.sensorValues[Model.M3];
+    return this.motors[Model.M3].getValue() != this.prevSonar;
   }
 
 
@@ -203,8 +152,8 @@ public class SimulatedEntity {
     this.motors[Model.M3].tick(simulator.TIME_SLICE);
 
     // based on the motor's (new) angle's determine the displacement
-    int changeLeft = this.motors[Model.M1].getValue() - sensorValues[Model.M1];
-    int changeRight = this.motors[Model.M2].getValue() - sensorValues[Model.M2];
+    int changeLeft = this.motors[Model.M1].getValue() - this.prevLeft;
+    int changeRight = this.motors[Model.M2].getValue() - this.prevRight;
 
     if (changeLeft == changeRight) {
       // we're moving in one direction 
@@ -231,13 +180,18 @@ public class SimulatedEntity {
       System.err.println(changeLeft + ", " + changeRight);
     }
 
+    // keep track of the (new) current motor angles
+    this.prevLeft = this.motors[Model.M1].getValue();
+    this.prevRight = this.motors[Model.M2].getValue();
+    this.prevSonar = this.motors[Model.M3].getValue();
+
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
 
     // always refresh our SimulationView
     //simulator.refreshView();
     
-    getRobot().step();
+    robot.step();
   }
 
   private void reportMovementStatistics() {
@@ -254,10 +208,107 @@ public class SimulatedEntity {
    *       this is shared with the Model in a way (for now)
    */
   private void updateSensorValues() {
-    for(int i = 0; i<NUMBER_OF_SENSORS; i++){
-      sensorValues[i] = sensors[i].getValue();
+    this.updateMotors();
+    this.updateFrontPushSensors();
+    this.updateSonar();
+    this.updateLightSensor();
+  }
+
+  private void updateFrontPushSensors() {
+    this.calculateBumperSensor(45, Model.S1);
+    this.calculateBumperSensor(315, Model.S2);
+  }
+
+  private void updateSonar() {
+    int angle = (int) this.sensorValues[Model.M3] + this.getAngle();
+    Point tile = getCurrentTileCoordinates();
+    Point pos = getCurrentOnTileCoordinates();
+    int minimum = simulator.getFreeDistance(tile, pos, (angle + 360) % 360);
+    // TODO: reintroduce ? - removed to find Sonar detection bug (xtof)
+    // this "abuses" our ability to make many sonar checks at once ?!
+    // for (int i = -15; i < 16; i++) {
+    //   int distance = this.getFreeDistance((angle+i+360)%360);
+    //   minimum = Math.min(minimum, distance);
+    // }
+    this.sensorValues[Model.S3] = minimum > 90 ? 255 : minimum;
+  }
+
+  private void updateMotors() {
+    this.sensorValues[Model.M1] = this.motors[Model.M1].getValue();
+    this.sensorValues[Model.M2] = this.motors[Model.M2].getValue();
+    this.sensorValues[Model.M3] = this.motors[Model.M3].getValue();
+    this.sensorValues[Model.MS1] = getMotorState(motors[0]);
+    this.sensorValues[Model.MS2] = getMotorState(motors[1]);
+    this.sensorValues[Model.MS3] = getMotorState(motors[2]);
+  }
+
+  private int getMotorState(Motor m) {
+    if (!m.isMoving()) {
+      return Model.MOTORSTATE_STOPPED;
+    }
+    if (m.getDirection() == Motor.FORWARD) {
+      return Model.MOTORSTATE_FORWARD;
+    }
+    if (m.getDirection() == Motor.BACKWARD) {
+      return Model.MOTORSTATE_BACKWARD;
+    }
+
+    throw new RuntimeException("I M P O S S I B L E !");
+  }
+
+  private void updateLightSensor() {
+    // determine position of light-sensor
+    Point pos = getCurrentOnTileCoordinates();
+    double rads = Math.toRadians(direction);
+    int x = (int) (pos.getX() - LIGHTSENSOR_DISTANCE * Math.sin(rads));
+    int y = (int) (pos.getY() - LIGHTSENSOR_DISTANCE * Math.cos(rads));
+
+    // if we go beyond the boundaries of this tile, move to the next and
+    // adapt the x,y coordinates on the new tile
+    int dx = 0, dy = 0;
+    if (x < 0) {
+      dx = -1;
+      x += Tile.SIZE;
+    }
+    if (x >= Tile.SIZE) {
+      dx = +1;
+      x -= Tile.SIZE;
+    }
+    if (y < 0) {
+      dy = -1;
+      y += Tile.SIZE;
+    }
+    if (y >= Tile.SIZE) {
+      dy = +1;
+      y -= Tile.SIZE;
+    }
+    // get correct tile
+    Point tilePos = getCurrentTileCoordinates();
+    Tile tile = simulator.getCurrentTile(tilePos);
+
+    int color = tile.getColorAt(x, y);
+
+    // TODO: add random abberations
+    this.sensorValues[Model.S4] =
+            color == Tile.WHITE ? 100 : (color == Tile.BLACK ? 0 : 70);
+    
+    System.out.println( this.sensorValues[Model.S4]);
+    
+  }
+
+  private void calculateBumperSensor(int angle, int sensorPort) {
+    angle = (this.getAngle() + angle) % 360;
+    Point tile = getCurrentTileCoordinates();
+    Point pos = getCurrentOnTileCoordinates();
+    int distance = simulator.getFreeDistance(tile, pos, angle);
+
+    if (distance < BUMPER_LENGTH_ROBOT) {
+      this.sensorValues[sensorPort] = 50;
+    } else {
+      this.sensorValues[sensorPort] = 0;
     }
   }
+
   public Point getCurrentTileCoordinates() {
     // determine tile coordinates we're on
     int left = (int) (this.positionX / Tile.SIZE)+ 1;
@@ -270,5 +321,21 @@ public class SimulatedEntity {
     int left = (int) (this.positionX % Tile.SIZE);
     int top = (int) (this.positionY % Tile.SIZE);
     return new Point(left, top);
+  }
+
+  double getPosX() {
+    return positionX;
+  }
+  
+  double getPosY() {
+    return positionY;
+  }
+  
+  double getDir(){
+    return direction;
+  }
+  
+  ViewRobot getRobotView(){
+    return new ViewRobot(this);
   }
 }
