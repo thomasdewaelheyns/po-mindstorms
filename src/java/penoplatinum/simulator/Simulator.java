@@ -15,7 +15,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-class Simulator {
+public class Simulator {
   // the Simulator can run until different goals are reached
   
   public static final double TIME_SLICE = 0.008;
@@ -60,7 +60,7 @@ class Simulator {
 
   // determine the distance to the first obstacle in direct line of sight 
   // under a given angle
-  int getFreeDistance(Point tile, Point pos, int angle) {
+  public int getFreeDistance(Point tile, Point pos, int angle) {
     int distance = 0;
 
     // find distance to first wall in line of sight
@@ -69,7 +69,7 @@ class Simulator {
             (int) pos.getX(), (int) pos.getY());
   }
 
-  Tile getCurrentTile(Point tile) {
+  public Tile getCurrentTile(Point tile) {
     return this.map.get((int) tile.getX(), (int) tile.getY());
   }
 

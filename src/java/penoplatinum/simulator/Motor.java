@@ -1,5 +1,7 @@
 package penoplatinum.simulator;
 
+import java.util.Scanner;
+
 /**
  * Motor
  * 
@@ -102,4 +104,9 @@ public class Motor implements Tickable, Sensor {
   public void useSimulator(Simulator sim) {
     // a motor does not need information from the world
   }
+
+  @Override
+  public void useSimulatedEntity(SimulatedEntity simEntity) {
+    // a motor does not need information from the entity
+  }  
 }

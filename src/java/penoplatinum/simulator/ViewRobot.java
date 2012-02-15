@@ -53,10 +53,10 @@ public class ViewRobot {
     return (int) original.getDir();
   }
   public List<Integer> getDistances() {
-    return original.robot.getModel().getDistances();
+    return original.getRobot().getModel().getDistances();
   }
   public List<Integer> getAngles() {
-    return original.robot.getModel().getAngles();
+    return original.getRobot().getModel().getAngles();
   }
   
 }

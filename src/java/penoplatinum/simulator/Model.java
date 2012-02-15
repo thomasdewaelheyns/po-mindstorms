@@ -28,7 +28,7 @@ public class Model {
   public static final int MS1 = 7; // Motor state 1
   public static final int MS2 = 8; // Motor state 1
   public static final int MS3 = 9; // Motor state 1
-  public static final int SENSORVALUES_NUM = 10; // number of sensorvalues 
+  public static final int SENSORVALUES_NUM = SimulatedEntity.NUMBER_OF_SENSORS; // number of sensorvalues 
   public static final int MOTORSTATE_FORWARD = 1;
   public static final int MOTORSTATE_BACKWARD = 2;
   public static final int MOTORSTATE_STOPPED = 3;
@@ -40,10 +40,6 @@ public class Model {
   private int[] prevSensors = new int[SENSORVALUES_NUM];
   // processors are chained using a Decorator pattern
   private ModelProcessor processor;
-  // current position
-  private int x, y;
-  // the map constructed based on the input
-  //private Map map;
   // flag indicating the robot is stuck, ModelProcessors determine this
   private Boolean stuckLeft = false;
   private Boolean stuckRight = false;
@@ -117,14 +113,6 @@ public class Model {
    */
   public int getSensorValue(int num) {
     return this.sensors[num];
-  }
-
-  //public Map getMap() {
-  //  return this.map;
-  //}
-  public void setPosition(int x, int y) {
-    this.x = x;
-    this.y = y;
   }
 
   /**
@@ -261,13 +249,14 @@ public class Model {
     boolean pushRight = this.getSensorValue(S2) == 255;
 
     builder.delete(0, builder.length());
-    builder.append(lightValue).append(",\"").append(interpretedColor.toLowerCase()).append("\",\"").append(lastBarcode).append("\",").append(sonarAngle).append(',').append(sonarDistance).append(',').append(pushLeft).append(',').append(pushRight);
+    builder .append(lightValue).append(",\"")
+            .append(interpretedColor.toLowerCase()).append("\",\"")
+            .append(lastBarcode).append("\",")
+            .append(sonarAngle).append(',')
+            .append(sonarDistance).append(',')
+            .append(pushLeft).append(',')
+            .append(pushRight);
     return builder.toString();
-
-
-//    String model = lightValue + ",\"" + interpretedColor.toLowerCase() + "\",\"" + lastBarcode + "\"," + sonarAngle 
-//            + "," + sonarDistance + "," + pushLeft + "," + pushRight;
-//    return model;
   }
   private boolean leftObstacle;
   private boolean rightObstacle;
