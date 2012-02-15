@@ -4,6 +4,7 @@
  */
 package penoplatinum.bluetooth;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -74,6 +75,7 @@ public class RemoteFileLogger {
                         String s;
                         s = scanner.nextLine();
                         fs.println(s);
+                        System.out.println(s);
 
                         if (extraOutputStream != null) {
                             extraOutputStream.onLog(s);

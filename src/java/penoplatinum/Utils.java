@@ -59,13 +59,13 @@ public class Utils {
 
     PacketTransporter t = new PacketTransporter(conn);
     conn.RegisterTransporter(t, PACKETID_LOG);
-//    conn.RegisterTransporter(t, PACKETID_STARTLOG);
+    conn.RegisterTransporter(t, PACKETID_STARTLOG);
 
     synchronized (logLock) {
       logTransporter = t;
       logPrintStream = new PrintStream(logTransporter.getSendStream());
-//      logPrintStream.println(logname);
-//      t.SendPacket(PACKETID_STARTLOG);
+      logPrintStream.println(logname);
+      t.SendPacket(PACKETID_STARTLOG);
     }
 
 
