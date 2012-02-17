@@ -17,9 +17,10 @@ public class MazeBoard extends JPanel {
   private Graphics2D agentsG;
   
   // colors on the board
-  public static final Color BLACK = new Color(0,0,0);
-  public static final Color WHITE = new Color(255,255,255);
-  public static final Color BROWN = new Color(205,165,100);
+  public static final Color BLACK  = new Color(0,0,0);
+  public static final Color WHITE  = new Color(255,255,255);
+  public static final Color YELLOW = new Color(255,255,0);
+  public static final Color BROWN  = new Color(205,165,100);
 
   public MazeBoard(int width, int height) {
     this.width  = width;
@@ -62,8 +63,8 @@ public class MazeBoard extends JPanel {
     }
   }
 
-  public void setAgent(int left, int top) {
-    this.agentsG.setColor(WHITE);
+  public void setAgent(int left, int top, boolean isTarget) {
+    this.agentsG.setColor(isTarget ? YELLOW : WHITE);
     this.agentsG.fill(new Ellipse2D.Float(20*left+4, 20*top+4, 10, 10));
   }
   

@@ -8,18 +8,19 @@ public class MazeRunner {
 
       // add agents
       maze.addAgent(new GhostAgent(0,0))
-        .addAgent(new GhostAgent(9,0));
+          .addAgent(new GhostAgent(9,0));
 
       // add random target
-      maze.setTarget((int)(Math.random()*maze.getWidth()),
-        (int)(Math.random()*maze.getHeight()));
+      int left = (int)(Math.random()*maze.getWidth());
+      int top  = (int)(Math.random()*maze.getHeight());
+      maze.addAgent(new PacmanAgent(left, top));
 
       maze.show();
 
       CD cd = new CD();
 
       maze.moveAgents();
-      while( ! maze.allAgentsAreHolding() ) {
+      while( ! maze.allHuntingAgentsAreHolding() ) {
         try { Thread.sleep(100); } catch(Exception e) {}
         cd.apply(maze);
         cd.apply(maze);

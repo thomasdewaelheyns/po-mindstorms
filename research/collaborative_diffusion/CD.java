@@ -7,7 +7,7 @@ public class CD {
       for( int left=0; left<width; left++ ) {
         int v = maze.get(left, top);
         if( v != 1000 ) {
-          if( maze.hasAgentOn(left,top) ) {
+          if( maze.hasHuntingAgentOn(left,top) ) {
             maze.set(left, top, 0);
           } else {
             int n = maze.hasWall(left, top, Baring.N) ? 0 : maze.get(left, top-1);

@@ -39,7 +39,6 @@ public class SwingMazeView extends JFrame implements MazeView {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setSize( this.maze.getWidth() * 20 -2, this.maze.getHeight() * 20 + 20);
     this.setLocationRelativeTo(null);
-    //setLocation(0,0);
     this.setLocationRelativeTo(null);
     this.setTitle("Maze");
     this.setResizable(false);
@@ -61,7 +60,7 @@ public class SwingMazeView extends JFrame implements MazeView {
 
     // add agent positions
     for( Agent agent : this.maze.getAgents() ) {
-      this.board.setAgent(agent.getLeft(), agent.getTop());
+      this.board.setAgent(agent.getLeft(), agent.getTop(), agent.isTarget());
     }
     
     this.board.render();

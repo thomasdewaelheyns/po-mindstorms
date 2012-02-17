@@ -8,6 +8,11 @@ public class GhostAgent implements Agent {
     this.left = left;
     this.top  = top;
   }
+  
+  public boolean isTarget() { return false; }
+  public boolean isHunter() { return true;  }
+
+  public int getValue() { return 0; }
 
   public int getLeft() {
     return this.left;

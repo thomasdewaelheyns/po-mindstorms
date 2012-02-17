@@ -50,10 +50,6 @@ public class Maze {
     return this;
   }
   
-  public Maze setTarget(int left, int top) {
-    return this.setValue(left, top, 1000);
-  }
-  
   public int getValue(int left, int top) {
     return this.maze[left][top].getValue();
   }
@@ -81,9 +77,11 @@ public class Maze {
   }
   
   public int get(int left, int top) {
-    int value = this.getRaw(left,top);
-    if( value == -999 ) { return 0; }
-    return value;
+    Agent agent = this.getAgentAt(left, top);
+    if( agent != null ) {
+      return agent.getValue();
+    }
+    return this.getRaw(left,top);
   }
 
   public int getRaw(int left, int top) {
@@ -121,19 +119,27 @@ public class Maze {
   public List<Agent> getAgents() {
     return this.agents;
   }
-
-  public boolean hasAgentOn(int left, int top) {
+  
+  public Agent getAgentAt(int left, int top) {
     for( Agent agent : this.agents ) {
       if( agent.getLeft() == left && agent.getTop() == top ) {
-        return true;
+        return agent;
       }
+    }
+    return null;
+  }
+
+  public boolean hasHuntingAgentOn(int left, int top) {
+    Agent agent = this.getAgentAt(left, top);
+    if( agent != null && agent.isHunter() ) {
+      return true;
     }
     return false;
   }
-  
-  public boolean allAgentsAreHolding() {
+
+  public boolean allHuntingAgentsAreHolding() {
     for( Agent agent : this.agents ) {
-      if( ! agent.isHolding() ) { return false; }
+      if( agent.isHunter() && ! agent.isHolding() ) { return false; }
     }
     return true;
   }
