@@ -1,18 +1,22 @@
 public class GhostAgent implements Agent {
+  private String name;
   private int left;
   private int top;
   
   private int previousMove = -1;
   
-  public GhostAgent(int left, int top) {
+  public GhostAgent(int left, int top, String name) {
     this.left = left;
     this.top  = top;
+    this.name = name;
   }
   
   public boolean isTarget() { return false; }
   public boolean isHunter() { return true;  }
 
   public int getValue() { return 0; }
+  
+  public void setMaze(Maze maze) { /* do nothing, we're hunters */ }
 
   public int getLeft() {
     return this.left;
@@ -30,7 +34,7 @@ public class GhostAgent implements Agent {
     int move = -1;
     
     // if any of the moves brings us onto the 1000 pos, we hold our position
-    if( n == 1000 || e == 1000 || s == 1000 || w == 1000 ) {
+    if( n == -1000 || e == -1000 || s == -1000 || w == -1000 ) {
       this.previousMove = -1;
       return;
     }

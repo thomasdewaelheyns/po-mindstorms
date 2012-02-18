@@ -44,6 +44,29 @@ public class Maze {
   public boolean hasWall(int left, int top, int wall) {
     return this.maze[left][top].hasWall(wall);
   }
+  
+  public boolean hasObstacle(int left, int top, int wall) {
+    int l=0, t=0;
+    switch(wall) {
+      case Baring.N: t=-1; break;
+      case Baring.E: l=+1; break;
+      case Baring.S: t=+1; break;
+      case Baring.W: l=-1; break;
+    }
+    return this.hasWall(left, top, wall) ||
+           this.hasAgentAt(left+l, top+t);
+  }
+
+  public boolean facesAgentAt(int left, int top, int wall) {
+    int l=0, t=0;
+    switch(wall) {
+      case Baring.N: t=-1; break;
+      case Baring.E: l=+1; break;
+      case Baring.S: t=+1; break;
+      case Baring.W: l=-1; break;
+    }
+    return this.hasAgentAt(left+l, top+t);
+  }
 
   private Maze setValue(int left, int top, int value) {
     this.maze[left][top].setValue(value);
@@ -113,6 +136,8 @@ public class Maze {
   
   public Maze addAgent(Agent agent) {
     this.agents.add(agent);
+    // targets get knowledge about the entire maze and other agents
+    if(agent.isTarget()) { agent.setMaze(this); }
     return this;
   }
   
@@ -127,6 +152,10 @@ public class Maze {
       }
     }
     return null;
+  }
+  
+  public boolean hasAgentAt(int left, int top) {
+    return this.getAgentAt(left, top) != null;
   }
 
   public boolean hasHuntingAgentOn(int left, int top) {
@@ -144,16 +173,27 @@ public class Maze {
     return true;
   }
   
+  public boolean targetIsBlocked() {
+    for( Agent agent : this.agents ) {
+      if( agent.isTarget() && agent.isHolding() ) { return true; }
+    }
+    return false;
+  }
+
   public Maze moveAgents() {
     for( Agent agent : this.agents ) {
       int left = agent.getLeft();
       int top  = agent.getTop();
       
       int n = this.hasWall(left, top, Baring.N) ? -1 : this.get(left, top-1);
+      if( this.facesAgentAt(left, top, Baring.N) ) { n -= 2000;}
       int e = this.hasWall(left, top, Baring.E) ? -1 : this.get(left+1, top);
+      if( this.facesAgentAt(left, top, Baring.E) ) { e -= 2000;}
       int s = this.hasWall(left, top, Baring.S) ? -1 : this.get(left, top+1);
+      if( this.facesAgentAt(left, top, Baring.S) ) { s -= 2000;}
       int w = this.hasWall(left, top, Baring.W) ? -1 : this.get(left-1, top);
-      
+      if( this.facesAgentAt(left, top, Baring.W) ) { w -= 2000;}
+  
       agent.move( n, e, s, w );
     }
     return this;
