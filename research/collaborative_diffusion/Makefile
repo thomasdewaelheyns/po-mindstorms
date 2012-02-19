@@ -2,10 +2,12 @@ CC=javac
 
 TARGETS=MazeRunner.class
 
+MAP=test.maze
+
 all: ${TARGETS}
 
 run: ${TARGETS}
-	java MazeRunner
+	java MazeRunner ${MAP}
 
 %.class: %.java
 	${CC} $<

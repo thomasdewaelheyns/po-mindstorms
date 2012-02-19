@@ -14,13 +14,9 @@ public class Maze {
   
   private MazeView view = new ConsoleMazeView().show(this);
 
-  private Maze(int width, int height) {
+  private Maze setSize(int width, int height) {
     this.width  = width;
     this.height = height;
-    this.resize();
-  }
-
-  private Maze resize() {
     this.maze = new Sector[this.width][];
     // create new 2-dim array to store maze info
     for(int left=0; left<this.width; left++) {
@@ -200,26 +196,59 @@ public class Maze {
   }
 
   public static Maze load(String fileName) {
-    Maze maze = new Maze(0,0);
+    Maze maze = new Maze();
     try {
       File file = new File(fileName);
       Scanner scanner = new Scanner(file);
-      int width  = scanner.nextInt();
-      int height = scanner.nextInt();
-      System.out.println( "loading maze: " + width + "x" + height );
-      maze = new Maze(width,height);
-
-      for(int top=0; top<height; top++) {
-        for(int left=0; left<width; left++ ) {
-          int v = scanner.nextInt();
-          if( v < 1000 ) { maze.setWalls(left, top, (char)v); }
-          else {
-            maze.setValue(left, top, 1000);
-            maze.setWalls(left, top, (char)(v-1000));
-          }
-        }
-      }
+      maze.loadWalls(scanner);
+      maze.loadAgents(scanner);
     } catch( Exception e ) { throw new RuntimeException(e); }
     return maze;
+  }
+  
+  private void loadWalls(Scanner scanner) {
+    // load walls
+    int width  = scanner.nextInt();
+    int height = scanner.nextInt();
+    System.out.println( "loading maze: " + width + "x" + height );
+    this.setSize(width, height);
+
+    for(int top=0; top<height; top++) {
+      for(int left=0; left<width; left++ ) {
+        int v = scanner.nextInt();
+        if( v < 1000 ) { this.setWalls(left, top, (char)v); }
+        else {
+          this.setValue(left, top, 1000);
+          this.setWalls(left, top, (char)(v-1000));
+        }
+      }
+    }
+  }
+  
+  private void loadAgents(Scanner scanner) {
+    boolean haveTarget = false;
+
+    while( scanner.hasNext() ) {
+      String type, name = "";
+      int left, top;
+      
+      type = scanner.next();
+      left = scanner.nextInt();
+      top  = scanner.nextInt();
+      if( type.equals("ghost") ) {
+        name = scanner.next();
+        System.out.println( "ghost " + name + " @ " + left + "," + top );
+        this.addAgent(new GhostAgent(left, top, name));
+      } else {
+        this.addAgent(new PacmanAgent(left, top));
+        haveTarget = true;  
+      }
+    }
+    // add at least 1 randomly placed target
+    if( ! haveTarget ) {
+      int left = (int)(Math.random()*this.getWidth());
+      int top  = (int)(Math.random()*this.getHeight());
+      this.addAgent(new PacmanAgent(left, top));
+    }
   }
 }

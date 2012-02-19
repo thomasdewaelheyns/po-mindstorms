@@ -14,7 +14,7 @@ public class CD {
             int s = maze.hasWall(left, top, Baring.S) ? 0 : maze.get(left, top+1);
             int w = maze.hasWall(left, top, Baring.W) ? 0 : maze.get(left-1, top);
             int e = maze.hasWall(left, top, Baring.E) ? 0 : maze.get(left+1, top);
-            maze.set(left, top, (int)((n+s+e+w)/3.5));
+            maze.set(left, top, (int)((n+s+e+w)/4));
           }
         }
       }

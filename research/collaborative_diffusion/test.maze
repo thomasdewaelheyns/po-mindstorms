@@ -10,3 +10,7 @@
 8 0 0 2 8 0 0 2 8 2
 8 2 8 0 0 2 8 0 0 2
 12 6 12 4 4 6 12 4 4 6
+ghost 0 0 red
+ghost 9 0 pink
+ghost 0 9 cyan
+ghost 9 9 orange
