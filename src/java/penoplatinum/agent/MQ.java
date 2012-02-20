@@ -24,10 +24,10 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP;
 
-abstract public class MQ {
+ public abstract class MQ {
 
   // configurable properties
-  private String  server      = "localhost";
+  private String  server      = "127.0.0.1";
   private String  me          = "default";
   private String  channelName = "default";
   
@@ -87,5 +87,5 @@ abstract public class MQ {
 
   // this class is abstract to allow users to provide a callback-style
   // method to handle the incoming messages at their level
-  abstract void handleIncomingMessage(String sender, String message);
+  protected abstract void handleIncomingMessage(String sender, String message);
 }

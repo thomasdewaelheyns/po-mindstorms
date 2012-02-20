@@ -16,7 +16,7 @@ public class MQRunner {
                                                 java.lang.InterruptedException
   {
     MQ mq = new MQ() {
-       void handleIncomingMessage(String sender, String message) {
+       protected void handleIncomingMessage(String sender, String message) {
          // handling the incoming messages ...
          System.out.println( "[" + sender + "] " + message );
        }
@@ -32,7 +32,7 @@ public class MQRunner {
     System.out.println( "Waiting for messages. To exit press CTRL+C" );
     while (true) {
       Thread.sleep(100);
-      // mq.sendMessage( "Some message" );
+       mq.sendMessage( "Some message" );
     }
   }
 }

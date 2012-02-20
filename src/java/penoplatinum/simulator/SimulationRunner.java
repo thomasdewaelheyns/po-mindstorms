@@ -24,7 +24,7 @@ public class SimulationRunner {
   
   public SimulationRunner() {
     this.simulator = new Simulator();
-    useMap(defaultMap() );
+    useMap(createDefaultMap() );
   }
   
   public SimulationRunner(Map m) {
@@ -37,7 +37,7 @@ public class SimulationRunner {
     return this;
   }
   public SimulationRunner useMap(String file){
-    Map m = defaultMap();
+    Map m = createDefaultMap();
     if(!file.equals("defaultMap")){
       File f = new File(file);
       try {
@@ -53,9 +53,7 @@ public class SimulationRunner {
   
   // TODO: create MapFactory with support to load files
   //       add option to provide map file
-  private Map defaultMap() {
-    if (0 == 1)
-      return michielMap();
+  public static Map createDefaultMap() {
     Map map = new Map(4)
       .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_E) .add(Panels.W_S)
       .add(Panels.E_N) .add(Panels.E_W) .add(Panels.S_W) .add(Panels.N_S)
@@ -64,7 +62,7 @@ public class SimulationRunner {
     return map;
   }
   
-  private Map michielMap(){
+  private static Map michielMap(){
     Map map = new Map(4)
       .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_E.withoutBarcodeLocation()) .add(Panels.W_S)
       .add(Panels.E_N.withoutBarcodeLocation()) .add(Panels.E_W) .add(Panels.S_W) .add(Panels.N_S.withoutBarcodeLocation())
@@ -106,7 +104,7 @@ public class SimulationRunner {
     // put the robot
     if( this.navigator != null ) {
       Robot robot = new NavigatorRobot(getNavigator());
-      SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+      SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("PlatinumSimulated"), robot);
       entity.setPostition(x, y, direction);
       simulator.addSimulatedEntity(entity);
     } else {

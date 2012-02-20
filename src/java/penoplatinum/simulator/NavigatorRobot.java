@@ -22,6 +22,7 @@ import penoplatinum.modelprocessor.ProximityModelProcessor;
 public class NavigatorRobot implements Robot {
 
   private RobotAPI api;
+  private RobotAgent agent;
   private Navigator navigator;
   private Model model;
 
@@ -37,7 +38,7 @@ public class NavigatorRobot implements Robot {
   private void setupModel() {
     // setup a model with the required ModelProcessors
     this.model = new Model();
-    ModelProcessor histoBuilder = 
+    ModelProcessor histoBuilder =
             new HistogramModelProcessor(
             new FrontPushModelProcessor(
             new SonarModelProcessor(
@@ -45,9 +46,8 @@ public class NavigatorRobot implements Robot {
             new ProximityModelProcessor(
             new LightCorruptionModelProcessor(
             new BarcodeModelProcessor(
-            new LineModelProcessor(
-    ))))))));
-    
+            new LineModelProcessor())))))));
+
     this.model.setProcessor(histoBuilder);
   }
 
@@ -61,6 +61,11 @@ public class NavigatorRobot implements Robot {
   public void useRobotAPI(RobotAPI api) {
     this.api = api;
     this.initAPI();
+  }
+
+  public void useRobotAgent(RobotAgent agent) {
+    this.agent = agent;
+
   }
 
   // method to perform initializing actions when an API is available
@@ -115,6 +120,16 @@ public class NavigatorRobot implements Robot {
       default:
       // do nothing
     }
+
+
+    agent.send("p" + (int)model.getPositionX() + "," + (int)model.getPositionY());
+    
+    //agent.send(getStatusMessage());
+
+  }
+
+  public String getStatusMessage() {
+    return this.getModelState() + "," + this.getNavigatorState() + "," + "-1";
   }
 
   public Boolean reachedGoal() {

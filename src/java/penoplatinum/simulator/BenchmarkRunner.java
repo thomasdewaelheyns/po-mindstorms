@@ -35,7 +35,7 @@ class BenchmarkRunner {
     simulator.useMap   (map);
     // put the robot at position 150 cm from top, 150 cm from left, in an
     // angle of 33 degrees, with 0 degrees pointing north
-    SimulatedEntity s = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    SimulatedEntity s = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("PenoplatinumSimulated"), robot);
     s.setPostition(150, 150, 33);
     simulator.addSimulatedEntity(s);
 

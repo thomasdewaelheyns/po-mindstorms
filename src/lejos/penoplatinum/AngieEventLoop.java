@@ -33,11 +33,8 @@ public class AngieEventLoop {
 
     private void cacheState() {
         synchronized (this) {
-
-//            Utils.Log(this.navigatorRobot.getModelState());
-            this.lastState =
-                    this.navigatorRobot.getModelState() + ","
-                    + this.navigatorRobot.getNavigatorState() + "," + fps;
+            //TODO: WARNING, this was copied/moved to NavigatorRobot, fps was removed
+            this.lastState = this.navigatorRobot.getStatusMessage();
         }
     }
 

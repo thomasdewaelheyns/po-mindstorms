@@ -8,7 +8,7 @@ import penoplatinum.simulator.sensors.MotorState;
 import penoplatinum.simulator.sensors.Sonar;
 import penoplatinum.simulator.sensors.TouchSensor;
 
-public class SimulatedEntity {
+public class SimulatedEntity implements RobotEntity{
 
   public final double LENGTH_ROBOT = 10.0;
   
@@ -160,8 +160,8 @@ public class SimulatedEntity {
     return direction;
   }
   
-  ViewRobot getRobotView(){
-    return new ViewRobot(this);
+  public ViewRobot getViewRobot(){
+    return new SimulatedViewRobot(this);
   }
   
   public Robot getRobot() {
@@ -197,7 +197,7 @@ public class SimulatedEntity {
   }
 
   // performs the next step in the movement currently executed by the robot
-  void step() {
+  public void step() {
     // let all motors know that another timeslice has passed
 
     this.motors[Model.M1].tick(simulator.TIME_SLICE);

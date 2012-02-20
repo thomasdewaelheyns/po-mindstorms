@@ -9,6 +9,7 @@ package penoplatinum.agent;
  */
 
 import org.apache.log4j.Logger;
+import penoplatinum.bluetooth.SimulatedConnection;
 
 public class Agent {
   // setup the logger

@@ -23,7 +23,7 @@ public class TestSimulation {
     // this.simulator.displayOn( new SwingSimulationView() );
     this.navigator = new TestNavigator();
     this.robot = new NavigatorRobot(this.navigator);
-    SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), this.robot);
+    SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("PlatinumSimulated"), this.robot);
     simulator.addSimulatedEntity(entity);
   }
 

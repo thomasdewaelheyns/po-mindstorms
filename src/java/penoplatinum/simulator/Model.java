@@ -32,6 +32,10 @@ public class Model {
   public static final int MOTORSTATE_FORWARD = 1;
   public static final int MOTORSTATE_BACKWARD = 2;
   public static final int MOTORSTATE_STOPPED = 3;
+  
+  private float positionX;
+  private float positionY;
+  
   /**
    * the raw data of the sensors: three motors, sensors 1, 2, 3, 4 
    * and the states of the three motors defined by the MOTORSTATE enumeration
@@ -315,5 +319,33 @@ public class Model {
    */
   public void setScanningLightData(boolean scanningLightData) {
     this.scanningLightData = scanningLightData;
+  }
+
+  /**
+   * @return the positionX
+   */
+  public float getPositionX() {
+    return positionX;
+  }
+
+  /**
+   * @param positionX the positionX to set
+   */
+  public void setPositionX(float positionX) {
+    this.positionX = positionX;
+  }
+
+  /**
+   * @return the positionY
+   */
+  public float getPositionY() {
+    return positionY;
+  }
+
+  /**
+   * @param positionY the positionY to set
+   */
+  public void setPositionY(float positionY) {
+    this.positionY = positionY;
   }
 }
