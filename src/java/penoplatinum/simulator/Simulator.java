@@ -14,7 +14,6 @@ package penoplatinum.simulator;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import penoplatinum.Utils;
 
 public class Simulator {
   // the Simulator can run until different goals are reached
@@ -26,6 +25,7 @@ public class Simulator {
   private Map map;                // the map that the robot will run on
   
   private List<SimulatedEntity> robotEntities = new ArrayList<SimulatedEntity>();
+  private SimulatedEntity pacmanEntity;
   
   
   // main constructor, no arguments, Simulator is selfcontained
@@ -194,5 +194,9 @@ public class Simulator {
             && dy > 0 && (posYOnTile - dy < LENGTH_ROBOT))
             || (this.map.get(tileX, tileY).hasWall(Baring.S)
             && dy < 0 && (posYOnTile - dy > Tile.SIZE - LENGTH_ROBOT));
+  }
+
+  public SimulatedEntity getPacMan() {
+    return pacmanEntity;
   }
 }
