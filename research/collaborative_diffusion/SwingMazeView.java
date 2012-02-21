@@ -2,45 +2,54 @@ import javax.swing.JFrame;
 
 public class SwingMazeView extends JFrame implements MazeView {
   private Maze maze;
+  private String title = "Maze";
+  private int left = -1, top = -1;
 
   private MazeBoard board;
 
   public MazeView show(Maze maze) {
     this.maze = maze;
     this.setupBoard();
-    this.setupWindow();
+    this.setupWindow(); // yes keep this order ;-)
     return this;
   }
   
+  public MazeView refreshWalls() {
+    this.board.clearWalls();
+    this.addWalls();
+    this.refresh();
+    return this;
+  }
+
   private void setupBoard() {
     this.board = new MazeBoard(this.maze.getWidth(), this.maze.getHeight());
     this.add(this.board);
-    
+    this.addWalls();
+  }
+  
+  private void addWalls() {
     // add walls
     for(int top=0; top<this.maze.getHeight(); top++) {
       for(int left=0; left<this.maze.getWidth(); left++ ) {
-        if( maze.hasWall(left, top, Baring.N) ) {
-          this.board.addWall(left, top, Baring.N );
-        }
-        if( maze.hasWall(left, top, Baring.E) ) {
-          this.board.addWall(left, top, Baring.E );
-        }
-        if( maze.hasWall(left, top, Baring.S) ) {
-          this.board.addWall(left, top, Baring.S );
-        }
-        if( maze.hasWall(left, top, Baring.W) ) {
-          this.board.addWall(left, top, Baring.W );
+        for(int wall=Baring.N; wall<=Baring.W; wall++ ) {
+          Boolean hasWall = this.maze.hasWall(left, top, wall);
+          if( hasWall != null && hasWall ) {
+            this.board.addWall(left, top, wall );
+          }
         }
       }
     }
   }
-
+  
   private void setupWindow() {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setSize( this.maze.getWidth() * 20 -2, this.maze.getHeight() * 20 + 20);
-    this.setLocationRelativeTo(null);
-    this.setLocationRelativeTo(null);
-    this.setTitle("Maze");
+    if( this.left > 0 ) {
+      this.setLocation(this.left, this.top);
+    } else {
+      this.setLocationRelativeTo(null);
+    }
+    this.setTitle(this.title);
     this.setResizable(false);
     this.setVisible(true);
   }
@@ -60,10 +69,22 @@ public class SwingMazeView extends JFrame implements MazeView {
 
     // add agent positions
     for( Agent agent : this.maze.getAgents() ) {
-      this.board.setAgent(agent.getLeft(), agent.getTop(), agent.isTarget());
+      this.board.setAgent(agent.getLeft(), agent.getTop(), 
+                          agent.getOrientation(), agent.isTarget());
     }
     
     this.board.render();
+    return this;
+  }
+
+  public MazeView changeTitle(String title) { 
+    this.title = title;
+    return this;
+  }
+  
+  public MazeView changeLocation(int left, int top) {
+    this.left = left;
+    this.top  = top;
     return this;
   }
 }

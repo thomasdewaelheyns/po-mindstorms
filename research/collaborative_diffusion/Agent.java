@@ -4,6 +4,7 @@ public interface Agent {
   public int getValue();
   public int getLeft();
   public int getTop();
+  public int getOrientation();
   public void move(int n, int e, int s, int w);
   public boolean isHolding();
   public void setMaze(Maze maze);

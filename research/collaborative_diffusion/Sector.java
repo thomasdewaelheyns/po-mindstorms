@@ -1,10 +1,11 @@
 public class Sector {
-  private Tile tile;
-  private int  value;
+  // walls and the certainty about them
+  private Tile walls     = new Tile();
+  private Tile certainty = new Tile();
   
-  public Sector() {
-    this.tile = new Tile();
-  }
+  // the value associated with this sector. it is used to create collaborated
+  // diffusion
+  private int  value;
   
   public int getValue() {
     return value;
@@ -16,20 +17,39 @@ public class Sector {
   }
   
   public Sector setWalls(char walls) {
-    this.tile.withWalls(walls);
+    this.walls.withWalls(walls);
+    this.certainty.withWalls((char)15); // mark all walls as certain
+    return this;
+  }
+  
+  public Sector clearCertainty() {
+    this.certainty.clear();
     return this;
   }
 
+  public boolean isKnown(int wall) {
+    return this.certainty.hasWall(wall);
+  }
+
   public char getWalls() {
-    return this.tile.getWalls();
+    return this.walls.getWalls();
   }
   
   public Sector setWall(int wall) {
-    this.tile.withWall(wall);
+    this.walls.withWall(wall);
+    this.certainty.withWall(wall);
+    return this;
+  }
+
+  public Sector unsetWall(int wall) {
+    this.walls.withoutWall(wall);
+    this.certainty.withWall(wall);
     return this;
   }
   
-  public boolean hasWall(int wall) {
-    return this.tile.hasWall(wall);
+  // we use the Boolean class here to be able to return "null" when we don't
+  // know anything about the wall.
+  public Boolean hasWall(int wall) {
+    return this.certainty.hasWall(wall) ? this.walls.hasWall(wall) : null;
   }
 }

@@ -2,13 +2,15 @@ public class GhostAgent implements Agent {
   private String name;
   private int left;
   private int top;
+  private int orientation;
   
   private int previousMove = -1;
   
-  public GhostAgent(int left, int top, String name) {
-    this.left = left;
-    this.top  = top;
-    this.name = name;
+  public GhostAgent(int left, int top, int orientation, String name) {
+    this.left        = left;
+    this.top         = top;
+    this.orientation = orientation;
+    this.name        = name;
   }
   
   public boolean isTarget() { return false; }
@@ -24,6 +26,10 @@ public class GhostAgent implements Agent {
 
   public int getTop() {
     return this.top;
+  }
+  
+  public int getOrientation() {
+    return this.orientation;
   }
   
   public boolean isHolding() {

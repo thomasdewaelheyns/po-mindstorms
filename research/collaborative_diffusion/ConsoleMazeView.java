@@ -24,4 +24,8 @@ public class ConsoleMazeView implements MazeView {
     }
     return this;
   }
+  
+  public MazeView changeTitle(String title) { return this; }
+  public MazeView changeLocation(int left, int top) { return this; }
+  public MazeView refreshWalls() { return this; }
 }

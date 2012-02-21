@@ -2,14 +2,16 @@ public class PacmanAgent implements Agent {
   // our position
   private int left;
   private int top;
+  private int orientation;
   private boolean blocked = false;
   
   // our extra knowledge
   private Maze maze;
   
-  public PacmanAgent(int left, int top) {
+  public PacmanAgent(int left, int top, int orientation) {
     this.left = left;
     this.top  = top;
+    this.orientation = orientation;
   }
 
   public boolean isTarget() { return true;  }
@@ -27,6 +29,10 @@ public class PacmanAgent implements Agent {
 
   public int getTop() {
     return this.top;
+  }
+  
+  public int getOrientation() {
+    return this.orientation;
   }
   
   public boolean isHolding() {

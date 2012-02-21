@@ -31,8 +31,7 @@ public class MazeBoard extends JPanel {
   private void setupCanvas() {
     this.setBackground(BLACK);
     this.setDoubleBuffered(true);
-    this.walls  = this.createBuffer();
-    this.wallsG = this.walls.createGraphics();
+    this.clearWalls();
   }
   
   public void start() {
@@ -40,6 +39,11 @@ public class MazeBoard extends JPanel {
     this.cloudG  = this.cloud.createGraphics();
     this.agents  = this.createBuffer();
     this.agentsG = this.agents.createGraphics();
+  }
+  
+  public void clearWalls() {
+    this.walls  = this.createBuffer();
+    this.wallsG = this.walls.createGraphics();
   }
   
   public void addWall(int left, int top, int location) {
@@ -63,9 +67,22 @@ public class MazeBoard extends JPanel {
     }
   }
 
-  public void setAgent(int left, int top, boolean isTarget) {
+  public void setAgent(int left, int top, int orientation, boolean isTarget) {
+    left *= 20;
+    top  *= 20;
     this.agentsG.setColor(isTarget ? YELLOW : WHITE);
-    this.agentsG.fill(new Ellipse2D.Float(20*left+4, 20*top+4, 10, 10));
+
+    Polygon triangle = new Polygon();
+    triangle.addPoint(left+10, top+3);
+    triangle.addPoint(left+17, top+17);
+    triangle.addPoint(left+3 , top+17);
+    
+    double angle = orientation * Math.PI/2;
+    
+    this.agentsG.rotate(angle, left+10, top+10);
+    this.agentsG.fillPolygon(triangle);
+    // reset
+    this.agentsG.rotate(-1*angle, left+10, top+10);
   }
   
   private Color mapToHeatColor(int value) {
@@ -112,8 +129,8 @@ public class MazeBoard extends JPanel {
     super.paint(g);
     Graphics2D g2d = (Graphics2D)g;
     
-    g2d.drawImage( this.cloud, null, 0, 0 );
-    g2d.drawImage( this.walls, null, 0, 0 );
+    g2d.drawImage( this.cloud,  null, 0, 0 );
+    g2d.drawImage( this.walls,  null, 0, 0 );
     g2d.drawImage( this.agents, null, 0, 0 );
     
     Toolkit.getDefaultToolkit().sync();

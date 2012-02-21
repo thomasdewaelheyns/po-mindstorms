@@ -10,8 +10,8 @@
 10 10 10 10 10 10 10 10 10 10
 8 0 0 0 0 0 0 0 0 2
 12 4 4 4 4 4 4 4 4 6
-ghost 4 1 red
-ghost 5 1 pink
-ghost 6 1 cyan
-ghost 7 1 orange
-pacman 4 9
+ghost 4 1 0 red
+ghost 5 1 0 pink
+ghost 6 1 0 cyan
+ghost 7 1 0 orange
+pacman 4 9 0

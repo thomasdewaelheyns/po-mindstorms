@@ -4,10 +4,13 @@ TARGETS=MazeRunner.class
 
 MAP=test.maze
 
-all: ${TARGETS}
+all: 
 
-run: ${TARGETS}
+chase: MazeRunner.class
 	java MazeRunner ${MAP}
+
+discover: Discovery.class
+	java Discovery ${MAP}
 
 %.class: %.java
 	${CC} $<
