@@ -83,7 +83,7 @@ public class GhostAgent implements Agent {
     // keep track of previous move
     this.previousMove = move;
     
-    this.processMovement();
+    this.processMovement(n,e,s,w);
   }
   
   private void holdPosition() {
@@ -136,10 +136,10 @@ public class GhostAgent implements Agent {
     this.moves = 1;
   }
 
-  private void processMovement() {
+  private void processMovement(int n, int e, int s, int w) {
     if( this.turns < 0 )      { this.turnLeft();    this.turns++; }
     else if( this.turns > 0 ) { this.turnRight();   this.turns--; }
-    else if( this.moves > 0 ) { this.moveForward(); this.moves--; }
+    else if( this.moves > 0 ) { this.moveForward(n,e,s,w); this.moves--; }
   }
   
   private void turnRight() {
@@ -158,12 +158,12 @@ public class GhostAgent implements Agent {
     }
   }
   
-  private void moveForward() {
+  private void moveForward(int n, int e, int s, int w) {
     switch(this.orientation) {
-      case Baring.N: this.top--;  break;
-      case Baring.E: this.left++; break;
-      case Baring.S: this.top++;  break;
-      case Baring.W: this.left--; break;
+      case Baring.N: if( n >= 0 ) { this.top--;  } break;
+      case Baring.E: if( e >= 0 ) { this.left++; } break;
+      case Baring.S: if( s >= 0 ) { this.top++;  } break;
+      case Baring.W: if( w >= 0 ) { this.left--; } break;
       default: // impossible ? ;-)
     }
   }

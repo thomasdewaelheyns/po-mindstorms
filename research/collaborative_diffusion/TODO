@@ -1,4 +1,3 @@
-- fix bug allowing multiple ghosts on same Sector
 - create abstract base-class for agents
 - apply CD to discovery
 - improve code (consistency, remove Generics, performance, memory usage,...)
