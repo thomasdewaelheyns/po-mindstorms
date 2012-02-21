@@ -1,5 +1,7 @@
 package penoplatinum.simulator;
 
+import penoplatinum.simulator.tiles.Panels;
+import penoplatinum.simulator.tiles.Panel;
 import java.util.ArrayList;
 import java.util.List;
 

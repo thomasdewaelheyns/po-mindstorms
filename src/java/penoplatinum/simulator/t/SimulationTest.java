@@ -1,4 +1,7 @@
+package penoplatinum.simulator.t;
 
+
+import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*;
 import java.util.List;
 import penoplatinum.simulator.*;

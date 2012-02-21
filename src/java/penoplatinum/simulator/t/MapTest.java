@@ -1,5 +1,7 @@
+package penoplatinum.simulator.t;
+
 import penoplatinum.simulator.Map;
-import penoplatinum.simulator.Panel;
+import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*; 
 
 public class MapTest extends TestCase { 

@@ -1,5 +1,7 @@
 package penoplatinum.simulator;
 
+import penoplatinum.simulator.tiles.Panels;
+import penoplatinum.simulator.view.SwingSimulationView;
 import org.apache.commons.cli.*;
 
 /**

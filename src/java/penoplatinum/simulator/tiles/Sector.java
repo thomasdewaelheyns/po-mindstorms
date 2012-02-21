@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package penoplatinum.simulator;
+package penoplatinum.simulator.tiles;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import penoplatinum.modelprocessor.BarcodeDataNav;
+import penoplatinum.simulator.Baring;
+import penoplatinum.simulator.view.Board;
 
-/**
- *
- * @author Thomas
- */
 public class Sector implements Tile {
   
    private int data;
@@ -26,6 +22,12 @@ public class Sector implements Tile {
   public static int BARCODE_LINE_WIDTH =  2;
   public static int BARCODE_LINES      =  7;
   public static int BARCODE_WIDTH      = BARCODE_LINES * BARCODE_LINE_WIDTH;
+  
+  public static final int DRAW_WALL_LINE_WIDTH = 2*Board.SCALE;
+  public static final int DRAW_LINE_START = (Panel.LINE_OFFSET * Board.SCALE);
+  public static final int DRAW_LINE_END = (Panel.LINE_OFFSET +LINE_WIDTH )* Board.SCALE;
+  public static final int DRAW_TILE_SIZE = Panel.SIZE * Board.SCALE;
+  public static final int DRAW_LINE_WIDTH = Panel.LINE_WIDTH * Board.SCALE;
   
   
   // Lines and corners are divided into two sets for white and black
@@ -231,4 +233,73 @@ public class Sector implements Tile {
   public int getSize(){
     return this.SIZE;
   }
+
+  @Override
+  public void drawTile(Graphics2D g2d, int left, int top) {
+    renderLinesCross(g2d, left, top);
+    renderWalls(g2d, left, top);
+  }
+  
+  
+  @Override
+  public int drawSize() {
+    return Sector.SIZE*Board.SCALE;
+  }
+
+  /**
+   * Teken de lijnen in het midden van het paneel
+   */
+  private void renderLinesCross(Graphics2D g2d, int left, int top) {
+    left--;
+    top--;
+    Rectangle horizontal = new Rectangle(
+            left * DRAW_TILE_SIZE + DRAW_TILE_SIZE / 2 - DRAW_LINE_WIDTH / 2,
+            top * DRAW_TILE_SIZE,
+            DRAW_LINE_WIDTH,
+            DRAW_TILE_SIZE);
+    Rectangle vertical = new Rectangle(
+            left * DRAW_TILE_SIZE,
+            top * DRAW_TILE_SIZE + DRAW_TILE_SIZE / 2 - DRAW_LINE_WIDTH / 2,
+            DRAW_TILE_SIZE,
+            DRAW_LINE_WIDTH);
+    g2d.setColor(Board.WHITE);
+
+
+    g2d.fill(horizontal);
+    g2d.fill(vertical);
+  }
+
+  private void renderWalls(Graphics2D g2d, int left, int top) {
+    // walls are 2cm width = 4px
+    g2d.setColor(Board.DARK_BROWN);
+    if (hasWall(Baring.N)) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top - 1),
+              DRAW_TILE_SIZE,
+              DRAW_WALL_LINE_WIDTH));
+    }
+    if (hasWall(Baring.E)) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * left - DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE * (top - 1),
+              4,
+              DRAW_TILE_SIZE));
+    }
+    if (hasWall(Baring.S)) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE,
+              4));
+    }
+    if (hasWall(Baring.W)) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top - 1),
+              DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE));
+    }
+  }
+
 }

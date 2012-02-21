@@ -1,4 +1,7 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.tiles;
+
+import penoplatinum.simulator.Barcode;
+import penoplatinum.simulator.Baring;
 
 /**
  * Enumeration of commonly used Panels

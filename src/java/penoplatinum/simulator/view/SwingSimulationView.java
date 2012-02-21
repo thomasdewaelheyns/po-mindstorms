@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.view;
 
 /**
  * SwingSimulationView
@@ -10,6 +10,7 @@ package penoplatinum.simulator;
  */
 
 import javax.swing.JFrame;
+import penoplatinum.simulator.Map;
 
 public class SwingSimulationView extends JFrame implements SimulationView {
   

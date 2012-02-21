@@ -8,6 +8,8 @@ package penoplatinum.simulator;
  *  @author: Team Platinum
  */
 
+import penoplatinum.simulator.tiles.Panel;
+import penoplatinum.simulator.tiles.Tile;
 import java.util.List;
 import java.util.ArrayList;
 

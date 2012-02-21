@@ -11,6 +11,10 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.simulator.tiles.TileGeometry;
+import penoplatinum.simulator.tiles.Tile;
+import penoplatinum.simulator.view.SilentSimulationView;
+import penoplatinum.simulator.view.SimulationView;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;

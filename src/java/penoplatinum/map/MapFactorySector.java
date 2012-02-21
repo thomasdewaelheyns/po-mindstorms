@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import penoplatinum.simulator.Map;
 import penoplatinum.simulator.Map3D;
-import penoplatinum.simulator.Sector;
-import penoplatinum.simulator.Sectors;
+import penoplatinum.simulator.tiles.Sector;
+import penoplatinum.simulator.tiles.Sectors;
 
 /**
  *

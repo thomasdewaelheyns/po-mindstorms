@@ -1,5 +1,7 @@
 package penoplatinum.simulator;
 
+import penoplatinum.simulator.tiles.Panel;
+import penoplatinum.simulator.view.ViewRobot;
 import java.awt.Point;
 import penoplatinum.simulator.sensors.LightSensor;
 import penoplatinum.simulator.sensors.MotorState;

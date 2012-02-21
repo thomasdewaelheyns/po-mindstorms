@@ -1,5 +1,7 @@
+package penoplatinum.simulator.t;
+
 import penoplatinum.simulator.Baring;
-import penoplatinum.simulator.Panel;
+import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*; 
 
 public class TileTest extends TestCase { 

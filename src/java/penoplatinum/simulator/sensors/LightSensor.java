@@ -4,7 +4,8 @@ import java.awt.Point;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
-import penoplatinum.simulator.Panel;
+import penoplatinum.simulator.tiles.Panel;
+import penoplatinum.simulator.tiles.Tile;
 
 public class LightSensor implements Sensor{
   private Simulator sim;
@@ -40,7 +41,7 @@ public class LightSensor implements Sensor{
     // get correct tile
     Point tilePos = simEntity.getCurrentTileCoordinates();
     tilePos.translate(dx, dy);
-    Panel tile = sim.getCurrentTile(tilePos);
+    Tile tile = sim.getCurrentTile(tilePos);
 
     int color = tile.getColorAt(x, y);
 

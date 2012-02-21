@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.view;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.ImageObserver;
 import java.util.List;
+import penoplatinum.simulator.SimulatedEntity;
 
 public class ViewRobot {
   // cached images

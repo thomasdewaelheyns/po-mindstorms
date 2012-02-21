@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import penoplatinum.simulator.Map;
 import penoplatinum.simulator.Map3D;
-import penoplatinum.simulator.Panel;
-import penoplatinum.simulator.Panels;
+import penoplatinum.simulator.tiles.Panel;
+import penoplatinum.simulator.tiles.Panels;
 
 /**
  * 

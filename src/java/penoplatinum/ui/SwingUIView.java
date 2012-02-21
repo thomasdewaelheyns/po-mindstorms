@@ -14,7 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import penoplatinum.simulator.Board;
+import penoplatinum.simulator.view.Board;
 
 public class SwingUIView extends JFrame implements UIView, ActionListener {
 

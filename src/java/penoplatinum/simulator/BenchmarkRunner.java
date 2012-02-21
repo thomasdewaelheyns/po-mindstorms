@@ -1,5 +1,6 @@
 package penoplatinum.simulator;
 
+import penoplatinum.simulator.tiles.Panels;
 import penoplatinum.navigators.SonarNavigator;
 
 /**

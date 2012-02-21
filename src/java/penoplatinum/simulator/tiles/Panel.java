@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.tiles;
 
 /**
  * Panel
@@ -30,8 +30,11 @@ package penoplatinum.simulator;
  *  @author: Team Platinum
  */
 
-import java.awt.Point;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import penoplatinum.modelprocessor.BarcodeDataNav;
+import penoplatinum.simulator.Baring;
+import penoplatinum.simulator.view.Board;
 
 public class Panel implements Tile {
   // these are the positions in the bitstring where relevant information
@@ -56,6 +59,14 @@ public class Panel implements Tile {
   public static int BARCODE_LINE_WIDTH =  2;
   public static int BARCODE_LINES      =  7;
   public static int BARCODE_WIDTH      = BARCODE_LINES * BARCODE_LINE_WIDTH;
+  
+  // sizes in pixel format
+  public static final int DRAW_LINE_START = (Panel.LINE_OFFSET * Board.SCALE);
+  public static final int DRAW_LINE_END = (Panel.LINE_OFFSET +LINE_WIDTH )* Board.SCALE;
+  public static final int DRAW_TILE_SIZE = Panel.SIZE * Board.SCALE;
+  public static final int DRAW_LINE_WIDTH = Panel.LINE_WIDTH * Board.SCALE;
+  public static final int DRAW_BARCODE_LINE_WIDTH = Panel.BARCODE_LINE_WIDTH * Board.SCALE;
+  public static final int DRAW_WALL_LINE_WIDTH = 2*Board.SCALE;
 
   // internal representation of a Panel using a 32bit int
   private int data;
@@ -389,4 +400,230 @@ public class Panel implements Tile {
   public int getSize(){
     return this.SIZE;
   }
+
+  @Override
+  public void drawTile(Graphics2D g2d, int left, int top) {
+    // background
+    g2d.setColor(Board.BROWN);
+    g2d.fill(new Rectangle(DRAW_TILE_SIZE * (left - 1), DRAW_TILE_SIZE * (top - 1),
+            DRAW_TILE_SIZE, DRAW_TILE_SIZE));
+    this.renderLinesCross(g2d, left, top);
+    this.renderLines(g2d, left, top);
+    this.renderBarcode(g2d, left, top);
+    this.renderNarrowing(g2d, left, top);
+    this.renderWalls(g2d, left, top);
+  }
+  
+  /**
+   * Teken de lijnen in het midden van het paneel
+   */
+  private void renderLinesCross(Graphics2D g2d, int left, int top) {
+    left--;
+    top--;
+    Rectangle horizontal = new Rectangle(
+            left * DRAW_TILE_SIZE + DRAW_TILE_SIZE / 2 - DRAW_LINE_WIDTH / 2,
+            top * DRAW_TILE_SIZE, 
+            DRAW_LINE_WIDTH, 
+            DRAW_TILE_SIZE);
+    Rectangle vertical = new Rectangle(
+            left * DRAW_TILE_SIZE, 
+            top * DRAW_TILE_SIZE + DRAW_TILE_SIZE / 2 - DRAW_LINE_WIDTH / 2, 
+            DRAW_TILE_SIZE, 
+            DRAW_LINE_WIDTH);
+    g2d.setColor(Board.WHITE);
+    
+
+    g2d.fill(horizontal);
+    g2d.fill(vertical);
+  }
+
+  private void renderLines(Graphics2D g2d, int left, int top) {
+    this.renderLine(g2d, left, top, Baring.N);
+    this.renderLine(g2d, left, top, Baring.E);
+    this.renderLine(g2d, left, top, Baring.S);
+    this.renderLine(g2d, left, top, Baring.W);
+
+    this.renderCorner(g2d, left, top, Baring.NE);
+    this.renderCorner(g2d, left, top, Baring.SE);
+    this.renderCorner(g2d, left, top, Baring.SW);
+    this.renderCorner(g2d, left, top, Baring.NW);
+  }
+
+  // TODO: further refactor this code, the switch is still ugly as hell ;-)
+  private void renderLine(Graphics2D g2d, int left, int top, int line) {
+    if (hasLine(line)) {
+      g2d.setColor(hasLine(line, Panel.WHITE) ? Board.WHITE : Board.BLACK);
+      int length = DRAW_TILE_SIZE;
+      int offset = 0;
+      if (hasLine(Baring.getLeftNeighbour(line)) || hasLine(Baring.getRightNeighbour(line))) {
+        length -= DRAW_LINE_START;
+      }
+      if (hasLine(Baring.getLeftNeighbour(line))) {
+        offset += DRAW_LINE_START;
+      }
+      int x = 0, y = 0, dX = 0, dY = 0;
+      switch (line) {
+        case Baring.N:
+          dX = length;
+          dY = DRAW_LINE_WIDTH;
+          x = offset;
+          y = DRAW_LINE_START;
+          break;
+        case Baring.S:
+          dX = length;
+          dY = DRAW_LINE_WIDTH;
+          x = offset;
+          y = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
+          break;
+        case Baring.E:
+          dX = DRAW_LINE_WIDTH;
+          dY = length;
+          x = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
+          y = offset;
+          break;
+        case Baring.W:
+          dX = DRAW_LINE_WIDTH;
+          dY = length;
+          x = DRAW_LINE_START;
+          y = offset;
+      }
+
+      int dLeft = left - 1, dTop = top - 1;
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * dLeft + x,
+              DRAW_TILE_SIZE * dTop + y,
+              dX,
+              dY));
+    }
+  }
+
+  private void renderCorner(Graphics2D g2d, int left, int top, int corner) {
+    if (hasCorner(corner)) {
+      g2d.setColor(hasCorner(corner, Panel.WHITE)
+              ? Board.WHITE : Board.BLACK);
+      int offsetLeftH = 0, offsetTopH = 0,
+              offsetLeftV = 0, offsetTopV = 0;
+      switch (corner) {
+        case Baring.NE:
+          offsetLeftH = offsetLeftV = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
+          offsetTopH = DRAW_LINE_START;
+          offsetTopV = 0;
+          break;
+        case Baring.SE:
+          offsetLeftH = offsetLeftV = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
+          offsetTopH = offsetTopV = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
+          break;
+        case Baring.SW:
+          offsetLeftH = 0;
+          offsetLeftV = DRAW_LINE_START;
+          offsetTopH = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
+          offsetTopV = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
+          break;
+        case Baring.NW:
+          offsetLeftH = 0;
+          offsetLeftV = DRAW_LINE_START;
+          offsetTopV = 0;
+          offsetTopH = DRAW_LINE_START;
+          break;
+      }
+      int tileLeft = DRAW_TILE_SIZE * (left - 1);
+      int tileTop = DRAW_TILE_SIZE * (top - 1);
+
+      // horizontal
+      g2d.fill(new Rectangle(
+              tileLeft + offsetLeftH, 
+              tileTop + offsetTopH,
+              DRAW_LINE_START + DRAW_LINE_WIDTH, 
+              DRAW_LINE_WIDTH));
+      // vertical
+      g2d.fill(new Rectangle(
+              tileLeft + offsetLeftV, 
+              tileTop + offsetTopV,
+              DRAW_LINE_WIDTH, 
+              DRAW_LINE_START + DRAW_LINE_WIDTH));
+
+    }
+  }
+
+  private void renderBarcode(Graphics2D g2d, int left, int top) {
+    // every bar of the barcode has a 2cm width = 4px
+    for (int line = 0; line < 7; line++) {
+      g2d.setColor(getBarcodeLine(line) == Panel.BLACK ? Board.BLACK : Board.WHITE);
+
+      switch (getBarcodeLocation()) {
+        case Baring.N:
+          g2d.fill(new Rectangle(
+                  DRAW_TILE_SIZE * (left - 1),
+                  DRAW_TILE_SIZE * (top - 1) + DRAW_BARCODE_LINE_WIDTH * line,
+                  DRAW_TILE_SIZE,
+                  DRAW_BARCODE_LINE_WIDTH));
+          break;
+        case Baring.E:
+          g2d.fill(new Rectangle(
+                  DRAW_TILE_SIZE * (left) - DRAW_BARCODE_LINE_WIDTH * (line + 1),
+                  DRAW_TILE_SIZE * (top - 1),
+                  DRAW_BARCODE_LINE_WIDTH,
+                  DRAW_TILE_SIZE));
+          break;
+        case Baring.S:
+          g2d.fill(new Rectangle(
+                  DRAW_TILE_SIZE * (left - 1),
+                  DRAW_TILE_SIZE * (top) - DRAW_BARCODE_LINE_WIDTH * (line + 1),
+                  DRAW_TILE_SIZE,
+                  DRAW_BARCODE_LINE_WIDTH));
+          break;
+        case Baring.W:
+          g2d.fill(new Rectangle(
+                  DRAW_TILE_SIZE * (left - 1) + DRAW_BARCODE_LINE_WIDTH * line,
+                  DRAW_TILE_SIZE * (top - 1) + DRAW_WALL_LINE_WIDTH,
+                  DRAW_BARCODE_LINE_WIDTH,
+                  DRAW_TILE_SIZE));
+          break;
+      }
+    }
+  }
+
+  private void renderNarrowing(Graphics2D g2d, int left, int top) {
+    // TODO
+  }
+
+  private void renderWalls(Graphics2D g2d, int left, int top) {
+    // walls are 2cm width = 4px
+    g2d.setColor(Board.DARK_BROWN);
+    if (hasWall(Baring.N)) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top - 1),
+              DRAW_TILE_SIZE,
+              DRAW_WALL_LINE_WIDTH));
+    }
+    if (hasWall(Baring.E)) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * left - DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE * (top - 1),
+              4,
+              DRAW_TILE_SIZE));
+    }
+    if (hasWall(Baring.S)) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE,
+              4));
+    }
+    if (hasWall(Baring.W)) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top - 1),
+              DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE));
+    }
+  }
+
+  @Override
+  public int drawSize() {
+    return SIZE*Board.SCALE;
+  }
+  
+  
 }
