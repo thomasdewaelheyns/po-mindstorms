@@ -20,8 +20,6 @@ public class Discovery {
     currentMaze.addAgent(discoverer);
     discoverer.setMaze(currentMaze); // only targets normally get this info
 
-    CD cd = new CD();
-    
     while(true) {
       currentMaze.moveAgents();
       //goalMaze.show(); // no need to re-render the goal

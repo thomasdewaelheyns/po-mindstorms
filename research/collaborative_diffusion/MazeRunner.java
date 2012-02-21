@@ -5,15 +5,9 @@ public class MazeRunner {
     while(true) {
       Maze maze = Maze.load(args[0]).displayOn(swing).show();
 
-      CD cd = new CD();
-
       while( ! maze.targetIsBlocked() ) {
-        cd.apply(maze);
-        cd.apply(maze);
-        cd.apply(maze);
-
+        CD.apply(maze);
         maze.moveAgents();
-
         maze.show();
         try { Thread.sleep(200); } catch(Exception e) {}
       }

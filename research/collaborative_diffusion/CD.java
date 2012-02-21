@@ -1,5 +1,5 @@
 public class CD {
-  public CD apply(Maze maze) {
+  public static void apply(Maze maze) {
     int width  = maze.getWidth();
     int height = maze.getHeight();
     
@@ -19,6 +19,5 @@ public class CD {
         }
       }
     }
-    return this;
   }
 }
