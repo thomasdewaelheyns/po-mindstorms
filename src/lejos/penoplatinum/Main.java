@@ -5,6 +5,7 @@ import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.addon.IRSeeker;
+import penoplatinum.IRSeekerV2.Mode;
 import penoplatinum.bluetooth.PacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.navigators.BehaviourNavigator;
@@ -16,10 +17,11 @@ public class Main {
 
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
         conn.initializeConnection();
+        
+        
 
         Utils.EnableRemoteLogging(conn);
-
-        IRSeeker seeker = new IRSeeker(SensorPort.S3);
+        IRSeekerV2 seeker = new IRSeekerV2(SensorPort.S3, Mode.AC);
 
 
         Motor m = Motor.A;
@@ -48,8 +50,7 @@ public class Main {
 
     }
 
-    private static boolean startMeasurement(IRSeeker seeker, int[] angles, Motor m, int startAngle) {
-        seeker.setAddress(8);
+    private static boolean startMeasurement(IRSeekerV2 seeker, int[] angles, Motor m, int startAngle) {
         while (!Button.ESCAPE.isPressed()) {
             while (!Button.ENTER.isPressed()) {
                 Utils.Sleep(500);
@@ -58,8 +59,6 @@ public class Main {
                 }
             }
             for (int i = 0; i < angles.length; i++) {
-                
-                
                 int angle = angles[i];
                 m.rotateTo(startAngle + angle, false);
                 int dir = seeker.getDirection();
@@ -74,25 +73,6 @@ public class Main {
     }
     static byte[] buf = new byte[1];
     static IRSeeker seeker = new IRSeeker(SensorPort.S3);
-
-    private static int readDirection() {
-
-        boolean isAC = true;
-
-        int register = 0;
-        if (isAC) {
-            register = 0x49;
-        } else {
-            register = 0x42;
-        }
-
-
-        int ret = seeker.getData(register, buf, 1);
-        if (ret != 0) {
-            Utils.Log("Error");
-        }
-        return (0xFF & buf[0]);
-    }
 
     private static void runRobotSemester1() {
         final AngieEventLoop angie = new AngieEventLoop();
