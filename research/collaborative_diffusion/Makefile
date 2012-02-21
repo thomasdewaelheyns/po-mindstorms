@@ -6,7 +6,7 @@ MAP=test.maze
 
 all: 
 
-chase: MazeRunner.class
+hunt: MazeRunner.class
 	java MazeRunner ${MAP}
 
 discover: Discovery.class
