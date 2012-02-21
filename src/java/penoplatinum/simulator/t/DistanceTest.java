@@ -1,11 +1,11 @@
 import penoplatinum.simulator.Baring;
-import penoplatinum.simulator.Tile;
+import penoplatinum.simulator.Panel;
 import junit.framework.*; 
 
 import java.awt.Point;
 
 public class DistanceTest extends TestCase { 
-  private Tile tile;
+  private Panel tile;
   private int positionX;
   private int positionY;
   private int direction;
@@ -16,33 +16,33 @@ public class DistanceTest extends TestCase {
   
   public void testHitPoint() {
     assertEquals( "java.awt.Point[x=80,y=50]", 
-                  Tile.findHitPoint(50, 50,   0, 80).toString() );
+                  Panel.findHitPoint(50, 50,   0, 80).toString() );
     assertEquals( "java.awt.Point[x=80,y=39]", 
-                  Tile.findHitPoint(50, 50,  20, 80).toString() );
+                  Panel.findHitPoint(50, 50,  20, 80).toString() );
     assertEquals( "java.awt.Point[x=68,y=0]",
-                  Tile.findHitPoint(50, 50,  70, 80).toString() );
+                  Panel.findHitPoint(50, 50,  70, 80).toString() );
     assertEquals( "java.awt.Point[x=50,y=0]",
-                  Tile.findHitPoint(50, 50,  90, 80).toString() );
+                  Panel.findHitPoint(50, 50,  90, 80).toString() );
     assertEquals( "java.awt.Point[x=31,y=0]",
-                  Tile.findHitPoint(50, 50, 110, 80).toString() );
+                  Panel.findHitPoint(50, 50, 110, 80).toString() );
     assertEquals( "java.awt.Point[x=0,y=31]",
-                  Tile.findHitPoint(50, 50, 160, 80).toString() );
+                  Panel.findHitPoint(50, 50, 160, 80).toString() );
     assertEquals( "java.awt.Point[x=0,y=50]",
-                  Tile.findHitPoint(50, 50, 180, 80).toString() );
+                  Panel.findHitPoint(50, 50, 180, 80).toString() );
     assertEquals( "java.awt.Point[x=0,y=68]",
-                  Tile.findHitPoint(50, 50, 200, 80).toString() );
+                  Panel.findHitPoint(50, 50, 200, 80).toString() );
     assertEquals( "java.awt.Point[x=39,y=80]",
-                  Tile.findHitPoint(50, 50, 250, 80).toString() );
+                  Panel.findHitPoint(50, 50, 250, 80).toString() );
     assertEquals( "java.awt.Point[x=50,y=80]",
-                  Tile.findHitPoint(50, 50, 270, 80).toString() );
+                  Panel.findHitPoint(50, 50, 270, 80).toString() );
     assertEquals( "java.awt.Point[x=60,y=80]",
-                  Tile.findHitPoint(50, 50, 290, 80).toString() );
+                  Panel.findHitPoint(50, 50, 290, 80).toString() );
     assertEquals( "java.awt.Point[x=80,y=60]",
-                  Tile.findHitPoint(50, 50, 340, 80).toString() );
+                  Panel.findHitPoint(50, 50, 340, 80).toString() );
     assertEquals( "java.awt.Point[x=80,y=50]",
-                  Tile.findHitPoint(50, 50, 360, 80).toString() );
+                  Panel.findHitPoint(50, 50, 360, 80).toString() );
     assertEquals( "java.awt.Point[x=80,y=39]", 
-                  Tile.findHitPoint(50, 50, 380, 80).toString() );
+                  Panel.findHitPoint(50, 50, 380, 80).toString() );
   }
 
   public void testFacingWall() {
@@ -63,8 +63,8 @@ public class DistanceTest extends TestCase {
   }
   
   private int findFacingWall( int x, int y, int angle ) {
-    Point hit = Tile.findHitPoint( x, y, angle, 80 );
-    return Tile.getHitWall( hit, 80 );
+    Point hit = Panel.findHitPoint( x, y, angle, 80 );
+    return Panel.getHitWall( hit, 80 );
   }
   
   public void testDistance() {
@@ -84,8 +84,8 @@ public class DistanceTest extends TestCase {
   }
   
   private double findFrontFacingDistance( int x, int y, int angle ) {
-    Point hit = Tile.findHitPoint( x, y, angle, 80 );
-    return Tile.getDistance( x, y, hit );
+    Point hit = Panel.findHitPoint( x, y, angle, 80 );
+    return Panel.getDistance( x, y, hit );
   }
 
 }

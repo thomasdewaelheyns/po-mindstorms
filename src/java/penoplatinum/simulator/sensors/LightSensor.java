@@ -4,7 +4,7 @@ import java.awt.Point;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
-import penoplatinum.simulator.Tile;
+import penoplatinum.simulator.Panel;
 
 public class LightSensor implements Sensor{
   private Simulator sim;
@@ -23,31 +23,31 @@ public class LightSensor implements Sensor{
     int dx = 0, dy = 0;
     if (x < 0) {
       dx = -1;
-      x += Tile.SIZE;
+      x += Panel.SIZE;
     }
-    if (x >= Tile.SIZE) {
+    if (x >= Panel.SIZE) {
       dx = +1;
-      x -= Tile.SIZE;
+      x -= Panel.SIZE;
     }
     if (y < 0) {
       dy = -1;
-      y += Tile.SIZE;
+      y += Panel.SIZE;
     }
-    if (y >= Tile.SIZE) {
+    if (y >= Panel.SIZE) {
       dy = +1;
-      y -= Tile.SIZE;
+      y -= Panel.SIZE;
     }
     // get correct tile
     Point tilePos = simEntity.getCurrentTileCoordinates();
     tilePos.translate(dx, dy);
-    Tile tile = sim.getCurrentTile(tilePos);
+    Panel tile = sim.getCurrentTile(tilePos);
 
     int color = tile.getColorAt(x, y);
 
     // TODO: add random abberations
     //this.sensorValues[Model.S4] =
-    //        color == Tile.WHITE ? 100 : (color == Tile.BLACK ? 0 : 70);
-    return color == Tile.WHITE ? 100 : (color == Tile.BLACK ? 0 : 70);
+    //        color == Panel.WHITE ? 100 : (color == Panel.BLACK ? 0 : 70);
+    return color == Panel.WHITE ? 100 : (color == Panel.BLACK ? 0 : 70);
   }
 
   @Override

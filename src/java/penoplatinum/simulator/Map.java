@@ -47,7 +47,7 @@ public class Map {
   }
 
   // adds a tile at a given position. left,top 1-based
-  public Map put( Tile tile, int left, int top ) {
+  public Map put( Panel tile, int left, int top ) {
     // TODO if useful
     this.tiles.set(getPosition(left, top), tile );
     return this;
@@ -59,7 +59,7 @@ public class Map {
   public Tile get(int left, int top) {
     return this.tiles.get(getPosition(left, top));
   }
-  /*public Tile get(int left, int top, int level){
+  /*public Panel get(int left, int top, int level){
     return get(left, top);
   }/**/
 
@@ -80,5 +80,13 @@ public class Map {
       return false;
     }
     return this.tiles.get( pos ) != null;
+  }
+  
+  /**
+   * Returns the first tile found.
+   * This determines the type of the map.
+   */
+  public Tile getFirst(){
+    return tiles.iterator().next();
   }
 }

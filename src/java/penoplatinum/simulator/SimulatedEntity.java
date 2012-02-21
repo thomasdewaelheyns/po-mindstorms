@@ -260,15 +260,15 @@ public class SimulatedEntity {
   }
   public Point getCurrentTileCoordinates() {
     // determine tile coordinates we're on
-    int left = (int) (this.positionX / Tile.SIZE)+ 1;
-    int top = (int) (this.positionY / Tile.SIZE) + 1;
+    int left = (int) (this.positionX / Panel.SIZE)+ 1;
+    int top = (int) (this.positionY / Panel.SIZE) + 1;
     return new Point(left, top);
   }
 
   public Point getCurrentOnTileCoordinates() {
     // determine tile coordinates on the tile we're on
-    int left = (int) (this.positionX % Tile.SIZE);
-    int top = (int) (this.positionY % Tile.SIZE);
+    int left = (int) (this.positionX % Panel.SIZE);
+    int top = (int) (this.positionY % Panel.SIZE);
     return new Point(left, top);
   }
 }

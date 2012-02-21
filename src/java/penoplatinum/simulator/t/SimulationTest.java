@@ -28,15 +28,15 @@ public class SimulationTest extends TestCase implements GoalDecider {
     return distances != null && distances.size() > 0;
   }
 
-  // we use a single-Tile Map
+  // we use a single-Panel Map
   private Map createMap() {
     return new Map(2)
-          .add(new Tile()
+          .add(new Panel()
             .withWall(Baring.N)
             .withWall(Baring.W)
             .withWall(Baring.NONE)
             .withWall(Baring.S))
-          .add(new Tile()
+          .add(new Panel()
             .withWall(Baring.N)
             .withWall(Baring.NONE)
             .withWall(Baring.E)

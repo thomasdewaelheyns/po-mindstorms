@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.Scanner;
 import penoplatinum.simulator.Map;
 import penoplatinum.simulator.Map3D;
-import penoplatinum.simulator.Tile;
-import penoplatinum.simulator.Tiles;
+import penoplatinum.simulator.Panel;
+import penoplatinum.simulator.Panels;
 
 /**
  * 
  * @author: Team Platinum
  */
 public class MapFactory {
-  HashMap<String, Tile> tiles = new HashMap<String, Tile>();
+  HashMap<String, Panel> tiles = new HashMap<String, Panel>();
 
   public MapFactory() {
     addTiles();
@@ -27,9 +27,9 @@ public class MapFactory {
     for(int i = 0; i <length; i++){
       for(int j = 0; j <width; j++){
         String str = sc.next();
-        Tile next = tiles.get(str);
+        Panel next = tiles.get(str);
         if(next == null){
-          next = Tiles.NONE;
+          next = Panels.NONE;
         }
         map.add(next);
       }
@@ -38,30 +38,30 @@ public class MapFactory {
   }
 
   private void addTiles() {
-    tiles.put("None.N", Tiles.NONE);
-    tiles.put("None.E", Tiles.NONE);
-    tiles.put("None.S", Tiles.NONE);
-    tiles.put("None.W", Tiles.NONE);
+    tiles.put("None.N", Panels.NONE);
+    tiles.put("None.E", Panels.NONE);
+    tiles.put("None.S", Panels.NONE);
+    tiles.put("None.W", Panels.NONE);
     
-    tiles.put("RCorner.N", Tiles.S_E);
-    tiles.put("RCorner.E", Tiles.W_S);
-    tiles.put("RCorner.S", Tiles.N_W);
-    tiles.put("RCorner.W", Tiles.E_N);
+    tiles.put("RCorner.N", Panels.S_E);
+    tiles.put("RCorner.E", Panels.W_S);
+    tiles.put("RCorner.S", Panels.N_W);
+    tiles.put("RCorner.W", Panels.E_N);
     
-    tiles.put("LCorner.N", Tiles.S_W);
-    tiles.put("LCorner.E", Tiles.W_N);
-    tiles.put("LCorner.S", Tiles.N_E);
-    tiles.put("LCorner.W", Tiles.E_S);
+    tiles.put("LCorner.N", Panels.S_W);
+    tiles.put("LCorner.E", Panels.W_N);
+    tiles.put("LCorner.S", Panels.N_E);
+    tiles.put("LCorner.W", Panels.E_S);
     
-    tiles.put("Straight.N", Tiles.S_N);
-    tiles.put("Straight.E", Tiles.W_E);
-    tiles.put("Straight.S", Tiles.N_S);
-    tiles.put("Straight.W", Tiles.E_W);
+    tiles.put("Straight.N", Panels.S_N);
+    tiles.put("Straight.E", Panels.W_E);
+    tiles.put("Straight.S", Panels.N_S);
+    tiles.put("Straight.W", Panels.E_W);
     
-    tiles.put("End.N", Tiles.N);
-    tiles.put("End.E", Tiles.E);
-    tiles.put("End.S", Tiles.S);
-    tiles.put("End.W", Tiles.W);
+    tiles.put("End.N", Panels.N);
+    tiles.put("End.E", Panels.E);
+    tiles.put("End.S", Panels.S);
+    tiles.put("End.W", Panels.W);
    
   }
   

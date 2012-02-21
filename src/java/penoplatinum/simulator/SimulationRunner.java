@@ -55,19 +55,19 @@ public class SimulationRunner {
     if (0 == 1)
       return michielMap();
     Map map = new Map(4)
-      .add(Tiles.S_E) .add(Tiles.W_E) .add(Tiles.W_E) .add(Tiles.W_S)
-      .add(Tiles.E_N) .add(Tiles.E_W) .add(Tiles.S_W) .add(Tiles.N_S)
-      .add(Tiles.S_E) .add(Tiles.W_E) .add(Tiles.W_N) .add(Tiles.N_S)
-      .add(Tiles.E_N) .add(Tiles.E_W) .add(Tiles.E_W) .add(Tiles.N_W);
+      .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_E) .add(Panels.W_S)
+      .add(Panels.E_N) .add(Panels.E_W) .add(Panels.S_W) .add(Panels.N_S)
+      .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_N) .add(Panels.N_S)
+      .add(Panels.E_N) .add(Panels.E_W) .add(Panels.E_W) .add(Panels.N_W);
     return map;
   }
   
   private Map michielMap(){
     Map map = new Map(4)
-      .add(Tiles.S_E) .add(Tiles.W_E) .add(Tiles.W_E.withoutBarcodeLocation()) .add(Tiles.W_S)
-      .add(Tiles.E_N.withoutBarcodeLocation()) .add(Tiles.E_W) .add(Tiles.S_W) .add(Tiles.N_S.withoutBarcodeLocation())
-      .add(Tiles.S_E.withoutLine(Baring.N).withoutLine(Baring.W)) .add(Tiles.W_E) .add(Tiles.W_N.setNarrowingOrientation(Baring.W)) .add(Tiles.N_S)
-      .add(Tiles.E_N) .add(Tiles.E_W) .add(Tiles.E_W) .add(Tiles.N_W);
+      .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_E.withoutBarcodeLocation()) .add(Panels.W_S)
+      .add(Panels.E_N.withoutBarcodeLocation()) .add(Panels.E_W) .add(Panels.S_W) .add(Panels.N_S.withoutBarcodeLocation())
+      .add(Panels.S_E.withoutLine(Baring.N).withoutLine(Baring.W)) .add(Panels.W_E) .add(Panels.W_N.setNarrowingOrientation(Baring.W)) .add(Panels.N_S)
+      .add(Panels.E_N) .add(Panels.E_W) .add(Panels.E_W) .add(Panels.N_W);
     return map;
   }
   

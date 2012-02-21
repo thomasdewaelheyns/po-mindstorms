@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Map
  * 
- * Class representing a Map of Tiles that represents the world of our robot.
+ * Class representing a Map of Panels that represents the world of our robot.
  *
  *  @author: Team Platinum
  */
@@ -15,13 +15,13 @@ public class Map3D extends Map {
   private int width;  //X
   private int length; //Y
   private int height; //Z
-  private List<Tile> tiles;
+  private List<Panel> tiles;
 
   public Map3D(int length, int width) {
     super();
     this.length = length;
     this.width = width;
-    this.tiles = new ArrayList<Tile>();
+    this.tiles = new ArrayList<Panel>();
   }
 
   public int getWidth() {
@@ -44,16 +44,16 @@ public class Map3D extends Map {
    * are applied to retrieve them later. this method is used to add a stream
    * of tiles (e.g. reading them from a file).
    */
-  public Map3D add(Tile tile) {
+  public Map3D add(Panel tile) {
     this.tiles.add(tile);
     return this;
   }
 
   // adds a tile at a given position. left,top 1-based
-  public Map3D put(Tile tile, int left, int top) {
+  public Map3D put(Panel tile, int left, int top) {
     return put(tile, left-1, top-1, 0);
   }
-  public Map3D put(Tile tile, int x, int y, int z) {
+  public Map3D put(Panel tile, int x, int y, int z) {
     int pos = getPosition(x, y, z);
     this.tiles.set(pos, tile);
     return this;
@@ -72,15 +72,15 @@ public class Map3D extends Map {
   /**
    * returns a tile at position left, top. first row/column are 1 (one)
    */
-  public Tile get(int left, int top){
+  public Panel get(int left, int top){
     return get(left-1, top-1, 0);
   }
-  public Tile get(int x, int y, int z) {
+  public Panel get(int x, int y, int z) {
     if(getPosition(x, y, z)<0){
-      return Tiles.NONE;
+      return Panels.NONE;
     }
     if(getPosition(x, y, z)>=tiles.size()){
-      return Tiles.NONE;
+      return Panels.NONE;
     }
     return this.tiles.get(getPosition(x, y, z));
   }

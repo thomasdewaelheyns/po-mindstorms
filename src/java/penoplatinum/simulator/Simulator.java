@@ -87,22 +87,24 @@ public class Simulator {
     Tile tile;
     Point hit;
     do {
-      hit = Tile.findHitPoint(x, y, angle, Tile.SIZE);
+      
+      tile = this.map.get(left, top);
+      
+      hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
 
       // distance from the starting point to the hit-point on this tile
-      dist += Tile.getDistance(x, y, hit);
+      dist += TileGeometry.getDistance(x, y, hit);
 
       // if we don't have a wall on this tile at this baring, move to the next
       // at the same baring, starting at the hit point on the tile
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
-      tile = this.map.get(left, top);
-      baring = Tile.getHitWall(hit, Tile.SIZE);
+      baring = TileGeometry.getHitWall(hit, tile.getSize());
 
       left = left + Baring.moveLeft(baring);
       top = top + Baring.moveTop(baring);
-      x = hit.x == 0 ? Tile.SIZE : (hit.x == Tile.SIZE ? 0 : hit.x);
-      y = hit.y == 0 ? Tile.SIZE : (hit.y == Tile.SIZE ? 0 : hit.y);
+      x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
+      y = hit.y == 0 ? tile.getSize() : (hit.y == tile.getSize() ? 0 : hit.y);
     } while (!tile.hasWall(baring));
 
     return (int) Math.round(dist);
@@ -162,8 +164,8 @@ public class Simulator {
   }
 
   boolean hasTile(double positionX, double positionY) {
-    int x = (int) positionX / Tile.SIZE + 1;
-    int y = (int) positionY / Tile.SIZE + 1;
+    int x = (int) positionX / this.getTileSize()+ 1;
+    int y = (int) positionY / this.getTileSize() + 1;
     return map.exists(x, y);
   }
 
@@ -172,13 +174,13 @@ public class Simulator {
     double positionY = entity.getPosY();
     double LENGTH_ROBOT = entity.LENGTH_ROBOT;
     
-    double posXOnTile = positionX % Tile.SIZE;
-    int tileX = (int) positionX / Tile.SIZE + 1;
-    int tileY = (int) positionY / Tile.SIZE + 1;
+    double posXOnTile = positionX % this.getTileSize();
+    int tileX = (int) positionX / this.getTileSize() + 1;
+    int tileY = (int) positionY / this.getTileSize() + 1;
     return (this.map.get(tileX, tileY).hasWall(Baring.W)
             && dx < 0 && (posXOnTile + dx < LENGTH_ROBOT))
             || (this.map.get(tileX, tileY).hasWall(Baring.E)
-            && dx > 0 && (posXOnTile + dx > Tile.SIZE - LENGTH_ROBOT));
+            && dx > 0 && (posXOnTile + dx > this.getTileSize() - LENGTH_ROBOT));
   }
 
   boolean goesThroughWallY(SimulatedEntity entity, double dy) {
@@ -186,17 +188,21 @@ public class Simulator {
     double positionY = entity.getPosY();
     double LENGTH_ROBOT = entity.LENGTH_ROBOT;
     
-    double posYOnTile = positionY % Tile.SIZE;
-    int tileX = (int) positionX / Tile.SIZE + 1;
-    int tileY = (int) positionY / Tile.SIZE + 1;
+    double posYOnTile = positionY % this.getTileSize();
+    int tileX = (int) positionX / this.getTileSize()+ 1;
+    int tileY = (int) positionY / this.getTileSize() + 1;
 
     return (this.map.get(tileX, tileY).hasWall(Baring.N)
             && dy > 0 && (posYOnTile - dy < LENGTH_ROBOT))
             || (this.map.get(tileX, tileY).hasWall(Baring.S)
-            && dy < 0 && (posYOnTile - dy > Tile.SIZE - LENGTH_ROBOT));
+            && dy < 0 && (posYOnTile - dy > this.getTileSize() - LENGTH_ROBOT));
   }
 
   public SimulatedEntity getPacMan() {
     return pacmanEntity;
+  }
+  
+  private int getTileSize(){
+    return map.getFirst().getSize();
   }
 }

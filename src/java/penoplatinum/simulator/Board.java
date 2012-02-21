@@ -22,11 +22,11 @@ public class Board extends JPanel {
 
   public static final int SCALE = 2;
   // sizes in pixel format
-  public static final int LINE_OFFSET = (Tile.LINE_OFFSET * Board.SCALE);
-  public static final int TILE_SIZE = Tile.SIZE * Board.SCALE;
-  public static final int LINE_OFFSET2 = (Tile.LINE_OFFSET * Board.SCALE) + 2;
-  public static final int LINE_WIDTH = Tile.LINE_WIDTH * Board.SCALE;
-  public static final int BARCODE_LINE_WIDTH = Tile.BARCODE_LINE_WIDTH * Board.SCALE;
+  public static final int LINE_OFFSET = (Panel.LINE_OFFSET * Board.SCALE);
+  public static final int TILE_SIZE = Panel.SIZE * Board.SCALE;
+  public static final int LINE_OFFSET2 = (Panel.LINE_OFFSET * Board.SCALE) + 2;
+  public static final int LINE_WIDTH = Panel.LINE_WIDTH * Board.SCALE;
+  public static final int BARCODE_LINE_WIDTH = Panel.BARCODE_LINE_WIDTH * Board.SCALE;
   // colors on the board
   public static final Color BLACK = new Color(100, 100, 100);
   public static final Color WHITE = new Color(200, 200, 200);
@@ -138,7 +138,7 @@ public class Board extends JPanel {
    * @param left
    * @param top 
    */
-  private void renderLinesCross(Graphics2D g2d, Tile tile, int left, int top) {
+  private void renderLinesCross(Graphics2D g2d, Panel tile, int left, int top) {
     left--;
     top--;
     Rectangle horizontal = new Rectangle(left * TILE_SIZE + TILE_SIZE / 2 - LINE_WIDTH / 2,
@@ -153,7 +153,7 @@ public class Board extends JPanel {
     
   }
 
-  private void renderLines(Graphics2D g2d, Tile tile, int left, int top) {
+  private void renderLines(Graphics2D g2d, Panel tile, int left, int top) {
     this.renderLine(g2d, tile, left, top, Baring.N);
     this.renderLine(g2d, tile, left, top, Baring.E);
     this.renderLine(g2d, tile, left, top, Baring.S);
@@ -166,9 +166,9 @@ public class Board extends JPanel {
   }
 
   // TODO: further refactor this code, the switch is still ugly as hell ;-)
-  private void renderLine(Graphics2D g2d, Tile tile, int left, int top, int line) {
+  private void renderLine(Graphics2D g2d, Panel tile, int left, int top, int line) {
     if (tile.hasLine(line)) {
-      g2d.setColor(tile.hasLine(line, Tile.WHITE) ? this.WHITE : this.BLACK);
+      g2d.setColor(tile.hasLine(line, Panel.WHITE) ? this.WHITE : this.BLACK);
       int length = TILE_SIZE, offset = 0;
       if (tile.hasLine(Baring.getLeftNeighbour(line)) || tile.hasLine(Baring.getRightNeighbour(line))) {
         length -= LINE_OFFSET;
@@ -211,9 +211,9 @@ public class Board extends JPanel {
     }
   }
 
-  private void renderCorner(Graphics2D g2d, Tile tile, int left, int top, int corner) {
+  private void renderCorner(Graphics2D g2d, Panel tile, int left, int top, int corner) {
     if (tile.hasCorner(corner)) {
-      g2d.setColor(tile.hasCorner(corner, Tile.WHITE)
+      g2d.setColor(tile.hasCorner(corner, Panel.WHITE)
               ? this.WHITE : this.BLACK);
       int offsetLeftH = 0, offsetTopH = 0,
               offsetLeftV = 0, offsetTopV = 0;
@@ -253,10 +253,10 @@ public class Board extends JPanel {
     }
   }
 
-  private void renderBarcode(Graphics2D g2d, Tile tile, int left, int top) {
+  private void renderBarcode(Graphics2D g2d, Panel tile, int left, int top) {
     // every bar of the barcode has a 2cm width = 4px
     for (int line = 0; line < 7; line++) {
-      g2d.setColor(tile.getBarcodeLine(line) == Tile.BLACK ? this.BLACK : this.WHITE);
+      g2d.setColor(tile.getBarcodeLine(line) == Panel.BLACK ? this.BLACK : this.WHITE);
 
       switch (tile.getBarcodeLocation()) {
         case Baring.N:
@@ -287,11 +287,11 @@ public class Board extends JPanel {
     }
   }
 
-  private void renderNarrowing(Graphics2D g2d, Tile tile, int left, int top) {
+  private void renderNarrowing(Graphics2D g2d, Panel tile, int left, int top) {
     // TODO
   }
 
-  private void renderWalls(Graphics2D g2d, Tile tile, int left, int top) {
+  private void renderWalls(Graphics2D g2d, Panel tile, int left, int top) {
     // walls are 2cm width = 4px
     g2d.setColor(Board.DARK_BROWN);
     if (tile.hasWall(Baring.N)) {
