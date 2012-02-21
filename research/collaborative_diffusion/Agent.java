@@ -1,6 +1,7 @@
 public interface Agent {
   public boolean isTarget();
   public boolean isHunter();
+  public String getName();
   public int getValue();
   public int getLeft();
   public int getTop();

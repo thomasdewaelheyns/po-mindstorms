@@ -1,4 +1,4 @@
-- create abstract base-class for agents
+- implement DFS
 - apply CD to discovery
 - improve code (consistency, remove Generics, performance, memory usage,...)
 - add random maze generation

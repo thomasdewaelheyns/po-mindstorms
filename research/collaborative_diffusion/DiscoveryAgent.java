@@ -79,6 +79,8 @@ public class DiscoveryAgent implements Agent {
     }
     return this;
   }
+  
+  public String getName() { return "discoverer"; }
 
   // not really applicable
   public boolean isTarget()      { return false; }

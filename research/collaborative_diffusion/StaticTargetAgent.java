@@ -19,6 +19,10 @@ public class StaticTargetAgent implements Agent {
   public void setMaze(Maze maze) { 
     // we're not using any maze info
   }
+  
+  public String getName() {
+    return "pacman";
+  }
 
   public int getLeft() {
     return this.left;
