@@ -16,8 +16,12 @@ import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
 import penoplatinum.simulator.view.SimulationView;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import penoplatinum.agent.MQ;
 
 public class Simulator {
   // the Simulator can run until different goals are reached
@@ -143,15 +147,32 @@ public class Simulator {
    */
   public Simulator run() {
     this.view.showMap(this.map);
-    /*for(RobotEntity s:robotEntities){
-      s.robotAgent.run();
-    }*/
+    try {
+      /*for(RobotEntity s:robotEntities){
+        s.robotAgent.run();
+      }*/
+       MQ mq = new MQ() {
+         protected void handleIncomingMessage(String sender, String message) {
+           // handling the incoming messages ...
+           System.out.println( "[" + sender + "] " + message );
+         }
+      }
+      .setMyName("Simulatorrrr")
+      .connectToMQServer("localhost")
+      .follow("ghost-channel");
+    } catch (IOException ex) {
+      Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (InterruptedException ex) {
+      Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    
+    
     while (true) {
       this.step();
       if(false){
         break;
       }
-//      Utils.Sleep(3);
+      //Utils.Sleep(3);
     }
     this.view.log("");
     return this;

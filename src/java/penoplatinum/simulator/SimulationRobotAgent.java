@@ -65,7 +65,7 @@ public class SimulationRobotAgent implements RobotAgent {
       Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
     }
     
-    this.simulator.receive(msg); //TODO: unused
+    //this.simulator.receive(msg); //TODO: unused
   }
 
   // this method is not part of the RobotAgent interface, but is used by

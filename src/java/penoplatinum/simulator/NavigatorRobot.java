@@ -25,9 +25,13 @@ public class NavigatorRobot implements Robot {
   private RobotAgent agent;
   private Navigator navigator;
   private Model model;
+  
+  private ReferencePosition stepReference = new ReferencePosition();
 
   public NavigatorRobot() {
     this.setupModel();
+    
+    
   }
 
   public NavigatorRobot(Navigator navigator) {
@@ -76,6 +80,7 @@ public class NavigatorRobot implements Robot {
     this.api.setSpeed(Model.M3, 500); // set sonar speed to double of default
     this.api.setSpeed(Model.M2, 250); // set sonar speed to double of default
     this.api.setSpeed(Model.M1, 250); // set sonar speed to double of default
+    api.setReferencePoint(stepReference);
   }
 
   public void processCommand(String cmd) {
@@ -104,6 +109,14 @@ public class NavigatorRobot implements Robot {
     }
     // get sensor data and update the model (motors are sensors too)
     this.model.updateSensorValues(this.api.getSensorValues());
+    
+    
+    // Update the robot's estimated position in the model
+    ExtendedVector delta =  api.getRelativePosition(stepReference);
+    api.setReferencePoint(stepReference);
+    model.setPositionX(model.getPositionX() + delta.getX());
+    model.setPositionY(model.getPositionY() + delta.getY());
+    
 
     // ask the navigator what to do next
     switch (this.navigator.nextAction()) {

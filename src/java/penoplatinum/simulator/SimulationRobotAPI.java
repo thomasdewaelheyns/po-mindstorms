@@ -14,8 +14,9 @@ public class SimulationRobotAPI implements RobotAPI {
   private int sonarAngle = 90;   // the sonar moves from - to + this angle
   private int prevSonarTacho = 0;
 
-  public void setSimulatedEntity(SimulatedEntity simulator) {
+  public SimulationRobotAPI setSimulatedEntity(SimulatedEntity simulator) {
     this.simulatedEntity = simulator;
+    return this;
   }
 
   public void move(double distance) {
@@ -69,5 +70,30 @@ public class SimulationRobotAPI implements RobotAPI {
   @Override
   public void beep() {
     System.out.println("BEEP");
+  }
+  private ExtendedVector currentPosition = new ExtendedVector();
+  private ExtendedVector outVector = new ExtendedVector();
+
+  @Override
+  public void setReferencePoint(ReferencePosition reference) {
+    updateCurrentPosition();
+    reference.internalValue.set(currentPosition);
+  }
+
+  @Override
+  public ExtendedVector getRelativePosition(ReferencePosition reference) {
+    if (reference.internalValue == null)
+      throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
+    updateCurrentPosition();
+    outVector.set(reference.internalValue);
+    outVector.negate();
+    outVector.add(currentPosition);
+    return outVector;
+  }
+
+  private void updateCurrentPosition() {
+    currentPosition.setX((float)simulatedEntity.getPosX());
+    currentPosition.setY((float)simulatedEntity.getPosY());
+    currentPosition.setAngle(simulatedEntity.getAngle());
   }
 }
