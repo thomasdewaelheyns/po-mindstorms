@@ -38,7 +38,7 @@ public class RemoteEntity implements RobotEntity{
           }
         }
         
-      }.setMyName(entityName).connectToMQServer("localhost").follow("ghost-protocol");
+      }.setMyName(entityName).connectToMQServer().follow("ghost-protocol");
     } catch (IOException ex) {
       Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
     } catch (InterruptedException ex) {

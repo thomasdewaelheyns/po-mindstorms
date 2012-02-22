@@ -26,6 +26,8 @@ import com.rabbitmq.client.AMQP;
 
  public abstract class MQ {
 
+   public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
+   
   // configurable properties
   private String  server      = "127.0.0.1";
   private String  me          = "default";
@@ -40,6 +42,11 @@ import com.rabbitmq.client.AMQP;
     return this;
   }
 
+  // connects to a server, setting up the technical communication channel
+  public MQ connectToMQServer() throws java.io.IOException {
+    return connectToMQServer(DefaultServer);
+  }
+  
   // connects to a server, setting up the technical communication channel
   public MQ connectToMQServer(String name) throws java.io.IOException {
     ConnectionFactory factory = new ConnectionFactory();

@@ -34,7 +34,7 @@ public class SimulationRobotAgent implements RobotAgent {
       }
     };
     try {
-      mq.setMyName(robotName).connectToMQServer("localhost").follow("ghost-protocol");
+      mq.setMyName(robotName).connectToMQServer().follow("ghost-protocol");
       // TODO: remove hard coded data
     } catch (IOException ex) {
       Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);

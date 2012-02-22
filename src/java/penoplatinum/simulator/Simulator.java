@@ -160,7 +160,7 @@ public class Simulator {
           messageQueue.add(sender);
 
         }
-      }.setMyName("Simulatorrrr").connectToMQServer("localhost").follow("ghost-protocol");
+      }.setMyName("Simulatorrrr").connectToMQServer().follow("ghost-protocol");
     } catch (IOException ex) {
       Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
     } catch (InterruptedException ex) {
