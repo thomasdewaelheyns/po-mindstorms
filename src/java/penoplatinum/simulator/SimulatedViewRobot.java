@@ -7,6 +7,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.ImageObserver;
 import java.util.List;
+import penoplatinum.simulator.view.Board;
+import penoplatinum.simulator.view.ViewRobot;
 
 public class SimulatedViewRobot implements ViewRobot{
   // cached images
@@ -19,11 +21,13 @@ public class SimulatedViewRobot implements ViewRobot{
   }
   
 
+  @Override
   public void trackMovement(Graphics2D g2d) {
     g2d.setColor(Color.yellow);
     g2d.drawLine( this.getX(), this.getY(), this.getX(), this.getY());
   }
   
+  @Override
   public void renderRobot(Graphics2D g2d, ImageObserver board) { 
     // render robot
     AffineTransform affineTransform = new AffineTransform(); 
@@ -33,6 +37,7 @@ public class SimulatedViewRobot implements ViewRobot{
     
   }
   
+  @Override
   public void renderSonar(Graphics2D g2d) {
     if( this.getDistances() == null ) { return; }
     for( int i=0; i<this.getDistances().size()-1; i++ ) {
@@ -43,12 +48,15 @@ public class SimulatedViewRobot implements ViewRobot{
       g2d.draw(new Line2D.Float(this.getX(), this.getY(), this.getX() + dx, this.getY() - dy));
     }
   }
+  @Override
   public int getX() {
     return ((int) original.getPosX())*Board.SCALE;
   }
+  @Override
   public int getY() {
     return ((int) original.getPosY())*Board.SCALE;
   }
+  @Override
   public int getDirection() {
     return (int) original.getDir();
   }

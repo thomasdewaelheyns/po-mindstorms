@@ -2,7 +2,6 @@ package penoplatinum.simulator.view;
 
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
-import penoplatinum.simulator.SimulatedEntity;
 
 /**
  *
@@ -10,7 +9,7 @@ import penoplatinum.simulator.SimulatedEntity;
  */
 public interface ViewRobot {
 
-  void trackMovement(Graphics2D g2d);
+  public void trackMovement(Graphics2D g2d);
 
   void renderRobot(Graphics2D g2d, ImageObserver board);
 

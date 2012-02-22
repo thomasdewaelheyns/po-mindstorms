@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 import java.awt.image.ImageObserver;
-import java.util.List;
+import penoplatinum.simulator.view.Board;
+import penoplatinum.simulator.view.ViewRobot;
 
 public class RemoteViewRobot implements ViewRobot{
   // cached images
-  static Image robot;
+  public static Image robot;
   
   private RemoteEntity original;
 
@@ -19,11 +19,13 @@ public class RemoteViewRobot implements ViewRobot{
   }
   
 
+  @Override
   public void trackMovement(Graphics2D g2d) {
     g2d.setColor(Color.yellow);
     g2d.drawLine( this.getX(), this.getY(), this.getX(), this.getY());
   }
   
+  @Override
   public void renderRobot(Graphics2D g2d, ImageObserver board) { 
     // render robot
     AffineTransform affineTransform = new AffineTransform(); 
@@ -33,6 +35,7 @@ public class RemoteViewRobot implements ViewRobot{
     
   }
   
+  @Override
   public void renderSonar(Graphics2D g2d) {
 //    
 //    if( this.getDistances() == null ) { return; }

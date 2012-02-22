@@ -122,7 +122,7 @@ public class NavigatorRobot implements Robot {
     }
 
 
-    agent.send("p" + (int)model.getPositionX() + "," + (int)model.getPositionY());
+    //agent.send("p" + (int)model.getPositionX() + "," + (int)model.getPositionY());
     
     //agent.send(getStatusMessage());
 

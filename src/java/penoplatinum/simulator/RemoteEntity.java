@@ -1,9 +1,10 @@
 package penoplatinum.simulator;
 
 import java.awt.Point;
-import java.util.Queue;
 import penoplatinum.agent.MQ;
 import penoplatinum.bluetooth.CircularQueue;
+import penoplatinum.simulator.tiles.Tile;
+import penoplatinum.simulator.view.ViewRobot;
 
 public class RemoteEntity implements RobotEntity{
 
@@ -114,15 +115,15 @@ public class RemoteEntity implements RobotEntity{
 
   public Point getCurrentTileCoordinates() {
     // determine tile coordinates we're on
-    int left = (int) (this.positionX / Tile.SIZE)+ 1;
-    int top = (int) (this.positionY / Tile.SIZE) + 1;
+    int left = (int) (this.positionX / simulator.getTileSize())+ 1;
+    int top = (int) (this.positionY / simulator.getTileSize()) + 1;
     return new Point(left, top);
   }
 
   public Point getCurrentOnTileCoordinates() {
     // determine tile coordinates on the tile we're on
-    int left = (int) (this.positionX % Tile.SIZE);
-    int top = (int) (this.positionY % Tile.SIZE);
+    int left = (int) (this.positionX % simulator.getTileSize());
+    int top = (int) (this.positionY % simulator.getTileSize());
     return new Point(left, top);
   }
 }

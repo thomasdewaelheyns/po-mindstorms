@@ -17,7 +17,7 @@ import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import penoplatinum.simulator.Map;
-import penoplatinum.simulator.tiles.Tile;
+import penoplatinum.simulator.RemoteViewRobot;
 
 public class Board extends JPanel {
   // Tiles are defined in logical dimensions, comparable to cm in reality
@@ -47,7 +47,7 @@ public class Board extends JPanel {
   private void setupImages() {
     URL resource = this.getClass().getResource("../images/robot40.png");
     ImageIcon ii = new ImageIcon(resource);
-    ViewRobot.robot = ii.getImage();
+    RemoteViewRobot.robot = ii.getImage();
   }
 
   public void showMap(Map map) {
