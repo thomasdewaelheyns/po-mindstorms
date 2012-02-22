@@ -18,29 +18,32 @@ import penoplatinum.simulator.view.SimulationView;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import penoplatinum.Utils;
 import penoplatinum.agent.MQ;
 
 public class Simulator {
   // the Simulator can run until different goals are reached
-  
-  public static final double TIME_SLICE = 0.008;
 
+  public static final double TIME_SLICE = 0.008;
   // a view to display the simulation, by default it does nothing
   SimulationView view = new SilentSimulationView();
   private Map map;                // the map that the robot will run on
-  
   private List<RobotEntity> robotEntities = new ArrayList<RobotEntity>();
+  private HashMap<String, RemoteEntity> remoteEntities = new HashMap<String, RemoteEntity>();
   private SimulatedEntity pacmanEntity;
-  
-  
+  private ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<String>();
+
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
   }
-  
-  public void addSimulatedEntity(SimulatedEntity r){
+
+  public void addSimulatedEntity(SimulatedEntity r) {
     robotEntities.add(r);
     view.addRobot(r.getViewRobot());
     r.useSimulator(this);
@@ -52,7 +55,7 @@ public class Simulator {
    */
   public Simulator displayOn(SimulationView view) {
     this.view = view;
-    for(RobotEntity s:robotEntities){
+    for (RobotEntity s : robotEntities) {
       view.addRobot(s.getViewRobot());
     }
     return this;
@@ -96,7 +99,7 @@ public class Simulator {
     Point hit;
     do {
       tile = this.map.get(left, top);
-      
+
       hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
 
       // distance from the starting point to the hit-point on this tile
@@ -106,12 +109,12 @@ public class Simulator {
       // at the same baring, starting at the hit point on the tile
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
-      baring = TileGeometry.getHitWall(hit, tile.getSize());      
+      baring = TileGeometry.getHitWall(hit, tile.getSize());
       left = left + Baring.moveLeft(baring);
       top = top + Baring.moveTop(baring);
       x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
       y = hit.y == 0 ? tile.getSize() : (hit.y == tile.getSize() ? 0 : hit.y);
-      
+
     } while (!tile.hasWall(baring));
     return (int) Math.round(dist);
   }
@@ -149,27 +152,26 @@ public class Simulator {
     this.view.showMap(this.map);
     try {
       /*for(RobotEntity s:robotEntities){
-        s.robotAgent.run();
+      s.robotAgent.run();
       }*/
-       MQ mq = new MQ() {
-         protected void handleIncomingMessage(String sender, String message) {
-           // handling the incoming messages ...
-           System.out.println( "[" + sender + "] " + message );
-         }
-      }
-      .setMyName("Simulatorrrr")
-      .connectToMQServer("localhost")
-      .follow("ghost-channel");
+      MQ mq = new MQ() {
+
+        protected void handleIncomingMessage(String sender, String message) {
+          messageQueue.add(sender);
+
+        }
+      }.setMyName("Simulatorrrr").connectToMQServer("localhost").follow("ghost-protocol");
     } catch (IOException ex) {
       Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
     } catch (InterruptedException ex) {
       Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
     }
-    
-    
+
+
+
     while (true) {
       this.step();
-      if(false){
+      if (false) {
         break;
       }
       //Utils.Sleep(3);
@@ -179,15 +181,37 @@ public class Simulator {
   }
 
   private void step() {
-    for(RobotEntity robotEntity : robotEntities){
+    processRemoteMessages();
+    for (RobotEntity robotEntity : robotEntities) {
       robotEntity.step();
     }
     refreshView();
     
+    Utils.Sleep(1);
+
+  }
+
+  private void processRemoteMessages() {
+    while (!messageQueue.isEmpty()) {
+      String name = messageQueue.poll();
+      if (remoteEntities.containsKey(name)) {
+        continue;
+      }
+
+
+      RemoteEntity ent = new RemoteEntity(name);
+      view.addRobot(ent.getViewRobot());
+      
+      ent.useSimulator(this);
+      
+      robotEntities.add(ent);
+      remoteEntities.put(name, ent);
+
+    }
   }
 
   boolean hasTile(double positionX, double positionY) {
-    int x = (int) positionX / this.getTileSize()+ 1;
+    int x = (int) positionX / this.getTileSize() + 1;
     int y = (int) positionY / this.getTileSize() + 1;
     return map.exists(x, y);
   }
@@ -196,7 +220,7 @@ public class Simulator {
     double positionX = entity.getPosX();
     double positionY = entity.getPosY();
     double LENGTH_ROBOT = entity.LENGTH_ROBOT;
-    
+
     double posXOnTile = positionX % this.getTileSize();
     int tileX = (int) positionX / this.getTileSize() + 1;
     int tileY = (int) positionY / this.getTileSize() + 1;
@@ -210,9 +234,9 @@ public class Simulator {
     double positionX = entity.getPosX();
     double positionY = entity.getPosY();
     double LENGTH_ROBOT = entity.LENGTH_ROBOT;
-    
+
     double posYOnTile = positionY % this.getTileSize();
-    int tileX = (int) positionX / this.getTileSize()+ 1;
+    int tileX = (int) positionX / this.getTileSize() + 1;
     int tileY = (int) positionY / this.getTileSize() + 1;
 
     return (this.map.get(tileX, tileY).hasWall(Baring.N)
@@ -224,8 +248,8 @@ public class Simulator {
   public SimulatedEntity getPacMan() {
     return pacmanEntity;
   }
-  
-  public int getTileSize(){
+
+  public int getTileSize() {
     return map.getFirst().getSize();
   }
 }

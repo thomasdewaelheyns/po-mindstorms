@@ -23,7 +23,7 @@ public class MQRunner {
     }
     .setMyName(argv[0])
     .connectToMQServer("localhost")
-    .follow("ghost-channel");
+    .follow("ghost-protocol");
 
     // be nice ...
     mq.sendMessage( "Hello everybody." );

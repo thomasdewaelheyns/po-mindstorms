@@ -1,9 +1,11 @@
 package penoplatinum.simulator;
 
 import java.awt.Point;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import penoplatinum.agent.MQ;
 import penoplatinum.bluetooth.CircularQueue;
-import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.ViewRobot;
 
 public class RemoteEntity implements RobotEntity{
@@ -20,23 +22,28 @@ public class RemoteEntity implements RobotEntity{
 
   private MQ mq;
   
-  private CircularQueue<String> messageQueue;
+  private CircularQueue<String> messageQueue = new CircularQueue<String>(1000); //TODO: warning this can crash
   
   
   public RemoteEntity(String entityName) {
     this.robotAgent = robotAgent;
-    
-    mq = new MQ(){
+    try {
+      mq = new MQ(){
 
-      @Override
-      protected void handleIncomingMessage(String sender, String message) {
-        synchronized(this)
-        {
-          messageQueue.insert(message);
+        @Override
+        protected void handleIncomingMessage(String sender, String message) {
+          synchronized(this)
+          {
+            messageQueue.insert(message);
+          }
         }
-      }
-      
-    };
+        
+      }.setMyName(entityName).connectToMQServer("localhost").follow("ghost-protocol");
+    } catch (IOException ex) {
+      Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (InterruptedException ex) {
+      Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
+    }
     
   }
   
@@ -106,7 +113,9 @@ public class RemoteEntity implements RobotEntity{
           String[] coords = msg.substring(1).split(",");
           positionX = Integer.parseInt(coords[0]);
           positionY = Integer.parseInt(coords[1]);
+          direction = Integer.parseInt(coords[2]);
         }
+        
         
         
       }

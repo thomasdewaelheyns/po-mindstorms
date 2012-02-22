@@ -35,6 +35,7 @@ public class Model {
   
   private float positionX;
   private float positionY;
+  private float direction;
   
   /**
    * the raw data of the sensors: three motors, sensors 1, 2, 3, 4 
@@ -348,4 +349,14 @@ public class Model {
   public void setPositionY(float positionY) {
     this.positionY = positionY;
   }
+
+  public float getDirection() {
+    return direction;
+  }
+
+  public void setDirection(float direction) {
+    this.direction = direction;
+  }
+  
+  
 }
