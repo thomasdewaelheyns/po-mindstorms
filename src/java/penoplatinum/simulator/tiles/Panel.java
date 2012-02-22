@@ -3,7 +3,7 @@ package penoplatinum.simulator.tiles;
 /**
  * Panel
  * 
- * Class representing a Panel. The internal data is stored as an integer, which
+ * Class representing a Panel. The internal this.data is stored as an integer, which
  * is treathed as a 32bit string, used to represent different information 
  * about the tile:
  * 
@@ -32,6 +32,7 @@ package penoplatinum.simulator.tiles;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import penoplatinum.BitwiseOperations;
 import penoplatinum.modelprocessor.BarcodeDataNav;
 import penoplatinum.simulator.Baring;
 import penoplatinum.simulator.view.Board;
@@ -82,12 +83,12 @@ public class Panel implements Tile {
   
   /* Walls */
   public Panel withWall(int location) { 
-    this.setBit(Panel.startWalls + location);
+    this.data = BitwiseOperations.setBit(this.data, Panel.startWalls + location);
     return this;
   }
   
   public Panel withoutWall(int location)  { 
-    this.unsetBit(Panel.startWalls + location);
+    this.data = BitwiseOperations.unsetBit(this.data, Panel.startWalls + location);
     return this;
   }
   
@@ -104,20 +105,20 @@ public class Panel implements Tile {
         return this.hasWall(Baring.N) || this.hasWall(Baring.W);
       default:
         // "simple" location, just check the bit
-        return this.hasBit(Panel.startWalls + location);
+        return BitwiseOperations.hasBit(this.data, Panel.startWalls + location);
     }
   }
   
 
   /* Lines */
   public Panel withLine(int location, int color) { 
-    this.setBit(Panel.startLines + location + color);
+    BitwiseOperations.setBit(this.data, Panel.startLines + location + color);
     return this;
   }
   
   public Panel withoutLine(int location)  { 
-    this.unsetBit(Panel.startLines + location + Panel.WHITE);
-    this.unsetBit(Panel.startLines + location + Panel.BLACK);
+    this.data = BitwiseOperations.unsetBit(this.data, Panel.startLines + location + Panel.WHITE);
+    this.data = BitwiseOperations.unsetBit(this.data, Panel.startLines + location + Panel.BLACK);
     return this;
   }
   
@@ -127,18 +128,18 @@ public class Panel implements Tile {
   }
 
   public Boolean hasLine(int location, int color) {
-    return this.hasBit(Panel.startLines + location + color);
+    return BitwiseOperations.hasBit(this.data, Panel.startLines + location + color);
   }
 
   /* Corners */
   public Panel withCorner(int location, int color) { 
-    this.setBit(Panel.startCorners + (location - 4) + color);
+    this.data = BitwiseOperations.setBit(this.data, Panel.startCorners + (location - 4) + color);
     return this;
   }
   
   public Panel withoutCorner(int location)  { 
-    this.unsetBit(Panel.startCorners + (location - 4) + Panel.WHITE);
-    this.unsetBit(Panel.startCorners + (location - 4) + Panel.BLACK);
+    this.data = BitwiseOperations.unsetBit(this.data, Panel.startCorners + (location - 4) + Panel.WHITE);
+    this.data = BitwiseOperations.unsetBit(this.data, Panel.startCorners + (location - 4) + Panel.BLACK);
     return this;
   }
   
@@ -148,23 +149,23 @@ public class Panel implements Tile {
   }
 
   public Boolean hasCorner(int location, int color) {
-    return this.hasBit(Panel.startCorners + (location - 4) + color);
+    return BitwiseOperations.hasBit(this.data, Panel.startCorners + (location - 4) + color);
   }
 
   /* Barcode */
   public Panel withBarcode( int code ) {
-    this.setBits(Panel.startBarcode, 4, code);
+    this.data = BitwiseOperations.setBits(this.data, Panel.startBarcode, 4, code);
     return this;
   }
 
   public Panel withoutBarcode() {
-    this.unsetBits(Panel.startBarcode, 4);
+    this.data = BitwiseOperations.unsetBits(this.data, Panel.startBarcode, 4);
     return this;
   }
 
   @Override
   public int getBarcode() {
-    return BarcodeDataNav.expand[this.getBits(Panel.startBarcode,4)];
+    return BarcodeDataNav.expand[BitwiseOperations.getBits(this.data, Panel.startBarcode,4)];
   }
   public int getBarcodeLine(int line){
       return (this.getBarcode() & (1<<(Panel.BARCODE_LINES-line-1)) ) == 0 ?
@@ -176,32 +177,32 @@ public class Panel implements Tile {
   }
   
   public Panel withBarcodeLocation( int location ) {
-    this.setBits(Panel.startBarcodeLocation, 3, location + 1);
+    this.data = BitwiseOperations.setBits(this.data, Panel.startBarcodeLocation, 3, location + 1);
     return this;
   }
 
   public Panel withoutBarcodeLocation() {
-    this.unsetBits(Panel.startBarcodeLocation, 3);
+    BitwiseOperations.unsetBits(this.data, Panel.startBarcodeLocation, 3);
     return this;
   }
 
   public int getBarcodeLocation() {
-    return this.getBits(Panel.startBarcodeLocation, 3) - 1;
+    return BitwiseOperations.getBits(this.data, Panel.startBarcodeLocation, 3) - 1;
   }
   
   /* Narrowing */
   public Panel setNarrowingOrientation( int orientation ) { 
-    this.setBits(Panel.startNarrowing, 3, orientation + 1 );
+    BitwiseOperations.setBits(this.data, Panel.startNarrowing, 3, orientation + 1 );
     return this;
   }
   
   public Panel unsetNarrowingOrientation()  { 
-    this.unsetBits(Panel.startNarrowing, 3);
+    BitwiseOperations.unsetBits(this.data, Panel.startNarrowing, 3);
     return this;
   }
   
   public int getNarrowingOrientation() {
-    return this.getBits(Panel.startNarrowing, 3) - 1;
+    return BitwiseOperations.getBits(this.data, Panel.startNarrowing, 3) - 1;
   }
 
   /* representations */
@@ -217,43 +218,7 @@ public class Panel implements Tile {
       bits += this.hasBit(i) ? "1" : "0";
     }
     return bits;/**/
-    return Integer.toBinaryString(data);
-  }
-
-  /* elementary bitwise operations */
-
-  // sets one bit at position to 1
-  private void setBit(int p) {
-    this.data |= (1<<p);
-  }
-
-  // sets one bit at position to 0
-  private void unsetBit(int p) {
-    this.data &= ~(1<<p);
-  }
-  
-  // checks if at position the bit is set to 1
-  private Boolean hasBit(int p) {
-    return ( this.data & (1<<p) ) != 0;
-  }
-
-  // sets a range of bits, represented by value
-  private void setBits(int start, int length, int value) {
-    this.unsetBits( start, length );
-    value <<= start;
-    this.data |= value;
-  }
-
-  // sets a range of bits to 0
-  private void unsetBits(int start, int length) {
-    int mask = ( ( 1 << length ) - 1 ) << start;
-    this.data &= ~(mask);
-  }
-
-  // returns a range of length bits starting at start
-  private int getBits(int start, int length) {
-    int mask = ( 1 << length ) - 1;
-    return ( ( this.data >> start ) & mask );
+    return Integer.toBinaryString(this.data);
   }
   
   // get the logical color at position x,y
@@ -282,7 +247,6 @@ public class Panel implements Tile {
     
     return false;
   }
-  
 
   // return the Color from the Barcode
   public int getBarcodeColor(int x, int y) {
@@ -397,6 +361,7 @@ public class Panel implements Tile {
                && y < offset+Panel.LINE_WIDTH;
   }
   
+  @Override
   public int getSize(){
     return this.SIZE;
   }

@@ -101,4 +101,8 @@ public class Panels {
           .withWall(Baring.N)
           .withWall(Baring.E)
           .withWall(Baring.S);
+  public static Panel E_S_W = new Panel()
+          .withWall(Baring.N);
+    public static Panel N_E_W = new Panel()
+          .withWall(Baring.S);
 }

@@ -1,16 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.simulator.tiles;
 
 import java.awt.Point;
 import penoplatinum.simulator.Baring;
 
-/**
- *
- * @author Thomas
- */
 public class TileGeometry {
   
   
@@ -18,7 +10,7 @@ public class TileGeometry {
    * calculates the point where given an angle and position, the  robot will 
    * "hit" a wall of this/a tile.
    */
-  public static Point findHitPoint( int X, int Y, double angle, int size ) {
+  public static Point findHitPoint( double X, double Y, double angle, int size ) {
     double x, y, dx, dy;
 
     if( angle <= 90 ) {
@@ -83,7 +75,7 @@ public class TileGeometry {
   
   
   // simple application of a^2 + b^2 = c^2
-  public static double getDistance( int x, int y, Point hit ) {
+  public static double getDistance( double x, double y, Point hit ) {
     return Math.sqrt( Math.pow(hit.x - x, 2 ) + Math.pow(hit.y - y, 2 ) );    
   }
   

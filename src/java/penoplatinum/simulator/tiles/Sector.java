@@ -2,6 +2,7 @@ package penoplatinum.simulator.tiles;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import penoplatinum.BitwiseOperations;
 import penoplatinum.modelprocessor.BarcodeDataNav;
 import penoplatinum.simulator.Baring;
 import penoplatinum.simulator.view.Board;
@@ -24,10 +25,8 @@ public class Sector implements Tile {
   public static int BARCODE_WIDTH      = BARCODE_LINES * BARCODE_LINE_WIDTH;
   
   public static final int DRAW_WALL_LINE_WIDTH = 2*Board.SCALE;
-  public static final int DRAW_LINE_START = (Panel.LINE_OFFSET * Board.SCALE);
-  public static final int DRAW_LINE_END = (Panel.LINE_OFFSET +LINE_WIDTH )* Board.SCALE;
-  public static final int DRAW_TILE_SIZE = Panel.SIZE * Board.SCALE;
-  public static final int DRAW_LINE_WIDTH = Panel.LINE_WIDTH * Board.SCALE;
+  public static final int DRAW_TILE_SIZE = Sector.SIZE * Board.SCALE;
+  public static final int DRAW_LINE_WIDTH = Sector.LINE_WIDTH * Board.SCALE;
   
   
   // Lines and corners are divided into two sets for white and black
@@ -41,8 +40,8 @@ public class Sector implements Tile {
 
   @Override
   public int getBarcode() {
-    if(this.hasBit(startIsItABarcode)){
-      return BarcodeDataNav.expand[this.getBits(Sector.startBarcode,4)];
+    if(BitwiseOperations.hasBit(data, startIsItABarcode)){
+      return BarcodeDataNav.expand[BitwiseOperations.getBits(data, Sector.startBarcode,4)];
     }
     return -1;
   }
@@ -58,8 +57,7 @@ public class Sector implements Tile {
     color = Sector.NO_COLOR;
     return color;
   }
-  
-  
+
     // return the Color from the Barcode
   public int getBarcodeColor(int x, int y) {
     if( ! this.robotIsOnBarcode(x,y) ) { return Sector.NO_COLOR; }
@@ -85,30 +83,30 @@ public class Sector implements Tile {
     line /= Sector.BARCODE_LINE_WIDTH;
     return getBarcodeLine(line);
   }
-  
+
     // check if the robot is on a barcode
   private boolean robotIsOnBarcode(int x, int y) {
     
-    if(this.hasBit(startIsItABarcode)){
+    if(BitwiseOperations.hasBit(data, startIsItABarcode)){
       int tempBarcodeSize = BARCODE_WIDTH/2;
       int tempSize = Sector.SIZE/2;
-      switch(this.getBits(startBarcodeDirection, 2)){
+      switch(BitwiseOperations.getBits(data, startBarcodeDirection, 2)){
         case 1: return (x > (tempSize-tempBarcodeSize)) && (x < (tempSize+tempBarcodeSize));
         case 2: return (y > (tempSize-tempBarcodeSize)) && (y < (tempSize+tempBarcodeSize));
       }
     }
     return false;
   }
-  
+
   public int getBarcodeLocation() {
-    return this.getBits(Sector.startBarcodeDirection, 2);
+    return BitwiseOperations.getBits(data, Sector.startBarcodeDirection, 2);
   }
-  
+
   public int getBarcodeLine(int line){
       return (this.getBarcode() & (1<<(Sector.BARCODE_LINES-line-1)) ) == 0 ?
                     Sector.BLACK : Sector.WHITE;
   }
-  
+
   private boolean IsOnLine(int x, int y){
     int start = Sector.SIZE - Sector.LINE_WIDTH;
     int end = Sector.SIZE;
@@ -129,15 +127,26 @@ public class Sector implements Tile {
 
   @Override
   public Boolean hasWall(int location) {
-    return this.hasBit(startWalls+location);
+    switch( location ) {
+      case Baring.NE:
+        return this.hasWall(Baring.N) || this.hasWall(Baring.E);
+      case Baring.SE:
+        return this.hasWall(Baring.S) || this.hasWall(Baring.E);
+      case Baring.SW:
+        return this.hasWall(Baring.S) || this.hasWall(Baring.W);
+      case Baring.NW:
+        return this.hasWall(Baring.N) || this.hasWall(Baring.W);
+      default:
+        // "simple" location, just check the bit
+        return BitwiseOperations.hasBit(data, Sector.startWalls + location);
+    }
   }
 
   @Override
   public int toInteger() {
     return this.data;
   }
-  
-  
+ 
   @Override
   public String toString() {
     /*String bits = "";
@@ -146,11 +155,8 @@ public class Sector implements Tile {
     }
     return bits;/**/
     return Integer.toBinaryString(data);
-  }
+  } 
 
-  
-  
-  
   /**
    * Adds a wall on the given position.
    * 0: north
@@ -160,10 +166,10 @@ public class Sector implements Tile {
    * @param pos a position between 0 and 4
    */
   public Sector addWall(int pos){
-    this.setBit(startWalls+pos);
+    data = BitwiseOperations.setBit(data, startWalls+pos);
     return this;
   }
-  
+
   /**
    * Adds a barcode to a sector
    * code: the barcode
@@ -175,131 +181,81 @@ public class Sector implements Tile {
    * @param direction 
    */
   public Sector addBarcode(int code, int direction){
-    this.setBit(startIsItABarcode);
-    this.setBits(startBarcode, 4, code);
-    this.setBits(startBarcodeDirection, 2, direction);
+    data = BitwiseOperations.setBit(data, startIsItABarcode);
+    data = BitwiseOperations.setBits(data, startBarcode, 4, code);
+    data = BitwiseOperations.setBits(data, startBarcodeDirection, 2, direction);
     return this;
   }
   
   public void removeWall(int pos){
-    this.unsetBit(pos);
+    data = BitwiseOperations.unsetBit(data, pos);
   }
   
   public void removeBarcode(){
-    this.unsetBit(startIsItABarcode);
-  }
-  
-  
-  
-  
-  
-  /* elementary bitwise operations */
-
-  // sets one bit at position to 1
-  private void setBit(int p) {
-    this.data |= (1<<p);
+    data = BitwiseOperations.unsetBit(data, startIsItABarcode);
   }
 
-  // sets one bit at position to 0
-  private void unsetBit(int p) {
-    this.data &= ~(1<<p);
-  }
-  
-  // checks if at position the bit is set to 1
-  private Boolean hasBit(int p) {
-    return ( this.data & (1<<p) ) != 0;
-  }
-
-  // sets a range of bits, represented by value
-  private void setBits(int start, int length, int value) {
-    this.unsetBits( start, length );
-    value <<= start;
-    this.data |= value;
-  }
-
-  // sets a range of bits to 0
-  private void unsetBits(int start, int length) {
-    int mask = ( ( 1 << length ) - 1 ) << start;
-    this.data &= ~(mask);
-  }
-
-  // returns a range of length bits starting at start
-  private int getBits(int start, int length) {
-    int mask = ( 1 << length ) - 1;
-    return ( ( this.data >> start ) & mask );
-  }
-  
-  
   public int getSize(){
     return this.SIZE;
   }
 
   @Override
   public void drawTile(Graphics2D g2d, int left, int top) {
-    renderLinesCross(g2d, left, top);
+    g2d.setColor(Board.BROWN);
+    g2d.fill(new Rectangle(DRAW_TILE_SIZE * (left - 1), DRAW_TILE_SIZE * (top - 1),
+            DRAW_TILE_SIZE, DRAW_TILE_SIZE));
+    //renderLinesCross(g2d, left, top);
     renderWalls(g2d, left, top);
   }
-  
-  
+
   @Override
   public int drawSize() {
     return Sector.SIZE*Board.SCALE;
   }
-
-  /**
-   * Teken de lijnen in het midden van het paneel
-   */
-  private void renderLinesCross(Graphics2D g2d, int left, int top) {
-    left--;
-    top--;
-    Rectangle horizontal = new Rectangle(
-            left * DRAW_TILE_SIZE + DRAW_TILE_SIZE / 2 - DRAW_LINE_WIDTH / 2,
-            top * DRAW_TILE_SIZE,
-            DRAW_LINE_WIDTH,
-            DRAW_TILE_SIZE);
-    Rectangle vertical = new Rectangle(
-            left * DRAW_TILE_SIZE,
-            top * DRAW_TILE_SIZE + DRAW_TILE_SIZE / 2 - DRAW_LINE_WIDTH / 2,
-            DRAW_TILE_SIZE,
-            DRAW_LINE_WIDTH);
-    g2d.setColor(Board.WHITE);
-
-
-    g2d.fill(horizontal);
-    g2d.fill(vertical);
-  }
-
+  
   private void renderWalls(Graphics2D g2d, int left, int top) {
     // walls are 2cm width = 4px
     g2d.setColor(Board.DARK_BROWN);
     if (hasWall(Baring.N)) {
-      g2d.fill(new Rectangle(
-              DRAW_TILE_SIZE * (left - 1),
-              DRAW_TILE_SIZE * (top - 1),
-              DRAW_TILE_SIZE,
-              DRAW_WALL_LINE_WIDTH));
+      g2d.setColor(Board.DARK_BROWN);
+    } else {
+      g2d.setColor(Board.WHITE);
     }
+    g2d.fill(new Rectangle(
+            DRAW_TILE_SIZE * (left - 1),
+            DRAW_TILE_SIZE * (top - 1),
+            DRAW_TILE_SIZE,
+            DRAW_WALL_LINE_WIDTH));
     if (hasWall(Baring.E)) {
-      g2d.fill(new Rectangle(
-              DRAW_TILE_SIZE * left - DRAW_WALL_LINE_WIDTH,
-              DRAW_TILE_SIZE * (top - 1),
-              4,
-              DRAW_TILE_SIZE));
+      g2d.setColor(Board.DARK_BROWN);
+    } else {
+      g2d.setColor(Board.WHITE);
     }
+    g2d.fill(new Rectangle(
+            DRAW_TILE_SIZE * left - DRAW_WALL_LINE_WIDTH,
+            DRAW_TILE_SIZE * (top - 1),
+            4,
+            DRAW_TILE_SIZE));
     if (hasWall(Baring.S)) {
-      g2d.fill(new Rectangle(
-              DRAW_TILE_SIZE * (left - 1),
-              DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
-              DRAW_TILE_SIZE,
-              4));
+      g2d.setColor(Board.DARK_BROWN);
+    } else {
+      g2d.setColor(Board.WHITE);
     }
+    g2d.fill(new Rectangle(
+            DRAW_TILE_SIZE * (left - 1),
+            DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
+            DRAW_TILE_SIZE,
+            4));
     if (hasWall(Baring.W)) {
-      g2d.fill(new Rectangle(
-              DRAW_TILE_SIZE * (left - 1),
-              DRAW_TILE_SIZE * (top - 1),
-              DRAW_WALL_LINE_WIDTH,
-              DRAW_TILE_SIZE));
+      g2d.setColor(Board.DARK_BROWN);
+    } else {
+      g2d.setColor(Board.WHITE);
     }
+    g2d.fill(new Rectangle(
+            DRAW_TILE_SIZE * (left - 1),
+            DRAW_TILE_SIZE * (top - 1),
+            DRAW_WALL_LINE_WIDTH,
+            DRAW_TILE_SIZE));
   }
 
 }

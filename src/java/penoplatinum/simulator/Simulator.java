@@ -83,7 +83,7 @@ public class Simulator {
    * if the hit is not on a wall on the current tile, we follow the baring
    * to the next tile and recursively try to find the hist-distance
    */
-  private int findHitDistance(int angle, int left, int top, int x, int y) {
+  private int findHitDistance(int angle, int left, int top, double x, double y) {
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this baring
     double dist = 0;
@@ -91,7 +91,6 @@ public class Simulator {
     Tile tile;
     Point hit;
     do {
-      
       tile = this.map.get(left, top);
       
       hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
@@ -103,14 +102,13 @@ public class Simulator {
       // at the same baring, starting at the hit point on the tile
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
-      baring = TileGeometry.getHitWall(hit, tile.getSize());
-
+      baring = TileGeometry.getHitWall(hit, tile.getSize());      
       left = left + Baring.moveLeft(baring);
       top = top + Baring.moveTop(baring);
       x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
       y = hit.y == 0 ? tile.getSize() : (hit.y == tile.getSize() ? 0 : hit.y);
+      
     } while (!tile.hasWall(baring));
-
     return (int) Math.round(dist);
   }
 
@@ -206,7 +204,7 @@ public class Simulator {
     return pacmanEntity;
   }
   
-  private int getTileSize(){
+  public int getTileSize(){
     return map.getFirst().getSize();
   }
 }

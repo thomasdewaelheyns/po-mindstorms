@@ -19,11 +19,12 @@ public class Map {
   private List<Tile> tiles;
   
   protected Map(){
+    this.tiles = new ArrayList<Tile>();
   }
   
   public Map(int width) {
+    this();
     this.width = width;
-    this.tiles = new ArrayList<Tile>();
   }
   
   public int getWidth() {

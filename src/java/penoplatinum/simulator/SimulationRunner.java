@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import org.apache.commons.cli.*;
-import penoplatinum.map.MapFactory;
+import penoplatinum.map.MapFactorySector;
 
 /**
  * SimulationRunner
@@ -42,7 +42,7 @@ public class SimulationRunner {
       File f = new File(file);
       try {
         Scanner sc = new Scanner(f);
-        MapFactory fact = new MapFactory();
+        MapFactorySector fact = new MapFactorySector();
         m = fact.getMap(sc);
       } catch (FileNotFoundException ex) {
         System.err.println("File not found, using default map!");

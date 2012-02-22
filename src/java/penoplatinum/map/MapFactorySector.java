@@ -7,7 +7,6 @@ package penoplatinum.map;
 import java.util.HashMap;
 import java.util.Scanner;
 import penoplatinum.simulator.Map;
-import penoplatinum.simulator.Map3D;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Sectors;
 
@@ -29,7 +28,7 @@ public class MapFactorySector {
   public Map getMap(Scanner sc){
     int width = sc.nextInt();
     int length = sc.nextInt();
-    Map map = new Map3D(length, width);
+    Map map = new Map(width);
     for(int i = 0; i <length; i++){
       for(int j = 0; j <width; j++){
         String str = sc.next();
