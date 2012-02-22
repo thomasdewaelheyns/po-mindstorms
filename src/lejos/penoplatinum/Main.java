@@ -13,31 +13,17 @@ import penoplatinum.navigators.BehaviourNavigator;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
-
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
         conn.initializeConnection();
-        
-        
-
         Utils.EnableRemoteLogging(conn);
         IRSeekerV2 seeker = new IRSeekerV2(SensorPort.S3, Mode.AC);
-
-
         Motor m = Motor.A;
-
         int startAngle = m.getTachoCount();
-
-
         int range = 120;
         int step = 15;
         int curr = -range;
-
         int[] angles = new int[(range * 2) / step + 1];
-
-
         for (int i = 0; i < angles.length; i++) {
-
             angles[i] = curr;
             curr += step;
         }
@@ -45,34 +31,27 @@ public class Main {
         if (startMeasurement(seeker, angles, m, startAngle)) {
             return;
         }
-
         m.rotateTo(startAngle, false);
-
     }
 
     private static boolean startMeasurement(IRSeekerV2 seeker, int[] angles, Motor m, int startAngle) {
+        int count = 0;
         while (!Button.ESCAPE.isPressed()) {
-            while (!Button.ENTER.isPressed()) {
-                Utils.Sleep(500);
-                 if (Button.ESCAPE.isPressed()) {
-                    return true;
-                }
-            }
             for (int i = 0; i < angles.length; i++) {
-                int angle = angles[i];
-                m.rotateTo(startAngle + angle, false);
+                m.rotateTo(startAngle + angles[i], false);
                 int dir = seeker.getDirection();
-                Utils.Log(angle + ", " + dir);
-                if (Button.ESCAPE.isPressed()) {
-                    return true;
+                String str = count + "," + dir;
+                for(int j=1; j<6; j++){
+                    str += ","+seeker.getSensorValue(j);
                 }
+                Utils.Log(str);
+                count++;
                 Utils.Sleep(1000);
             }
         }
         return false;
     }
     static byte[] buf = new byte[1];
-    static IRSeeker seeker = new IRSeeker(SensorPort.S3);
 
     private static void runRobotSemester1() {
         final AngieEventLoop angie = new AngieEventLoop();

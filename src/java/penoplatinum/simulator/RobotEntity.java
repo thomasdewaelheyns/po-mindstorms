@@ -13,5 +13,4 @@ import penoplatinum.simulator.view.ViewRobot;
 public interface RobotEntity {
   void step();
   ViewRobot getViewRobot();
-  
 }

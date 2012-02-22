@@ -43,21 +43,25 @@ public class SimulationRobotAgent implements RobotAgent {
     }
   }
 
+  @Override
   public void setRobot(Robot robot) {
     this.robot = robot;
   }
 
+  @Override
   public void run() {
     // in the Simulator, we don't use threading
     System.out.println("Agent:> Starting logging...");
 
   }
 
+  @Override
   public void receive(String cmd) {
     //Warning: this is called asynchronously!!
     this.robot.processCommand(cmd);
   }
 
+  @Override
   public void send(String msg) {
     try {
       mq.sendMessage(msg);

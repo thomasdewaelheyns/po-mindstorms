@@ -53,7 +53,7 @@ public class SonarNavigator implements Navigator {
       Utils.Log(values[0]+","+values[1]+","+values[2]+","+values[3]);
 
       // if we're close to a frontal object, avoid with big turn
-      if( values[0] < 25 && Math.abs(values[1]) < 45 ){
+      if( values[0] < 40 && Math.abs(values[1]) < 45 ){
         int diff = ( values[3] - values[1] + 360 ) % 360 - 180;
         this.angle = diff > 0 ? values[1]-90 : values[1]+90;
         //System.out.println( "AVOID: -> " + this.angle + "(min: " + values[0] + " / " + values[1] + ")" + "(max: " + values[2] + " / " + values[3] + ")" );
