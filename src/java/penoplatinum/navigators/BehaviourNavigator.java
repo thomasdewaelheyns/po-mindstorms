@@ -94,12 +94,12 @@ public class BehaviourNavigator implements Navigator {
     }
 
 //
-    if (!proximityBlocked) {
-      checkProximityEvent();
-    }
-    checkBarcodeEvent();
-    checkLineEvent();
-    //checkSonarCollisionEvent();
+    //if (!proximityBlocked) {
+    //  checkProximityEvent();
+    //}
+    //checkBarcodeEvent();
+    //checkLineEvent();
+    checkSonarCollisionEvent();
 //    checkCollisionEvent();
   }
 //  private double lastBarcodeAngle;
@@ -282,7 +282,7 @@ public class BehaviourNavigator implements Navigator {
     return this.controler.reachedGoal();
   }
   int numCollisionWallWarnings;
-  private static final int COLLISION_WALL_AVOID_DISTANCE = 10;
+  private static final int COLLISION_WALL_AVOID_DISTANCE = 15;
   final int OBSTACLE_DETECTION_THRESHOLD = 3;
   int proximityOrientTimeout = 0;
 

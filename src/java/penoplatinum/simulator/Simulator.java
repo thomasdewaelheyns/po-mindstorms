@@ -11,6 +11,7 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
+import com.intel.bluetooth.Utils;
 import penoplatinum.simulator.tiles.TileGeometry;
 import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import penoplatinum.Utils;
 import penoplatinum.agent.MQ;
 
 public class Simulator {
@@ -87,9 +87,13 @@ public class Simulator {
   /**
    * determines the distance to the first hit wall at the current baring.
    * if the hit is not on a wall on the current tile, we follow the baring
-   * to the next tile and recursively try to find the hist-distance
+   * to the next tile and recursively try to find the hit-distance
    */
-  private int findHitDistance(int angle, int left, int top, double x, double y) {
+  int findHitDistance(int angle, int left, int top, double x, double y) {
+    // Force angles between 0 and 360 !!!
+    angle = penoplatinum.Utils.ClampLooped(angle, 0, 360);
+    //if (angle < 0 || angle > 360) throw new IllegalArgumentException();
+    
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this baring
     double dist = 0;
@@ -108,13 +112,14 @@ public class Simulator {
       // at the same baring, starting at the hit point on the tile
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
-      baring = TileGeometry.getHitWall(hit, tile.getSize());
+      baring =  TileGeometry.getHitWall(hit, tile.getSize());
       left = left + Baring.moveLeft(baring);
       top = top + Baring.moveTop(baring);
       x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
       y = hit.y == 0 ? tile.getSize() : (hit.y == tile.getSize() ? 0 : hit.y);
 
     } while (!tile.hasWall(baring));
+    System.out.println((int) Math.round(dist));
     return (int) Math.round(dist);
   }
 
@@ -187,12 +192,14 @@ public class Simulator {
     }
     refreshView();
     
-    Utils.Sleep(1);
+//    Utils.Sleep(20);
 
   }
 
   private void processRemoteMessages() {
+    System.out.println(messageQueue.size());
     while (!messageQueue.isEmpty()) {
+      
       String name = messageQueue.poll();
       if (remoteEntities.containsKey(name)) {
         continue;

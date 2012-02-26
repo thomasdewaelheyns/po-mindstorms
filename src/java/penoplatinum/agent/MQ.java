@@ -15,7 +15,6 @@ package penoplatinum.agent;
  *
  * Author: Team Platinum
  */
-
 import java.io.IOException;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
@@ -24,15 +23,14 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP;
 
- public abstract class MQ {
+public abstract class MQ {
 
-   public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
-   
+  //public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
+  public static String DefaultServer = "127.0.0.1";
   // configurable properties
-  private String  server      = "127.0.0.1";
-  private String  me          = "default";
-  private String  channelName = "default";
-  
+  private String server = "127.0.0.1";
+  private String me = "default";
+  private String channelName = "default";
   // the actual channel
   private Channel channel;
 
@@ -46,7 +44,7 @@ import com.rabbitmq.client.AMQP;
   public MQ connectToMQServer() throws java.io.IOException {
     return connectToMQServer(DefaultServer);
   }
-  
+
   // connects to a server, setting up the technical communication channel
   public MQ connectToMQServer(String name) throws java.io.IOException {
     ConnectionFactory factory = new ConnectionFactory();
@@ -58,27 +56,26 @@ import com.rabbitmq.client.AMQP;
 
   // connects to a queue
   public MQ follow(String name) throws java.io.IOException,
-                                       java.lang.InterruptedException
-  {
+          java.lang.InterruptedException {
     this.channel.exchangeDeclare(name, "fanout");
     String queueName = this.channel.queueDeclare().getQueue();
     this.channel.queueBind(queueName, name, "");
     this.channel.basicConsume(queueName, true,
-      new DefaultConsumer(this.channel) {
-        @Override
-        public void handleDelivery( String consumerTag,
-                                    Envelope envelope,
-                                    AMQP.BasicProperties properties,
-                                    byte[] body ) throws IOException
-        {
-          String[] parts = new String(body).split(":");
-          String sender  = parts[0];
-          String message = parts[1];
-          if( ! me.equals(sender) ) {
-            handleIncomingMessage(sender, message);
-          }
-        }
-      });
+            new DefaultConsumer(this.channel) {
+
+              @Override
+              public void handleDelivery(String consumerTag,
+                      Envelope envelope,
+                      AMQP.BasicProperties properties,
+                      byte[] body) throws IOException {
+                String[] parts = new String(body).split(":");
+                String sender = parts[0];
+                String message = parts[1];
+                if (!me.equals(sender)) {
+                  handleIncomingMessage(sender, message);
+                }
+              }
+            });
 
     this.channelName = name;
     return this;
