@@ -1,4 +1,4 @@
-- add reference-points
+- add inter-agent communication
 - implement import of other grid
 - implement continuous update of own grid based on linked/imported party/grid
 

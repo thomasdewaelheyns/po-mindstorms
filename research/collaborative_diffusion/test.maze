@@ -14,3 +14,7 @@ ghost 0 0 2 red
 ghost 9 0 2 pink
 ghost 0 9 0 cyan
 ghost 9 9 0 orange
+tag 5 0 barcode-N
+tag 9 5 barcode-E
+tag 5 9 barcode-S
+tag 0 5 barcode-W

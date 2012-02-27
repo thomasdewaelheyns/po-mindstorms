@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class Sector {
   // back-link to the Grid we live in
   private Grid grid;
@@ -17,6 +20,8 @@ public class Sector {
   // the value associated with this sector. it is used to create collaborated
   // diffusion
   private int value = 0;
+  
+  private List<String> tags = new ArrayList<String>();
 
 
   // TODO: sort this out ;-)
@@ -148,6 +153,11 @@ public class Sector {
   // sets the value of the sector
   public Sector setValue(int value) {
     this.value = value;
+    return this;
+  }
+  
+  public Sector addTag(String tag) {
+    this.tags.add(tag);
     return this;
   }
   

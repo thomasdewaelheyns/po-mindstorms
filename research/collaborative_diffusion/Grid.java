@@ -14,6 +14,7 @@ public class Grid {
   int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
   // mapping from coordinates to allocating Sector
   private HashedMap sectors = new HashedMap();
+  private HashedMap tags    = new HashedMap();
   // all agents in a row
   private List<Agent> agents = new ArrayList<Agent>();  
   // visualization for the Grid, by default none, is used by Simulator
@@ -186,7 +187,7 @@ public class Grid {
       File file = new File(fileName);
       Scanner scanner = new Scanner(file);
       this.loadWalls(scanner);
-      this.loadAgents(scanner);
+      this.loadAgentsAndTags(scanner);
     } catch( Exception e ) { throw new RuntimeException(e); }
     return this;
   }
@@ -211,10 +212,10 @@ public class Grid {
     }
   }
 
-  // given a scanner-based file, load the agents
+  // given a scanner-based file, load the agents/tags
   // at least one target agent should be available, else add one randomly
   // placed in the Grid
-  private void loadAgents(Scanner scanner) {
+  private void loadAgentsAndTags(Scanner scanner) {
     boolean haveTarget = false;
 
     while( scanner.hasNext() ) {
@@ -224,18 +225,24 @@ public class Grid {
       type        = scanner.next();
       left        = scanner.nextInt();
       top         = scanner.nextInt();
-      orientation = scanner.nextInt();
       Sector sector = this.getSector(left, top);
       if( sector != null ) {
         Agent agent;
-        if( type.equals("ghost") ) {
-          name = scanner.next();
-          agent = new GhostAgent(name);
+        if( type.equals("tag") ) {
+          String tag = scanner.next();
+          sector.addTag(tag);
+          this.tags.put(tag, sector);
         } else {
-          agent = new PacmanAgent();
-          haveTarget = true;  
+          orientation = scanner.nextInt();
+          if( type.equals("ghost") ) {
+            name = scanner.next();
+            agent = new GhostAgent(name);
+          } else {
+            agent = new PacmanAgent();
+            haveTarget = true;  
+          }
+          sector.putAgent(agent, orientation);
         }
-        sector.putAgent(agent, orientation);
       }
     }
     
