@@ -140,16 +140,17 @@ Ir Sensor
 \subsection{PC}
 
 \chapter{Strategie}
+\section{Strategie van Robot}
 
-\section{Demo 1}
-\subsection{Algoritme}
-\subsection{Decentralizatie}
-\section{Demo 2}
-\subsection{Algoritme}
-\subsection{Decentralizatie}
-\section{Demo 3}
-\subsection{Algoritme}
-\subsection{Decentralizatie}
+\subsection{Achtervolgstrategie}
+Wanneer de Pacman gezien wordt stuurt deze een "scent" uit. Deze plant zich dan langs de gekende sectoren voort. Dit wordt gedaan met het gemiddelde van de 4 omliggende sectoren, indien er een muur staat is de waarde 0. Zo ontstaat er een hoogte-kaart met aan de top een Pacman die moet beklommen worden door de Ghosts. Deze hoogte-kaart wordt vaak herberekend en de geur van een Pacman zal dus snel verdwijnen. Als een Pacman meerdere keren gezien wordt zal deze ook een sterkere geur uitsturen en dus meer Ghosts aantrekken.
+
+Iedere Ghost probeert de waarde van het vakje te maximaliseren en stapt zo steeds dichterbij. Om te voorkomen dat robots allemaal dezelfde weg volgen en enkel achter Pacman lopen slorpt iedere Ghost de geur op door de waarde van zijn huidig vakje op 0 te zetten. Hierdoor ontstaat er een dal rond iedere Ghost en zullen de anderen een omweg zoeken. Dit zorgt er ook voor dat de Ghosts elkaar van nature uit ontwijken en niet zullen botsen.
+
+
+\subsection{Verkenstrategie}
+Het verkenningsalgoritme is een variant op het achtervolgstrategie. Hier is er niet ??n bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het grootste onverkende stuk gaan. Omdat de ene Ghost een andere eventueel kan insluiten in een verkend doodlopend stuk slorpen deze maar een stuk op. Hierdoor zal de robot nog steeds proberen te ontsnappen.
+
 \chapter{Simulator}
 \section{Demo 1}
 \subsection{Virtualisatie}
