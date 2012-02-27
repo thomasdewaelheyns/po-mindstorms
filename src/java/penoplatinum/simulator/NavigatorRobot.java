@@ -97,6 +97,7 @@ public class NavigatorRobot implements Robot {
   public String getNavigatorState() {
     return this.navigator.toString();
   }
+  ExtendedVector sendDelta = new ExtendedVector();
 
   /**
    * This implements one step in the Event Loop. The Robot polls its sensors
@@ -117,6 +118,8 @@ public class NavigatorRobot implements Robot {
     model.setPositionY(model.getPositionY() + delta.getY());
     model.setDirection(model.getDirection() + delta.getAngle());
 
+    sendDelta.add(delta);
+
 
     // ask the navigator what to do next
     switch (this.navigator.nextAction()) {
@@ -135,7 +138,10 @@ public class NavigatorRobot implements Robot {
     }
 
 
-    agent.send("p" + (int) model.getPositionX() + "," + (int) model.getPositionY() + "," + (int) model.getDirection());
+    if (Math.abs(sendDelta.getX()) > 20 || Math.abs(sendDelta.getY()) > 20 || Math.abs(sendDelta.getAngle()) > 20) {
+      agent.send("p" + (int) model.getPositionX() + "," + (int) model.getPositionY() + "," + (int) model.getDirection());
+      sendDelta.zero();
+    }
 
 
     //agent.send(getStatusMessage());

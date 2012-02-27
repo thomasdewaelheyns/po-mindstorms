@@ -58,6 +58,7 @@ public abstract class MQ {
   public MQ follow(String name) throws java.io.IOException,
           java.lang.InterruptedException {
     this.channel.exchangeDeclare(name, "fanout");
+    
     String queueName = this.channel.queueDeclare().getQueue();
     this.channel.queueBind(queueName, name, "");
     this.channel.basicConsume(queueName, true,

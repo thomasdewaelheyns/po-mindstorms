@@ -119,7 +119,6 @@ public class Simulator {
       y = hit.y == 0 ? tile.getSize() : (hit.y == tile.getSize() ? 0 : hit.y);
 
     } while (!tile.hasWall(baring));
-    System.out.println((int) Math.round(dist));
     return (int) Math.round(dist);
   }
 
@@ -197,7 +196,7 @@ public class Simulator {
   }
 
   private void processRemoteMessages() {
-    System.out.println(messageQueue.size());
+    
     while (!messageQueue.isEmpty()) {
       
       String name = messageQueue.poll();

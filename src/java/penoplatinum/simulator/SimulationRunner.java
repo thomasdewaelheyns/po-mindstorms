@@ -88,21 +88,21 @@ public class SimulationRunner {
     return null;
   }
 
-  public SimulationRunner putRobotAt(String position) {
+  public SimulationRunner putRobotAt(String position, String robotName) {
     // parse position string
     String[] parts = position.split(",");
     int x = Integer.parseInt(parts[0]),
             y = Integer.parseInt(parts[1]),
             direction = Integer.parseInt(parts[2]);
 
-    UUID id = UUID.randomUUID();
+    
 
 
 
     // put the robot
     if (this.navigator != null) {
       Robot robot = new NavigatorRobot(getNavigator());
-      SimulationRobotAgent agent = new SimulationRobotAgent("PlatinumSimulated" + id.toString());
+      SimulationRobotAgent agent = new SimulationRobotAgent(robotName);
       agent.setRobot(robot);
       SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), agent, robot);
       robot.useRobotAPI(new SimulationRobotAPI().setSimulatedEntity(entity));
@@ -142,6 +142,8 @@ public class SimulationRunner {
             + "default=" + defaultPosition);
     options.addOption("m", "mapFile", true, "use mapfile. "
             + "default=defaultMap");
+    options.addOption("name", "name", true, "use specified robot name. "
+            + "default=Penoplatinum + randomID");
 
     CommandLineParser parser = new GnuParser();
     try {
@@ -156,11 +158,16 @@ public class SimulationRunner {
 
         runner.useNavigator(line.getOptionValue("navigator",
                 defaultNavigator));
+        
+        
+        UUID id = UUID.randomUUID();
+        String robotName = "PlatinumSimulated" + id.toString();
+        robotName = line.getOptionValue("name", robotName);
         if (line.getOptionValues("put") == null) {
-          runner.putRobotAt(defaultPosition);
+          runner.putRobotAt(defaultPosition,robotName);
         } else {
           for (String put : line.getOptionValues("put")) {
-            runner.putRobotAt(put);
+            runner.putRobotAt(put,robotName);
           }
         }
 
