@@ -21,8 +21,8 @@ public class Discovery {
     Agent discoverer = new DiscoveryAgent(goalGrid);
     Grid currentGrid     = new Grid()
                              .displayOn(currentView)
-                             .addSector( new Sector().setCoordinates(0,0) )
-                             .getSector(0,0)
+                             .addSector( new Sector().setCoordinates(9,9) )
+                             .getSector(9,9)
                                .putAgent(discoverer, Bearing.N)
                                .getGrid()
                              .show();

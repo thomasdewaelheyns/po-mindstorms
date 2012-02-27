@@ -71,16 +71,18 @@ public class DiscoveryAgent extends MovingAgent {
     int highestBearing = Bearing.NONE;
     // detect scents
     for(int bearing=Bearing.N;bearing<=Bearing.W;bearing++) {
-      Sector neighbour = this.getSector().getNeighbour(bearing);
-      if( neighbour != null ) {
-        if( neighbour.getValue() > highestValue ) {
-          highestValue   = neighbour.getValue();
-          highestBearing = bearing;
+      Sector sector = this.getSector();
+      if( ! sector.hasWall(bearing) ) {
+        Sector neighbour = sector.getNeighbour(bearing);
+        if( neighbour != null ) {
+          if( neighbour.getValue() > highestValue ) {
+            highestValue   = neighbour.getValue();
+            highestBearing = bearing;
+          }
         }
       }
     }
     if( highestValue == 0 ) { this.finished = true; }
-    //this.log( highestValue + " @ " + highestBearing );
     this.go(highestBearing);
   }
 }
