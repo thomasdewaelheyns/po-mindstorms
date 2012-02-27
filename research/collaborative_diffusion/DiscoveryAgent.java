@@ -51,7 +51,7 @@ public class DiscoveryAgent extends MovingAgent {
               //this.log( "No Wall @ " + bearing + " -> adding new Sector" );
               sector.removeWall(bearing);
               // no wall, this is interesting, let's add a new Sector
-              sector.createNeighbour(bearing).setValue(500);
+              sector.createNeighbour(bearing).setValue(5000);
             }
           }
         }
