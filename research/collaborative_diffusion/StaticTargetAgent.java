@@ -26,6 +26,9 @@ public class StaticTargetAgent implements Agent {
   public int    getLeft() { return this.sector.getLeft(); }
   public int    getTop()  { return this.sector.getTop(); }
   public int    getOrientation() { return this.bearing; }
+
+  public Agent       setProxy(ProxyAgent proxy) { return this; }
+  public ProxyAgent  getProxy() { return null; }
   
   public boolean isHolding() { return false; }
 }

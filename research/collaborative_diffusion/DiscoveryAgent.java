@@ -3,13 +3,9 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class DiscoveryAgent extends MovingAgent {
-  private Grid goalGrid;
   private boolean finished = false;
     
-  public DiscoveryAgent(Grid grid) {
-    super( "discoverer" );
-    this.goalGrid = grid;
-  }
+  public DiscoveryAgent() { super( "discoverer" ); }
   
   public boolean isHolding() {
     return this.finished;
@@ -36,7 +32,6 @@ public class DiscoveryAgent extends MovingAgent {
   }
   
   private void detectTile() {
-    // TODO: externalize access to goalGrid
     Sector sector = this.getSector();
     // look at each wall that isn't known yet
     for(int bearing=Bearing.W; bearing>=Bearing.N; bearing-- ) {
@@ -46,9 +41,8 @@ public class DiscoveryAgent extends MovingAgent {
           this.turnTo(bearing);
         } else {
           //this.log( "looking at " + bearing );
-          Sector goalSector = 
-            this.goalGrid.getSector(sector.getLeft(), sector.getTop());
-          Boolean hasWall = goalSector.hasWall(bearing);
+          Boolean hasWall = this.getProxy().getSector()
+                                .hasWall(this.getProxy().getOrientation());
           if( hasWall != null ) {
             if( hasWall ) {
               //this.log( "Wall @ " + bearing + " -> moving on" );

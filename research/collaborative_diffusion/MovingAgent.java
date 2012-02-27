@@ -8,9 +8,21 @@ public abstract class MovingAgent implements Agent {
   private int turns = 0; // number of turns, positive Right, negative Left
   private int moves = 0; // number of moves
 
+  // a proxy agent is an agent that is situated in a goalGrid
+  // it represents our eyes and ears
+  private ProxyAgent proxy;
 
   public MovingAgent(String name) {
     this.name = name;
+  }
+
+  public Agent setProxy(ProxyAgent proxy) {
+    this.proxy = proxy;
+    return this;
+  }
+
+  public ProxyAgent getProxy() {
+    return this.proxy;
   }
 
   public Agent setSector(Sector sector, int bearing) {
@@ -115,6 +127,15 @@ public abstract class MovingAgent implements Agent {
     this.turnToWest();
     this.moves = 1;
   }
+  
+  protected void go(int bearing) {
+    switch(bearing) {
+      case Bearing.N: this.goNorth(); break;
+      case Bearing.E: this.goEast();  break;
+      case Bearing.S: this.goSouth(); break;
+      case Bearing.W: this.goWest();  break;
+    }
+  }
 
   protected void processMovement() {
     if( this.turns < 0 )      { this.turnLeft();    this.turns++; }
@@ -128,6 +149,7 @@ public abstract class MovingAgent implements Agent {
     } else {
       this.bearing++;
     }
+    if( this.proxy != null ) { this.proxy.turnRight(); }
   }
 
   protected void turnLeft() {
@@ -136,6 +158,7 @@ public abstract class MovingAgent implements Agent {
     } else {
       this.bearing--;
     }
+    if( this.proxy != null ) { this.proxy.turnLeft(); }
   }
 
   protected void moveForward() {
@@ -146,17 +169,9 @@ public abstract class MovingAgent implements Agent {
       this.sector.removeAgent();
       target.putAgent(this, this.bearing);
     }
+    if( this.proxy != null ) { this.proxy.moveForward(); }
   }
   
-  protected void go(int bearing) {
-    switch(bearing) {
-      case Bearing.N: this.goNorth(); break;
-      case Bearing.E: this.goEast();  break;
-      case Bearing.S: this.goSouth(); break;
-      case Bearing.W: this.goWest();  break;
-    }
-  }
-
   // this is proper to the concrete implementation
   public abstract void move(int n, int e, int s, int w);
 }

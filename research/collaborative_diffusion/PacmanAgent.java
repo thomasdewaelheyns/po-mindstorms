@@ -20,15 +20,7 @@ public class PacmanAgent extends MovingAgent {
     if( n < 0 && e < 0 && s < 0 && w < 0 ) {
       this.blocked = true;
     } else {
-      move = this.chooseBestMove(n, e, s, w);
-
-      switch(move) {
-        case Bearing.N: this.goNorth(); break;
-        case Bearing.E: this.goEast();  break;
-        case Bearing.S: this.goSouth(); break;
-        case Bearing.W: this.goWest();  break;
-        default: // do nothing new
-      }
+      this.go(this.chooseBestMove(n, e, s, w));
     }
     
     this.processMovement();

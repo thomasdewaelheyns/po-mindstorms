@@ -71,19 +71,22 @@ public class SwingGridView extends JFrame implements GridView {
 
     this.board.start();
 
+    int minLeft = this.grid.getMinLeft(),
+        minTop  = this.grid.getMinTop();
+
     // add scent/height values
     for(int top=this.grid.getMinTop(); top<=this.grid.getMaxTop(); top++) {
       for(int left=this.grid.getMinLeft(); left<=this.grid.getMaxLeft(); left++ ) {
         Sector sector = this.grid.getSector(left,top);
         if( sector != null ) {
-          this.board.setValue(left, top, sector.getValue() );
+          this.board.setValue(left-minLeft, top-minTop, sector.getValue() );
         }
       }
     }
 
     // add agent positions
     for( Agent agent : this.grid.getAgents() ) {
-      this.board.setAgent(agent.getLeft(), agent.getTop(), 
+      this.board.setAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
                           agent.getOrientation(), agent.isTarget());
     }
     

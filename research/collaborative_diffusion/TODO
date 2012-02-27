@@ -1,3 +1,7 @@
+- add reference-points
+- implement import of other grid
+- implement continuous update of own grid based on linked/imported party/grid
+
 - improve code (consistency, remove Generics, performance, memory usage,...)
 - add random Grid generation
 - add fitness function -> semi-quantifiable test results -> report
