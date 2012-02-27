@@ -151,6 +151,9 @@ public class Grid {
 
   // remove all agents from the agent list
   public Grid clearAgents() {
+    for(Agent agent : this.agents) {
+      agent.getSector().removeAgent();
+    }
     this.agents.clear();
     return this;
   }
