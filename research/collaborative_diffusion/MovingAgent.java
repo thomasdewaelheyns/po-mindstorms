@@ -1,19 +1,26 @@
 public abstract class MovingAgent implements Agent {
   private String name;
-  private int    left;
-  private int    top;
-  private int    orientation;
-  private Maze   maze;
+
+  private Sector sector;
+  private int    bearing;
 
   // turns are executed, then moves are executed
   private int turns = 0; // number of turns, positive Right, negative Left
   private int moves = 0; // number of moves
 
-  public MovingAgent(int left, int top, int orientation, String name) {
-    this.left        = left;
-    this.top         = top;
-    this.orientation = orientation;
-    this.name        = name;
+
+  public MovingAgent(String name) {
+    this.name = name;
+  }
+
+  public Agent setSector(Sector sector, int bearing) {
+    this.sector  = sector;
+    this.bearing = bearing;
+    return this;
+  }
+  
+  public Sector getSector() {
+    return this.sector;
   }
   
   public boolean isTarget() { return false; }
@@ -21,28 +28,14 @@ public abstract class MovingAgent implements Agent {
 
   public int getValue() { return 0; }
 
-  public void setMaze(Maze maze) {
-    this.maze = maze;
-  }
+  public String getName() { return this.name; }
+  public int    getLeft() { return this.sector.getLeft(); }
+  public int    getTop()  { return this.sector.getTop(); }
+  public int    getOrientation() { return this.bearing; }
   
-  protected Maze getMaze() {
-    return this.maze;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public int getLeft() {
-    return this.left;
-  }
-
-  public int getTop() {
-    return this.top;
-  }
-
-  public int getOrientation() {
-    return this.orientation;
+  protected void log(String msg) {
+    System.out.printf( "%s @ %2d,%2d : %s\n",
+                       this.getName(), this.getLeft(), this.getTop(), msg);
   }
   
   public boolean isMoving() {
@@ -58,75 +51,100 @@ public abstract class MovingAgent implements Agent {
     this.moves = 0;
   }
 
-  protected void goNorth() {
-    switch(this.orientation) {
-      case Baring.W: this.turns = +1; break;
-      case Baring.E: this.turns = -1; break;
-      case Baring.S: this.turns = +2; break;
+  protected void turnTo(int bearing) {
+    switch(bearing) {
+      case Bearing.N: this.turnToNorth(); break;
+      case Bearing.E: this.turnToEast();  break;
+      case Bearing.S: this.turnToSouth(); break;
+      case Bearing.W: this.turnToWest();  break;
+    }
+  }
+
+  protected void turnToNorth() {
+    switch(this.bearing) {
+      case Bearing.W: this.turns = +1; break;
+      case Bearing.E: this.turns = -1; break;
+      case Bearing.S: this.turns = +2; break;
       default: // we're already facing north ;-)
     }
+  }
+
+  protected void goNorth() {
+    this.turnToNorth();
     this.moves = 1;
+  }
+
+  protected void turnToEast() {
+    switch(this.bearing) {
+      case Bearing.N: this.turns = +1; break;
+      case Bearing.S: this.turns = -1; break;
+      case Bearing.W: this.turns = +2; break;
+      default: // we're already facing east ;-)
+    }
   }
 
   protected void goEast() {
-    switch(this.orientation) {
-      case Baring.N: this.turns = +1; break;
-      case Baring.S: this.turns = -1; break;
-      case Baring.W: this.turns = +2; break;
-      default: // we're already facing east ;-)
-    }
+    this.turnToEast();
     this.moves = 1;
+  }
+  
+  protected void turnToSouth() {
+    switch(this.bearing) {
+      case Bearing.N: this.turns = +2; break;
+      case Bearing.E: this.turns = +1; break;
+      case Bearing.W: this.turns = -1; break;
+      default: // we're already facing south ;-)
+    }
   }
   
   protected void goSouth() {
-    switch(this.orientation) {
-      case Baring.N: this.turns = -2; break;
-      case Baring.E: this.turns = +1; break;
-      case Baring.W: this.turns = -1; break;
-      default: // we're already facing south ;-)
-    }
+    this.turnToSouth();
     this.moves = 1;
+  }
+
+  protected void turnToWest() {
+    switch(this.bearing) {
+      case Bearing.N: this.turns = -1; break;
+      case Bearing.E: this.turns = +2; break;
+      case Bearing.S: this.turns = + 1; break;
+      default: // we're already facing west ;-)
+    }
   }
 
   protected void goWest() {
-    switch(this.orientation) {
-      case Baring.N: this.turns = -1; break;
-      case Baring.E: this.turns = +2; break;
-      case Baring.S: this.turns = + 1; break;
-      default: // we're already facing west ;-)
-    }
+    this.turnToWest();
     this.moves = 1;
   }
 
-  protected void processMovement(int n, int e, int s, int w) {
+  protected void processMovement() {
     if( this.turns < 0 )      { this.turnLeft();    this.turns++; }
     else if( this.turns > 0 ) { this.turnRight();   this.turns--; }
-    else if( this.moves > 0 ) { this.moveForward(n,e,s,w); this.moves--; }
+    else if( this.moves > 0 ) { this.moveForward(); this.moves--; }
   }
   
   protected void turnRight() {
-    if( this.orientation == Baring.W ) {
-      this.orientation = Baring.N;
+    if( this.bearing == Bearing.W ) {
+      this.bearing = Bearing.N;
     } else {
-      this.orientation++;
+      this.bearing++;
     }
   }
 
   protected void turnLeft() {
-    if( this.orientation == Baring.N ) {
-      this.orientation = Baring.W;
+    if( this.bearing == Bearing.N ) {
+      this.bearing = Bearing.W;
     } else {
-      this.orientation--;
+      this.bearing--;
     }
   }
-  
-  protected void moveForward(int n, int e, int s, int w) {
-    switch(this.orientation) {
-      case Baring.N: if( n >= 0 ) { this.top--;  } break;
-      case Baring.E: if( e >= 0 ) { this.left++; } break;
-      case Baring.S: if( s >= 0 ) { this.top++;  } break;
-      case Baring.W: if( w >= 0 ) { this.left--; } break;
-      default: // impossible ? ;-)
+
+  protected void moveForward() {
+    Sector target = this.sector.getNeighbour(this.bearing);
+    if( target == null ) {
+      this.log( "can't move forward (bearing=" +this.bearing+")" );
+    } else {
+      this.sector.removeAgent();
+      target.putAgent(this, this.bearing);
     }
   }
 

@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.awt.image.*; 
 import javax.swing.*; 
 
-public class MazeBoard extends JPanel {
+public class GridBoard extends JPanel {
   private int width = 0, height = 0;
 
   private BufferedImage walls;
@@ -22,10 +22,11 @@ public class MazeBoard extends JPanel {
   public static final Color YELLOW = new Color(255,255,0);
   public static final Color BROWN  = new Color(205,165,100);
 
-  public MazeBoard(int width, int height) {
+  public GridBoard resizeTo(int width, int height) {
     this.width  = width;
     this.height = height;
     this.setupCanvas();
+    return this;
   }
   
   private void setupCanvas() {
@@ -49,10 +50,10 @@ public class MazeBoard extends JPanel {
   public void addWall(int left, int top, int location) {
     Rectangle r;
     switch(location) {
-      case Baring.N: r = new Rectangle(left*20,       top*20-3,      20, 6); break;
-      case Baring.W: r = new Rectangle(left*20-3,     top*20,        6, 20); break;
-      case Baring.E: r = new Rectangle((left+1)*20-6, top*20,        6, 20); break;
-      case Baring.S: r = new Rectangle(left*20,       (top+1)*20-6, 20,  6); break;
+      case Bearing.N: r = new Rectangle(left*20,       top*20-3,     20,  6); break;
+      case Bearing.W: r = new Rectangle(left*20-3,     top*20,        6, 20); break;
+      case Bearing.E: r = new Rectangle((left+1)*20-6, top*20,        6, 20); break;
+      case Bearing.S: r = new Rectangle(left*20,       (top+1)*20-6, 20,  6); break;
       default:       r = new Rectangle(0,0,0,0);
     }
     this.wallsG.setColor(WHITE);

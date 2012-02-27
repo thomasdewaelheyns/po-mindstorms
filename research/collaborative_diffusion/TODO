@@ -1,6 +1,6 @@
 - implement DFS
 - apply CD to discovery
 - improve code (consistency, remove Generics, performance, memory usage,...)
-- add random maze generation
+- add random Grid generation
 - add fitness function -> semi-quantifiable test results -> report
 - combine discovery and hunt

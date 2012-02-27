@@ -1,8 +1,8 @@
 public class PacmanAgent extends MovingAgent {
   private boolean blocked = false;
-  
-  public PacmanAgent(int left, int top, int orientation) {
-    super(left, top, orientation, "pacman" );
+
+  public PacmanAgent() {
+    super( "pacman" );
   }
 
   public boolean isTarget() { return true; }
@@ -23,15 +23,15 @@ public class PacmanAgent extends MovingAgent {
       move = this.chooseBestMove(n, e, s, w);
 
       switch(move) {
-        case Baring.N: this.goNorth(); break;
-        case Baring.E: this.goEast();  break;
-        case Baring.S: this.goSouth(); break;
-        case Baring.W: this.goWest();  break;
+        case Bearing.N: this.goNorth(); break;
+        case Bearing.E: this.goEast();  break;
+        case Bearing.S: this.goSouth(); break;
+        case Bearing.W: this.goWest();  break;
         default: // do nothing new
       }
     }
     
-    this.processMovement(n, e, s, w);
+    this.processMovement();
   }
 
   private int chooseBestMove(int n, int e, int s, int w) {
@@ -44,22 +44,22 @@ public class PacmanAgent extends MovingAgent {
 
     if( n > 0 ) {
       int dist = this.getDistance(this.getLeft(), this.getTop()-1);
-      if( dist > bestDist ) { bestDist = dist; move = Baring.N; }
+      if( dist > bestDist ) { bestDist = dist; move = Bearing.N; }
     }
 
     if( e > 0 ) {
       int dist = this.getDistance(this.getLeft()+1, this.getTop());
-      if( dist > bestDist ) { bestDist = dist; move = Baring.E; }
+      if( dist > bestDist ) { bestDist = dist; move = Bearing.E; }
     }
     
     if( s > 0 ) {
       int dist = this.getDistance(this.getLeft(), this.getTop()+1);
-      if( dist > bestDist ) { bestDist = dist; move = Baring.S; }
+      if( dist > bestDist ) { bestDist = dist; move = Bearing.S; }
     }
     
     if( w > 0 ) {
       int dist = this.getDistance(this.getLeft()-1, this.getTop());
-      if( dist > bestDist ) { bestDist = dist; move = Baring.W; }
+      if( dist > bestDist ) { bestDist = dist; move = Bearing.W; }
     }
     
     return move;
@@ -67,7 +67,7 @@ public class PacmanAgent extends MovingAgent {
 
   private int getDistance(int left, int top) {
     int smallestDist = 1000;
-    for(Agent agent: this.getMaze().getAgents()) {
+    for(Agent agent: this.getSector().getGrid().getAgents()) {
       if( agent != this ) {
         int dist= Math.abs(agent.getLeft() - left)
                 + Math.abs(agent.getTop()  - top);

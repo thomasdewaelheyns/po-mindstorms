@@ -1,14 +1,14 @@
-public class MazeRunner {
+public class GridRunner {
   public static void main(String[] args) {
-    SwingMazeView swing = new SwingMazeView();
+    SwingGridView swing = new SwingGridView();
 
     while(true) {
-      Maze maze = Maze.load(args[0]).displayOn(swing).show();
+      Grid grid = new Grid().load(args[0]).displayOn(swing).show();
 
-      while( ! maze.targetIsBlocked() ) {
-        CD.apply(maze);
-        maze.moveAgents();
-        maze.show();
+      while( ! grid.targetIsBlocked() ) {
+        CD.apply(grid);
+        grid.moveAgents();
+        grid.show();
         try { Thread.sleep(200); } catch(Exception e) {}
       }
 

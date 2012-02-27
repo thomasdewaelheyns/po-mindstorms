@@ -1,11 +1,8 @@
 public class GhostAgent extends MovingAgent {
   private int previousMove = -1;
-  
-  public GhostAgent(int left, int top, int orientation, String name) {
-    super(left, top, orientation, name);
-  }
 
-  // override to indicate we're a hunter
+  public GhostAgent(String name) { super(name); }
+  
   public boolean isHunter() { return true;  }
 
   public void move(int n, int e, int s, int w) {
@@ -41,17 +38,17 @@ public class GhostAgent extends MovingAgent {
     }
 
     switch(move) {
-      case Baring.N: this.goNorth(); break;
-      case Baring.E: this.goEast();  break;
-      case Baring.S: this.goSouth(); break;
-      case Baring.W: this.goWest();  break;
+      case Bearing.N: this.goNorth(); break;
+      case Bearing.E: this.goEast();  break;
+      case Bearing.S: this.goSouth(); break;
+      case Bearing.W: this.goWest();  break;
       default: // do nothing new
     }
 
     // keep track of previous move
     this.previousMove = move;
     
-    this.processMovement(n,e,s,w);
+    this.processMovement();
   }
   
   private void holdPosition() {

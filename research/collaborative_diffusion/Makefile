@@ -1,22 +1,32 @@
-CC=javac
+RM=rm -rf
 
-TARGETS=MazeRunner.class
+LIBS=:lib/commons-collections-3.2.1.jar
+CP=./:${LIBS}
+
+BUILD_DIR=build
+
+JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
+JAVA=java -cp ${BUILD_DIR}:${LIBS}
 
 MAP=test.maze
 
 all: 
 
-hunt: MazeRunner.class
-	java MazeRunner ${MAP}
+hunt: GridRunner.class
+	${JAVA} GridRunner ${MAP}
 
 discover: Discovery.class
-	java Discovery ${MAP}
+	${JAVA} Discovery ${MAP}
 
-%.class: %.java
-	${CC} $<
+%.class: %.java ${BUILD_DIR}
+	@echo "*** building ${<:.class=}"
+	@${JAVAC} $<
+
+${BUILD_DIR}:
+	@mkdir ${BUILD_DIR}
 
 clean:
-	@rm -f *.class
-
+	@${RM} ${BUILD_DIR} *.class
+  
 test:
 	@(cd t; make test)
