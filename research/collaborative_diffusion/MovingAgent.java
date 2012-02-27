@@ -147,6 +147,15 @@ public abstract class MovingAgent implements Agent {
       target.putAgent(this, this.bearing);
     }
   }
+  
+  protected void go(int bearing) {
+    switch(bearing) {
+      case Bearing.N: this.goNorth(); break;
+      case Bearing.E: this.goEast();  break;
+      case Bearing.S: this.goSouth(); break;
+      case Bearing.W: this.goWest();  break;
+    }
+  }
 
   // this is proper to the concrete implementation
   public abstract void move(int n, int e, int s, int w);

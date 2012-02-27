@@ -30,7 +30,12 @@ public class Discovery {
     while(!discoverer.isHolding()) {
       currentGrid.moveAgents();
       currentGrid.show(); // refresh our Grid view to reflect movement
-      try { Thread.sleep(20); } catch(Exception e) {}
+      CD.apply(currentGrid);
+      try { Thread.sleep(Integer.parseInt(args[1])); } catch(Exception e) {}
     }
+    
+    System.out.println("*** done, press return to exit...");
+    try { System.in.read(); } catch(Exception e) {}
+    System.exit(0);
   }
 }

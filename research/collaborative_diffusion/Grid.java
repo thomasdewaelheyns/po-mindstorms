@@ -65,11 +65,11 @@ public class Grid {
 
   private void connect(Sector sector, Sector other, int location) {
     if( sector != null ) {
-      System.out.println("Connecting " + sector.getLeft() + "," + sector.getTop() + " <- " + " / " + location );
+      //System.out.println("Connecting " + sector.getLeft() + "," + sector.getTop() + " <- " + " / " + location );
       sector.addNeighbour(other, location);
     }
     if( other != null ) {
-      System.out.println("Connecting " + " -> " + other.getLeft() + "," + other.getTop() + " / " + Bearing.reverse(location) );
+      //System.out.println("Connecting " + " -> " + other.getLeft() + "," + other.getTop() + " / " + Bearing.reverse(location) );
       other.addNeighbour(sector, Bearing.reverse(location));
     }
   }

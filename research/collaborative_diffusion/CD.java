@@ -3,7 +3,7 @@ public class CD {
     for( int top=grid.getMinTop(); top<=grid.getMaxTop(); top++ ) {
       for( int left=grid.getMinLeft(); left<=grid.getMaxLeft(); left++ ) {
         Sector sector = grid.getSector(left, top);
-        if( sector != null ) {
+        if( sector != null && sector.isFullyKnown() ) {
           // a hunting agent resets the value of its sector
           if( sector.hasAgent() && sector.getAgent().isHunter() ) {
             sector.setValue(0);

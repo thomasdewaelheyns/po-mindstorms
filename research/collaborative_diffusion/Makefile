@@ -9,6 +9,7 @@ JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
 JAVA=java -cp ${BUILD_DIR}:${LIBS}
 
 MAP=test.maze
+SLEEP=25
 
 all: 
 
@@ -16,7 +17,7 @@ hunt: GridRunner.class
 	${JAVA} GridRunner ${MAP}
 
 discover: Discovery.class
-	${JAVA} Discovery ${MAP}
+	${JAVA} Discovery ${MAP} ${SLEEP}
 
 %.class: %.java ${BUILD_DIR}
 	@echo "*** building ${<:.class=}"

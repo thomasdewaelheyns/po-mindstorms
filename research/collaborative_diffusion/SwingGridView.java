@@ -76,7 +76,7 @@ public class SwingGridView extends JFrame implements GridView {
       for(int left=this.grid.getMinLeft(); left<=this.grid.getMaxLeft(); left++ ) {
         Sector sector = this.grid.getSector(left,top);
         if( sector != null ) {
-          this.board.setValue(left, top, sector.getRawValue() );
+          this.board.setValue(left, top, sector.getValue() );
         }
       }
     }

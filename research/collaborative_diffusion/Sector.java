@@ -244,7 +244,11 @@ public class Sector {
   public boolean isKnown(int atLocation) {
     return this.certainty.hasWall(atLocation);
   }
-
+  
+  public boolean isFullyKnown() {
+    return this.getCertainty() == 15;
+  }
+  
   // we use the Boolean class to allow returning null to indicate we don't
   // know (because of uncertainty)
   public Boolean isBlocked(int atLocation) {
