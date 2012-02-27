@@ -85,7 +85,9 @@ public class Discovery {
     System.out.println("*** ready, press return to start...");
     try { System.in.read(); } catch(Exception e) {}
 
-    while(!discoverer1.isHolding() && !discoverer2.isHolding()) {
+    while(!(discoverer1.isHolding() && discoverer2.isHolding() &&
+            discoverer3.isHolding() && discoverer4.isHolding() ) )
+    {
       currentGrid1.moveAgents();
       currentGrid2.moveAgents();
       currentGrid3.moveAgents();
