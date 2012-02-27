@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import penoplatinum.simulator.Map;
 import penoplatinum.simulator.RemoteViewRobot;
+import penoplatinum.simulator.tiles.Tile;
 
 public class Board extends JPanel {
   // Tiles are defined in logical dimensions, comparable to cm in reality
@@ -40,7 +41,7 @@ public class Board extends JPanel {
   }
 
   private void setupCanvas() {
-    this.setBackground(Color.WHITE);
+    this.setBackground(Color.BLACK);
     this.setDoubleBuffered(true);
   }
 
@@ -63,7 +64,12 @@ public class Board extends JPanel {
     int height = this.map.getHeight();
     for (int top = 1; top <= height; top++) {
       for (int left = 1; left <= width; left++) {
-        this.map.get(left, top).drawTile(g2d, left, top);
+        Tile t = this.map.get(left, top);
+        if (t == null) {
+          // No tile set, keep black
+        } else {
+          t.drawTile(g2d, left, top);
+        }
       }
     }
   }
@@ -73,8 +79,18 @@ public class Board extends JPanel {
   }
 
   private BufferedImage createBuffer() {
-    int w = this.map.getWidth() * map.getFirst().drawSize();
-    int h = this.map.getHeight() * map.getFirst().drawSize();
+
+    int drawSize = 10; // Magic!
+
+
+    if (map.getTileCount() != 0) {
+      drawSize = this.map.getFirst().drawSize();
+    }
+
+    int w = this.map.getWidth() * drawSize;
+    int h = this.map.getHeight() * drawSize;
+    
+    if (h == 0) h = w; // cheat
     return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
   }
 
