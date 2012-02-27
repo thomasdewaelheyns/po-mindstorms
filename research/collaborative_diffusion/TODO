@@ -1,5 +1,6 @@
 - add inter-agent communication
-- implement import of other grid
+- implement tracking of others' grid
+- implement import of others' grid
 - implement continuous update of own grid based on linked/imported party/grid
 
 - improve code (consistency, remove Generics, performance, memory usage,...)
