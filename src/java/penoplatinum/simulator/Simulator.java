@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -156,6 +155,7 @@ public class Simulator {
       }*/
       MQ mq = new MQ() {
 
+        @Override
         protected void handleIncomingMessage(String sender, String message) {
           messageQueue.add(sender);
 
@@ -174,7 +174,7 @@ public class Simulator {
       if (false) {
         break;
       }
-      //Utils.Sleep(3);
+      Utils.Sleep(2);
     }
     this.view.log("");
     return this;
