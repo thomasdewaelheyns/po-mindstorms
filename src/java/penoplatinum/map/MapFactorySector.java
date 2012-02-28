@@ -6,7 +6,6 @@ package penoplatinum.map;
 
 import java.util.HashMap;
 import java.util.Scanner;
-import penoplatinum.simulator.Map;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Sectors;
 
@@ -32,13 +31,13 @@ public class MapFactorySector {
     for(int i = 0; i <length; i++){
       for(int j = 0; j <width; j++){
         String str = sc.next();
-        Sector next = sectors.get(str);
+        Sector next = sectors.get(str).clone();
         if(next == null){
           next = Sectors.NONE;
         }
         str = sc.next();
         Boolean test = commands.get(str);
-        if(!(test == null) && (test)){
+        if(test != null && test){
           int barcode = sc.nextInt();
           String direction = sc.next();
           next.addBarcode(barcode, directions.get(direction));

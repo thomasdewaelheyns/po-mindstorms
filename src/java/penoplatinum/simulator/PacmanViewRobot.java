@@ -8,16 +8,16 @@ import java.awt.image.ImageObserver;
 import penoplatinum.simulator.view.Board;
 import penoplatinum.simulator.view.ViewRobot;
 
-public class RemoteViewRobot implements ViewRobot{
-  // cached images
+public class PacmanViewRobot implements ViewRobot{
+  
+    // cached images
   public static Image robot;
   
-  private RemoteEntity original;
+  private PacmanEntity original;
 
-  public RemoteViewRobot(RemoteEntity original) {
+  public PacmanViewRobot(PacmanEntity original) {
     this.original = original;
-  }
-  
+  }   
 
   @Override
   public void trackMovement(Graphics2D g2d) {
@@ -37,27 +37,21 @@ public class RemoteViewRobot implements ViewRobot{
   
   @Override
   public void renderSonar(Graphics2D g2d) {
-//    
-//    if( this.getDistances() == null ) { return; }
-//    for( int i=0; i<this.getDistances().size()-1; i++ ) {
-//      int angle = (int)(this.getAngles().get(i)) + this.getDirection();
-//      double rads = Math.toRadians(angle+90);
-//      int dx = (int)(Math.cos(rads) * this.getDistances().get(i)) * Board.SCALE;
-//      int dy = (int)(Math.sin(rads) * this.getDistances().get(i)) * Board.SCALE;
-//      g2d.draw(new Line2D.Float(this.getX(), this.getY(), this.getX() + dx, this.getY() - dy));
-//    }
+    //Pacman has no sonar
   }
+
   @Override
   public int getX() {
     return ((int) original.getPosX())*Board.SCALE;
   }
+
   @Override
   public int getY() {
     return ((int) original.getPosY())*Board.SCALE;
   }
+
   @Override
   public int getDirection() {
     return (int) original.getDir();
-  }
-  
+  }  
 }

@@ -9,7 +9,7 @@ package penoplatinum.simulator.view;
  */
 
 import java.util.List;
-import penoplatinum.simulator.Map;
+import penoplatinum.map.Map;
 
 public class SilentSimulationView implements SimulationView {
   

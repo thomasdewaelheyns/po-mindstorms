@@ -9,7 +9,7 @@ package penoplatinum.simulator.view;
  * @author: Team Platinum
  */
 import javax.swing.JFrame;
-import penoplatinum.simulator.Map;
+import penoplatinum.map.Map;
 
 public class SwingSimulationView extends JFrame implements SimulationView {
 

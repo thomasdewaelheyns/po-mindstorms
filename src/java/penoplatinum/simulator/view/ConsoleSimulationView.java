@@ -10,7 +10,7 @@ package penoplatinum.simulator.view;
  */
 
 import java.util.List;
-import penoplatinum.simulator.Map;
+import penoplatinum.map.Map;
 
 public class ConsoleSimulationView implements SimulationView {
   private List<ViewRobot> robots;

@@ -1,6 +1,6 @@
 package penoplatinum.simulator.view;
 
-import penoplatinum.simulator.Map;
+import penoplatinum.map.Map;
 
 /**
  * SimulationView interface

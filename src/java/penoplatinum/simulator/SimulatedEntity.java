@@ -149,18 +149,22 @@ public class SimulatedEntity implements RobotEntity{
     return this;
   }
 
+  @Override
   public double getPosX() {
     return positionX;
   }
   
+  @Override
   public double getPosY() {
     return positionY;
   }
   
+  @Override
   public double getDir(){
     return direction;
   }
   
+  @Override
   public ViewRobot getViewRobot(){
     return new SimulatedViewRobot(this);
   }

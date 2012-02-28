@@ -1,5 +1,6 @@
 package penoplatinum.simulator;
 
+import penoplatinum.map.Map;
 import penoplatinum.navigators.TestNavigator;
 
 /**

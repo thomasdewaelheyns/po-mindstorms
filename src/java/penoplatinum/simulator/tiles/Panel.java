@@ -33,6 +33,7 @@ package penoplatinum.simulator.tiles;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import penoplatinum.BitwiseOperations;
+import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.barcode.BarcodeHammingCorrector;
 import penoplatinum.simulator.Baring;
 import penoplatinum.simulator.view.Board;
@@ -68,6 +69,8 @@ public class Panel implements Tile {
   public static final int DRAW_LINE_WIDTH = Panel.LINE_WIDTH * Board.SCALE;
   public static final int DRAW_BARCODE_LINE_WIDTH = Panel.BARCODE_LINE_WIDTH * Board.SCALE;
   public static final int DRAW_WALL_LINE_WIDTH = 2*Board.SCALE;
+  
+  private static final BarcodeCorrector barcode = new BarcodeHammingCorrector(null);
 
   // internal representation of a Panel using a 32bit int
   private int data;
@@ -165,7 +168,7 @@ public class Panel implements Tile {
 
   @Override
   public int getBarcode() {
-    return BarcodeHammingCorrector.expand[BitwiseOperations.getBits(this.data, Panel.startBarcode,4)];
+    return barcode.getExpand()[BitwiseOperations.getBits(this.data, Panel.startBarcode,4)];
   }
   public int getBarcodeLine(int line){
       return (this.getBarcode() & (1<<(Panel.BARCODE_LINES-line-1)) ) == 0 ?

@@ -1,5 +1,6 @@
 package penoplatinum.simulator;
 
+import penoplatinum.map.Map;
 import penoplatinum.simulator.tiles.Panels;
 import penoplatinum.simulator.view.SwingSimulationView;
 import java.io.File;

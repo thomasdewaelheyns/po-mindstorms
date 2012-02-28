@@ -16,7 +16,7 @@ import javax.swing.*;
 
 import java.net.URL;
 import java.util.ArrayList;
-import penoplatinum.simulator.Map;
+import penoplatinum.map.Map;
 import penoplatinum.simulator.RemoteViewRobot;
 import penoplatinum.simulator.SimulatedViewRobot;
 import penoplatinum.simulator.tiles.Tile;

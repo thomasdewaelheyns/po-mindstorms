@@ -11,6 +11,7 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.map.Map;
 import penoplatinum.simulator.tiles.TileGeometry;
 import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;

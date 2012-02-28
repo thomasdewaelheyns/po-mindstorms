@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.map;
 
 import penoplatinum.simulator.tiles.Panels;
 import penoplatinum.simulator.tiles.Panel;

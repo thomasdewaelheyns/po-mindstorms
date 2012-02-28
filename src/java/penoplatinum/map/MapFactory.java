@@ -3,8 +3,6 @@ package penoplatinum.map;
 import java.lang.String;
 import java.util.HashMap;
 import java.util.Scanner;
-import penoplatinum.simulator.Map;
-import penoplatinum.simulator.Map3D;
 import penoplatinum.simulator.tiles.Panel;
 import penoplatinum.simulator.tiles.Panels;
 

@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.map;
 
 /**
  * Map
