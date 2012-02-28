@@ -6,7 +6,7 @@ public class PacmanAgent extends MovingAgent {
   }
 
   public boolean isTarget() { return true; }
-  public int     getValue() { return 1000; }
+  public int     getValue() { return 10000; }
 
   // we can't reuse the standard !moving implementation, because when possible
   // pacman will not be moving, but will nog be blocked

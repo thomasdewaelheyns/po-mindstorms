@@ -2,6 +2,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import java.util.Arrays;
+
 public class DiscoveryAgent extends MovingAgent {
   private boolean finished = false;
     
@@ -57,19 +59,29 @@ public class DiscoveryAgent extends MovingAgent {
   
   private void chooseNextAction(int[] values) {
     int highestValue = this.getMax(values);
+
+    // if there are no values to "climb" to, we're done
+    // TODO: check global grid information to look for unknown sectors that
+    //       are further away
     if( highestValue == 0 ) {
       this.finished = true;
       return;
     }
 
-    int highestBearing = Bearing.NONE;
-    
-    for(int bearing=Bearing.N;bearing<=Bearing.W;bearing++) {
-      if( values[bearing] == highestValue ) {
-        this.go(bearing);
-        return;
+    // retain moves with highest value
+    int[] moves = {-1, -1, -1, -1};
+    int count = 0;
+    for( int i=0; i<4; i++ ) {
+      if( values[i] == highestValue ) {
+        moves[count] = i;
+        count++;
       }
     }
 
+    // choose randomly one of the best moves (this introduces some non-deter-
+    // minism to help solve deadlocks of agents that block each other
+    int bearing = moves[(int)(Math.random()*count)];
+    this.go(bearing);
+    //this.log( "higest = " + highestValue + " out of " + Arrays.toString(values) + " -> " + bearing );
   }
 }

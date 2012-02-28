@@ -8,4 +8,6 @@ public class ProxyAgent extends MovingAgent {
   public int getValue() { return 0; }
 
   public boolean isHolding() { return false; }
+
+  public boolean isProxy() { return true; }
 }

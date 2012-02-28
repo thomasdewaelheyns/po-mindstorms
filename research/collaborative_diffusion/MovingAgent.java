@@ -37,6 +37,7 @@ public abstract class MovingAgent implements Agent {
   
   public boolean isTarget() { return false; }
   public boolean isHunter() { return false; }
+  public boolean isProxy()  { return false; }
 
   public int getValue() { return 0; }
 
@@ -168,11 +169,8 @@ public abstract class MovingAgent implements Agent {
     }
     if( target == null ) {
       this.log( "can't move forward (no sector @ " + this.bearing + ")" );
-    // FIXME : collision prevention
-    // } else if( proxyTarget == null ) {
-    //   this.log( "can't move forward (no proxyTarget)" );
-    // } else if( proxyTarget.getAgent() != null ) {
-    //   this.log( "can't move forward (agent occupying " + this.proxy.getOrientation() + ")" );
+    } else if( !this.isProxy() && proxyTarget != null && proxyTarget.getAgent() != null ) {
+      this.log( "can't move forward (agent occupying " + this.proxy.getOrientation() + ")" );
     } else {
       this.sector.removeAgent();
       target.putAgent(this, this.bearing);
