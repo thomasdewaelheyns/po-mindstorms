@@ -1,5 +1,6 @@
 package penoplatinum.modelprocessor;
 
+import penoplatinum.barcode.BarcodeHammingCorrector;
 import penoplatinum.modelprocessor.ColorInterpreter.Color;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Model;
@@ -18,10 +19,10 @@ public class BarcodeModelProcessor extends ModelProcessor {
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
-  private BarcodeDataNav interpreter;
+  private BarcodeHammingCorrector interpreter;
+  private ColorInterpreter colorInterpreter;
   private int brownCounter = 0;
   int state = WAITING;
-  private ColorInterpreter colorInterpreter;
   private float startTacho;
   private float endTacho;
   public float WIELOMTREK = 0.175f;
@@ -37,7 +38,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
   public BarcodeModelProcessor() {
     super();
     this.colorInterpreter = new ColorInterpreter();
-    interpreter = new BarcodeDataNav(colorInterpreter);
+    interpreter = new BarcodeHammingCorrector(colorInterpreter);
   }
 
   /**
@@ -50,7 +51,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
   public BarcodeModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
     this.colorInterpreter = new ColorInterpreter();
-    interpreter = new BarcodeDataNav(colorInterpreter);
+    interpreter = new BarcodeHammingCorrector(colorInterpreter);
   }
 
   /**
