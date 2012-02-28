@@ -11,7 +11,6 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
-import com.intel.bluetooth.Utils;
 import penoplatinum.simulator.tiles.TileGeometry;
 import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import penoplatinum.Utils;
 import penoplatinum.agent.MQ;
 
 public class Simulator {
