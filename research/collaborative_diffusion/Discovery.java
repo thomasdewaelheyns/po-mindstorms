@@ -103,6 +103,11 @@ public class Discovery {
       currentGrid3.show(); // refresh our Grid view to reflect movement
       currentGrid4.show(); // refresh our Grid view to reflect movement
 
+      CD.apply(goalGrid);
+
+      // FIXME: illustrates ghost overwriting/erasing pacman from its sector
+      // System.out.println(goalGrid.getSector(2,2).getAgent().getName() + " : " + goalGrid.getSector(2,2).getValue());
+      
       goalGrid.show();    // refresh to show effect in "real world"
 
       try { Thread.sleep(Integer.parseInt(args[1])); } catch(Exception e) {}

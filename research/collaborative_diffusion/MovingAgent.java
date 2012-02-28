@@ -137,7 +137,7 @@ public abstract class MovingAgent implements Agent {
     }
   }
 
-  protected void processMovement() {
+  protected void continueActiveMovement() {
     if( this.turns < 0 )      { this.turnLeft();    this.turns++; }
     else if( this.turns > 0 ) { this.turnRight();   this.turns--; }
     else if( this.moves > 0 ) { this.moveForward(); this.moves--; }
@@ -162,16 +162,34 @@ public abstract class MovingAgent implements Agent {
   }
 
   protected void moveForward() {
-    Sector target = this.sector.getNeighbour(this.bearing);
+    Sector target = this.sector.getNeighbour(this.bearing), proxyTarget = null;
+    if( this.proxy != null ) {
+      proxyTarget = this.proxy.getSector().getNeighbour(this.proxy.getOrientation());
+    }
     if( target == null ) {
-      this.log( "can't move forward (bearing=" +this.bearing+")" );
+      this.log( "can't move forward (no sector @ " + this.bearing + ")" );
+    // FIXME : collision prevention
+    // } else if( proxyTarget == null ) {
+    //   this.log( "can't move forward (no proxyTarget)" );
+    // } else if( proxyTarget.getAgent() != null ) {
+    //   this.log( "can't move forward (agent occupying " + this.proxy.getOrientation() + ")" );
     } else {
       this.sector.removeAgent();
       target.putAgent(this, this.bearing);
+      if( this.proxy != null ) { this.proxy.moveForward(); }
     }
-    if( this.proxy != null ) { this.proxy.moveForward(); }
   }
   
+  protected int getMax(int[] values) {
+    // find max
+    int max = 0;
+    for( int value : values ) {
+      if( value > max ) { max = value; }
+    }
+    return max;
+  }
+
+  
   // this is proper to the concrete implementation
-  public abstract void move(int n, int e, int s, int w);
+  public abstract void move(int[] values);
 }

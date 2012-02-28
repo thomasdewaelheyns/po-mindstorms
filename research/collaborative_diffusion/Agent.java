@@ -11,7 +11,7 @@ public interface Agent {
   public int    getTop();
   public int    getOrientation();
   
-  public void move(int n, int e, int s, int w);
+  public void move(int[] values);
 
   public boolean isHolding();
 

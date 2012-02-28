@@ -176,8 +176,7 @@ public class Grid {
                            -1 : sector.getNeighbour(atLocation).getValue();
         if( sector.facesAgent(atLocation) ) { info[atLocation] -= 2000;}
       }
-      agent.move( info[Bearing.N], info[Bearing.E],
-                  info[Bearing.S], info[Bearing.W] );
+      agent.move(info);
     }
     return this;
   }

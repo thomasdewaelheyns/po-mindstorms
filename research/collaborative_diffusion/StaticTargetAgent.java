@@ -13,7 +13,7 @@ public class StaticTargetAgent implements Agent {
     return this.sector;
   }
 
-  public void move(int n, int e, int s, int w) {
+  public void move(int[] values) {
     // we're static
   }
 

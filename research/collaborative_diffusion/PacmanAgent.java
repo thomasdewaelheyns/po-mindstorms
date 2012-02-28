@@ -14,19 +14,21 @@ public class PacmanAgent extends MovingAgent {
     return this.blocked;
   }
 
-  public void move(int n, int e, int s, int w) {
+  public void move(int[] values) {
     int move = -1;
 
-    if( n < 0 && e < 0 && s < 0 && w < 0 ) {
+    if( values[Bearing.N] < 0 && values[Bearing.E] < 0 && 
+        values[Bearing.S] < 0 && values[Bearing.W] < 0 )
+    {
       this.blocked = true;
     } else {
-      this.go(this.chooseBestMove(n, e, s, w));
+      this.go(this.chooseBestMove(values));
     }
     
-    this.processMovement();
+    this.continueActiveMovement();
   }
 
-  private int chooseBestMove(int n, int e, int s, int w) {
+  private int chooseBestMove(int[] values) {
     int move = -1;
     
     // get the positions of all agents and try to move away from them as 
@@ -34,22 +36,22 @@ public class PacmanAgent extends MovingAgent {
     // first calc current distance
     int bestDist = this.getDistance(this.getLeft(), this.getTop());
 
-    if( n > 0 ) {
+    if( values[Bearing.N] > 0 ) {
       int dist = this.getDistance(this.getLeft(), this.getTop()-1);
       if( dist > bestDist ) { bestDist = dist; move = Bearing.N; }
     }
 
-    if( e > 0 ) {
+    if( values[Bearing.E] > 0 ) {
       int dist = this.getDistance(this.getLeft()+1, this.getTop());
       if( dist > bestDist ) { bestDist = dist; move = Bearing.E; }
     }
     
-    if( s > 0 ) {
+    if( values[Bearing.S] > 0 ) {
       int dist = this.getDistance(this.getLeft(), this.getTop()+1);
       if( dist > bestDist ) { bestDist = dist; move = Bearing.S; }
     }
     
-    if( w > 0 ) {
+    if( values[Bearing.W] > 0 ) {
       int dist = this.getDistance(this.getLeft()-1, this.getTop());
       if( dist > bestDist ) { bestDist = dist; move = Bearing.W; }
     }

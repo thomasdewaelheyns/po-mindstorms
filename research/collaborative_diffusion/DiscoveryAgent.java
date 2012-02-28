@@ -11,46 +11,41 @@ public class DiscoveryAgent extends MovingAgent {
     return this.finished;
   }
   
-  public void move(int n, int e, int s, int w) {
+  public void move(int[] values) {
     if( this.isMoving() ) {
-      //this.log("Continue active movement...");
-      this.processMovement();
-    } else if( this.currentTileHasUnknownWalls() ) {
-      //this.log("Detecting tile...");
-      this.detectTile();
+      this.continueActiveMovement();
+    } else if( this.currentSectorHasUnknownWalls() ) {
+      this.detectSectorWalls();
     } else if( ! this.finished ) {
-      //this.log("Following highest Scent..." );
-      this.followScent();
+      this.chooseNextAction(values);
     } else {
       this.log("Nothing more to do..." );
     }
   }
   
-  private boolean currentTileHasUnknownWalls() {
+  private boolean currentSectorHasUnknownWalls() {
     Sector sector = this.getSector();
     return sector != null && !sector.isFullyKnown();
   }
   
-  private void detectTile() {
+  private void detectSectorWalls() {
     Sector sector = this.getSector();
     // look at each wall that isn't known yet
     for(int bearing=Bearing.W; bearing>=Bearing.N; bearing-- ) {
       if( ! sector.isKnown(bearing) ) {
         if( this.getOrientation() != bearing ) {
-          //this.log( "turing to " + bearing + " to detect it" );
           this.turnTo(bearing);
         } else {
-          //this.log( "looking at " + bearing );
+          // TODO: change to lookAt(bearing) thingy
+          // FIXME: should we take into account the fact that we don't know
+          //        if the sonar detects a wall or another agent ?
           Boolean hasWall = this.getProxy().getSector()
                                 .hasWall(this.getProxy().getOrientation());
           if( hasWall != null ) {
             if( hasWall ) {
-              //this.log( "Wall @ " + bearing + " -> moving on" );
               sector.addWall(bearing);
             } else {
-              //this.log( "No Wall @ " + bearing + " -> adding new Sector" );
               sector.removeWall(bearing);
-              // no wall, this is interesting, let's add a new Sector
               sector.createNeighbour(bearing).setValue(5000);
             }
           }
@@ -60,23 +55,21 @@ public class DiscoveryAgent extends MovingAgent {
     }
   }
   
-  private void followScent() {
-    int highestValue   = 0;
+  private void chooseNextAction(int[] values) {
+    int highestValue = this.getMax(values);
+    if( highestValue == 0 ) {
+      this.finished = true;
+      return;
+    }
+
     int highestBearing = Bearing.NONE;
-    // detect scents
+    
     for(int bearing=Bearing.N;bearing<=Bearing.W;bearing++) {
-      Sector sector = this.getSector();
-      if( ! sector.hasWall(bearing) ) {
-        Sector neighbour = sector.getNeighbour(bearing);
-        if( neighbour != null ) {
-          if( neighbour.getValue() > highestValue ) {
-            highestValue   = neighbour.getValue();
-            highestBearing = bearing;
-          }
-        }
+      if( values[bearing] == highestValue ) {
+        this.go(bearing);
+        return;
       }
     }
-    if( highestValue == 0 ) { this.finished = true; }
-    this.go(highestBearing);
+
   }
 }
