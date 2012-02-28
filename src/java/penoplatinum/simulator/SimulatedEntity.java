@@ -12,7 +12,7 @@ public class SimulatedEntity implements RobotEntity{
   public final double LENGTH_ROBOT = 10.0;
   
   public static final int NUMBER_OF_SENSORS = 10;
-  public static final double LIGHTSENSOR_DISTANCE = 10.0; // 10cm from center
+  public static final double LIGHTSENSOR_DISTANCE = 5.0; // 10cm from center
   public static final double BUMPER_LENGTH_ROBOT = 11.0;
   public static final double WHEEL_SIZE = 17.5; // circumf. in cm
   public static final double WHEEL_BASE = 16.0; // wheeldist. in cm

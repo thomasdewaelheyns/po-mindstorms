@@ -112,16 +112,16 @@ public class Sector implements Tile {
     int start = Sector.SIZE - Sector.LINE_WIDTH;
     int end = Sector.SIZE;
 
-    if (hasWall(1) && start <= x && x < end) {
+    if (!hasWall(1) && start <= x && x < end) {
       return true;
     }
-    if (hasWall(2) && start <= y && y < end) {
+    if (!hasWall(2) && start <= y && y < end) {
       return true;
     }
-    if (hasWall(3) && x <= Sector.LINE_WIDTH) {
+    if (!hasWall(3) && x <= Sector.LINE_WIDTH) {
       return true;
     }
-    if (hasWall(0) && y <= Sector.LINE_WIDTH) {
+    if (!hasWall(0) && y <= Sector.LINE_WIDTH) {
       return true;
     }
 

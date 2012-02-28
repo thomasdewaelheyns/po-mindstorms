@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import org.junit.Test;
 import penoplatinum.Utils;
 import penoplatinum.navigators.BehaviourNavigator;
+import penoplatinum.navigators.SectorNavigator;
 import penoplatinum.simulator.NavigatorRobot;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
@@ -47,6 +48,31 @@ public class WallDetectionTest {
 
         System.out.println(s);
         Utils.Sleep(40);
+      }
+    });
+
+    sim.displayOn(new SwingSimulationView());
+    sim.run();
+
+
+  }
+  
+  
+  @Test
+  public void testSectorNavigator() throws FileNotFoundException {
+    Simulator sim = new Simulator();
+    sim.useMap(SimulatorTest.createSectorMap());
+
+    final NavigatorRobot robot = new NavigatorRobot();
+    robot.useNavigator(new SectorNavigator());
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
+    ent.setPostition(20, 20, 0);
+    sim.addSimulatedEntity(ent);
+
+    sim.useStepRunnable(new Runnable() {
+
+      @Override
+      public void run() {
       }
     });
 

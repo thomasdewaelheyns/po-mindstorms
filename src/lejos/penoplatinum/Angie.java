@@ -114,7 +114,7 @@ public class Angie implements RobotAPI {
         int[] values = new int[Model.SENSORVALUES_NUM];
         values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
         values[sensorNumberMotorRight] = motorRight.getTachoCount();
-        values[sensorNumberMotorSonar] = -sonar.getMotor().getTachoCount();
+        values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
 
 
         values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
@@ -175,10 +175,11 @@ public class Angie implements RobotAPI {
     }
 
     public void setReferencePoint(ReferencePosition reference) {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public ExtendedVector getRelativePosition(ReferencePosition reference) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new ExtendedVector();
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

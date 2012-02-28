@@ -9,10 +9,28 @@ import penoplatinum.IRSeekerV2.Mode;
 import penoplatinum.bluetooth.PacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.navigators.BehaviourNavigator;
+import penoplatinum.navigators.SectorNavigator;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        final AngieEventLoop angie = new AngieEventLoop();
+
+        initializeAgent(angie);
+
+        Runnable robot = new Runnable() {
+
+            public void run() {
+                Utils.Log("Started!");
+                angie.useNavigator(new SectorNavigator());
+                angie.runEventLoop();
+            }
+        };
+
+        robot.run();
+    }
+
+    private static boolean IRTestRuben() {
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
         conn.initializeConnection();
         Utils.EnableRemoteLogging(conn);
@@ -29,9 +47,10 @@ public class Main {
         }
         System.out.println(angles[0]);
         if (startMeasurement(seeker, angles, m, startAngle)) {
-            return;
+            return true;
         }
         m.rotateTo(startAngle, false);
+        return false;
     }
 
     private static boolean startMeasurement(IRSeekerV2 seeker, int[] angles, Motor m, int startAngle) {
@@ -41,8 +60,8 @@ public class Main {
                 m.rotateTo(startAngle + angles[i], false);
                 int dir = seeker.getDirection();
                 String str = count + "," + dir;
-                for(int j=1; j<6; j++){
-                    str += ","+seeker.getSensorValue(j);
+                for (int j = 1; j < 6; j++) {
+                    str += "," + seeker.getSensorValue(j);
                 }
                 Utils.Log(str);
                 count++;
@@ -71,6 +90,9 @@ public class Main {
     }
 
     private static void initializeAgent(final AngieEventLoop angie) {
+        if (0 == 0) {
+            return;
+        }
         RobotBluetoothConnection connection = new RobotBluetoothConnection();
         connection.initializeConnection();
 //        Utils.EnableRemoteLogging(connection);

@@ -1,5 +1,8 @@
 package penoplatinum.simulator;
 
+import java.util.Random;
+import penoplatinum.simulator.t.DistanceTest;
+
 /**
  * SimulationRobotAPI
  * 
@@ -11,8 +14,9 @@ package penoplatinum.simulator;
 public class SimulationRobotAPI implements RobotAPI {
 
   private SimulatedEntity simulatedEntity;
-  private int sonarAngle = 90;   // the sonar moves from - to + this angle
+  private int sonarAngle = 120;   // the sonar moves from - to + this angle
   private int prevSonarTacho = 0;
+  private Random random = new Random(987453231);
 
   public SimulationRobotAPI setSimulatedEntity(SimulatedEntity simulator) {
     this.simulatedEntity = simulator;
@@ -20,10 +24,17 @@ public class SimulationRobotAPI implements RobotAPI {
   }
 
   public void move(double distance) {
+    double error = 0;//0.2;
+    double afwijking = 0;// 0.1;
+    distance *= 1 + (random.nextDouble() - 0.5 + afwijking) * error;
     this.simulatedEntity.moveRobot(distance);
   }
 
   public void turn(int angle) {
+    double error = 0.0; //0.05;
+    double afwijking = 0.3;
+
+    angle = (int) (angle * (1 + (random.nextDouble() - 0.5 + afwijking) * error));
     this.simulatedEntity.turnRobot(angle);
   }
 
@@ -82,8 +93,9 @@ public class SimulationRobotAPI implements RobotAPI {
 
   @Override
   public ExtendedVector getRelativePosition(ReferencePosition reference) {
-    if (reference.internalValue == null)
+    if (reference.internalValue == null) {
       throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
+    }
     updateCurrentPosition();
     outVector.set(reference.internalValue);
     outVector.negate();
@@ -92,8 +104,8 @@ public class SimulationRobotAPI implements RobotAPI {
   }
 
   private void updateCurrentPosition() {
-    currentPosition.setX((float)simulatedEntity.getPosX());
-    currentPosition.setY((float)simulatedEntity.getPosY());
+    currentPosition.setX((float) simulatedEntity.getPosX());
+    currentPosition.setY((float) simulatedEntity.getPosY());
     currentPosition.setAngle(simulatedEntity.getAngle());
   }
 }

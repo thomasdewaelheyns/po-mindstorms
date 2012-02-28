@@ -380,7 +380,16 @@ public class Model {
   private boolean wallLeft;
   private boolean wallFront;
   private boolean wallRight;
+  private int wallLeftDistance;
+  private int wallFrontDistance;
+  private int wallRightDistance;
 
+  
+  private int wallLeftClosestAngle;
+  private int wallRightClosestAngle;
+  
+  
+  
   public boolean isWallFront() {
     return wallFront;
   }
@@ -404,6 +413,61 @@ public class Model {
   public void setWallRight(boolean wallRight) {
     this.wallRight = wallRight;
   }
+
+  public int getWallFrontDistance() {
+    return wallFrontDistance;
+  }
+
+  public void setWallFrontDistance(int wallFrontDistance) {
+    this.wallFrontDistance = wallFrontDistance;
+  }
+
+  public int getWallLeftDistance() {
+    return wallLeftDistance;
+  }
+
+  public void setWallLeftDistance(int wallLeftDistance) {
+    this.wallLeftDistance = wallLeftDistance;
+  }
+
+  public int getWallRightDistance() {
+    return wallRightDistance;
+  }
+
+  public void setWallRightDistance(int wallRightDistance) {
+    this.wallRightDistance = wallRightDistance;
+  }
+
+  public int getWallLeftClosestAngle() {
+    return wallLeftClosestAngle;
+  }
+
+  public void setWallLeftClosestAngle(int wallLeftClosestAngle) {
+    this.wallLeftClosestAngle = wallLeftClosestAngle;
+  }
+
+  public int getWallRightClosestAngle() {
+    return wallRightClosestAngle;
+  }
+
+  public void setWallRightClosestAngle(int wallRightClosestAngle) {
+    this.wallRightClosestAngle = wallRightClosestAngle;
+  }
+  
+  
+  
+  
+  private double totalTurnedAngle;
+
+  public double getTotalTurnedAngle() {
+    return totalTurnedAngle;
+  }
+
+  public void setTotalTurnedAngle(double totalTurnedAngle) {
+    this.totalTurnedAngle = totalTurnedAngle;
+  }
+  
+  
   
   
   

@@ -2,10 +2,12 @@ package penoplatinum.navigators;
 
 import penoplatinum.Utils;
 import penoplatinum.actions.ActionQueue;
-import penoplatinum.actions.AlignNotLineAction;
 import penoplatinum.actions.AlignPerpendicularAction;
+import penoplatinum.actions.AlignPerpendicularLine;
 import penoplatinum.actions.DriveForwardAction;
 import penoplatinum.actions.MoveAction;
+import penoplatinum.actions.MoveRandomSectorAction;
+import penoplatinum.actions.StaticSweepAction;
 import penoplatinum.actions.StopAction;
 import penoplatinum.actions.TurnAction;
 import penoplatinum.modelprocessor.ColorInterpreter;
@@ -32,7 +34,7 @@ public class SectorNavigator implements Navigator {
 
   public SectorNavigator() {
     // Fill with initial action
-    queue.add(driveForwardAction);
+
     interpreter = new ColorInterpreter();
 
   }
@@ -43,11 +45,19 @@ public class SectorNavigator implements Navigator {
       return false;
     }
   };
+  boolean first = true;
 
   public int nextAction() {
 
+    if (first) {
+      first = false;
+      queue.add(new StaticSweepAction(model));
+      queue.add(new StaticSweepAction(model));
+    }
+
     //Utils.Log(model.getSensorValue(Model.S4)+"");
-    updateWallWarnings(); // process sensory data, if more complex should be modelprocessor
+    //updateWallWarnings(); // process sensory data, if more complex should be modelprocessor
+    
     processWorldEvents();
 
 
@@ -56,14 +66,46 @@ public class SectorNavigator implements Navigator {
 
     }
 //
+//    if (queue.getCurrentAction() == null) {
+//      performGapMovement();
+//    }
     if (queue.getCurrentAction() == null) {
-      performGapMovement();
+      //newEvent("Idle", "", "Drive");
+      Model m = model;
+      int diff = (m.getWallLeftClosestAngle() + m.getWallRightClosestAngle()) / 2;
+
+//      if (Math.abs(diff) > 0 && m.isWallLeft() && m.isWallRight()) {
+//        queue.add(new TurnAction(m, -diff).setIsNonInterruptable(true));
+//        queue.add(new StaticSweepAction(model));
+//      }
+
+      if (m.getWallLeftDistance() < 15 && !m.isWallFront()) {
+        queue.add(new TurnAction(m, -10).setIsNonInterruptable(true));
+
+      } else if (m.getWallRightDistance() < 15 && !m.isWallFront()) {
+        queue.add(new TurnAction(m, 10).setIsNonInterruptable(true));
+
+      }
+
+//      if (diff > 5 && m.isWallLeft() && m.isWallRight()) {
+//        queue.add(new SideWallCorrectAction(model, diff * 0.01f * 0.5f));
+//        queue.add(new StaticSweepAction(model));
+//      }
+
+
+
+
+
+      queue.add(new MoveRandomSectorAction(model));
+
+
+
+
+      queue.add(new StaticSweepAction(model));
     }
-    if (queue.getCurrentAction() == null) {
-      newEvent("Idle", "", "Drive");
-      driveForwardAction.reset();
-      queue.add(driveForwardAction);
-    }
+
+
+    //System.out.println(queue.toString());
 
     return queue.getCurrentAction().getNextAction();
   }
@@ -98,8 +140,8 @@ public class SectorNavigator implements Navigator {
     //  checkProximityEvent();
     //}
     //checkBarcodeEvent();
-    //checkLineEvent();
-    checkSonarCollisionEvent();
+    checkLineEvent();
+    //checkSonarCollisionEvent();
 //    checkCollisionEvent();
   }
 //  private double lastBarcodeAngle;
@@ -189,9 +231,14 @@ public class SectorNavigator implements Navigator {
       return;
     }
     // Line detected
-    newEvent("Line " + (model.getLine() == Line.BLACK ? "Black" : "White"), "Lightsensor", "Align and evade"); //TODO: maybe
-    queue.add(new TurnAction(model, model.getLine() == Line.BLACK ? -10 : 10));
-    queue.add(new AlignNotLineAction(model, model.getLine() == Line.BLACK).setIsNonInterruptable(true));
+//    newEvent("Line " + (model.getLine() == Line.BLACK ? "Black" : "White"), "Lightsensor", "Align and evade"); //TODO: maybe
+    queue.clearActionQueue();
+    queue.add(new MoveAction(model, 0.05f));
+    queue.add(new AlignPerpendicularLine(model, true));
+    queue.add(new MoveAction(model, 0.15f));
+    queue.add(new StaticSweepAction(model));
+    Utils.Log("LINE!!");
+    //Sound.playNote(Sound.PIANO, 440, 500);
 //    queue.add(new MoveAction(model, 0.05f).setIsNonInterruptable(true));
 //    queue.add(new DriveForwardAction());
   }
@@ -249,6 +296,12 @@ public class SectorNavigator implements Navigator {
     }
     // Obstacle detected
     newEvent("Sonar Collision", "Sonar", "Align perpendicular");
+
+    queue.clearActionQueue();
+    queue.add(new StaticSweepAction(model));
+    if (0 == 0) {
+      return;
+    }
 
     queue.add(new MoveAction(model, -.05f).setIsNonInterruptable(true));
 
@@ -327,13 +380,7 @@ public class SectorNavigator implements Navigator {
       }
     }
     builder.delete(0, builder.length());
-    builder
-            .append('\"').append(event)
-            .append("\",\"").append(eventSource)
-            .append("\",\"").append(eventAction)
-            .append("\",\"").append(actionQueue)
-            .append("\",\"").append(currentAction).append("\",\"")
-            .append(currentActionArgument).append('\"');
+    builder.append('\"').append(event).append("\",\"").append(eventSource).append("\",\"").append(eventAction).append("\",\"").append(actionQueue).append("\",\"").append(currentAction).append("\",\"").append(currentActionArgument).append('\"');
     return builder.toString();
 
 //    return "\"" + event + "\",\"" + eventSource + "\", \"" + eventAction + "\", \"" + actionQueue + "\", \"" + currentAction + "\", \"" + currentActionArgument + "\"";

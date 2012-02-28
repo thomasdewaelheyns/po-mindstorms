@@ -34,7 +34,7 @@
                     <target>clean</target>
                 </action>
                 <action name="run">
-                    <target>uploadandrun</target>
+                    <target>uploadandrunusb</target>
                 </action>
                 <action name="rebuild">
                     <target>clean</target>
