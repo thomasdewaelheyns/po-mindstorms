@@ -60,6 +60,11 @@ public class Model {
   private double barcodeAngle = 0;
   private boolean lightCorruption = false;
   private ColorInterpreter interpreter;
+  
+  /**
+   * This value is true on the step that the sweep was completed
+   */
+  private Boolean sweepComplete;
 
   public Model() {
     interpreter = new ColorInterpreter();
@@ -107,6 +112,7 @@ public class Model {
    */
   private void process() {
     setScanningLightData(false); // Resets this flag to false
+    sweepComplete = false;
     if (this.processor != null) {
       this.processor.process();
     }
@@ -181,6 +187,7 @@ public class Model {
     this.sweepValues[2] = max;
     this.sweepValues[3] = maxA;
     this.sweepChanged = true;
+    this.sweepComplete = true;
   }
 
   // indicates whether the sweep-values have changed since the last time
@@ -357,6 +364,53 @@ public class Model {
   public void setDirection(float direction) {
     this.direction = direction;
   }
+
+  /**
+   * Returns true when the sweep was completed this step
+   * @return 
+   */
+  public Boolean isSweepComplete() {
+    return sweepComplete;
+  }
+  
+  
+  
+  
+  
+  private boolean wallLeft;
+  private boolean wallFront;
+  private boolean wallRight;
+
+  public boolean isWallFront() {
+    return wallFront;
+  }
+
+  public void setWallFront(boolean wallFront) {
+    this.wallFront = wallFront;
+  }
+
+  public boolean isWallLeft() {
+    return wallLeft;
+  }
+
+  public void setWallLeft(boolean wallLeft) {
+    this.wallLeft = wallLeft;
+  }
+
+  public boolean isWallRight() {
+    return wallRight;
+  }
+
+  public void setWallRight(boolean wallRight) {
+    this.wallRight = wallRight;
+  }
+  
+  
+  
+  
+  
+  
+  
   
   
 }

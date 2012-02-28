@@ -42,6 +42,7 @@ public class LightSensor implements Sensor{
     Point tilePos = simEntity.getCurrentTileCoordinates();
     tilePos.translate(dx, dy);
     Tile tile = sim.getCurrentTile(tilePos);
+    if (tile == null) return Panel.BLACK;
 
     int color = tile.getColorAt(x, y);
 

@@ -11,6 +11,7 @@ import penoplatinum.Utils;
 import penoplatinum.modelprocessor.GapModelProcessor;
 import penoplatinum.modelprocessor.LightCorruptionModelProcessor;
 import penoplatinum.modelprocessor.ProximityModelProcessor;
+import penoplatinum.modelprocessor.WallDetectionModelProcessor;
 
 /**
  * NavigatorRobot
@@ -49,7 +50,8 @@ public class NavigatorRobot implements Robot {
             new ProximityModelProcessor(
             new LightCorruptionModelProcessor(
             new BarcodeModelProcessor(
-            new LineModelProcessor())))))));
+            new LineModelProcessor(
+            new WallDetectionModelProcessor(null)))))))));
 
     this.model.setProcessor(histoBuilder);
   }

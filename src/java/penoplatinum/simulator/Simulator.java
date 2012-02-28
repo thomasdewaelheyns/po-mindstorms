@@ -37,6 +37,7 @@ public class Simulator {
   private HashMap<String, RemoteEntity> remoteEntities = new HashMap<String, RemoteEntity>();
   private SimulatedEntity pacmanEntity;
   private ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<String>();
+  private Runnable stepRunnable;
 
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
@@ -93,7 +94,7 @@ public class Simulator {
     // Force angles between 0 and 360 !!!
     angle = penoplatinum.Utils.ClampLooped(angle, 0, 360);
     //if (angle < 0 || angle > 360) throw new IllegalArgumentException();
-    
+
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this baring
     double dist = 0;
@@ -112,7 +113,7 @@ public class Simulator {
       // at the same baring, starting at the hit point on the tile
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
-      baring =  TileGeometry.getHitWall(hit, tile.getSize());
+      baring = TileGeometry.getHitWall(hit, tile.getSize());
       left = left + Baring.moveLeft(baring);
       top = top + Baring.moveTop(baring);
       x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
@@ -189,16 +190,19 @@ public class Simulator {
     for (RobotEntity robotEntity : robotEntities) {
       robotEntity.step();
     }
+    if (stepRunnable != null) {
+      stepRunnable.run();
+    }
     refreshView();
-    
+
 //    Utils.Sleep(20);
 
   }
 
   private void processRemoteMessages() {
-    
+
     while (!messageQueue.isEmpty()) {
-      
+
       String name = messageQueue.poll();
       if (remoteEntities.containsKey(name)) {
         continue;
@@ -207,9 +211,9 @@ public class Simulator {
 
       RemoteEntity ent = new RemoteEntity(name);
       view.addRobot(ent.getViewRobot());
-      
+
       ent.useSimulator(this);
-      
+
       robotEntities.add(ent);
       remoteEntities.put(name, ent);
 
@@ -257,5 +261,9 @@ public class Simulator {
 
   public int getTileSize() {
     return map.getFirst().getSize();
+  }
+
+  public void useStepRunnable(Runnable runnable) {
+    stepRunnable = runnable;
   }
 }

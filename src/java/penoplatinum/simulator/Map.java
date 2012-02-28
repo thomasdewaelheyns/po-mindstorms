@@ -61,6 +61,8 @@ public class Map {
    * returns a tile at position left, top. first row/column are 1 (one)
    */
   public Tile get(int left, int top) {
+    if (left < 1) return null;
+    if (top < 1) return null;
     int index = getPosition(left, top);
     if (index >= tiles.size()) {
       return null;
