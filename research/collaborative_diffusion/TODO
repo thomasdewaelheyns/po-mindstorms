@@ -3,6 +3,8 @@
 - implement import of others' grid
 - implement continuous update of own grid based on linked/imported party/grid
 
+- implement pacman detection
+
 - improve code (consistency, remove Generics, performance, memory usage,...)
 - add random Grid generation
 - add fitness function -> semi-quantifiable test results -> report

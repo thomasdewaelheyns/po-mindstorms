@@ -225,6 +225,7 @@ public class Grid {
       type        = scanner.next();
       left        = scanner.nextInt();
       top         = scanner.nextInt();
+      orientation = scanner.nextInt();
       Sector sector = this.getSector(left, top);
       if( sector != null ) {
         Agent agent;
@@ -233,7 +234,6 @@ public class Grid {
           sector.addTag(tag);
           this.tags.put(tag, sector);
         } else {
-          orientation = scanner.nextInt();
           if( type.equals("ghost") ) {
             name = scanner.next();
             agent = new GhostAgent(name);
