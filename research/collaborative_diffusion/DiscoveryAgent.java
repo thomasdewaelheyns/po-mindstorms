@@ -53,6 +53,7 @@ public class DiscoveryAgent extends MovingAgent {
       this.chooseNextAction(values);
     } else {
       this.log("Nothing more to do..." );
+      try { System.in.read(); } catch(Exception e) {}
     }
   }
   
@@ -66,14 +67,14 @@ public class DiscoveryAgent extends MovingAgent {
     // look at each wall that isn't known yet
     for(int bearing=Bearing.W; bearing>=Bearing.N; bearing-- ) {
       if( ! sector.isKnown(bearing) ) {
-        if( this.getOrientation() != bearing ) {
+        if( this.getBearing() != bearing ) {
           this.turnTo(bearing);
         } else {
           // TODO: change to lookAt(bearing) thingy
           // FIXME: should we take into account the fact that we don't know
           //        if the sonar detects a wall or another agent ?
           Boolean hasWall = this.getProxy().getSector()
-                                .hasWall(this.getProxy().getOrientation());
+                                .hasWall(this.getProxy().getBearing());
           if( hasWall != null ) {
             if( hasWall ) {
               sector.addWall(bearing);
@@ -95,6 +96,9 @@ public class DiscoveryAgent extends MovingAgent {
   
   private void chooseNextAction(int[] values) {
     int highestValue = this.getMax(values);
+
+    //this.log( "higest = " + highestValue + " out of " + Arrays.toString(values) );
+
 
     // if there are no values to "climb" to, we're done
     // TODO: check global grid information to look for unknown sectors that

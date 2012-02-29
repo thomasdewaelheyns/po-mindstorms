@@ -172,9 +172,25 @@ public class Grid {
         hasNeighbour = sector.hasNeighbour(atLocation);
         hasWall      = sector.hasWall(atLocation);
         hasWall      = hasWall != null && hasWall;
+        // if there is an agent on the field, that we don't know about
+        // (a proxy can see it), consider this to be a wall
+        // if( agent.hasProxy() ) {
+        //   // we need to translate our bearing to that of the proxy
+        //   Agent proxy = agent.getProxy();
+        //   int proxyBearing = (atLocation + (proxy.getOriginalBearing() - agent.getOriginalBearing())) % 3;
+        //   if( proxy.facesAgent(proxyBearing) ) {
+        //     System.out.println( agent.getName() + " : overriding wall for agent via proxy at " + proxyBearing );
+        //     hasWall = true;
+        //   }
+        // }
         info[atLocation] = !sector.hasNeighbour(atLocation) || hasWall ?
                            -1 : sector.getNeighbour(atLocation).getValue();
-        if( sector.facesAgent(atLocation) ) { info[atLocation] -= 2000;}
+        // is we know there is an agent on the next sector, lower the value
+        // drastically
+        Sector neighbour = sector.getNeighbour(atLocation);
+        if( neighbour != null && neighbour.hasAgent() ) {
+          info[atLocation] -= 2000;
+        }
       }
       agent.move(info);
     }

@@ -258,18 +258,4 @@ public class Sector {
   public boolean isFullyKnown() {
     return this.getCertainty() == 15;
   }
-  
-  // we use the Boolean class to allow returning null to indicate we don't
-  // know (because of uncertainty)
-  public Boolean isBlocked(int atLocation) {
-    return this.hasWall(atLocation) == null ? 
-      null : (this.hasWall(atLocation) || this.facesAgent(atLocation));
-  }
-
-  // TODO: should we take into account dat if there's a wall between these
-  //       Sections and also take into account uncertainty ?
-  public boolean facesAgent(int atLocation) {
-    return this.getNeighbour(atLocation) != null
-           && this.getNeighbour(atLocation).hasAgent();
-  }
 }

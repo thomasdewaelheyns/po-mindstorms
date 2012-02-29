@@ -3,6 +3,7 @@ public abstract class MovingAgent implements Agent {
 
   private Sector sector;
   private int    bearing;
+  private int    originalBearing = Bearing.NONE;
 
   // turns are executed, then moves are executed
   private int turns = 0; // number of turns, positive Right, negative Left
@@ -29,14 +30,21 @@ public abstract class MovingAgent implements Agent {
     this.proxy = proxy;
     return this;
   }
+  
+  public boolean hasProxy() {
+    return this.proxy != null;
+  }
 
   public ProxyAgent getProxy() {
     return this.proxy;
   }
 
   public Agent setSector(Sector sector, int bearing) {
-    this.sector  = sector;
-    this.bearing = bearing;
+    this.sector          = sector;
+    this.bearing         = bearing;
+    if( this.originalBearing == Bearing.NONE ) {
+      this.originalBearing = bearing;
+    }
     return this;
   }
   
@@ -53,7 +61,8 @@ public abstract class MovingAgent implements Agent {
   public String getName() { return this.name; }
   public int    getLeft() { return this.sector.getLeft(); }
   public int    getTop()  { return this.sector.getTop(); }
-  public int    getOrientation() { return this.bearing; }
+  public int    getBearing() { return this.bearing; }
+  public int    getOriginalBearing() { return this.originalBearing; }
   
   protected void log(String msg) {
     System.out.printf( "%s @ %2d,%2d : %s\n",
@@ -174,12 +183,15 @@ public abstract class MovingAgent implements Agent {
   protected void moveForward() {
     Sector target = this.sector.getNeighbour(this.bearing), proxyTarget = null;
     if( this.proxy != null ) {
-      proxyTarget = this.proxy.getSector().getNeighbour(this.proxy.getOrientation());
+      proxyTarget = this.proxy.getSector().getNeighbour(this.proxy.getBearing());
     }
     if( target == null ) {
       this.log( "can't move forward (no sector @ " + this.bearing + ")" );
     } else if( !this.isProxy() && proxyTarget != null && proxyTarget.getAgent() != null ) {
-      this.log( "can't move forward (agent occupying " + this.proxy.getOrientation() + ")" );
+      // this means a move that we want to make, but can't (anymore)
+      // it is possible that the sector was free, but became occupied while
+      // turning to it
+      this.log( "can't move forward (agent occupying " + this.proxy.getBearing() + ")" );
     } else {
       this.sector.removeAgent();
       target.putAgent(this, this.bearing);
@@ -196,6 +208,13 @@ public abstract class MovingAgent implements Agent {
     return max;
   }
   
+  // TODO: should we take into account dat if there's a wall between these
+  //       Sections and also take into account uncertainty ?
+  public boolean facesAgent(int atLocation) {
+    Sector sector = this.getSector().getNeighbour(atLocation);
+    return sector != null && sector.hasAgent();
+  }
+
   // this is proper to the concrete implementation
   public abstract void move(int[] values);
 }

@@ -20,6 +20,14 @@ public class StaticTargetAgent implements Agent {
   public Sector getSector() {
     return this.sector;
   }
+  
+  public boolean hasProxy() {
+    return false;
+  }
+  
+  public boolean facesAgent(int atLocation) {
+    return false;
+  }
 
   public void move(int[] values) {
     // we're static
@@ -33,7 +41,8 @@ public class StaticTargetAgent implements Agent {
   public String getName() { return "pacman"; }
   public int    getLeft() { return this.sector.getLeft(); }
   public int    getTop()  { return this.sector.getTop(); }
-  public int    getOrientation() { return this.bearing; }
+  public int    getBearing() { return this.bearing; }
+  public int    getOriginalBearing() { return this.bearing; }
 
   public Agent       setProxy(ProxyAgent proxy) { return this; }
   public ProxyAgent  getProxy() { return null; }

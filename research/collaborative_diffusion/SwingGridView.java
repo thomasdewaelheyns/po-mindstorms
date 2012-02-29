@@ -87,7 +87,7 @@ public class SwingGridView extends JFrame implements GridView {
     // add agent positions
     for( Agent agent : this.grid.getAgents() ) {
       this.board.setAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
-                          agent.getOrientation(), agent.isTarget());
+                          agent.getBearing(), agent.isTarget());
     }
     
     this.board.render();
