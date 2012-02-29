@@ -31,7 +31,7 @@ public class GhostProtocolHandler implements MessageHandler {
     try {
       Scanner scanner = new Scanner(msg).useDelimiter("[ ,]");
       String agentName = scanner.next();
-      if( "JOIN".equals(agentName) ) {
+      if( "JOIN".equals(agentName) && !scanner.hasNext() ) {
         this.handleJoin();
       } else if( this.agent.getName().equals(agentName) ) {
         // skip our own messages
