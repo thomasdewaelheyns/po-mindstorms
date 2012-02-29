@@ -5,118 +5,55 @@ public class Discovery {
                             .changeTitle("Goal")
                             .changeLocation(100,100);
 
-    ProxyAgent proxy1    = new ProxyAgent();
-    ProxyAgent proxy2    = new ProxyAgent();
-    ProxyAgent proxy3    = new ProxyAgent();
-    ProxyAgent proxy4    = new ProxyAgent();
-    Grid goalGrid        = new Grid()
-                             .load(args[0])
-                             .displayOn(goalView)
-                             .clearAgents()
-                             .getSector(2,2)
-                               .putAgent(new StaticTargetAgent(), Bearing.E)
-                               .getGrid()
-                             .getSector(0,0)
-                               .putAgent(proxy1, Bearing.E)
-                               .getGrid()
-                             .getSector(9,0)
-                               .putAgent(proxy2, Bearing.S)
-                               .getGrid()
-                             .getSector(0,9)
-                               .putAgent(proxy3, Bearing.E)
-                               .getGrid()
-                             .getSector(9,9)
-                               .putAgent(proxy4, Bearing.W)
-                               .getGrid()
-                             .show();
+    ProxyAgent[] proxies   = { new ProxyAgent(), new ProxyAgent(),
+                               new ProxyAgent(), new ProxyAgent() };
+    Grid goalGrid = new Grid().load(args[0])
+                              .displayOn(goalView)
+                              .clearAgents();
+    goalGrid.getSector(2,2).putAgent(new StaticTargetAgent(), Bearing.E);
+    goalGrid.getSector(0,0).putAgent(proxies[0], Bearing.E);
+    goalGrid.getSector(9,0).putAgent(proxies[1], Bearing.S);
+    goalGrid.getSector(0,9).putAgent(proxies[2], Bearing.N);
+    goalGrid.getSector(9,9).putAgent(proxies[3], Bearing.W);
 
-    GridView currentView1 = new SwingGridView()
-                             .changeTitle("Discoverer 1")
-                             .changeLocation(300,100);
+    goalGrid.show();
 
-    Agent discoverer1    = new DiscoveryAgent("discoverer1").setProxy(proxy1);
-    Grid currentGrid1    = new Grid()
-                             .displayOn(currentView1)
-                             .addSector(new Sector().setCoordinates(0,0) )
-                             .getSector(0,0)
-                               .putAgent(discoverer1, Bearing.N)
-                               .getGrid()
-                             .show();
+    GridView[] views  = new GridView[4];
+    Agent[]    agents = new Agent[4];
+    Grid[]     grids  = new Grid[4];
+    Queue      queue  = new Queue();
 
-    GridView currentView2 = new SwingGridView()
-                             .changeTitle("Discoverer 2")
-                             .changeLocation(500,100);
+    queue.subscribe(new MessageSpy()); // a logger to follow the conversation
 
-    Agent discoverer2    = new DiscoveryAgent("discoverer2").setProxy(proxy2);
-    Grid currentGrid2    = new Grid()
-                             .displayOn(currentView2)
-                             .addSector(new Sector().setCoordinates(0,0) )
-                             .getSector(0,0)
-                               .putAgent(discoverer2, Bearing.N)
-                               .getGrid()
-                             .show();
-
-    GridView currentView3 = new SwingGridView()
-                             .changeTitle("Discoverer 3")
-                             .changeLocation(300,322);
-
-    Agent discoverer3    = new DiscoveryAgent("discoverer3").setProxy(proxy3);
-    Grid currentGrid3    = new Grid()
-                             .displayOn(currentView3)
-                             .addSector(new Sector().setCoordinates(0,0) )
-                             .getSector(0,0)
-                               .putAgent(discoverer3, Bearing.N)
-                               .getGrid()
-                             .show();
-
-    GridView currentView4 = new SwingGridView()
-                             .changeTitle("Discoverer 4")
-                             .changeLocation(500,322);
-
-    Agent discoverer4    = new DiscoveryAgent("discoverer4").setProxy(proxy4);
-    Grid currentGrid4    = new Grid()
-                             .displayOn(currentView4)
-                             .addSector(new Sector().setCoordinates(0,0) )
-                             .getSector(0,0)
-                               .putAgent(discoverer4, Bearing.N)
-                               .getGrid()
-                             .show();
-
-    // set up communication queue
-    Queue queue = new Queue();
-    queue.subscribe(new MessageSpy())
-         .subscribe(discoverer1.getMessageHandler())
-         .subscribe(discoverer2.getMessageHandler())
-         .subscribe(discoverer3.getMessageHandler())
-         .subscribe(discoverer4.getMessageHandler());
+    // create 4 DiscoveryAgents
+    for(int d=0;d<4;d++) {
+      views[d] = new SwingGridView().changeTitle("Discoverer " + d)
+                                    .changeLocation(300+(d*200),100);
+      agents[d] = new DiscoveryAgent("discoverer" + d).setProxy(proxies[d]);
+      grids[d] = new Grid().displayOn(views[d])
+                           .addSector(new Sector().setCoordinates(0,0) )
+                           .getSector(0,0)
+                             .putAgent(agents[d], Bearing.N)
+                             .getGrid()
+                           .show();
+      queue.subscribe(agents[d].getMessageHandler());
+    }
 
     System.out.println("*** ready, press return to start...");
     try { System.in.read(); } catch(Exception e) {}
 
-    while(!(discoverer1.isHolding() && discoverer2.isHolding() &&
-            discoverer3.isHolding() && discoverer4.isHolding() ) )
+    while( ! ( agents[0].isHolding() && agents[1].isHolding() &&
+               agents[2].isHolding() && agents[3].isHolding() ) )
     {
-      currentGrid1.moveAgents();
-      currentGrid2.moveAgents();
-      currentGrid3.moveAgents();
-      currentGrid4.moveAgents();
       
-      CD.apply(currentGrid1);
-      CD.apply(currentGrid2);
-      CD.apply(currentGrid3);
-      CD.apply(currentGrid4);
-      
-      currentGrid1.show(); // refresh our Grid view to reflect movement
-      currentGrid2.show(); // refresh our Grid view to reflect movement
-      currentGrid3.show(); // refresh our Grid view to reflect movement
-      currentGrid4.show(); // refresh our Grid view to reflect movement
+      for(int d=0;d<4;d++) {
+        grids[d].moveAgents();
+        CD.apply(grids[2]);
+        grids[d].show();
+      }
 
       CD.apply(goalGrid);
-
-      // FIXME: illustrates ghost overwriting/erasing pacman from its sector
-      // System.out.println(goalGrid.getSector(2,2).getAgent().getName() + " : " + goalGrid.getSector(2,2).getValue());
-      
-      goalGrid.show();    // refresh to show effect in "real world"
+      goalGrid.show();
 
       try { Thread.sleep(Integer.parseInt(args[1])); } catch(Exception e) {}
     }
