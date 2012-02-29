@@ -4,16 +4,47 @@ import java.util.Stack;
 
 import java.util.Arrays;
 
+// we're using commons collections HashedMap because HashMap isn't implemented
+// on Lejos.
+import org.apache.commons.collections.map.HashedMap;
+
 public class DiscoveryAgent extends MovingAgent {
   private boolean finished = false;
-    
-  public DiscoveryAgent() { super( "discoverer" ); }
   
+  private boolean joined = false;
+  private int joins = 0;
+  private boolean waitingToStart = true;
+  private HashedMap otherAgents = new HashedMap();
+
+  // we use the GhostProtocolHandler to manage communication to/from others
+  private GhostProtocolHandler others;
+    
+  public DiscoveryAgent(String name) { 
+    super(name);
+  }
+
+  public MessageHandler getMessageHandler() {
+    this.others = new GhostProtocolHandler(this);
+    return this.others;
+  }
+  
+  public Agent activate() {
+    this.waitingToStart = false;
+    return this;
+  }
+
   public boolean isHolding() {
     return this.finished;
   }
   
   public void move(int[] values) {
+    // wait until we can actually start
+    if( this.waitingToStart ) {
+      this.log( "Waiting to start..." );
+      return;
+    }
+
+    // Goooo ....
     if( this.isMoving() ) {
       this.continueActiveMovement();
     } else if( this.currentSectorHasUnknownWalls() ) {
@@ -48,14 +79,19 @@ public class DiscoveryAgent extends MovingAgent {
               sector.addWall(bearing);
             } else {
               sector.removeWall(bearing);
-              sector.createNeighbour(bearing).setValue(5000);
+              Sector neighbour = sector.createNeighbour(bearing).setValue(5000);
+              // announce new/completely unknown sector
+              this.others.sendDiscover(neighbour);
             }
+            // announce new configuration after update of wall info
+            this.others.sendDiscover(sector);
           }
         }
         break;
       }
     }
   }
+  
   
   private void chooseNextAction(int[] values) {
     int highestValue = this.getMax(values);
@@ -84,4 +120,5 @@ public class DiscoveryAgent extends MovingAgent {
     this.go(bearing);
     //this.log( "higest = " + highestValue + " out of " + Arrays.toString(values) + " -> " + bearing );
   }
+
 }

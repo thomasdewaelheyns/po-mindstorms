@@ -11,9 +11,18 @@ public abstract class MovingAgent implements Agent {
   // a proxy agent is an agent that is situated in a goalGrid
   // it represents our eyes and ears
   private ProxyAgent proxy;
-
+  
   public MovingAgent(String name) {
     this.name = name;
+  }
+
+  public MessageHandler getMessageHandler() {
+    return null;
+  }
+
+  // by default, nothing todo
+  public Agent activate() {
+    return this;
   }
 
   public Agent setProxy(ProxyAgent proxy) {
@@ -186,7 +195,6 @@ public abstract class MovingAgent implements Agent {
     }
     return max;
   }
-
   
   // this is proper to the concrete implementation
   public abstract void move(int[] values);

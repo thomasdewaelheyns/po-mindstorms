@@ -34,7 +34,7 @@ public class Discovery {
                              .changeTitle("Discoverer 1")
                              .changeLocation(300,100);
 
-    Agent discoverer1    = new DiscoveryAgent().setProxy(proxy1);
+    Agent discoverer1    = new DiscoveryAgent("discoverer1").setProxy(proxy1);
     Grid currentGrid1    = new Grid()
                              .displayOn(currentView1)
                              .addSector(new Sector().setCoordinates(0,0) )
@@ -47,7 +47,7 @@ public class Discovery {
                              .changeTitle("Discoverer 2")
                              .changeLocation(500,100);
 
-    Agent discoverer2    = new DiscoveryAgent().setProxy(proxy2);
+    Agent discoverer2    = new DiscoveryAgent("discoverer2").setProxy(proxy2);
     Grid currentGrid2    = new Grid()
                              .displayOn(currentView2)
                              .addSector(new Sector().setCoordinates(0,0) )
@@ -60,7 +60,7 @@ public class Discovery {
                              .changeTitle("Discoverer 3")
                              .changeLocation(300,322);
 
-    Agent discoverer3    = new DiscoveryAgent().setProxy(proxy3);
+    Agent discoverer3    = new DiscoveryAgent("discoverer3").setProxy(proxy3);
     Grid currentGrid3    = new Grid()
                              .displayOn(currentView3)
                              .addSector(new Sector().setCoordinates(0,0) )
@@ -73,7 +73,7 @@ public class Discovery {
                              .changeTitle("Discoverer 4")
                              .changeLocation(500,322);
 
-    Agent discoverer4    = new DiscoveryAgent().setProxy(proxy4);
+    Agent discoverer4    = new DiscoveryAgent("discoverer4").setProxy(proxy4);
     Grid currentGrid4    = new Grid()
                              .displayOn(currentView4)
                              .addSector(new Sector().setCoordinates(0,0) )
@@ -81,6 +81,14 @@ public class Discovery {
                                .putAgent(discoverer4, Bearing.N)
                                .getGrid()
                              .show();
+
+    // set up communication queue
+    Queue queue = new Queue();
+    queue.subscribe(new MessageSpy())
+         .subscribe(discoverer1.getMessageHandler())
+         .subscribe(discoverer2.getMessageHandler())
+         .subscribe(discoverer3.getMessageHandler())
+         .subscribe(discoverer4.getMessageHandler());
 
     System.out.println("*** ready, press return to start...");
     try { System.in.read(); } catch(Exception e) {}

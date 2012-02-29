@@ -3,6 +3,14 @@ public class StaticTargetAgent implements Agent {
   private Sector sector;
   private int    bearing;
 
+  public MessageHandler getMessageHandler() {
+    return null;
+  }
+  
+  public Agent activate() {
+    return this;
+  }
+
   public Agent setSector(Sector sector, int bearing) {
     this.sector  = sector;
     this.bearing = bearing;
