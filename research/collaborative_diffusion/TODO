@@ -1,6 +1,6 @@
-- add inter-agent communication
 - implement Model with wall info + update Sector-info if changing (think of
   other robots looking like walls until we know about them)
+- add inter-agent communication
 - implement tracking of others' grid
 - implement import of others' grid
 - implement continuous update of own grid based on linked/imported party/grid
