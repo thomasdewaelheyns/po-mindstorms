@@ -9,16 +9,20 @@ public class CD {
             sector.setValue(0);
           } else {
             int total = 0;
+            int count = 0;
             for(int atLocation=Bearing.N; atLocation<=Bearing.W; atLocation++ ) {
               // is we know about walls and there is no wall ...
               if( sector.isKnown(atLocation) && !sector.hasWall(atLocation) ) {
                 Sector neighbour = sector.getNeighbour(atLocation);
                 if( neighbour != null ) {
                   total += neighbour.getValue();
+                  count++;
                 }
               }
             }
-            sector.setValue(total/4);
+            // TODO: determine optimal algorithm
+            sector.setValue((int)((total/count)*0.85));
+            // sector.setValue(total/4);
           }
         }
       }
