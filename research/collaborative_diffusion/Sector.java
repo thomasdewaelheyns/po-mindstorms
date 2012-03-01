@@ -244,6 +244,13 @@ public class Sector {
     this.certainty.withoutWall(atLocation);
     return this;
   }
+
+  // clears all knowledge about a wall
+  public Sector clearWalls() {
+    this.walls.clear();
+    this.certainty.clear();
+    return this;
+  }
   
   // returns the certainty information about the Sector
   public int getCertainty() {

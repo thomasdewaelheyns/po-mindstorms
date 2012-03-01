@@ -1,5 +1,5 @@
 // copied from original RobotAPI
-// no modifications
+// added support for requesting a sweep
 public interface RobotAPI {
   // moves the robot in a straigth line for a distance expressed in meters
   public void move( double distance );
@@ -18,4 +18,9 @@ public interface RobotAPI {
   
   // beeps once
   public void beep();
+
+  // NEW
+  public void sweep(int[] angles);
+  public boolean sweepInProgress();
+  public int[] getSweepResult();
 }

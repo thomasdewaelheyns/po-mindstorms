@@ -87,6 +87,11 @@ public class GridBoard extends JPanel {
   }
   
   private Color mapToHeatColor(int value) {
+    // TODO: make this relative to a configurable maximum
+    // now: 750 ... possibly needs to go up to 10000
+    // Quick Fix to test:
+    value /= 10;
+    
     float r, g, b, v = value;
     v = (v/1000) * 400 + 350;
 

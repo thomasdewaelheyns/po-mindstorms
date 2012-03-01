@@ -3,14 +3,6 @@ public class StaticTargetAgent implements Agent {
   private Sector sector;
   private int    bearing;
 
-  public MessageHandler getMessageHandler() {
-    return null;
-  }
-  
-  public Agent activate() {
-    return this;
-  }
-
   public Agent setSector(Sector sector, int bearing) {
     this.sector  = sector;
     this.bearing = bearing;
@@ -21,31 +13,21 @@ public class StaticTargetAgent implements Agent {
     return this.sector;
   }
   
-  public boolean hasProxy() {
-    return false;
-  }
-  
-  public boolean facesAgent(int atLocation) {
-    return false;
-  }
-
-  public void move(int[] values) {
-    // we're static
-  }
-
   public boolean isTarget() { return true;  }
   public boolean isHunter() { return false; }
 
-  public int getValue() { return 1000; }
+  public String getName()   { return "target"; }
+  public int    getValue()  { return 10000; }
 
-  public String getName() { return "pacman"; }
-  public int    getLeft() { return this.sector.getLeft(); }
-  public int    getTop()  { return this.sector.getTop(); }
+  public int    getLeft()         { return this.sector.getLeft(); }
+  public int    getOriginalLeft() { return this.sector.getLeft(); }
+  public int    getTop()          { return this.sector.getTop();  }
+  public int    getOriginalTop()  { return this.sector.getTop();  }
+
   public int    getBearing() { return this.bearing; }
   public int    getOriginalBearing() { return this.bearing; }
 
-  public Agent       setProxy(ProxyAgent proxy) { return this; }
-  public ProxyAgent  getProxy() { return null; }
-  
-  public boolean isHolding() { return false; }
+  // whatever you do, we won't budge
+  public Agent  turnTo(int bearing) { return this; }
+  public Agent  moveForward()       { return this; }
 }

@@ -13,11 +13,8 @@ SLEEP=25
 
 all: 
 
-hunt: GridRunner.class
-	${JAVA} GridRunner ${MAP}
-
-discover: Discovery.class
-	${JAVA} Discovery ${MAP} ${SLEEP}
+discover: MiniSimulation.class
+	${JAVA} MiniSimulation ${MAP} ${SLEEP}
 
 %.class: %.java ${BUILD_DIR}
 	@echo "*** building ${<:.class=}"

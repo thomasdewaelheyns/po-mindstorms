@@ -4,6 +4,8 @@
  * @author: Team Platinum
  */
 
+// TODO: turn in into a class with instances and methods
+
 public class Bearing {
   public static final int NONE = -1;
   public static final int N    =  0;
@@ -17,6 +19,26 @@ public class Bearing {
       case Bearing.E: return Bearing.W;
       case Bearing.S: return Bearing.N;
       case Bearing.W: return Bearing.E;
+    }
+    return Bearing.NONE; // shouldn't happen ;-)
+  }
+  
+  public static int leftFrom(int bearing) {
+    switch(bearing) {
+      case Bearing.N: return Bearing.W;
+      case Bearing.E: return Bearing.N;
+      case Bearing.S: return Bearing.E;
+      case Bearing.W: return Bearing.S;
+    }
+    return Bearing.NONE; // shouldn't happen ;-)
+  }
+
+  public static int rightFrom(int bearing) {
+    switch(bearing) {
+      case Bearing.N: return Bearing.E;
+      case Bearing.E: return Bearing.S;
+      case Bearing.S: return Bearing.W;
+      case Bearing.W: return Bearing.N;
     }
     return Bearing.NONE; // shouldn't happen ;-)
   }

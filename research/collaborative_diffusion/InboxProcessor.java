@@ -1,11 +1,11 @@
 public class InboxProcessor extends ModelProcessor{
 
-  public HistogramModelProcessor() { super(); }
-  public HistogramModelProcessor( ModelProcessor nextProcessor ) {
+  public InboxProcessor() { super(); }
+  public InboxProcessor( ModelProcessor nextProcessor ) {
     super(nextProcessor);
   }
 
   protected void work() {
-    
+    // TODO
   }
 }
