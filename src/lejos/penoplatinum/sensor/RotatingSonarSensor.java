@@ -1,5 +1,7 @@
 package penoplatinum.sensor;
 
+import java.util.ArrayList;
+import java.util.List;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
 import lejos.nxt.UltrasonicSensor;
@@ -15,21 +17,24 @@ public class RotatingSonarSensor {
     private final UltrasonicSensor sensor;
     private int startTacho;
     private int endTacho;
+    private int forwardTacho;
     private boolean first;
+    private boolean continuousSweeping = false;
 
     public RotatingSonarSensor(Motor motor, UltrasonicSensor sensor) {
         this.motor = motor;
         this.sensor = sensor;
-        motor.smoothAcceleration(false);
-        
+        motor.smoothAcceleration(true);
+
         if (motor.getTachoCount() != 0) {
-            Sound.playNote(Sound.PIANO, 220,1);
+            Sound.playNote(Sound.PIANO, 220, 1);
             Utils.Log("Initial tacho of the motor should've been 0!");
             motor.resetTachoCount();
         }
-        
+
         int range = 110;
-        
+
+        forwardTacho = motor.getTachoCount();
         startTacho = motor.getTachoCount() + range;
         endTacho = motor.getTachoCount() - range;
     }
@@ -42,10 +47,18 @@ public class RotatingSonarSensor {
     }
 
     public void updateSonarMovement() {
+        if (continuousSweeping) {
+            updateSonarMovementContinuousl();
+        } else {
+            updateSonarMovementOnDemand();
+
+        }
+    }
+
+    private void updateSonarMovementContinuousl() {
         if (motor.isMoving()) {
             return;
         }
-
         first = !first;
         if (first) {
             motor.rotateTo(endTacho, true);
@@ -61,5 +74,58 @@ public class RotatingSonarSensor {
 
     public UltrasonicSensor getSensor() {
         return sensor;
+    }
+
+    public boolean isContinuousSweeping() {
+        return continuousSweeping;
+    }
+
+    public void setContinuousSweeping(boolean continuousSweeping) {
+        this.continuousSweeping = continuousSweeping;
+    }
+    int[] currentSweepAngles;
+    int currentSweepAngleIndex;
+    List<Integer> resultBuffer = new ArrayList<Integer>();
+
+    public boolean sweepInProgress() {
+        return currentSweepAngles != null;
+    }
+
+    public void sweep(int[] i) {
+        currentSweepAngles = i;
+        currentSweepAngleIndex = 0;
+        resultBuffer.clear();
+    }
+
+    public List<Integer> getSweepResult() {
+        return resultBuffer;
+    }
+
+    private void updateSonarMovementOnDemand() {
+        if (!sweepInProgress()) {
+            return;
+        }
+        if (motor.isMoving()) {
+            return;
+        }
+
+        int currentTacho = motor.getTachoCount() - forwardTacho;
+
+        int currentAngle = currentSweepAngles[currentSweepAngleIndex] - forwardTacho;
+
+        if (currentTacho != currentAngle) {
+            motor.rotateTo(currentAngle, true);
+            return;
+        }
+        
+        resultBuffer.add((int) getDistance());
+        currentSweepAngleIndex++;
+
+        if (currentSweepAngleIndex >= currentSweepAngles.length) {
+            motor.rotateTo(currentSweepAngles[0] - forwardTacho, true);
+            currentSweepAngles = null;
+
+        }
+
     }
 }

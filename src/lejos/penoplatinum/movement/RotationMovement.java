@@ -2,17 +2,53 @@ package penoplatinum.movement;
 
 import lejos.nxt.*;
 import penoplatinum.Utils;
+import penoplatinum.simulator.ExtendedVector;
 
 public class RotationMovement {
 
     public static double CCW_afwijking = 1.01;
-    public int SPEEDFORWARD = 400;
+    public int SPEEDFORWARD = 400; //400
     public int SPEEDTURN = 250;
     public final int WIELOMTREK = 175; //mm
     public final int WIELAFSTAND = 160;//112mm
     public Motor motorLeft = Motor.C;
     public Motor motorRight = Motor.B;
     private boolean movementDisabled;
+    private int tachoLeftStart;
+    private int tachoRightStart;
+    private ExtendedVector internalOrientation = new ExtendedVector();
+    private ExtendedVector buffer = new ExtendedVector();
+
+    private void abortMovement() {
+        internalOrientation.set(getInternalOrientation());
+        startMovement();
+    }
+
+    public ExtendedVector getInternalOrientation() {
+        int tachoLeftDiff = motorLeft.getTachoCount() - tachoLeftStart;
+        int tachoRightDiff = motorRight.getTachoCount() - tachoRightStart;
+        float averageForward = (tachoLeftDiff + tachoRightDiff) / 2.0f;
+
+        float inverse = averageForward * WIELOMTREK / 360 / 1000;
+
+        buffer.setX((float) (inverse * Math.sin(Math.toRadians(internalOrientation.getAngle()))));
+        buffer.setY((float) (inverse * Math.cos(Math.toRadians(internalOrientation.getAngle()))));
+
+        averageForward = (tachoRightDiff - tachoLeftDiff) / 2.0f;
+
+        inverse = (float) (averageForward * WIELOMTREK / WIELAFSTAND / Math.PI);
+
+
+
+        buffer.setAngle(-inverse);
+        buffer.add(internalOrientation);
+        return buffer;
+    }
+
+    private void startMovement() {
+        tachoLeftStart = motorLeft.getTachoCount();
+        tachoRightStart = motorRight.getTachoCount();
+    }
 
     public void setMovementDisabled(boolean movementDisabled) {
         this.movementDisabled = movementDisabled;
@@ -42,6 +78,7 @@ public class RotationMovement {
         if (movementDisabled) {
             return;
         }
+        abortMovement();
         distance *= 1000;
         distance /= 0.99;
         int r = (int) (distance * 360 / WIELOMTREK);
@@ -64,6 +101,7 @@ public class RotationMovement {
         if (movementDisabled) {
             return;
         }
+        abortMovement();
         setSpeed(SPEEDTURN);
         angleCCW *= CCW_afwijking;
 
@@ -105,6 +143,7 @@ public class RotationMovement {
     }
 
     public void stop() {
+        abortMovement();
         motorLeft.stop();
         motorRight.stop();
     }
@@ -119,4 +158,5 @@ public class RotationMovement {
     public float getAverageTacho() {
         return (motorLeft.getTachoCount() + motorRight.getTachoCount()) / 2f;
     }
+
 }

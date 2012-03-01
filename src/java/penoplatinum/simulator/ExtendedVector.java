@@ -1,5 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
+/* To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package penoplatinum.simulator;
@@ -57,7 +56,13 @@ public class ExtendedVector {
     angle += other.angle;
   }
 
-  void zero() {
+  public void subtract(ExtendedVector other) {
+    x -= other.x;
+    y -= other.y;
+    angle -= other.angle;
+  }
+  
+  public void zero() {
     x = 0;
     y = 0;
     angle = 0;

@@ -1,16 +1,11 @@
 package penoplatinum.simulator;
 
-import penoplatinum.modelprocessor.LineModelProcessor;
 import penoplatinum.modelprocessor.SonarModelProcessor;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
 import penoplatinum.modelprocessor.ModelProcessor;
-import penoplatinum.modelprocessor.FrontPushModelProcessor;
-import penoplatinum.modelprocessor.BarcodeModelProcessor;
 
 import penoplatinum.Utils;
-import penoplatinum.modelprocessor.GapModelProcessor;
-import penoplatinum.modelprocessor.LightCorruptionModelProcessor;
-import penoplatinum.modelprocessor.ProximityModelProcessor;
+import penoplatinum.modelprocessor.LineModelProcessor;
 import penoplatinum.modelprocessor.WallDetectionModelProcessor;
 
 /**
@@ -45,14 +40,14 @@ public class NavigatorRobot implements Robot {
     this.model = new Model();
     ModelProcessor histoBuilder =
             new HistogramModelProcessor(
-            new FrontPushModelProcessor(
+            //new FrontPushModelProcessor(
             new SonarModelProcessor(
-            new GapModelProcessor(
-            new ProximityModelProcessor(
-            new LightCorruptionModelProcessor(
-            new BarcodeModelProcessor(
+            //new GapModelProcessor(
+            //new ProximityModelProcessor(
+            //new LightCorruptionModelProcessor(
+            //new BarcodeModelProcessor(
             new LineModelProcessor(
-            new WallDetectionModelProcessor(null)))))))));
+            new WallDetectionModelProcessor(null))));
 
     this.model.setProcessor(histoBuilder);
   }
@@ -113,7 +108,7 @@ public class NavigatorRobot implements Robot {
     }
     // get sensor data and update the model (motors are sensors too)
     this.model.updateSensorValues(this.api.getSensorValues());
-    
+
     this.model.setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
 
@@ -144,12 +139,13 @@ public class NavigatorRobot implements Robot {
     }
 
 
-    if (Math.abs(sendDelta.getX()) > 20 || Math.abs(sendDelta.getY()) > 20 || Math.abs(sendDelta.getAngle()) > 20) {
-      agent.send("p" + (int) model.getPositionX() + "," + (int) model.getPositionY() + "," + (int) model.getDirection());
-      sendDelta.zero();
-    }
+//    if (Math.abs(sendDelta.getX()) > 20 || Math.abs(sendDelta.getY()) > 20 || Math.abs(sendDelta.getAngle()) > 20) {
+//      agent.send("p" + (int) model.getPositionX() + "," + (int) model.getPositionY() + "," + (int) model.getDirection());
+//      sendDelta.zero();
+//    }
 
 
+//    Utils.Log(model.getTotalTurnedAngle() + "");
     //agent.send(getStatusMessage());
 
   }

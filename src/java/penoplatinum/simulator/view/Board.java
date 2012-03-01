@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import penoplatinum.simulator.Map;
 import penoplatinum.simulator.RemoteViewRobot;
+import penoplatinum.simulator.SimulatedViewRobot;
 import penoplatinum.simulator.tiles.Tile;
 
 public class Board extends JPanel {
@@ -49,6 +50,7 @@ public class Board extends JPanel {
     URL resource = this.getClass().getResource("../images/robot40.png");
     ImageIcon ii = new ImageIcon(resource);
     RemoteViewRobot.robot = ii.getImage();
+    SimulatedViewRobot.robot = ii.getImage();
   }
 
   public void showMap(Map map) {

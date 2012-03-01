@@ -6,6 +6,7 @@ package penoplatinum;
 
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.NavigatorRobot;
+import penoplatinum.simulator.Robot;
 
 /**
  *
@@ -13,29 +14,24 @@ import penoplatinum.simulator.NavigatorRobot;
  */
 public class AngieEventLoop {
 
-    private NavigatorRobot navigatorRobot;
-    private Angie angie;
+    private Robot robot;
+    private AngieRobotAPI angie;
     private Navigator navigator;
     private String lastState = "";
 
-    public AngieEventLoop() {
-        this.angie = new Angie();
+    public AngieEventLoop(Robot robot) {
+        this.angie = new AngieRobotAPI();
 
-        navigatorRobot = new NavigatorRobot();
-        navigatorRobot.useRobotAPI(angie);
+        this.robot = robot;
+        robot.useRobotAPI(angie);
 
-    }
-
-    public void useNavigator(Navigator navigator) {
-        this.navigatorRobot.useNavigator(navigator);
-        this.navigator = navigator;
     }
 
     private void cacheState() {
-        synchronized (this) {
-            //TODO: WARNING, this was copied/moved to NavigatorRobot, fps was removed
-            this.lastState = this.navigatorRobot.getStatusMessage();
-        }
+//        synchronized (this) {
+//            //TODO: WARNING, this was copied/moved to NavigatorRobot, fps was removed
+//            this.lastState = this.navigatorRobot.getStatusMessage();
+//        }
     }
 
     /**
@@ -49,13 +45,12 @@ public class AngieEventLoop {
             }
             return lastState;
         }
-        
+
     }
     private Object updateLock = new Object();
     private boolean updateStateInvoked;
-
     private int fps;
-    
+
     public void runEventLoop() {
         int count = 0;
         int delta = 0;
@@ -64,29 +59,29 @@ public class AngieEventLoop {
             step();
             delta += System.nanoTime() - start;
             if (delta > 1000L * 1000 * 1000) {
-                fps = (int)(count / (double) delta * 1000d * 1000d * 1000d);
-                System.out.println(fps);
+                fps = (int) (count / (double) delta * 1000d * 1000d * 1000d);
+                Utils.Log(Integer.toString(fps));
                 count = 0;
                 delta = 0;
             }
             count++;
 
-            synchronized(updateLock)
-            {
-                if (updateStateInvoked)
-                {
-                    this.cacheState();
-                    updateStateInvoked =false;
-                    updateLock.notify();
-                }
-            }
-            Thread.yield();
+//            synchronized(updateLock)
+//            {
+//                if (updateStateInvoked)
+//                {
+//                    this.cacheState();
+//                    updateStateInvoked =false;
+//                    updateLock.notify();
+//                }
+//            }
+//            Thread.yield();
         }
 
     }
 
     public void step() {
         angie.getSonar().updateSonarMovement();
-        navigatorRobot.step();
+        robot.step();
     }
 }

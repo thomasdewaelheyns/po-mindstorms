@@ -8,26 +8,33 @@ import lejos.nxt.addon.IRSeeker;
 import penoplatinum.IRSeekerV2.Mode;
 import penoplatinum.bluetooth.PacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
+import penoplatinum.ghost.GhostRobot;
+import penoplatinum.ghost.LeftFollowingGhostNavigator;
 import penoplatinum.navigators.BehaviourNavigator;
 import penoplatinum.navigators.SectorNavigator;
+import penoplatinum.simulator.NavigatorRobot;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        final AngieEventLoop angie = new AngieEventLoop();
+        
+        GhostRobot robot = new GhostRobot("Michiel");
+        robot.useNavigator(new LeftFollowingGhostNavigator(robot.getGhostModel()));
+        
+        
+        final AngieEventLoop angie = new AngieEventLoop(robot);
 
-        initializeAgent(angie);
+        //initializeAgent(angie);
 
-        Runnable robot = new Runnable() {
+        Runnable runnable = new Runnable() {
 
             public void run() {
                 Utils.Log("Started!");
-                angie.useNavigator(new SectorNavigator());
                 angie.runEventLoop();
             }
         };
 
-        robot.run();
+        runnable.run();
     }
 
     private static boolean IRTestRuben() {
@@ -73,7 +80,11 @@ public class Main {
     static byte[] buf = new byte[1];
 
     private static void runRobotSemester1() {
-        final AngieEventLoop angie = new AngieEventLoop();
+        
+        NavigatorRobot nav = new NavigatorRobot();
+        nav.useNavigator(new BehaviourNavigator());
+        
+        final AngieEventLoop angie = new AngieEventLoop(nav);
 
         initializeAgent(angie);
 
@@ -81,7 +92,6 @@ public class Main {
 
             public void run() {
                 Utils.Log("Started!");
-                angie.useNavigator(new BehaviourNavigator());
                 angie.runEventLoop();
             }
         };
@@ -90,12 +100,14 @@ public class Main {
     }
 
     private static void initializeAgent(final AngieEventLoop angie) {
-        if (0 == 0) {
-            return;
-        }
+     
         RobotBluetoothConnection connection = new RobotBluetoothConnection();
         connection.initializeConnection();
-//        Utils.EnableRemoteLogging(connection);
+        Utils.EnableRemoteLogging(connection);
+     
+           if (0 == 0) {
+            return;
+        }
         final PacketTransporter transporter = new PacketTransporter(connection);
         connection.RegisterTransporter(transporter, 123);
         final PrintStream stream = new PrintStream(transporter.getSendStream());

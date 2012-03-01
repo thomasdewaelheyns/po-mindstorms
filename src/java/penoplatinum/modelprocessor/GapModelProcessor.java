@@ -17,9 +17,14 @@ public class GapModelProcessor extends ModelProcessor {
   public static final int MAX_GAP_ANGLE = 90;
   public static final int MIN_GAP_DISTANCE = 80;
   public static final int MAX_GAP_INGORE_ANGLE = 1;
+  private boolean gapUnique = true;
 
   public GapModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
+  }
+
+  public void setGapMustBeUnique(boolean value) {
+    gapUnique = value;
   }
 
   public void work() {
@@ -123,7 +128,9 @@ public class GapModelProcessor extends ModelProcessor {
 
     if (uniqueGapFound) {
       // Another gap found, invalid data or no walls
-      fail = true;
+      if (gapUnique) {
+        fail = true;
+      }
       return;
     }
 

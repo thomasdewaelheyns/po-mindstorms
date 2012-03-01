@@ -12,6 +12,7 @@ package penoplatinum.simulator;
 import penoplatinum.modelprocessor.ModelProcessor;
 import java.util.List;
 import java.util.ArrayList;
+import penoplatinum.Utils;
 import penoplatinum.modelprocessor.Buffer;
 import penoplatinum.modelprocessor.ColorInterpreter;
 
@@ -32,11 +33,9 @@ public class Model {
   public static final int MOTORSTATE_FORWARD = 1;
   public static final int MOTORSTATE_BACKWARD = 2;
   public static final int MOTORSTATE_STOPPED = 3;
-  
   private float positionX;
   private float positionY;
   private float direction;
-  
   /**
    * the raw data of the sensors: three motors, sensors 1, 2, 3, 4 
    * and the states of the three motors defined by the MOTORSTATE enumeration
@@ -60,7 +59,6 @@ public class Model {
   private double barcodeAngle = 0;
   private boolean lightCorruption = false;
   private ColorInterpreter interpreter;
-  
   /**
    * This value is true on the step that the sweep was completed
    */
@@ -83,7 +81,12 @@ public class Model {
    */
   public void updateSensorValues(int[] values) {
     if (values.length != SENSORVALUES_NUM) {
+      Utils.Sleep(5000);
       throw new RuntimeException("Invalid number of sensorvalues given!");
+    }
+    if (this.sensors == null) {
+      Utils.Log("HELOOOOOO");
+      Utils.Sleep(5000);
     }
 
     this.prevSensors = this.sensors.clone(); //TODO: WARNING GC
@@ -116,6 +119,8 @@ public class Model {
     if (this.processor != null) {
       this.processor.process();
     }
+    isSweepDataChanged = false;
+
   }
 
   /**
@@ -189,6 +194,22 @@ public class Model {
     this.sweepChanged = true;
     this.sweepComplete = true;
   }
+  private boolean isSweepDataChanged;
+
+  /**
+   * WARNING: THIS IS NOT SUPPOSED TO BE CALLED BY A MODELPROCESSOR
+   * @param distances
+   * @param angles 
+   */
+  public void updateSonarValues(List<Integer> distances, List<Integer> angles) {
+    this.distances = distances;
+    this.angles = angles;
+    isSweepDataChanged = true;
+  }
+
+  public boolean isSweepDataChanged() {
+    return isSweepDataChanged;
+  }
 
   // indicates whether the sweep-values have changed since the last time
   // they are consulted
@@ -261,13 +282,7 @@ public class Model {
     boolean pushRight = this.getSensorValue(S2) == 255;
 
     builder.delete(0, builder.length());
-    builder .append(lightValue).append(",\"")
-            .append(interpretedColor.toLowerCase()).append("\",\"")
-            .append(lastBarcode).append("\",")
-            .append(sonarAngle).append(',')
-            .append(sonarDistance).append(',')
-            .append(pushLeft).append(',')
-            .append(pushRight);
+    builder.append(lightValue).append(",\"").append(interpretedColor.toLowerCase()).append("\",\"").append(lastBarcode).append("\",").append(sonarAngle).append(',').append(sonarDistance).append(',').append(pushLeft).append(',').append(pushRight);
     return builder.toString();
   }
   private boolean leftObstacle;
@@ -372,24 +387,15 @@ public class Model {
   public Boolean isSweepComplete() {
     return sweepComplete;
   }
-  
-  
-  
-  
-  
   private boolean wallLeft;
   private boolean wallFront;
   private boolean wallRight;
   private int wallLeftDistance;
   private int wallFrontDistance;
   private int wallRightDistance;
-
-  
   private int wallLeftClosestAngle;
   private int wallRightClosestAngle;
-  
-  
-  
+
   public boolean isWallFront() {
     return wallFront;
   }
@@ -453,10 +459,6 @@ public class Model {
   public void setWallRightClosestAngle(int wallRightClosestAngle) {
     this.wallRightClosestAngle = wallRightClosestAngle;
   }
-  
-  
-  
-  
   private double totalTurnedAngle;
 
   public double getTotalTurnedAngle() {
@@ -466,15 +468,4 @@ public class Model {
   public void setTotalTurnedAngle(double totalTurnedAngle) {
     this.totalTurnedAngle = totalTurnedAngle;
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 }

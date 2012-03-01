@@ -1,7 +1,8 @@
 package penoplatinum.simulator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import penoplatinum.simulator.t.DistanceTest;
 
 /**
  * SimulationRobotAPI
@@ -17,6 +18,7 @@ public class SimulationRobotAPI implements RobotAPI {
   private int sonarAngle = 120;   // the sonar moves from - to + this angle
   private int prevSonarTacho = 0;
   private Random random = new Random(987453231);
+  private boolean continuousSweep = false;
 
   public SimulationRobotAPI setSimulatedEntity(SimulatedEntity simulator) {
     this.simulatedEntity = simulator;
@@ -61,6 +63,14 @@ public class SimulationRobotAPI implements RobotAPI {
   private int motorDelay = 10;
 
   private void restartSonarMotor() {
+    if (continuousSweep) {
+      restartSonarMotorContinuous();
+    } else {
+      restartSonarMotorOnDemand();
+    }
+  }
+
+  private void restartSonarMotorContinuous() {
     int currentTacho = (int) this.simulatedEntity.getSensorValues()[Model.M3];
     // if the motor has finished its previous movement, sweep back ...
     if (currentTacho == this.prevSonarTacho && motorDelay == 0) {
@@ -107,5 +117,48 @@ public class SimulationRobotAPI implements RobotAPI {
     currentPosition.setX((float) simulatedEntity.getPosX());
     currentPosition.setY((float) simulatedEntity.getPosY());
     currentPosition.setAngle(simulatedEntity.getAngle());
+  }
+  int[] currentSweepAngles;
+  int currentSweepAngleIndex;
+  List<Integer> resultBuffer = new ArrayList<Integer>();
+
+  @Override
+  public boolean sweepInProgress() {
+    return currentSweepAngles != null;
+  }
+
+  @Override
+  public void sweep(int[] i) {
+    currentSweepAngles = i;
+    currentSweepAngleIndex = 0;
+    resultBuffer.clear();
+  }
+
+  @Override
+  public List<Integer> getSweepResult() {
+    return resultBuffer;
+  }
+
+  private void restartSonarMotorOnDemand() {
+    if (!sweepInProgress()) {
+      return;
+    }
+
+    int currentTacho = (int) this.simulatedEntity.getSensorValues()[Model.M3];
+
+    int currentAngle = currentSweepAngles[currentSweepAngleIndex];
+
+    if (currentTacho != currentAngle) {
+      simulatedEntity.rotateMotorTo(Model.M3, currentAngle);
+      return;
+    }
+    resultBuffer.add((int) this.simulatedEntity.getSensorValues()[Model.S3]);
+    currentSweepAngleIndex++;
+
+    if (currentSweepAngleIndex >= currentSweepAngles.length) {
+      currentSweepAngles = null;
+    }
+
+
   }
 }

@@ -1,5 +1,7 @@
 package penoplatinum.simulator;
 
+import java.util.List;
+
 
 /**
  * Robot API interface
@@ -40,4 +42,10 @@ public interface RobotAPI {
    * @param reference 
    */
   public ExtendedVector getRelativePosition(ReferencePosition reference);
+
+  public boolean sweepInProgress();
+
+  public void sweep(int[] i);
+  
+  public List<Integer> getSweepResult();
 }

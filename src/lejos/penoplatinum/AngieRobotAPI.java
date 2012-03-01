@@ -1,5 +1,6 @@
 package penoplatinum;
 
+import java.util.List;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.TouchSensor;
@@ -17,7 +18,7 @@ import penoplatinum.simulator.RobotAPI;
  * TODO: WARNING, WHEN CHANGIN PORTS THIS ENTIRE CLASS MUST BE CHECKED
  * @author: Team Platinum
  */
-public class Angie implements RobotAPI {
+public class AngieRobotAPI implements RobotAPI {
 
     private Motor motorLeft;
     private Motor motorRight;
@@ -35,23 +36,23 @@ public class Angie implements RobotAPI {
     private static final int sensorNumberMotorRight = Model.M2;
     private static final int sensorNumberMotorSonar = Model.M3;
 
-    public Angie() {
+    public AngieRobotAPI() {
 
         //Reset tacho's
         Motor.A.resetTachoCount();
         Motor.B.resetTachoCount();
-        Motor.C.resetTachoCount();        
-        
-        
+        Motor.C.resetTachoCount();
+
+
         motorLeft = Motor.B;
         motorRight = Motor.C;
 
-        
-        
+
+
         touchLeft = new TouchSensor(SensorPort.S2);
         touchRight = new TouchSensor(SensorPort.S1);
         light = new WrappedLightSensor(null, null);
-        light.calibrate();
+//        light.calibrate();
         sonar = new RotatingSonarSensor(Motor.A, new UltrasonicSensor(SensorPort.S3));
 
         calibrationData = new AngieCalibrationData();
@@ -121,7 +122,7 @@ public class Angie implements RobotAPI {
         values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
         values[sensorNumberLight] = light.getLightValue();
         values[sensorNumberSonar] = (int) sonar.getDistance();
-        
+
         //TODO: change on port change
         values[Model.MS3] = getMotorState(Motor.A);
         values[Model.MS1] = getMotorState(Motor.B);
@@ -133,7 +134,7 @@ public class Angie implements RobotAPI {
     }
 
     private int getMotorState(Motor m) {
-        for(int i=0;i<3; i++){
+        for (int i = 0; i < 3; i++) {
             if (!m.isMoving() || m.isStopped() || m.isFloating()) {
                 return Model.MOTORSTATE_STOPPED;
             }
@@ -144,7 +145,7 @@ public class Angie implements RobotAPI {
                 return Model.MOTORSTATE_BACKWARD;
             }
         }
-        Utils.Error("Syncronized??? "+(m.isMoving()?1:0)+","+(m.isForward()?1:0)+","+(m.isBackward()?1:0)+","+(m.isStopped()?1:0)+","+(m.isFloating()?1:0));
+        Utils.Error("Syncronized??? " + (m.isMoving() ? 1 : 0) + "," + (m.isForward() ? 1 : 0) + "," + (m.isBackward() ? 1 : 0) + "," + (m.isStopped() ? 1 : 0) + "," + (m.isFloating() ? 1 : 0));
         //1, 0, 0, 1, 0
         Utils.Error("I M P O S S I B L E !");
         return 0;
@@ -173,13 +174,33 @@ public class Angie implements RobotAPI {
     public void beep() {
         lejos.nxt.Sound.beep();
     }
+    private ExtendedVector outVector = new ExtendedVector();
 
     public void setReferencePoint(ReferencePosition reference) {
-//        throw new UnsupportedOperationException("Not supported yet.");
+        reference.internalValue.set(movement.getInternalOrientation());
     }
 
     public ExtendedVector getRelativePosition(ReferencePosition reference) {
-        return new ExtendedVector();
-//        throw new UnsupportedOperationException("Not supported yet.");
+        if (reference.internalValue == null) {
+            throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
+        }
+        outVector.set(reference.internalValue);
+        outVector.negate();
+        outVector.add(movement.getInternalOrientation());
+        
+        
+        return outVector;
+    }
+
+    public boolean sweepInProgress() {
+        return sonar.sweepInProgress();
+    }
+
+    public void sweep(int[] i) {
+        sonar.sweep(i);
+    }
+
+    public List<Integer> getSweepResult() {
+        return sonar.getSweepResult();
     }
 }

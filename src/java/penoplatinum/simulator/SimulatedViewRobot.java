@@ -12,7 +12,7 @@ import penoplatinum.simulator.view.ViewRobot;
 
 public class SimulatedViewRobot implements ViewRobot{
   // cached images
-  static Image robot;
+  public static Image robot;
   
   private SimulatedEntity original;
 
@@ -40,7 +40,7 @@ public class SimulatedViewRobot implements ViewRobot{
   @Override
   public void renderSonar(Graphics2D g2d) {
     if( this.getDistances() == null ) { return; }
-    for( int i=0; i<this.getDistances().size()-1; i++ ) {
+    for( int i=0; i<this.getDistances().size(); i++ ) {
       int angle = (int)(this.getAngles().get(i)) + this.getDirection();
       double rads = Math.toRadians(angle+90);
       int dx = (int)(Math.cos(rads) * this.getDistances().get(i)) * Board.SCALE;

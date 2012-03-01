@@ -17,8 +17,8 @@ public class WrappedLightSensor implements ILightSensor {
 
     final LightSensor light;
     private int WHITEVAL = 100;
-    private int BROWNVAL = 58;
-    private int BLACKVAL = 1;
+    private int BROWNVAL = 63;
+    private int BLACKVAL = -3;
     private int blackBorder;
     private int whiteBorder;
     PrintStream printStream;
@@ -33,7 +33,9 @@ public class WrappedLightSensor implements ILightSensor {
     public WrappedLightSensor(IConnection conn, PacketTransporter commandTransporter) {
         //TODO: move out the sensorport
         light = new LightSensor(SensorPort.S4, true);
-        
+        light.setLow(344);
+        light.setHigh(508);
+
         if (conn != null) {
             lightTransporter = new PacketTransporter(conn);
             conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
@@ -60,6 +62,7 @@ public class WrappedLightSensor implements ILightSensor {
 //        commandTransporter.ReceivePacket();
         Button.waitForPress();
         LCD.drawInt(light.readValue(), 3, 0);
+
         light.calibrateHigh();
         WHITEVAL = light.readValue();
         Sound.beep();
@@ -86,6 +89,10 @@ public class WrappedLightSensor implements ILightSensor {
         updateBorders();
 
         Utils.Log(BLACKVAL + "," + BROWNVAL + "," + WHITEVAL);
+        Utils.Log(light.getLow() + "," + light.getHigh());
+        Utils.Sleep(10000);
+
+
 
 
     }
@@ -95,7 +102,7 @@ public class WrappedLightSensor implements ILightSensor {
         whiteBorder = (WHITEVAL + BROWNVAL) / 2;
         ColorInterpreter.blackBorder = blackBorder;
         ColorInterpreter.whiteBorder = whiteBorder;
-        
+
     }
 
     public int getLightValue() {

@@ -233,9 +233,9 @@ public class SectorNavigator implements Navigator {
     // Line detected
 //    newEvent("Line " + (model.getLine() == Line.BLACK ? "Black" : "White"), "Lightsensor", "Align and evade"); //TODO: maybe
     queue.clearActionQueue();
-    queue.add(new MoveAction(model, 0.05f));
-    queue.add(new AlignPerpendicularLine(model, true));
-    queue.add(new MoveAction(model, 0.15f));
+    queue.add(new MoveAction(model, 0.02f));
+    queue.add(new AlignPerpendicularLine(model, true).setIsNonInterruptable(true));
+    queue.add(new MoveAction(model, 0.18f + 0.03f));
     queue.add(new StaticSweepAction(model));
     Utils.Log("LINE!!");
     //Sound.playNote(Sound.PIANO, 440, 500);

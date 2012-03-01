@@ -2,13 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.simulator;
+package penoplatinum.ghost;
 
 /**
  *
  * @author MHGameWork
  */
-public class ReferencePosition {
-    
-    public ExtendedVector internalValue = new ExtendedVector();
+class GridUpdateProcessor {
+
+  public GridUpdateProcessor() {
+  }
+  
 }

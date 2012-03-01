@@ -18,9 +18,9 @@ import penoplatinum.sensor.WrappedLightSensor;
  */
 public class RobotCalibrator {
 
-    private final Angie angie;
+    private final AngieRobotAPI angie;
 
-    public RobotCalibrator(Angie angie) {
+    public RobotCalibrator(AngieRobotAPI angie) {
         this.angie = angie;
 
     }

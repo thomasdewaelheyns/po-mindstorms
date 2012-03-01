@@ -20,7 +20,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
   List<Integer> angles;
 
   public void work() {
-    if (!model.isSweepComplete()) {
+    if (!model.isSweepDataChanged()) {
       return;
     }
 
