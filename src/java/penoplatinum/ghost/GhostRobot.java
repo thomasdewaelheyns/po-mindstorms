@@ -3,6 +3,7 @@ package penoplatinum.ghost;
 import java.util.ArrayList;
 import penoplatinum.Utils;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
+import penoplatinum.modelprocessor.LightColorModelProcessor;
 import penoplatinum.modelprocessor.LineModelProcessor;
 import penoplatinum.modelprocessor.ModelProcessor;
 import penoplatinum.modelprocessor.WallDetectionModelProcessor;
@@ -47,6 +48,7 @@ public class GhostRobot implements Robot {
     this.model = new GhostModel(name);
     ModelProcessor processors =
             new HistogramModelProcessor(
+            new LightColorModelProcessor(
             //new FrontPushModelProcessor(
             //new SonarModelProcessor(
             //new GapModelProcessor(
@@ -57,7 +59,7 @@ public class GhostRobot implements Robot {
             new WallDetectionModelProcessor(
             new InboxProcessor(
             new WallDetectorProcessor(
-            new GridUpdateProcessor())))));
+            new GridUpdateProcessor()))))));
     this.model.setProcessor(processors);
   }
 
