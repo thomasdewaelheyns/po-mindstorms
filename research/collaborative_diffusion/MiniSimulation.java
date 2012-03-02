@@ -34,7 +34,7 @@ public class MiniSimulation {
 
     // instantiate 4 ghosts
     // TODO: create GhostFactory
-    for( int r=0; r<1; r++ ) {
+    for( int r=0; r<4; r++ ) {
       apis[r] = new MiniSimulationRobotAPI(proxies[r]);
       views[r] = new SwingGridView().changeTitle("Discoverer " + r)
                                     .changeLocation(300+(r*200),100);
@@ -48,16 +48,14 @@ public class MiniSimulation {
     System.out.println("*** ready, press return to start...");
     try { System.in.read(); } catch(Exception e) {}
 
-    // while( ! ( robots[0].reachedGoal() && robots[1].reachedGoal() && 
-    //            robots[2].reachedGoal() && robots[3].reachedGoal() ) )
-    // {
-    while( true ) {
-      
-      for(int d=0;d<1;d++) {
+    while( ! ( robots[0].reachedGoal() && robots[1].reachedGoal() && 
+               robots[2].reachedGoal() && robots[3].reachedGoal() ) )
+    {
+      for(int d=0;d<4;d++) {
         robots[d].step();
-        System.out.println( ((GhostModel)robots[d].getModel()).explain() );
+        //System.out.println( ((GhostModel)robots[d].getModel()).explain() );
         views[d].refreshWalls();
-        try { System.in.read(); } catch(Exception e) {}
+        //try { System.in.read(); } catch(Exception e) {}
       }
       goalGrid.show();
 
