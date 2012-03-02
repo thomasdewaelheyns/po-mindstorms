@@ -18,5 +18,7 @@ public interface Agent {
   public int      getOriginalBearing();
   
   public Agent    turnTo(int bearing);
+  public Agent    turnLeft();
+  public Agent    turnRight();
   public Agent    moveForward();
 }

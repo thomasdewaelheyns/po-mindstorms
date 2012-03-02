@@ -39,9 +39,10 @@ public class SwingGridView extends JFrame implements GridView {
     int minTop  = this.grid.getMinTop();
     for(int top=this.grid.getMinTop(); top<=this.grid.getMaxTop(); top++) {
       for(int left=this.grid.getMinLeft(); left<=this.grid.getMaxLeft(); left++ ) {
-        for(int wall=Bearing.N; wall<=Bearing.W; wall++ ) {
-          Sector sector = this.grid.getSector(left, top);
-          if( sector != null ) {
+        Sector sector = this.grid.getSector(left, top);
+        if( sector != null ) {
+          this.board.addSector(left-minLeft, top-minTop);
+          for(int wall=Bearing.N; wall<=Bearing.W; wall++ ) {
             Boolean hasWall = sector.hasWall(wall);
             if( hasWall != null && hasWall ) {
               this.board.addWall(left-minLeft, top-minTop, wall);

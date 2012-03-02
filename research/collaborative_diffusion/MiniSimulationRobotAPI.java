@@ -23,23 +23,7 @@ public class MiniSimulationRobotAPI implements RobotAPI {
   }
   
   public int[] getSensorValues() {
-    return new int[] { this.proxy.getLeft() - this.proxy.getOriginalLeft(),
-                       this.proxy.getTop()  - this.proxy.getOriginalTop(),
-                       this.calcBearingDiff()
-                     };
-  }
-  
-  // TODO: too much knowledge here about default position of Agent in GhostModel
-  // TODO: at least this should go into Bearing class
-  private int calcBearingDiff() {
-    // calc diff from default agent
-    int diff = Bearing.N - this.proxy.getOriginalBearing();
-    if( Math.abs(diff) == 3 ) { diff /= 3; } // -3 => 1   3 => -1
-    // apply to current
-    int virtual = this.proxy.getBearing() + diff;
-    if( virtual < 0 ) { virtual += 3; }
-    else if( virtual > 3 ) { virtual -= 3; }
-    return virtual;
+    return new int[] {};
   }
   
   public void setSpeed(int motor, int speed) {
@@ -64,9 +48,13 @@ public class MiniSimulationRobotAPI implements RobotAPI {
     int left, front, right;
 
     int bearing = this.proxy.getBearing();
-    Boolean wall = this.proxy.getSector().hasWall(Bearing.leftFrom(bearing));
+    Boolean wall, agent = false;
+    wall = this.proxy.getSector().hasWall(Bearing.leftFrom(bearing));
     if(wall == null) {
       throw new RuntimeException("proxy can not determine wall to left");
+    }
+    if(!wall && this.proxy.getSector().getNeighbour(Bearing.leftFrom(bearing)).hasAgent()) {
+      wall = true;
     }
     left = wall ? 20 : 60;
 
@@ -74,11 +62,17 @@ public class MiniSimulationRobotAPI implements RobotAPI {
     if(wall == null) {
       throw new RuntimeException("proxy can not determine wall in front");
     }
+    if(!wall && this.proxy.getSector().getNeighbour(bearing).hasAgent()) {
+      wall = true;
+    }
     front = wall ? 20 : 60;
 
     wall = this.proxy.getSector().hasWall(Bearing.rightFrom(bearing));
     if(wall == null) {
       throw new RuntimeException("proxy can not determine wall to right");
+    }
+    if(!wall && this.proxy.getSector().getNeighbour(Bearing.rightFrom(bearing)).hasAgent()) {
+      wall = true;
     }
     right = wall ? 20 : 60;
 

@@ -53,7 +53,12 @@ public class MiniSimulation {
     // {
     while( true ) {
       
-      for(int d=0;d<1;d++) { robots[d].step(); }
+      for(int d=0;d<1;d++) {
+        robots[d].step();
+        System.out.println( ((GhostModel)robots[d].getModel()).explain() );
+        views[d].refreshWalls();
+        try { System.in.read(); } catch(Exception e) {}
+      }
       goalGrid.show();
 
       try { Thread.sleep(Integer.parseInt(args[1])); } catch(Exception e) {}

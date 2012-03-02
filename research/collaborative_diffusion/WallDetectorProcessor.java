@@ -11,7 +11,17 @@ public class WallDetectorProcessor extends ModelProcessor {
   // are obtained
   protected void work() {
     GhostModel model = (GhostModel)this.model;
-    if( ! model.hasNewSonarValues() ) { return; }
+
+    // clear the certainty of the current Sector
+    model.getDetectedSector().clearCertainty();
+
+    // only update when we have a complete set of sensorvalues
+    if( ! model.hasNewSonarValues() ) { 
+      System.out.println(" @@@@@ WallDetection waiting for now sweep info" );
+      return;
+    }
+    
+    System.out.println(" @@@@@ WallDetection" );
 
     Agent agent = model.getAgent();
     int bearing = agent.getBearing();
@@ -26,7 +36,10 @@ public class WallDetectorProcessor extends ModelProcessor {
     }
     
     // back = reverse(bearing) = no, I just came from there
-    sector.removeWall(Bearing.reverse(bearing));
+    // TODO: find a way to solve the initial back-wall
+    //if( model.hasMoved() ) {
+      sector.removeWall(Bearing.reverse(bearing));
+    //}
     
     // left = leftFrom(bearing)
     if( model.getLeftFreeDistance() < 35 ) {

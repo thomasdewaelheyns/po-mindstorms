@@ -7,32 +7,45 @@ public class GridUpdateProcessor extends ModelProcessor {
 
   // update the agent
   protected void work() {
+    System.out.println( "GridUpdateProcessor..." );
     this.updateWallInfo();
     this.addNewSectors();
-    this.repositionAgent();
+    this.updateHillClimbingInfo();
   }
 
   // update the current Sector on the Grid to reflect the currently selected
   private void updateWallInfo() {
     GhostModel model = (GhostModel)this.model;
-    model.getCurrentSector().addWalls(model.getDetectedSector().getWalls());
+
+    Sector detected = model.getDetectedSector();
+    Sector current  = model.getCurrentSector();
+    for(int atLocation=Bearing.N; atLocation<=Bearing.W; atLocation++ ) {
+      if( detected.isKnown(atLocation) ) {
+        if( detected.hasWall(atLocation) ) {
+          current.addWall(atLocation);
+        } else {
+          current.removeWall(atLocation);
+        }
+      }
+    }
   }
 
   // if there are bearing without walls, providing access to unknown Sectors,
-  // add such Sectors to the 
+  // add such Sectors to the Grid
   private void addNewSectors() {
-    
+    Sector current = ((GhostModel)this.model).getCurrentSector();
+    for(int location=Bearing.N; location<=Bearing.W; location++) {
+      if( current.givesAccessTo(location) &&
+          ! current.hasNeighbour(location) )
+      {
+        // TODO: parameterize the value
+        System.out.println("adding unknown sector(" + location +")" );
+        current.createNeighbour(location).setValue(5000);
+      }
+    }
   }
   
-  // remove the agent from its "current" position and put him on the newly
-  // detected position based on its relative position
-  private void repositionAgent() {
-    Agent  agent   = ((GhostModel)this.model).getAgent();
-    Sector current = agent.getSector();
-    Sector target  = current.getGrid()
-                            .getSector(agent.getLeft(), agent.getTop());
-
-    current.removeAgent();
-    target.putAgent(agent, agent.getBearing());
+  private void updateHillClimbingInfo() {
+    CD.apply(((GhostModel)this.model).getGrid());
   }
 }

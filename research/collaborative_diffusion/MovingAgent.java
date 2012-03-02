@@ -46,6 +46,18 @@ public abstract class MovingAgent implements Agent {
     return this;
   }
   
+  public Agent turnLeft() {
+    if( this.bearing == Bearing.N ) { this.bearing = Bearing.W; }
+    else { this.bearing--; }
+    return this;
+  }
+  
+  public Agent turnRight() {
+    if( this.bearing == Bearing.W ) { this.bearing = Bearing.N; }
+    else { this.bearing++; }
+    return this;
+  }
+  
   public Agent moveForward() {
     int bearing = this.getBearing();
     Sector current = this.getSector();
@@ -56,7 +68,7 @@ public abstract class MovingAgent implements Agent {
     } else if( current.getNeighbour(bearing).hasAgent() ) {
       System.err.println("ERROR: Neighbour has Agent" );
     } else {
-      // actually move the proxy
+      // actually move the agent
       current.removeAgent();
       current.getNeighbour(bearing).putAgent(this, bearing);
     }

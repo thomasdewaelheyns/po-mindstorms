@@ -7,6 +7,9 @@ import javax.swing.*;
 public class GridBoard extends JPanel {
   private int width = 0, height = 0;
 
+  private BufferedImage sectors;
+  private Graphics2D sectorsG;
+
   private BufferedImage walls;
   private Graphics2D wallsG;
 
@@ -30,9 +33,9 @@ public class GridBoard extends JPanel {
   }
   
   private void setupCanvas() {
-    this.setBackground(BLACK);
+    this.setBackground(WHITE);
     this.setDoubleBuffered(true);
-    this.clearWalls();
+    this.clearSectors();
   }
   
   public void start() {
@@ -42,9 +45,20 @@ public class GridBoard extends JPanel {
     this.agentsG = this.agents.createGraphics();
   }
   
+  public void clearSectors() {
+    this.sectors  = this.createBuffer();
+    this.sectorsG = this.sectors.createGraphics();
+    this.clearWalls();
+  }
+
   public void clearWalls() {
     this.walls  = this.createBuffer();
     this.wallsG = this.walls.createGraphics();
+  }
+  
+  public void addSector(int left, int top) {
+    this.sectorsG.setColor(BLACK);
+    this.sectorsG.fill(new Rectangle(20 * left, 20 * top, 20, 20));
   }
   
   public void addWall(int left, int top, int location) {
@@ -134,10 +148,11 @@ public class GridBoard extends JPanel {
   public void paint(Graphics g) {
     super.paint(g);
     Graphics2D g2d = (Graphics2D)g;
-    
-    g2d.drawImage( this.cloud,  null, 0, 0 );
-    g2d.drawImage( this.walls,  null, 0, 0 );
-    g2d.drawImage( this.agents, null, 0, 0 );
+
+    g2d.drawImage( this.sectors, null, 0, 0 );
+    g2d.drawImage( this.cloud,   null, 0, 0 );
+    g2d.drawImage( this.walls,   null, 0, 0 );
+    g2d.drawImage( this.agents,  null, 0, 0 );
     
     Toolkit.getDefaultToolkit().sync();
     g.dispose();

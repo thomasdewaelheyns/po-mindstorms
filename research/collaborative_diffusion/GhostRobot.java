@@ -61,19 +61,20 @@ public class GhostRobot implements Robot {
   private void log(String msg) {
     System.out.printf( "[%10s] %2d,%2d : %s\n", 
                        this.model.getAgent().getName(),
-                       this.model.getLeft(),
-                       this.model.getTop(),
+                       this.model.getAgent().getLeft(),
+                       this.model.getAgent().getTop(),
                        msg );
   }
   
   // one step in the event-loop of the Robot
   public void step() {
-    this.log( "start step" );
+    this.log( ">>>>> start step" );
     // poll other sensors and update model
     this.model.updateSensorValues(this.api.getSensorValues());
 
     // let the driver do his thing
-    if( this.driver.isBusy() ) { 
+    if( this.driver.isBusy() ) {
+      this.log( "waiting for driver..." ); 
       this.driver.step();
       return;
     }
@@ -81,22 +82,21 @@ public class GhostRobot implements Robot {
     // we want obstacle-information based on Sonar-values
     // as long as this is in progress, we wait
     if( this.api.sweepInProgress() ) { 
+      this.log( "waiting for sweep in progress" );
       return;
     }
     
     // if the sweep is ready ...
     if( this.waitingForSweep ) {
+      this.log( "new sweep is ready" );
       this.model.updateSonarValues(this.api.getSweepResult());
       this.waitingForSweep = false;
     } else {
+      this.log( "request sweep" );
       this.api.sweep( new int[] { -90, 0, 90 } );
       this.waitingForSweep = true;
       return; // to wait for results
     }
-    
-    System.out.println( this.model.explain() );
-    try { System.in.read(); } catch(Exception e) {}
-
     
     // ask navigator what to do and ...
     // let de driver drive, manhattan style ;-)

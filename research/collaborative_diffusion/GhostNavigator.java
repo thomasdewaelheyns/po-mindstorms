@@ -32,7 +32,9 @@ public class GhostNavigator implements Navigator {
     // TODO: maybe take into account the move with least turns ?
     
     // choose randomly one of the best moves and create the required actions
-    return this.createActions(moves[(int)(Math.random()*count)]);
+    int forMove = moves[(int)(Math.random()*count)];
+    System.out.println( "NAVIGATOR: " + forMove );
+    return this.createActions(forMove);
   }
 
   // get the values of all 4 adjectant Sectors (N,E,S,W)
@@ -77,7 +79,7 @@ public class GhostNavigator implements Navigator {
   
   private List<Integer> createActions(int target) {
     List<Integer> actions = new ArrayList<Integer>();
-    int current = this.model.getBearing();
+    int current = this.model.getAgent().getBearing();
     
     if( target != current ) {
       int diff = target - current;
@@ -89,7 +91,7 @@ public class GhostNavigator implements Navigator {
         case  2: actions.add(GhostAction.TURN_RIGHT);
         case  1: actions.add(GhostAction.TURN_RIGHT); break;
       }
-      System.out.println( "ACTIONS: " + current + " -> " + target + " = " + diff );
+      System.out.println( "ACTIONS TURN: " + current + " -> " + target + " = " + diff );
     }
     
     // after turning, move forward

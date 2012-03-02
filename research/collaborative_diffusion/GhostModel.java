@@ -10,7 +10,7 @@ public class GhostModel implements Model {
   // little bit of configuration
   private static final int SENSORVALUES_COUNT = 4; // TODO
 
-  private int[] sonarValues;
+  private int[] sonarValues = { -1, -1, -1 };
   private boolean newSonarValues = false;
 
   // two queue-like lists for in- and out-goinging messages
@@ -24,8 +24,6 @@ public class GhostModel implements Model {
   
   // the agent on the grid
   private Agent agent;
-  // its position
-  private int left, top, bearing;
   // sector representing the current/prev current-sector
   private Sector currentSector = new Sector(); // THIS IS NOT a reference to the Grid
   private Sector prevSector    = new Sector(); // THIS IS NOT a reference to the Grid
@@ -58,6 +56,10 @@ public class GhostModel implements Model {
     return this;
   }
   
+  public Grid getGrid() {
+    return this.myGrid;
+  }
+  
   public Model setProcessor(ModelProcessor processor) {
     this.processor = processor;
     this.processor.setModel(this);
@@ -66,10 +68,7 @@ public class GhostModel implements Model {
 
   // receive an update of the sensor values
   public void updateSensorValues(int[] values) {
-    this.left    = values[0];
-    this.top     = values[1];
-    this.bearing = values[2];
-
+    // nothing required here for Navigator
     this.process();
   }
   
@@ -108,18 +107,6 @@ public class GhostModel implements Model {
   
   public Agent getAgent() {
     return this.agent;
-  }
-  
-  public int getLeft() {
-    return this.left;
-  }
-
-  public int getTop() {
-    return this.top;
-  }
-
-  public int getBearing() {
-    return this.bearing;
   }
   
   public boolean hasNewSonarValues() {
@@ -164,13 +151,17 @@ public class GhostModel implements Model {
   }
   
   public String explain() {
-    return "@ " + this.left + "," + this.top + " / Agent @ " + this.agent.getLeft() + "," + this.agent.getTop() + "\n" + 
-           "Bearing: " + this.bearing + " / AgentBearing: " + this.agent.getBearing() + "\n" +
+    Boolean n = this.currentSector.hasWall(Bearing.N);
+    Boolean e = this.currentSector.hasWall(Bearing.E);
+    Boolean s = this.currentSector.hasWall(Bearing.S);
+    Boolean w = this.currentSector.hasWall(Bearing.W);
+    return "Agent @ " + this.agent.getLeft() + "," + this.agent.getTop() + "\n" + 
+           "AgentBearing: " + this.agent.getBearing() + "\n" +
            "Detected Sector:\n" +
-           "  N: " + ( this.currentSector.hasWall(Bearing.N) ? "yes" : "" ) + "\n" + 
-           "  E: " + ( this.currentSector.hasWall(Bearing.E) ? "yes" : "" ) + "\n" + 
-           "  S: " + ( this.currentSector.hasWall(Bearing.S) ? "yes" : "" ) + "\n" + 
-           "  W: " + ( this.currentSector.hasWall(Bearing.W) ? "yes" : "" ) + "\n" +
+           "  N: " + ( n == null ? "?" : ( n ? "yes" : "" )) + "\n" + 
+           "  E: " + ( e == null ? "?" : ( e ? "yes" : "" )) + "\n" + 
+           "  S: " + ( s == null ? "?" : ( s ? "yes" : "" )) + "\n" + 
+           "  W: " + ( w == null ? "?" : ( w ? "yes" : "" )) + "\n" + 
            "Free Left : " + this.getLeftFreeDistance() + "\n" + 
            "     Front: " + this.getFrontFreeDistance() + "\n" + 
            "     Right: " + this.getRightFreeDistance() + "\n";

@@ -49,6 +49,7 @@ public class Sector {
     return this;
   }
   
+  // WATCH OUT: this method returns the new neighbour, not itself
   public Sector createNeighbour(int atLocation) {
     // if we already have a neighbour at this location, return it
     if(this.hasNeighbour(atLocation)) { return this.getNeighbour(atLocation);}
@@ -225,6 +226,13 @@ public class Sector {
   // know anything about the wall.
   public Boolean hasWall(int wall) {
     return this.certainty.hasWall(wall) ? this.walls.hasWall(wall) : null;
+  }
+
+  // returns true if there is NO wall and we absolutely can move forward
+  // that way
+  public boolean givesAccessTo(int location) {
+    return this.certainty.hasWall(location) && 
+          ! this.walls.hasWall(location);
   }
   
   // returns all wall configuration
