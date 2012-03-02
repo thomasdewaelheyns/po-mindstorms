@@ -1,5 +1,7 @@
 public class WallDetectorProcessor extends ModelProcessor {
 
+  private boolean first = true;
+
   public WallDetectorProcessor() { super(); }
   public WallDetectorProcessor( ModelProcessor nextProcessor ) {
     super(nextProcessor);
@@ -37,9 +39,10 @@ public class WallDetectorProcessor extends ModelProcessor {
     
     // back = reverse(bearing) = no, I just came from there
     // TODO: find a way to solve the initial back-wall
-    //if( model.hasMoved() ) {
+    if( !this.first ) {
       sector.removeWall(Bearing.reverse(bearing));
-    //}
+    }
+    first = false;
     
     // left = leftFrom(bearing)
     if( model.getLeftFreeDistance() < 35 ) {
