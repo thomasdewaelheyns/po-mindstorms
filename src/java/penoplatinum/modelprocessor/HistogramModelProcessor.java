@@ -22,6 +22,7 @@ public class HistogramModelProcessor extends ModelProcessor{
     @Override
     protected void work() {
         int value = this.model.getSensorValue(this.model.S4);
+        System.out.println(value);
         this.model.getLightValueBuffer().insert(value);
     }
     

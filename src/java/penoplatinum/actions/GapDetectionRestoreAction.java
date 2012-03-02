@@ -28,6 +28,7 @@ public class GapDetectionRestoreAction extends BaseAction {
     this.model = model;
 
     proc = new GapModelProcessor(null);
+    proc.setModel(model);
 
   }
   int state = -1;
@@ -51,12 +52,11 @@ public class GapDetectionRestoreAction extends BaseAction {
 
     if (state == 0) {
 
-      proc.work();
+      proc.performGapDetectionOnBuffer();
       if (model.isGapFound()) {
-        int diff = model.getGapStartAngle() - model.getGapEndAngle();
-        diff = -diff;
+        int diff = (model.getGapStartAngle() + model.getGapEndAngle()) / 2;
 
-        setAngle(state);
+        setAngle(diff);
 
         return Navigator.TURN;
       }

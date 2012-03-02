@@ -4,8 +4,7 @@
  */
 package penoplatinum.actions;
 
-import penoplatinum.Utils;
-import penoplatinum.modelprocessor.ColorInterpreter;
+import java.util.ArrayList;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.RobotAPI;
@@ -17,49 +16,49 @@ import penoplatinum.simulator.RobotAPI;
 public class PerformSweepAction extends BaseAction {
 
   private Model model;
-
   private final RobotAPI api;
+  int[] array;
+  ArrayList<Integer> arrayList = new ArrayList<Integer>();
 
   public PerformSweepAction(RobotAPI api, Model model) {
     super(model);
     this.api = api;
     this.model = model;
 
+    int step = 5;
+    int start = -120;
+    int end = 120;
+    array = new int[(end - start) / step + 1];
+
+    for (int i = 0; i < array.length; i++) {
+      array[i] = i * step + start;
+      arrayList.add(array[i]);
+    }
 
   }
-  
   int state = -1;
 
   @Override
   public int getNextAction() {
-    
-    if (state == 0)
-    {
-      if (api.sweepInProgress())
-        return Navigator.STOP;
+
+    if (api.sweepInProgress()) {
+      return Navigator.STOP;
     }
-    
-    
-    
+
+
     state++;
     return getStateStart();
 
   }
 
   private int getStateStart() {
-    switch(state)
-    {
+    switch (state) {
       case 0:
-        
-        int step = 5;
-        int start = -120;
-        int end = 120;
-        int[] array = new int[(end - start) / step +1];
-        
-        for (int i = 0; i < array.length; i++) {
-          array[i] = i * step + start;
-        }
         api.sweep(array);
+        break;
+      case 1:
+        this.model.updateSonarValues(this.api.getSweepResult(), arrayList);
+        break;
     }
     return Navigator.STOP;
   }

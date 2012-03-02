@@ -26,14 +26,14 @@ public class SimulationRobotAPI implements RobotAPI {
   }
 
   public void move(double distance) {
-    double error = 0;//0.2;
+    double error = 0.2;//0.2;
     double afwijking = 0;// 0.1;
     distance *= 1 + (random.nextDouble() - 0.5 + afwijking) * error;
     this.simulatedEntity.moveRobot(distance);
   }
 
   public void turn(int angle) {
-    double error = 0.0; //0.05;
+    double error = 0.2; //0.05;
     double afwijking = 0.3;
 
     angle = (int) (angle * (1 + (random.nextDouble() - 0.5 + afwijking) * error));
@@ -116,7 +116,7 @@ public class SimulationRobotAPI implements RobotAPI {
   private void updateCurrentPosition() {
     currentPosition.setX((float) simulatedEntity.getPosX());
     currentPosition.setY((float) simulatedEntity.getPosY());
-    currentPosition.setAngle(simulatedEntity.getAngle());
+    currentPosition.setAngle((float)simulatedEntity.getDirection() + 90);
   }
   int[] currentSweepAngles;
   int currentSweepAngleIndex;
@@ -131,7 +131,8 @@ public class SimulationRobotAPI implements RobotAPI {
   public void sweep(int[] i) {
     currentSweepAngles = i;
     currentSweepAngleIndex = 0;
-    resultBuffer.clear();
+    //WARNING: this is not possible, the result-array of getSweepResult can live longer than 1 sweep
+    resultBuffer = new ArrayList<Integer>();
   }
 
   @Override

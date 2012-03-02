@@ -274,4 +274,10 @@ public class SimulatedEntity implements RobotEntity{
     int top = (int) (this.positionY % simulator.getTileSize());
     return new Point(left, top);
   }
+
+  public double getDirection() {
+    return direction;
+  }
+  
+  
 }

@@ -7,15 +7,16 @@ package penoplatinum.modelprocessor;
  * 
  * Author: Team Platinum
  */
+import java.util.List;
 import penoplatinum.simulator.Model;
 
 public class GapModelProcessor extends ModelProcessor {
 
   private Boolean direction;
   private int prevAngle = 0;
-  public static final int MIN_GAP_ANGLE = 40;
+  public static final int MIN_GAP_ANGLE = 20;
   public static final int MAX_GAP_ANGLE = 90;
-  public static final int MIN_GAP_DISTANCE = 80;
+  public static final int MIN_GAP_DISTANCE = 40;
   public static final int MAX_GAP_INGORE_ANGLE = 1;
   private boolean gapUnique = true;
 
@@ -31,26 +32,10 @@ public class GapModelProcessor extends ModelProcessor {
     model.setGapFound(false);
     // if we changed direction
     if (this.changedDirection()) {
-
-      this.direction = this.getDirection();
-
-      // close a possible open gap
-      closeGap();
-
-      // push a copy of the info to model
-      model.setGapFound(!fail && uniqueGapFound);
-      if (model.isGapFound()) {
-        model.setGapEndAngle(gapEndAngle);
-        model.setGapStartAngle(gapStartAngle);
-      }
-
+      // Reached the end of this gap detection pass
+      endGapDetectionPass();
       // prepare for next sweep
-
-      fail = false;
-      uniqueGapFound = false;
-      gapStartAngle = Integer.MAX_VALUE;
-      gapEndAngle = Integer.MAX_VALUE;
-      gapStartFound = false;
+      startGapDetectionPass();
     }
 
     if (model.isTurning()) {
@@ -58,9 +43,33 @@ public class GapModelProcessor extends ModelProcessor {
     }
 
     // now record the new ping
-    this.record();
+    this.record(getDistance(), getAngle());
 
     this.prevAngle = this.getAngle();
+  }
+
+  private void endGapDetectionPass() {
+    this.direction = this.getDirection();
+
+    // close a possible open gap
+    closeGap(getAngle());
+
+    // push a copy of the info to model
+    model.setGapFound(!fail && uniqueGapFound);
+    if (model.isGapFound()) {
+      model.setGapEndAngle(gapEndAngle);
+      model.setGapStartAngle(gapStartAngle);
+    }
+
+  }
+
+  private void startGapDetectionPass() {
+
+    fail = false;
+    uniqueGapFound = false;
+    gapStartAngle = Integer.MAX_VALUE;
+    gapEndAngle = Integer.MAX_VALUE;
+    gapStartFound = false;
   }
 
   private Boolean changedDirection() {
@@ -84,25 +93,23 @@ public class GapModelProcessor extends ModelProcessor {
   private boolean fail = false;
   private boolean uniqueGapFound = false;
 
-  private void record() {
-    int distance = this.getDistance();
-    int angle = this.getAngle();
+  private void record(int distance, int angle) {
 
     if (fail) {
       return;
     }
 
     if (distance > MIN_GAP_DISTANCE) {
-      growGap();
+      growGap(angle);
     } else {
-      closeGap();
+      closeGap(angle);
     }
   }
 
-  private void growGap() {
+  private void growGap(int angle) {
     if (gapStartAngle == Integer.MAX_VALUE) {
       // start of gap
-      gapStartAngle = getAngle();
+      gapStartAngle = angle;
       gapStartFound = true;
       return;
     }
@@ -110,7 +117,7 @@ public class GapModelProcessor extends ModelProcessor {
     // just grow the gap, (do nothing)
   }
 
-  private void closeGap() {
+  private void closeGap(int angle) {
     if (!gapStartFound) {
       return;
     }
@@ -118,7 +125,7 @@ public class GapModelProcessor extends ModelProcessor {
       return;
     }
 
-    int endAngle = getAngle();
+    int endAngle = angle;
     int size = Math.abs(endAngle - gapStartAngle);
 
     if (size < MAX_GAP_INGORE_ANGLE) {
@@ -144,6 +151,20 @@ public class GapModelProcessor extends ModelProcessor {
       // incorrect gap found (invalid data or no walls), fail
       fail = true;
     }
+  }
+
+  /**
+   * Detects a gap in the current sonar buffer 
+   */
+  public void performGapDetectionOnBuffer() {
+    List<Integer> distances = model.getDistances();
+    List<Integer> angles = model.getAngles();
+
+    startGapDetectionPass();
+    for (int i = 0; i < distances.size(); i++) {
+      record(distances.get(i), angles.get(i));
+    }
+    endGapDetectionPass();
   }
 
   private int getDistance() {
