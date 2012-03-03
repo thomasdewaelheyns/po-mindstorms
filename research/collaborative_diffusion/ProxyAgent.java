@@ -1,5 +1,5 @@
 public class ProxyAgent extends MovingAgent {
-  public ProxyAgent() { super( "proxy"); }
+  public ProxyAgent(String name) { super(name); }
 
   public void move(int[] values) {
     // we're not moving on our own
