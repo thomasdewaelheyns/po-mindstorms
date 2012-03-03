@@ -123,6 +123,9 @@ public class Sector {
   
   // keeps track of an agent occupying this sector
   public Sector putAgent(Agent agent, int bearing) {
+    // reset the value to zero, because an agent has its own value
+    this.setValue(0);
+    // now add the agent
     this.agent = agent;
     this.agent.setSector(this, bearing);
     this.grid.addAgent(this.agent);
@@ -148,13 +151,10 @@ public class Sector {
     return this.agent != null ? this.agent.getValue() : this.value;
   }
   
-  // returns the value of the sector, not taking in account any agent
-  public int getRawValue() {
-    return this.value;
-  }
-  
   // sets the value of the sector
   public Sector setValue(int value) {
+    // if there is an agent on the sector, we don't change the value
+    if( this.hasAgent() ) { return this; }
     if( value != this.value ) {
       this.value = value;
       this.grid.valuesNeedRefresh();
