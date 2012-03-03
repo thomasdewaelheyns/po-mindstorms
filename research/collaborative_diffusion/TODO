@@ -1,13 +1,11 @@
-- implement Model with wall info + update Sector-info if changing (think of
-  other robots looking like walls until we know about them)
 - add inter-agent communication
 - implement tracking of others' grid
 - implement import of others' grid
 - implement continuous update of own grid based on linked/imported party/grid
 
 - implement pacman detection
+- combine discovery and hunt
 
 - improve code (consistency, remove Generics, performance, memory usage,...)
 - add random Grid generation
 - add fitness function -> semi-quantifiable test results -> report
-- combine discovery and hunt
