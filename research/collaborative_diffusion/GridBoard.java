@@ -34,13 +34,17 @@ public class GridBoard extends JPanel {
   public void clearSectors() {
     this.sectors  = this.createBuffer();
     this.sectorsG = this.sectors.createGraphics();
+    this.clearWalls();
+  }
+  
+  public void clearWalls() {
     this.walls    = this.createBuffer();
     this.wallsG   = this.walls.createGraphics();
   }
 
   public void clearValues() {
     this.values  = this.createBuffer();
-    this.valuesG = this.sectors.createGraphics();
+    this.valuesG = this.values.createGraphics();
   }
 
   public void clearAgents() {
@@ -96,7 +100,7 @@ public class GridBoard extends JPanel {
     // TODO: make this relative to a configurable maximum
     // now: 750 ... possibly needs to go up to 10000
     // Quick Fix to test:
-    //value /= 10;
+    value /= 10;
     
     float r, g, b, v = value;
     v = (v/1000) * 400 + 350;
