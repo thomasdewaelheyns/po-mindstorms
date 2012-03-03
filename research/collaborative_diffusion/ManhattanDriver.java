@@ -15,6 +15,10 @@ public class ManhattanDriver {
   
   // simple implementation, performing one action per step
   public boolean isBusy() {
+    // a dangling feedback-update
+    if( this.nextAction != GhostAction.NONE ) {
+      this.postProcessPreviousStep();
+    }
     return ! this.todo.isEmpty();
   }
   
