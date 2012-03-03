@@ -21,8 +21,11 @@ public class CD {
               }
             }
             // TODO: determine optimal algorithm
-            // sector.setValue((int)((total/count)*0.85));
-            sector.setValue(total/4);
+            if( count > 0 ) {
+              sector.setValue((int)((total/count)*0.85));
+            } else {
+              sector.setValue(total/4);
+            }
           }
         }
       }
