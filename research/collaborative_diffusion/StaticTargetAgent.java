@@ -30,5 +30,7 @@ public class StaticTargetAgent implements Agent {
   // whatever you do, we won't budge
   public Agent  turnLeft()          { return this; }
   public Agent  turnRight()         { return this; }
-  public Agent  moveForward()       { return this; }
+
+  public boolean canMoveForward()    { return false; }
+  public Agent   moveForward()       { return this;  }
 }

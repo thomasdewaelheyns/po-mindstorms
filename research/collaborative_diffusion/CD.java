@@ -13,7 +13,8 @@ public class CD {
             int total = 0;
             int count = 0;
             for(int atLocation=Bearing.N; atLocation<=Bearing.W; atLocation++ ) {
-              // is we know about walls and there is no wall ...
+              // if we know about walls and there is NO wall take the sector's
+              // value into account
               if( sector.isKnown(atLocation) && !sector.hasWall(atLocation) ) {
                 Sector neighbour = sector.getNeighbour(atLocation);
                 if( sector.hasNeighbour(atLocation) ) {

@@ -5,8 +5,12 @@ public class MiniSimulationRobotAPI implements RobotAPI {
     this.proxy = proxy;
   }
   
-  public void move(double distance) {
+  public boolean move(double distance) {
+    if( ! this.proxy.canMoveForward() ) {
+      return false;
+    }
     this.proxy.moveForward();
+    return true;
   }
   
   public void turn(int angle) {
@@ -52,26 +56,17 @@ public class MiniSimulationRobotAPI implements RobotAPI {
     if(wall == null) {
       throw new RuntimeException("proxy can not determine wall to left");
     }
-    if(!wall && this.proxy.getSector().getNeighbour(Bearing.leftFrom(bearing)).hasAgent()) {
-      wall = true;
-    }
     left = wall ? 20 : 60;
 
     wall = this.proxy.getSector().hasWall(bearing);
     if(wall == null) {
       throw new RuntimeException("proxy can not determine wall in front");
     }
-    if(!wall && this.proxy.getSector().getNeighbour(bearing).hasAgent()) {
-      wall = true;
-    }
     front = wall ? 20 : 60;
 
     wall = this.proxy.getSector().hasWall(Bearing.rightFrom(bearing));
     if(wall == null) {
       throw new RuntimeException("proxy can not determine wall to right");
-    }
-    if(!wall && this.proxy.getSector().getNeighbour(Bearing.rightFrom(bearing)).hasAgent()) {
-      wall = true;
     }
     right = wall ? 20 : 60;
 

@@ -1,8 +1,9 @@
 // copied from original RobotAPI
 // added support for requesting a sweep
+// modified move() signature to return boolean
 public interface RobotAPI {
   // moves the robot in a straigth line for a distance expressed in meters
-  public void move( double distance );
+  public boolean move( double distance );
   
   // turns the robot on its spot by an angle expressed in degrees
   public void turn( int angle );

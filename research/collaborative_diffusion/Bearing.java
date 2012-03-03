@@ -42,4 +42,11 @@ public class Bearing {
     }
     return Bearing.NONE; // shouldn't happen ;-)
   }
+  
+  // bearings are N-based, this method allows to transform such a bearing
+  // to a bearing, based on a different origin
+  public static int withOrigin(int bearing, int origin) {
+    if( origin == Bearing.N ) { return bearing; }
+    throw new RuntimeException("Bearing::withOrigin not fully implemented.");
+  }
 }

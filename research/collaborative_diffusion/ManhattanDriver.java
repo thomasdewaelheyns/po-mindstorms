@@ -60,7 +60,15 @@ public class ManhattanDriver {
     switch(this.nextAction) {
       case GhostAction.FORWARD:
         this.log( "going forward..." );
-        this.api.move( 0.2 );
+        if( ! this.api.move( 0.2 ) ) {
+          // THIS SHOULDN'T HAPPEN, it happens when we want to move forward 
+          // and an agent has moved into our targetted spot while we were
+          // turning --> solution: don't do combined actions, but navigate
+          // only one step at a time, including turning
+          // if we can't perform this action, so don't let it be processed
+          // on the Model and therefore reset it here
+          this.nextAction = GhostAction.NONE;
+        }
         break;
       case GhostAction.TURN_LEFT:
         this.log( "turning left..." );

@@ -19,5 +19,7 @@ public interface Agent {
   
   public Agent    turnLeft();
   public Agent    turnRight();
+
+  public boolean  canMoveForward();
   public Agent    moveForward();
 }

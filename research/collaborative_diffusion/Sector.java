@@ -5,7 +5,7 @@ public class Sector {
   // back-link to the Grid we live in
   private Grid grid;
   
-  // links to the adjectant Sectors
+  // links to the adjacent Sectors
   private Sector[] neighbours = new Sector[4];
   // absolute positions within Grid
   private int left, top;

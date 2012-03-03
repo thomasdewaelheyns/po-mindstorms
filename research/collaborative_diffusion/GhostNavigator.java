@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class GhostNavigator implements Navigator {
   private GhostModel model;
   
-  // get the values of the 4 adjectant sectors and decide were to go
+  // get the values of the 4 adjacent sectors and decide were to go
   public List<Integer> nextActions() {
-    int[] values = this.getAdjectantSectorInfo();
+    int[] values = this.getadjacentSectorInfo();
 
     // if any of the moves brings us onto the 1000 pos, we hold our position
     for(int bearing=Bearing.N;bearing<=Bearing.W;bearing++) {
@@ -34,16 +34,19 @@ public class GhostNavigator implements Navigator {
     // choose randomly one of the best moves and create the required actions
     int forMove = moves[(int)(Math.random()*count)];
     System.out.println( "NAVIGATOR: " + forMove );
+    
+    // randomly don't do anything (5%)
+    if(Math.random()*20==10) {
+      return new ArrayList<Integer>();
+    }
     return this.createActions(forMove);
   }
 
-  // get the values of all 4 adjectant Sectors (N,E,S,W)
+  // get the values of all 4 adjacent Sectors (N,E,S,W)
   // return the Sector's value IF it is accessible (there must be a Sector,
-  // and there shouldn't be a wall in between.
-  // if there is an agent on the adjectant Sector, we subtract a lot, making
-  // it not "nice" to go there 
-  // TODO: maybe turn an agent also in a simple, absolute NO-GO ?
-  private int[] getAdjectantSectorInfo() {
+  // and there shouldn't be a wall in between).
+  // if there is an agent on the adjacent Sector, we don't go there...
+  private int[] getadjacentSectorInfo() {
     Agent  agent  = this.model.getAgent();
     Sector sector = agent.getSector();
 
@@ -61,7 +64,19 @@ public class GhostNavigator implements Navigator {
       if( sector.hasNeighbour(atLocation) && 
           sector.getNeighbour(atLocation).hasAgent() )
       {
-        info[atLocation] -= 2000;
+        info[atLocation] = -1;
+      } else {
+        // TEMPORARY CHEATING TO SOLVE DETECT-OTHER-AGENT-AS-WALL PROBLEM
+        // we don't want to allow multiple agents on the same sector
+        Agent proxy = MiniSimulation.goalGrid.getAgent(agent.getName());
+        int proxyOrigin = proxy.getOriginalBearing();
+        int bearingOfProxy = Bearing.withOrigin(atLocation, proxyOrigin);
+        Sector neighbour = proxy.getSector().getNeighbour(bearingOfProxy);
+        if( neighbour != null && neighbour.hasAgent() ) {
+          // System.out.println( agent.getName() + " : other agent @ " + atLocation + " == " + bearingOfProxy );
+          // try { System.in.read(); } catch(Exception e) {}
+          info[atLocation] = -1;
+        }
       }
     }
 

@@ -54,21 +54,36 @@ public abstract class MovingAgent implements Agent {
     this.sector.getGrid().agentsNeedRefresh();
     return this;
   }
+
+  public boolean canMoveForward() {
+    int bearing = this.getBearing();
+    Sector current = this.getSector();
+    if( current.hasWall(bearing) ) {
+      System.err.println(this.name + " ERROR: Can't move through wall.");
+      try { System.in.read(); } catch(Exception e) {}
+    } else if( ! current.hasNeighbour(bearing) ) {
+      System.err.println(this.name + "ERROR: No neighbour to move to.");
+      try { System.in.read(); } catch(Exception e) {}      
+    } else if( current.getNeighbour(bearing).hasAgent() ) {
+      System.err.println(this.name + "ERROR: Neighbour has Agent" );
+      try { System.in.read(); } catch(Exception e) {}      
+    } else {
+      return true;
+    }
+    return false;
+  }
   
   public Agent moveForward() {
     int bearing = this.getBearing();
     Sector current = this.getSector();
-    if( current.hasWall(bearing) ) {
-      System.err.println("ERROR: Can't move through wall.");
-    } else if( ! current.hasNeighbour(bearing) ) {
-      System.err.println("ERROR: No neighbour to move to.");
-    } else if( current.getNeighbour(bearing).hasAgent() ) {
-      System.err.println("ERROR: Neighbour has Agent" );
-    } else {
+    if( this.canMoveForward() ) {
       // actually move the agent
       current.removeAgent();
       current.getNeighbour(bearing).putAgent(this, bearing);
       this.sector.getGrid().agentsNeedRefresh();
+    } else {
+      System.err.println(this.name + "ERROR: Didn't check canMoveForward?" );
+      try { System.in.read(); } catch(Exception e) {}      
     }
     return this;
   }

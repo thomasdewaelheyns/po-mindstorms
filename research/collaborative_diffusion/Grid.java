@@ -124,6 +124,13 @@ public class Grid {
   public List<Agent> getAgents() {
     return this.agents;
   }
+  
+  public Agent getAgent(String name) {
+    for(Agent agent: this.agents) {
+      if(agent.getName().equals(name)) { return agent; }
+    }
+    return null;
+  }
 
   // remove targets from the agent list
   public Grid clearTargets() {

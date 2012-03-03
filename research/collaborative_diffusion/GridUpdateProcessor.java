@@ -53,6 +53,6 @@ public class GridUpdateProcessor extends ModelProcessor {
   }
   
   private void updateHillClimbingInfo() {
-    CD.apply(((GhostModel)this.model).getGrid());
+    CD.apply( ((GhostModel)this.model).getGrid() );
   }
 }

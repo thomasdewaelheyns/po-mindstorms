@@ -68,13 +68,11 @@ public class GhostRobot implements Robot {
   
   // one step in the event-loop of the Robot
   public void step() {
-    this.log( "step" );
     // poll other sensors and update model
     this.model.updateSensorValues(this.api.getSensorValues());
 
     // let the driver do his thing
     if( this.driver.isBusy() ) {
-      this.log( "waiting for driver..." ); 
       this.driver.step();
       return;
     }
@@ -88,11 +86,9 @@ public class GhostRobot implements Robot {
     
     // if the sweep is ready ...
     if( this.waitingForSweep ) {
-      this.log( "new sweep is ready" );
       this.model.updateSonarValues(this.api.getSweepResult());
       this.waitingForSweep = false;
     } else {
-      this.log( "request sweep" );
       this.api.sweep( new int[] { -90, 0, 90 } );
       this.waitingForSweep = true;
       return; // to wait for results
@@ -103,10 +99,7 @@ public class GhostRobot implements Robot {
     this.driver.perform(this.navigator.nextActions());
     
     // send outgoing messages
-    this.log( "sending messages" );
     this.sendMessages();
-
-    this.log( "step done" );
   }
   
   private void sendMessages() {

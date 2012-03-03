@@ -1,4 +1,7 @@
 public class MiniSimulation {
+  // TEMPORARY CHEATING TRICK !!!
+  public static Grid goalGrid;
+  
   public static void main(String[] args) {
 
     // we use a Grid+View+ProxyAgents to create a mini-simualtor
@@ -6,7 +9,10 @@ public class MiniSimulation {
                             .changeTitle("Goal")
                             .changeLocation(100,100);
 
-    Grid goalGrid = new Grid().load(args[0])
+    // TEMPORARY CHEATING TRICK !!!                      
+    // we're using a globally static variable to make it accessible to
+    // Navigators to check for agents on adjacent sectors
+    goalGrid = new Grid().load(args[0])
                               .displayOn(goalView)
                               .clearAgents();
     ProxyAgent[] proxies   = { new ProxyAgent("0"), new ProxyAgent("1"),
@@ -40,7 +46,7 @@ public class MiniSimulation {
                                     .changeLocation(300+(r*200),100);
       robotAgents[r] = new SimulationRobotAgent();
       queue.subscribe(robotAgents[r]);
-      robots[r] = new GhostRobot("discoverer" + r, views[r])
+      robots[r] = new GhostRobot(""+r, views[r])
                     .useRobotAPI(apis[r])
                     .useCommunicationAgent(robotAgents[r]);
     }
