@@ -6,6 +6,7 @@ public class ManhattanDriver {
   private RobotAPI   api;     //       needed by a ManhattanDriver
 
   private List<Integer> todo = new ArrayList<Integer>();
+  private Integer nextAction = GhostAction.NONE;
   
   public ManhattanDriver(GhostModel model, RobotAPI api) {
     this.model = model;
@@ -27,31 +28,44 @@ public class ManhattanDriver {
 
   // simple implementation, performing one action per step
   public void step() {
-    this.log( "starting step" );
-    if( this.isBusy() ) { 
-      Integer nextAction = this.todo.remove(0);
-      switch(nextAction) {
-        case GhostAction.FORWARD:
-          this.log( "forward" );
-          // move 20cm
-          this.model.getAgent().moveForward();
-          this.api.move( 0.2 );
-          break;
-        case GhostAction.TURN_LEFT:
-          this.log( "turn left" );
-          // turn 90 degrees to the left
-          this.model.getAgent().turnLeft();
-          this.api.turn(-90);
-          break;
-        case GhostAction.TURN_RIGHT:
-          this.log( "turn right" );
-          // turn 90 degrees to the right
-          this.model.getAgent().turnRight();
-          this.api.turn(90);
-          break;
-      }
-    } else {
-      this.log("skipping, still moving" );
+    this.postProcessPreviousStep();
+    this.performNextStep();
+  }
+
+  // update the Model after successfully completing a requested action
+  private void postProcessPreviousStep() {
+    switch(this.nextAction) {
+      case GhostAction.FORWARD:
+        this.model.moveForward();
+        break;
+      case GhostAction.TURN_LEFT:
+        this.model.turnLeft();
+        break;
+      case GhostAction.TURN_RIGHT:
+        this.model.turnRight();
+        break;
+    }
+    this.nextAction = GhostAction.NONE;
+  }
+  
+  private void performNextStep() {
+    if( ! this.isBusy() ) { return; }
+
+    // get the next action from the list and execute it through the RobotAPI
+    this.nextAction = this.todo.remove(0);
+    switch(this.nextAction) {
+      case GhostAction.FORWARD:
+        this.log( "going forward..." );
+        this.api.move( 0.2 );
+        break;
+      case GhostAction.TURN_LEFT:
+        this.log( "turning left..." );
+        this.api.turn(-90);
+        break;
+      case GhostAction.TURN_RIGHT:
+        this.log( "turn right..." );
+        this.api.turn(90);
+        break;
     }
   }
   
