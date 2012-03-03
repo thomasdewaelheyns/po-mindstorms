@@ -2,7 +2,9 @@ public class CD {
   public static void apply(Grid grid) {
     for( int top=grid.getMinTop(); top<=grid.getMaxTop(); top++ ) {
       for( int left=grid.getMinLeft(); left<=grid.getMaxLeft(); left++ ) {
+
         Sector sector = grid.getSector(left, top);
+
         if( sector != null && sector.isFullyKnown() ) {
           // a hunting agent resets the value of its sector
           if( sector.hasAgent() && sector.getAgent().isHunter() ) {
@@ -14,15 +16,15 @@ public class CD {
               // is we know about walls and there is no wall ...
               if( sector.isKnown(atLocation) && !sector.hasWall(atLocation) ) {
                 Sector neighbour = sector.getNeighbour(atLocation);
-                if( neighbour != null ) {
-                  total += neighbour.getValue();
+                if( sector.hasNeighbour(atLocation) ) {
+                  total += sector.getNeighbour(atLocation).getValue();
                   count++;
                 }
               }
             }
             // TODO: determine optimal algorithm
             if( count > 0 ) {
-              sector.setValue((int)((total/count)*0.85));
+              sector.setValue((int)((total/count)*0.75));
             } else {
               sector.setValue(total/4);
             }

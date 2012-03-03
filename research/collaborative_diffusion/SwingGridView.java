@@ -1,61 +1,38 @@
 import javax.swing.JFrame;
 
 public class SwingGridView extends JFrame implements GridView {
-  private Grid grid;
+  private Grid   grid;
   private String title = "Grid";
-  private int left = -1, top = -1;
+  private int    left   = -1,
+                 top    = -1,
+                 width  = 0,
+                 height = 0;
+
+  private boolean refreshSectors = true;
+  private boolean refreshValues  = true;
+  private boolean refreshAgents  = true;
 
   private GridBoard board;
-
+  
   public GridView show(Grid grid) {
     this.grid = grid;
-    this.setupBoard();
-    this.setupWindow(); // yes keep this order ;-)
-    return this;
-  }
-  
-  public GridView refreshWalls() {
-    this.board.clearWalls();
-    this.addWalls();
+
+    this.setupBoard();  // yes keep this order ;-)
+    this.setupWindow(); // the board needs to be ready before we construct
+                        // the window
     this.refresh();
+
     return this;
   }
 
   private void setupBoard() {
     this.board = new GridBoard();
-    this.refreshSize();
     this.add(this.board);
-  }
-  
-  public GridView refreshSize() {
-    this.board.resizeTo(this.grid.getWidth(), this.grid.getHeight());
-    // after a resize, we need to redraw the walls
-    this.addWalls();
-    return this;
-  }
-  
-  private void addWalls() {
-    int minLeft = this.grid.getMinLeft();
-    int minTop  = this.grid.getMinTop();
-    for(int top=this.grid.getMinTop(); top<=this.grid.getMaxTop(); top++) {
-      for(int left=this.grid.getMinLeft(); left<=this.grid.getMaxLeft(); left++ ) {
-        Sector sector = this.grid.getSector(left, top);
-        if( sector != null ) {
-          this.board.addSector(left-minLeft, top-minTop);
-          for(int wall=Bearing.N; wall<=Bearing.W; wall++ ) {
-            Boolean hasWall = sector.hasWall(wall);
-            if( hasWall != null && hasWall ) {
-              this.board.addWall(left-minLeft, top-minTop, wall);
-            }
-          }
-        }
-      }
-    }
   }
   
   private void setupWindow() {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setSize( this.grid.getWidth() * 20 -2, this.grid.getHeight() * 20 + 20);
+    this.refreshSize();
     if( this.left > 0 ) {
       this.setLocation(this.left, this.top);
     } else {
@@ -67,34 +44,111 @@ public class SwingGridView extends JFrame implements GridView {
   }
 
   public GridView refresh() {
-    this.setSize( this.grid.getWidth()  * 20 -  2, 
-                  this.grid.getHeight() * 20 + 20);
+    this.refreshSize();
+    boolean somethingChanged = false;
+    
+    if( this.refreshSectors ) {
+      this.board.clearSectors();
+      this.addSectors();
+      this.addWalls();
+      this.refreshSectors = false;
+      somethingChanged = true;
+    }
+    
+    if( this.refreshValues ) {
+      this.board.clearValues();
+      this.addValues();
+      this.refreshValues = false;
+      somethingChanged = true;
+    }
+    
+    if( this.refreshAgents ) {
+      this.board.clearAgents();
+      this.addAgents();
+      this.refreshAgents = false;
+      somethingChanged = true;
+    }
 
-    this.board.start();
-
+    if( somethingChanged ) { this.board.render(); }
+    return this;
+  }
+  
+  private void addSectors() {
     int minLeft = this.grid.getMinLeft(),
         minTop  = this.grid.getMinTop();
 
-    // add scent/height values
-    for(int top=this.grid.getMinTop(); top<=this.grid.getMaxTop(); top++) {
-      for(int left=this.grid.getMinLeft(); left<=this.grid.getMaxLeft(); left++ ) {
-        Sector sector = this.grid.getSector(left,top);
-        if( sector != null ) {
-          this.board.setValue(left-minLeft, top-minTop, sector.getValue() );
+    // add sectors
+    for(Sector sector : this.grid.getSectors()) {
+      this.board.addSector(sector.getLeft()-minLeft, sector.getTop()-minTop);
+    }
+  }
+
+  private void addWalls() {
+    int minLeft = this.grid.getMinLeft(),
+        minTop  = this.grid.getMinTop();
+
+    // add sectors
+    for(Sector sector : this.grid.getSectors()) {
+      for(int wall=Bearing.N; wall<=Bearing.W; wall++ ) {
+        if( sector.isKnown(wall) && sector.hasWall(wall) ) {
+          this.board.addWall(sector.getLeft()-minLeft, sector.getTop()-minTop, 
+                             wall);
         }
       }
     }
+  }
+    
+  private void addValues() {
+    int minLeft = this.grid.getMinLeft(),
+        minTop  = this.grid.getMinTop();
 
-    // add agent positions
+    for(Sector sector : this.grid.getSectors()) {
+      this.board.addValue(sector.getLeft()-minLeft, sector.getTop()-minTop,
+                          sector.getValue());
+    }
+  }
+
+  private void addAgents() {
+    int minLeft = this.grid.getMinLeft(),
+        minTop  = this.grid.getMinTop();
+
     for( Agent agent : this.grid.getAgents() ) {
-      this.board.setAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
+      this.board.addAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
                           agent.getBearing(), agent.isTarget());
     }
-    
-    this.board.render();
+  }
+  
+  public GridView sectorsNeedRefresh() {
+    this.refreshSectors = true;
     return this;
   }
 
+  public GridView valuesNeedRefresh() {
+    this.refreshValues = true;
+    return this;
+  }
+
+  public GridView agentsNeedRefresh() {
+    this.refreshAgents = true;
+    return this;
+  }
+
+  private void refreshSize() {
+    int newWidth  = this.grid.getWidth(),
+        newHeight = this.grid.getHeight();
+    if( newWidth != this.width || newHeight != this.height ) {
+      // set our own size
+      this.setSize( newWidth  * GridBoard.SECTOR_SIZE -  2, 
+                    newHeight * GridBoard.SECTOR_SIZE + 20 );
+      // set the board's size
+      if( this.board != null ) {
+        this.board.resizeTo(this.grid.getWidth(), this.grid.getHeight());
+      }
+      this.width = newWidth;
+      this.height = newHeight;
+    }
+  }
+  
   public GridView changeTitle(String title) { 
     this.title = title;
     return this;

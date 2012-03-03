@@ -1,5 +1,5 @@
 public class ConsoleGridView implements GridView {
-  private Grid Grid;
+  private Grid grid;
   
   public GridView show(Grid grid) {
     this.grid = grid;
@@ -24,8 +24,11 @@ public class ConsoleGridView implements GridView {
     }
     return this;
   }
+
+  public GridView sectorsNeedRefresh() { return this; }
+  public GridView valuesNeedRefresh()  { return this; }
+  public GridView agentsNeedRefresh()  { return this; }
   
-  public GridView changeTitle(String title) { return this; }
+  public GridView changeTitle(String title)         { return this; }
   public GridView changeLocation(int left, int top) { return this; }
-  public GridView refreshWalls() { return this; }
 }

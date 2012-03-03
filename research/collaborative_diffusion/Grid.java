@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.io.IOException;
 
 import java.util.List;
+import java.util.Collection;
 import java.util.ArrayList;
 
 // we're using commons collections HashedMap because HashMap isn't implemented
@@ -39,7 +40,7 @@ public class Grid {
     this.connect(sector, this.getSector(left, top+1), Bearing.S);
     this.connect(sector, this.getSector(left-1, top), Bearing.W);
 
-    this.view.refreshSize();
+    this.view.sectorsNeedRefresh();
 
     return this;
   }
@@ -64,13 +65,17 @@ public class Grid {
     return (Sector)this.sectors.get(left + "," + top);
   }
 
+  public List<Sector> getSectors() {
+    @SuppressWarnings("unchecked")
+    List<Sector> sectors = new ArrayList(this.sectors.values());
+    return sectors;
+  }
+
   private void connect(Sector sector, Sector other, int location) {
     if( sector != null ) {
-      //System.out.println("Connecting " + sector.getLeft() + "," + sector.getTop() + " <- " + " / " + location );
       sector.addNeighbour(other, location);
     }
     if( other != null ) {
-      //System.out.println("Connecting " + " -> " + other.getLeft() + "," + other.getTop() + " / " + Bearing.reverse(location) );
       other.addNeighbour(sector, Bearing.reverse(location));
     }
   }
@@ -82,17 +87,12 @@ public class Grid {
     return this;
   }
 
-  // returns the View that displays this grid
-  public GridView getView() {
-    return this.view;
-  }
-  
   // shows the Grid, triggering a refresh/re-rendering of the view
   public Grid show() {
     this.view.refresh();
     return this;
   }
-  
+
   // dumps the Grid using its values
   public Grid dump() {
     for(int top=this.getMinTop(); top<=this.getMaxTop(); top++) {
@@ -102,8 +102,7 @@ public class Grid {
         if( sector != null ) {
           walls = 
           value = sector.getValue();
-          System.out.printf( "%2d/%5d ", (int)sector.getWalls(),
-                                         (int)sector.getValue() );
+          System.out.printf( "%5d ", (int)sector.getValue() );
         } else {
           System.out.print( "../....." );
         }
@@ -114,7 +113,10 @@ public class Grid {
   }
   
   public Grid addAgent(Agent agent) {
-    if( ! this.agents.contains(agent) ) { this.agents.add(agent); }
+    if( ! this.agents.contains(agent) ) {
+      this.agents.add(agent);
+      this.view.agentsNeedRefresh();
+    }
     return this;
   }
   
@@ -128,6 +130,7 @@ public class Grid {
     for( int i=this.agents.size()-1; i>=0; i-- ) {
       if( this.agents.get(i).isTarget() ) {
         this.agents.remove(i);
+        this.view.agentsNeedRefresh();
       }
     }
     return this;
@@ -139,14 +142,7 @@ public class Grid {
       agent.getSector().removeAgent();
     }
     this.agents.clear();
-    return this;
-  }
-
-  // ask each agent to move, based on the value and agent information of the
-  // four adjectant sectors
-  public Grid moveAgents() {
-    for( int a=0; a<this.agents.size(); a++ ) {
-    }
+    this.view.agentsNeedRefresh();
     return this;
   }
 
@@ -157,6 +153,27 @@ public class Grid {
       this.loadWalls(scanner);
       this.loadAgentsAndTags(scanner);
     } catch( Exception e ) { throw new RuntimeException(e); }
+    return this;
+  }
+  
+  public Grid sectorsNeedRefresh() {
+    this.view.sectorsNeedRefresh();
+    return this;
+  }
+
+  public Grid wallsNeedRefresh() {
+    // TODO: also separate walls update
+    this.view.sectorsNeedRefresh();
+    return this;
+  }
+
+  public Grid valuesNeedRefresh() {
+    this.view.valuesNeedRefresh();
+    return this;
+  }
+
+  public Grid agentsNeedRefresh() {
+    this.view.agentsNeedRefresh();
     return this;
   }
 

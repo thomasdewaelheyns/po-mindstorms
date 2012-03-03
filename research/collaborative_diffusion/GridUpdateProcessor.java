@@ -7,7 +7,6 @@ public class GridUpdateProcessor extends ModelProcessor {
 
   // update the agent
   protected void work() {
-    System.out.println( "GridUpdateProcessor..." );
     this.updateWallInfo();
     this.addNewSectors();
     this.updateHillClimbingInfo();
@@ -22,9 +21,17 @@ public class GridUpdateProcessor extends ModelProcessor {
     for(int atLocation=Bearing.N; atLocation<=Bearing.W; atLocation++ ) {
       if( detected.isKnown(atLocation) ) {
         if( detected.hasWall(atLocation) ) {
-          current.addWall(atLocation);
+          //if( current.isKnown(atLocation) && !current.hasWall(atLocation) ) {
+          //  current.clearWall(atLocation);
+          //} else {
+            current.addWall(atLocation);
+          //}
         } else {
-          current.removeWall(atLocation);
+          //if( current.isKnown(atLocation) && current.hasWall(atLocation) ) {
+          //  current.clearWall(atLocation);
+          //} else {
+            current.removeWall(atLocation);
+          //}
         }
       }
     }

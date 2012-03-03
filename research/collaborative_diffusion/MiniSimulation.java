@@ -12,10 +12,10 @@ public class MiniSimulation {
     ProxyAgent[] proxies   = { new ProxyAgent(), new ProxyAgent(),
                                new ProxyAgent(), new ProxyAgent() };
     goalGrid.getSector(2,2).putAgent(new StaticTargetAgent(), Bearing.E);
-    goalGrid.getSector(0,0).putAgent(proxies[0], Bearing.E);
-    goalGrid.getSector(9,0).putAgent(proxies[1], Bearing.S);
+    goalGrid.getSector(0,0).putAgent(proxies[0], Bearing.N);
+    goalGrid.getSector(9,0).putAgent(proxies[1], Bearing.N);
     goalGrid.getSector(0,9).putAgent(proxies[2], Bearing.N);
-    goalGrid.getSector(9,9).putAgent(proxies[3], Bearing.W);
+    goalGrid.getSector(9,9).putAgent(proxies[3], Bearing.N);
 
     goalGrid.show();
 
@@ -51,10 +51,10 @@ public class MiniSimulation {
     while( ! ( robots[0].reachedGoal() && robots[1].reachedGoal() && 
                robots[2].reachedGoal() && robots[3].reachedGoal() ) )
     {
-      for(int d=0;d<4;d++) {
+      for(int d=0;d<1;d++) {
         robots[d].step();
+        views[d].refresh();
         //System.out.println( ((GhostModel)robots[d].getModel()).explain() );
-        views[d].refreshWalls();
         //try { System.in.read(); } catch(Exception e) {}
       }
       goalGrid.show();

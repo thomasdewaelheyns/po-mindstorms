@@ -7,23 +7,16 @@ import javax.swing.*;
 public class GridBoard extends JPanel {
   private int width = 0, height = 0;
 
-  private BufferedImage sectors;
-  private Graphics2D sectorsG;
+  private BufferedImage sectors, walls, values, agents;
+  private Graphics2D sectorsG, wallsG, valuesG, agentsG; // TODO: improve name
 
-  private BufferedImage walls;
-  private Graphics2D wallsG;
-
-  private BufferedImage cloud;
-  private Graphics2D cloudG;
-
-  private BufferedImage agents;
-  private Graphics2D agentsG;
-  
   // colors on the board
   public static final Color BLACK  = new Color(0,0,0);
   public static final Color WHITE  = new Color(255,255,255);
   public static final Color YELLOW = new Color(255,255,0);
   public static final Color BROWN  = new Color(205,165,100);
+  
+  public static final int SECTOR_SIZE = 20;
 
   public GridBoard resizeTo(int width, int height) {
     this.width  = width;
@@ -38,22 +31,21 @@ public class GridBoard extends JPanel {
     this.clearSectors();
   }
   
-  public void start() {
-    this.cloud   = this.createBuffer();
-    this.cloudG  = this.cloud.createGraphics();
-    this.agents  = this.createBuffer();
-    this.agentsG = this.agents.createGraphics();
-  }
-  
   public void clearSectors() {
     this.sectors  = this.createBuffer();
     this.sectorsG = this.sectors.createGraphics();
-    this.clearWalls();
+    this.walls    = this.createBuffer();
+    this.wallsG   = this.walls.createGraphics();
   }
 
-  public void clearWalls() {
-    this.walls  = this.createBuffer();
-    this.wallsG = this.walls.createGraphics();
+  public void clearValues() {
+    this.values  = this.createBuffer();
+    this.valuesG = this.sectors.createGraphics();
+  }
+
+  public void clearAgents() {
+    this.agents  = this.createBuffer();
+    this.agentsG = this.agents.createGraphics();
   }
   
   public void addSector(int left, int top) {
@@ -68,21 +60,21 @@ public class GridBoard extends JPanel {
       case Bearing.W: r = new Rectangle(left*20-3,     top*20,        6, 20); break;
       case Bearing.E: r = new Rectangle((left+1)*20-6, top*20,        6, 20); break;
       case Bearing.S: r = new Rectangle(left*20,       (top+1)*20-6, 20,  6); break;
-      default:       r = new Rectangle(0,0,0,0);
+      default:        r = new Rectangle(0,0,0,0);
     }
     this.wallsG.setColor(WHITE);
     this.wallsG.fill(r);
   }
   
-  public void setValue(int left, int top, int value) {
+  public void addValue(int left, int top, int value) {
     if( value > 0 ) {
       Color color = this.mapToHeatColor(value);
-      this.cloudG.setColor(color);
-      this.cloudG.fill(new Rectangle(20 * left+3, 20 * top+3, 14, 14 ));
+      this.valuesG.setColor(color);
+      this.valuesG.fill(new Rectangle(20 * left+3, 20 * top+3, 14, 14 ));
     }
   }
 
-  public void setAgent(int left, int top, int orientation, boolean isTarget) {
+  public void addAgent(int left, int top, int orientation, boolean isTarget) {
     left *= 20;
     top  *= 20;
     this.agentsG.setColor(isTarget ? YELLOW : WHITE);
@@ -104,7 +96,7 @@ public class GridBoard extends JPanel {
     // TODO: make this relative to a configurable maximum
     // now: 750 ... possibly needs to go up to 10000
     // Quick Fix to test:
-    value /= 10;
+    //value /= 10;
     
     float r, g, b, v = value;
     v = (v/1000) * 400 + 350;
@@ -149,8 +141,9 @@ public class GridBoard extends JPanel {
     super.paint(g);
     Graphics2D g2d = (Graphics2D)g;
 
+    // draw layers, bottom to top
     g2d.drawImage( this.sectors, null, 0, 0 );
-    g2d.drawImage( this.cloud,   null, 0, 0 );
+    g2d.drawImage( this.values,  null, 0, 0 );
     g2d.drawImage( this.walls,   null, 0, 0 );
     g2d.drawImage( this.agents,  null, 0, 0 );
     

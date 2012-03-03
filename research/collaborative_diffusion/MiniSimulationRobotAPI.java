@@ -12,10 +12,9 @@ public class MiniSimulationRobotAPI implements RobotAPI {
   public void turn(int angle) {
     int bearing = this.proxy.getBearing();
     switch(angle) {
-      case -90: bearing = Bearing.leftFrom (this.proxy.getBearing()); break;
-      case  90: bearing = Bearing.rightFrom(this.proxy.getBearing()); break;
+      case -90: this.proxy.turnLeft(); break;
+      case  90: this.proxy.turnRight(); break;
     }
-    this.proxy.turnTo(bearing);
   }
 
   public void stop() {

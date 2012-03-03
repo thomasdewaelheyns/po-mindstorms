@@ -41,20 +41,17 @@ public abstract class MovingAgent implements Agent {
   public int    getBearing()         { return this.bearing; }
   public int    getOriginalBearing() { return this.originalBearing; }
   
-  public Agent turnTo(int bearing) {
-    this.bearing = bearing;
-    return this;
-  }
-  
   public Agent turnLeft() {
     if( this.bearing == Bearing.N ) { this.bearing = Bearing.W; }
     else { this.bearing--; }
+    this.sector.getGrid().agentsNeedRefresh();
     return this;
   }
   
   public Agent turnRight() {
     if( this.bearing == Bearing.W ) { this.bearing = Bearing.N; }
     else { this.bearing++; }
+    this.sector.getGrid().agentsNeedRefresh();
     return this;
   }
   
@@ -71,6 +68,7 @@ public abstract class MovingAgent implements Agent {
       // actually move the agent
       current.removeAgent();
       current.getNeighbour(bearing).putAgent(this, bearing);
+      this.sector.getGrid().agentsNeedRefresh();
     }
     return this;
   }

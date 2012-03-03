@@ -153,7 +153,10 @@ public class Sector {
   
   // sets the value of the sector
   public Sector setValue(int value) {
-    this.value = value;
+    if( value != this.value ) {
+      this.value = value;
+      this.grid.valuesNeedRefresh();
+    }
     return this;
   }
   
@@ -169,14 +172,14 @@ public class Sector {
     if( this.hasNeighbour(atLocation) ) {
       this.getNeighbour(atLocation).inheritWall(Bearing.reverse(atLocation));
     }
-    // refresh the rendering of the walls
-    this.grid.getView().refreshWalls();
+    this.grid.wallsNeedRefresh();
     return this;
   }
   
   protected void inheritWall(int atLocation) {
     this.walls.withWall(atLocation);
     this.certainty.withWall(atLocation);
+    this.grid.wallsNeedRefresh();
   }
 
   // removes a wall from this sector at given location
@@ -186,14 +189,14 @@ public class Sector {
     if( this.hasNeighbour(atLocation) ) {
       this.getNeighbour(atLocation).inheritNoWall(Bearing.reverse(atLocation));
     }
-    // refresh the rendering of the walls
-    this.grid.getView().refreshWalls();
+    this.grid.wallsNeedRefresh();
     return this;
   }
   
   protected void inheritNoWall(int atLocation) {
     this.walls.withoutWall(atLocation);
     this.certainty.withWall(atLocation);
+    this.grid.wallsNeedRefresh();
   }
 
   // adds all walls at once
@@ -203,8 +206,7 @@ public class Sector {
     // also update neighbours
     this.updateNeighboursWalls();
 
-    // refresh the rendering of the walls
-    this.grid.getView().refreshWalls();
+    this.grid.wallsNeedRefresh();
     return this;
   }
   

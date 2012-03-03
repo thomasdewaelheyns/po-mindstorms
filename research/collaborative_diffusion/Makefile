@@ -13,8 +13,11 @@ SLEEP=25
 
 all: 
 
+show: ShowMap.class
+	${JAVA} ${<:.class=} ${MAP}
+
 discover: MiniSimulation.class
-	${JAVA} MiniSimulation ${MAP} ${SLEEP}
+	${JAVA} ${<:.class=} ${MAP} ${SLEEP}
 
 %.class: %.java ${BUILD_DIR}
 	@echo "*** building ${<:.class=}"

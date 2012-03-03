@@ -28,7 +28,6 @@ public class StaticTargetAgent implements Agent {
   public int    getOriginalBearing() { return this.bearing; }
 
   // whatever you do, we won't budge
-  public Agent  turnTo(int bearing) { return this; }
   public Agent  turnLeft()          { return this; }
   public Agent  turnRight()         { return this; }
   public Agent  moveForward()       { return this; }
