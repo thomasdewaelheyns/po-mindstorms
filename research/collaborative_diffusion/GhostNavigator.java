@@ -9,10 +9,10 @@ public class GhostNavigator implements Navigator {
   public List<Integer> nextActions() {
     int[] values = this.getadjacentSectorInfo();
 
-    // if any of the moves brings us onto the 1000 pos, we hold our position
+    // if any of the moves brings us onto the 10000 pos, we hold our position
     for(int bearing=Bearing.N;bearing<=Bearing.W;bearing++) {
-      if( values[bearing] == -1000 ) {
-        return Arrays.asList( GhostAction.NONE );
+      if( values[bearing] == 10000 ) {
+        return new ArrayList<Integer>();
       }
     }
     
@@ -33,12 +33,15 @@ public class GhostNavigator implements Navigator {
     
     // choose randomly one of the best moves and create the required actions
     int forMove = moves[(int)(Math.random()*count)];
-    System.out.println( this.model.getAgent().getName() + " : NAVIGATOR: " + forMove );
+    System.out.println( this.model.getAgent().getName() + " : NAVIGATOR: " + forMove + " out of " + Arrays.toString(moves) + " / " + count);
     
-    // randomly don't do anything (5%)
-    if(Math.random()*20==10) {
+    // randomly don't do anything (20%)
+    if(Math.random()*5==3) { forMove = Bearing.NONE; }
+
+    if(forMove <= Bearing.NONE) {
       return new ArrayList<Integer>();
     }
+    
     return this.createActions(forMove);
   }
 

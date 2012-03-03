@@ -96,13 +96,11 @@ public class WallDetectorProcessor extends ModelProcessor {
       sector.removeWall(Bearing.rightFrom(bearing));
     }
 
-    if( true ) {
-      System.out.println( "Detect new Wall configuration: " );
-      System.out.println( " N : " + (sector.isKnown(Bearing.N) ? ( sector.hasWall(Bearing.N) ? "Y" : " " ) : "?" ));
-      System.out.println( " E : " + (sector.isKnown(Bearing.E) ? ( sector.hasWall(Bearing.E) ? "Y" : " " ) : "?" ));
-      System.out.println( " S : " + (sector.isKnown(Bearing.S) ? ( sector.hasWall(Bearing.S) ? "Y" : " " ) : "?" ));
-      System.out.println( " W : " + (sector.isKnown(Bearing.W) ? ( sector.hasWall(Bearing.W) ? "Y" : " " ) : "?" ));
-    }
+    // System.out.println( model.getAgent().getName() + " : Detect new Wall configuration: " );
+    // System.out.println( " N : " + (sector.isKnown(Bearing.N) ? ( sector.hasWall(Bearing.N) ? "Y" : " " ) : "?" ));
+    // System.out.println( " E : " + (sector.isKnown(Bearing.E) ? ( sector.hasWall(Bearing.E) ? "Y" : " " ) : "?" ));
+    // System.out.println( " S : " + (sector.isKnown(Bearing.S) ? ( sector.hasWall(Bearing.S) ? "Y" : " " ) : "?" ));
+    // System.out.println( " W : " + (sector.isKnown(Bearing.W) ? ( sector.hasWall(Bearing.W) ? "Y" : " " ) : "?" ));
 
     model.updateSector(sector);
     model.markSonarValuesProcessed();
