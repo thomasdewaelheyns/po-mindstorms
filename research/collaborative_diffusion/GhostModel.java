@@ -166,4 +166,16 @@ public class GhostModel implements Model {
            "     Front: " + this.getFrontFreeDistance() + "\n" + 
            "     Right: " + this.getRightFreeDistance() + "\n";
   }
+  
+  public void moveForward() {
+    this.agent.moveForward();
+  }
+  
+  public void turnLeft() {
+    this.agent.turnLeft();
+  }
+  
+  public void turnRight() {
+    this.agent.turnRight();
+  }
 }
