@@ -59,7 +59,7 @@ public class GhostRobot implements Robot {
   }
 
   private void log(String msg) {
-    System.out.printf( "[%10s] %2d,%2d : %s\n", 
+    System.out.printf( "[%10s] %2d,%2d / Robot  : %s\n", 
                        this.model.getAgent().getName(),
                        this.model.getAgent().getLeft(),
                        this.model.getAgent().getTop(),
@@ -68,7 +68,7 @@ public class GhostRobot implements Robot {
   
   // one step in the event-loop of the Robot
   public void step() {
-    this.log( ">>>>> start step" );
+    this.log( "step" );
     // poll other sensors and update model
     this.model.updateSensorValues(this.api.getSensorValues());
 
