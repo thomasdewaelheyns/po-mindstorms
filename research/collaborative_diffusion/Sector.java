@@ -35,6 +35,8 @@ public class Sector {
 
   public Sector setGrid(Grid grid) {
     this.grid = grid;
+    // if we have an agent, we notify this to our (new) grid
+    if( this.hasAgent() ) { this.grid.addAgent(this.getAgent()); }
     return this;
   }
   
