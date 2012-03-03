@@ -78,7 +78,9 @@ public class GridBoard extends JPanel {
     }
   }
 
-  public void addAgent(int left, int top, int orientation, boolean isTarget) {
+  public void addAgent(int left, int top, int orientation, String name, 
+                       boolean isTarget)
+  {
     left *= 20;
     top  *= 20;
     this.agentsG.setColor(isTarget ? YELLOW : WHITE);
@@ -94,6 +96,14 @@ public class GridBoard extends JPanel {
     this.agentsG.fillPolygon(triangle);
     // reset
     this.agentsG.rotate(-1*angle, left+10, top+10);
+    
+    // add label
+    FontMetrics fm = this.agentsG.getFontMetrics();
+    this.agentsG.setColor(BLACK);
+    this.agentsG.setFont(this.agentsG.getFont().deriveFont(8F));
+    int w = fm.charWidth(name.charAt(0));
+    int h = fm.getHeight();
+    this.agentsG.drawString(name.substring(0,1), left+10-w/2, top+20-h/2);
   }
   
   private Color mapToHeatColor(int value) {

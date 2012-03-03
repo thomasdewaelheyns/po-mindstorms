@@ -114,7 +114,8 @@ public class SwingGridView extends JFrame implements GridView {
 
     for( Agent agent : this.grid.getAgents() ) {
       this.board.addAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
-                          agent.getBearing(), agent.isTarget());
+                          agent.getBearing(), agent.getName(), 
+                          agent.isTarget());
     }
   }
   
