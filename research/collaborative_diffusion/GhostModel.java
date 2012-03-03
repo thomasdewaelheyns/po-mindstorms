@@ -36,6 +36,9 @@ public class GhostModel implements Model {
   // applies the incoming changes to our own Grid. This is possible, after the
   // other robot/ghost has crossed a common reference point/barcode.
   HashedMap otherGrids = new HashedMap();
+  
+  // we keep track of the last movement
+  int lastMovement = GhostAction.NONE;
 
   public GhostModel(String name) {
     this.agent = new GhostAgent(name);
@@ -169,13 +172,24 @@ public class GhostModel implements Model {
   
   public void moveForward() {
     this.agent.moveForward();
+    this.lastMovement = GhostAction.FORWARD;
   }
   
   public void turnLeft() {
     this.agent.turnLeft();
+    this.lastMovement = GhostAction.TURN_LEFT;
   }
   
   public void turnRight() {
     this.agent.turnRight();
+    this.lastMovement = GhostAction.TURN_RIGHT;
+  }
+  
+  public void clearLastMovement() {
+    this.lastMovement = GhostAction.NONE;
+  }
+  
+  public int getLastMovement() {
+    return lastMovement;
   }
 }

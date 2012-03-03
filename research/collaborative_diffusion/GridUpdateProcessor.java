@@ -46,7 +46,7 @@ public class GridUpdateProcessor extends ModelProcessor {
           ! current.hasNeighbour(location) )
       {
         // TODO: parameterize the value
-        System.out.println("adding unknown sector(" + location +")" );
+        System.out.println(current.getAgent().getName() + " : adding unknown sector(" + location +")" );
         current.createNeighbour(location).setValue(5000);
       }
     }

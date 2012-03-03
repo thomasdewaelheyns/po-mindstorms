@@ -33,7 +33,7 @@ public class GhostNavigator implements Navigator {
     
     // choose randomly one of the best moves and create the required actions
     int forMove = moves[(int)(Math.random()*count)];
-    System.out.println( "NAVIGATOR: " + forMove );
+    System.out.println( this.model.getAgent().getName() + " : NAVIGATOR: " + forMove );
     
     // randomly don't do anything (5%)
     if(Math.random()*20==10) {
@@ -106,7 +106,7 @@ public class GhostNavigator implements Navigator {
         case  2: actions.add(GhostAction.TURN_RIGHT);
         case  1: actions.add(GhostAction.TURN_RIGHT); break;
       }
-      System.out.println( "ACTIONS TURN: " + current + " -> " + target + " = " + diff );
+      System.out.println( this.model.getAgent().getName() + " TURN: " + current + " -> " + target + " = " + diff );
     }
     
     // after turning, move forward

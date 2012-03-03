@@ -66,7 +66,7 @@ public abstract class MovingAgent implements Agent {
       try { System.in.read(); } catch(Exception e) {}      
     } else if( current.getNeighbour(bearing).hasAgent() ) {
       System.err.println(this.name + "ERROR: Neighbour has Agent" );
-      try { System.in.read(); } catch(Exception e) {}      
+      //try { System.in.read(); } catch(Exception e) {}      
     } else {
       return true;
     }

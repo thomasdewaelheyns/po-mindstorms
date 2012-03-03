@@ -33,6 +33,10 @@ public class ManhattanDriver {
   // simple implementation, performing one action per step
   public void step() {
     this.postProcessPreviousStep();
+    // at this point, the real-world and the Model are in sync
+    this.model.getGrid().show();
+    this.log( "in sync" );
+    //try { System.in.read(); } catch(Exception e) {}
     this.performNextStep();
   }
 
@@ -40,14 +44,19 @@ public class ManhattanDriver {
   private void postProcessPreviousStep() {
     switch(this.nextAction) {
       case GhostAction.FORWARD:
+        this.log( "moving model forward..." );
         this.model.moveForward();
         break;
       case GhostAction.TURN_LEFT:
+        this.log( "turning model left..." );
         this.model.turnLeft();
         break;
       case GhostAction.TURN_RIGHT:
+        this.log( "turning model left..." );
         this.model.turnRight();
         break;
+      default:
+        this.model.clearLastMovement();
     }
     this.nextAction = GhostAction.NONE;
   }
@@ -67,7 +76,7 @@ public class ManhattanDriver {
           // only one step at a time, including turning
           // if we can't perform this action, so don't let it be processed
           // on the Model and therefore reset it here
-          this.nextAction = GhostAction.NONE;
+          this.nextAction = GhostAction.RESET;
         }
         break;
       case GhostAction.TURN_LEFT:
