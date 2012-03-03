@@ -18,13 +18,8 @@ public class WallDetectorProcessor extends ModelProcessor {
     model.getDetectedSector().clearCertainty();
 
     // only update when we have a complete set of sensorvalues
-    if( ! model.hasNewSonarValues() ) { 
-      System.out.println(" @@@@@ WallDetection waiting for now sweep info" );
-      return;
-    }
+    if( ! model.hasNewSonarValues() ) { return; }
     
-    System.out.println(" @@@@@ WallDetection" );
-
     Agent agent = model.getAgent();
     int bearing = agent.getBearing();
 
