@@ -55,7 +55,7 @@ public class SwingGridView extends JFrame implements GridView {
       somethingChanged = true;
     }
     
-    if( this.refreshValues ) {
+    if( this.refreshValues || this.refreshAgents ) {
       this.board.clearValues();
       this.addValues();
       this.refreshValues = false;
