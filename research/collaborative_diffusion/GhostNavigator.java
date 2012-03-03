@@ -83,7 +83,7 @@ public class GhostNavigator implements Navigator {
     
     if( target != current ) {
       int diff = target - current;
-      if( Math.abs(diff) == 3 ) { diff /= 3; } // -3 => 1   3 => -1
+      if( Math.abs(diff) == 3 ) { diff /= -3; } // -3 => 1   3 => -1
     
       switch(diff) {
         case -2: actions.add(GhostAction.TURN_LEFT);
