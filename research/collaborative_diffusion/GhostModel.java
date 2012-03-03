@@ -52,7 +52,7 @@ public class GhostModel implements Model {
   
   // when running in a UI environment we can provide a View for the Grid
   public GhostModel displayGridOn(GridView view) {
-    this.myGrid.displayOn(view).show();
+    this.myGrid.displayOn(view);
     return this;
   }
   
