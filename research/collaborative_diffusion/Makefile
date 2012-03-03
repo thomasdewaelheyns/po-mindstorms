@@ -8,7 +8,7 @@ BUILD_DIR=build
 JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
 JAVA=java -cp ${BUILD_DIR}:${LIBS}
 
-MAP=test.maze
+MAP=test.map
 SLEEP=25
 
 all: 
