@@ -1,5 +1,5 @@
 public interface GridView {
-  public GridView show(Grid Grid);
+  public GridView display(Grid grid);
 
   public GridView refresh();
   public GridView sectorsNeedRefresh();

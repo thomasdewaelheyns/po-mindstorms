@@ -1,6 +1,6 @@
 // a GridView that doesn't do anything, used to avoid != null checks
 public class NullGridView implements GridView {
-  public GridView show(Grid Grid)                   { return null; }
+  public GridView display(Grid Grid)                   { return null; }
 
   public GridView refresh()                         { return this; }
   public GridView sectorsNeedRefresh()              { return this; }

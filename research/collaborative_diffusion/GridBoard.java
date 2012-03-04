@@ -79,11 +79,11 @@ public class GridBoard extends JPanel {
   }
 
   public void addAgent(int left, int top, int orientation, String name, 
-                       boolean isTarget)
+                       Color color)
   {
     left *= 20;
     top  *= 20;
-    this.agentsG.setColor(isTarget ? YELLOW : WHITE);
+    this.agentsG.setColor(color);
 
     Polygon triangle = new Polygon();
     triangle.addPoint(left+10, top+3);

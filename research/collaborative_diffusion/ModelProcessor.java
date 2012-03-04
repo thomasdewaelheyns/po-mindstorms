@@ -9,10 +9,10 @@ abstract public class ModelProcessor {
     this.nextProcessor = nextProcessor;
   }
 
-  public void setModel( Model model ) {
+  public void useModel( Model model ) {
     this.model = model;
     if( this.nextProcessor != null ) {
-      this.nextProcessor.setModel( model );
+      this.nextProcessor.useModel( model );
     }
   }
 

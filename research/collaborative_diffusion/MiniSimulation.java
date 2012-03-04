@@ -12,18 +12,17 @@ public class MiniSimulation {
     // TEMPORARY CHEATING TRICK !!!                      
     // we're using a globally static variable to make it accessible to
     // Navigators to check for agents on adjacent sectors
-    goalGrid = new Grid().load(args[0])
-                              .displayOn(goalView)
-                              .clearAgents();
+    goalGrid = new SimpleGrid().load(args[0]).clearAgents();
     ProxyAgent[] proxies   = { new ProxyAgent("0"), new ProxyAgent("1"),
                                new ProxyAgent("2"), new ProxyAgent("3") };
-    goalGrid.getSector(2,2).putAgent(new StaticTargetAgent(), Bearing.E);
-    goalGrid.getSector(0,0).putAgent(proxies[0], Bearing.N);
-    goalGrid.getSector(9,0).putAgent(proxies[1], Bearing.N);
-    goalGrid.getSector(0,9).putAgent(proxies[2], Bearing.N);
-    goalGrid.getSector(9,9).putAgent(proxies[3], Bearing.N);
+    goalGrid.getSector(2,2).put(new StaticTargetAgent(), Bearing.E);
+    goalGrid.getSector(0,0).put(proxies[0], Bearing.N);
+    goalGrid.getSector(9,0).put(proxies[1], Bearing.N);
+    goalGrid.getSector(0,9).put(proxies[2], Bearing.N);
+    goalGrid.getSector(9,9).put(proxies[3], Bearing.N);
 
-    goalGrid.show();
+    goalGrid.setProcessor(new DiffusionGridProcessor())
+            .displayOn(goalView);
 
     // we instantiate 4 GhostRobots
     Robot[] robots = new GhostRobot[4];
@@ -60,10 +59,10 @@ public class MiniSimulation {
       for(int d=0;d<4;d++) {
         robots[d].step();
         views[d].refresh();
-        // System.out.println( ((GhostModel)robots[d].getModel()).explain() );
+        // System.out.println( robots[d] );
         // try { System.in.read(); } catch(Exception e) {}
       }
-      goalGrid.show();
+      goalGrid.refresh();
 
       try { Thread.sleep(Integer.parseInt(args[1])); } catch(Exception e) {}
       // System.out.print(".");

@@ -46,13 +46,13 @@ public class GridUpdateProcessor extends ModelProcessor {
           ! current.hasNeighbour(location) )
       {
         // TODO: parameterize the value
-        System.out.println(current.getAgent().getName() + " : adding unknown sector(" + location +")" );
+        //System.out.println(current.getAgent().getName() + " : adding unknown sector(" + location +")" );
         current.createNeighbour(location).setValue(5000);
       }
     }
   }
   
   private void updateHillClimbingInfo() {
-    CD.apply( ((GhostModel)this.model).getGrid() );
+    ((GhostModel)this.model).getGrid().refresh();
   }
 }

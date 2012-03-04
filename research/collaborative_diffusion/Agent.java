@@ -1,13 +1,13 @@
+import java.awt.Color;
+
 // interface of an agent that is placed on the Grid
 public interface Agent {
-  public Agent    setSector(Sector sector, int atLocation);
+  public Agent    assignSector(Sector sector, int bearing);
   public Sector   getSector();
   
-  public boolean  isTarget();
-  public boolean  isHunter();
-
   public String   getName();
   public int      getValue();
+  public Color    getColor();
 
   public int      getLeft();
   public int      getOriginalLeft();

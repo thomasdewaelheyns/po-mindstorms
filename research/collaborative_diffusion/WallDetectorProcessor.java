@@ -31,38 +31,27 @@ public class WallDetectorProcessor extends ModelProcessor {
     
     // back = depends on last movement
     // TODO: clean this up (probably extract methods)
+    // System.out.println( model.getAgent().getName() + " : previous Detected Wall configuration: " );
+    // System.out.println( detected );
+    // System.out.println( "========= determining back " + lastMovement + " at " + bearing );
     switch(lastMovement) {
       case GhostAction.FORWARD:
         // there is no wall the way we came, we can remove it for sure
         sector.removeWall(Bearing.reverse(bearing));
         break;
       case GhostAction.TURN_LEFT:
-        // we turned left, our back was previouslu on our right side, if we 
-        // previously detected it, and it should, we can copy that information
-        if( detected.isKnown(Bearing.rightFrom(bearing)) ) {
-          if( detected.hasWall(Bearing.rightFrom(bearing)) ) {
-            sector.addWall(Bearing.reverse(bearing));
-          } else {
-            sector.removeWall(Bearing.reverse(bearing));
-          }
-        } else { 
-          // shouldn't happen
-          System.err.println( "WE turned and don't known what we know ?" );
-          try { System.in.read(); } catch(Exception e) {}
-        }
-        break;
       case GhostAction.TURN_RIGHT:
-        // we turned right, our back was previouslu on our left side, if we 
-        // previously detected it, and it should, we can copy that information
-        if( detected.isKnown(Bearing.leftFrom(bearing)) ) {
-          if( detected.hasWall(Bearing.leftFrom(bearing)) ) {
+        // we turned our back to a wall we normally shoudl have detected on 
+        // a previous step when we entered this sector
+        if( detected.isKnown(Bearing.reverse(bearing)) ) {
+          if( detected.hasWall(Bearing.reverse(bearing)) ) {
             sector.addWall(Bearing.reverse(bearing));
           } else {
             sector.removeWall(Bearing.reverse(bearing));
           }
         } else { 
           // shouldn't happen
-          System.err.println( "WE turned and don't known what we know ?" );
+          System.err.println( "We turned and don't known what we know ?" );
           try { System.in.read(); } catch(Exception e) {}
         }
         break;
@@ -97,10 +86,8 @@ public class WallDetectorProcessor extends ModelProcessor {
     }
 
     // System.out.println( model.getAgent().getName() + " : Detect new Wall configuration: " );
-    // System.out.println( " N : " + (sector.isKnown(Bearing.N) ? ( sector.hasWall(Bearing.N) ? "Y" : " " ) : "?" ));
-    // System.out.println( " E : " + (sector.isKnown(Bearing.E) ? ( sector.hasWall(Bearing.E) ? "Y" : " " ) : "?" ));
-    // System.out.println( " S : " + (sector.isKnown(Bearing.S) ? ( sector.hasWall(Bearing.S) ? "Y" : " " ) : "?" ));
-    // System.out.println( " W : " + (sector.isKnown(Bearing.W) ? ( sector.hasWall(Bearing.W) ? "Y" : " " ) : "?" ));
+    // System.out.println( sector );
+    // try { System.in.read(); } catch( Exception e ) {}
 
     model.updateSector(sector);
     model.markSonarValuesProcessed();

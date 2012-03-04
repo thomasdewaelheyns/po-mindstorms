@@ -1,7 +1,7 @@
 public class ConsoleGridView implements GridView {
   private Grid grid;
   
-  public GridView show(Grid grid) {
+  public GridView refreshGrid grid) {
     this.grid = grid;
     return this;
   }

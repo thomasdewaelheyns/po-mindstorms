@@ -7,7 +7,8 @@ public class Sector {
   
   // links to the adjacent Sectors
   private Sector[] neighbours = new Sector[4];
-  // absolute positions within Grid
+
+  // position within Grid
   private int left, top;
 
   // walls and the certainty about them
@@ -17,23 +18,44 @@ public class Sector {
   // the agent currently on this Sector
   private Agent agent;
 
-  // the value associated with this sector. it is used to create collaborated
-  // diffusion
+  // the value associated with this sector
   private int value = 0;
   
   private List<String> tags = new ArrayList<String>();
 
 
-  // TODO: sort this out ;-)
   public Sector() {
-    this.grid = new Grid(); // a dummy one, untill we get one assigned
+    this.putOn(new SimpleGrid()); // a dummy one, untill we get one assigned
   }
   
   public Sector(Grid grid) {
-    this.grid = grid;
+    this.putOn(grid);
+  }
+  
+  public String toString() {
+    return 
+    " N : " + (this.isKnown(Bearing.N) ? (this.hasWall(Bearing.N) ? "Y" : " " ) : "?" ) + "\n" +
+    " E : " + (this.isKnown(Bearing.E) ? (this.hasWall(Bearing.E) ? "Y" : " " ) : "?" ) + "\n" +
+    " S : " + (this.isKnown(Bearing.S) ? (this.hasWall(Bearing.S) ? "Y" : " " ) : "?" ) + "\n" +
+    " W : " + (this.isKnown(Bearing.W) ? (this.hasWall(Bearing.W) ? "Y" : " " ) : "?" ) + "\n";
   }
 
-  public Sector setGrid(Grid grid) {
+  // sets the absolute coordinates in the Grid this Sector is placed in
+  public Sector setCoordinates(int left, int top) {
+    this.left = left;
+    this.top  = top;
+    return this;
+  }
+  
+  public int getLeft() {
+    return this.left;
+  }
+  
+  public int getTop() {
+    return this.top;
+  }
+
+  public Sector putOn(Grid grid) {
     this.grid = grid;
     // if we have an agent, we notify this to our (new) grid
     if( this.hasAgent() ) { this.grid.addAgent(this.getAgent()); }
@@ -70,7 +92,7 @@ public class Sector {
     return neighbour;
   }
   
-  public Sector exchangeWallInfo(int atLocation) {
+  private Sector exchangeWallInfo(int atLocation) {
     Sector  neighbour = this.neighbours[atLocation];
     if( neighbour == null ) { return this; }
     
@@ -106,28 +128,13 @@ public class Sector {
     return this.neighbours[atLocation];
   }
 
-  // sets the absolute coordinates in the Grid this Sector is placed in
-  public Sector setCoordinates(int left, int top) {
-    this.left = left;
-    this.top  = top;
-    return this;
-  }
-  
-  public int getLeft() {
-    return this.left;
-  }
-  
-  public int getTop() {
-    return this.top;
-  }
-  
   // keeps track of an agent occupying this sector
-  public Sector putAgent(Agent agent, int bearing) {
+  public Sector put(Agent agent, int bearing) {
     // reset the value to zero, because an agent has its own value
     this.setValue(0);
     // now add the agent
     this.agent = agent;
-    this.agent.setSector(this, bearing);
+    this.agent.assignSector(this, bearing);
     this.grid.addAgent(this.agent);
     return this;
   }
@@ -146,11 +153,6 @@ public class Sector {
     return this;
   }
   
-  // if an agent is occupying us, return the agent's value else our own
-  public int getValue() {
-    return this.agent != null ? this.agent.getValue() : this.value;
-  }
-  
   // sets the value of the sector
   public Sector setValue(int value) {
     // if there is an agent on the sector, we don't change the value
@@ -160,6 +162,11 @@ public class Sector {
       this.grid.valuesNeedRefresh();
     }
     return this;
+  }
+
+  // if an agent is occupying us, return the agent's value else our own
+  public int getValue() {
+    return this.agent != null ? this.agent.getValue() : this.value;
   }
   
   public Sector addTag(String tag) {

@@ -14,7 +14,7 @@ public class SwingGridView extends JFrame implements GridView {
 
   private GridBoard board;
   
-  public GridView show(Grid grid) {
+  public GridView display(Grid grid) {
     this.grid = grid;
 
     this.setupBoard();  // yes keep this order ;-)
@@ -115,7 +115,7 @@ public class SwingGridView extends JFrame implements GridView {
     for( Agent agent : this.grid.getAgents() ) {
       this.board.addAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
                           agent.getBearing(), agent.getName(), 
-                          agent.isTarget());
+                          agent.getColor());
     }
   }
   

@@ -1,9 +1,14 @@
+import java.awt.Color;
+
 public class StaticTargetAgent implements Agent {
   // our position
   private Sector sector;
   private int    bearing;
+  
+  // our color
+  private Color color = new Color(255,255,0);
 
-  public Agent setSector(Sector sector, int bearing) {
+  public Agent assignSector(Sector sector, int bearing) {
     this.sector  = sector;
     this.bearing = bearing;
     return this;
@@ -13,11 +18,9 @@ public class StaticTargetAgent implements Agent {
     return this.sector;
   }
   
-  public boolean isTarget() { return true;  }
-  public boolean isHunter() { return false; }
-
   public String getName()   { return "target"; }
   public int    getValue()  { return 10000; }
+  public Color  getColor()  { return this.color; }
 
   public int    getLeft()         { return this.sector.getLeft(); }
   public int    getOriginalLeft() { return this.sector.getLeft(); }

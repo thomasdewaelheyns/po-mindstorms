@@ -10,7 +10,7 @@ public abstract class MovingAgent implements Agent {
     this.name = name;
   }
 
-  public Agent setSector(Sector sector, int bearing) {
+  public Agent assignSector(Sector sector, int bearing) {
     this.sector          = sector;
     if( this.originalLeft == -999 ) {
       this.originalLeft = sector.getLeft();
@@ -79,7 +79,7 @@ public abstract class MovingAgent implements Agent {
     if( this.canMoveForward() ) {
       // actually move the agent
       current.removeAgent();
-      current.getNeighbour(bearing).putAgent(this, bearing);
+      current.getNeighbour(bearing).put(this, bearing);
       this.sector.getGrid().agentsNeedRefresh();
     } else {
       System.err.println(this.name + "ERROR: Didn't check canMoveForward?" );

@@ -1,15 +1,16 @@
-public class CD {
-  public static void apply(Grid grid) {
-    for( int top=grid.getMinTop(); top<=grid.getMaxTop(); top++ ) {
-      for( int left=grid.getMinLeft(); left<=grid.getMaxLeft(); left++ ) {
+public class DiffusionGridProcessor extends GridProcessor {
+  protected void work() {
+    int minLeft = this.grid.getMinLeft(),  maxLeft = this.grid.getMaxLeft(),
+        minTop  = this.grid.getMinTop(),   maxTop  = this.grid.getMaxTop();
+        
+    for(int top=minTop; top<=maxTop; top++ ) {
+      for( int left=minLeft; left<=maxLeft; left++ ) {
 
-        Sector sector = grid.getSector(left, top);
+        Sector sector = this.grid.getSector(left, top);
 
         if( sector != null && sector.isFullyKnown() ) {
           // a hunting agent resets the value of its sector
-          if( sector.hasAgent() && sector.getAgent().isHunter() ) {
-            sector.setValue(0);
-          } else {
+          if( !sector.hasAgent() ) {
             int total = 0;
             int count = 0;
             for(int atLocation=Bearing.N; atLocation<=Bearing.W; atLocation++ ) {
@@ -23,11 +24,11 @@ public class CD {
                 }
               }
             }
-            // TODO: determine optimal algorithm
+
             if( count > 0 ) {
               sector.setValue((int)((total/count)*0.75));
             } else {
-              sector.setValue(total/4);
+              sector.setValue(0);
             }
           }
         }

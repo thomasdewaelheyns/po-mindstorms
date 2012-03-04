@@ -1,9 +1,9 @@
 public class GhostRobot implements Robot {
-  private GhostModel      model;
-  private RobotAPI        api;   // provided from the outside
-  private ManhattanDriver driver;
-  private Navigator       navigator;
-  private RobotAgent      communicationAgent;
+  private GhostModel  model;
+  private RobotAPI    api;   // provided from the outside
+  private Driver      driver;
+  private Navigator   navigator;
+  private RobotAgent  communicationAgent;
   
   private boolean waitingForSweep = false;
   
@@ -42,8 +42,10 @@ public class GhostRobot implements Robot {
 
   public Robot useRobotAPI( RobotAPI api ) {
     this.api       = api;
-    this.driver    = new ManhattanDriver(this.model, this.api);
-    this.navigator = new GhostNavigator().setModel(this.model);
+    this.driver    = new ManhattanDriver()
+                      .useModel(this.model)
+                      .useRobotAPI(this.api);
+    this.navigator = new GhostNavigator().useModel(this.model);
     return this;
   }
 
@@ -96,7 +98,7 @@ public class GhostRobot implements Robot {
     
     // ask navigator what to do and ...
     // let de driver drive, manhattan style ;-)
-    this.driver.perform(this.navigator.nextActions());
+    this.driver.perform(this.navigator.nextAction());
     
     // send outgoing messages
     this.sendMessages();

@@ -6,13 +6,13 @@ public class ShowMap {
     }
 
     GridView view = new SwingGridView().changeTitle(args[0]);
-    Grid     grid = new Grid().load(args[0])
-                              .displayOn(view);
+    Grid     grid = new SimpleGrid().load(args[0])
+                                    .setProcessor(new DiffusionGridProcessor())
+                                    .displayOn(view);
     
     // 10x results in a stable CD
-    CD.apply(grid); CD.apply(grid); CD.apply(grid); CD.apply(grid); CD.apply(grid);
-    CD.apply(grid); CD.apply(grid); CD.apply(grid); CD.apply(grid); CD.apply(grid);
-    grid.show();
+    grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh();
+    grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh();
     
     grid.dump();
 

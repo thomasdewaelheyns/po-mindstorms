@@ -32,9 +32,6 @@ public class GhostModel implements Model {
   Grid myGrid;
   // This is a map of the other robots. It consists of a key representing the
   // name of the other robot/ghost and a value that contains a Grid.
-  // This Grid can be a real Grid, or a GridTranslatingProxy that directly
-  // applies the incoming changes to our own Grid. This is possible, after the
-  // other robot/ghost has crossed a common reference point/barcode.
   HashedMap otherGrids = new HashedMap();
   
   // we keep track of the last movement
@@ -45,12 +42,22 @@ public class GhostModel implements Model {
     this.setupGrid();
   }
   
+  private void log(String msg) {
+    System.out.printf( "[%10s] %2d,%2d / Model  : %s\n", 
+                       this.getAgent().getName(),
+                       this.getAgent().getLeft(),
+                       this.getAgent().getTop(),
+                       msg );
+  }
+
+  
   // we create a new Grid, add the first sector, the starting point
   private void setupGrid() {
-    this.myGrid = new Grid()
+    this.myGrid = new AggregatedGrid()
+                    .setProcessor(new DiffusionGridProcessor())
                     .addSector(new Sector()
                                 .setCoordinates(0,0)
-                                .putAgent(this.agent, Bearing.N));
+                                .put(this.agent, Bearing.N));
   }
   
   // when running in a UI environment we can provide a View for the Grid
@@ -65,14 +72,15 @@ public class GhostModel implements Model {
   
   public Model setProcessor(ModelProcessor processor) {
     this.processor = processor;
-    this.processor.setModel(this);
+    this.processor.useModel(this);
     return this;
   }
 
   // receive an update of the sensor values
-  public void updateSensorValues(int[] values) {
+  public Model updateSensorValues(int[] values) {
     // nothing required here for Navigator
     this.process();
+    return this;
   }
   
   // triggers the processor(s) to start processing the sensordata and update
@@ -190,6 +198,7 @@ public class GhostModel implements Model {
   }
   
   public int getLastMovement() {
-    return lastMovement;
+    this.log("inspecting last movement: " + this.lastMovement);
+    return this.lastMovement;
   }
 }

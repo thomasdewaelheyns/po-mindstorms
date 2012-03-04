@@ -1,25 +1,30 @@
 import java.util.List;
 import java.util.ArrayList;
 
-public class ManhattanDriver {
+public class ManhattanDriver implements Driver {
   private GhostModel model;   // TODO: change GhostModel to minimal interface
   private RobotAPI   api;     //       needed by a ManhattanDriver
 
-  private List<Integer> todo = new ArrayList<Integer>();
-  private Integer nextAction = GhostAction.NONE;
+  private int todo   = GhostAction.NONE;
+  private int action = GhostAction.NONE;
   
-  public ManhattanDriver(GhostModel model, RobotAPI api) {
-    this.model = model;
-    this.api   = api;
+  public Driver useModel(Model model) {
+    this.model = (GhostModel)model;
+    return this;
+  }
+
+  public Driver useRobotAPI(RobotAPI api) {
+    this.api = api;
+    return this;
   }
   
   // simple implementation, performing one action per step
   public boolean isBusy() {
     // a dangling feedback-update
-    if( this.nextAction != GhostAction.NONE ) {
+    if( this.action != GhostAction.NONE ) {
       this.postProcessPreviousStep();
     }
-    return ! this.todo.isEmpty();
+    return this.todo != GhostAction.NONE;
   }
   
   private void log(String msg) {
@@ -34,15 +39,13 @@ public class ManhattanDriver {
   public void step() {
     this.postProcessPreviousStep();
     // at this point, the real-world and the Model are in sync
-    this.model.getGrid().show();
-    this.log( "in sync" );
-    //try { System.in.read(); } catch(Exception e) {}
+    this.model.getGrid().refresh();
     this.performNextStep();
   }
 
   // update the Model after successfully completing a requested action
   private void postProcessPreviousStep() {
-    switch(this.nextAction) {
+    switch(this.action) {
       case GhostAction.FORWARD:
         this.log( "moving model forward..." );
         this.model.moveForward();
@@ -52,21 +55,22 @@ public class ManhattanDriver {
         this.model.turnLeft();
         break;
       case GhostAction.TURN_RIGHT:
-        this.log( "turning model left..." );
+        this.log( "turning model right..." );
         this.model.turnRight();
         break;
       default:
         this.model.clearLastMovement();
     }
-    this.nextAction = GhostAction.NONE;
+    this.action = GhostAction.NONE;
   }
   
   private void performNextStep() {
-    if( ! this.isBusy() ) { return; }
+    if( this.todo == GhostAction.NONE ) { return; }
 
     // get the next action from the list and execute it through the RobotAPI
-    this.nextAction = this.todo.remove(0);
-    switch(this.nextAction) {
+    this.action = this.todo;
+    this.log("performing next step : " + this.action );
+    switch(this.action) {
       case GhostAction.FORWARD:
         this.log( "going forward..." );
         if( ! this.api.move( 0.2 ) ) {
@@ -76,7 +80,7 @@ public class ManhattanDriver {
           // only one step at a time, including turning
           // if we can't perform this action, so don't let it be processed
           // on the Model and therefore reset it here
-          this.nextAction = GhostAction.RESET;
+          this.action = GhostAction.RESET;
         }
         break;
       case GhostAction.TURN_LEFT:
@@ -88,10 +92,11 @@ public class ManhattanDriver {
         this.api.turn(90);
         break;
     }
+    this.todo = GhostAction.NONE;
   }
   
-  public void perform(List<Integer> actions) {
-    this.todo = actions;
+  public void perform(int action) {
+    this.todo = action;
     this.step();
   }
 }

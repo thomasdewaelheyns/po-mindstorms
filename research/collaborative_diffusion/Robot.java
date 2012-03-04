@@ -27,8 +27,6 @@ public interface Robot {
   public String getModelState();
   public String getNavigatorState();
 
-  public Model getModel();
-
   /**
    * in this method, the robot performs one step of its event loop. in this
    * step, it should poll its sensors, update its model and ask the 
