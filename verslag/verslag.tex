@@ -33,28 +33,32 @@ Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, bouwen wij een aut
 
 Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen ivm het werken in team verband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
 
-Hierbij komt in het tweede semester de belangrijke opgave van inter-teamcollaboratie, het traject van de autonome robot blijft immers behouden. Om deze collaboratie in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om de beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester ligt in het insluiten van een pacmanrobot bestuurd door het didactisch team, dit met behulp van vier autonome ghosts
+In het tweede semester wordt hier nog eens de nood aan samenwerking toegevoegd. Het traject van de autonome robot blijft behouden, maar de verschillende robots zullen nu moeten samen werking om een gemeenschappelijk doel te bereiken. Om deze samenwerking in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om de beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester ligt in het insluiten van een ``Pac-Man''-robot bestuurd door het didactisch team, dit met behulp van vier autonome ``ghosts''.
 
-In het eerste semester werkten we reeds in een parallel traject aan het ontwikkelen van een simulatoromgeving. Aan de hand van deze omgeving waren we in staat om met meerdere teamleden in parallel een robot te ontwikkelen zonder nood aan een fysieke. Nu is het ontwikkelen van deze simulator deel geworden van de verdere opdracht en dienen we dus de nodige aanpassingen te doen om het pacman-spel in de computer te simuleren. Het gebruik van een simulator is evident, aangezien we niet kunnen verwachten alle fysieke testen uit te voeren met de 4 teams tegelijk.
+In het eerste semester werkten we reeds in een parallel traject aan een simulatieomgeving. Aan de hand van deze omgeving waren we in staat om met meerdere teamleden in parallel een robot te ontwikkelen zonder nood aan een fysieke. Nu is het ontwikkelen van deze simulator deel geworden van de verdere opdracht en dienen we dus de nodige aanpassingen te doen om het Pac-Man-spel in de computer te simuleren. Het gebruik van een simulator is evident, aangezien we niet kunnen verwachten alle fysieke testen uit te voeren met de 4 teams tegelijk.
 \end{abstract}
 
 \chapter{Inleiding}
 
 Het project wordt zoals in het eerste semester begeleidt door het gebruik van tussentijdse demo's. Het finale doel is om zo optimaal mogelijk samen te werken met vier teams om de Pac-Man in te sluiten, hoewel we ten alle tijden autonoom beslissingen nemen.
 
-Het doel van de eerste demo is een versimpelde vorm van het einddoel waarbij we een stilstaande Pac-Man zoeken binnen het doolhof. De simulator dient ook reeds werkend te zijn bij deze vertoning. Voor de tweede demo mag de comissie beslissen welke doelstellingen passen in het verdere proces richting het einddoel.
+Het doel van de eerste demo is een versimpelde vorm van het einddoel waarbij we een stilstaande Pac-Man zoeken binnen het doolhof. De simulator dient ook reeds beschikbaar te zijn. Voor de tweede demo mag de comissie beslissen welke doelstellingen passen in het verdere proces richting het einddoel.
 
 Duidelijk is dat we er in geslaagd zijn om zeer herbruikbare code te produceren in het eerste semester. Iedereen is ondertussen vertrouwd geraakt met de volledige architectuur. Aangezien we duidelijk te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
 
-Het verslag is duidelijk verschillend opgebouwd ten opzichte van het vorige semester en kiest voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is duidelijk erg gelijkend hoewel natuurlijk de inhoud verandert is tov het eerste semester. Nieuw zijn natuurlijk de stukken over de strategie ivm de opgegeven spelomgeving, over de collaboratie en over de finale analyse van het jaarproject.
+Het verslag is duidelijk verschillend opgebouwd ten opzichte van het vorige semester en kiest voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is duidelijk erg gelijkend hoewel natuurlijk de inhoud verandert is tov het eerste semester. Nieuw zijn natuurlijk de stukken over de strategie ivm de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
 
 \chapter{Probleemstelling}
 
-De doelstellingen van de demo's worden hier achtereenvolgens beschreven, zij liggen in de lijn van het ontwerpproces richting een autonome ghost, die in collaboratie met de drie anderen probeert de Pac-Man in te sluiten.
+De doelstellingen van de demo's worden hier achtereenvolgens beschreven, zij liggen in de lijn van het ontwerpproces richting een autonome ghost, die samen met de drie anderen probeert de Pac-Man in te sluiten.
 
 \section{Demo 1}
 
-Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn slechts virtueel.\\ De enige voorkennis die we hebben is onze eigen globale startpositie. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol geimplementeerd is.\\Elk team wordt tijdens de demo afzonderlijk beoordeelt.
+Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en wordt vertegenwoordigd door drie aparte instanties van de simulator, elk met zijn eigen virtuele ``gehost''.
+
+De ``ghosts'' hebben geen enkele informatie over het doolhof waarin ze zich bevinden, noch over hun positie, noch over hun ori\"entatie.. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol ge\"implementeerd is.
+
+Elk team wordt tijdens de demo afzonderlijk beoordeeld.
  
 \section{Demo 2}
  
@@ -64,16 +68,15 @@ Dit dient nog afgesproken te worden door de commissie.
 
 \subsection{Verkenning}
 
-De robots rijden in een op voorhand onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het creeren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de pac-man. Elke robot communiceert dus zijn gevonden info en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van één van de robotten kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo efficient mogelijk zijn eigen info verzameld.
+De robots rijden in een op voorhand onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het cre\"eren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de pac-man. Elke robot communiceert zijn gevonden informatie en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van \'e\'en van de robots kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo effici\"ent mogelijk zijn eigen info verzameld en met de nodige voorzichtigheid andere informatie hierin verwerkt.
 
 \subsection{Pac-Man}
 
-Het Pac-Man spel zelf kunnen we winnen door alle vluchtwegen van de Pac-Man af te sluiten. Dit houdt in dat alle omliggende sectoren door een ghost bezet wordt of afgeschermd worden door een muur. Men wint enkel als alle robots die meewerken aan de insluiting ook effectief aangeven dat ze gewonnen hebben via hun grafische interface. De probleemstelling vraagt dus om effectief samen te werken en zowel consensus te bereiken over de verzamelde informatie als over de te volgen strategie.
-
+Het Pac-Man spel zelf kunnen we winnen door alle vluchtwegen van de Pac-Man af te sluiten. Dit houdt in dat alle omliggende sectoren door een ghost bezet wordt of afgeschermd worden door een muur. Men wint enkel als alle robots die meewerken aan de insluiting ook effectief aangeven dat ze gewonnen hebben via hun grafische interface. De probleemstelling vereist dus een effectieve samenwerking, waarbij een consensus moet bereikt worden over de verzamelde informatie en de te volgen strategie.
 
 \chapter{Scheidsrechtercomissie}
 
-Deze commissie staat in voor het nemen van beslissingen die betrekking hebben op:
+Deze commissie staat in voor het nemen van beslissingen die betrekking hebben op afspraken tussen de verschillende teams en het didactische team. Hierbij kunnen we deze beslissingen groeperen in:
 \begin{itemize}
 	\item De verdere regels waarmee de spelomgeving beperkt wordt.
 	\item Afspraken die noodzakelijk zijn voor de samenwerking van de teams.
@@ -83,11 +86,13 @@ Deze commissie staat in voor het nemen van beslissingen die betrekking hebben op
 
 \subsection{SpelWereld}
 
-De spelwereld bestaat uit aangepaste panelen uit het eerste semester. Er is een raster van witte lijnen geintroduceerd waar mogelijks muren kunnen staan. Dit komt neer op een mogelijke herschaling van de panelen met een factor vier. Deze nieuwe minimumeenheid aan oppervlakte noemen we sectoren. Deze zijn belangrijk voor de plaatsbepaling binnen het doolhof. De doolhof is volledig ommuurd en de absolute afmetingen worden op voorhand gegeven.
+De spelwereld bestaat uit aangepaste panelen uit het eerste semester. Er is een raster van witte lijnen ge\"introduceerd waar mogelijks muren kunnen staan. Dit komt neer op een mogelijke herschaling van de panelen met een factor vier. Deze nieuwe minimumeenheid aan oppervlakte noemen we sectoren. Deze zijn belangrijk voor de plaatsbepaling binnen het doolhof. De doolhof is volledig ommuurd en de absolute afmetingen worden op voorhand gegeven.
 
 \subsection{Pac-Man}
 
-De Pac-Man wordt zichbaar gemaakt door een Infraroodbeacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen ghosts beevinden.\\De beweging van Pac-Man is beperkt tot het rechtdoor oversteken van de witte lijnen die de sectoren scheiden.
+De Pac-Man wordt zichbaar gemaakt door een infrarood-beacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen ``ghosts'' beevinden.
+
+De beweging van Pac-Man is beperkt tot het rechtdoor oversteken van de witte lijnen die de sectoren scheiden.
 
 \subsection{Ghosts}
 
@@ -107,34 +112,69 @@ Te vinden in pdf.
 \section{Demo 1}
 
 \subsection{Fysiek ontwerp}
-Door de veranderde specificaties van het doolhof en de extra infrarood sensor, moesten enkele wijzigingen gemaakt worden aan de fysieke robot. Zo zijn de druksensoren verwijderd om een sensor poort vrij te maken voor de infrarood sensor. Verder werd de hoogte van de robot iets verlaagd door het verplaatsen van de motor die verantwoordelijk is voor het draaien van de sonar. Naast een grotere stabiliteit doordat het zwaartepunt van de robot lager bij de grond ligt staat ook de motor stabieler, waardoor nauwkeurigere metingen mogelijk zijn. Aangezien het doolhof minder breed is (sectoren zijn 40 centimeter in plaats van 80) zijn de extra wielen weggehaald om het geheel iets slanker te maken wat een eenvoudigere navigatie mogelijk maakt.
+
+Door de veranderde specificaties van het doolhof en de extra infrarood sensor, moesten enkele wijzigingen gemaakt worden aan de fysieke robot. Zo zijn de druksensoren verwijderd om een sensor poort vrij te maken voor de infrarood sensor. Verder werd de hoogte van de robot iets verlaagd door het verplaatsen van de motor die verantwoordelijk is voor het draaien van de sonar. Naast een grotere stabiliteit doordat het zwaartepunt van de robot lager bij de grond ligt staat ook de motor stabieler, waardoor nauwkeurigere metingen mogelijk zijn. (ALS WE DIT LATEN STAAN, DAN GAAN ZE VRAGEN NAAR NUMERIEKE ONDERSTEUNING VAN DIE OPMERKING) Aangezien het doolhof minder breed is (sectoren zijn 40 centimeter in plaats van 80) zijn de extra wielen weggehaald om het geheel iets slanker te maken wat een eenvoudigere navigatie mogelijk maakt.
+
 \subsection{Testen}
+
 Ir Sensor
-\section{Demo 2}
-\section{Demo 3}
-
-\chapter{SoftwareDesign}
-
-\section{Demo 1}
-
-\subsection{Robot}
-
-\subsection{PC}
 
 \section{Demo 2}
+
 \section{Demo 3}
 
 \chapter{Strategie}
+
 \section{Strategie van Robot}
 
+Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome ``ghosts'' gedaan.
+
+We vonden een paper omtrent ``Collaborate Diffusion''\footnote{http://www.cs.colorado.edu/~ralex/papers/PDF/OOPSLA06antiobjects.pdf}. Hierin wordt voorgesteld om een vorm van ``Hill Climbing'' \footnote{http://en.wikipedia.org/wiki/Hill\_climbing/} toe te passen om zo verschillende autonome ``ghosts'' toe te laten samen te werken om een ``Pac-Man'' te achtervolgen. Hierbij hebben zij geen nood aan bijkomende onderlinge communicatie naast de informatie over de wereld.
+
+Ondanks het feit dat we geen overeenstemming met de andere teams konden bereiken om allen dit algoritme te implementeren, blijft het een zeer interessant algoritme om toe te passen voor het bepalen van ons eigen pad.
+
 \subsection{Achtervolgstrategie}
-Wanneer de Pacman gezien wordt stuurt deze een "scent" uit. Deze plant zich dan langs de gekende sectoren voort. Dit wordt gedaan met het gemiddelde van de 4 omliggende sectoren, indien er een muur staat is de waarde 0. Zo ontstaat er een hoogte-kaart met aan de top een Pacman die moet beklommen worden door de Ghosts. Deze hoogte-kaart wordt vaak herberekend en de geur van een Pacman zal dus snel verdwijnen. Als een Pacman meerdere keren gezien wordt zal deze ook een sterkere geur uitsturen en dus meer Ghosts aantrekken.
 
-Iedere Ghost probeert de waarde van het vakje te maximaliseren en stapt zo steeds dichterbij. Om te voorkomen dat robots allemaal dezelfde weg volgen en enkel achter Pacman lopen slorpt iedere Ghost de geur op door de waarde van zijn huidig vakje op 0 te zetten. Hierdoor ontstaat er een dal rond iedere Ghost en zullen de anderen een omweg zoeken. Dit zorgt er ook voor dat de Ghosts elkaar van nature uit ontwijken en niet zullen botsen.
+Wanneer de Pac-Man gezien wordt stuurt deze een ``geur'' uit. Deze plant zich langs gekende sectoren voort. Dit wordt gedaan door het gemiddelde van de 4 omliggende sectoren te berekenen, indien er een muur staat is de waarde 0. Zo ontstaat er een hoogte-kaart met aan de top een Pac-Man. De Ghosts kunnen nu aan de hand van een eenvoudig ``Hill Climbing'' algoritme een optimale weg volgen naar de Pac-Man.
 
+Wanneer een ``ghost'' de Pac-Man opmerkt, kan deze positie op de kaart een zeer hoge waarde gegeven worden. Deze kaart wordt vaak herberekend en de geur van een Pac-Man zal dus snel verdwijnen. En dit is zoals het in de realiteit ook zal zijn. De Pac-Man beweegt zich doorheen het doolhof en zal niet op \'e\'en plek blijven wachten. Als een Pac-Man meerdere keren gezien wordt zal zijn positie ook een constantere ``geur'' verspreiden, waardoor de ``ghosts'' van alle kanten op hem kunnen naderen. Figuur \ref{fig:hillclimbing1} toont het principe aan de hand van een visualisatie van de hoogte of geur van de Pac-Man door middel van een kleurenpallet. Hierbij zijn hoge waarden rood gekleurd en lage waarden violet.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=50mm]{resources/hillclimbing1.png}
+  \caption{Hill Climbing}
+  \label{fig:hillclimbing1}
+\end{figure}
+
+Om te voorkomen dat robots allemaal dezelfde weg volgen en enkel achter Pac-Man lopen slorpt iedere Ghost de geur op door de waarde van zijn huidig vakje op 0 te zetten. Hierdoor ontstaat er een dal rond iedere Ghost en zullen de anderen een omweg zoeken. Dit zorgt er ook voor dat de Ghosts elkaar van nature uit ontwijken en niet zullen botsen. Figuur \ref{fig:hillclimbing2} illustreert dat, eens een Ghost een bepaalde ``beste'' route naar de Pac-Man heeft ingeslagen, het pad achter hem minder interessant wordt voor de overige achtervolgers.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=50mm]{resources/hillclimbing2.png}
+  \caption{Hill Climbing met afsluiting van pad}
+  \label{fig:hillclimbing2}
+\end{figure}
 
 \subsection{Verkenstrategie}
-Het verkenningsalgoritme is een variant op het achtervolgstrategie. Hier is er niet ??n bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het grootste onverkende stuk gaan. Omdat de ene Ghost een andere eventueel kan insluiten in een verkend doodlopend stuk slorpen deze maar een stuk op. Hierdoor zal de robot nog steeds proberen te ontsnappen.
+
+De verkenstrategie is gebaseerd op het zelfde principe. Hier is er niet \'e\'en bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het meest onverkende stuk van het doolhof willen gaan. Daarnaast zorgt dit principe er ook voor dat een robot zal terugkeren op zijn stappen en automatisch terugkeert naar achtergelaten onbekende sectoren. We kunnen stellen dat het algoritme impliciet ``Depth-First-Search"\footnote{http://en.wikipedia.org/wiki/Depth-first\_search} implementeert. Figuur \ref{fig:dfs} toont een robot die een onbekend doolhof aan het verkennen is. De fel groene sectoren zijn onbekende sectoren en hebben een hogere waarde dan de reeds bezochte sectoren.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=50mm]{resources/dfs.png}
+  \caption{Hill Climbing met impliciet ``Dept-First-Search'' zoekgedrag}
+  \label{fig:dfs}
+\end{figure}
+
+Het toepassen van het zelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een ``ghost'' onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn ``geur'' dit pad nog extra versterken en zal een ``ghost'' automatisch hierdoor aangetrokken worden.
+
+\chapter{SoftwareDesign}
+\section{Demo 1}
+\subsection{Robot}
+\subsection{PC}
+\section{Demo 2}
+\section{Demo 3}
+
 
 \chapter{Simulator}
 \section{Demo 1}
@@ -165,45 +205,34 @@ Teamlid & Focus \\ [0.5ex]
 Teamlid & Focus \\ [0.5ex]
 \hline 
 \endhead
-Michiel 		& 	(Coordinator) Bluetooth communicatie, calibratie, finale navigator. \\
-Florian 		&	RobotAPI, lijnvolger, opvolgen unit testen, finale navigator. \\
-Ruben 		&	RobotAPI, veelhoek algoritme, muurvolger, sonar-navigator.\\
-Thomas 		&	RobotAPI, lichtsensor, barcode-lezer, fat client. \\
-Daniel 		&	Testen, barcode-lezer, fat client. \\
-Christophe 	&	(Secretaris) Verslag, simulator, model \& navigator, web-client. \\
+Michiel 		& 	(Commissie-lid) GhostRobot. \\
+Florian 		&	\\
+Ruben 		&	IR-sensor, Simulator.\\
+Thomas 		&	\\
+Daniel 		&	\\
+Christophe 	&	Diffusion algoritme, Dashboard \\
 \hline
 \label{tab:focus}
 \end{longtable}
 
-\begin{longtable}{l r r r r r r}
+\begin{longtable}{l r r r r r r r}
 \caption{Tijdsbesteding per team lid per week} \\
 %This is the header for the first page of the table...
 \hline\hline
- & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\
+ & michiel & florian & ruben & thomas & daniel & christophe & totaal \\
 \hline 
 \endfirsthead
-%This is the header for the remaining page(s) of the table...
-\multicolumn{4}{c}{{\tablename} \thetable{} -- Vervolg} \\
-\hline \hline
- & Michiel & Florian & Ruben & Thomas & Daniel & Christophe \\
-\hline 
-\endhead
-totaal    & 121 & 90 & 91 & 76 & 78 & 128 \\
+totaal & 61 & 19 & 43 & 36 & 13 & 63 & 235\\
 \hline
-week 1 & 10 & 10 & 10 & 10 & 10 & 15 \\
-week 2 & 9 & 7 & 8 & 7 & 9 & 16 \\
-week 3 & 8 & 8 & 8 & 8 & 5 & 12 \\
-week 4 & 9 & 7 & 5 & 8 & 5 & 17 \\
-week 5 & 42 & 15 & 18 & 6 & 15 & 34 \\
-week 6  & 15 & 11 & 12 & 18 & 15 & 5 \\
-week 7 & 5 & 11 & 10 & 9 & 9 & 9 \\
-week 8 & 10 & 9 & 12 & 5 & 5 & 9 \\
-week 9 & 13 & 12 & 8 & 5 & 5 & 11\\
-week 10 \\
-week 11 \\
+week 1 & 12 & 9 & 13 & 12 & 0 & 16,5 & 62,5 \\
+week 2 & 16,5 & 5 & 14 & 15 & 8 & 17,5 & 76 \\
+week 3 & 32,5 & 5 & 16 & 9 & 5 & 29 & 96,5 \\
 \hline
+gemid./week & 20 & 6 & 14 & 12 & 4 & 21 & 13 \\
 \label{tab:tijdsregistratie}
 \end{longtable}
+
+In samenspraak met het didactische team, zal Christophe gedurende twee van de vijf uren die standaard ingepland staan op maandag het team niet vervoegen. Deze uren worden enerzijds onmiddellijk voorafgaandelijk alsook 's avonds na deze vaste uren gepresteerd.
 
 \chapter{KritischeAnalyse}
 
