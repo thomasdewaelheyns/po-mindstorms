@@ -129,7 +129,7 @@ Ir Sensor
 
 Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome ``ghosts'' gedaan.
 
-We vonden een paper omtrent ``Collaborate Diffusion''\footnote{http://www.cs.colorado.edu/~ralex/papers/PDF/OOPSLA06antiobjects.pdf}. Hierin wordt voorgesteld om een vorm van ``Hill Climbing'' \footnote{http://en.wikipedia.org/wiki/Hill\_climbing/} toe te passen om zo verschillende autonome ``ghosts'' toe te laten samen te werken om een ``Pac-Man'' te achtervolgen. Hierbij hebben zij geen nood aan bijkomende onderlinge communicatie naast de informatie over de wereld.
+We vonden een paper omtrent ``Collaborate Diffusion''\footnote{\url{http://www.cs.colorado.edu/~ralex/papers/PDF/OOPSLA06antiobjects.pdf}}. Hierin wordt voorgesteld om een vorm van ``Hill Climbing'' \footnote{\url{http://en.wikipedia.org/wiki/Hill_climbing/}} toe te passen om zo verschillende autonome ``ghosts'' toe te laten samen te werken om een ``Pac-Man'' te achtervolgen. Hierbij hebben zij geen nood aan bijkomende onderlinge communicatie naast de informatie over de wereld.
 
 Ondanks het feit dat we geen overeenstemming met de andere teams konden bereiken om allen dit algoritme te implementeren, blijft het een zeer interessant algoritme om toe te passen voor het bepalen van ons eigen pad.
 
@@ -157,7 +157,7 @@ Om te voorkomen dat robots allemaal dezelfde weg volgen en enkel achter Pac-Man 
 
 \subsection{Verkenstrategie}
 
-De verkenstrategie is gebaseerd op het zelfde principe. Hier is er niet \'e\'en bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het meest onverkende stuk van het doolhof willen gaan. Daarnaast zorgt dit principe er ook voor dat een robot zal terugkeren op zijn stappen en automatisch terugkeert naar achtergelaten onbekende sectoren. We kunnen stellen dat het algoritme impliciet ``Depth-First-Search"\footnote{http://en.wikipedia.org/wiki/Depth-first\_search} implementeert. Figuur \ref{fig:dfs} toont een robot die een onbekend doolhof aan het verkennen is. De fel groene sectoren zijn onbekende sectoren en hebben een hogere waarde dan de reeds bezochte sectoren.
+De verkenstrategie is gebaseerd op het zelfde principe. Hier is er niet \'e\'en bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het meest onverkende stuk van het doolhof willen gaan. Daarnaast zorgt dit principe er ook voor dat een robot zal terugkeren op zijn stappen en automatisch terugkeert naar achtergelaten onbekende sectoren. We kunnen stellen dat het algoritme impliciet ``Depth-First-Search"\footnote{\url{http://en.wikipedia.org/wiki/Depth-first_search}} implementeert. Figuur \ref{fig:dfs} toont een robot die een onbekend doolhof aan het verkennen is. De fel groene sectoren zijn onbekende sectoren en hebben een hogere waarde dan de reeds bezochte sectoren.
 
 \begin{figure}[htbp]
   \centering
@@ -169,12 +169,80 @@ De verkenstrategie is gebaseerd op het zelfde principe. Hier is er niet \'e\'en 
 Het toepassen van het zelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een ``ghost'' onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn ``geur'' dit pad nog extra versterken en zal een ``ghost'' automatisch hierdoor aangetrokken worden.
 
 \chapter{SoftwareDesign}
-\section{Demo 1}
-\subsection{Robot}
-\subsection{PC}
-\section{Demo 2}
-\section{Demo 3}
 
+In het eerste semester hadden we reeds een redelijk uitgebreid raamwerk opgebouwd om robots samen te stellen uit componenten. Dankzij dit werk kunnen we in het twee semester hier op verder bouwen door de bestaande concepten verder te verfijnen en uit te breiden.
+
+\section{Robot}
+
+Klasse diagram \ref{uml:design-semester1} toont de belangrijkste bouwstenen van ons robot-raamwerk, zoals dit tijdens het eerste semester werd ontworpen: Een Robot-entiteit beschikt over een RobotAPI om met de fysieke robot informatie uit te wisselen. Deze informatie heeft betrekking op de gemeten waarden van de verschillende sensoren als ook het instellen van de motoren. De RobotAPI stelt ons in staat door het vervangen van \'e\'en enkele klasse, om identiek dezelfde Robot-entiteit te gebruiken in een echte fysieke robot, als ook in een gesimuleerde wereld.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=110mm]{resources/design-semester1.png}
+  \caption{Design $1^e$ semester}
+  \label{uml:design-semester1}
+\end{figure}
+
+De Robot beschikt verder over een Model waarin alle informatie uit de wereld wordt samengebracht. Dit model kan verrijkt of bijgewerkt worden door zgn. ModelProcessors. Deze onderzoeken bepaalde delen van het Model en trachten hieruit informatie van een hoger niveau te distilleren. Voorbeelden hiervan zijn processors die op basis van metingen door de sonar-sensor bepalen waar er zich muren bevinden.
+
+Tot slot heeft de Robot ook een Navigator die op basis van de informatie in het Model bepaalt waarheen de Robot dient te rijden. De navigator geeft zeer basische instructies aan de Robot, in de vorm van ``beweeg voor- of achterwaarts'' en ``draai zoveel graden''.
+
+Om met de Robot te kunnen communiceren is een RobotAgent voorzien, waarlangs berichten kunnen verzonden en ontvangen worden.
+
+Het is duidelijk dat dit raamwerk een sterk herbruikbare basis biedt om verschillende robots te bouwen. Dit heeft zich al tijdens het eerste semester van nut bewezen, maar komt nog sterker naar voor bij aanvang van het tweede semester. Door het maken van een nieuwe specifieke Navigator en bijhorend Model met Modelprocessors, kunnen we opnieuw een robot samenstellen.
+
+\subsection{Driver}
+
+Ofschoon we een nieuwe Navigator zouden kunnen maken die perfect zou passen, werd snel duidelijk dat er een verfijning van het raamwerk mogelijk was: daar waar tijdens het eerste semester de robot geen resolutie had bij het rijden, is dit in het tweede semester wel het geval. Door het introduceren van het concept van sectoren is er een duidelijk onderscheid tussen het operationele en strategische aspect van het besturen van de robot. Operationeel dient de robot optimaal van sector naar sector te rijden, zodat op strategisch niveau kan geredeneerd worden in termen van deze sectoren.
+
+De functionaliteit om van sector near sector te rijden zou typisch terecht gekomen zijn in een Navigator-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. ``Driver''. Klasse diagram \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor dit tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een ``ManhattanDriver''\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie: met \url{http://en.wikipedia.org/wiki/Taxicab_geometry}}. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=110mm]{resources/design-semester2.png}
+  \caption{Design $2^e$ semester}
+  \label{uml:design-semester2}
+\end{figure}
+
+\subsection{Grids en Sectoren}
+
+De Navigator kan zich nu specifiek toeleggen op het bepalen van de volgende Sector, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten Grid, Sector en Agent in het leven geroepen. Klasse diagram \ref{uml:grids-sectors} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. ``GhostRobot'' opbouwen.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=200mm, angle=90]{resources/grids-sectors.png}
+  \caption{Design Grids en Sectoren}
+  \label{uml:grids-sectors}
+\end{figure}
+
+Centraal staat het concept van de Sector in een Grid. Een Sector heeft een cošrdinaat relatief tov de Grid waarop het zich bevindt, heeft potentieel 4 muren, elk met een bepaalde zekerheid, heeft een waarde en kan bezet worden door een Agent. De waarde van een Sector zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de Grid bewegen langs de Sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratie aanpassingen, implementeren zo de PacmanAgent en GhostAgent de agents die op de Grid voorkomen. Een ProxyAgent werd gebruikt om in een simulator een echte Agent voor te stellen die de volledige Grid nog niet kent en de StaticTargetAgent werd speciaal voorzien voor de voorbereiding van de eerste demo.
+
+Optioneel kan aan een Grid ook een GridView gegeven worden. Deze voorziet een visualisatie van de Grid en kan op verschillende manieren ingevuld worden. Voor dit project hebben twee implementaties gemaakt: enerzijds een ConsoleGridView die gedetailleerde informatie over de Sectoren weergeeft en een SwingGridView die een grafische voorstelling geeft van de Grid. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
+
+Een Grid beschikt ook over een GridProcessor. Net zoals de ModelProcessor kan dit een geschakelde lijst van Processoren zijn die de Grid kunnen ondervragen en bijwerken. Zo hebben we een DiffusionGridProcessor ge\"implementeert die de waarde van de Sectoren zal bijwerken volgens het eerder beschreven algoritme.
+
+De nieuwe robot zal ook informatie van andere robots ontvangen. Deze worden allemaal opgeslagen in een zelfde Grid. Een tweede implementatie van het Grid concept, de zgn. AggregatedGrid, is in staat om een aantal verschillende grids samen in beschouwing te nemen en de ``som'' van deze als een geaggregeerd beeld aan te bieden.
+
+\subsection{GhostRobot}
+
+Klasse diagram \ref{uml:ghostrobot} geeft tot slot de volledige compositie van de nieuwe ``GhostRobot'' weer. De GhostRobot beschikt over een GhostModel, GhostNavigator en GhostDriver.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=110mm]{resources/ghostrobot.png}
+  \caption{Compositie GhostRobot}
+  \label{uml:ghostrobot}
+\end{figure}
+
+Het GhostModel bevat Grids voor elk van de andere robots alsook een AggregatedGrid voor de eigen Agent. Zolang er geen gemeenschappelijk referentiepunt\footnote{Referentiepunten worden op het parcours voorgesteld door geori\"enteerde barcodes.} is gevonden zijn de verschillende Grids niet met elkaar in verband te brengen. Wanneer er echter een gemeenschappelijk referentiepunt gevonden is, kan de corresponderende Grid van de andere robot toegevoegd worden aan de eigen AggregatedGrid, waardoor de informatie van beide Grids gecombineerd wordt en een ruimer wereldbeeld beschikbaar wordt.
+
+De eigen AggregatedGrid beschikt ook over een DiffusiongGridProcessor die het algoritme voor het bepalen van de waarde van een Sector zal toepassen op de AggregatedGrid, waardoor de GhostNavigator een redelijk eenvoudige beslissing kan nemen op basis van de waarden van de vier aangrenzende sectoren.
+
+Het GhostModel is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de GhostNavigator beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende Grids in het GhostModel. Anderzijds is er de WallDetectorProcessor die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige Sector. Tot slot is er de GridUpdateProcessor die de nieuwe muur-informatie zal verwerken in de eigen Grid en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie ModelProcessoren zijn er nog andere actief. Het betreft hier bvb. de LineModelProcessor of de ProximityModelProcessor. Deze zorgen voor informatie die door de Driver zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze ModelProcessoren maakten reeds deel uit van de robots uit het eerste semester.}
+
+\section{PC}
+
+TODO: ServiceAgent uitbreiding voor bi-directionele spel-communicatie
 
 \chapter{Simulator}
 \section{Demo 1}
