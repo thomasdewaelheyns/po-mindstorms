@@ -3,4 +3,6 @@
 *.toc
 *.aux
 verslag.pdf
+*.bbl
+*.blg
 
