@@ -4,10 +4,6 @@ import penoplatinum.Utils;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 
-/**
- *
- * @author Thomas
- */
 public class LineModelProcessor extends ModelProcessor {
 
   private static final int WAITING = 0;

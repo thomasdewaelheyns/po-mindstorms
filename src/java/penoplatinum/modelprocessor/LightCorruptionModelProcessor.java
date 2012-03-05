@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.modelprocessor;
 
 import penoplatinum.modelprocessor.LightColor;
@@ -9,10 +5,6 @@ import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.OriginalModel;
 
-/**
- *
- * @author Thomas
- */
 public class LightCorruptionModelProcessor extends ModelProcessor {
 
 
