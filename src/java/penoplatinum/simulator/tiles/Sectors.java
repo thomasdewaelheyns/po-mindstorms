@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.simulator.tiles;
 
-/**
- *
- * @author Thomas
- */
 public class Sectors {
   public static Sector NONE = new Sector()
           .addWall(0)
