@@ -242,7 +242,18 @@ Het GhostModel is verder voorzien van een aantal ModelProcessoren die de inkomen
 
 \section{PC}
 
-TODO: ServiceAgent uitbreiding voor bi-directionele spel-communicatie
+Aan de zijde van de PC kunnen we opnieuw verder bouwen op onze bestaande ServiceAgent. Naast het logging-kanaal, zal deze nu ook een tweede Bluetooth kanaal volgen, langs het welke de boodschappen van het GhostProtocol kunnen uitgewisseld worden met de Exchange-queue op de RabbitMQ server.
+
+Ook het Dashboard wordt uitgebreid met meer informatie over de werking van het zoek-algortime en de map-verkenning. Hiervoor moet louter bijkomende informatie vanuit het Model en de Navigator doorgestuurd worden, kunnen we Log4J eenvoudig aanpassen in configuratie en voorzien we de databank van bijkomende kolommen om de nieuwe gegevens op te slaan.
+
+Het Dashboard zelf wordt voorzien van de nodige visualisaties voor deze nieuwe informatie. Figuur \ref{fig:dashboard} toont de nieuwe samenstelling.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=140mm]{resources/webclient.png}
+  \caption{Nieuw Dashboard}
+  \label{fig:dashboard}
+\end{figure}
 
 \chapter{Simulator}
 \section{Demo 1}
