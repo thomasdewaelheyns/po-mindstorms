@@ -16,9 +16,9 @@ public interface Robot {
    * we allow the RobotAPI to be set externally. this allows for reusing the
    * same robot, both in the real world as in the Simulator
    */
-  public void useRobotAPI(RobotAPI api);
+  public Robot useRobotAPI(RobotAPI api);
 
-  public void useRobotAgent(RobotAgent agent);
+  public Robot useCommunicationAgent(RobotAgent agent);
 
   /**
    * to allow external Communication to be processed by the Robot, a generic

@@ -14,7 +14,7 @@ import java.util.List;
 public interface RobotAPI {
 
   // moves the robot in a straigth line for a distance expressed in meters
-  public void move(double distance);
+  public boolean move(double distance);
 
   // turns the robot on its spot by an angle expressed in degrees
   public void turn(int angle);
@@ -43,9 +43,7 @@ public interface RobotAPI {
    */
   public ExtendedVector getRelativePosition(ReferencePosition reference);
 
+  public void sweep(int[] angles);
   public boolean sweepInProgress();
-
-  public void sweep(int[] i);
-  
   public List<Integer> getSweepResult();
 }

@@ -1,7 +1,11 @@
 RM=rm -rf
 
 TARGETS=SimulationRunner.class
-LIBS=:../../../../lib/commons-cli-1.2.jar
+LIB_DIR=../../../../lib
+LIB_CLI=${LIB_DIR}/commons-cli-1.2.jar
+LIB_COLL=${LIB_DIR}/commons-collections-3.2.1.jar
+LIB_MQ=${LIB_DIR}/rabbitmq-client.jar
+LIBS=${LIB_COLL}:${LIB_CLI}:${LIB_MQ}
 CP=../../:${LIBS}
 
 BUILD_DIR=build
@@ -19,8 +23,8 @@ behaviour: ../navigators/BehaviourNavigator.class
 linefollower: ../navigators/LineFollowerNavigator.class
 	@${MAKE} run OPTIONS="-n penoplatinum.navigators.LineFollowerNavigator -p 100,100,180"
 
-sonar: ../navigators/SonarNavigator.class
-	@${MAKE} run OPTIONS="-n penoplatinum.navigators.SonarNavigator"
+sonar: ../navigators/SonarNavigator.class ../bluetooth/CircularQueue.class
+	@${MAKE} run OPTIONS="-n penoplatinum.navigators.SonarNavigator -p 80,100,180"
 
 run: ${TARGETS} images
 	@${JAVA} penoplatinum.simulator.${<:.class=} ${OPTIONS}

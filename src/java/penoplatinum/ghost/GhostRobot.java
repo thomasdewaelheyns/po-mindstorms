@@ -142,7 +142,7 @@ public class GhostRobot implements Robot {
   }
 
   @Override
-  public void useRobotAgent(RobotAgent agent) {
+  public void useCommunicationAgent(RobotAgent agent) {
     this.agent = agent;
   }
 

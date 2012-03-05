@@ -64,6 +64,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
   int currentIndex;
   private static final int REVERSE_THRESHOLD = 18;
 
+  @SuppressWarnings("unchecked")
   public static void reverse(List<?> list) {
     int size = list.size();
     if (size < REVERSE_THRESHOLD) {
@@ -81,6 +82,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static void swap(List<?> list, int i, int j) {
     final List l = list;
     l.set(i, l.set(j, l.get(i)));

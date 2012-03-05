@@ -44,7 +44,7 @@ public class SimulatedEntity implements RobotEntity{
     this.robot = robot;
     robotAPI.setSimulatedEntity(this);
     robot.useRobotAPI(robotAPI);
-    robot.useRobotAgent(robotAgent);
+    robot.useCommunicationAgent(robotAgent);
     
   }
   

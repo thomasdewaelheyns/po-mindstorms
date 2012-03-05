@@ -26,8 +26,6 @@ public class NavigatorRobot implements Robot {
 
   public NavigatorRobot() {
     this.setupModel();
-
-
   }
 
   public NavigatorRobot(Navigator navigator) {
@@ -37,7 +35,7 @@ public class NavigatorRobot implements Robot {
 
   private void setupModel() {
     // setup a model with the required ModelProcessors
-    this.model = new Model();
+    this.model = new OriginalModel();
     ModelProcessor histoBuilder =
             new HistogramModelProcessor(
             //new FrontPushModelProcessor(
@@ -59,15 +57,16 @@ public class NavigatorRobot implements Robot {
     return this;
   }
 
-  public void useRobotAPI(RobotAPI api) {
+  public Robot useRobotAPI(RobotAPI api) {
     this.api = api;
     this.initAPI();
     api.setReferencePoint(initialReference);
+    return this;
   }
 
-  public void useRobotAgent(RobotAgent agent) {
+  public Robot useCommunicationAgent(RobotAgent agent) {
     this.agent = agent;
-
+    return this;
   }
 
   // method to perform initializing actions when an API is available
