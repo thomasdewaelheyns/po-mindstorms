@@ -1,0 +1,135 @@
+HTML, BODY {
+  padding: 0px;
+  margin: 0px;
+  font-family: Helvetica;
+  background-color: #777;
+}
+
+H1 {
+  margin: 0px;
+  padding: 10px;
+  color: #eee ;
+  background-color: #444;
+}
+
+H2 {
+  margin: 0px;
+  padding: 10px;
+  color: #eee ;
+  background-color: #777;
+}
+
+H3 {
+  margin: 0px;
+  padding: 5px;
+  padding-left: 10px;
+  color: #eee ;
+  background-color: #aaa;
+}
+
+H4 {
+  margin: 0px;
+  padding: 3px;
+  padding-left: 10px;
+  color: #333;
+  border-bottom: 1px solid black;
+  text-align:center;
+}
+
+DIV.group {
+  height: 295px;
+  background-color: #777;
+}
+
+DIV.sensor,
+DIV.action {
+  width: 200px;
+  height: 245px;
+  margin:5px;
+  border: 1px solid black;
+  background-color: #ccc;
+  float: left;
+}
+
+DIV.sensor DIV {
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  margin: 10px;
+}
+
+DIV.sensor DIV.brown {
+  background-color: rgb(209,127,46);
+  color: rgb(97,47,34);
+}
+
+DIV.sensor DIV.white {
+  background-color: white;
+  color: black;
+}
+DIV.sensor DIV.black {
+  background-color: black;
+  color: #eee;
+}
+
+OL.actionQueue {
+  text-align:left;
+  margin:0px;
+  padding-left:35px;
+  font-size: 10pt;
+}
+
+CANVAS.light {
+  border: 1px solid black;
+  margin-left:25px;
+  margin-top: 10px;
+}
+
+CANVAS.sonar {
+  border: 1px solid black;
+  margin-left:25px;
+}
+
+DIV.sensor DIV.push {
+  margin: 9px;
+  width: 70px;
+  height: 19px;
+  padding: 5px;
+  border: 1px solid black;
+  float: left;
+  color: #eee;;
+}
+
+DIV.push.active {
+  background-color: rgb(152,16,5);
+}
+
+DIV.push.inactive {
+  background-color: rgb(5,152,16);
+}
+
+DIV.action DIV {
+  padding: 5px;
+  margin: 10px;
+  text-align: center;
+}
+
+DIV.action DIV.urgent {
+  background-color: rgb(152,16,5);
+  color: #eee;;
+}
+
+DIV#action.action DIV {
+  height: 50px;
+  border: 1px solid black;
+  padding-top: 35px;
+  font-size: 16pt;
+}
+
+A.button {
+  display: block;
+  margin: 20px;
+  padding: 20px;
+  font-size: 20pt;
+  text-decoration: none;
+}
