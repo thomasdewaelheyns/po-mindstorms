@@ -12,6 +12,7 @@ import penoplatinum.grid.SimpleGrid;
 import penoplatinum.grid.GridView;
 import penoplatinum.grid.SwingGridView;
 import penoplatinum.grid.DiffusionGridProcessor;
+import penoplatinum.grid.GridFactory;
 
 public class ShowMap {
   public static void main(String[] args) {
@@ -21,7 +22,7 @@ public class ShowMap {
     }
 
     GridView view = new SwingGridView().changeTitle(args[0]);
-    Grid     grid = new SimpleGrid().load(args[0])
+    Grid     grid = GridFactory.load(args[0])
                                     .setProcessor(new DiffusionGridProcessor())
                                     .displayOn(view);
     

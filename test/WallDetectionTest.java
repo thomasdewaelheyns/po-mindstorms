@@ -1,10 +1,9 @@
 
-import java.awt.Robot;
 import java.io.FileNotFoundException;
 import org.junit.Test;
 import penoplatinum.Utils;
 import penoplatinum.navigators.BehaviourNavigator;
-import penoplatinum.navigators.SectorNavigator;
+import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.NavigatorRobot;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
@@ -38,13 +37,13 @@ public class WallDetectionTest {
 
       @Override
       public void run() {
-        if (!robot.getModel().hasUpdatedSonarValues()) {
+        if (!((GhostModel) robot.getModel()).hasUpdatedSonarValues()) {
           return;
         }
         String s = "";
-        s += "Left: " + (robot.getModel().isWallLeft() ? "XXX" : "   ");
-        s += " Front: " + (robot.getModel().isWallFront() ? "XXX" : "   ");
-        s += " Right: " + (robot.getModel().isWallRight() ? "XXX" : "   ");
+        s += "Left: " + (((GhostModel) robot.getModel()).isWallLeft() ? "XXX" : "   ");
+        s += " Front: " + (((GhostModel) robot.getModel()).isWallFront() ? "XXX" : "   ");
+        s += " Right: " + (((GhostModel) robot.getModel()).isWallRight() ? "XXX" : "   ");
 
         System.out.println(s);
         Utils.Sleep(40);
@@ -56,29 +55,5 @@ public class WallDetectionTest {
 
 
   }
-  
-  
-  @Test
-  public void testSectorNavigator() throws FileNotFoundException {
-    Simulator sim = new Simulator();
-    sim.useMap(SimulatorTest.createSectorMap());
 
-    final NavigatorRobot robot = new NavigatorRobot();
-    robot.useNavigator(new SectorNavigator());
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
-    ent.setPostition(20, 20, 0);
-    sim.addSimulatedEntity(ent);
-
-    sim.useStepRunnable(new Runnable() {
-
-      @Override
-      public void run() {
-      }
-    });
-
-    sim.displayOn(new SwingSimulationView());
-    sim.run();
-
-
-  }
 }

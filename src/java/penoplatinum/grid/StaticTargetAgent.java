@@ -8,8 +8,8 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
 
-import java.awt.Color;
 
+import penoplatinum.Color;
 import penoplatinum.simulator.mini.Bearing;
 
 public class StaticTargetAgent implements Agent {

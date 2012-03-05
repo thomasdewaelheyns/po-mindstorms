@@ -3,6 +3,7 @@ package penoplatinum.modelprocessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import penoplatinum.pacman.GhostModel;
 
 /**
  * Implements a modelProcessor that gathers the information of the SonarSweep
@@ -20,6 +21,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
   List<Integer> angles;
 
   public void work() {
+    GhostModel model = (GhostModel) this.model;
     if (!model.isSweepDataChanged()) {
       return;
     }
@@ -43,12 +45,12 @@ public class WallDetectionModelProcessor extends ModelProcessor {
 
 
     model.setWallRightDistance(getEstimatedWallDistance(-110, -70));
-    model.setWallRightClosestAngle(cheatOutputAngle);
+//    model.setWallRightClosestAngle(cheatOutputAngle);
 
     model.setWallFrontDistance(getEstimatedWallDistance(-25, 25));
 
     model.setWallLeftDistance(getEstimatedWallDistance(70, 110));
-    model.setWallLeftClosestAngle(cheatOutputAngle);
+//    model.setWallLeftClosestAngle(cheatOutputAngle);
 
 
 

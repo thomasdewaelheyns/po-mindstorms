@@ -14,8 +14,9 @@ import penoplatinum.grid.ProxyAgent;
 import penoplatinum.grid.StaticTargetAgent;
 import penoplatinum.grid.DiffusionGridProcessor;
 
-import penoplatinum.pacman.GhostRobot;
+import penoplatinum.ghost.GhostRobot;
 
+import penoplatinum.grid.GridFactory;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.RobotAgent;
@@ -34,7 +35,7 @@ public class MiniSimulation {
     // TEMPORARY CHEATING TRICK !!!                      
     // we're using a globally static variable to make it accessible to
     // Navigators to check for agents on adjacent sectors
-    goalGrid = new SimpleGrid().load(args[0]).clearAgents();
+    goalGrid = GridFactory.load(args[0]).clearAgents();
     ProxyAgent[] proxies   = { new ProxyAgent("0"), new ProxyAgent("1"),
                                new ProxyAgent("2"), new ProxyAgent("3") };
     goalGrid.getSector(2,2).put(new StaticTargetAgent(), Bearing.E);

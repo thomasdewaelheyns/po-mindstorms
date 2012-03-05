@@ -35,8 +35,6 @@ public interface Grid {
   public List<Agent> getAgents();
   public Grid clearAgents();
 
-  public Grid load(String fileName);
-  
   public Grid sectorsNeedRefresh();
   public Grid wallsNeedRefresh();
   public Grid valuesNeedRefresh();

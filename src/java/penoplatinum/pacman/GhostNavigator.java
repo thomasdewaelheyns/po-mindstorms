@@ -16,11 +16,8 @@ import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 import penoplatinum.simulator.mini.Bearing;
 import penoplatinum.simulator.Model;
-import penoplatinum.pacman.GhostModel;
 
 import penoplatinum.simulator.mini.Navigator;
-// TEMP TRICK
-import penoplatinum.simulator.mini.MiniSimulation;
 
 public class GhostNavigator implements Navigator {
   private GhostModel model;
@@ -135,15 +132,15 @@ public class GhostNavigator implements Navigator {
       } else {
         // TEMPORARY CHEATING TO SOLVE DETECT-OTHER-AGENT-AS-WALL PROBLEM
         // we don't want to allow multiple agents on the same sector
-        Agent proxy = MiniSimulation.goalGrid.getAgent(agent.getName());
-        int proxyOrigin = proxy.getOriginalBearing();
-        int bearingOfProxy = Bearing.withOrigin(atLocation, proxyOrigin);
-        Sector neighbour = proxy.getSector().getNeighbour(bearingOfProxy);
-        if( neighbour != null && neighbour.hasAgent() ) {
-          // System.out.println( agent.getName() + " : other agent @ " + atLocation + " == " + bearingOfProxy );
-          // try { System.in.read(); } catch(Exception e) {}
-          info[atLocation] = -1;
-        }
+//        Agent proxy = MiniSimulation.goalGrid.getAgent(agent.getName());
+//        int proxyOrigin = proxy.getOriginalBearing();
+//        int bearingOfProxy = Bearing.withOrigin(atLocation, proxyOrigin);
+//        Sector neighbour = proxy.getSector().getNeighbour(bearingOfProxy);
+//        if( neighbour != null && neighbour.hasAgent() ) {
+//          // System.out.println( agent.getName() + " : other agent @ " + atLocation + " == " + bearingOfProxy );
+//          // try { System.in.read(); } catch(Exception e) {}
+//          info[atLocation] = -1;
+//        }
       }
     }
 

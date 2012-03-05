@@ -1,5 +1,7 @@
 package penoplatinum.grid;
 
+import penoplatinum.Color;
+
 /**
  * Agent Interface
  * 
@@ -8,7 +10,6 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
 
-import java.awt.Color;
 
 // interface of an agent that is placed on the Grid
 public interface Agent {

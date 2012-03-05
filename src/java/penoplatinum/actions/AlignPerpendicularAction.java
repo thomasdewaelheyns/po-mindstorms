@@ -6,6 +6,7 @@ package penoplatinum.actions;
 
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
+import penoplatinum.simulator.OriginalModel;
 
 /**
  *
@@ -33,7 +34,7 @@ public class AlignPerpendicularAction extends BaseAction {
       return Navigator.NONE;
     }
 
-    if (!getModel().hasUpdatedSonarValues()) {
+    if (!((OriginalModel) getModel()).hasUpdatedSonarValues()) {
       return Navigator.STOP;
     }
 
@@ -66,10 +67,10 @@ public class AlignPerpendicularAction extends BaseAction {
     return !getModel().isMoving() && correctionStarted;
 
   }
-  
-   @Override
+
+  @Override
   public String getKind() {
-     return "Align perpendicular";
+    return "Align perpendicular";
   }
 
   @Override

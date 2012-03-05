@@ -1,25 +1,31 @@
 package penoplatinum.ghost;
 
+import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
-import penoplatinum.Utils;
+import penoplatinum.grid.GridView;
+import penoplatinum.grid.ProxyAgent;
+import penoplatinum.modelprocessor.GridUpdateProcessor;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
+import penoplatinum.modelprocessor.InboxProcessor;
 import penoplatinum.modelprocessor.LightColorModelProcessor;
 import penoplatinum.modelprocessor.LineModelProcessor;
 import penoplatinum.modelprocessor.ModelProcessor;
 import penoplatinum.modelprocessor.WallDetectionModelProcessor;
+import penoplatinum.modelprocessor.WallDetectorProcessor;
+import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.RobotAgent;
+import penoplatinum.simulator.mini.Navigator;
 
 public class GhostRobot implements Robot {
 
   private GhostModel model;
   private RobotAPI api;   // provided from the outside
   private GhostDriver driver;
-  private GhostNavigator navigator;
-  private RobotAgent communicationAgent;
+  private Navigator navigator;
   private int[] sweepAngles = new int[]{-105, -90, -75, -30, 0, 30, 75, 90, 105};
   private ArrayList<Integer> sweepAnglesList = new ArrayList<Integer>();
   private boolean waitingForSweep = false;
@@ -37,11 +43,7 @@ public class GhostRobot implements Robot {
 
   public GhostRobot(String name, GridView view) {
     this(name);
-    //this.model.displayOn(view);
-  }
-
-  public GhostRobot useProxy(ProxyAgent proxy) {
-    return this;
+    this.model.displayGridOn(view);
   }
 
   private void setupModel(String name) {
@@ -64,16 +66,17 @@ public class GhostRobot implements Robot {
   }
 
   @Override
-  public void useRobotAPI(RobotAPI api) {
+  public GhostRobot useRobotAPI(RobotAPI api) {
     this.api = api;
     this.driver = new GhostDriver(this.model, this.api);
     api.setReferencePoint(initialReference);
     this.api.setSpeed(Model.M3, 125); // set sonar speed to double of default
     this.api.setSpeed(Model.M2, 500); // set sonar speed to double of default
     this.api.setSpeed(Model.M1, 500); // set sonar speed to double of default
+    return this;
   }
 
-  public void useNavigator(GhostNavigator nav) {
+  public void useNavigator(Navigator nav) {
     this.navigator = nav;
   }
 
@@ -116,8 +119,8 @@ public class GhostRobot implements Robot {
     //    so the model still contains old wall information!!!
     // ask navigator what to do and ...
     // let de driver drive, manhattan style ;-)
-    this.model.updateSensorValues(this.api.getSensorValues()); // Double update
-    this.driver.perform(this.navigator.nextActions());
+    
+    this.driver.perform(this.navigator.nextAction());
 
     // send outgoing messages
     this.sendMessages();
@@ -142,8 +145,9 @@ public class GhostRobot implements Robot {
   }
 
   @Override
-  public void useCommunicationAgent(RobotAgent agent) {
+  public GhostRobot useCommunicationAgent(RobotAgent agent) {
     this.agent = agent;
+    return this;
   }
 
   @Override
@@ -164,4 +168,5 @@ public class GhostRobot implements Robot {
   public GhostModel getGhostModel() {
     return model;
   }
+
 }

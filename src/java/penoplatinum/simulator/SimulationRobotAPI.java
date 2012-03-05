@@ -26,7 +26,7 @@ public class SimulationRobotAPI implements RobotAPI {
   }
 
   public boolean move(double distance) {
-    double error = 0.2;//0.2;
+    double error = 0.05;//0.2;
     double afwijking = 0;// 0.1;
     distance *= 1 + (random.nextDouble() - 0.5 + afwijking) * error;
     this.simulatedEntity.moveRobot(distance);
@@ -34,7 +34,7 @@ public class SimulationRobotAPI implements RobotAPI {
   }
 
   public void turn(int angle) {
-    double error = 0.2; //0.05;
+    double error = 0.05; //0.05;
     double afwijking = 0.3;
 
     angle = (int) (angle * (1 + (random.nextDouble() - 0.5 + afwijking) * error));

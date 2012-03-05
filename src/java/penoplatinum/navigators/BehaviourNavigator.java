@@ -14,6 +14,7 @@ import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
+import penoplatinum.simulator.OriginalModel;
 
 /**
  * TestNavigator
@@ -36,7 +37,7 @@ public class BehaviourNavigator implements Navigator {
     interpreter = new ColorInterpreter();
 
   }
-  private Model model;
+  private OriginalModel model;
   private GoalDecider controler = new GoalDecider() {
 
     public Boolean reachedGoal() {
@@ -268,7 +269,7 @@ public class BehaviourNavigator implements Navigator {
   }
 
   public BehaviourNavigator setModel(Model model) {
-    this.model = model;
+    this.model = (OriginalModel) model;
     interpreter.setModel(model);
     return this;
   }
@@ -327,13 +328,7 @@ public class BehaviourNavigator implements Navigator {
       }
     }
     builder.delete(0, builder.length());
-    builder
-            .append('\"').append(event)
-            .append("\",\"").append(eventSource)
-            .append("\",\"").append(eventAction)
-            .append("\",\"").append(actionQueue)
-            .append("\",\"").append(currentAction).append("\",\"")
-            .append(currentActionArgument).append('\"');
+    builder.append('\"').append(event).append("\",\"").append(eventSource).append("\",\"").append(eventAction).append("\",\"").append(actionQueue).append("\",\"").append(currentAction).append("\",\"").append(currentActionArgument).append('\"');
     return builder.toString();
 
 //    return "\"" + event + "\",\"" + eventSource + "\", \"" + eventAction + "\", \"" + actionQueue + "\", \"" + currentAction + "\", \"" + currentActionArgument + "\"";

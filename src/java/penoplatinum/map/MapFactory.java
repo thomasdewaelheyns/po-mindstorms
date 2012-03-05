@@ -63,7 +63,7 @@ public class MapFactory {
     tiles.put("End.S", Panels.S);
     tiles.put("End.W", Panels.W);
    
-    tiles.put("Cross", Tiles.CROSS);
+    //tiles.put("Cross", Panels.CROSS);
   }
   
 }

@@ -1,4 +1,6 @@
 import junit.framework.*; 
+import penoplatinum.grid.Tile;
+import penoplatinum.simulator.mini.Bearing;
 
 public class TileTest extends TestCase { 
   private Tile tile;

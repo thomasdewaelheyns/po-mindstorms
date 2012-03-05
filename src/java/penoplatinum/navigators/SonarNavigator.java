@@ -12,21 +12,21 @@ import penoplatinum.Utils;
 import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
+import penoplatinum.simulator.OriginalModel;
 
 public class SonarNavigator implements Navigator {
 
   // a reference to the Model that contains all information about our world
-  private Model model;
-  
+  private OriginalModel model;
   // after giving instructions, we also provide a distance to drive or angle
   // to turn
   private double distance = 0;
-  private int    angle = 0;
+  private int angle = 0;
 
   // we use the model to read out raw sensor values for the sonar :
   // distance and angle
   public SonarNavigator setModel(Model model) {
-    this.model = model;
+    this.model = (OriginalModel) model;
     return this;
   }
 
@@ -41,21 +41,21 @@ public class SonarNavigator implements Navigator {
 
   public int nextAction() {
     // always finish turning before doing anything else
-    if( this.model.isTurning() ) {
+    if (this.model.isTurning()) {
       return Navigator.NONE;
     }
-    
+
     // moving can be interrupted by a turn
     // a turn is made when we detect a better direction to a far away place
     // a possible better direction comes from a new set of sonar values
-    if( this.model.hasUpdatedSonarValues() ) {
+    if (this.model.hasUpdatedSonarValues()) {
       int[] values = this.model.getSonarValues();
-      Utils.Log(values[0]+","+values[1]+","+values[2]+","+values[3]);
+      Utils.Log(values[0] + "," + values[1] + "," + values[2] + "," + values[3]);
 
       // if we're close to a frontal object, avoid with big turn
-      if( values[0] < 40 && Math.abs(values[1]) < 45 ){
-        int diff = ( values[3] - values[1] + 360 ) % 360 - 180;
-        this.angle = diff > 0 ? values[1]-90 : values[1]+90;
+      if (values[0] < 40 && Math.abs(values[1]) < 45) {
+        int diff = (values[3] - values[1] + 360) % 360 - 180;
+        this.angle = diff > 0 ? values[1] - 90 : values[1] + 90;
         //System.out.println( "AVOID: -> " + this.angle + "(min: " + values[0] + " / " + values[1] + ")" + "(max: " + values[2] + " / " + values[3] + ")" );
         System.out.println("Avoid");
         return Navigator.TURN;

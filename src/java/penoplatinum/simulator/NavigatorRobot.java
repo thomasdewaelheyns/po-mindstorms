@@ -108,7 +108,6 @@ public class NavigatorRobot implements Robot {
     // get sensor data and update the model (motors are sensors too)
     this.model.updateSensorValues(this.api.getSensorValues());
 
-    this.model.setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
 
     // Update the robot's estimated position in the model

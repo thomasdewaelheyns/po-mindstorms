@@ -69,7 +69,7 @@ public class LightColorModelProcessor extends ModelProcessor {
         break;
     }
 
-    System.out.println((int) averageBlackValue + "," + (int) averageLightValue + "," + (int) averageWhiteValue);
+//    Utils.Log((int) averageBlackValue + "," + (int) averageLightValue + "," + (int) averageWhiteValue);
 
     prevValue = value;
   }

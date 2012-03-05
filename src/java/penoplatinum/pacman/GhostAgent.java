@@ -8,8 +8,8 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 
-import java.awt.Color;
 
+import penoplatinum.Color;
 import penoplatinum.grid.MovingAgent;
 
 public class GhostAgent extends MovingAgent {

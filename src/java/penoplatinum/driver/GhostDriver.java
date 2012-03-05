@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.ghost;
+package penoplatinum.driver;
 
+import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.Utils;
 import penoplatinum.actions.ActionQueue;
@@ -14,6 +15,8 @@ import penoplatinum.actions.PerformSweepAction;
 import penoplatinum.actions.StopAction;
 import penoplatinum.actions.TurnAction;
 import penoplatinum.modelprocessor.ColorInterpreter;
+import penoplatinum.pacman.GhostAction;
+import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
@@ -24,18 +27,18 @@ import penoplatinum.simulator.RobotAPI;
  *
  * @author MHGameWork
  */
-public class GhostDriver {
+public class GhostDriver implements Driver {
 
-  private final RobotAPI api;
+  private RobotAPI api;
 
-  GhostDriver(GhostModel model, RobotAPI api) {
+  public GhostDriver(GhostModel model, RobotAPI api) {
     this.api = api;
     this.model = model;
     interpreter = new ColorInterpreter();
     queue.add(new StopAction());
   }
 
-  boolean isBusy() {
+  public boolean isBusy() {
     if (navigatorActions == null) {
       return false;
     }
@@ -44,16 +47,11 @@ public class GhostDriver {
   private List<Integer> navigatorActions;
   private int currentNavigatorAction = -1;
 
-  void perform(List<Integer> actions) {
-    navigatorActions = actions;
-    currentNavigatorAction = -1;
-  }
-
   private void abortDriving() {
     currentNavigatorAction = navigatorActions.size() + 4;// 4 or whathever
   }
 
-  void step() {
+  public void step() {
     // ask the navigator what to do next
     switch (nextAction()) {
       case Navigator.MOVE:
@@ -83,12 +81,35 @@ public class GhostDriver {
     }
     if (queue.getCurrentAction() == null) {
       onQueueEmpty();
+      if (queue.getCurrentAction() == null) {
+        throw new RuntimeException("Algoritm error");
+      }
     }
 
     return queue.getCurrentAction().getNextAction();
   }
 
   private void onQueueEmpty() {
+    GhostModel model = (GhostModel) this.model;
+
+
+
+
+    if (currentNavigatorAction != -1) {
+      Integer prevAction = navigatorActions.get(currentNavigatorAction);
+
+      if (prevAction == GhostAction.TURN_LEFT) {
+        model.turnLeft();
+      } else if (prevAction == GhostAction.TURN_RIGHT) {
+        model.turnRight();
+      } else if (prevAction == GhostAction.FORWARD) {
+        model.moveForward();
+      } else {
+        throw new RuntimeException("Unknown GhostAction");
+      }
+    }
+
+
     if (currentNavigatorAction + 1 >= navigatorActions.size()) {
       currentNavigatorAction++;
       queue.add(new StopAction());
@@ -110,21 +131,21 @@ public class GhostDriver {
     Integer a = navigatorActions.get(currentNavigatorAction);
 
 
-    if (a == GhostNavigator.TURNLEFT) {
+    if (a == GhostAction.TURN_LEFT) {
       queue.add(new TurnAction(model, 90).setIsNonInterruptable(true));
-    } else if (a == GhostNavigator.TURNRIGHT) {
+    } else if (a == GhostAction.TURN_RIGHT) {
       queue.add(new TurnAction(model, -90).setIsNonInterruptable(true));
-    } else if (a == GhostNavigator.TURNAROUND) {
-      queue.add(new TurnAction(model, 180).setIsNonInterruptable(true));
-    } else if (a == GhostNavigator.MOVE) {
+    } else if (a == GhostAction.FORWARD) {
       queueProximityCorrectionAction();
       queue.add(new MoveAction(model, 0.4f));
+    } else {
+      throw new RuntimeException("Unknown GhostAction");
     }
 
   }
 
   private void queueProximityCorrectionAction() {
-    Model m = model;
+    GhostModel m = (GhostModel) model;
 
     if (m.getWallLeftDistance() < 18 && !m.isWallFront()) {
       queue.add(new TurnAction(m, -20).setIsNonInterruptable(true));
@@ -215,5 +236,18 @@ public class GhostDriver {
     return builder.toString();
 
 //    return "\"" + event + "\",\"" + eventSource + "\", \"" + eventAction + "\", \"" + actionQueue + "\", \"" + currentAction + "\", \"" + currentActionArgument + "\"";
+  }
+
+  @Override
+  public Driver useRobotAPI(RobotAPI api) {
+    this.api = api;
+    return this;
+  }
+
+  @Override
+  public void perform(int action) {
+    navigatorActions = new ArrayList<Integer>();
+    navigatorActions.add(action);
+    currentNavigatorAction = -1;
   }
 }

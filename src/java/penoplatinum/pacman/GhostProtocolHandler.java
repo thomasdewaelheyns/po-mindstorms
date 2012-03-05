@@ -9,9 +9,12 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 
-import java.util.List;
-import java.util.Arrays;
+import java.util.Queue;
 import java.util.Scanner;
+import penoplatinum.agent.Agent;
+import penoplatinum.grid.Sector;
+import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.mini.MessageHandler;
 
 public class GhostProtocolHandler implements MessageHandler {
   private static String version = "1.0-partial";
@@ -147,5 +150,10 @@ public class GhostProtocolHandler implements MessageHandler {
   public void sendBarcode() {
     this.queue.send(this.agent.getName() + " BARCODE " + 
                     "TODO" + " " + "TODO");
+  }
+
+  @Override
+  public void useQueue(penoplatinum.simulator.mini.Queue queue) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

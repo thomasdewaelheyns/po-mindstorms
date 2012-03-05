@@ -75,9 +75,9 @@ public class LineModelProcessor extends ModelProcessor {
   @Override
   protected void work() {
     model.setLine(Line.NONE);
-    if (model.isLightDataCorrupt()) {
-      state = WAITING;
-    }
+//    if (model.isLightDataCorrupt()) {
+//      state = WAITING;
+//    }
     
     switch (state) {
       case END_BARCODE:

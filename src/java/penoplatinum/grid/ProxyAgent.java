@@ -1,5 +1,7 @@
 package penoplatinum.grid;
 
+import penoplatinum.Color;
+
 /**
  * ProxyAgent
  * 
@@ -9,7 +11,6 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
 
-import java.awt.Color;
 
 // TODO: give the proxy a link to the actual agent
 //       copy color, name, etc.

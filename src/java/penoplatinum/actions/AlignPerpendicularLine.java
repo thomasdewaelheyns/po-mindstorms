@@ -7,6 +7,7 @@ package penoplatinum.actions;
 import lejos.nxt.Sound;
 import penoplatinum.Utils;
 import penoplatinum.modelprocessor.ColorInterpreter;
+import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 
@@ -79,22 +80,21 @@ public class AlignPerpendicularLine extends BaseAction {
   private double initialAngle;
 
   private int getRelativeAngle() {
-    return (int) (model.getTotalTurnedAngle() - initialAngle);
+    return (int) (((GhostModel) model).getTotalTurnedAngle() - initialAngle);
   }
 
   private int getStateStart() {
-    
+
     int sweepSize = 170;
-    
+
     switch (state) {
       case 0:
         // sweep over line left 
-        initialAngle = model.getTotalTurnedAngle();
+        initialAngle = ((GhostModel) model).getTotalTurnedAngle();
         setAngle(-sweepSize);
         return Navigator.TURN;
       case 1:
-        if (leftEnd == null)
-        {
+        if (leftEnd == null) {
           //Terminate
           state = 3;
           return Navigator.STOP;
@@ -119,10 +119,10 @@ public class AlignPerpendicularLine extends BaseAction {
         leftStart = Utils.ClampLooped(leftStart, -360, 0);
         rightEnd = Utils.ClampLooped(rightEnd, 0, 360);
         rightStart = Utils.ClampLooped(rightStart, 0, 360);
-        
+
         int left = (leftEnd + leftStart) / 2;
         int right = (rightEnd + rightStart) / 2;
-        
+
         left = leftStart;
         right = rightStart;
 

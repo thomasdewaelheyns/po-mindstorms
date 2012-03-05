@@ -10,6 +10,7 @@ package penoplatinum.grid;
 
 import javax.swing.JFrame;
 
+import penoplatinum.Color;
 import penoplatinum.simulator.mini.Bearing;
 
 public class SwingGridView extends JFrame implements GridView {
@@ -125,9 +126,10 @@ public class SwingGridView extends JFrame implements GridView {
         minTop  = this.grid.getMinTop();
 
     for( Agent agent : this.grid.getAgents() ) {
+      final Color c = agent.getColor();
       this.board.addAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
                           agent.getBearing(), agent.getName(), 
-                          agent.getColor());
+                          new java.awt.Color(c.getR(),c.getG(),c.getB()));
     }
   }
   

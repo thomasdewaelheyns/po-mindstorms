@@ -11,7 +11,7 @@ package penoplatinum.grid;
 public class ConsoleGridView implements GridView {
   private Grid grid;
   
-  public GridView refreshGrid grid) {
+  public GridView refresh(Grid grid) {
     this.grid = grid;
     return this;
   }

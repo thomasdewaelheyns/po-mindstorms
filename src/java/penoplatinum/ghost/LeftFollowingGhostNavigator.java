@@ -6,39 +6,64 @@ package penoplatinum.ghost;
 
 import java.util.ArrayList;
 import java.util.List;
+import penoplatinum.pacman.GhostAction;
+import penoplatinum.pacman.GhostModel;
+import penoplatinum.pacman.GhostNavigator;
+import penoplatinum.simulator.Model;
+import penoplatinum.simulator.mini.Navigator;
 
 /**
  *
  * @author MHGameWork
  */
-public class LeftFollowingGhostNavigator implements GhostNavigator {
+public class LeftFollowingGhostNavigator implements Navigator {
 
   private final GhostModel m;
-
+  private boolean forwardQueued = false;
 
   public LeftFollowingGhostNavigator(GhostModel model) {
     this.m = model;
   }
-
   private ArrayList<Integer> outputBuffer = new ArrayList<Integer>();
-  
-  public List<Integer> nextActions() {
 
-    outputBuffer.clear();
-    
-    if (!m.isWallLeft()) {
-      outputBuffer.add(TURNLEFT);
-      outputBuffer.add(MOVE);
-    } else if (!m.isWallFront()) {
-      outputBuffer.add(MOVE);
-    } else if (!m.isWallRight()) {
-      outputBuffer.add(TURNRIGHT);
-      outputBuffer.add(MOVE);
-    } else {
-      outputBuffer.add(TURNAROUND);
-      outputBuffer.add(MOVE);
+  @Override
+  public Navigator setModel(Model model) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int nextAction() {
+    if (forwardQueued) {
+      forwardQueued = false;
+      return GhostAction.FORWARD;
     }
+    if (!m.isWallLeft()) {
+      forwardQueued = true;
+      return GhostAction.TURN_LEFT;
+    } else if (!m.isWallFront()) {
+      return GhostAction.FORWARD;
 
-    return outputBuffer;
+    } else if (!m.isWallRight()) {
+      forwardQueued = true;
+
+      return GhostAction.TURN_RIGHT;
+    } else {
+      return GhostAction.TURN_LEFT;
+    }
+  }
+
+  @Override
+  public double getDistance() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public double getAngle() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Boolean reachedGoal() {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

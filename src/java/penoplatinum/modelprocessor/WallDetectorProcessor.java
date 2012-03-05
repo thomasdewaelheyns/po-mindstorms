@@ -60,8 +60,8 @@ public class WallDetectorProcessor extends ModelProcessor {
           }
         } else { 
           // shouldn't happen
-          System.err.println( "We turned and don't known what we know ?" );
-          try { System.in.read(); } catch(Exception e) {}
+//          System.err.println( "We turned and don't known what we know ?" );
+//          try { System.in.read(); } catch(Exception e) {}
         }
         break;
       case GhostAction.NONE:

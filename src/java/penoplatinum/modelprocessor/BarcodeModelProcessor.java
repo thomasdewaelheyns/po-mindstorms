@@ -29,7 +29,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
   //the length of a barcode strip
   private float barcodeLength = 0.14f;
 
-  
   /**
    * The constructor in case the BarcodeModelProcessor is the last in a linked list of ModdelProcessors
    * or when there is only one ModdelProcessor.
@@ -77,20 +76,20 @@ public class BarcodeModelProcessor extends ModelProcessor {
   protected void work() {
     Buffer tempBuffer = this.model.getLightValueBuffer();
     model.setBarcode(Barcode.None);
-    if (model.isLightDataCorrupt()) {
-//      if (state != WAITING) {
-//        Utils.Log("Turning! Disabling measurement");
-//      }
-
-      setState(WAITING);
-      tempBuffer.unsetCheckPoint();
-    }
+//    if (model.isLightDataCorrupt()) {
+////      if (state != WAITING) {
+////        Utils.Log("Turning! Disabling measurement");
+////      }
+//
+//      setState(WAITING);
+//      tempBuffer.unsetCheckPoint();
+//    }
     updateState(tempBuffer);
-    
-    if (state != WAITING)
-    {
-      model.setScanningLightData(true); // Flag that someone is reading light data.
-    }
+
+//    if (state != WAITING)
+//    {
+//      model.setScanningLightData(true); // Flag that someone is reading light data.
+//    }
   }
 
   /**

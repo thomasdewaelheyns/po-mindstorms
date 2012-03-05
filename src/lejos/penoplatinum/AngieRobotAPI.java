@@ -98,8 +98,9 @@ public class AngieRobotAPI implements RobotAPI {
         return touchRight;
     }
 
-    public void move(double distance) {
+    public boolean move(double distance) {
         getMovement().driveDistance(distance);
+        return true;
     }
 
     public void turn(double angle) {

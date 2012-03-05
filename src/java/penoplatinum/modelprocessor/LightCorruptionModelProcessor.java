@@ -7,6 +7,7 @@ package penoplatinum.modelprocessor;
 import penoplatinum.modelprocessor.ColorInterpreter.Color;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
+import penoplatinum.simulator.OriginalModel;
 
 /**
  *
@@ -35,6 +36,7 @@ public class LightCorruptionModelProcessor extends ModelProcessor {
 
   @Override
   protected void work() {
+    OriginalModel model = (OriginalModel)this.model;
     model.setLine(Line.NONE);
     if (model.isTurning() && !colorInterpreter.isColor(Color.Brown)) {
       lightDataCorruption = 3;

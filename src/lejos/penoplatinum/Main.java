@@ -11,7 +11,6 @@ import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.ghost.GhostRobot;
 import penoplatinum.ghost.LeftFollowingGhostNavigator;
 import penoplatinum.navigators.BehaviourNavigator;
-import penoplatinum.navigators.SectorNavigator;
 import penoplatinum.simulator.NavigatorRobot;
 
 public class Main {
