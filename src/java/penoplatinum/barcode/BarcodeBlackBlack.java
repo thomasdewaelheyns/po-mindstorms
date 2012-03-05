@@ -13,7 +13,7 @@ public class BarcodeBlackBlack implements BarcodeCorrector {
 
   @Override
   public int translate(BufferSubset list) {
-    return translator.translate(list, 7);
+    return translator.translate(list, 8, true);
   }
 
   @Override

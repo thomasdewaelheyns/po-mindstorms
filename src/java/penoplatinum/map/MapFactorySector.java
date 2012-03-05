@@ -82,8 +82,8 @@ public class MapFactorySector {
   
   private void addDirections(){
     directions.put("NS", 0);
-    directions.put("SN", 1);
-    directions.put("EW", 2);
+    directions.put("EW", 1);
+    directions.put("SN", 2);
     directions.put("WE", 3);
   }
 }

@@ -6,11 +6,12 @@ public class BarcodeTranslator {
 
   private static final int MINIMUM_BETTER = 3;
 
-  public int translate(BufferSubset list, int barcodeLength) {
+  public int translate(BufferSubset list, int barcodeLength, boolean reverse) {
     if (list.size() < barcodeLength) {
       return -1;
     }
     int val = 0;
+    int pos = 1;
     for (int i = 0; i < barcodeLength; i++) {
       int sum = 0;
       for (int j = (i * list.size()) / barcodeLength; j < (i + 1) * list.size() / barcodeLength; j++) {
@@ -20,8 +21,13 @@ public class BarcodeTranslator {
       if (sum < MINIMUM_BETTER && sum > -MINIMUM_BETTER) {
         return -1;
       }
-      val *= 2;
-      val += (sum > 0 ? 1 : 0);
+      if(reverse){
+        val += pos * interpreter.isBlackOrWhite(averageValue);
+        pos *= 2;
+      } else {
+        val *= 2;
+        val += interpreter.isBlackOrWhite(averageValue);
+      }
     }
     return val;
   }

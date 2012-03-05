@@ -66,7 +66,7 @@ public class Sector implements Tile, Cloneable{
   @Override
   public int getBarcode() {
     if (BitwiseOperations.hasBit(data, startIsItABarcode)) {
-      return barcode.getExpand()[BitwiseOperations.getBits(data, Sector.startBarcode, 4)];
+      return barcode.getExpand()[BitwiseOperations.getBits(data, Sector.startBarcode, 4)]*2;
     }
     return -1;
   }
@@ -121,7 +121,7 @@ public class Sector implements Tile, Cloneable{
 =======
 >>>>>>> eff70d3... Barcodes worden getekend.
     }
-    int pos = ((getBarcodeLocation() & 1) == 0 ? y : x);
+    int pos = ((getBarcodeLocation() & 1) != 0 ? x : y);
     pos -= ((this.SIZE / 2) - (this.BARCODE_WIDTH / 2));
     pos *= ((getBarcodeLocation() & 2) == 0 ? 1 : -1);
     pos /= Sector.BARCODE_LINE_WIDTH;
@@ -372,7 +372,7 @@ public class Sector implements Tile, Cloneable{
       
       int lengthX = 0;
       int lengthY = 0;
-      if ((getBarcodeLocation() & 1) != 0) {
+      if ((getBarcodeLocation() & 1) == 0) {
         baseY += dx;
         lengthX = DRAW_TILE_SIZE;
         lengthY = DRAW_BARCODE_LINE_WIDTH;
