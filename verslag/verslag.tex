@@ -296,6 +296,9 @@ Naast het aanpassen van de schaal veranderden we ook wijze waarop de verschillen
 
 Voor het simuleren van meerdere robots, zowel lokaal als op afstand, moest de robot afgescheiden worden van de simulator. Tegelijk werd ook het GUI component van de robot afgescheiden en ge-abstraheerd zodat er meerdere types robots kunnen bestaan. Door deze abstractie is het mogelijk om verschillende simulatoren te laten samenwerken elk met hun eigen robot. Deze simulatoren communiceren met een speciaal protocol op een eigen RabbitMQ kanaal.
 
+TODO: lees dit stukje na =>
+Voor het testen van de verschillende algoritmes, specifiek het herori\"entatie algoritme, is er al de mogelijkheid om op sommige plaatsen meet- en stuur-afwijkingen in te voegen in de simulator. Dit kan men eenvoudigweg toevoegen in de klasse van iedere sensor. De afwijkingen waarop de motor rijdt kan men in de gesimuleerde API van de robot aanpassen, zowel de variatie als een gemiddelde fout kan ingesteld worden, onafhankelijk voor het vooruitrijden en het draaien.
+
 \subsection{Simulator Modi}
 
 De simulator van het eerste semester was een hulpmiddel om met meerdere team-leden in parallel te kunnen werken zonder te moeten strijden om tijd met de echte fysieke robot. In het tweede semester is de simulator een wezenlijk deel geworden van de opdracht en ook de manier waarop de simulator moet kunnen werken is sterk verschillend van onze eigen doelstellingen in het tweede semester.
