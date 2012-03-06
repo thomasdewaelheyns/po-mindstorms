@@ -3,12 +3,12 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{longtable}
-\usepackage{pgfgantt}
+%\usepackage{pgfgantt}
 \usepackage[dutch]{babel}
 \usepackage{url}
-\usepackage{pgf,pgfplots}
-\usetikzlibrary{fit,calc}
-\usepgfplotslibrary{external}
+%\usepackage{pgf,pgfplots}
+%\usetikzlibrary{fit,calc}
+%\usepgfplotslibrary{external}
 
 \geometry{a4paper}
 
@@ -126,9 +126,15 @@ Verder is ook de motor, die de sonar laat draaien, iets naar onder verplaatst en
 \subsection{IR-sensor}
 De Infrarood sensor werd vooraan in het midden van de robot aangebracht. Net boven de lichtsensor. Het uitlezen van deze sensor zorgde voor een aantal problemen. De gemeten afstand leek niet overeen te komen met de voorspelde. Het bleek dat de Lejos implementatie verouderd was en niet alle mogelijkheden van de sensor ondersteunde. Met een aanpassing van de nieuwe broncode van Lejos werkte de sensor volledig en zoals verwacht. 
 
-Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is. De sensor heeft \'e\'en AC modus en \'e\'en DC modus. Er bleek dat de AC modus van de bol die speciaal voor de sensor ontwikkeld was het beste werkte. 
+Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is. De sensor heeft \'e\'en AC modus en \'e\'en DC modus. Er bleek dat de AC modus van de bol die speciaal voor de sensor ontwikkeld was het beste werkte. De sensor had dan een reikwijdte van 5 meter in tegenstelling tot ongeveer 80 cm bij andere modi.
 
 TODO: Ruben: maak referenties naar afbeelding...
+
+In grafiek kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat de varianties zeer klein zijn vergeleken met de sterkte. Een afstandsschatting lijkt dus goed mogelijk.
+
+Ook werd er ondervonden dat het infrarood licht weerkaatst op de muren. De sterkte was toen ook herkenbaar lager dan met rechtstreeks zicht(zie grafiek ). Men kan dus eventueel ook met de meetsterkte een herkennen of de pacman zich achter muren bevindt. Dan kan deze meting genegeerd worden aangezien er onmogelijk nauwkeurig een weerkaatsingspatroon kan gegenereerd worden. 
+
+Het enige nadeel van zo'n filtering is dat deze de afstanden waarop geschat kan worden inperkt. Zoals men kan zien op grafiek , kunnen we geen afstanden meer schatten van meer dan 160 cm (4 sectoren) als we rekening houden met weerkaatsingen. Dit zal voor demo 2 en 3 moeten afgewogen worden wat de beste oplossing bezorgt: een grotere gemeten afstand maar misschien niet nauwkeurig of een grotere zekerheid garanderen. Er zal ook moeten rekening gehouden worden met de keuze van andere teams. 
 
 In grafiek kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat er voor 
 
@@ -179,7 +185,7 @@ De verkenstrategie is gebaseerd op het zelfde principe. Hier is er niet \'e\'en 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=50mm]{resources/dfs.png}
-  \caption{Hill Climbing met impliciet ``Dept-First-Search'' zoekgedrag}
+  \caption{Hill Climbing met impliciet ``Depth-First-Search'' zoekgedrag}
   \label{fig:dfs}
 \end{figure}
 
