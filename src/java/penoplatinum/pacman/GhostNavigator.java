@@ -8,7 +8,6 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -29,11 +28,11 @@ public class GhostNavigator implements Navigator {
   }
   
   private void log(String msg) {
-    System.out.printf( "[%10s] %2d,%2d / Navigator  : %s\n", 
-                       this.model.getAgent().getName(),
-                       this.model.getAgent().getLeft(),
-                       this.model.getAgent().getTop(),
-                       msg );
+//    System.out.printf( "[%10s] %2d,%2d / Navigator  : %s\n", 
+//                       this.model.getAgent().getName(),
+//                       this.model.getAgent().getLeft(),
+//                       this.model.getAgent().getTop(),
+//                       msg );
   }
 
   public int nextAction() {
@@ -94,7 +93,7 @@ public class GhostNavigator implements Navigator {
     
     // choose randomly one of the best moves and create the required actions
     int forMove = moves[(int)(Math.random()*count)];
-    this.log( forMove + " out of " + Arrays.toString(moves) + " / " + count);
+    //TODO: log disabled - this.log( forMove + " out of " + Arrays.toString(moves) + " / " + count);
     
     // randomly don't do anything (20%)
     if(Math.random()*5==3) { forMove = Bearing.NONE; }

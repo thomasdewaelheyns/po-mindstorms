@@ -15,22 +15,18 @@ import penoplatinum.simulator.OriginalModel;
  */
 public class LightCorruptionModelProcessor extends ModelProcessor {
 
-  private ColorInterpreter colorInterpreter;
 
   public LightCorruptionModelProcessor() {
     super();
-    this.colorInterpreter = new ColorInterpreter();
   }
 
   public LightCorruptionModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
-    this.colorInterpreter = new ColorInterpreter();
   }
 
   @Override
   public void setModel(Model model) {
     super.setModel(model);
-    colorInterpreter.setModel(model);
   }
   private int lightDataCorruption = 0;
 
@@ -38,13 +34,13 @@ public class LightCorruptionModelProcessor extends ModelProcessor {
   protected void work() {
     OriginalModel model = (OriginalModel)this.model;
     model.setLine(Line.NONE);
-    if (model.isTurning() && !colorInterpreter.isColor(LightColor.Brown)) {
+    if (model.isTurning() && model.getCurrentLightColor() != LightColor.Brown) {
       lightDataCorruption = 3;
 
     }
     if (lightDataCorruption > 0) {
       model.setLightCorruption(true);
-      if (colorInterpreter.isColor(LightColor.Brown)) {
+      if (model.getCurrentLightColor() ==LightColor.Brown) {
         lightDataCorruption--;
       }
     }

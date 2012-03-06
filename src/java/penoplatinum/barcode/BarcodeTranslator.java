@@ -1,15 +1,10 @@
 package penoplatinum.barcode;
 
 import penoplatinum.modelprocessor.BufferSubset;
-import penoplatinum.modelprocessor.ColorInterpreter;
 
 public class BarcodeTranslator {
 
-  ColorInterpreter interpreter;
 
-  public BarcodeTranslator(ColorInterpreter interpreter) {
-    this.interpreter = interpreter;
-  }
 
   public int translate(BufferSubset list, int barcodeLength) {
     if (list.size() < barcodeLength) {

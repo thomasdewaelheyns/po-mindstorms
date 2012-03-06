@@ -8,7 +8,6 @@ import penoplatinum.actions.DriveForwardAction;
 import penoplatinum.actions.MoveAction;
 import penoplatinum.actions.StopAction;
 import penoplatinum.actions.TurnAction;
-import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.GoalDecider;
@@ -29,13 +28,11 @@ public class BehaviourNavigator implements Navigator {
 
   private boolean proximityBlocked = true;
   private ActionQueue queue = new ActionQueue();
-  ColorInterpreter interpreter;
   private DriveForwardAction driveForwardAction = new DriveForwardAction(true);
 
   public BehaviourNavigator() {
     // Fill with initial action
     queue.add(driveForwardAction);
-    interpreter = new ColorInterpreter();
 
   }
   private OriginalModel model;
@@ -75,7 +72,7 @@ public class BehaviourNavigator implements Navigator {
       // No clear gap data, do nothing
       return;
     }
-    if (model.isScanningLightData() || !interpreter.isColor(LightColor.Brown)) {
+    if (model.isScanningLightData() || model.getCurrentLightColor()   !=LightColor.Brown) {
       // Do not gap correct when someone is reading light data
       return;
     }
@@ -216,7 +213,7 @@ public class BehaviourNavigator implements Navigator {
   }
 
   private void checkProximityEvent() {
-    if (!interpreter.isColor(LightColor.Brown)) {
+    if (model.getCurrentLightColor() != LightColor.Brown) {
       // Ignore when on color
       return;
     }
@@ -271,7 +268,6 @@ public class BehaviourNavigator implements Navigator {
 
   public BehaviourNavigator setModel(Model model) {
     this.model = (OriginalModel) model;
-    interpreter.setModel(model);
     return this;
   }
 

@@ -6,7 +6,6 @@ package penoplatinum.actions;
 
 import lejos.nxt.Sound;
 import penoplatinum.Utils;
-import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.Model;
@@ -20,7 +19,6 @@ public class AlignPerpendicularLine extends BaseAction {
 
   public static final int TARGET_ANGLE = 20;
   public static final int SWEEP_ANGLE = 250;
-  ColorInterpreter colors;
   private int directionModifier;
   private Model model;
 
@@ -28,7 +26,6 @@ public class AlignPerpendicularLine extends BaseAction {
     super(model);
     this.model = model;
     directionModifier = CCW ? 1 : -1;
-    colors = new ColorInterpreter().setModel(model);
 
 
   }
@@ -48,10 +45,10 @@ public class AlignPerpendicularLine extends BaseAction {
       // processing state
       switch (state) {
         case 0:
-          if (colors.isColor(LightColor.White) && leftStart == null) {
+          if ( getModel().getCurrentLightColor() == LightColor.White && leftStart == null) {
             leftStart = getRelativeAngle();
           }
-          if (colors.isColor(LightColor.Brown) && leftStart != null) {
+          if (getModel().getCurrentLightColor() == LightColor.Brown && leftStart != null) {
             leftEnd = getRelativeAngle();
             return Navigator.STOP;
           }
@@ -59,10 +56,10 @@ public class AlignPerpendicularLine extends BaseAction {
         case 1:
           break;
         case 2:
-          if (colors.isColor(LightColor.White) && rightStart == null) {
+          if (getModel().getCurrentLightColor() == LightColor.White && rightStart == null) {
             rightStart = getRelativeAngle();
           }
-          if (colors.isColor(LightColor.Brown) && rightStart != null) {
+          if (getModel().getCurrentLightColor() == LightColor.Brown && rightStart != null) {
             rightEnd = getRelativeAngle();
             return Navigator.STOP;
           }

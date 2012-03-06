@@ -99,8 +99,6 @@ public class WrappedLightSensor implements ILightSensor {
     private void updateBorders() {
         blackBorder = (BLACKVAL + BROWNVAL) / 2;
         whiteBorder = (WHITEVAL + BROWNVAL) / 2;
-//        ColorInterpreter.blackBorder = blackBorder;
-//        ColorInterpreter.whiteBorder = whiteBorder;
 
     }
 

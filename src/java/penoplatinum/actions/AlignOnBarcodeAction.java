@@ -4,7 +4,6 @@
  */
 package penoplatinum.actions;
 
-import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
@@ -16,14 +15,12 @@ import penoplatinum.simulator.Navigator;
 public class AlignOnBarcodeAction extends BaseAction {
 
   public static double CCW_afwijking = 1.01;
-  ColorInterpreter colors;
   public final int WIELOMTREK = 175; //mm
   public final int WIELAFSTAND = 160;//112mm
   private final int correctionAngle;
 
   public AlignOnBarcodeAction(Model model, int correctionAngle) {
     super(model);
-    colors = new ColorInterpreter().setModel(model);
     this.correctionAngle = correctionAngle;
 
 
@@ -49,7 +46,7 @@ public class AlignOnBarcodeAction extends BaseAction {
       started = true;
       return Navigator.TURN;
     }
-    if (!colors.isColor(LightColor.Brown)) {
+    if (getModel().getCurrentLightColor() != LightColor.Brown) {
       // Found something!! turn other way
 
       int diffTacho = getModel().getSensorValue(Model.M1) - startTacho;

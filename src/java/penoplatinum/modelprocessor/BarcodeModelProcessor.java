@@ -20,7 +20,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
   private BarcodeHammingCorrector interpreter;
-  private ColorInterpreter colorInterpreter;
   private int brownCounter = 0;
   int state = WAITING;
   private float startTacho;
@@ -32,25 +31,19 @@ public class BarcodeModelProcessor extends ModelProcessor {
   /**
    * The constructor in case the BarcodeModelProcessor is the last in a linked list of ModdelProcessors
    * or when there is only one ModdelProcessor.
-   * A colorInterpreter is created.
    */
   public BarcodeModelProcessor() {
     super();
-    this.colorInterpreter = new ColorInterpreter();
-    interpreter = new BarcodeHammingCorrector(colorInterpreter);
   }
 
   /**
    * The constructor for when the BarcodeModelProcessor is not the last element in a
    * linked list with at least 2 ModelProcessors
-   * A colorInterpreter is created.
    * @param nextProcessor 
    *        The next ModelProcessor in the linked list.
    */
   public BarcodeModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
-    this.colorInterpreter = new ColorInterpreter();
-    interpreter = new BarcodeHammingCorrector(colorInterpreter);
   }
 
   /**
@@ -61,7 +54,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
   @Override
   public void setModel(Model model) {
     super.setModel(model);
-    colorInterpreter.setModel(model);
   }
 
   /**
@@ -108,14 +100,11 @@ public class BarcodeModelProcessor extends ModelProcessor {
   private void updateState(Buffer tempBuffer) {
     switch (state) {
       case WAITING:
-        if (!colorInterpreter.isColor(LightColor.Brown)) {
           setState(RECORDING);
           tempBuffer.setCheckPoint();
           brownCounter = 0;
-        }
         break;
       case RECORDING:
-        if (colorInterpreter.isColor(LightColor.Brown)) {
           brownCounter++;
           if (brownCounter > 5 && tempBuffer.getCheckpointSize() < 10) {
             setState(WAITING);
@@ -123,9 +112,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
           } else if (brownCounter > END_OF_BARCODE_BROWN_COUNT) {
             setState(INTERPRET);
           }
-        } else {
-          brownCounter = 0;
-        }
         break;
       case INTERPRET:
         int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));

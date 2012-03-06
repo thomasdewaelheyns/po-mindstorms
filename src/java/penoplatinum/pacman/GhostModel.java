@@ -66,11 +66,11 @@ public class GhostModel implements Model {
     if (0 == 0) {
       return;
     }
-    System.out.printf("[%10s] %2d,%2d / Model  : %s\n",
-            this.getAgent().getName(),
-            this.getAgent().getLeft(),
-            this.getAgent().getTop(),
-            msg);
+//    System.out.printf("[%10s] %2d,%2d / Model  : %s\n",
+//            this.getAgent().getName(),
+//            this.getAgent().getLeft(),
+//            this.getAgent().getTop(),
+//            msg);
   }
 
   // we create a new Grid, add the first sector, the starting point
@@ -101,7 +101,7 @@ public class GhostModel implements Model {
       throw new RuntimeException("Invalid number of sensorvalues given!");
     }
 
-    this.prevSensors = this.sensors.clone(); //TODO: WARNING GC
+    //this.prevSensors = this.sensors.clone(); //TODO: WARNING GC
     this.sensors = values;
     this.process();
 
@@ -249,7 +249,6 @@ public class GhostModel implements Model {
    * and the states of the three motors defined by the MOTORSTATE enumeration
    */
   private int[] sensors = new int[SENSORVALUES_NUM];
-  private int[] prevSensors = new int[SENSORVALUES_NUM];
   // processors are chained using a Decorator pattern
   private List<Integer> distances = new ArrayList<Integer>();
   private List<Integer> angles = new ArrayList<Integer>();

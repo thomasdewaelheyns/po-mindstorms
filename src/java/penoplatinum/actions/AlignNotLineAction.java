@@ -4,7 +4,6 @@
  */
 package penoplatinum.actions;
 
-import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
@@ -17,13 +16,11 @@ public class AlignNotLineAction extends BaseAction {
   
   public static final int TARGET_ANGLE = 20;
   public static final int SWEEP_ANGLE = 250;
-  ColorInterpreter colors;
   private int directionModifier;
   
   public AlignNotLineAction(Model model, boolean CCW) {
     super(model);
     directionModifier = CCW ? 1 : -1;
-    colors = new ColorInterpreter().setModel(model);
     
     
   }
@@ -58,12 +55,12 @@ public class AlignNotLineAction extends BaseAction {
       
       if (!lineStartFound) {
         // Searching start
-        if (!colors.isColor(LightColor.Brown)) {
+        if ( getModel().getCurrentLightColor() != LightColor.Brown) {
           // Start found!
           lineStartFound = true;
         }
       } else {
-        if (colors.isColor(LightColor.Brown)) {
+        if (getModel().getCurrentLightColor() != LightColor.Brown) {
           // End found!
           sweeping = false;
           

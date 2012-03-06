@@ -4,9 +4,6 @@
  */
 package penoplatinum.actions;
 
-import lejos.nxt.Sound;
-import penoplatinum.Utils;
-import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.modelprocessor.GapModelProcessor;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;

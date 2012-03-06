@@ -23,10 +23,10 @@ public class GridUpdateProcessor extends ModelProcessor {
   }
 
   // update the agent
-  protected void work() {
+  public void work() {
     this.updateWallInfo();
     this.addNewSectors();
-    this.updateHillClimbingInfo();
+    //this.updateHillClimbingInfo();
   }
 
   // update the current Sector on the Grid to reflect the currently selected
@@ -69,7 +69,7 @@ public class GridUpdateProcessor extends ModelProcessor {
     }
   }
   
-  private void updateHillClimbingInfo() {
+  public void updateHillClimbingInfo() {
     ((GhostModel)this.model).getGrid().refresh();
   }
 }

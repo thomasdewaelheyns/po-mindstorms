@@ -143,9 +143,9 @@ public class SimpleGrid implements Grid {
         if (sector != null) {
           walls =
                   value = sector.getValue();
-          System.out.printf("%5d ", (int) sector.getValue());
+//          System.out.printf("%5d ", (int) sector.getValue());
         } else {
-          System.out.print("../.....");
+//          System.out.print("../.....");
         }
       }
       System.out.println("");

@@ -34,6 +34,8 @@ public class GhostRobot implements Robot {
   private RobotAgent agent;
   private ReferencePosition initialReference = new ReferencePosition();
 
+  private GridUpdateProcessor gridUpdateProcessor;
+  
   public GhostRobot(String name) {
     this.setupModel(name);
 
@@ -50,6 +52,8 @@ public class GhostRobot implements Robot {
 
   private void setupModel(String name) {
     this.model = new GhostModel(name);
+    gridUpdateProcessor = new GridUpdateProcessor();
+    gridUpdateProcessor.setModel(model);
     ModelProcessor processors =
             new HistogramModelProcessor(
             new LightColorModelProcessor(
@@ -63,10 +67,8 @@ public class GhostRobot implements Robot {
             new WallDetectionModelProcessor(
             new InboxProcessor(
             new WallDetectorProcessor(
-            new GridUpdateProcessor()))))));
+            ))))));
     this.model.setProcessor(processors);
-
-    model.setAverageLightValue(70);
 
   }
 
@@ -95,27 +97,27 @@ public class GhostRobot implements Robot {
   // the external tick...
   public void step() {
 
-    switch (model.getCurrentLightColor()) {
-      case Black:
-        buffer.add("Black, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
-        break;
-      case Brown:
-        buffer.add("Brown, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
-        break;
-      case White:
-        buffer.add("White, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
-        break;
-      default:
-        break;
-    }
-    //buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
-    //buffer.add(Integer.toString((int)model.getLightSensorValue()));
-    if (buffer.size() > 30) {
-      for (String s : buffer) {
-        Utils.Log(s);
-      }
-      buffer.clear();
-    }
+//    switch (model.getCurrentLightColor()) {
+//      case Black:
+//        buffer.add("Black, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
+//        break;
+//      case Brown:
+//        buffer.add("Brown, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
+//        break;
+//      case White:
+//        buffer.add("White, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
+//        break;
+//      default:
+//        break;
+//    }
+//    //buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
+//    //buffer.add(Integer.toString((int)model.getLightSensorValue()));
+//    if (buffer.size() > 30) {
+//      for (String s : buffer) {
+//        Utils.Log(s);
+//      }
+//      buffer.clear();
+//    }
 
 
     // poll other sensors and update model
@@ -137,6 +139,7 @@ public class GhostRobot implements Robot {
     // if the sweep is ready ...
     if (this.waitingForSweep) {
       this.model.updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
+      gridUpdateProcessor.work();
       this.waitingForSweep = false;
     } else {
       this.api.sweep(sweepAngles);
@@ -144,6 +147,9 @@ public class GhostRobot implements Robot {
       return; // to wait for results
     }
 
+    for (int i = 0; i < 3; i++) {
+      gridUpdateProcessor.updateHillClimbingInfo();
+    }
 
     // NOTE: wallmodelprocessor hasn't run yet at this point, 
     //    so the model still contains old wall information!!!

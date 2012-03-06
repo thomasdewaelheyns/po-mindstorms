@@ -69,7 +69,7 @@ public class LightSensor implements Sensor {
     // TODO: add random abberations
     //this.sensorValues[Model.S4] =
     //        color == Panel.WHITE ? 100 : (color == Panel.BLACK ? 0 : 70);
-    return color == Panel.WHITE ? 100 : (color == Panel.BLACK ? 0 : 70);
+    return color == Panel.WHITE ? 500 : (color == Panel.BLACK ? 360 : 450);
   }
 
   @Override

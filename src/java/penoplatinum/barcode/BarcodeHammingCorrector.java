@@ -1,16 +1,12 @@
 package penoplatinum.barcode;
 
 import penoplatinum.modelprocessor.BufferSubset;
-import penoplatinum.modelprocessor.ColorInterpreter;
 
 public class BarcodeHammingCorrector implements BarcodeCorrector {
 
   public static byte[] expand = new byte[]{0, 15, 22, 25, 37, 42, 51, 60, 67, 76, 85, 90, 102, 105, 112, 127};
   private BarcodeTranslator translator;
 
-  public BarcodeHammingCorrector(ColorInterpreter interpreter) {
-    this.translator = new BarcodeTranslator(interpreter);
-  }
 
   public int correct(int value) {
     byte corrected = (byte) (getBarcodesRepair(value) / 8);
