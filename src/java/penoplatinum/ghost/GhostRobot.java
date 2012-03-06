@@ -96,6 +96,14 @@ public class GhostRobot implements Robot {
 
   // the external tick...
   public void step() {
+    Utils.Log("Infrared Angle: "+model.getSensorValue(model.S1));
+    buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
+    if (buffer.size() > 100) {
+      for (String s : buffer) {
+        Utils.Log(s);
+      }
+      buffer.clear();
+    }
 
 //    switch (model.getCurrentLightColor()) {
 //      case Black:

@@ -26,10 +26,12 @@ public class AngieRobotAPI implements RobotAPI {
     private TouchSensor touchRight;
     private WrappedLightSensor light;
     private RotatingSonarSensor sonar;
+    private IRSeekerV2 irSeeker;
     private AngieCalibrationData calibrationData;
     private RotationMovement movement;
     private static final int sensorNumberTouchLeft = Model.S1;
     private static final int sensorNumberTouchRight = Model.S2;
+    private static final int sensorNumberInfraRed = Model.S1;
     private static final int sensorNumberLight = Model.S4;
     private static final int sensorNumberSonar = Model.S3;
     private static final int sensorNumberMotorLeft = Model.M1;
@@ -48,12 +50,15 @@ public class AngieRobotAPI implements RobotAPI {
         motorRight = Motor.C;
 
 
-
+        /*
         touchLeft = new TouchSensor(SensorPort.S2);
         touchRight = new TouchSensor(SensorPort.S1);
+        /**/
         light = new WrappedLightSensor(null, null);
 //        light.calibrate();
         sonar = new RotatingSonarSensor(Motor.A, new UltrasonicSensor(SensorPort.S3));
+        irSeeker = new IRSeekerV2(SensorPort.S1, IRSeekerV2.Mode.AC);
+        
 
         calibrationData = new AngieCalibrationData();
         movement = new RotationMovement();
@@ -97,6 +102,10 @@ public class AngieRobotAPI implements RobotAPI {
     public TouchSensor getTouchRight() {
         return touchRight;
     }
+    
+    public IRSeekerV2 getIrSeeker(){
+        return irSeeker;
+    }
 
     public boolean move(double distance) {
         getMovement().driveDistance(distance);
@@ -118,11 +127,16 @@ public class AngieRobotAPI implements RobotAPI {
         values[sensorNumberMotorRight] = motorRight.getTachoCount();
         values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
 
-
+        /*
         values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
         values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
-        values[sensorNumberLight] = light.getRawLightValue();
-        values[sensorNumberSonar] = (int) sonar.getDistance();
+		values[sensorNumberLight] = light.getRawLightValue();        values[sensorNumberInfraRed] = irSeeker.getDirection();        values[sensorNumberSonar] = (int) sonar.getDistance();        
+        values[Model.IR0] = irSeeker.getSensorValue(1);
+        values[Model.IR1] = irSeeker.getSensorValue(2);
+        values[Model.IR2] = irSeeker.getSensorValue(3);
+        values[Model.IR3] = irSeeker.getSensorValue(4);
+        values[Model.IR4] = irSeeker.getSensorValue(5);
+        
 
         //TODO: change on port change
         values[Model.MS3] = getMotorState(Motor.A);
