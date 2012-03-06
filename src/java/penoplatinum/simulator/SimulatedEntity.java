@@ -3,6 +3,7 @@ package penoplatinum.simulator;
 import java.awt.Point;
 import penoplatinum.simulator.sensors.LightSensor;
 import penoplatinum.simulator.sensors.MotorState;
+import penoplatinum.simulator.sensors.NoneSensor;
 import penoplatinum.simulator.sensors.Sonar;
 import penoplatinum.simulator.sensors.TouchSensor;
 import penoplatinum.simulator.view.ViewRobot;
@@ -79,6 +80,12 @@ public class SimulatedEntity implements RobotEntity{
     setSensor(Model.S2, new TouchSensor(315));
     setSensor(Model.S3, new Sonar());
     setSensor(Model.S4, new LightSensor());
+    setSensor(Model.IR0, new NoneSensor());
+    setSensor(Model.IR1, new NoneSensor());
+    setSensor(Model.IR2, new NoneSensor());
+    setSensor(Model.IR3, new NoneSensor());
+    setSensor(Model.IR4, new NoneSensor());
+    
   }
   
   private void setSensor(int port, Sensor sensor){
