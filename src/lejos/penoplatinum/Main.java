@@ -24,7 +24,7 @@ public class Main {
         
         final AngieEventLoop angie = new AngieEventLoop(robot);
 
-        initializeAgent(angie);
+//        initializeAgent(angie);
 
         Runnable runnable = new Runnable() {
 

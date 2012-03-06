@@ -19,7 +19,7 @@ public class LightColorModelProcessor extends ModelProcessor {
   
   private final float AVERAGE_EXPONENT = 0.001f;
   private final float AVERAGE_COLOR_EXPONENT = 0.80f;
-  private final int SENSOR_VARIATION = 20;
+  private final int SENSOR_VARIATION = 30;
   public static final int BLACK = -1;
   public static final int BROWN = 0;
   public static final int WHITE = 1;

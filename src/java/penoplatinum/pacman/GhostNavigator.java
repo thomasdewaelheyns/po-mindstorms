@@ -8,9 +8,11 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
+import penoplatinum.Utils;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 import penoplatinum.simulator.mini.Bearing;
@@ -28,6 +30,7 @@ public class GhostNavigator implements Navigator {
   }
   
   private void log(String msg) {
+    Utils.Log(msg);
 //    System.out.printf( "[%10s] %2d,%2d / Navigator  : %s\n", 
 //                       this.model.getAgent().getName(),
 //                       this.model.getAgent().getLeft(),
@@ -38,11 +41,11 @@ public class GhostNavigator implements Navigator {
   public int nextAction() {
     // TODO: add check if next planned action is still valid, else also
     //       create a new plan based on the new situation
-    if( this.plan.isEmpty() ) {
+    if( this.plan.size() == 0 ) {
       this.createNewPlan();
       this.log("Got a new Plan : " + this.plan );
     }
-    if( this.plan.isEmpty() ) {
+    if( this.plan.size() == 0 ) {
       throw new RuntimeException( "Out of plans ..." );
     }
     this.log("Executing plan: " + this.plan);
@@ -93,7 +96,7 @@ public class GhostNavigator implements Navigator {
     
     // choose randomly one of the best moves and create the required actions
     int forMove = moves[(int)(Math.random()*count)];
-    //TODO: log disabled - this.log( forMove + " out of " + Arrays.toString(moves) + " / " + count);
+//    this.log( forMove + " out of " + Arrays.toString(moves) + " / " + count);
     
     // randomly don't do anything (20%)
     if(Math.random()*5==3) { forMove = Bearing.NONE; }

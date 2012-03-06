@@ -51,7 +51,7 @@ public class SimpleHashMap<K, T> {
   }
 
   public boolean isEmpty() {
-    return keys.isEmpty();
+    return keys.size() == 0;
   }
 
   public List<T> values() {

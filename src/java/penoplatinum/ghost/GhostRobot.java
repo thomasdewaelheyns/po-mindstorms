@@ -147,7 +147,7 @@ public class GhostRobot implements Robot {
       return; // to wait for results
     }
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 10; i++) {
       gridUpdateProcessor.updateHillClimbingInfo();
     }
 
