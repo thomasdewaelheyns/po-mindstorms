@@ -66,6 +66,9 @@ Dit dient nog afgesproken te worden door de commissie.
 
 \section{Demo 3}
 
+
+
+
 \subsection{Verkenning}
 
 De robots rijden in een op voorhand onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het cre\"eren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de pac-man. Elke robot communiceert zijn gevonden informatie en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van \'e\'en van de robots kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo effici\"ent mogelijk zijn eigen info verzameld en met de nodige voorzichtigheid andere informatie hierin verwerkt.
@@ -102,6 +105,7 @@ De ghosts vertrekken op de vier hoekpunten van de doolhof, zodat de verkenning v
 \section{CommunicatieProtocol}
 
 Te vinden in pdf.
+
 \subsection{Voordelen}
 
 \subsection{Nadelen}
@@ -113,11 +117,19 @@ Te vinden in pdf.
 
 \subsection{Fysiek ontwerp}
 
-Door de veranderde specificaties van het doolhof en de extra infrarood sensor, moesten enkele wijzigingen gemaakt worden aan de fysieke robot. Zo zijn de druksensoren verwijderd om een sensor poort vrij te maken voor de infrarood sensor. Verder werd de hoogte van de robot iets verlaagd door het verplaatsen van de motor die verantwoordelijk is voor het draaien van de sonar. Naast een grotere stabiliteit doordat het zwaartepunt van de robot lager bij de grond ligt staat ook de motor stabieler, waardoor nauwkeurigere metingen mogelijk zijn. (ALS WE DIT LATEN STAAN, DAN GAAN ZE VRAGEN NAAR NUMERIEKE ONDERSTEUNING VAN DIE OPMERKING) Aangezien het doolhof minder breed is (sectoren zijn 40 centimeter in plaats van 80) zijn de extra wielen weggehaald om het geheel iets slanker te maken wat een eenvoudigere navigatie mogelijk maakt.
+Door de veranderde specificaties van het doolhof en de extra infrarood sensor, moesten enkele wijzigingen gemaakt worden aan de fysieke robot. Zo zijn de druksensoren verwijderd om een sensor poort vrij te maken voor de infrarood sensor. Aangezien het doolhof minder breed is (sectoren zijn 40 centimeter in plaats van 80) zijn de extra wielen weggehaald om het geheel iets slanker te maken wat een eenvoudigere navigatie mogelijk maakt.
 
-\subsection{Testen}
+Verder is ook de motor, die de sonar laat draaien, iets naar onder verplaatst en naar het midden. Hierdoor hebben we uit de verbinding tussen de motor en de sensor de tandwielen kunnen verwijderen waardoor de sensor rechtstreeks op de motor zit.
 
-Ir Sensor
+\subsection{IR-sensor}
+De Infrarood sensor werd vooraan in het midden van de robot aangebracht. Net boven de lichtsensor. Het uitlezen van deze sensor zorgde voor een aantal problemen. De gemeten afstand leek niet overeen te komen met de voorspelde. Het bleek dat de Lejos implementatie verouderd was en niet alle mogelijkheden van de sensor ondersteunde. Met een aanpassing van de nieuwe broncode van Lejos werkte de sensor volledig en zoals verwacht. 
+
+Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is. De sensor heeft \'e\'en AC modus en \'e\'en DC modus. Er bleek dat de AC modus van de bol die speciaal voor de sensor ontwikkeld was het beste werkte. 
+
+%TODO maak referenties naar afbeelding...
+In grafiek kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat er voor 
+
+
 
 \section{Demo 2}
 
@@ -262,12 +274,14 @@ De simulator is zoals reeds vermeld een verplichte component van het tweede seme
 
 \section{Demo 1}
 \subsection{Aanpassingen}
+Aangezien de kleinste eenheid van een parcours veranderd is van paneel tot een sector hebben we een refactoring uitgevoerd zodat in de simulator een parcours zowel met panelen als met sectors kan worden voorgesteld. Hierdoor is het mogelijk zowel het project van het eerste als het tweede uit te voeren. Deze techniek werd verder toegepast op de rest van het herstructureringsproces. 
+
+Naast het aanpassen van de schaal veranderden we ook wijze waarop de verschillende sensoren voorgesteld werden. Op het einde van vorige iteratie waren sensoren eigenlijk functies die elke stap werden opgeroepen om de sensor-waarden in het model up te daten. Deze voorstelling is niet ideaal om uit te breiden. Er werd gekozen voor Sensor interface en voor elke sensor een klasse die deze interface implementeer. Naast een makkelijkere uitbreidbaarheid, heeft dit design ook het voordeel dat men voor elke entiteit zijn eigen sensoren kan aanmaken. En dus een custom mapping kan hebben.
+
 
 \subsection{Nieuwe Functionaliteit}
+Voor het simuleren van meerdere robots, zowel lokaal als op afstand, moest de robot afgescheiden worden van de simulator. Tegelijk werd ook het GUI component van de robot afgescheiden en ge-abstraheerd zodat er meerdere types robots kunnen bestaan. Door deze abstractie is het mogelijk om verschillende simulatoren te laten samenwerken elk met hun eigen robot. Deze simulatoren communiceren met een speciaal protocol op een eigen RabbitMQ kanaal.
 
-\subsection{Virtualisatie}
-\subsection{Granulariteit}
-\subsection{Testen}
 \section{Demo 2}
 \section{Demo 3}
 
@@ -275,7 +289,9 @@ De simulator is zoals reeds vermeld een verplichte component van het tweede seme
 \section{Demo 1}
 \section{Demo 2}
 \section{Demo 3}
+
 \chapter{Procesbeschrijving}
+
 
 \chapter{Werkverdeling}
 
@@ -292,11 +308,11 @@ Teamlid & Focus \\ [0.5ex]
 Teamlid & Focus \\ [0.5ex]
 \hline 
 \endhead
-Michiel 		& 	(Commissie-lid) GhostRobot. \\
-Florian 		&	\\
-Ruben 		&	IR-sensor, Simulator.\\
-Thomas 		&	\\
-Daniel 		&	\\
+Michiel 		& 	(Commissie-lid) GhostRobot, Navigator. \\
+Florian 		&	Simulator, LightSensor, IR-sensor\\
+Ruben 		&	IR-sensor, Simulator\\
+Thomas 		&	IR-sensor, Simulator\\
+Daniel 		&	Iets? \\
 Christophe 	&	Diffusion algoritme, Dashboard \\
 \hline
 \label{tab:focus}
@@ -306,7 +322,7 @@ Christophe 	&	Diffusion algoritme, Dashboard \\
 \caption{Tijdsbesteding per team lid per week} \\
 %This is the header for the first page of the table...
 \hline\hline
- & michiel & florian & ruben & thomas & daniel & christophe & totaal \\
+ & Michiel & Florian & Ruben & Thomas & Daniel & Christophe & totaal \\
 \hline 
 \endfirsthead
 totaal & 61 & 43 & 43 & 36 & 13 & 63 & 235\\
@@ -321,7 +337,7 @@ gemid./week & 20 & 12 & 14 & 12 & 4 & 21 & 13 \\
 
 In samenspraak met het didactische team, zal Christophe gedurende twee van de vijf uren die standaard ingepland staan op maandag het team niet vervoegen. Deze uren worden enerzijds onmiddellijk voorafgaandelijk alsook 's avonds na deze vaste uren gepresteerd.
 
-\chapter{KritischeAnalyse}
+\chapter{Kritische analyse}
 
 Dit deel wordt later toegevoegd.
 
@@ -337,93 +353,20 @@ Dit deel wordt later toegevoegd.
 \chapter{Planning}
 \label{appendix:planning}
 
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}
-	\begin{ganttchart}[ 
-	  y unit title=0.6cm,
-	  y unit chart=0.5cm,
-	  vgrid,
-	  bar height=.5,
-	  group right shift=0,
-	  group top shift=.6,
-	  group height=.3]{22}
-\gantttitle{Oktober}{10} 	   	\gantttitle{November}{8} 	    \gantttitle{December}{4} \\
-\gantttitlelist{3,10,17,24,31}{2}	\gantttitlelist{7,14,21,28}{2}  \gantttitlelist{5,12}{2} \\
-\ganttgroup{1. Beweging}{1}{5} \\
-\ganttbar{1.1. API Tijd}{2}{4} \\
-\ganttbar{1.2. API Omw.}{2}{4} \\
-\ganttbar{1.3. Tijd}{4}{5} \\
-\ganttbar{1.4. Omw.}{4}{5} \\
-\ganttbar{1.5. tests}{5}{5} \\
-\ganttbar{2. Veelhoek}{3}{5} \\
-\ganttbar{3. LCD}{2}{5} \\
-\ganttmilestone{Demo 1}{5} \ganttnewline
-\ganttgroup{4. Verslag}{1}{20} \\
-\ganttbar{4.1. Demo 1}{2}{5} \\
-\ganttbar{4.2. Demo 2}{8}{12} \\
-\ganttbar{4.3. Finaal}{18}{20} \\
-\ganttgroup{5. Comm.}{3}{20} \\
-\ganttgroup{5.1. Robot}{3}{20} \\
-\ganttbar{5.1.1. Log}{3}{11} \\
-\ganttbar{5.1.2. Commando}{11}{20} \\
-\ganttgroup{5.2. PC}{5}{20} \\
-\ganttbar{5.2.1. Log}{5}{11} \\
-\ganttbar{5.2.2. Commando}{11}{20} \\
-\ganttbar{6. Model}{3}{18} \\
-\end{ganttchart}
-\end{tikzpicture}
-\caption{Planning}
-\label{fig:planning}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}
-	\begin{ganttchart}[ y unit title=0.6cm, y unit chart=0.5cm,  vgrid,
-	  bar height=.5,
-	  group right shift=0,
-	  group top shift=.6,
-	  group height=.3]{22}
-\gantttitle{Oktober}{10} 	   	\gantttitle{November}{8} 	    \gantttitle{December}{4} \\
-\gantttitlelist{3,10,17,24,31}{2}	\gantttitlelist{7,14,21,28}{2}  \gantttitlelist{5,12}{2} \\
-\ganttgroup{7. Navigator}{5}{18} \\
-\ganttbar{7.1. Abstract}{5}{11} \\
-\ganttbar{7.2. Design}{11}{18} \\
-\ganttbar{7.3. Impl.}{13}{18} \\
-\ganttbar{7.4. Tests}{15}{18} \\
-\ganttbar{8. Simulator}{3}{13} \\
-\ganttbar{9. Log server}{5}{11} \\
-\ganttbar{10. Syslog}{7}{10} \\
-\ganttbar{11. DB server}{7}{10} \\
-\ganttgroup{12. Fat client}{9}{16} \\
-\ganttbar{12.1. Status}{9}{14} \\
-\ganttbar{12.2. Commando}{10}{16} \\
-\ganttgroup{13. SOA}{9}{12} \\
-\ganttbar{13.1. REST}{9}{11} \\
-\ganttbar{13.2. web client}{10}{12} \\
-\ganttbar{14. Smart client}{12}{18} \\
-\ganttbar{15. Calibratie}{12}{18} \\
-\ganttbar{16. Unit tests}{2}{18} \\
-\ganttgroup{17. Lijnvolger}{5}{10} \\
-\ganttbar{17.1. Onderzoek}{5}{8} \\
-\ganttbar{17.2. Sensor}{7}{9} \\
-\ganttbar{17.3. Impl.}{9}{10} \\
-\ganttgroup{18. Muurvolger}{5}{10} \\
-\ganttbar{18.1. Onderzoek}{5}{8} \\
-\ganttbar{18.2. Sensor}{7}{9} \\
-\ganttbar{18.3. Impl.}{9}{10} \\
-\ganttgroup{19. Barcode}{5}{10} \\
-\ganttbar{19.1. Onderzoek}{5}{8} \\
-\ganttbar{19.2. Detectie}{7}{9} \\
-\ganttbar{19.3. Impl.}{9}{10} \\
-\ganttmilestone{Demo 2}{10} \ganttnewline
-\ganttmilestone{Finale Demo}{18} \ganttnewline
-\ganttbar{20. Finaal verslag}{19}{20} \\
-\end{ganttchart}
-\end{tikzpicture}
-\caption{Planning (vervolg)}
-\label{fig:planning2}
-\end{figure}
+%Verwijzen naar de docs planning, gedeeld met assistenten.
+%Finale demo zal een kopie bevatten.
+%\begin{figure}[htbp]
+%\centering
+%\begin{tikzpicture}
+%	\begin{ganttchart}[ 
+%	  y unit title=0.6cm,
+	  % y unit chart=0.5cm,
+	  % vgrid,
+	  % bar height=.5,
+	  % group right shift=0,
+	  % group top shift=.6,
+	  % group height=.3]{22}
+% \gantttitle{Oktober}{10} 	   	\gantttitle{November}{8} 	    \gantttitle{December}{4} \\
+% \gantttitlelist{3,10,17,24,31}{2}	\gantttitlelist{7,14,21,28}{2}  \gantttitlelist{5,12}{2} \\
 
 \end{document}
