@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import penoplatinum.Utils;
 import penoplatinum.modelprocessor.Buffer;
-import penoplatinum.modelprocessor.ColorInterpreter;
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.modelprocessor.ModelProcessor;
 
 import penoplatinum.grid.Agent;
@@ -48,15 +48,12 @@ public class OriginalModel implements Model {
   private Buffer lightValueBuffer = new Buffer(bufferSize);
   private double barcodeAngle = 0;
   private boolean lightCorruption = false;
-  private ColorInterpreter interpreter;
   /**
    * This value is true on the step that the sweep was completed
    */
   private Boolean sweepComplete;
 
   public OriginalModel() {
-    interpreter = new ColorInterpreter();
-    interpreter.setModel(this);
   }
 
   // sets the (top-level) processor
@@ -268,7 +265,7 @@ public class OriginalModel implements Model {
   public String toString() {
     int lightValue = this.getSensorValue(S4);
 
-    String interpretedColor = interpreter.getCurrentColor().toString();
+    String interpretedColor = getCurrentLightColor().toString();
     int sonarAngle = this.getSensorValue(M3) + 90;
     int sonarDistance = getSensorValue(S3);
     boolean pushLeft = this.getSensorValue(S1) == 255;
@@ -407,4 +404,9 @@ public class OriginalModel implements Model {
   public void turnRight() {}
   public void clearLastMovement() {}
   public int getLastMovement() { return 0; }
+
+  @Override
+  public LightColor getCurrentLightColor() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

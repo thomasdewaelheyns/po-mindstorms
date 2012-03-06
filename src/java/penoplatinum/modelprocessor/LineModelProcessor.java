@@ -15,7 +15,6 @@ public class LineModelProcessor extends ModelProcessor {
   private static final int INTERPRET = 2;
   private static final int END_BARCODE = 3;
   private int brownCounter = 0;
-  private ColorInterpreter colorInterpreter;
   int state = WAITING;
   LightColor readingColor;
   private int colorCounter = 0;
@@ -26,7 +25,6 @@ public class LineModelProcessor extends ModelProcessor {
    */
   public LineModelProcessor() {
     super();
-    this.colorInterpreter = new ColorInterpreter();
   }
 
   /**
@@ -37,7 +35,6 @@ public class LineModelProcessor extends ModelProcessor {
    */
   public LineModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
-    this.colorInterpreter = new ColorInterpreter();
   }
 
   /**
@@ -48,7 +45,6 @@ public class LineModelProcessor extends ModelProcessor {
   @Override
   public void setModel(Model model) {
     super.setModel(model);
-    colorInterpreter.setModel(model);
   }
 
   /**
@@ -78,12 +74,12 @@ public class LineModelProcessor extends ModelProcessor {
 //    if (model.isLightDataCorrupt()) {
 //      state = WAITING;
 //    }
-    
+
     switch (state) {
       case END_BARCODE:
-        if (colorInterpreter.isColor(LightColor.Brown)) {
+        if (model.getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
-          if(brownCounter >5){
+          if (brownCounter > 5) {
             state = WAITING;
           }
         } else {
@@ -91,8 +87,8 @@ public class LineModelProcessor extends ModelProcessor {
         }
         break;
       case WAITING:
-        if (!colorInterpreter.isColor(LightColor.Brown)) {
-          readingColor = colorInterpreter.getCurrentColor();
+        if (model.getCurrentLightColor() != LightColor.Brown) {
+          readingColor = model.getCurrentLightColor();
           //Utils.Log("RECORD LINE");
           state = RECORDING;
           brownCounter = 0;
@@ -100,7 +96,7 @@ public class LineModelProcessor extends ModelProcessor {
         }
         break;
       case RECORDING:
-        if (colorInterpreter.isColor(LightColor.Brown)) {
+        if (model.getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
           if (brownCounter > 5 && colorCounter < 2) {
             //Utils.Log("False alarm");
@@ -113,8 +109,7 @@ public class LineModelProcessor extends ModelProcessor {
             //Utils.Log("INTERPRET" + colorCounter);
           }
         } else {
-          if (!colorInterpreter.isColor(readingColor))
-          {
+          if (model.getCurrentLightColor() != readingColor) {
             state = END_BARCODE;
             break;
           }

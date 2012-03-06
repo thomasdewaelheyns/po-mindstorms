@@ -13,9 +13,13 @@ import penoplatinum.pacman.GhostModel;
  */
 public class LightColorModelProcessor extends ModelProcessor {
 
-  private final int DISCONTINUITY_THRESHOLD = 20;
+  
+  private final int BROWN_START = 440;
+  private final int BROWN_END = 470;
+  
   private final float AVERAGE_EXPONENT = 0.001f;
-  private final float AVERAGE_COLOR_EXPONENT = 0.20f;
+  private final float AVERAGE_COLOR_EXPONENT = 0.80f;
+  private final int SENSOR_VARIATION = 20;
   public static final int BLACK = -1;
   public static final int BROWN = 0;
   public static final int WHITE = 1;
@@ -28,9 +32,8 @@ public class LightColorModelProcessor extends ModelProcessor {
     super(nextProcessor);
   }
   
-  private void init()
-  {
-  }
+  
+  
   int prevValue;
   int prevColor; // -1 = black 0 = brown 1 = white
 
@@ -41,39 +44,60 @@ public class LightColorModelProcessor extends ModelProcessor {
     int value = this.model.getSensorValue(this.model.S4);
     
     float averageLightValue = model.getAverageLightValue();
+    
+    if (averageLightValue < BROWN_START || averageLightValue > BROWN_END)
+    {
+      averageLightValue = (BROWN_END + BROWN_START)*0.5f;
+    }
+    
+    if (value > BROWN_START && value < BROWN_END)
+    {
+      // In the brown range
+      averageLightValue = model.getAverageLightValue() * (1 - AVERAGE_EXPONENT) + value * AVERAGE_EXPONENT;
+    }
+    
+    
+    
+    
+    model.setAverageLightValue(averageLightValue);
 
-    model.setAverageLightValue(model.getAverageLightValue() * (1 - AVERAGE_EXPONENT) + value * AVERAGE_EXPONENT);
 
     // Detect discontinuity
-    if (Math.abs(value - prevValue) > DISCONTINUITY_THRESHOLD) {
+    if (Math.abs(value - averageLightValue) > SENSOR_VARIATION) {
       // found a color difference
-      if (value + DISCONTINUITY_THRESHOLD < averageLightValue) {
+      if (value  < averageLightValue) {
         // Black
         prevColor = -1;
-      } else if (value - DISCONTINUITY_THRESHOLD > averageLightValue) {
+      } else if (value  > averageLightValue) {
         // White
         prevColor = 1;
       } else {
-        // probably brown
         prevColor = 0;
       }
     }
-
-
-    if ((averageLightValue - DISCONTINUITY_THRESHOLD < value && value < averageLightValue)
-            || (averageLightValue < value && value < averageLightValue + DISCONTINUITY_THRESHOLD)) {
-      // Looks too much like brown, so reset to brown
+    else
+    {
       prevColor = 0;
     }
 
+//
+//    if ((averageLightValue - DISCONTINUITY_THRESHOLD < value && value < averageLightValue)
+//            || (averageLightValue < value && value < averageLightValue + DISCONTINUITY_THRESHOLD)) {
+//      // Looks too much like brown, so reset to brown
+//      prevColor = 0;
+//    }
+
     switch (prevColor) {
       case WHITE:
-        model.setAverageWhiteValue( model.getAverageWhiteValue() * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT);
+        model.setCurrentLightColor(LightColor.White);
+        model.setAverageWhiteValue(model.getAverageWhiteValue() * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT);
         break;
       case BROWN:
+        model.setCurrentLightColor(LightColor.Brown);
         break;
       case BLACK:
-        model.setAverageBlackValue( model.getAverageBlackValue() * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT);
+        model.setCurrentLightColor(LightColor.Black);
+        model.setAverageBlackValue(model.getAverageBlackValue() * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT);
         break;
     }
 

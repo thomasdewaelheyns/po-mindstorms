@@ -548,8 +548,12 @@ public class GhostModel implements Model {
   public void setAverageWhiteValue(float averageWhiteValue) {
     this.averageWhiteValue = averageWhiteValue;
   }
+  private LightColor currentLightColor = LightColor.Brown;
 
   public LightColor getCurrentLightColor() {
+    if (0 == 0) {
+      return currentLightColor;
+    }
     float blackBorder = (averageLightValue + averageBlackValue) * 0.5f;
     float whiteBorder = (averageLightValue + averageWhiteValue) * 0.5f;
     if (getLightSensorValue() < blackBorder) {
@@ -560,5 +564,9 @@ public class GhostModel implements Model {
     }
 
     return LightColor.Brown;
+  }
+
+  public void setCurrentLightColor(LightColor value) {
+    currentLightColor = value;
   }
 }

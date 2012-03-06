@@ -60,7 +60,7 @@ public class AngieEventLoop {
             delta += System.nanoTime() - start;
             if (delta > 1000L * 1000 * 1000) {
                 fps = (int) (count / (double) delta * 1000d * 1000d * 1000d);
-                Utils.Log(Integer.toString(fps));
+                Utils.Log("FPS: " + Integer.toString(fps));
                 count = 0;
                 delta = 0;
             }

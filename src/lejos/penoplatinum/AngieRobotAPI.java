@@ -121,7 +121,7 @@ public class AngieRobotAPI implements RobotAPI {
 
         values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
         values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
-        values[sensorNumberLight] = light.getLightValue();
+        values[sensorNumberLight] = light.getRawLightValue();
         values[sensorNumberSonar] = (int) sonar.getDistance();
 
         //TODO: change on port change

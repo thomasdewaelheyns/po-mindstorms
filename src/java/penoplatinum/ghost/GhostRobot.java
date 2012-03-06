@@ -27,7 +27,8 @@ public class GhostRobot implements Robot {
   private RobotAPI api;   // provided from the outside
   private GhostDriver driver;
   private Navigator navigator;
-  private int[] sweepAngles = new int[]{-105, -90, -75, -30, 0, 30, 75, 90, 105};
+//  private int[] sweepAngles = new int[]{-105, -90, -75, -30, 0, 30, 75, 90, 105};
+  private int[] sweepAngles = new int[]{-90, 0, 90};
   private ArrayList<Integer> sweepAnglesList = new ArrayList<Integer>();
   private boolean waitingForSweep = false;
   private RobotAgent agent;
@@ -64,9 +65,9 @@ public class GhostRobot implements Robot {
             new WallDetectorProcessor(
             new GridUpdateProcessor()))))));
     this.model.setProcessor(processors);
-    
+
     model.setAverageLightValue(70);
-    
+
   }
 
   @Override
@@ -74,7 +75,7 @@ public class GhostRobot implements Robot {
     this.api = api;
     this.driver = new GhostDriver(this.model, this.api);
     api.setReferencePoint(initialReference);
-    this.api.setSpeed(Model.M3, 125); // set sonar speed to double of default
+    this.api.setSpeed(Model.M3, 250); // set sonar speed to double of default
     this.api.setSpeed(Model.M2, 500); // set sonar speed to double of default
     this.api.setSpeed(Model.M1, 500); // set sonar speed to double of default
     return this;
@@ -93,9 +94,23 @@ public class GhostRobot implements Robot {
 
   // the external tick...
   public void step() {
-    
-    buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
-    if (buffer.size() > 100) {
+
+    switch (model.getCurrentLightColor()) {
+      case Black:
+        buffer.add("Black, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
+        break;
+      case Brown:
+        buffer.add("Brown, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
+        break;
+      case White:
+        buffer.add("White, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
+        break;
+      default:
+        break;
+    }
+    //buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
+    //buffer.add(Integer.toString((int)model.getLightSensorValue()));
+    if (buffer.size() > 30) {
       for (String s : buffer) {
         Utils.Log(s);
       }

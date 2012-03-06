@@ -9,12 +9,9 @@ import java.util.List;
 import penoplatinum.Utils;
 import penoplatinum.actions.ActionQueue;
 import penoplatinum.actions.AlignPerpendicularLine;
-import penoplatinum.actions.GapDetectionRestoreAction;
 import penoplatinum.actions.MoveAction;
-import penoplatinum.actions.PerformSweepAction;
 import penoplatinum.actions.StopAction;
 import penoplatinum.actions.TurnAction;
-import penoplatinum.modelprocessor.ColorInterpreter;
 import penoplatinum.pacman.GhostAction;
 import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.Barcode;
@@ -34,7 +31,6 @@ public class GhostDriver implements Driver {
   public GhostDriver(GhostModel model, RobotAPI api) {
     this.api = api;
     this.model = model;
-    interpreter = new ColorInterpreter();
     queue.add(new StopAction());
   }
 
@@ -69,7 +65,6 @@ public class GhostDriver implements Driver {
     }
   }
   private ActionQueue queue = new ActionQueue();
-  ColorInterpreter interpreter;
   private Model model;
 
   public int nextAction() {
@@ -121,8 +116,8 @@ public class GhostDriver implements Driver {
       Utils.Log("TOOO CLOOOSE");
       queue.clearActionQueue();
       queue.add(new MoveAction(model, -0.1f));
-      queue.add(new PerformSweepAction(api, model));
-      queue.add(new GapDetectionRestoreAction(api, model));
+      //queue.add(new PerformSweepAction(api, model));
+      //queue.add(new GapDetectionRestoreAction(api, model));
       return;
 
     }
@@ -200,7 +195,6 @@ public class GhostDriver implements Driver {
 
   public GhostDriver setModel(Model model) {
     this.model = model;
-    interpreter.setModel(model);
     return this;
   }
 
