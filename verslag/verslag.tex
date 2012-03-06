@@ -40,7 +40,7 @@ In het eerste semester werkten we reeds in een parallel traject aan een simulati
 
 \chapter{Inleiding}
 
-Het project wordt zoals in het eerste semester begeleidt door het gebruik van tussentijdse demo's. Het finale doel is om zo optimaal mogelijk samen te werken met vier teams om de Pac-Man in te sluiten, hoewel we ten alle tijden autonoom beslissingen nemen.
+Het project wordt zoals in het eerste semester begeleid door het gebruik van tussentijdse demo's. Het finale doel is om zo optimaal mogelijk samen te werken met vier teams om de Pac-Man in te sluiten, hoewel we ten alle tijden autonoom beslissingen nemen.
 
 Het doel van de eerste demo is een versimpelde vorm van het einddoel waarbij we een stilstaande Pac-Man zoeken binnen het doolhof. De simulator dient ook reeds beschikbaar te zijn. Voor de tweede demo mag de comissie beslissen welke doelstellingen passen in het verdere proces richting het einddoel.
 
@@ -54,7 +54,7 @@ De doelstellingen van de demo's worden hier achtereenvolgens beschreven, zij lig
 
 \section{Demo 1}
 
-Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en wordt vertegenwoordigd door drie aparte instanties van de simulator, elk met zijn eigen virtuele ``gehost''.
+Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en wordt vertegenwoordigd door drie virtuele ``ghost'' die in simulator ``leven''.
 
 De ``ghosts'' hebben geen enkele informatie over het doolhof waarin ze zich bevinden, noch over hun positie, noch over hun ori\"entatie.. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol ge\"implementeerd is.
 
@@ -66,12 +66,9 @@ Dit dient nog afgesproken te worden door de commissie.
 
 \section{Demo 3}
 
-
-
-
 \subsection{Verkenning}
 
-De robots rijden in een op voorhand onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het cre\"eren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de pac-man. Elke robot communiceert zijn gevonden informatie en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van \'e\'en van de robots kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo effici\"ent mogelijk zijn eigen info verzameld en met de nodige voorzichtigheid andere informatie hierin verwerkt.
+De robots rijden in een op voorhand onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het cre\"eren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de pac-man. Elke robot communiceert zijn gevonden informatie en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van \'e\'en van de robots kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo effici\"ent mogelijk zijn eigen info verzamelt en met de nodige voorzichtigheid andere informatie hierin verwerkt.
 
 \subsection{Pac-Man}
 
@@ -104,12 +101,17 @@ De ghosts vertrekken op de vier hoekpunten van de doolhof, zodat de verkenning v
 
 \section{CommunicatieProtocol}
 
-Te vinden in pdf.
+We verwijzen naar de offici\"ele documentatie van het Ghost Protocol. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het Ghost Protocol is het resultaat van een werkgroep door de commissie aangesteld. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen voor onze eigen ontwikkeling.
 
 \subsection{Voordelen}
 
+TODO: Michiel: Als jij er in slaagt om iets positiefs te zeggen ;-)
+
 \subsection{Nadelen}
 
+In het algemeen ondervinden we geen nadelen van de beslissingen die genomen zijn. Aangezien wij voldoende informatie kunnen verzamelen met een kleine subset, zal het volledige protocol slechts een marginale implementatiekost met zich meebrengen.
+
+TODO: Michiel: Zoals eerder vandaag besproken de puntjes omtrent overbodigheid en onvolledigheid.
 
 \chapter{Robot}
 
@@ -126,18 +128,21 @@ De Infrarood sensor werd vooraan in het midden van de robot aangebracht. Net bov
 
 Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is. De sensor heeft \'e\'en AC modus en \'e\'en DC modus. Er bleek dat de AC modus van de bol die speciaal voor de sensor ontwikkeld was het beste werkte. 
 
-%TODO maak referenties naar afbeelding...
+TODO: Ruben: maak referenties naar afbeelding...
+
 In grafiek kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat er voor 
 
-
+TODO: Ruben: verder afwerken ... tekst + grafieken
 
 \section{Demo 2}
 
+Dit deel wordt later toegevoegd.
+
 \section{Demo 3}
 
-\chapter{Strategie}
+Dit deel wordt later toegevoegd.
 
-\section{Strategie van Robot}
+\chapter{Strategie}
 
 Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome ``ghosts'' gedaan.
 
@@ -145,7 +150,7 @@ We vonden een paper omtrent ``Collaborate Diffusion''\footnote{\url{http://www.c
 
 Ondanks het feit dat we geen overeenstemming met de andere teams konden bereiken om allen dit algoritme te implementeren, blijft het een zeer interessant algoritme om toe te passen voor het bepalen van ons eigen pad.
 
-\subsection{Achtervolgstrategie}
+\section{Achtervolgstrategie}
 
 Wanneer de Pac-Man gezien wordt stuurt deze een ``geur'' uit. Deze plant zich langs gekende sectoren voort. Dit wordt gedaan door het gemiddelde van de 4 omliggende sectoren te berekenen, indien er een muur staat is de waarde 0. Zo ontstaat er een hoogte-kaart met aan de top een Pac-Man. De Ghosts kunnen nu aan de hand van een eenvoudig ``Hill Climbing'' algoritme een optimale weg volgen naar de Pac-Man.
 
@@ -167,7 +172,7 @@ Om te voorkomen dat robots allemaal dezelfde weg volgen en enkel achter Pac-Man 
   \label{fig:hillclimbing2}
 \end{figure}
 
-\subsection{Verkenstrategie}
+\section{Verkenstrategie}
 
 De verkenstrategie is gebaseerd op het zelfde principe. Hier is er niet \'e\'en bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het meest onverkende stuk van het doolhof willen gaan. Daarnaast zorgt dit principe er ook voor dat een robot zal terugkeren op zijn stappen en automatisch terugkeert naar achtergelaten onbekende sectoren. We kunnen stellen dat het algoritme impliciet ``Depth-First-Search"\footnote{\url{http://en.wikipedia.org/wiki/Depth-first_search}} implementeert. Figuur \ref{fig:dfs} toont een robot die een onbekend doolhof aan het verkennen is. De fel groene sectoren zijn onbekende sectoren en hebben een hogere waarde dan de reeds bezochte sectoren.
 
@@ -268,30 +273,79 @@ Het Dashboard zelf wordt voorzien van de nodige visualisaties voor deze nieuwe i
 \end{figure}
 
 \chapter{Simulator}
-De simulator is zoals reeds vermeld een verplichte component van het tweede semester en bedoeld als belangrijk hulpmiddel voor de ontwikkeling van de ghosts. Aangezien we tijdens het vorige semester reeds een werkende simulator ontwikkeld hebben, zal deze beschrijving zich vooral focusen op de delen die toegevoegd en/of veranderd werden in functie van de nieuwe opdracht.
-\par Initieel werd er zoveel mogelijk orde geschapen in de bestaande code om zo tot een fase te komen waarbij we de nodige uitbreidingen hebben toegevoegd ter ondersteuning van de nieuwe functionaliteiten. Hierbij moet opgemerkt worden dat de bestaande code werkend is gehouden. 
 
+De simulator is zoals reeds vermeld een verplichte component van het tweede semester en bedoeld als belangrijk hulpmiddel voor de ontwikkeling van de ghosts. Aangezien we tijdens het vorige semester reeds een werkende simulator ontwikkeld hebben, zal deze beschrijving zich vooral focusen op de delen die toegevoegd en/of veranderd werden in functie van de nieuwe opdracht.
+
+Initieel werd er zoveel mogelijk orde geschapen in de bestaande code om zo tot een fase te komen waarbij we de nodige uitbreidingen hebben toegevoegd ter ondersteuning van de nieuwe functionaliteiten. Hierbij moet opgemerkt worden dat de bestaande code werkend is gehouden. 
 
 \section{Demo 1}
+
 \subsection{Aanpassingen}
+
 Aangezien de kleinste eenheid van een parcours veranderd is van paneel tot een sector hebben we een refactoring uitgevoerd zodat in de simulator een parcours zowel met panelen als met sectors kan worden voorgesteld. Hierdoor is het mogelijk zowel het project van het eerste als het tweede uit te voeren. Deze techniek werd verder toegepast op de rest van het herstructureringsproces. 
 
 Naast het aanpassen van de schaal veranderden we ook wijze waarop de verschillende sensoren voorgesteld werden. Op het einde van vorige iteratie waren sensoren eigenlijk functies die elke stap werden opgeroepen om de sensor-waarden in het model up te daten. Deze voorstelling is niet ideaal om uit te breiden. Er werd gekozen voor Sensor interface en voor elke sensor een klasse die deze interface implementeer. Naast een makkelijkere uitbreidbaarheid, heeft dit design ook het voordeel dat men voor elke entiteit zijn eigen sensoren kan aanmaken. En dus een custom mapping kan hebben.
 
-
 \subsection{Nieuwe Functionaliteit}
+
 Voor het simuleren van meerdere robots, zowel lokaal als op afstand, moest de robot afgescheiden worden van de simulator. Tegelijk werd ook het GUI component van de robot afgescheiden en ge-abstraheerd zodat er meerdere types robots kunnen bestaan. Door deze abstractie is het mogelijk om verschillende simulatoren te laten samenwerken elk met hun eigen robot. Deze simulatoren communiceren met een speciaal protocol op een eigen RabbitMQ kanaal.
 
+\subsection{Simulator Modi}
+
+De simulator van het eerste semester was een hulpmiddel om met meerdere team-leden in parallel te kunnen werken zonder te moeten strijden om tijd met de echte fysieke robot. In het tweede semester is de simulator een wezenlijk deel geworden van de opdracht en ook de manier waarop de simulator moet kunnen werken is sterk verschillend van onze eigen doelstellingen in het tweede semester.
+
+In het tweede semester moet de simulator op niet minder dan 3 verschillende manieren functioneren:
+
+\begin{itemize}
+\item Meerdere (virtuele) robots moeten te gelijkertijd binnen dezelfde simulator aangestuurd kunnen worden.
+\item Meerdere instanties van de simulator moeten robots kunnen laten communiceren met elkaar via het Ghost Protocol langs de MQ server.
+\item Naast onderlinge communicatie tussen de robots in de simulatoren moeten ook fysieke robots kunnen deelnemen, in een zgn. hybride modus.
+\end{itemize}
+
+Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het Ghost Protocol en de MQ server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de ServiceAgent en het Log4J losging framework opgeslagen worden in de databank, waarna ze ondervraagtaal zijn via de webclient.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=155mm]{resources/simulator-modi.png}
+  \caption{Werking van de simulator in verschillende opstellingen.}
+  \label{fig:simulator-modi}
+\end{figure}
+
 \section{Demo 2}
+
+Dit deel wordt later toegevoegd.
+
 \section{Demo 3}
 
+Dit deel wordt later toegevoegd.
+
 \chapter{Conclusies}
+
+Dit deel wordt later toegevoegd.
+
 \section{Demo 1}
+
+Dit deel wordt later toegevoegd.
+
 \section{Demo 2}
+
+Dit deel wordt later toegevoegd.
+
 \section{Demo 3}
+
+Dit deel wordt later toegevoegd.
 
 \chapter{Procesbeschrijving}
 
+De werkwijze tijdens het eerste semester heeft zijn vruchten afgeworpen. We willen deze aanpak ook in het tweede semester verder zetten. Zo volgen we opnieuw twee paden naar ons doel: enerzijds wordt er verder gewerkt aan de simulator en wordt de robot verder verbetert. Anderzijds starten we ook een traject op dat zich focust op het einddoel.
+
+Omdat de scope van de eerste demo in essentie zo sterkt aanleunt bij het uiteindelijke doel en omdat we met de ontwikkeling van de simulator tijdens het eerste semester een voorsprong hebben tov de over teams willen we trachten om de scope van de finale demo reeds als doelstelling te nemen voor de eerste demo.
+
+Dit gaat hand in hand met de tijd die we ter beschikking hebben tijdens de eerste weken van het semester, wanneer oefenzittingen voor andere vakken nog niet begonnen zijn. We kiezen dus voor een ``blitzkrieg'' waarbij we trachten om de totale scope in een zeer korte tijd te realiseren, waarna we tijdens de resterende weken dit dan verder kunnen verfijnen.
+
+De taken van co\"ordinator (Michiel) en secretaris (Christophe) werden opnieuw verdeeld. Ruben is de nieuwe co\"ordinator. Voor de rol van secretaris werd niet \'e\'en teamlid aangesteld, maar werd besloten om dit een gedeelde taak te maken.
+
+In samenspraak met het didactische team, zal Christophe gedurende twee van de vijf uren die standaard ingepland staan op maandag het team niet vervoegen. Deze uren worden enerzijds onmiddellijk voorafgaandelijk alsook 's avonds na deze vaste uren gepresteerd.
 
 \chapter{Werkverdeling}
 
@@ -325,17 +379,15 @@ Christophe 	&	Diffusion algoritme, Dashboard \\
  & Michiel & Florian & Ruben & Thomas & Daniel & Christophe & totaal \\
 \hline 
 \endfirsthead
-totaal & 61 & 43 & 43 & 36 & 13 & 63 & 235\\
+totaal & 61 & 38 & 48 & 42 & 22,5 & 63 & 235\\
 \hline
 week 1 & 12 & 9 & 13 & 12 & 0 & 16,5 & 62,5 \\
-week 2 & 16,5 & 14 & 14 & 15 & 8 & 17,5 & 76 \\
-week 3 & 32,5 & 15 & 16 & 9 & 5 & 29 & 96,5 \\
+week 2 & 16,5 & 14 & 15 & 15 & 10 & 17,5 & 76 \\
+week 3 & 32,5 & 21 & 14 & 12,5 & 5 & 29 & 96,5 \\
 \hline
-gemid./week & 20 & 12 & 14 & 12 & 4 & 21 & 13 \\
+gemid./week & 20 & 12 & 16 & 14 & 7,5 & 21 & 13 \\
 \label{tab:tijdsregistratie}
 \end{longtable}
-
-In samenspraak met het didactische team, zal Christophe gedurende twee van de vijf uren die standaard ingepland staan op maandag het team niet vervoegen. Deze uren worden enerzijds onmiddellijk voorafgaandelijk alsook 's avonds na deze vaste uren gepresteerd.
 
 \chapter{Kritische analyse}
 
@@ -345,13 +397,20 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Beoordelingen}
 
+Dit deel wordt later toegevoegd.
+
 \chapter{Grafische User Interface}
+
+Dit deel wordt later toegevoegd.
 
 \chapter{Klasse Diagrammen}
 
+Dit deel wordt later toegevoegd.
 
 \chapter{Planning}
 \label{appendix:planning}
+
+Dit deel wordt later toegevoegd.
 
 %Verwijzen naar de docs planning, gedeeld met assistenten.
 %Finale demo zal een kopie bevatten.
