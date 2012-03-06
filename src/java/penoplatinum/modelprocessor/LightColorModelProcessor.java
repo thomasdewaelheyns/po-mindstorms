@@ -4,6 +4,9 @@
  */
 package penoplatinum.modelprocessor;
 
+import penoplatinum.Utils;
+import penoplatinum.pacman.GhostModel;
+
 /**
  *
  * @author Thomas
@@ -12,10 +15,7 @@ public class LightColorModelProcessor extends ModelProcessor {
 
   private final int DISCONTINUITY_THRESHOLD = 20;
   private final float AVERAGE_EXPONENT = 0.001f;
-  private float averageLightValue;
   private final float AVERAGE_COLOR_EXPONENT = 0.05f;
-  private float averageWhiteValue;
-  private float averageBlackValue;
   public static final int BLACK = -1;
   public static final int BROWN = 0;
   public static final int WHITE = 1;
@@ -27,14 +27,23 @@ public class LightColorModelProcessor extends ModelProcessor {
   public LightColorModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
+  
+  private void init()
+  {
+    ((GhostModel)model).setAverageLightValue(70);
+  }
   int prevValue;
   int prevColor; // -1 = black 0 = brown 1 = white
 
   @Override
   protected void work() {
-    int value = this.model.getSensorValue(this.model.S4);
+    GhostModel model = (GhostModel) this.model;
 
-    averageLightValue = averageLightValue * (1 - AVERAGE_EXPONENT) + value * AVERAGE_EXPONENT;
+    int value = this.model.getSensorValue(this.model.S4);
+    
+    float averageLightValue = model.getAverageLightValue();
+
+    model.setAverageLightValue(model.getAverageLightValue() * (1 - AVERAGE_EXPONENT) + value * AVERAGE_EXPONENT);
 
     // Detect discontinuity
     if (Math.abs(value - prevValue) > DISCONTINUITY_THRESHOLD) {
@@ -60,16 +69,16 @@ public class LightColorModelProcessor extends ModelProcessor {
 
     switch (prevColor) {
       case WHITE:
-        averageWhiteValue = averageWhiteValue * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT;
+        model.setAverageWhiteValue( model.getAverageWhiteValue() * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT);
         break;
       case BROWN:
         break;
       case BLACK:
-        averageBlackValue = averageBlackValue * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT;
+        model.setAverageBlackValue( model.getAverageBlackValue() * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT);
         break;
     }
 
-//    Utils.Log((int) averageBlackValue + "," + (int) averageLightValue + "," + (int) averageWhiteValue);
+    //Utils.Log((int)  model.getAverageBlackValue() + "," + (int) averageLightValue + "," + (int) model.getAverageWhiteValue());
 
     prevValue = value;
   }

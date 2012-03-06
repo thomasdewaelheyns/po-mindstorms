@@ -1,7 +1,7 @@
 package penoplatinum.modelprocessor;
 
 import penoplatinum.barcode.BarcodeHammingCorrector;
-import penoplatinum.modelprocessor.ColorInterpreter.Color;
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Model;
 
@@ -108,14 +108,14 @@ public class BarcodeModelProcessor extends ModelProcessor {
   private void updateState(Buffer tempBuffer) {
     switch (state) {
       case WAITING:
-        if (!colorInterpreter.isColor(Color.Brown)) {
+        if (!colorInterpreter.isColor(LightColor.Brown)) {
           setState(RECORDING);
           tempBuffer.setCheckPoint();
           brownCounter = 0;
         }
         break;
       case RECORDING:
-        if (colorInterpreter.isColor(Color.Brown)) {
+        if (colorInterpreter.isColor(LightColor.Brown)) {
           brownCounter++;
           if (brownCounter > 5 && tempBuffer.getCheckpointSize() < 10) {
             setState(WAITING);

@@ -5,6 +5,7 @@
 package penoplatinum.actions;
 
 import penoplatinum.modelprocessor.ColorInterpreter;
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 
@@ -57,12 +58,12 @@ public class AlignNotLineAction extends BaseAction {
       
       if (!lineStartFound) {
         // Searching start
-        if (!colors.isColor(ColorInterpreter.Color.Brown)) {
+        if (!colors.isColor(LightColor.Brown)) {
           // Start found!
           lineStartFound = true;
         }
       } else {
-        if (colors.isColor(ColorInterpreter.Color.Brown)) {
+        if (colors.isColor(LightColor.Brown)) {
           // End found!
           sweeping = false;
           

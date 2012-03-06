@@ -30,14 +30,6 @@ public class ColorInterpreter {
   }
 
   /**
-   * An enumeration of the Colors with values BLACK, WHITE and BROWN
-   */
-  public enum Color {
-
-    Black, White, Brown;
-  }
-
-  /**
    * Checks if the light value in the arguments is the Color from the
    * arguments.
    * 
@@ -49,7 +41,7 @@ public class ColorInterpreter {
    *        Returns a true boolean if the val is the Color col
    *        Else returns false boolean.
    */
-  public boolean isColor(Color col, double val) {
+  public boolean isColor(LightColor col, double val) {
 
     switch (col) {
       case Brown:
@@ -72,7 +64,7 @@ public class ColorInterpreter {
    *        Returns a true boolean if the current light value is the Color col
    *        Else returns false boolean.
    */
-  public boolean isColor(Color col) {
+  public boolean isColor(LightColor col) {
     return isColor(col, getLightValue());
   }
 
@@ -81,7 +73,7 @@ public class ColorInterpreter {
    * @return 
    *        Returns an enumeration value corresponding with the correct color.
    */
-  public Color getCurrentColor() {
+  public LightColor getCurrentColor() {
     return getCurrentColor(getLightValue());
   }
 
@@ -92,14 +84,14 @@ public class ColorInterpreter {
    * @return 
    *        Returns an enumeration value corresponding with the correct color.
    */
-  public Color getCurrentColor(int val) {
-    if (isColor(Color.Brown, val)) {
-      return Color.Brown;
+  public LightColor getCurrentColor(int val) {
+    if (isColor(LightColor.Brown, val)) {
+      return LightColor.Brown;
     }
-    if (isColor(Color.Black, val)) {
-      return Color.Black;
+    if (isColor(LightColor.Black, val)) {
+      return LightColor.Black;
     }
-    return Color.White;
+    return LightColor.White;
   }
 
   /**

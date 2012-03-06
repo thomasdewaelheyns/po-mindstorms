@@ -1,6 +1,6 @@
 package penoplatinum.modelprocessor;
 
-import penoplatinum.modelprocessor.ColorInterpreter.Color;
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 
@@ -17,7 +17,7 @@ public class LineModelProcessor extends ModelProcessor {
   private int brownCounter = 0;
   private ColorInterpreter colorInterpreter;
   int state = WAITING;
-  Color readingColor;
+  LightColor readingColor;
   private int colorCounter = 0;
 
   /**
@@ -81,7 +81,7 @@ public class LineModelProcessor extends ModelProcessor {
     
     switch (state) {
       case END_BARCODE:
-        if (colorInterpreter.isColor(Color.Brown)) {
+        if (colorInterpreter.isColor(LightColor.Brown)) {
           brownCounter++;
           if(brownCounter >5){
             state = WAITING;
@@ -91,7 +91,7 @@ public class LineModelProcessor extends ModelProcessor {
         }
         break;
       case WAITING:
-        if (!colorInterpreter.isColor(Color.Brown)) {
+        if (!colorInterpreter.isColor(LightColor.Brown)) {
           readingColor = colorInterpreter.getCurrentColor();
           //Utils.Log("RECORD LINE");
           state = RECORDING;
@@ -100,7 +100,7 @@ public class LineModelProcessor extends ModelProcessor {
         }
         break;
       case RECORDING:
-        if (colorInterpreter.isColor(Color.Brown)) {
+        if (colorInterpreter.isColor(LightColor.Brown)) {
           brownCounter++;
           if (brownCounter > 5 && colorCounter < 2) {
             //Utils.Log("False alarm");
@@ -125,7 +125,7 @@ public class LineModelProcessor extends ModelProcessor {
       case INTERPRET:
         state = WAITING;
         //Utils.Log(readingColor+"");
-        if (readingColor.equals(Color.Black)) {
+        if (readingColor.equals(LightColor.Black)) {
           model.setLine(Line.BLACK);
         } else {
           model.setLine(Line.WHITE);

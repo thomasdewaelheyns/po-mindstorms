@@ -26,6 +26,7 @@ import penoplatinum.grid.AggregatedGrid;
 import penoplatinum.grid.GridView;
 import penoplatinum.grid.DiffusionGridProcessor;
 
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 
 import penoplatinum.simulator.mini.Bearing;
@@ -51,7 +52,7 @@ public class GhostModel implements Model {
   private Grid myGrid;
   // This is a map of the other robots. It consists of a key representing the
   // name of the other robot/ghost and a value that contains a Grid.
-  private SimpleHashMap<String,Grid> otherGrids = new SimpleHashMap<String,Grid>();
+  private SimpleHashMap<String, Grid> otherGrids = new SimpleHashMap<String, Grid>();
   // we keep track of the last movement
   private int lastMovement = GhostAction.NONE;
   private boolean isSweepDataChanged;
@@ -262,6 +263,9 @@ public class GhostModel implements Model {
    * This value is true on the step that the sweep was completed
    */
   private Boolean sweepComplete;
+  private float averageLightValue;
+  private float averageWhiteValue;
+  private float averageBlackValue;
 
   // method to update a set of distances and angles
   public void updateDistances(List<Integer> distances,
@@ -286,6 +290,10 @@ public class GhostModel implements Model {
     return this.sensors[num];
   }
 
+  public int getLightSensorValue() {
+    return this.sensors[Model.S4];
+  }
+
   public Boolean isMoving() {
     return sensors[Model.MS1] != MOTORSTATE_STOPPED || sensors[Model.MS2] != MOTORSTATE_STOPPED;
 //    return this.sensors[Model.M1] != this.prevSensors[Model.M1] &&
@@ -300,7 +308,7 @@ public class GhostModel implements Model {
   }
 
   public boolean isSweepDataChanged() {
-    return isSweepDataChanged;
+    return isSweepDataChanged; //TODO: does this work???
   }
 
   // indicates whether the sweep-values have changed since the last time
@@ -515,5 +523,42 @@ public class GhostModel implements Model {
   }
 
   private void setScanningLightData(boolean b) {
+  }
+
+  public float getAverageBlackValue() {
+    return averageBlackValue;
+  }
+
+  public void setAverageBlackValue(float averageBlackValue) {
+    this.averageBlackValue = averageBlackValue;
+  }
+
+  public float getAverageLightValue() {
+    return averageLightValue;
+  }
+
+  public void setAverageLightValue(float averageLightValue) {
+    this.averageLightValue = averageLightValue;
+  }
+
+  public float getAverageWhiteValue() {
+    return averageWhiteValue;
+  }
+
+  public void setAverageWhiteValue(float averageWhiteValue) {
+    this.averageWhiteValue = averageWhiteValue;
+  }
+
+  public LightColor getCurrentLightColor() {
+    float blackBorder = (averageLightValue + averageBlackValue) * 0.5f;
+    float whiteBorder = (averageLightValue + averageWhiteValue) * 0.5f;
+    if (getLightSensorValue() < blackBorder) {
+      return LightColor.Black;
+    }
+    if (getLightSensorValue() > whiteBorder) {
+      return LightColor.White;
+    }
+
+    return LightColor.Brown;
   }
 }

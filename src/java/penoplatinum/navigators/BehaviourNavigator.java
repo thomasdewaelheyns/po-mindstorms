@@ -9,6 +9,7 @@ import penoplatinum.actions.MoveAction;
 import penoplatinum.actions.StopAction;
 import penoplatinum.actions.TurnAction;
 import penoplatinum.modelprocessor.ColorInterpreter;
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Line;
@@ -74,7 +75,7 @@ public class BehaviourNavigator implements Navigator {
       // No clear gap data, do nothing
       return;
     }
-    if (model.isScanningLightData() || !interpreter.isColor(ColorInterpreter.Color.Brown)) {
+    if (model.isScanningLightData() || !interpreter.isColor(LightColor.Brown)) {
       // Do not gap correct when someone is reading light data
       return;
     }
@@ -215,7 +216,7 @@ public class BehaviourNavigator implements Navigator {
   }
 
   private void checkProximityEvent() {
-    if (!interpreter.isColor(ColorInterpreter.Color.Brown)) {
+    if (!interpreter.isColor(LightColor.Brown)) {
       // Ignore when on color
       return;
     }

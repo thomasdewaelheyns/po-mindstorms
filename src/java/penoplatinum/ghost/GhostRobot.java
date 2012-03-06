@@ -2,11 +2,12 @@ package penoplatinum.ghost;
 
 import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
+import penoplatinum.Utils;
 import penoplatinum.grid.GridView;
-import penoplatinum.grid.ProxyAgent;
 import penoplatinum.modelprocessor.GridUpdateProcessor;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
 import penoplatinum.modelprocessor.InboxProcessor;
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.modelprocessor.LightColorModelProcessor;
 import penoplatinum.modelprocessor.LineModelProcessor;
 import penoplatinum.modelprocessor.ModelProcessor;
@@ -85,9 +86,24 @@ public class GhostRobot implements Robot {
   public void processCommand(String cmd) {
     this.model.addIncomingMessage(cmd);
   }
+  private ArrayList<String> buffer = new ArrayList<String>();
 
   // the external tick...
   public void step() {
+
+    buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
+    if (buffer.size() > 100) {
+      for (String s : buffer) {
+        Utils.Log(s);
+      }
+      buffer.clear();
+    }
+
+
+
+
+
+
     // poll other sensors and update model
     this.model.updateSensorValues(this.api.getSensorValues());
     this.model.setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
@@ -119,7 +135,7 @@ public class GhostRobot implements Robot {
     //    so the model still contains old wall information!!!
     // ask navigator what to do and ...
     // let de driver drive, manhattan style ;-)
-    
+
     this.driver.perform(this.navigator.nextAction());
 
     // send outgoing messages
@@ -168,5 +184,4 @@ public class GhostRobot implements Robot {
   public GhostModel getGhostModel() {
     return model;
   }
-
 }

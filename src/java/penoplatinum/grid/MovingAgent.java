@@ -73,12 +73,12 @@ public abstract class MovingAgent implements Agent {
     Sector current = this.getSector();
     if( current.hasWall(bearing) ) {
       System.err.println(this.name + " ERROR: Can't move through wall.");
-      try { System.in.read(); } catch(Exception e) {}
+//      try { System.in.read(); } catch(Exception e) {}
     } else if( ! current.hasNeighbour(bearing) ) {
-      System.err.println(this.name + "ERROR: No neighbour to move to.");
-      try { System.in.read(); } catch(Exception e) {}      
+//      System.err.println(this.name + "ERROR: No neighbour to move to.");
+//      try { System.in.read(); } catch(Exception e) {}      
     } else if( current.getNeighbour(bearing).hasAgent() ) {
-      System.err.println(this.name + "ERROR: Neighbour has Agent" );
+//      System.err.println(this.name + "ERROR: Neighbour has Agent" );
       //try { System.in.read(); } catch(Exception e) {}      
     } else {
       return true;
@@ -95,8 +95,8 @@ public abstract class MovingAgent implements Agent {
       current.getNeighbour(bearing).put(this, bearing);
       this.sector.getGrid().agentsNeedRefresh();
     } else {
-      System.err.println(this.name + "ERROR: Didn't check canMoveForward?" );
-      try { System.in.read(); } catch(Exception e) {}      
+//      System.err.println(this.name + "ERROR: Didn't check canMoveForward?" );
+//      try { System.in.read(); } catch(Exception e) {}      
     }
     return this;
   }

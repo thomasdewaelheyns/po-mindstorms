@@ -7,6 +7,7 @@ package penoplatinum.actions;
 import lejos.nxt.Sound;
 import penoplatinum.Utils;
 import penoplatinum.modelprocessor.ColorInterpreter;
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
@@ -47,10 +48,10 @@ public class AlignPerpendicularLine extends BaseAction {
       // processing state
       switch (state) {
         case 0:
-          if (colors.isColor(ColorInterpreter.Color.White) && leftStart == null) {
+          if (colors.isColor(LightColor.White) && leftStart == null) {
             leftStart = getRelativeAngle();
           }
-          if (colors.isColor(ColorInterpreter.Color.Brown) && leftStart != null) {
+          if (colors.isColor(LightColor.Brown) && leftStart != null) {
             leftEnd = getRelativeAngle();
             return Navigator.STOP;
           }
@@ -58,10 +59,10 @@ public class AlignPerpendicularLine extends BaseAction {
         case 1:
           break;
         case 2:
-          if (colors.isColor(ColorInterpreter.Color.White) && rightStart == null) {
+          if (colors.isColor(LightColor.White) && rightStart == null) {
             rightStart = getRelativeAngle();
           }
-          if (colors.isColor(ColorInterpreter.Color.Brown) && rightStart != null) {
+          if (colors.isColor(LightColor.Brown) && rightStart != null) {
             rightEnd = getRelativeAngle();
             return Navigator.STOP;
           }

@@ -5,6 +5,7 @@
 package penoplatinum.actions;
 
 import penoplatinum.modelprocessor.ColorInterpreter;
+import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 
@@ -48,7 +49,7 @@ public class AlignOnBarcodeAction extends BaseAction {
       started = true;
       return Navigator.TURN;
     }
-    if (!colors.isColor(ColorInterpreter.Color.Brown)) {
+    if (!colors.isColor(LightColor.Brown)) {
       // Found something!! turn other way
 
       int diffTacho = getModel().getSensorValue(Model.M1) - startTacho;
