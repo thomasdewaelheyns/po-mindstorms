@@ -21,7 +21,7 @@ public class IRSensor implements Sensor {
     int distanceToPacman = (int)Math.sqrt(dx*dx + dy*dy);
 
     // checks if the distance to the pacman is higher than 5 meter
-    if(distanceToPacman > 5000) return 0;
+    if(distanceToPacman > 500) return 0;
 
     // Checks if there is a wall in the way that prevents vision of the pacman
     if(distanceToWall <= distanceToPacman) return 0;

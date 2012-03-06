@@ -1,5 +1,6 @@
 package penoplatinum.barcode;
 
+import penoplatinum.Utils;
 import penoplatinum.modelprocessor.BufferSubset;
 
 public class BarcodeTranslator {
@@ -14,8 +15,10 @@ public class BarcodeTranslator {
     int pos = 1;
     for (int i = 0; i < barcodeLength; i++) {
       int sum = 0;
+      Utils.print("[");
       for (int j = (i * list.size()) / barcodeLength; j < (i + 1) * list.size() / barcodeLength; j++) {
         sum += list.get(j);
+        Utils.print(list.get(j)+",");
       }
       //int averageValue = sum / (((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength));
       if (sum < MINIMUM_BETTER && sum > -MINIMUM_BETTER) {

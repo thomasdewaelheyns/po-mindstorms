@@ -5,8 +5,7 @@
 package penoplatinum.visualizer;
 
 import org.junit.Test;
-import penoplatinum.Utils;
-import penoplatinum.simulator.Map;
+import penoplatinum.map.Map;
 import penoplatinum.simulator.tiles.Sectors;
 import penoplatinum.simulator.view.SwingSimulationView;
 

@@ -8,54 +8,32 @@ import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.simulator.Baring;
 import penoplatinum.simulator.view.Board;
 
-<<<<<<< HEAD
-public class Sector implements Tile {
-
-  private int data;
-  private static int startWalls = 0;
-  private static int startBarcode = startWalls + 4;
-  private static int startIsItABarcode = startBarcode + 4;
-  private static int startBarcodeDirection = startIsItABarcode + 1;
-=======
 public class Sector implements Tile, Cloneable{
   
   private int data;
   private static int startWalls = 0;
   private static int startBarcode = startWalls + 4;
-  private static int startIsItABarcode = startBarcode + 5;
+  private static int startIsItABarcode = startBarcode + 4;
   private static int startBarcodeDirection = startIsItABarcode + 1;
   private static int endBarcodeDirection = startIsItABarcode + 2;
->>>>>>> eff70d3... Barcodes worden getekend.
   // logical measurements of a Sector, these are equal to the actual dimensions
   public static int SIZE = 40;
   public static int LINE_WIDTH = 1;
   public static int BARCODE_LINE_WIDTH = 2;
-<<<<<<< HEAD
-  public static int BARCODE_LINES = 7;
-=======
   public static int BARCODE_LINES = 8;
->>>>>>> eff70d3... Barcodes worden getekend.
   public static int BARCODE_WIDTH = BARCODE_LINES * BARCODE_LINE_WIDTH;
   public static final int DRAW_WALL_LINE_WIDTH = 2 * Board.SCALE;
   public static final int DRAW_TILE_SIZE = Sector.SIZE * Board.SCALE;
   public static final int DRAW_LINE_WIDTH = Sector.LINE_WIDTH * Board.SCALE;
-<<<<<<< HEAD
-=======
   public static final int DRAW_BARCODE_LINE_WIDTH = Sector.BARCODE_LINE_WIDTH * Board.SCALE;
   public static final int DRAW_BARCODE_WIDTH = Sector.BARCODE_WIDTH * Board.SCALE;
->>>>>>> eff70d3... Barcodes worden getekend.
   // Lines and corners are divided into two sets for white and black
   public static int NO_COLOR = -1;
   public static int WHITE = 0;
   public static int BLACK = 4;
-<<<<<<< HEAD
-
-  public void Sector() {
-=======
   public static final BarcodeCorrector barcode = new BarcodeBlackBlack(null);  
   
   public Sector() {
->>>>>>> eff70d3... Barcodes worden getekend.
     this.data = 0;
   }
   
@@ -76,20 +54,12 @@ public class Sector implements Tile, Cloneable{
     if (IsOnLine(x, y)) {
       return Sector.WHITE;
     }
-<<<<<<< HEAD
-
-=======
     
->>>>>>> eff70d3... Barcodes worden getekend.
     int color = this.getBarcodeColor(x, y);
     if (color != Sector.NO_COLOR) {
       return color;
     }
-<<<<<<< HEAD
-
-=======
     
->>>>>>> eff70d3... Barcodes worden getekend.
     color = Sector.NO_COLOR;
     return color;
   }
@@ -98,28 +68,6 @@ public class Sector implements Tile, Cloneable{
   public int getBarcodeColor(int x, int y) {
     if (!this.robotIsOnBarcode(x, y)) {
       return Sector.NO_COLOR;
-<<<<<<< HEAD
-    }
-    int line = 0;
-    switch (this.getBarcodeLocation()) {
-      case 0:
-        // north to south
-        line = y - ((this.SIZE / 2) - (this.BARCODE_WIDTH / 2));
-        break;
-      case 1:
-        // south to north
-        line = (this.SIZE / 2) + (this.BARCODE_WIDTH / 2) - y;
-        break;
-      case 2:
-        //east to west
-        line = (this.SIZE / 2) + (this.BARCODE_WIDTH / 2) - x;
-        break;
-      case 3:
-        // west to east
-        line = x - ((this.SIZE / 2) - (this.BARCODE_WIDTH / 2));
-        break;
-=======
->>>>>>> eff70d3... Barcodes worden getekend.
     }
     int pos = ((getBarcodeLocation() & 1) != 0 ? x : y);
     pos -= ((this.SIZE / 2) - (this.BARCODE_WIDTH / 2));
@@ -132,21 +80,6 @@ public class Sector implements Tile, Cloneable{
     return BitwiseOperations.hasBit(data, startIsItABarcode);
   }
   // check if the robot is on a barcode
-
-<<<<<<< HEAD
-  // check if the robot is on a barcode
-  private boolean robotIsOnBarcode(int x, int y) {
-
-    if (BitwiseOperations.hasBit(data, startIsItABarcode)) {
-      int tempBarcodeSize = BARCODE_WIDTH / 2;
-      int tempSize = Sector.SIZE / 2;
-      switch (BitwiseOperations.getBits(data, startBarcodeDirection, 2)) {
-        case 1:
-          return (x > (tempSize - tempBarcodeSize)) && (x < (tempSize + tempBarcodeSize));
-        case 2:
-          return (y > (tempSize - tempBarcodeSize)) && (y < (tempSize + tempBarcodeSize));
-      }
-=======
   private boolean robotIsOnBarcode(int x, int y) {
     if (!hasBarcode()) {
       return false;
@@ -158,35 +91,21 @@ public class Sector implements Tile, Cloneable{
       return (x > (tempSize - tempBarcodeSize)) && (x < (tempSize + tempBarcodeSize));
     } else {
       return (y > (tempSize - tempBarcodeSize)) && (y < (tempSize + tempBarcodeSize));
->>>>>>> eff70d3... Barcodes worden getekend.
     }
   }
   
   public int getBarcodeLocation() {
     return BitwiseOperations.getBits(data, Sector.startBarcodeDirection, 2);
   }
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> eff70d3... Barcodes worden getekend.
   public int getBarcodeLine(int line) {
     return (this.getBarcode() & (1 << (Sector.BARCODE_LINES - line - 1))) == 0
             ? Sector.BLACK : Sector.WHITE;
   }
-<<<<<<< HEAD
-
-  private boolean IsOnLine(int x, int y) {
-    int start = Sector.SIZE - Sector.LINE_WIDTH;
-    int end = Sector.SIZE;
-
-=======
   
   private boolean IsOnLine(int x, int y) {
     int start = Sector.SIZE - Sector.LINE_WIDTH;
     int end = Sector.SIZE;
-    
->>>>>>> eff70d3... Barcodes worden getekend.
     if (!hasWall(1) && start <= x && x < end) {
       return true;
     }
@@ -224,11 +143,7 @@ public class Sector implements Tile, Cloneable{
   public int toInteger() {
     return this.data;
   }
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> eff70d3... Barcodes worden getekend.
   @Override
   public String toString() {
     /*String bits = "";
@@ -268,18 +183,6 @@ public class Sector implements Tile, Cloneable{
     data = BitwiseOperations.setBits(data, startBarcodeDirection, 2, direction);
     return this;
   }
-<<<<<<< HEAD
-
-  public void removeWall(int pos) {
-    data = BitwiseOperations.unsetBit(data, pos);
-  }
-
-  public void removeBarcode() {
-    data = BitwiseOperations.unsetBit(data, startIsItABarcode);
-  }
-
-=======
-  
   public void removeWall(int pos) {
     data = BitwiseOperations.unsetBit(data, pos);
   }
@@ -289,7 +192,6 @@ public class Sector implements Tile, Cloneable{
   }
   
   @Override
->>>>>>> eff70d3... Barcodes worden getekend.
   public int getSize() {
     return this.SIZE;
   }
@@ -354,9 +256,7 @@ public class Sector implements Tile, Cloneable{
             DRAW_TILE_SIZE));
   }
   
-<<<<<<< HEAD
 
-=======
   private void renderBarcode(Graphics2D g2d, int left, int top) {
     if (!hasBarcode()) {
       return;
@@ -392,5 +292,4 @@ public class Sector implements Tile, Cloneable{
   public Sector clone(){
     return new Sector(data);
   }
->>>>>>> eff70d3... Barcodes worden getekend.
 }

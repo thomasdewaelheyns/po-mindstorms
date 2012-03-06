@@ -23,11 +23,13 @@ public class Main {
         
         
         final AngieEventLoop angie = new AngieEventLoop(robot);
-
+        
+        RobotBluetoothConnection conn = new RobotBluetoothConnection();
+        conn.initializeConnection();
+        Utils.EnableRemoteLogging(conn);
+        
 //        initializeAgent(angie);
-
         Runnable runnable = new Runnable() {
-
             public void run() {
                 Utils.Log("Started!");
                 angie.runEventLoop();

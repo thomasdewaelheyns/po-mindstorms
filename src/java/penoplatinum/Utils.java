@@ -22,6 +22,21 @@ public class Utils {
       System.out.println("InterruptException");
     }
   }
+  
+  public static void print(String message){
+    if (message == null) {
+      Utils.Log("NULL!!");
+      return;
+    }
+    System.out.print(message);
+
+    synchronized (logLock) {
+      if (logTransporter != null) {
+        logPrintStream.print(message);
+        logTransporter.SendPacket(PACKETID_LOG);
+      }
+    }
+  }
 
   public static void Log(String message) {
     if (message == null) {

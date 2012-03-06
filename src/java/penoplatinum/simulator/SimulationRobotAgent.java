@@ -41,6 +41,7 @@ public class SimulationRobotAgent implements RobotAgent {
     } catch (InterruptedException ex) {
       Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
     }
+  /**/
   }
 
   @Override
@@ -63,11 +64,11 @@ public class SimulationRobotAgent implements RobotAgent {
 
   @Override
   public void send(String msg) {
-    try {
+    /*try {
       mq.sendMessage(msg);
     } catch (IOException ex) {
       Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    }/**/
     
     //this.simulator.receive(msg); //TODO: unused
   }

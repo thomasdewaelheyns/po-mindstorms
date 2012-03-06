@@ -1,8 +1,8 @@
 package penoplatinum.modelprocessor;
 
+import penoplatinum.Utils;
 import penoplatinum.barcode.BarcodeBlackBlack;
 import penoplatinum.barcode.BarcodeCorrector;
-import penoplatinum.barcode.BarcodeHammingCorrector;
 import penoplatinum.modelprocessor.ColorInterpreter.Color;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Model;
@@ -74,12 +74,7 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
   protected void work() {
     Buffer tempBuffer = this.model.getLightValueBuffer();
     model.setBarcode(Barcode.None);
-    if (model.isLightDataCorrupt()) {
-      setState(WAITING);
-      tempBuffer.unsetCheckPoint();
-    }
     updateState(tempBuffer);
-
     if (state != WAITING) {
       model.setScanningLightData(true); // Flag that someone is reading light data.
     }
@@ -121,7 +116,10 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
         }
         break;
       case INTERPRET:
-        int barcode = interpreter.translate(tempBuffer.getBufferSubset(END_OF_BARCODE_BROWN_COUNT));
+        BufferSubset subset = tempBuffer.getBufferSubset(brownCounter);
+        int barcode = interpreter.translate(subset);
+        Utils.Log("Barcode 2: "+barcode);
+        Utils.Log("Size : " + tempBuffer.getCheckpointSize());
         setState(WAITING);
         tempBuffer.unsetCheckPoint();
 

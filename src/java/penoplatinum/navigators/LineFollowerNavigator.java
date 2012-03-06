@@ -30,7 +30,7 @@ public class LineFollowerNavigator implements Navigator {
     
     public int nextAction() {
         int lightValue = model.getSensorValue(Model.S4);
-        Utils.Log(lightValue + "");
+        //Utils.Log(lightValue + "");
         if (lightValue < 30 || lightValue > 85) {
             timesTurned = 0;
             return Navigator.MOVE;

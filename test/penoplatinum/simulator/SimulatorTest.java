@@ -4,14 +4,13 @@
  */
 package penoplatinum.simulator;
 
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import org.junit.*;
 import static org.junit.Assert.*;
+import penoplatinum.map.Map;
 import penoplatinum.map.MapFactorySector;
-import penoplatinum.simulator.tiles.TileGeometry;
 
 /**
  *

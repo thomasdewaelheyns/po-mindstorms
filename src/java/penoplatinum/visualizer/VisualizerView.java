@@ -11,7 +11,7 @@ package penoplatinum.visualizer;
 
 import penoplatinum.simulator.view.*;
 import javax.swing.JFrame;
-import penoplatinum.simulator.Map;
+import penoplatinum.map.Map;
 
 public class VisualizerView extends JFrame implements SimulationView {
   
