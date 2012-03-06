@@ -15,7 +15,7 @@ public class LightColorModelProcessor extends ModelProcessor {
 
   private final int DISCONTINUITY_THRESHOLD = 20;
   private final float AVERAGE_EXPONENT = 0.001f;
-  private final float AVERAGE_COLOR_EXPONENT = 0.05f;
+  private final float AVERAGE_COLOR_EXPONENT = 0.20f;
   public static final int BLACK = -1;
   public static final int BROWN = 0;
   public static final int WHITE = 1;
@@ -30,7 +30,6 @@ public class LightColorModelProcessor extends ModelProcessor {
   
   private void init()
   {
-    ((GhostModel)model).setAverageLightValue(70);
   }
   int prevValue;
   int prevColor; // -1 = black 0 = brown 1 = white

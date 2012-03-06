@@ -64,6 +64,9 @@ public class GhostRobot implements Robot {
             new WallDetectorProcessor(
             new GridUpdateProcessor()))))));
     this.model.setProcessor(processors);
+    
+    model.setAverageLightValue(70);
+    
   }
 
   @Override
@@ -90,7 +93,7 @@ public class GhostRobot implements Robot {
 
   // the external tick...
   public void step() {
-
+    
     buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
     if (buffer.size() > 100) {
       for (String s : buffer) {
@@ -98,10 +101,6 @@ public class GhostRobot implements Robot {
       }
       buffer.clear();
     }
-
-
-
-
 
 
     // poll other sensors and update model
