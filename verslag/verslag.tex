@@ -31,7 +31,7 @@
 \begin{abstract}
 Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, bouwen wij een autonome robot met behulp van Lego Mindstorms. Voor de programmatie wordt beroep gedaan op Lejos, een Open Bron project dat een minimale JAVA virtuele machine heeft gemaakt die de plaats kan innemen van de standaard programmatie omgeving van Lego.
 
-Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen i.v.m. het werken in team verband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
+Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen i.v.m. het werken in teamverband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
 
 In het tweede semester wordt hier nog eens de nood aan samenwerking toegevoegd. Het traject van de autonome robot blijft behouden, maar de verschillende robots zullen nu moeten samen werking om een gemeenschappelijk doel te bereiken. Om deze samenwerking in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om de beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester ligt in het insluiten van een ``Pac-Man''-robot bestuurd door het didactisch team, dit met behulp van vier autonome ``ghosts''.
 
@@ -56,7 +56,7 @@ De doelstellingen van de demo's worden hier achtereenvolgens beschreven, zij lig
 
 Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en worden vertegenwoordigd door drie virtuele ``ghosts'' die in simulator ``leven''.
 
-De ``ghosts'' hebben geen enkele informatie over het doolhof waarin ze zich bevinden, noch over hun positie, noch over hun ori\"entatie.. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol ge\"implementeerd is.
+De ``ghosts'' hebben geen enkele informatie over het doolhof waarin ze zich bevinden, noch over hun positie, noch over hun ori\"entatie. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol ge\"implementeerd is.
 
 Elk team wordt tijdens de demo afzonderlijk beoordeeld.
  
@@ -68,7 +68,7 @@ Dit dient nog afgesproken te worden door de commissie.
 
 \subsection{Verkenning}
 
-De robots rijden in een op voorhand onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het cre\"eren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de Pac-Man. Elke robot communiceert zijn gevonden informatie en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van \'e\'en van de robots kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo effici\"ent mogelijk zijn eigen info verzamelt en met de nodige voorzichtigheid andere informatie hierin verwerkt.
+De robots rijden in een onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het cre\"eren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de pac-man. Elke robot communiceert zijn gevonden informatie en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van \'e\'en van de robots kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo effici\"ent mogelijk zijn eigen info verzamelt en met de nodige voorzichtigheid andere informatie hierin verwerkt.
 
 \subsection{Pac-Man}
 
@@ -90,16 +90,16 @@ De spelwereld bestaat uit aangepaste panelen uit het eerste semester. Er is een 
 
 \subsection{Pac-Man}
 
-De Pac-Man wordt zichbaar gemaakt door een infrarood-beacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen ``ghosts'' beevinden.
+De Pac-Man wordt zichbaar gemaakt door een infrarood-beacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen ``ghosts'' bevinden.
 
 De beweging van Pac-Man is beperkt tot het rechtdoor oversteken van de witte lijnen die de sectoren scheiden.
 
 \subsection{Ghosts}
 
-De ghosts vertrekken op de vier hoekpunten van de doolhof, zodat de verkenning van de doolhof zo snel mogelijk van start kan gaan. De ori\"entatie van de robot is onbekend hoewel de hoek t.o.v. het assenstel wel een veelvoud is van 90 graden.
+De ghosts vertrekken op de vier hoekpunten van de doolhof, zodat de verkenning van het doolhof zo snel mogelijk van start kan gaan. De ori\"entatie van de robot is onbekend hoewel de hoek t.o.v. het assenstel wel een veelvoud is van 90 graden.
 
 
-\section{CommunicatieProtocol}
+\section{Communicatieprotocol}
 
 We verwijzen naar de offici\"ele documentatie van het Ghost Protocol. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het Ghost Protocol is het resultaat van een werkgroep door de commissie aangesteld. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen voor onze eigen ontwikkeling.
 
@@ -119,12 +119,12 @@ TODO: Michiel: Zoals eerder vandaag besproken de puntjes omtrent overbodigheid e
 
 \subsection{Fysiek ontwerp}
 
-Door de veranderde specificaties van het doolhof en de extra infrarood sensor, moesten enkele wijzigingen gemaakt worden aan de fysieke robot. Zo zijn de druksensoren verwijderd om een sensor poort vrij te maken voor de infrarood sensor. Aangezien het doolhof minder breed is (sectoren zijn 40 centimeter in plaats van 80) zijn de extra wielen weggehaald om het geheel iets slanker te maken wat een eenvoudigere navigatie mogelijk maakt.
+Door de veranderde specificaties van het doolhof en de extra infrarood sensor, moesten enkele wijzigingen gemaakt worden aan de fysieke robot. Zo zijn de druksensoren verwijderd om een sensorpoort vrij te maken voor de infrarood sensor. Bovendien is het in dit project noodzakelijk om precies mogelijk door het midden van de sectoren te rijden, en touch-sensoren passen niet in deze strategie. Aangezien het doolhof minder breed is (sectoren zijn 40 centimeter in plaats van 80) zijn de extra wielen weggehaald om het geheel iets slanker te maken wat een eenvoudigere navigatie mogelijk maakt.
 
-Verder is ook de motor, die de sonar laat draaien, iets naar onder verplaatst en naar het midden. Hierdoor hebben we uit de verbinding tussen de motor en de sensor de tandwielen kunnen verwijderen waardoor de sensor rechtstreeks op de motor zit.
+Verder is ook de motor, die de sonar laat draaien, iets naar onder verplaatst en naar het midden. Hierdoor hebben we uit de verbinding tussen de motor en de sensor de tandwielen kunnen verwijderen waardoor de sensor rechtstreeks op de motor zit. Om eenvoudiger de ouput van de robot te kunnen lezen, is de brick omgedraaid, zodat het display zich nu aan de onderzijde van de robot bevindt.
 
 \subsection{IR-sensor}
-De Infrarood sensor werd vooraan in het midden van de robot aangebracht. Net boven de lichtsensor. Het uitlezen van deze sensor zorgde voor een aantal problemen. De gemeten afstand leek niet overeen te komen met de voorspelde. Het bleek dat de Lejos implementatie verouderd was en niet alle mogelijkheden van de sensor ondersteunde. Met een aanpassing van de nieuwe broncode van Lejos werkte de sensor volledig en zoals verwacht. 
+De Infrarood sensor werd vooraan in het midden van de robot aangebracht. Net boven de lichtsensor. Het uitlezen van deze sensor zorgde voor een aantal problemen. De maximale gemeten afstand kwam niet overeen met de specificatie van de IR-bal en sensor. Het bleek dat de Lejos implementatie verouderd was en niet alle mogelijkheden van de sensor ondersteunde. Met behulp van de broncode van Lejos versie 9.0 en enkele aanpassingen, is ons team er in geslaagd de verschillende sensormodi te activeren.
 
 Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is. De sensor heeft \'e\'en AC modus en \'e\'en DC modus. Er bleek dat de AC modus van de bol die speciaal voor de sensor ontwikkeld was het beste werkte. De sensor had dan een reikwijdte van 5 meter in tegenstelling tot ongeveer 80 cm bij andere modi.
 
@@ -136,7 +136,9 @@ Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is
 \end{center}
 \end{figure}
 
+In grafiek kan men zien dat de gemeten lichtsterkte exponentieel afneemt ten opzichten van de afstand tot de lichtbron. Hieruit zou men kunnen een schatting bepalen van de afstand tot de born. In de andere grafiek kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat de varianties van de sensorwaarden zeer klein zijn vergeleken met de sterkte. Een afstandsschatting lijkt dus goed mogelijk.
 
+Uit testen blijkt dat een significante hoeveelheid van het IR licht via weerkatsingen door de infraroodsensor gedetecteerd wordt. De sterkte is bij weerkaatsing herkenbaar lager dan bij een rechtstreekse detectie (zie grafiek). Men kan dus eventueel ook aan de hand van de signaalsterkte herkennen of de pacman zich achter een hoek bevindt. In dit geval kan deze meting best genegeerd worden. Het reconstrueren van een weerkaatsingpatroon een zeer moeilijke opgave.
 In grafiek \ref{fig:plotIR} kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek \ref{fig:boxplotIR} kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat de varianties zeer klein zijn vergeleken met de sterkte. Een afstandsschatting lijkt dus goed mogelijk.
 
 Ook werd er ondervonden dat het infrarood licht weerkaatst op de muren. De sterkte was toen ook herkenbaar lager dan met rechtstreeks zicht(zie grafiek \ref{fig:boxplotSpiegeling}). Men kan dus eventueel ook met de meetsterkte een herkennen of de pacman zich achter muren bevindt. Dan kan deze meting genegeerd worden aangezien er onmogelijk nauwkeurig een weerkaatsingspatroon kan gegenereerd worden. 
