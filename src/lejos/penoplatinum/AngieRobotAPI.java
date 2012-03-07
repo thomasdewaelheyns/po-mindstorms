@@ -127,7 +127,7 @@ public class AngieRobotAPI implements RobotAPI {
         values[sensorNumberMotorRight] = motorRight.getTachoCount();
         values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
 
-        /*
+        
         values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
         values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
 		values[sensorNumberLight] = light.getRawLightValue();        values[sensorNumberInfraRed] = irSeeker.getDirection();        values[sensorNumberSonar] = (int) sonar.getDistance();        

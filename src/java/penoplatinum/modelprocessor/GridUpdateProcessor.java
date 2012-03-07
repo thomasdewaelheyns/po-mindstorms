@@ -52,6 +52,7 @@ public class GridUpdateProcessor extends ModelProcessor {
         }
       }
     }
+    model.markSectorUpdated(current);
   }
 
   // if there are bearing without walls, providing access to unknown Sectors,

@@ -42,6 +42,8 @@ public class GhostRobot implements Robot {
     for (int i = 0; i < sweepAngles.length; i++) {
       sweepAnglesList.add(sweepAngles[i]);
     }
+    
+    
 
   }
 
@@ -191,6 +193,7 @@ public class GhostRobot implements Robot {
   @Override
   public GhostRobot useCommunicationAgent(RobotAgent agent) {
     this.agent = agent;
+    agent.setRobot(this);
     return this;
   }
 

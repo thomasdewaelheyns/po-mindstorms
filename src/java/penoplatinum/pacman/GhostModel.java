@@ -25,10 +25,13 @@ import penoplatinum.grid.AggregatedGrid;
 import penoplatinum.grid.GridView;
 import penoplatinum.grid.DiffusionGridProcessor;
 
+import penoplatinum.grid.SimpleGrid;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 
 import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.mini.MessageHandler;
+import penoplatinum.simulator.mini.Queue;
 
 public class GhostModel implements Model {
   // little bit of configuration
@@ -54,10 +57,27 @@ public class GhostModel implements Model {
   // we keep track of the last movement
   private int lastMovement = GhostAction.NONE;
   private boolean isSweepDataChanged;
+  private GhostProtocolHandler protocol;
 
   public GhostModel(String name) {
     this.agent = new GhostAgent(name);
     this.setupGrid();
+
+    protocol = new GhostProtocolHandler(agent, this);
+    final Queue queue = new Queue();
+    queue.subscribe(new MessageHandler() {
+
+      @Override
+      public void useQueue(Queue queue) {
+      }
+
+      @Override
+      public void receive(String msg) {
+        outbox.add(msg);
+      }
+    });
+    protocol.useQueue(queue);
+
   }
 
   private void log(String msg) {
@@ -167,6 +187,12 @@ public class GhostModel implements Model {
   public void updateSector(Sector newSector) {
     this.prevSector = this.currentSector;
     this.currentSector = newSector;
+
+
+  }
+
+  public void markSectorUpdated(Sector current) {
+    protocol.sendDiscover(current);
   }
 
   public Sector getDetectedSector() {
@@ -217,6 +243,7 @@ public class GhostModel implements Model {
   public void moveForward() {
     this.agent.moveForward();
     this.lastMovement = GhostAction.FORWARD;
+    protocol.sendPosition();
   }
 
   public void turnLeft() {
@@ -236,6 +263,15 @@ public class GhostModel implements Model {
   public int getLastMovement() {
     this.log("inspecting last movement: " + this.lastMovement);
     return this.lastMovement;
+  }
+
+  public Grid getGrid(String actorName) {
+    Grid get = otherGrids.get(actorName);
+    if (get == null) {
+      get = new SimpleGrid();
+      otherGrids.put(actorName, get);
+    }
+    return get;
   }
   private float positionX;
   private float positionY;

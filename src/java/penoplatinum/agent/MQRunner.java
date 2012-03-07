@@ -7,32 +7,32 @@ package penoplatinum.agent;
  *
  * Author: Team Platinum
  */
-
 import java.io.IOException;
 
 public class MQRunner {
 
   public static void main(String[] argv) throws java.io.IOException,
-                                                java.lang.InterruptedException
-  {
-    MQ mq = new MQ() {
-       protected void handleIncomingMessage(String sender, String message) {
-         // handling the incoming messages ...
-         System.out.println( "[" + sender + "] " + message );
-       }
+          java.lang.InterruptedException {
+    if (argv.length == 0) {
+      argv = new String[]{"MQRunner"};
     }
-    .setMyName(argv[0])
-    .connectToMQServer("localhost")
-    .follow("ghost-protocol");
+
+    MQ mq = new MQ() {
+
+      protected void handleIncomingMessage(String sender, String message) {
+        // handling the incoming messages ...
+        System.out.println("[" + sender + "] " + message);
+      }
+    }.setMyName(argv[0]).connectToMQServer("localhost").follow("Ghost");
 
     // be nice ...
-    mq.sendMessage( "Hello everybody." );
+    mq.sendMessage("Hello everybody.");
 
     // our actual event loop
-    System.out.println( "Waiting for messages. To exit press CTRL+C" );
+    System.out.println("Waiting for messages. To exit press CTRL+C");
     while (true) {
       Thread.sleep(100);
-       mq.sendMessage( "Some message" );
+      mq.sendMessage("Some message");
     }
   }
 }

@@ -34,7 +34,7 @@ public class SimulationRobotAgent implements RobotAgent {
       }
     };
     try {
-      mq.setMyName(robotName).connectToMQServer().follow("ghost-protocol");
+      mq.setMyName(robotName).connectToMQServer().follow("Ghost");
       // TODO: remove hard coded data
     } catch (IOException ex) {
       Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
@@ -64,11 +64,11 @@ public class SimulationRobotAgent implements RobotAgent {
 
   @Override
   public void send(String msg) {
-    /*try {
+    try {
       mq.sendMessage(msg);
     } catch (IOException ex) {
       Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
-    }/**/
+    }
     
     //this.simulator.receive(msg); //TODO: unused
   }
