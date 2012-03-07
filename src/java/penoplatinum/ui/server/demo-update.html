@@ -1,0 +1,123 @@
+<!-- dummy data set -->
+
+<script>
+  var light  = [ "350",    "400" , "500",   "15",   "879"  , "34",    "778" ];
+  var color  = [ "BROWN", "BROWN", "BROWN", "BLACK", "WHITE", "BLACK", "WHITE" ];
+  var angles = [ 0, 30, 60, 90, 120,  150,  180 ]; 
+  var dists  = [ 20, 40, 90, 200, 120, 100, 60 ];
+  for(var t=0; t<7; t++) {
+  for(var i=0; i<7; i++) {
+  parent.Dashboard.update( "2012-03-06 20:00:05",       "platinum",
+          light[i],      color[i], 
+          8,
+          angles[i],      dists[i],
+          0, 30, 20, 0, 0,      112,
+          4,   0, 0, 0, 1,    
+          "PACMAN DETECTED",  "1,2",
+          "TURN LEFT", "FORWARD",
+          "TURN", "-90",
+          25 );
+  }
+  }
+</script>
+
+<script>
+  parent.Dashboard.myGrid.updateWalls( { 
+    "0,-1": 0, "1,-1": 0, 
+    "0,0": 0, "1,0": 0, 
+    "0,1": 0,           
+    "0,2": 0, "1,2": 0
+  } );
+  parent.Dashboard.myGrid.updateAgents( { 
+    "ghost" :  { left:0, top:0, bearing:1, color:"white"  },
+    "pacman":  { left:2, top:2, bearing:3, color:"yellow" }
+  } );
+</script>
+
+<script>
+  parent.Dashboard.myGrid.updateWalls( { 
+    "0,-1": 9, "1,-1": 1, "2,-1": 1, "3,-1": 1, 
+    "0,0": 8, "1,0": 0, "2,0": 0, 
+    "0,1": 8,           "2,1": 0, 
+    "0,2": 8, "1,2": 0, "2,2": 0, 
+    "0,3": 8, "1,3": 0, 
+    "0,4": 12, "1,4": 4, "2,4": 4, "3,4": 4, "4,4": 6
+  } );
+  parent.Dashboard.myGrid.updateAgents( { 
+    "ghost" :  { left:0, top:0, bearing:2, color:"white"  },
+    "pacman":  { left:2, top:2, bearing:3, color:"yellow" }
+  } );
+</script>
+
+<script>
+  parent.Dashboard.myGrid.updateWalls( { 
+    "0,-1": 9, "1,-1": 1, "2,-1": 1, "3,-1": 1, "4,-1": 3, 
+    "0,0": 8, "1,0": 4, "2,0": 4, "3,0": 0, "4,0": 2, 
+    "0,1": 8,           "2,1": 3, "3,1": 10, "4,1": 10, 
+    "0,2": 8, "1,2": 0, "2,2": 0, "3,2": 0, "4,2": 2, 
+    "0,3": 8, "1,3": 0, "2,3": 0, "3,3": 0, "4,3": 2, 
+    "0,4": 12, "1,4": 4, "2,4": 4, "3,4": 4, "4,4": 6
+  } );
+  parent.Dashboard.myGrid.updateAgents( { 
+    "ghost" :  { left:1, top:0, bearing:2, color:"white"  },
+    "pacman":  { left:2, top:2, bearing:4, color:"yellow" }
+  } );
+</script>
+
+<script>
+  parent.Dashboard.myGrid.updateValues( { 
+    "0,-1": 5000, "1,-1": 250, "2,-1": 62, "3,-1": 15, "4,-1": 0, 
+    "0,0": 250, "1,0": 125, "2,0": 0, "3,0": 0, "4,0": 0, 
+    "0,1": 62,           "2,1": 0, "3,1": 0, "4,1": 0, 
+    "0,2": 15, "1,2": 4, "2,2": 0, "3,2": 0, "4,2": 0, 
+    "0,3": 4, "1,3": 2, "2,3": 0, "3,3": 0, "4,3": 0, 
+    "0,4": 1, "1,4": 1, "2,4": 0, "3,4": 0, "4,4": 0
+  } );
+  parent.Dashboard.myGrid.updateAgents( { 
+    "ghost" :  { left:2, top:4, bearing:1, color:"white"  },
+    "pacman":  { left:1, top:2, bearing:4, color:"yellow" }
+  } );
+</script>
+
+<script>
+    parent.Dashboard.others[0].updateWalls( { 
+    "0,-1": 9, "1,-1": 1, "2,-1": 1, "3,-1": 1, 
+    "0,0": 8, "1,0": 0, "2,0": 0, 
+    "0,1": 8,           "2,1": 0, 
+    "0,2": 8, "1,2": 0, "2,2": 0, 
+    "0,3": 8, "1,3": 0, 
+    "0,4": 12, "1,4": 4, "2,4": 4, "3,4": 4, "4,4": 6
+  } );
+  parent.Dashboard.others[0].updateAgents( { 
+    "ghost" :  { left:3, top:-1, bearing:4, color:"white"  },
+    "pacman":  { left:1, top:2, bearing:4, color:"yellow" }
+  } );
+</script>
+
+<script>
+  parent.Dashboard.others[1].updateWalls( { 
+    "0,-1": 9, "1,-1": 1, "2,-1": 1, "3,-1": 1, "4,-1": 3, 
+    "0,0": 8, "1,0": 4, "2,0": 4, "3,0": 0, "4,0": 2, 
+    "0,1": 8,           "2,1": 3, "3,1": 10, "4,1": 10, 
+    "0,2": 8, "1,2": 0, "2,2": 0, "3,2": 0, "4,2": 2, 
+    "0,3": 8, "1,3": 0, "2,3": 0, "3,3": 0, "4,3": 2, 
+    "0,4": 12, "1,4": 4, "2,4": 4, "3,4": 4, "4,4": 6
+  } );
+  parent.Dashboard.others[1].updateAgents( { 
+    "ghost" :  { left:4, top:1, bearing:3, color:"white"  },
+    "pacman":  { left:1, top:2, bearing:4, color:"yellow" }
+  } );
+</script>
+
+<script>
+  parent.Dashboard.others[2].updateWalls( { 
+    "0,1": 8,           "2,1": 3, "3,1": 10, "4,1": 10, 
+              "1,2": 0, "2,2": 0, "3,2": 0, "4,2": 2, 
+    "0,3": 8, "1,3": 0, "2,3": 0, "3,3": 0, "4,3": 2, 
+              "1,4": 4, "2,4": 4, "3,4": 4, "4,4": 6
+  } );
+  parent.Dashboard.others[2].updateAgents( { 
+    "ghost" :  { left:3, top:4, bearing:1, color:"white"  },
+    "pacman":  { left:1, top:2, bearing:4, color:"yellow" }
+  } );
+</script>

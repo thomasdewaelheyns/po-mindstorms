@@ -36,6 +36,13 @@ H4 {
   text-align:center;
 }
 
+TH {
+  font-size: 12pt;
+  margin: 0px;
+  padding: 0px;
+  padding-top: 10px;
+}
+
 DIV.group {
   height: 295px;
   background-color: #777;
@@ -67,6 +74,7 @@ DIV.sensor DIV.white {
   background-color: white;
   color: black;
 }
+
 DIV.sensor DIV.black {
   background-color: black;
   color: #eee;
@@ -85,7 +93,7 @@ CANVAS.light {
   margin-top: 10px;
 }
 
-CANVAS.sonar {
+CANVAS.sonar, CANVAS.irfield, CANVAS.sector {
   border: 1px solid black;
   margin-left:25px;
 }
@@ -106,6 +114,10 @@ DIV.push.active {
 
 DIV.push.inactive {
   background-color: rgb(5,152,16);
+}
+
+DIV.sensor.grids {
+  width: 625px;
 }
 
 DIV.action DIV {

@@ -6,6 +6,10 @@
   queue = [],
   streaming = true,
 
+  // TODO: fix sharing with grid.js ;-)
+  N = 0x1, E = 0x2, S = 0x4, W = 0x8,
+
+
   lightHistogram = [],
   sonarHistogram = [],
 
@@ -40,14 +44,6 @@
     updateHTML( "sonarValue", distance +"cm @ " + angle + "&deg;" );
     addDistance(angle, distance);
     renderSonarHistogram();
-  },
-
-  updatePush = function updatePush(left, right) {
-    updateHTML ( "push-left", left  ? "PUSHED" : "OK" );
-    updateClass( "push-left", left  ? "push active" : "push inactive" );
-
-    updateHTML ( "push-right", right ? "PUSHED" : "OK" );
-    updateClass( "push-right", right ? "push active" : "push inactive" );
   },
 
   updateEvent = function updateEvent( kind, source ) {
@@ -125,6 +121,68 @@
     }
   },
   
+  updateIR = function updateIR(values, dist) {
+    updateHTML("IrValue", dist+"cm");
+
+    var canvas = document.getElementById("irField").getContext("2d");
+    canvas.fillStyle = "black";
+    canvas.fillRect(0,0,150,150);
+
+    canvas.fillStyle = "white";
+    canvas.fillRect(10,60,10,10);
+    canvas.fillRect(70,30,10,10);
+    canvas.fillRect(130,60,10,10);
+    canvas.fillRect(10,120,10,10);
+    canvas.fillRect(130,120,10,10);
+
+    canvas.beginPath();
+    canvas.strokeStyle = "rgba(255,0,0,1)";
+    canvas.fillStyle   = "rgba(255,0,0,0.4)";
+    canvas.moveTo(75,125);
+    if( values[0] != 0 ) {
+      canvas.lineTo(15,125); canvas.lineTo(15,65); canvas.lineTo(75,125);
+      canvas.fillRect(11,121,8,8); canvas.fillRect(11,61,8,8);
+    } else if( values[1] != 0 ) {
+      canvas.lineTo(15,65); canvas.lineTo(75,35); canvas.lineTo(75,125);
+      canvas.fillRect(11,61,8,8);  canvas.fillRect(71,31,8,8);
+    } else if( values[2] != 0 ) {
+      canvas.lineTo(75,35); canvas.lineTo(135,65); canvas.lineTo(75,125);
+      canvas.fillRect(71,31,8,8);  canvas.fillRect(131,61,8,8);
+    } else if( values[3] != 0 ) {
+      canvas.lineTo(135,65); canvas.lineTo(135,125); canvas.lineTo(75,125);
+      canvas.fillRect(131,51,8,8);  canvas.fillRect(131,121,8,8);
+    }
+    canvas.closePath();
+    canvas.stroke();
+    canvas.fill();
+  },
+  
+  updateSector = function updateSector( walls, values ) {
+    var canvas = document.getElementById("sectorSituation").getContext("2d");
+    canvas.fillStyle = "black";
+    canvas.fillRect(0,0,150,150);
+
+    // tiles
+    canvas.fillStyle = "white";
+    canvas.fillRect( 60, 10, 30, 30 );
+    canvas.fillRect( 10, 60, 30, 30 );
+    canvas.fillRect( 60, 60, 30, 30 );
+    canvas.fillRect( 110, 60, 30, 30 );
+    canvas.fillRect( 60, 110, 30, 30 );
+    
+    // TODO: get minimum
+    canvas.fillStyle = "green";
+    canvas.fillRect( 10, 60, 30, 30 );    
+    
+    // walls
+    canvas.fillStyle = "brown";
+
+    if( walls & N ) { canvas.fillRect(50,47,50,5); }
+    if( walls & E ) { canvas.fillRect(95,50,5,50); }
+    if( walls & S ) { canvas.fillRect(50,97,50,5); }
+    if( walls & W ) { canvas.fillRect(50,47,5,50); }
+  },
+  
   processQueue = function processQueue() {
     // get the next update from the queue and do the update
     if( queue.length > 0 ) {
@@ -137,13 +195,14 @@
       updateLight   ( update.lightValue, update.lightColor    );
       updateBarcode ( update.barcode                          );
       updateSonar   ( update.sonarAngle, update.sonarDistance );
-      updatePush    ( update.pushLeft,   update.pushRight     );
+      updateIR      ( update.ir, update.irDist );
+      updateSector  ( update.walls, update.values );
       // navigator
       updateEvent   ( update.navigatorEvent,  update.navigatorSource      );
       updatePlan    ( update.navigatorAction, update.navigatorActionQueue );
       updateAction  ( update.actionKind,      update.actionArgument       );
       // rate
-      updateHTML( "rate", update.rate + "fps" );
+      //updateHTML( "rate", update.rate + "fps" );
     }
     updateHTML( "queueStatus", "(" + queue.length +")" );
     // schedule the next update in 30ms
@@ -160,7 +219,8 @@
                                       lightValue,      lightColor, 
                                       barcode,
                                       sonarAngle,      sonarDistance,
-                                      pushLeft,        pushRight,
+                                      ir1, ir2, ir3, ir4, ir5, irDist,
+                                      walls, valN, valE, valS, valW,
                                       navigatorEvent,  navigatorSource,
                                       navigatorAction, navigatorActionQueue,
                                       actionKind,      actionArgument,
@@ -172,7 +232,8 @@
       lightValue : lightValue,           lightColor : lightColor,
       barcode : barcode,
       sonarAngle : sonarAngle -90,       sonarDistance : sonarDistance,
-      pushLeft : pushLeft,               pushRight : pushRight,
+      ir : [ ir1, ir2, ir3, ir4, ir5 ],  irDist: irDist,
+      walls:walls,  values : {N:valN, E:valE, S:valS, W:valW },
       navigatorEvent : navigatorEvent,   navigatorSource : navigatorSource,
       navigatorAction : navigatorAction, navigatorActionQueue : navigatorActionQueue,
       actionKind : actionKind,           actionArgument : actionArgument,
@@ -203,5 +264,12 @@
     // start an event loop that processes the queue
     dashboard.play();
   };
-
+  
+  // initialize our own Grid and expose it using a public variable
+  dashboard.myGrid = globals.Grid.create("myGrid");
+  // initialize Grids for the other
+  dashboard.others = [];
+  dashboard.others[0] = globals.Grid.create("others1");
+  dashboard.others[1] = globals.Grid.create("others2");
+  dashboard.others[2] = globals.Grid.create("others3");
 }(window));
