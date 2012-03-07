@@ -31,7 +31,7 @@
 \begin{abstract}
 Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, bouwen wij een autonome robot met behulp van Lego Mindstorms. Voor de programmatie wordt beroep gedaan op Lejos, een Open Bron project dat een minimale JAVA virtuele machine heeft gemaakt die de plaats kan innemen van de standaard programmatie omgeving van Lego.
 
-Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen ivm het werken in team verband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
+Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen i.v.m. het werken in team verband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
 
 In het tweede semester wordt hier nog eens de nood aan samenwerking toegevoegd. Het traject van de autonome robot blijft behouden, maar de verschillende robots zullen nu moeten samen werking om een gemeenschappelijk doel te bereiken. Om deze samenwerking in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om de beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester ligt in het insluiten van een ``Pac-Man''-robot bestuurd door het didactisch team, dit met behulp van vier autonome ``ghosts''.
 
@@ -42,11 +42,11 @@ In het eerste semester werkten we reeds in een parallel traject aan een simulati
 
 Het project wordt zoals in het eerste semester begeleid door het gebruik van tussentijdse demo's. Het finale doel is om zo optimaal mogelijk samen te werken met vier teams om de Pac-Man in te sluiten, hoewel we ten alle tijden autonoom beslissingen nemen.
 
-Het doel van de eerste demo is een versimpelde vorm van het einddoel waarbij we een stilstaande Pac-Man zoeken binnen het doolhof. De simulator dient ook reeds beschikbaar te zijn. Voor de tweede demo mag de comissie beslissen welke doelstellingen passen in het verdere proces richting het einddoel.
+Het doel van de eerste demo is een versimpelde vorm van het einddoel waarbij we een stilstaande Pac-Man zoeken binnen het doolhof. De simulator dient ook reeds beschikbaar te zijn. Voor de tweede demo mag de commissie beslissen welke doelstellingen passen in het verdere proces richting het einddoel.
 
 Duidelijk is dat we er in geslaagd zijn om zeer herbruikbare code te produceren in het eerste semester. Iedereen is ondertussen vertrouwd geraakt met de volledige architectuur. Aangezien we duidelijk te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
 
-Het verslag is duidelijk verschillend opgebouwd ten opzichte van het vorige semester en kiest voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is duidelijk erg gelijkend hoewel natuurlijk de inhoud verandert is tov het eerste semester. Nieuw zijn natuurlijk de stukken over de strategie ivm de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
+Het verslag is duidelijk verschillend opgebouwd ten opzichte van het vorige semester en kiest voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is duidelijk erg gelijkend hoewel natuurlijk de inhoud verandert is t.o.v. het eerste semester. Nieuw zijn natuurlijk de stukken over de strategie ivm de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
 
 \chapter{Probleemstelling}
 
@@ -54,7 +54,7 @@ De doelstellingen van de demo's worden hier achtereenvolgens beschreven, zij lig
 
 \section{Demo 1}
 
-Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en wordt vertegenwoordigd door drie virtuele ``ghost'' die in simulator ``leven''.
+Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en worden vertegenwoordigd door drie virtuele ``ghosts'' die in simulator ``leven''.
 
 De ``ghosts'' hebben geen enkele informatie over het doolhof waarin ze zich bevinden, noch over hun positie, noch over hun ori\"entatie.. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol ge\"implementeerd is.
 
@@ -68,13 +68,13 @@ Dit dient nog afgesproken te worden door de commissie.
 
 \subsection{Verkenning}
 
-De robots rijden in een op voorhand onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het cre\"eren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de pac-man. Elke robot communiceert zijn gevonden informatie en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van \'e\'en van de robots kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo effici\"ent mogelijk zijn eigen info verzamelt en met de nodige voorzichtigheid andere informatie hierin verwerkt.
+De robots rijden in een op voorhand onbekend doolhof. Alle info die verzameld wordt door de vier ghosts draagt bij tot het cre\"eren van een individuele map die mogelijk inconsistenties bevat. Alle juiste info over het doolhof zal direct bijdragen tot het hoofddoel, namelijk het vangen van de Pac-Man. Elke robot communiceert zijn gevonden informatie en probeert zo veel mogelijk informatie te verzamelen over de rond hem onbekende wereld, het falen van \'e\'en van de robots kan reeds fataal zijn voor het snel kunnen opbouwen van een verkende omgeving. We proberen dus een zo robuust mogelijke robot te maken die zo effici\"ent mogelijk zijn eigen info verzamelt en met de nodige voorzichtigheid andere informatie hierin verwerkt.
 
 \subsection{Pac-Man}
 
 Het Pac-Man spel zelf kunnen we winnen door alle vluchtwegen van de Pac-Man af te sluiten. Dit houdt in dat alle omliggende sectoren door een ghost bezet wordt of afgeschermd worden door een muur. Men wint enkel als alle robots die meewerken aan de insluiting ook effectief aangeven dat ze gewonnen hebben via hun grafische interface. De probleemstelling vereist dus een effectieve samenwerking, waarbij een consensus moet bereikt worden over de verzamelde informatie en de te volgen strategie.
 
-\chapter{Scheidsrechtercomissie}
+\chapter{Scheidsrechtercommissie}
 
 Deze commissie staat in voor het nemen van beslissingen die betrekking hebben op afspraken tussen de verschillende teams en het didactische team. Hierbij kunnen we deze beslissingen groeperen in:
 \begin{itemize}
@@ -84,7 +84,7 @@ Deze commissie staat in voor het nemen van beslissingen die betrekking hebben op
 
 \section{Spelregels}
 
-\subsection{SpelWereld}
+\subsection{Spelwereld}
 
 De spelwereld bestaat uit aangepaste panelen uit het eerste semester. Er is een raster van witte lijnen ge\"introduceerd waar mogelijks muren kunnen staan. Dit komt neer op een mogelijke herschaling van de panelen met een factor vier. Deze nieuwe minimumeenheid aan oppervlakte noemen we sectoren. Deze zijn belangrijk voor de plaatsbepaling binnen het doolhof. De doolhof is volledig ommuurd en de absolute afmetingen worden op voorhand gegeven.
 
@@ -130,7 +130,7 @@ Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is
 
 \begin{figure}
 \begin{center}
- \includegraphics{./resources/plotIR.pdf}
+ \includegraphics[width=\textwidth]{./resources/plotIR.pdf}
  \caption{De meetwaarden van de IR-sensor volgens een bepaalde afstand \label{fig:plotIR}}
  % plotIR.pdf: 504x504 pixel, 72dpi, 17.78x17.78 cm, bb=0 0 504 504
 \end{center}
@@ -142,14 +142,14 @@ In grafiek \ref{fig:plotIR} kan men zien dat de sterkte exponentieel afneemt. Hi
 Ook werd er ondervonden dat het infrarood licht weerkaatst op de muren. De sterkte was toen ook herkenbaar lager dan met rechtstreeks zicht(zie grafiek \ref{fig:boxplotSpiegeling}). Men kan dus eventueel ook met de meetsterkte een herkennen of de pacman zich achter muren bevindt. Dan kan deze meting genegeerd worden aangezien er onmogelijk nauwkeurig een weerkaatsingspatroon kan gegenereerd worden. 
 \begin{figure}
 \begin{center}
- \includegraphics{./resources/bloxplotIR.pdf}
+ \includegraphics[width=\textwidth]{./resources/bloxplotIR.pdf}
  \caption{De meetwaarden van de IR-sensor volgens een bepaalde afstand \label{fig:boxplotIR}}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
- \includegraphics{./resources/boxplotSpiegeling.pdf}
+ \includegraphics[width=\textwidth]{./resources/boxplotSpiegeling.pdf}
  \caption{De meetwaarden van de IR-sensor volgens een bepaalde afstand \label{fig:boxplotSpiegeling}}
 \end{center}
 \end{figure}
