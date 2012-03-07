@@ -1,9 +1,9 @@
 package penoplatinum.modelprocessor;
 
+import java.awt.Color;
 import penoplatinum.Utils;
 import penoplatinum.barcode.BarcodeBlackBlack;
 import penoplatinum.barcode.BarcodeCorrector;
-import penoplatinum.modelprocessor.ColorInterpreter.Color;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Model;
 
@@ -22,7 +22,6 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
   private BarcodeCorrector interpreter;
-  private ColorInterpreter colorInterpreter;
   private int brownCounter = 0;
   int state = WAITING;
   public float WIELOMTREK = 0.175f;
@@ -34,8 +33,7 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
    */
   public BarcodeBlackModelProcessor() {
     super();
-    this.colorInterpreter = new ColorInterpreter();
-    interpreter = new BarcodeBlackBlack(colorInterpreter);
+    interpreter = new BarcodeBlackBlack();
   }
 
   /**
@@ -47,8 +45,7 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
    */
   public BarcodeBlackModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
-    this.colorInterpreter = new ColorInterpreter();
-    interpreter = new BarcodeBlackBlack(colorInterpreter);
+    interpreter = new BarcodeBlackBlack();
   }
 
   /**
@@ -59,7 +56,6 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
   @Override
   public void setModel(Model model) {
     super.setModel(model);
-    colorInterpreter.setModel(model);
   }
 
   /**
@@ -75,9 +71,9 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
     Buffer tempBuffer = this.model.getLightValueBuffer();
     model.setBarcode(Barcode.None);
     updateState(tempBuffer);
-    if (state != WAITING) {
-      model.setScanningLightData(true); // Flag that someone is reading light data.
-    }
+    //if (state != WAITING) {
+    //  model.setScanningLightData(true); // Flag that someone is reading light data.
+    //}
   }
 
   /**
@@ -96,14 +92,14 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
   private void updateState(Buffer tempBuffer) {
     switch (state) {
       case WAITING:
-        if (!colorInterpreter.isColor(Color.Brown)) {
+        if (model.getCurrentLightColor() != LightColor.Brown) {
           setState(RECORDING);
           tempBuffer.setCheckPoint();
           brownCounter = 0;
         }
         break;
       case RECORDING:
-        if (colorInterpreter.isColor(Color.Brown)) {
+        if (model.getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
           if (brownCounter > 5 && tempBuffer.getCheckpointSize() < 10) {
             setState(WAITING);

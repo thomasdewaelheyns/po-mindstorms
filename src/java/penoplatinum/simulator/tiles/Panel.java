@@ -70,7 +70,7 @@ public class Panel implements Tile {
   public static final int DRAW_BARCODE_LINE_WIDTH = Panel.BARCODE_LINE_WIDTH * Board.SCALE;
   public static final int DRAW_WALL_LINE_WIDTH = 2*Board.SCALE;
   
-  private static final BarcodeCorrector barcode = new BarcodeHammingCorrector(null);
+  private static final BarcodeCorrector barcode = new BarcodeHammingCorrector();
 
   // internal representation of a Panel using a 32bit int
   private int data;

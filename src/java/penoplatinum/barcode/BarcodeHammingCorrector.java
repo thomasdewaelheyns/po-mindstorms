@@ -33,7 +33,9 @@ public class BarcodeHammingCorrector implements BarcodeCorrector {
   }
   
   public static byte[] barcodesRepair = getBarcodes();
-  public static String[] codes = new String[]{"0000000", "0001111", "0010110", "0011001", "0100101", "0101010", "0110011", "0111100", "1000011", "1001100", "1010101", "1011010", "1100110", "1101001", "1110000", "1111111"};
+  public static String[] codes = new String[]{"0000000", "0001111", "0010110", "0011001", "0100101", 
+                                              "0101010", "0110011", "0111100", "1000011", "1001100", 
+                                              "1010101", "1011010", "1100110", "1101001", "1110000", "1111111"};
 
   public static byte[] getBarcodes() {
     byte[] out = new byte[128];

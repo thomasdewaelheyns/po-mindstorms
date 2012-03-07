@@ -1,15 +1,12 @@
 package penoplatinum.barcode;
 
 import penoplatinum.modelprocessor.BufferSubset;
-import penoplatinum.modelprocessor.ColorInterpreter;
 
 public class BarcodeBlackBlack implements BarcodeCorrector {
 
   BarcodeTranslator translator;
 
-  public BarcodeBlackBlack(ColorInterpreter interpreter) {
-    this.translator = new BarcodeTranslator(interpreter);
-  }
+  public BarcodeBlackBlack() {}
 
   @Override
   public int translate(BufferSubset list) {

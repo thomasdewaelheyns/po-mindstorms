@@ -31,7 +31,7 @@ public class Sector implements Tile, Cloneable{
   public static int NO_COLOR = -1;
   public static int WHITE = 0;
   public static int BLACK = 4;
-  public static final BarcodeCorrector barcode = new BarcodeBlackBlack(null);  
+  public static final BarcodeCorrector barcode = new BarcodeBlackBlack();  
   
   public Sector() {
     this.data = 0;
