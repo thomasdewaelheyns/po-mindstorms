@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.modelprocessor;
 
-/**
- *
- * @author Thomas
- */
 public class HistogramModelProcessor extends ModelProcessor{
 
     public HistogramModelProcessor(){
@@ -21,9 +13,8 @@ public class HistogramModelProcessor extends ModelProcessor{
     
     @Override
     protected void work() {
-        int value = this.model.getSensorValue(this.model.S4);
-//        System.out.println(value);
-        this.model.getLightValueBuffer().insert(value);
+        //int value = this.model.getSensorValue(this.model.S4);
+        //this.model.getLightValueBuffer().insert(value);
+        this.model.getLightValueBuffer().insert(model.getCurrentLightColor().getVal());
     }
-    
 }

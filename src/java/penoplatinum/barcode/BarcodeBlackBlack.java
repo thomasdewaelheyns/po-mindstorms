@@ -4,9 +4,7 @@ import penoplatinum.modelprocessor.BufferSubset;
 
 public class BarcodeBlackBlack implements BarcodeCorrector {
   BarcodeTranslator translator;
-  
 
-  
   @Override
   public int translate(BufferSubset list){
     return translator.translate(list, 7);

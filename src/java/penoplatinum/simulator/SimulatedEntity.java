@@ -31,12 +31,12 @@ public class SimulatedEntity implements RobotEntity{
   private int prevRight = 0;
   private int prevSonar = 0;/**/
   SimulationRobotAPI robotAPI;    // the API used to access hardware
-  SimulationRobotAgent robotAgent;  // the communication layer
+  RobotAgent robotAgent;  // the communication layer
   private Robot robot;            // the actual robot
   
   private Simulator simulator;
 
-  public SimulatedEntity(SimulationRobotAPI robotAPI, SimulationRobotAgent robotAgent, Robot robot) {
+  public SimulatedEntity(SimulationRobotAPI robotAPI, RobotAgent robotAgent, Robot robot) {
     this.setupMotors();
     this.setupSensors();
     this.robotAPI = robotAPI;

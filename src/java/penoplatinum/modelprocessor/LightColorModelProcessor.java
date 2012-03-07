@@ -13,10 +13,8 @@ import penoplatinum.pacman.GhostModel;
  */
 public class LightColorModelProcessor extends ModelProcessor {
 
-  
   private final int BROWN_START = 440;
   private final int BROWN_END = 470;
-  
   private final float AVERAGE_EXPONENT = 0.001f;
   private final float AVERAGE_COLOR_EXPONENT = 0.80f;
   private final int SENSOR_VARIATION = 30;
@@ -31,9 +29,6 @@ public class LightColorModelProcessor extends ModelProcessor {
   public LightColorModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
-  
-  
-  
   int prevValue;
   int prevColor; // -1 = black 0 = brown 1 = white
 
@@ -42,50 +37,27 @@ public class LightColorModelProcessor extends ModelProcessor {
     GhostModel model = (GhostModel) this.model;
 
     int value = this.model.getSensorValue(this.model.S4);
-    
     float averageLightValue = model.getAverageLightValue();
-    
-    if (averageLightValue < BROWN_START || averageLightValue > BROWN_END)
-    {
-      averageLightValue = (BROWN_END + BROWN_START)*0.5f;
+    if (averageLightValue < BROWN_START || averageLightValue > BROWN_END) {
+      averageLightValue = (BROWN_END + BROWN_START) * 0.5f;
     }
-    
-    if (value > BROWN_START && value < BROWN_END)
-    {
+    if (value > BROWN_START && value < BROWN_END) {
       // In the brown range
       averageLightValue = model.getAverageLightValue() * (1 - AVERAGE_EXPONENT) + value * AVERAGE_EXPONENT;
     }
-    
-    
-    
-    
     model.setAverageLightValue(averageLightValue);
-
-
     // Detect discontinuity
-    if (Math.abs(value - averageLightValue) > SENSOR_VARIATION) {
-      // found a color difference
-      if (value  < averageLightValue) {
-        // Black
-        prevColor = -1;
-      } else if (value  > averageLightValue) {
-        // White
-        prevColor = 1;
-      } else {
-        prevColor = 0;
-      }
+    if (Math.abs(value - averageLightValue) <= SENSOR_VARIATION) {
+      prevColor = BROWN;
+    } else if (value < averageLightValue) { // found a color difference
+      // Black
+      prevColor = BLACK;
+    } else if (value > averageLightValue) {
+      // White
+      prevColor = WHITE;
+    } else {
+      prevColor = BROWN;
     }
-    else
-    {
-      prevColor = 0;
-    }
-
-//
-//    if ((averageLightValue - DISCONTINUITY_THRESHOLD < value && value < averageLightValue)
-//            || (averageLightValue < value && value < averageLightValue + DISCONTINUITY_THRESHOLD)) {
-//      // Looks too much like brown, so reset to brown
-//      prevColor = 0;
-//    }
 
     switch (prevColor) {
       case WHITE:

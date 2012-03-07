@@ -10,7 +10,6 @@ package penoplatinum.pacman;
 import java.util.List;
 import java.util.ArrayList;
 
-import java.util.HashMap;
 import penoplatinum.SimpleHashMap;
 import penoplatinum.simulator.Line;
 import penoplatinum.modelprocessor.Buffer;
@@ -34,7 +33,6 @@ import penoplatinum.simulator.mini.Bearing;
 public class GhostModel implements Model {
   // little bit of configuration
 
-  private static final int SENSORVALUES_COUNT = 4; // TODO
   private List<Integer> sonarValues = new ArrayList<Integer>();
   private boolean newSonarValues = false;
   // two queue-like lists for in- and out-goinging messages
@@ -131,9 +129,7 @@ public class GhostModel implements Model {
     this.newSonarValues = true;
     isSweepDataChanged = true;
 
-
     this.process();
-
   }
 
   public void addIncomingMessage(String msg) {
@@ -256,7 +252,7 @@ public class GhostModel implements Model {
   private boolean sweepChanged = true;
   private int barcode = -1;
   private Line line = Line.NONE;
-  private int bufferSize = 2000;
+  private int bufferSize = 1000;
   private Buffer lightValueBuffer = new Buffer(bufferSize);
   /**
    * This value is true on the step that the sweep was completed

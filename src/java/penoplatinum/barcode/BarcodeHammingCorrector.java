@@ -8,11 +8,13 @@ public class BarcodeHammingCorrector implements BarcodeCorrector {
   private BarcodeTranslator translator;
 
 
+  @Override
   public int correct(int value) {
     byte corrected = (byte) (getBarcodesRepair(value) / 8);
     return corrected;
   }
 
+  @Override
   public int translate(BufferSubset bufferSubset) {
     return translator.translate(bufferSubset, 7);
   }

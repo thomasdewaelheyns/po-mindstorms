@@ -102,7 +102,8 @@ public class SimulationRunner {
     // put the robot
     if (this.navigator != null) {
       Robot robot = new NavigatorRobot(getNavigator());
-      SimulationRobotAgent agent = new SimulationRobotAgent(robotName);
+      //SimulationRobotAgent agent = new SimulationRobotAgent(robotName);
+      RobotAgent agent = new NoneRobotAgent();
       agent.setRobot(robot);
       SimulatedEntity entity = new SimulatedEntity(new SimulationRobotAPI(), agent, robot);
       robot.useRobotAPI(new SimulationRobotAPI().setSimulatedEntity(entity));
