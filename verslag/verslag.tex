@@ -128,17 +128,33 @@ De Infrarood sensor werd vooraan in het midden van de robot aangebracht. Net bov
 
 Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is. De sensor heeft \'e\'en AC modus en \'e\'en DC modus. Er bleek dat de AC modus van de bol die speciaal voor de sensor ontwikkeld was het beste werkte. De sensor had dan een reikwijdte van 5 meter in tegenstelling tot ongeveer 80 cm bij andere modi.
 
-TODO: Ruben: maak referenties naar afbeelding...
+\begin{figure}
+\begin{center}
+ \includegraphics{./resources/plotIR.pdf}
+ \caption{De meetwaarden van de IR-sensor volgens een bepaalde afstand \label{fig:plotIR}}
+ % plotIR.pdf: 504x504 pixel, 72dpi, 17.78x17.78 cm, bb=0 0 504 504
+\end{center}
+\end{figure}
 
-In grafiek kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat de varianties zeer klein zijn vergeleken met de sterkte. Een afstandsschatting lijkt dus goed mogelijk.
 
-Ook werd er ondervonden dat het infrarood licht weerkaatst op de muren. De sterkte was toen ook herkenbaar lager dan met rechtstreeks zicht(zie grafiek ). Men kan dus eventueel ook met de meetsterkte een herkennen of de pacman zich achter muren bevindt. Dan kan deze meting genegeerd worden aangezien er onmogelijk nauwkeurig een weerkaatsingspatroon kan gegenereerd worden. 
+In grafiek \ref{fig:plotIR} kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek \ref{fig:boxplotIR} kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat de varianties zeer klein zijn vergeleken met de sterkte. Een afstandsschatting lijkt dus goed mogelijk.
 
-Het enige nadeel van zo'n filtering is dat deze de afstanden waarop geschat kan worden inperkt. Zoals men kan zien op grafiek , kunnen we geen afstanden meer schatten van meer dan 160 cm (4 sectoren) als we rekening houden met weerkaatsingen. Dit zal voor demo 2 en 3 moeten afgewogen worden wat de beste oplossing bezorgt: een grotere gemeten afstand maar misschien niet nauwkeurig of een grotere zekerheid garanderen. Er zal ook moeten rekening gehouden worden met de keuze van andere teams. 
+Ook werd er ondervonden dat het infrarood licht weerkaatst op de muren. De sterkte was toen ook herkenbaar lager dan met rechtstreeks zicht(zie grafiek \ref{fig:boxplotSpiegeling}). Men kan dus eventueel ook met de meetsterkte een herkennen of de pacman zich achter muren bevindt. Dan kan deze meting genegeerd worden aangezien er onmogelijk nauwkeurig een weerkaatsingspatroon kan gegenereerd worden. 
+\begin{figure}
+\begin{center}
+ \includegraphics{./resources/bloxplotIR.pdf}
+ \caption{De meetwaarden van de IR-sensor volgens een bepaalde afstand \label{fig:boxplotIR}}
+\end{center}
+\end{figure}
 
-In grafiek kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat er voor 
+\begin{figure}
+\begin{center}
+ \includegraphics{./resources/boxplotSpiegeling.pdf}
+ \caption{De meetwaarden van de IR-sensor volgens een bepaalde afstand \label{fig:boxplotSpiegeling}}
+\end{center}
+\end{figure}
 
-TODO: Ruben: verder afwerken ... tekst + grafieken
+Het enige nadeel van zo'n filtering is dat deze de afstand waarop geschat kan worden inperkt. Zoals men kan zien op grafiek, kunnen we geen afstanden van meer dan 160 cm (4 sectoren) onderscheiden van weerkaatsingen. Dit zal voor demo 2 en 3 moeten afgewogen worden wat de beste oplossing bezorgt: een grotere gemeten afstand maar misschien niet nauwkeurig of een grotere zekerheid garanderen. Er zal ook moeten rekening gehouden worden met de keuze van andere teams. 
 
 \section{Demo 2}
 
@@ -297,7 +313,7 @@ Naast het aanpassen van de schaal veranderden we ook wijze waarop de verschillen
 Voor het simuleren van meerdere robots, zowel lokaal als op afstand, moest de robot afgescheiden worden van de simulator. Tegelijk werd ook het GUI component van de robot afgescheiden en ge-abstraheerd zodat er meerdere types robots kunnen bestaan. Door deze abstractie is het mogelijk om verschillende simulatoren te laten samenwerken elk met hun eigen robot. Deze simulatoren communiceren met een speciaal protocol op een eigen RabbitMQ kanaal.
 
 TODO: lees dit stukje na =>
-Voor het testen van de verschillende algoritmes, specifiek het herori\"entatie algoritme, is er al de mogelijkheid om op sommige plaatsen meet- en stuur-afwijkingen in te voegen in de simulator. Dit kan men eenvoudigweg toevoegen in de klasse van iedere sensor. De afwijkingen waarop de motor rijdt kan men in de gesimuleerde API van de robot aanpassen, zowel de variatie als een gemiddelde fout kan ingesteld worden, onafhankelijk voor het vooruitrijden en het draaien.
+Voor het testen van de verschillende algoritmes, specifiek het herori\"entatie algoritme, is er al de mogelijkheid om op sommige plaatsen meet- en stuur-afwijkingen in te voegen in de simulator. Dit kan men eenvoudigweg toevoegen in de klasse van iedere sensor. De afwijkingen waarop de motor rijdt kan men in de gesimuleerde API van de robot aanpassen, zowel de variantie als een gemiddelde fout kan ingesteld worden, onafhankelijk voor het vooruitrijden en het draaien.
 
 \subsection{Simulator Modi}
 
