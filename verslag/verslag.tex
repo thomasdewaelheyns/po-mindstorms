@@ -46,7 +46,7 @@ Het doel van de eerste demo is een versimpelde vorm van het einddoel waarbij we 
 
 Duidelijk is dat we er in geslaagd zijn om zeer herbruikbare code te produceren in het eerste semester. Iedereen is ondertussen vertrouwd geraakt met de volledige architectuur. Aangezien we duidelijk te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
 
-Het verslag is duidelijk verschillend opgebouwd ten opzichte van het vorige semester en kiest voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is duidelijk erg gelijkend hoewel natuurlijk de inhoud veranderd is t.o.v. het eerste semester. Nieuw zijn natuurlijk de stukken over de strategie ivm de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
+Het verslag is duidelijk verschillend opgebouwd ten opzichte van het vorige semester en kiest voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is duidelijk erg gelijkend hoewel natuurlijk de inhoud verandert is t.o.v. het eerste semester. Nieuw zijn natuurlijk de stukken over de strategie ivm de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
 
 \chapter{Probleemstelling}
 
@@ -54,7 +54,7 @@ De doelstellingen van de demo's worden hier achtereenvolgens beschreven, zij lig
 
 \section{Demo 1}
 
-Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en worden vertegenwoordigd door drie virtuele ``ghost'' die in simulator ``leven''.
+Het probleem dat we eerst aanpakken is het zo efficient mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ghosts, belangrijk hierbij is dat de in beeld gebrachte wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een hybride simulator, onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en worden vertegenwoordigd door drie virtuele ``ghosts'' die in simulator ``leven''.
 
 De ``ghosts'' hebben geen enkele informatie over het doolhof waarin ze zich bevinden, noch over hun positie, noch over hun ori\"entatie. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol ge\"implementeerd is.
 
@@ -72,7 +72,7 @@ De robots rijden in een onbekend doolhof. Alle info die verzameld wordt door de 
 
 \subsection{Pac-Man}
 
-Het Pac-Man spel zelf kunnen we winnen door alle vluchtwegen van de Pac-Man af te sluiten. Dit houdt in dat alle omliggende sectoren door een ghost bezet wordt of afgeschermd worden door een muur. Men wint enkel als alle robots die meewerken aan de insluiting ook effectief aangeven dat ze gewonnen hebben. De probleemstelling vereist dus een effectieve samenwerking, waarbij een consensus moet bereikt worden over de verzamelde informatie en de te volgen strategie.
+Het Pac-Man spel zelf kunnen we winnen door alle vluchtwegen van de Pac-Man af te sluiten. Dit houdt in dat alle omliggende sectoren door een ghost bezet wordt of afgeschermd worden door een muur. Men wint enkel als alle robots die meewerken aan de insluiting ook effectief aangeven dat ze gewonnen hebben via hun grafische interface. De probleemstelling vereist dus een effectieve samenwerking, waarbij een consensus moet bereikt worden over de verzamelde informatie en de te volgen strategie.
 
 \chapter{Scheidsrechtercommissie}
 
@@ -90,7 +90,7 @@ De spelwereld bestaat uit aangepaste panelen uit het eerste semester. Er is een 
 
 \subsection{Pac-Man}
 
-De Pac-Man wordt zichtbaar gemaakt door een infrarood-beacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen ``ghosts'' beevinden.
+De Pac-Man wordt zichbaar gemaakt door een infrarood-beacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen ``ghosts'' bevinden.
 
 De beweging van Pac-Man is beperkt tot het rechtdoor oversteken van de witte lijnen die de sectoren scheiden.
 
@@ -105,13 +105,35 @@ We verwijzen naar de offici\"ele documentatie van het Ghost Protocol. Ten tijde 
 
 \subsection{Voordelen}
 
-TODO: Michiel: Als jij er in slaagt om iets positiefs te zeggen ;-)
+Het collaborative diffusion algoritme waarop onze implementatie gebaseerd is, heeft zeer weinig informatie nodig van de andere robots. Het algoritme werkt met enkel map informatie, en positie van de Agents in het doolhof. De minimale subset van commando's die in het protocol moeten aanwezig zijn voor onze implementatie zijn:
+
+\begin{itemize}
+	\item{ [naam] position [p:coord]}
+	\item{ [naam] discover [p:coord] [w:int]}
+	\item{ [naam] pacman [p:coord] [a:angle]}
+	\item{ [naam] barcode [p:coord] }
+	\item{ [naam] captured }
+\end{itemize}
+
+Deze functionaliteiten zijn aanwezig in het huidige protocol, dus is het compatibel met onze implementatie.
 
 \subsection{Nadelen}
 
-In het algemeen ondervinden we geen nadelen van de beslissingen die genomen zijn. Aangezien wij voldoende informatie kunnen verzamelen met een kleine subset, zal het volledige protocol slechts een marginale implementatiekost met zich meebrengen.
+In het algemeen ondervinden we geen nadelen van de beslissingen die genomen zijn. Aangezien wij voldoende informatie kunnen verzamelen met een kleine subset, zal het volledige protocol slechts een marginale implementatiekost met zich meebrengen. Volgens ons kan het protocol wel sterk vereenvoudigd worden.
 
-TODO: Michiel: Zoals eerder vandaag besproken de puntjes omtrent overbodigheid en onvolledigheid.
+De hele join procedure lijkt overbodig. Wanneer een spook laattijdig ``join''t, zal hij gewoon de volgende berichten horen en zijn wereldbeeld beginnen opbouwen. Eventueel kan een commando toegevoegd worden om reeds gestuurde informatie opnieuw te sturen. In een latere versie van het protocol werd het SHOWMAP commando toegevoegd, wat deze functie gedeeltelijk vervult. Dit overlapt gedeeltelijk met het join principe. Bovendien eist de join procedure dat er exact 4 spoken zijn. Indien een spook crasht, of een extra spook op het kanaal komt, zorgt dit voor problemen. Hiervoor werd een 'override' commando toegevoegd, om toch te starten indien er een spook geen join stuurt. De protocolrestrictie voor 4 spoken is volledig onnodig, net als de join procedure. 
+
+In plaats van dynamisch namen uit te wisselen kunnen evengoed vaste namen afgesproken worden, dit zou het protocol eenvoudiger maken.
+
+Voor het discover commando lijkt het beter om een bitfield te gebruiken voor de aanduiding van de muren. Omdat er zeer veel discover commando's gestuurd kunnen worden kan dit de overhead op de communicatie verkleinen, en zelfs het parsen vereenvoudigen. Met eenvoudige bit-wise shift operaties kan getest worden of een tegel een muur heeft of niet. Nadeel is wel dat men moet weten wat een bitfield is.
+
+Het PLAN commando is naar onze mening onvolledig. Het doorsturen van een pad is pas nuttig indien er ook een vorm van election commando's worden gemaakt om iets nuttig te kunnen doen met de PLAN informatie. Zonder informatie met hoe snel de robot zijn pad aflegt kunnen de andere robots zeer weinig doen met de plannen. Hier zal het waarschijnlijk weer nodig zijn het protocol op te lappen met nog een reeks extra commando's.
+Voor ons algoritme is dit commando echter volledig overbodig. Onze robot rijdt op enkel informatie van het doolhof, de positie van de andere robots en pacman. De pad informatie zal niet gebruikt worden in onze implementatie.
+
+Nog een algemene opmerking is dat het protocol moeilijk te parsen is door combinatie van strings en numerieke waardes, inconsistensies in de structuur van de commando's, gebruik van verschillende soorten delimiters, ...
+
+Oorspronkelijk was het idee dat het Ghost Protocol letterlijk gebruikt zou worden in het Maze Protocol. Op deze manier zou de implementatie van het Ghost Protocol kunnen herbruikt worden voor het Maze Protocol. Spijtig genoeg zijn er enkele beslissingen in het Maze Protocol gemaakt waardoor het nu niet meer 100\% compatibel is met het Ghost Protocol.
+
 
 \chapter{Robot}
 
@@ -204,7 +226,7 @@ Om te voorkomen dat robots allemaal dezelfde weg volgen en enkel achter Pac-Man 
 
 \section{Verkenstrategie}
 
-De verkenstrategie is gebaseerd op hetzelfde principe. Hier is er niet \'e\'en bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het meest onverkende stuk van het doolhof willen gaan. Daarnaast zorgt dit principe er ook voor dat een robot zal terugkeren op zijn stappen en automatisch terugkeert naar achtergelaten onbekende sectoren. We kunnen stellen dat het algoritme impliciet ``Depth-First-Search"\footnote{\url{http://en.wikipedia.org/wiki/Depth-first_search}} implementeert. Figuur \ref{fig:dfs} toont een robot die een onbekend doolhof aan het verkennen is. De fel groene sectoren zijn onbekende sectoren en hebben een hogere waarde dan de reeds bezochte sectoren.
+De verkenstrategie is gebaseerd op het zelfde principe. Hier is er niet \'e\'en bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het meest onverkende stuk van het doolhof willen gaan. Daarnaast zorgt dit principe er ook voor dat een robot zal terugkeren op zijn stappen en automatisch terugkeert naar achtergelaten onbekende sectoren. We kunnen stellen dat het algoritme impliciet ``Depth-First-Search"\footnote{\url{http://en.wikipedia.org/wiki/Depth-first_search}} implementeert. Figuur \ref{fig:dfs} toont een robot die een onbekend doolhof aan het verkennen is. De fel groene sectoren zijn onbekende sectoren en hebben een hogere waarde dan de reeds bezochte sectoren.
 
 \begin{figure}[htbp]
   \centering
@@ -213,7 +235,7 @@ De verkenstrategie is gebaseerd op hetzelfde principe. Hier is er niet \'e\'en b
   \label{fig:dfs}
 \end{figure}
 
-Het toepassen van hetzelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een ``ghost'' onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn ``geur'' dit pad nog extra versterken en zal een ``ghost'' automatisch hierdoor aangetrokken worden.
+Het toepassen van het zelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een ``ghost'' onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn ``geur'' dit pad nog extra versterken en zal een ``ghost'' automatisch hierdoor aangetrokken worden.
 
 \chapter{Softwaredesign}
 
@@ -232,7 +254,7 @@ Klasse diagram \ref{uml:design-semester1} toont de belangrijkste bouwstenen van 
 
 De Robot beschikt verder over een Model waarin alle informatie uit de wereld wordt samengebracht. Dit model kan verrijkt of bijgewerkt worden door zgn. ModelProcessors. Deze onderzoeken bepaalde delen van het Model en trachten hieruit informatie van een hoger niveau te distilleren. Voorbeelden hiervan zijn processors die op basis van metingen door de sonar-sensor bepalen waar er zich muren bevinden.
 
-Tot slot heeft de Robot ook een Navigator die op basis van de informatie in het Model bepaalt waarheen de Robot dient te rijden. De navigator geeft zeer elementaire instructies aan de Robot, in de vorm van ``beweeg voor- of achterwaarts'' en ``draai zoveel graden''.
+Tot slot heeft de Robot ook een Navigator die op basis van de informatie in het Model bepaalt waarheen de Robot dient te rijden. De navigator geeft zeer basische instructies aan de Robot, in de vorm van ``beweeg voor- of achterwaarts'' en ``draai zoveel graden''.
 
 Om met de Robot te kunnen communiceren is een RobotAgent voorzien, waarlangs berichten kunnen verzonden en ontvangen worden.
 
@@ -253,18 +275,18 @@ De functionaliteit om van sector naar sector te rijden zou typisch terecht gekom
 
 \subsection{Grids en Sectoren}
 
-De Navigator kan zich nu specifiek toeleggen op het bepalen van de volgende Sector, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten Grid, Sector en Agent in het leven geroepen. Klasse diagram \ref{uml:grids-sectors} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. ``GhostRobot'' opbouwen.
+De Navigator kan zich nu specifiek toeleggen op het bepalen van de volgende Sector, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten Grid, Sector en Agent in het leven geroepen. Klasse diagram \ref{uml:grids-sectoren} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. ``GhostRobot'' opbouwen.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=200mm, angle=90]{resources/grids-sectors.png}
   \caption{Design Grids en Sectoren}
-  \label{uml:grids-sectors}
+  \label{uml:grids-sectoren}
 \end{figure}
 
-Centraal staat het concept van de Sector in een Grid. Een Sector heeft een co\"ordinaat relatief tov de Grid waarop het zich bevindt, heeft potentieel 4 muren, elk met een bepaalde zekerheid, heeft een waarde en kan bezet worden door een Agent. De waarde van een Sector zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de Grid bewegen langs de Sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstracte basis klasse, MovingAgent. Mits kleine configuratie-aanpassingen, implementeren zo de PacmanAgent en de GhostAgent de agents die op de Grid voorkomen. Een ProxyAgent werd gebruikt om in een simulator een echte Agent voor te stellen die de volledige Grid nog niet kent en de StaticTargetAgent werd speciaal voorzien voor de voorbereiding van de eerste demo.
+Centraal staat het concept van de Sector in een Grid. Een Sector heeft een co\"ordinaat relatief tov de Grid waarop het zich bevindt, heeft potentieel 4 muren, elk met een bepaalde zekerheid, heeft een waarde en kan bezet worden door een Agent. De waarde van een Sector zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de Grid bewegen langs de Sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratie aanpassingen, implementeren zo de PacmanAgent en GhostAgent de agents die op de Grid voorkomen. Een ProxyAgent werd gebruikt om in een simulator een echte Agent voor te stellen die de volledige Grid nog niet kent en de StaticTargetAgent werd speciaal voorzien voor de voorbereiding van de eerste demo.
 
-Optioneel kan aan een Grid ook een GridView gegeven worden. Deze voorziet een visualisatie van de Grid en kan op verschillende manieren ingevuld worden. Voor dit project hebben we twee implementaties gemaakt: enerzijds een ConsoleGridView die gedetailleerde informatie over de Sectoren weergeeft en een SwingGridView die een grafische voorstelling geeft van de Grid. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
+Optioneel kan aan een Grid ook een GridView gegeven worden. Deze voorziet een visualisatie van de Grid en kan op verschillende manieren ingevuld worden. Voor dit project hebben twee implementaties gemaakt: enerzijds een ConsoleGridView die gedetailleerde informatie over de Sectoren weergeeft en een SwingGridView die een grafische voorstelling geeft van de Grid. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
 
 Een Grid beschikt ook over een GridProcessor. Net zoals de ModelProcessor kan dit een geschakelde lijst van Processoren zijn die de Grid kunnen ondervragen en bijwerken. Zo hebben we een DiffusionGridProcessor ge\"implementeert die de waarde van de Sectoren zal bijwerken volgens het eerder beschreven algoritme.
 
@@ -312,15 +334,15 @@ Initieel werd er zoveel mogelijk orde geschapen in de bestaande code om zo tot e
 
 \subsection{Aanpassingen}
 
-Aangezien de kleinste eenheid van een parcours veranderd is van paneel naar sector, hebben we met behulp van refactoring de simulator aangepast zodat een parcours zowel met panelen als met sectors kan worden voorgesteld. Hierdoor is het mogelijk zowel het project van het eerste semester als het tweede semester uit te voeren. Deze techniek werd verder toegepast op de rest van het herstructureringsproces. 
+Aangezien de kleinste eenheid van een parcours veranderd is van paneel naar sector, hebben we met behulp van refactoring de simulator aangepast zodat een parcours zowel met panelen als met sectoren kan worden voorgesteld. Hierdoor is het mogelijk zowel het project van het eerste semester als het tweede semester uit te voeren. Deze techniek werd verder toegepast op de rest van het herstructureringsproces. 
 
-Naast het aanpassen van de schaal veranderden we ook wijze waarop de verschillende sensoren voorgesteld werden. Op het einde van vorige iteratie waren sensoren eigenlijk functies die elke stap werden opgeroepen om de sensor-waarden in het model up te daten. Deze voorstelling is niet ideaal om uit te breiden. Er werd gekozen voor Sensor interface en voor elke sensor een klasse die deze interface implementeer. Naast een makkelijkere uitbreidbaarheid, heeft dit design ook het voordeel dat men voor elke entiteit zijn eigen sensoren kan aanmaken. En dus een custom mapping kan hebben.
+Naast het aanpassen van de schaal veranderden we ook wijze waarop de verschillende sensoren voorgesteld werden. Op het einde van vorige iteratie waren sensoren eigenlijk functies die elke stap werden opgeroepen om de sensor-waarden in het model te updaten. Deze voorstelling is niet ideaal om uit te breiden. Er werd gekozen voor een Sensor interface en voor elke sensor een klasse die deze interface implementeert. Naast een makkelijkere uitbreidbaarheid, heeft dit design ook het voordeel dat men voor elke entiteit zijn eigen sensoren kan aanmaken. En dus een custom mapping kan hebben.
 
 \subsection{Nieuwe Functionaliteit}
 
-Voor het simuleren van meerdere robots, zowel lokaal als op afstand, moest de robot afgescheiden worden van de simulator. Tegelijk werd ook het GUI component van de robot afgescheiden en ge-abstraheerd zodat er meerdere types robots kunnen bestaan. Door deze abstractie is het mogelijk om verschillende simulatoren te laten samenwerken elk met hun eigen robot. Deze simulatoren communiceren met een speciaal protocol op een eigen RabbitMQ kanaal.
+Voor het simuleren van meerdere robots, zowel lokaal als op afstand, moest de robot afgescheiden worden van de simulator. Tegelijk werd ook het GUI component van de robot afgescheiden en geabstraheerd zodat er meerdere types robots kunnen bestaan. Door deze abstractie is het mogelijk om verschillende simulatoren te laten samenwerken elk met hun eigen robot. Deze simulatoren communiceren met een speciaal protocol op een eigen RabbitMQ kanaal.
 
-Voor het testen van de verschillende algoritmes, specifiek het herori\"entatie algoritme, is er al de mogelijkheid om op sommige plaatsen meet- en stuur-afwijkingen in te voegen in de simulator. De afwijkingen waarop de motor rijdt kan men in de gesimuleerde API van de robot aanpassen, zowel de variantie als een gemiddelde fout kan ingesteld worden, onafhankelijk voor het vooruitrijden en het draaien.
+Voor het testen van de verschillende algoritmes, specifiek het herori\"entatie algoritme, is er al de mogelijkheid om op sommige plaatsen meet- en stuurafwijkingen in te voegen in de simulator. De afwijkingen op de gesimuleerde motoren kan men in de API van de robot aanpassen. Er kan zowel een variantie als een gemiddelde fout ingesteld worden, onafhankelijk voor het vooruitrijden en het draaien.
 
 \subsection{Simulator Modi}
 
