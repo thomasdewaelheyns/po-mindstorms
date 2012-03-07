@@ -136,27 +136,33 @@ Uit testen bleek dat er voor de bol verschillende AC modi en \'e\'en DC modus is
 \end{center}
 \end{figure}
 
-In grafiek kan men zien dat de gemeten lichtsterkte exponentieel afneemt ten opzichten van de afstand tot de lichtbron. Hieruit zou men kunnen een schatting bepalen van de afstand tot de born. In de andere grafiek kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat de varianties van de sensorwaarden zeer klein zijn vergeleken met de sterkte. Een afstandsschatting lijkt dus goed mogelijk.
 
-Uit testen blijkt dat een significante hoeveelheid van het IR licht via weerkatsingen door de infraroodsensor gedetecteerd wordt. De sterkte is bij weerkaatsing herkenbaar lager dan bij een rechtstreekse detectie (zie grafiek). Men kan dus eventueel ook aan de hand van de signaalsterkte herkennen of de pacman zich achter een hoek bevindt. In dit geval kan deze meting best genegeerd worden. Het reconstrueren van een weerkaatsingpatroon een zeer moeilijke opgave.
-In grafiek \ref{fig:plotIR} kan men zien dat de sterkte exponentieel afneemt. Hieruit kan men eventueel een ruwe schatting van afstand afleiden. In de andere grafiek \ref{fig:boxplotIR} kan men de variatie van de IR-sensor zien voor de verschillende afstanden. We kunnen zien dat de varianties zeer klein zijn vergeleken met de sterkte. Een afstandsschatting lijkt dus goed mogelijk.
+ De sterkte is bij weerkaatsing herkenbaar lager dan bij een rechtstreekse detectie (zie grafiek). Men kan dus eventueel ook aan de hand van de signaalsterkte herkennen of de pacman zich achter een hoek bevindt. In dit geval kan deze meting best genegeerd worden. Het reconstrueren van een weerkaatsingpatroon een zeer moeilijke opgave.
 
-Ook werd er ondervonden dat het infrarood licht weerkaatst op de muren. De sterkte was toen ook herkenbaar lager dan met rechtstreeks zicht(zie grafiek \ref{fig:boxplotSpiegeling}). Men kan dus eventueel ook met de meetsterkte een herkennen of de pacman zich achter muren bevindt. Dan kan deze meting genegeerd worden aangezien er onmogelijk nauwkeurig een weerkaatsingspatroon kan gegenereerd worden. 
+In grafiek \ref{fig:plotIR} kan men zien dat de gemeten lichtsterkte exponentieel afneemt ten opzichten van de afstand tot de lichtbron.
+Hieruit zou men kunnen een schatting bepalen van de afstand tot de bron. In grafiek \ref{fig:boxplotIR} kan men de variatie van de IR-sensor zien voor verschillende afstanden. We zien dat de varianties zeer klein zijn in vergelijking met de lichtsterkte. Een afstandsschatting lijkt dus goed mogelijk.
+
+Uit testen blijkt dat een significante hoeveelheid van het IR licht via weerkaatsingen door de infraroodsensor gedetecteerd wordt.
+De sterkte is bij weerkaatsing herkenbaar lager dan bij een rechtstreekse detectie (zie grafiek \ref{fig:boxplotSpiegeling}).  Men kan dus eventueel ook aan de hand van de signaalsterkte herkennen of de pacman zich achter een hoek bevindt. In dit geval kan deze meting best genegeerd worden. Het reconstrueren van een weerkaatsingpatroon een zeer moeilijke opgave.
+
 \begin{figure}
 \begin{center}
- \includegraphics[width=\textwidth]{./resources/bloxplotIR.pdf}
- \caption{De meetwaarden van de IR-sensor volgens een bepaalde afstand \label{fig:boxplotIR}}
+ \includegraphics{./resources/bloxplotIR.pdf}
+ \caption{Sensorwaarden van de IR-sensor bij verschillende afstanden} \label{fig:boxplotIR}}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
- \includegraphics[width=\textwidth]{./resources/boxplotSpiegeling.pdf}
- \caption{De meetwaarden van de IR-sensor volgens een bepaalde afstand \label{fig:boxplotSpiegeling}}
+
+ \includegraphics{./resources/boxplotSpiegeling.pdf}
+ \caption{Sensorwaarden van de IR-sensor bij weerkaatsing en verschillende afstanden} 
+\label{fig:boxplotSpiegeling}}
+
 \end{center}
 \end{figure}
 
-Het enige nadeel van zo'n filtering is dat deze de afstand waarop geschat kan worden inperkt. Zoals men kan zien op grafiek, kunnen we geen afstanden van meer dan 160 cm (4 sectoren) onderscheiden van weerkaatsingen. Dit zal voor demo 2 en 3 moeten afgewogen worden wat de beste oplossing bezorgt: een grotere gemeten afstand maar misschien niet nauwkeurig of een grotere zekerheid garanderen. Er zal ook moeten rekening gehouden worden met de keuze van andere teams. 
+Een nadeel van zo'n filtering is dat deze de afstand waarop geschat kan worden inperkt. Zoals men kan zien op de grafiek \ref{fig:boxplotSpiegeling}, kunnen we geen afstanden van meer dan 160 cm (4 sectoren) onderscheiden van weerkaatsingen. Voor demo 2 en 3 zal moeten afgewogen worden wat de beste oplossing is: een grotere gemeten afstand maar misschien niet nauwkeurig, of een grotere zekerheid garanderen. Hier zal ook rekening gehouden moeten worden met de andere teams. 
 
 \section{Demo 2}
 
@@ -209,7 +215,7 @@ De verkenstrategie is gebaseerd op het zelfde principe. Hier is er niet \'e\'en 
 
 Het toepassen van het zelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een ``ghost'' onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn ``geur'' dit pad nog extra versterken en zal een ``ghost'' automatisch hierdoor aangetrokken worden.
 
-\chapter{SoftwareDesign}
+\chapter{Softwaredesign}
 
 In het eerste semester hadden we reeds een redelijk uitgebreid raamwerk opgebouwd om robots samen te stellen uit componenten. Dankzij dit werk kunnen we in het twee semester hier op verder bouwen door de bestaande concepten verder te verfijnen en uit te breiden.
 
@@ -236,7 +242,7 @@ Het is duidelijk dat dit raamwerk een sterk herbruikbare basis biedt om verschil
 
 Ofschoon we een nieuwe Navigator zouden kunnen maken die perfect zou passen, werd snel duidelijk dat er een verfijning van het raamwerk mogelijk was: daar waar tijdens het eerste semester de robot geen resolutie had bij het rijden, is dit in het tweede semester wel het geval. Door het introduceren van het concept van sectoren is er een duidelijk onderscheid tussen het operationele en strategische aspect van het besturen van de robot. Operationeel dient de robot optimaal van sector naar sector te rijden, zodat op strategisch niveau kan geredeneerd worden in termen van deze sectoren.
 
-De functionaliteit om van sector aear sector te rijden zou typisch terecht gekomen zijn in een Navigator-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. ``Driver''. Klasse diagram \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor dit tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een ``ManhattanDriver''\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie: met \url{http://en.wikipedia.org/wiki/Taxicab_geometry}}. 
+De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een Navigator-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. ``Driver''. Klasse diagram \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor dit tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een ``ManhattanDriver''\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie: met \url{http://en.wikipedia.org/wiki/Taxicab_geometry}}. 
 
 \begin{figure}[htbp]
   \centering
@@ -279,7 +285,7 @@ Het GhostModel bevat Grids voor elk van de andere robots alsook een AggregatedGr
 
 De eigen AggregatedGrid beschikt ook over een DiffusingGridProcessor die het algoritme voor het bepalen van de waarde van een Sector zal toepassen op de AggregatedGrid, waardoor de GhostNavigator een redelijk eenvoudige beslissing kan nemen op basis van de waarden van de vier aangrenzende sectoren.
 
-Het GhostModel is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de GhostNavigator beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende Grids in het GhostModel. Anderzijds is er de WallDetectorProcessor die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige Sector. Tot slot is er de GridUpdateProcessor die de nieuwe muur-informatie zal verwerken in de eigen Grid en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie ModelProcessoren zijn er nog andere actief. Het betreft hier bvb. de LineModelProcessor of de ProximityModelProcessor. Deze zorgen voor informatie die door de Driver zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze ModelProcessoren maakten reeds deel uit van de robots uit het eerste semester.}
+Het GhostModel is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de GhostNavigator beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende Grids in het GhostModel. Anderzijds is er de WallDetectorProcessor die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige Sector. Tot slot is er de GridUpdateProcessor die de nieuwe muur-informatie zal verwerken in de eigen Grid en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie ModelProcessoren zijn er nog andere actief. Het betreft hier bvb. de LineModelProcessor of de WallDetectionModelProcessor. Deze zorgen voor informatie die door de Driver zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze ModelProcessoren maakten reeds deel uit van de robots uit het eerste semester.}
 
 \section{PC}
 
@@ -298,15 +304,15 @@ Het Dashboard zelf wordt voorzien van de nodige visualisaties voor deze nieuwe i
 
 \chapter{Simulator}
 
-De simulator is zoals reeds vermeld een verplichte component van het tweede semester en bedoeld als belangrijk hulpmiddel voor de ontwikkeling van de ghosts. Aangezien we tijdens het vorige semester reeds een werkende simulator ontwikkeld hebben, zal deze beschrijving zich vooral focusen op de delen die toegevoegd en/of veranderd werden in functie van de nieuwe opdracht.
+De simulator is zoals reeds vermeld een verplichte component van het tweede semester en bedoeld als belangrijk hulpmiddel voor de ontwikkeling van de ghosts. Aangezien we tijdens het vorige semester reeds een werkende simulator ontwikkeld hadden, zal deze beschrijving zich vooral focussen op de delen die toegevoegd en/of veranderd werden in functie van de nieuwe opdracht.
 
-Initieel werd er zoveel mogelijk orde geschapen in de bestaande code om zo tot een fase te komen waarbij we de nodige uitbreidingen hebben toegevoegd ter ondersteuning van de nieuwe functionaliteiten. Hierbij moet opgemerkt worden dat de bestaande code werkend is gehouden. 
+Initieel werd er zoveel mogelijk orde geschapen in de bestaande code om zo tot een fase te komen waarbij we de nodige uitbreidingen hebben toegevoegd ter ondersteuning van de nieuwe functionaliteiten. Hierbij moet opgemerkt worden dat de reeds bestaande code werkend is gehouden.
 
 \section{Demo 1}
 
 \subsection{Aanpassingen}
 
-Aangezien de kleinste eenheid van een parcours veranderd is van paneel tot een sector hebben we een refactoring uitgevoerd zodat in de simulator een parcours zowel met panelen als met sectors kan worden voorgesteld. Hierdoor is het mogelijk zowel het project van het eerste als het tweede uit te voeren. Deze techniek werd verder toegepast op de rest van het herstructureringsproces. 
+Aangezien de kleinste eenheid van een parcours veranderd is van paneel naar sector, hebben we met behulp van refactoring de simulator aangepast zodat een parcours zowel met panelen als met sectors kan worden voorgesteld. Hierdoor is het mogelijk zowel het project van het eerste semester als het tweede semester uit te voeren. Deze techniek werd verder toegepast op de rest van het herstructureringsproces. 
 
 Naast het aanpassen van de schaal veranderden we ook wijze waarop de verschillende sensoren voorgesteld werden. Op het einde van vorige iteratie waren sensoren eigenlijk functies die elke stap werden opgeroepen om de sensor-waarden in het model up te daten. Deze voorstelling is niet ideaal om uit te breiden. Er werd gekozen voor Sensor interface en voor elke sensor een klasse die deze interface implementeer. Naast een makkelijkere uitbreidbaarheid, heeft dit design ook het voordeel dat men voor elke entiteit zijn eigen sensoren kan aanmaken. En dus een custom mapping kan hebben.
 
@@ -314,8 +320,7 @@ Naast het aanpassen van de schaal veranderden we ook wijze waarop de verschillen
 
 Voor het simuleren van meerdere robots, zowel lokaal als op afstand, moest de robot afgescheiden worden van de simulator. Tegelijk werd ook het GUI component van de robot afgescheiden en ge-abstraheerd zodat er meerdere types robots kunnen bestaan. Door deze abstractie is het mogelijk om verschillende simulatoren te laten samenwerken elk met hun eigen robot. Deze simulatoren communiceren met een speciaal protocol op een eigen RabbitMQ kanaal.
 
-TODO: lees dit stukje na =>
-Voor het testen van de verschillende algoritmes, specifiek het herori\"entatie algoritme, is er al de mogelijkheid om op sommige plaatsen meet- en stuur-afwijkingen in te voegen in de simulator. Dit kan men eenvoudigweg toevoegen in de klasse van iedere sensor. De afwijkingen waarop de motor rijdt kan men in de gesimuleerde API van de robot aanpassen, zowel de variantie als een gemiddelde fout kan ingesteld worden, onafhankelijk voor het vooruitrijden en het draaien.
+Voor het testen van de verschillende algoritmes, specifiek het herori\"entatie algoritme, is er al de mogelijkheid om op sommige plaatsen meet- en stuur-afwijkingen in te voegen in de simulator. De afwijkingen waarop de motor rijdt kan men in de gesimuleerde API van de robot aanpassen, zowel de variantie als een gemiddelde fout kan ingesteld worden, onafhankelijk voor het vooruitrijden en het draaien.
 
 \subsection{Simulator Modi}
 
