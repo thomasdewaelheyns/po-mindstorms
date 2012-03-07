@@ -37,4 +37,12 @@ public class SimulatorTest {
     m = fact.getMap(sc);
     return m;
   }
+  public static Map createSectorMap2() throws FileNotFoundException {
+    Map m;
+    File f = new File("..\\..\\src\\java\\map3.track");
+    Scanner sc = new Scanner(f);
+    MapFactorySector fact = new MapFactorySector();
+    m = fact.getMap(sc);
+    return m;
+  }
 }

@@ -4,10 +4,10 @@ import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
 import penoplatinum.Utils;
 import penoplatinum.grid.GridView;
+import penoplatinum.modelprocessor.BarcodeBlackModelProcessor;
 import penoplatinum.modelprocessor.GridUpdateProcessor;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
 import penoplatinum.modelprocessor.InboxProcessor;
-import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.modelprocessor.LightColorModelProcessor;
 import penoplatinum.modelprocessor.LineModelProcessor;
 import penoplatinum.modelprocessor.ModelProcessor;
@@ -62,12 +62,12 @@ public class GhostRobot implements Robot {
             //new GapModelProcessor(
             //new ProximityModelProcessor(
             //new LightCorruptionModelProcessor(
-            //new BarcodeModelProcessor(
+            new BarcodeBlackModelProcessor(
             new LineModelProcessor(
             new WallDetectionModelProcessor(
             new InboxProcessor(
             new WallDetectorProcessor(
-            ))))));
+            )))))));
     this.model.setProcessor(processors);
 
   }
@@ -96,8 +96,8 @@ public class GhostRobot implements Robot {
 
   // the external tick...
   public void step() {
-    Utils.Log("Infrared Angle: "+model.getSensorValue(model.S1));
-    buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
+    //Utils.Log("Infrared Angle: "+model.getSensorValue(model.S1));
+    //buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
     if (buffer.size() > 100) {
       for (String s : buffer) {
         Utils.Log(s);

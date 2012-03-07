@@ -72,6 +72,32 @@ public class GhostRobotTest {
     sim.displayOn(new SwingSimulationView());
     sim.run();
   }
+  
+  @Test
+  public void testGhostRobotGhostNavigator2() throws FileNotFoundException {
+    Simulator sim = new Simulator();
+    sim.useMap(SimulatorTest.createSectorMap2());
+    SwingGridView view = new SwingGridView();
+
+    GhostRobot robot = new GhostRobot("Michiel", view);
+    final GhostNavigator ghostNavigator = new GhostNavigator();
+    robot.useNavigator(ghostNavigator);
+    ghostNavigator.setModel(robot.getGhostModel());
+
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
+    ent.setPostition(20, 20, 0);
+    sim.addSimulatedEntity(ent);
+
+    sim.useStepRunnable(new Runnable() {
+
+      @Override
+      public void run() {
+      }
+    });
+
+    sim.displayOn(new SwingSimulationView());
+    sim.run();
+  }
 
   @Test
   public void testBackupGapcorrection() throws FileNotFoundException {
