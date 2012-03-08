@@ -100,4 +100,6 @@ public interface Model {
   public Boolean isSweepComplete();
 
   LightColor getCurrentLightColor();
+  public void setReadingBarcode(boolean b);
+  public boolean isReadingBarcode();
 }

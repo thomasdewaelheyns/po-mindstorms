@@ -620,4 +620,14 @@ public class GhostModel implements Model {
   public void setCurrentLightColor(LightColor value) {
     currentLightColor = value;
   }
+
+  boolean isReadingBarcode = false;
+  @Override
+  public void setReadingBarcode(boolean b) {
+    this.isReadingBarcode = b;
+  }
+  @Override
+  public boolean isReadingBarcode(){
+    return this.isReadingBarcode;
+  }
 }

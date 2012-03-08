@@ -99,14 +99,14 @@ public class LineModelProcessor extends ModelProcessor {
         if (model.getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
           if (brownCounter > 5 && colorCounter < 2) {
-            Utils.Log("False alarm");
+            //Utils.Log("False alarm");
             state = WAITING;
 //          } else if (brownCounter > 5 && colorCounter >= 15) {
 //            Utils.Log("Barcode");
 //            state = WAITING;
           } else if (brownCounter > 5) {
             state = INTERPRET;
-            Utils.Log("INTERPRET" + colorCounter);
+            //Utils.Log("INTERPRET" + colorCounter);
           }
         } else {
           if (model.getCurrentLightColor() != readingColor) {

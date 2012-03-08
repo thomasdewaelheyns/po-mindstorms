@@ -10,21 +10,25 @@ import penoplatinum.simulator.tiles.Tile;
 
 public class LightSensor implements Sensor {
 
+  private static final int BLACK = 360;
+  private static final int WHITE = 500;
+  private static final int BROWN = 450;
+  
   private Simulator sim;
   private SimulatedEntity simEntity;
   public static final int LIGHTBUFFER_SIZE = 5;
   private CircularQueue<Integer> lightValues = new CircularQueue<Integer>(LIGHTBUFFER_SIZE);
 
-  public LightSensor()
-  {
+  public LightSensor() {
     // TODO: WARNING: magic numbers
-    for (int i = 0; i < LIGHTBUFFER_SIZE-1; i++) {
-      lightValues.insert(70);
+    for (int i = 0; i < LIGHTBUFFER_SIZE - 1; i++) {
+      lightValues.insert(BROWN);
     }
   }
-  
+
   @Override
   public int getValue() {
+    // Insert a delay on the sensor
     int ret = lightValues.remove();
     lightValues.insert(getActualValue());
     return ret;
@@ -69,7 +73,7 @@ public class LightSensor implements Sensor {
     // TODO: add random abberations
     //this.sensorValues[Model.S4] =
     //        color == Panel.WHITE ? 100 : (color == Panel.BLACK ? 0 : 70);
-    return color == Panel.WHITE ? 500 : (color == Panel.BLACK ? 360 : 450);
+    return color == Panel.WHITE ? WHITE : (color == Panel.BLACK ? BLACK : BROWN);
   }
 
   @Override

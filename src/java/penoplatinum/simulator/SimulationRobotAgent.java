@@ -37,9 +37,11 @@ public class SimulationRobotAgent implements RobotAgent {
       mq.setMyName(robotName).connectToMQServer().follow("Ghost");
       // TODO: remove hard coded data
     } catch (IOException ex) {
-      Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
+      System.err.println("IOException gevangen, zoek voor meer info");
+      //Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
     } catch (InterruptedException ex) {
-      Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
+      System.err.println("InterruptedException gevangen, zoek voor meer info");
+      //Logger.getLogger(SimulationRobotAgent.class.getName()).log(Level.SEVERE, null, ex);
     }
   /**/
   }

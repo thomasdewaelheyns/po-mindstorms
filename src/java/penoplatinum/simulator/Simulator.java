@@ -168,9 +168,11 @@ public class Simulator {
         }
       }.setMyName("Simulatorrrr").connectToMQServer().follow("ghost-protocol");
     } catch (IOException ex) {
-      Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+      System.err.println("IOException gevangen, zoek voor meer info");
+      //Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
     } catch (InterruptedException ex) {
-      Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+      System.err.println("InterruptedException gevangen, zoek voor meer info");
+      //Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
     }
 
 

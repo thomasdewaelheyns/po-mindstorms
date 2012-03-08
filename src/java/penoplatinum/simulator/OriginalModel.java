@@ -409,4 +409,14 @@ public class OriginalModel implements Model {
   public LightColor getCurrentLightColor() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
+
+  @Override
+  public void setReadingBarcode(boolean b) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public boolean isReadingBarcode() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

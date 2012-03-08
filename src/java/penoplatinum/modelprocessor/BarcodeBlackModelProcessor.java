@@ -71,9 +71,7 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
     Buffer tempBuffer = this.model.getLightValueBuffer();
     model.setBarcode(Barcode.None);
     updateState(tempBuffer);
-    //if (state != WAITING) {
-    //  model.setScanningLightData(true); // Flag that someone is reading light data.
-    //}
+    model.setReadingBarcode(state != WAITING);
   }
 
   /**
@@ -92,7 +90,8 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
   private void updateState(Buffer tempBuffer) {
     switch (state) {
       case WAITING:
-        if (model.getCurrentLightColor() != LightColor.Brown) {
+        if (model.getCurrentLightColor() == LightColor.Black) {
+          Utils.Log("Barcode Start");
           setState(RECORDING);
           tempBuffer.setCheckPoint();
           brownCounter = 0;
