@@ -36,13 +36,12 @@ public class GhostRobot implements Robot {
   private GridUpdateProcessor gridUpdateProcessor;
 
   public GhostRobot(String name) {
+    
     this.setupModel(name);
 
     for (int i = 0; i < sweepAngles.length; i++) {
       sweepAnglesList.add(sweepAngles[i]);
     }
-
-
 
   }
 
@@ -190,7 +189,10 @@ public class GhostRobot implements Robot {
   @Override
   public GhostRobot useCommunicationAgent(RobotAgent agent) {
     this.agent = agent;
+    
     agent.setRobot(this);
+    
+    agent.run();
     return this;
   }
 
@@ -211,5 +213,10 @@ public class GhostRobot implements Robot {
 
   public GhostModel getGhostModel() {
     return model;
+  }
+
+  @Override
+  public String getName() {
+    return model.getAgent().getName();
   }
 }

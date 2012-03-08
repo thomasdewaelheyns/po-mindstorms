@@ -31,4 +31,5 @@ public class MiniSimulationRobotAgent implements RobotAgent, MessageHandler {
   public void send(String msg) {
     this.queue.send(msg);
   }
+
 }

@@ -52,4 +52,6 @@ public interface Robot {
    * a method to stop the robot (immediately)
    */
   public void stop();
+  
+  public String getName();
 }

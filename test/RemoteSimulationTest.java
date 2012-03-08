@@ -48,7 +48,7 @@ public class RemoteSimulationTest {
   public void testRemoteSimulation() throws IOException, InterruptedException {
 
     Simulator sim1 = new Simulator();
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Angie"), new NavigatorRobot(new BehaviourNavigator()));
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), new NavigatorRobot(new BehaviourNavigator()));
     ent.setPostition(200, 200, 10);
     sim1.addSimulatedEntity(ent);
     sim1.useMap(SimulationRunner.createDefaultMap());

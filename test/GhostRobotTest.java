@@ -27,7 +27,7 @@ public class GhostRobotTest {
     GhostRobot robot = new GhostRobot("Michiel");
     robot.useNavigator(new LeftFollowingGhostNavigator(robot.getGhostModel()));
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(20, 20, 0);
     sim.addSimulatedEntity(ent);
 
@@ -59,7 +59,7 @@ public class GhostRobotTest {
     robot.useNavigator(ghostNavigator);
     ghostNavigator.setModel(robot.getGhostModel());
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(name), robot);
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(20 + 1 * 40, 20 + 1 * 40, 0);
     sim.addSimulatedEntity(ent);
 
@@ -84,7 +84,7 @@ public class GhostRobotTest {
     robot.useNavigator(ghostNavigator);
 
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Michiel"), robot);
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(20, 20, 0);
     sim.addSimulatedEntity(ent);
 
@@ -93,7 +93,7 @@ public class GhostRobotTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
 
-    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Christophe"), robot);
+    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(60, 60, 0);
     sim.addSimulatedEntity(ent);
 
@@ -102,7 +102,7 @@ public class GhostRobotTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
 
-    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Ruben"), robot);
+    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(100, 100, 0);
     sim.addSimulatedEntity(ent);
 
@@ -110,7 +110,7 @@ public class GhostRobotTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
 
-    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Thomas"), robot);
+    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(100, 140, 0);
     sim.addSimulatedEntity(ent);
 
@@ -163,7 +163,7 @@ public class GhostRobotTest {
     GhostRobot robot = new GhostRobot("Michiel");
     robot.useNavigator(new LeftFollowingGhostNavigator(robot.getGhostModel()));
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(9, 20, 90);
     sim.addSimulatedEntity(ent);
 

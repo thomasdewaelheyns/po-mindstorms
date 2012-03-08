@@ -23,7 +23,7 @@ public class MQRunner {
         // handling the incoming messages ...
         System.out.println("[" + sender + "] " + message);
       }
-    }.setMyName(argv[0]).connectToMQServer("localhost").follow("Ghost");
+    }.setMyName(argv[0]).connectToMQServer().follow("Ghost");
 
     // be nice ...
     mq.sendMessage("Hello everybody.");

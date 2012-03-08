@@ -9,6 +9,7 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 import java.util.Scanner;
+import penoplatinum.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
@@ -121,6 +122,7 @@ public class GhostProtocolHandler implements MessageHandler {
     grid.agentsNeedRefresh();
     agent.assignSector(sector, bearing);
 
+    Utils.Log("Grid refresh!");
     grid.refresh(); //TODO: this shouldn't run on the robot
     
 
@@ -198,6 +200,7 @@ public class GhostProtocolHandler implements MessageHandler {
   }
 
   public void sendPosition() {
+    Utils.Log("Send Position!");
     this.queue.send(this.agent.getName() + " POSITION "
             + this.agent.getSector().getLeft() + ","
             + this.agent.getSector().getTop());

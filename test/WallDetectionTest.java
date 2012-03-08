@@ -29,7 +29,7 @@ public class WallDetectionTest {
 
     final NavigatorRobot robot = new NavigatorRobot();
     robot.useNavigator(new BehaviourNavigator());
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(20, 20, 0);
     sim.addSimulatedEntity(ent);
 

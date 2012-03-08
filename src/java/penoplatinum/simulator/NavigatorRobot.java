@@ -159,4 +159,9 @@ public class NavigatorRobot implements Robot {
   public void stop() {
     this.api.stop();
   }
+
+  @Override
+  public String getName() {
+    return "Angie";
+  }
 }

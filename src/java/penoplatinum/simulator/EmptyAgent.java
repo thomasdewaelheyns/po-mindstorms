@@ -21,5 +21,5 @@ public class EmptyAgent implements RobotAgent{
   public void send(String status) {
     //does nothing
   }
-  
+
 }

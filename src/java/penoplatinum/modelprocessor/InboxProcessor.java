@@ -17,6 +17,6 @@ public class InboxProcessor extends ModelProcessor {
     for (int i = 0; i < model.getIncomingMessages().size(); i++) {
       model.processMessage(model.getIncomingMessages().get(i));
     }
-    // TODO
+    model.getIncomingMessages().clear();
   }
 }
