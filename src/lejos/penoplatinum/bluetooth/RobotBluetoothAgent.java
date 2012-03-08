@@ -1,12 +1,11 @@
 package penoplatinum.bluetooth;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import penoplatinum.agent.MQ;
+import java.io.UnsupportedEncodingException;
+import penoplatinum.Utils;
+import penoplatinum.agent.AgentConfig;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAgent;
-import penoplatinum.simulator.Simulator;
 
 /**
  * SimulationRobotAgent
@@ -20,19 +19,14 @@ import penoplatinum.simulator.Simulator;
 public class RobotBluetoothAgent implements RobotAgent {
 
   private Robot robot;
-  private Simulator simulator;
-  private MQ mq;
   private IConnection conn;
-  private QueuedPacketTransporter t;
+  private CallbackPacketTransporter t;
 
   public RobotBluetoothAgent() {
-    /**/
   }
 
   public RobotBluetoothAgent useConnection(IConnection conn) {
     this.conn = conn;
-    this.t = new QueuedPacketTransporter(conn);
-    conn.RegisterTransporter(t, 7897987);
     return this;
   }
 
@@ -47,14 +41,14 @@ public class RobotBluetoothAgent implements RobotAgent {
       throw new RuntimeException();
     }
 
-    CallbackPacketTransporter t = new CallbackPacketTransporter(conn, new IPacketHandler() {
+    this.t = new CallbackPacketTransporter(conn, new IPacketHandler() {
 
       public void receive(int packetID, byte[] dgram) {
         RobotBluetoothAgent.this.receive(new String(dgram));
       }
     });
-    
-    conn.RegisterTransporter(t, 987874288);
+
+    conn.RegisterTransporter(t, AgentConfig.MQRelayPacket);
 
 
 
@@ -62,25 +56,31 @@ public class RobotBluetoothAgent implements RobotAgent {
 
   @Override
   public void receive(String cmd) {
-    //Warning: this is called asynchronously!!
     this.robot.processCommand(cmd);
   }
 
   @Override
   public void send(String msg) {
+    byte[] buf = null;
+    buf = getBytes(msg);
+
     try {
-      mq.sendMessage(msg);
+      t.getSendStream().write(buf, 0, buf.length);
+      t.SendPacket(AgentConfig.MQRelayPacket);
     } catch (IOException ex) {
-      Logger.getLogger(RobotBluetoothAgent.class.getName()).log(Level.SEVERE, null, ex);
+      Utils.Log("Send error!");
     }
 
-    //this.simulator.receive(msg); //TODO: unused
+
   }
 
-  // this method is not part of the RobotAgent interface, but is used by
-  // the simulator to replace the outgoing bluetooth communication stack
-  public void setSimulator(Simulator simulator) {
-    this.simulator = simulator;
-    this.send("SimulationAgent Ready");
+  public byte[] getBytes(String s) {
+    char[] characters;
+    characters = s.toCharArray();
+    byte[] b = new byte[characters.length];
+    for (int i = 0; i < characters.length; i++) {
+      b[i] = (byte) characters[i];
+    }
+    return b;
   }
 }

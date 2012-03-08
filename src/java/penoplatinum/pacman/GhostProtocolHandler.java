@@ -8,7 +8,6 @@ package penoplatinum.pacman;
  * 
  * @author: Team Platinum
  */
-import java.util.Scanner;
 import penoplatinum.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
@@ -16,6 +15,7 @@ import penoplatinum.grid.Sector;
 import penoplatinum.simulator.mini.Bearing;
 import penoplatinum.simulator.mini.MessageHandler;
 import penoplatinum.simulator.mini.Queue;
+
 
 public class GhostProtocolHandler implements MessageHandler {
 
@@ -41,7 +41,7 @@ public class GhostProtocolHandler implements MessageHandler {
   @Override
   public void receive(String msg) {
     try {
-      Scanner scanner = new Scanner(msg).useDelimiter("[ ,]");
+      MyScanner scanner = new MyScanner(msg);//.useDelimiter("[ ,]");
       String agentName = scanner.next();
       if ("JOIN".equals(agentName) && !scanner.hasNext()) {
         this.handleJoin();
@@ -65,7 +65,8 @@ public class GhostProtocolHandler implements MessageHandler {
       // badly formatted and other stupid issues with the protocol or 
       // formatting are handled here : NOT
       // COMMENT THE FOLLOWING LINE IN "PRODUCTION" environment ;-)
-      e.printStackTrace();
+//      e.printStackTrace();
+      Utils.Log("WEEQSDJFMldj");
     }
   }
 
@@ -200,7 +201,6 @@ public class GhostProtocolHandler implements MessageHandler {
   }
 
   public void sendPosition() {
-    Utils.Log("Send Position!");
     this.queue.send(this.agent.getName() + " POSITION "
             + this.agent.getSector().getLeft() + ","
             + this.agent.getSector().getTop());

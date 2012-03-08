@@ -26,7 +26,7 @@ import penoplatinum.grid.GridView;
 import penoplatinum.grid.DiffusionGridProcessor;
 
 import penoplatinum.grid.SimpleGrid;
-import penoplatinum.grid.SwingGridView;
+//import penoplatinum.grid.SwingGridView;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 
@@ -294,8 +294,8 @@ public class GhostModel implements Model {
       get = new SimpleGrid();
       otherGrids.put(actorName, get);
 
-      SwingGridView view = new SwingGridView();
-      get.displayOn(view);
+      //SwingGridView view = new SwingGridView();
+      //get.displayOn(view);
 
     }
     return get;

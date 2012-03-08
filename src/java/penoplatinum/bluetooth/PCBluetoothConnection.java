@@ -80,6 +80,7 @@ public class PCBluetoothConnection implements IConnection {
                 IPacketTransporter t = listenerMap.get(packetIdentifier);
                 if (t == null) {
                     Utils.Log("Packet discarded because no transporter is registered for this type! (" + packetIdentifier + ")");
+                    return;
                 }
                 t.onPacketReceived(packetIdentifier, dgram, 0, size);
 

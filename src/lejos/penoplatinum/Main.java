@@ -6,6 +6,7 @@ import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import penoplatinum.IRSeekerV2.Mode;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
+import penoplatinum.bluetooth.RobotBluetoothAgent;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.ghost.GhostRobot;
 import penoplatinum.navigators.BehaviourNavigator;
@@ -27,6 +28,8 @@ public class Main {
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
         conn.initializeConnection();
         Utils.EnableRemoteLogging(conn);
+        
+        robot.useCommunicationAgent(new RobotBluetoothAgent().useConnection(conn));
         
 //        initializeAgent(angie);
         Runnable runnable = new Runnable() {
