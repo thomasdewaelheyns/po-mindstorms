@@ -70,8 +70,12 @@ public class Sector implements Tile, Cloneable{
       return Sector.NO_COLOR;
     }
     int pos = ((getBarcodeLocation() & 1) != 0 ? x : y);
-    pos -= ((this.SIZE / 2) - (this.BARCODE_WIDTH / 2));
+    pos -= (this.SIZE / 2);
     pos *= ((getBarcodeLocation() & 2) == 0 ? 1 : -1);
+    pos += (this.BARCODE_WIDTH / 2);
+    if(pos<0){
+      return getBarcodeLine(pos);
+    }
     pos /= Sector.BARCODE_LINE_WIDTH;
     return getBarcodeLine(pos);
   }
