@@ -26,6 +26,7 @@ import penoplatinum.grid.GridView;
 import penoplatinum.grid.DiffusionGridProcessor;
 
 import penoplatinum.grid.SimpleGrid;
+import penoplatinum.grid.SwingGridView;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 
@@ -164,6 +165,11 @@ public class GhostModel implements Model {
     return this.outbox;
   }
 
+  public void processMessage(String msg)
+  {
+    protocol.receive(msg);
+  }
+  
   public void clearInbox() {
     this.inbox.clear();
   }
@@ -187,8 +193,18 @@ public class GhostModel implements Model {
   public void updateSector(Sector newSector) {
     this.prevSector = this.currentSector;
     this.currentSector = newSector;
+    needsGridUpdate = true;
 
 
+  }
+  private boolean needsGridUpdate;
+
+  public boolean needsGridUpdate() {
+    return needsGridUpdate;
+  }
+
+  public void markGridUpdated() {
+    needsGridUpdate = false;
   }
 
   public void markSectorUpdated(Sector current) {
@@ -270,6 +286,10 @@ public class GhostModel implements Model {
     if (get == null) {
       get = new SimpleGrid();
       otherGrids.put(actorName, get);
+      
+      SwingGridView view = new SwingGridView();
+      get.displayOn(view);
+      
     }
     return get;
   }

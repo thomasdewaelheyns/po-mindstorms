@@ -1,5 +1,6 @@
 
 import java.io.FileNotFoundException;
+import java.util.Random;
 import org.junit.Test;
 import penoplatinum.ghost.GhostRobot;
 import penoplatinum.ghost.LeftFollowingGhostNavigator;
@@ -12,10 +13,6 @@ import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
 import penoplatinum.simulator.view.SwingSimulationView;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author MHGameWork
@@ -53,13 +50,17 @@ public class GhostRobotTest {
     sim.useMap(SimulatorTest.createSectorMap());
     SwingGridView view = new SwingGridView();
 
-    GhostRobot robot = new GhostRobot("Michiel", view);
+    Random r = new Random();
+    final String name = r.nextInt() + "";
+
+
+    GhostRobot robot = new GhostRobot(name, view);
     final GhostNavigator ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
     ghostNavigator.setModel(robot.getGhostModel());
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
-    ent.setPostition(20, 20, 0);
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(name), robot);
+    ent.setPostition(20 + 1 * 40, 20 + 1 * 40, 0);
     sim.addSimulatedEntity(ent);
 
     sim.useStepRunnable(new Runnable() {
@@ -72,49 +73,46 @@ public class GhostRobotTest {
     sim.displayOn(new SwingSimulationView());
     sim.run();
   }
-  
-    @Test
-  public void testGhostRobotGhostNavigatorAgent() throws FileNotFoundException {
-    Simulator sim = new Simulator();
-    sim.useMap(SimulatorTest.createSectorMap());
-    SwingGridView view = new SwingGridView();
 
-    GhostRobot robot = new GhostRobot("Michiel", view);
-    final SimulationRobotAgent simulationRobotAgent = new SimulationRobotAgent("Michiel");
-    robot.useCommunicationAgent(simulationRobotAgent);
-    final GhostNavigator ghostNavigator = new GhostNavigator();
-    robot.useNavigator(ghostNavigator);
-    ghostNavigator.setModel(robot.getGhostModel());
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
-    ent.setPostition(20, 20, 0);
-    sim.addSimulatedEntity(ent);
-
-    sim.useStepRunnable(new Runnable() {
-
-      @Override
-      public void run() {
-      }
-    });
-
-    sim.displayOn(new SwingSimulationView());
-    sim.run();
-  }
-  
-  
   @Test
-  public void testGhostRobotGhostNavigator2() throws FileNotFoundException {
+  public void testGhostRobotMultiple() throws FileNotFoundException {
     Simulator sim = new Simulator();
     sim.useMap(SimulatorTest.createSectorMap2());
-    SwingGridView view = new SwingGridView();
 
-    GhostRobot robot = new GhostRobot("Michiel", view);
-    final GhostNavigator ghostNavigator = new GhostNavigator();
+    GhostRobot robot = new GhostRobot("Michiel", new SwingGridView());
+    GhostNavigator ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
-    ghostNavigator.setModel(robot.getGhostModel());
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Test"), robot);
+
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Michiel"), robot);
     ent.setPostition(20, 20, 0);
+    sim.addSimulatedEntity(ent);
+
+
+    robot = new GhostRobot("Christophe", new SwingGridView());
+    ghostNavigator = new GhostNavigator();
+    robot.useNavigator(ghostNavigator);
+
+    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Christophe"), robot);
+    ent.setPostition(60, 60, 0);
+    sim.addSimulatedEntity(ent);
+
+
+    robot = new GhostRobot("Ruben", new SwingGridView());
+    ghostNavigator = new GhostNavigator();
+    robot.useNavigator(ghostNavigator);
+
+    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Ruben"), robot);
+    ent.setPostition(100, 100, 0);
+    sim.addSimulatedEntity(ent);
+
+    robot = new GhostRobot("Thomas", new SwingGridView());
+    ghostNavigator = new GhostNavigator();
+    robot.useNavigator(ghostNavigator);
+
+    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Thomas"), robot);
+    ent.setPostition(100, 140, 0);
     sim.addSimulatedEntity(ent);
 
     sim.useStepRunnable(new Runnable() {

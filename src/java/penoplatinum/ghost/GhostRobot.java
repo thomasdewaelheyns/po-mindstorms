@@ -33,17 +33,16 @@ public class GhostRobot implements Robot {
   private boolean waitingForSweep = false;
   private RobotAgent agent;
   private ReferencePosition initialReference = new ReferencePosition();
-
   private GridUpdateProcessor gridUpdateProcessor;
-  
+
   public GhostRobot(String name) {
     this.setupModel(name);
 
     for (int i = 0; i < sweepAngles.length; i++) {
       sweepAnglesList.add(sweepAngles[i]);
     }
-    
-    
+
+
 
   }
 
@@ -69,7 +68,7 @@ public class GhostRobot implements Robot {
             new WallDetectionModelProcessor(
             new InboxProcessor(
             new WallDetectorProcessor(
-            )))))));
+            new GridUpdateProcessor())))))));
     this.model.setProcessor(processors);
 
   }
@@ -87,6 +86,7 @@ public class GhostRobot implements Robot {
 
   public void useNavigator(Navigator nav) {
     this.navigator = nav;
+    nav.setModel(model);
   }
 
   // incoming communication from other ghosts, used by RobotAgent to deliver
@@ -149,7 +149,6 @@ public class GhostRobot implements Robot {
     // if the sweep is ready ...
     if (this.waitingForSweep) {
       this.model.updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
-      gridUpdateProcessor.work();
       this.waitingForSweep = false;
     } else {
       this.api.sweep(sweepAngles);
@@ -157,9 +156,7 @@ public class GhostRobot implements Robot {
       return; // to wait for results
     }
 
-    for (int i = 0; i < 10; i++) {
-      gridUpdateProcessor.updateHillClimbingInfo();
-    }
+
 
     // NOTE: wallmodelprocessor hasn't run yet at this point, 
     //    so the model still contains old wall information!!!

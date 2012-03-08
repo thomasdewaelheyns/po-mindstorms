@@ -89,10 +89,6 @@ public class GhostProtocolHandler implements MessageHandler {
 
     // Add a new agent, or ignore when already added
     // TODO: a new agent, create a grid to store its information
-
-
-
-
   }
 
   private void begin() {
@@ -106,11 +102,27 @@ public class GhostProtocolHandler implements MessageHandler {
   private void handlePosition(String agentName, int x, int y) {
     // update the agent's position
     int bearing = Bearing.N; //TODO: 
-    final Grid grid = model.getGrid();
-    final Sector sector = grid.getSector(x, y);
-    grid.getAgent(agentName).assignSector(sector, bearing);
+    final Grid grid = model.getGrid(agentName);
+    
+    Sector sector = grid.getSector(x, y);
+    if (sector == null) {
+      sector = new Sector();
+      sector.setCoordinates(x, y);
+      grid.addSector(sector);
+    }
+    Agent agent = grid.getAgent(agentName);
+    if (agent == null)
+    {
+      // Add the agent when it doesn't exist
+      agent = new GhostAgent(agentName);
+      grid.addAgent(agent);
+    }
 
-    //TODO: add agents to the othergrids too
+    grid.agentsNeedRefresh();
+    agent.assignSector(sector, bearing);
+
+    grid.refresh(); //TODO: this shouldn't run on the robot
+    
 
 
   }
@@ -164,6 +176,8 @@ public class GhostProtocolHandler implements MessageHandler {
 
     // info set!! :P
 
+    grid.refresh(); //TODO: this shouldn't run on the robot
+    
   }
 
   private void handleBarcode(String agentName, int code, int bearing) {
