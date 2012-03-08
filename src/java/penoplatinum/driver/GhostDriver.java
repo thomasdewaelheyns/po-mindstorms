@@ -39,6 +39,7 @@ public class GhostDriver implements Driver {
   }
   private Integer navigatorAction;
   private int driverState;
+  private final int INIT = -1;
   private final int STARTING = 0;
   private final int COMPLETE = 1;
 
@@ -168,7 +169,7 @@ public class GhostDriver implements Driver {
     //  checkProximityEvent();
     //}
     //checkBarcodeEvent();
-
+    isReadingBarcodeEvent();
     checkLineEvent();
     //checkSonarCollisionEvent();
     //checkCollisionEvent();
@@ -182,6 +183,15 @@ public class GhostDriver implements Driver {
     queue.clearActionQueue();
   }
 
+  private void isReadingBarcodeEvent(){
+    if(!model.isReadingBarcode()){
+      return;
+    }
+    queue.clearActionQueue();
+    queue.add(new MoveAction(model, 0.2f).setIsNonInterruptable(true));
+    
+  }
+  
   private void checkBarcodeEvent() {
     if (model.getBarcode() == Barcode.None) {
       return;
@@ -249,6 +259,6 @@ public class GhostDriver implements Driver {
   @Override
   public void perform(int action) {
     navigatorAction = action;
-    driverState = -1;
+    driverState = INIT;
   }
 }

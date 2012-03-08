@@ -410,10 +410,6 @@ public class OriginalModel implements Model {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  @Override
-  public void receiveIncomingMessages(List<String> buffer) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
 
   @Override
   public void setReadingBarcode(boolean b) {
