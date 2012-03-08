@@ -1,5 +1,7 @@
 package penoplatinum.modelprocessor;
 
+import java.util.ArrayList;
+import java.util.List;
 import penoplatinum.pacman.GhostModel;
 
 public class InboxProcessor extends ModelProcessor {
@@ -12,11 +14,17 @@ public class InboxProcessor extends ModelProcessor {
     super(nextProcessor);
   }
 
+  private List<String> buffer = new ArrayList<String>();
+  
   protected void work() {
     GhostModel model = (GhostModel) this.model;
-    for (int i = 0; i < model.getIncomingMessages().size(); i++) {
-      model.processMessage(model.getIncomingMessages().get(i));
+    
+    buffer.clear();
+    
+    model.receiveIncomingMessages(buffer);
+    
+    for (int i = 0; i < buffer.size(); i++) {
+      model.processMessage(buffer.get(i));
     }
-    model.getIncomingMessages().clear();
   }
 }

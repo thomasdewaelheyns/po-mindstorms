@@ -24,7 +24,7 @@ public class RemoteFileLogger {
     Thread fileThread;
     IRemoteLoggerCallback outputStream;
     private final File directory;
-    private final PacketTransporter pt;
+    private final QueuedPacketTransporter pt;
 
     public void setOutputStream(IRemoteLoggerCallback outputStream) {
         this.outputStream = outputStream;
@@ -43,7 +43,7 @@ public class RemoteFileLogger {
 
         int testNum = 0;
 
-        pt = new PacketTransporter(conn);
+        pt = new QueuedPacketTransporter(conn);
         conn.RegisterTransporter(pt, penoplatinum.Utils.PACKETID_LOG);
         conn.RegisterTransporter(pt, penoplatinum.Utils.PACKETID_STARTLOG);
         this.directory = directory;

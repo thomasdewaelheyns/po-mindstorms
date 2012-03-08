@@ -9,7 +9,7 @@ import lejos.nxt.Sound;
 import penoplatinum.Utils;
 import penoplatinum.barcode.ILightSensor;
 import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.ui.UIView;
 
 public class WrappedLightSensor implements ILightSensor {
@@ -21,22 +21,22 @@ public class WrappedLightSensor implements ILightSensor {
     private int blackBorder;
     private int whiteBorder;
     PrintStream printStream;
-    PacketTransporter lightTransporter;
-    private final PacketTransporter commandTransporter;
+    QueuedPacketTransporter lightTransporter;
+    private final QueuedPacketTransporter commandTransporter;
 
     /**
      * TODO: remove this misery
      * @param conn
      * @param commandTransporter 
      */
-    public WrappedLightSensor(IConnection conn, PacketTransporter commandTransporter) {
+    public WrappedLightSensor(IConnection conn, QueuedPacketTransporter commandTransporter) {
         //TODO: move out the sensorport
         light = new LightSensor(SensorPort.S4, true);
         light.setLow(344);
         light.setHigh(508);
 
         if (conn != null) {
-            lightTransporter = new PacketTransporter(conn);
+            lightTransporter = new QueuedPacketTransporter(conn);
             conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
             printStream = new PrintStream(lightTransporter.getSendStream());
 

@@ -1,7 +1,7 @@
 package penoplatinum.sensor;
 
 import penoplatinum.Utils;
-import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.WrappedLightSensor.Color;
 
@@ -18,9 +18,9 @@ public class LineFollower {
     double platformThresHold;
     boolean LineType;
     private WrappedLightSensor lightSensor;
-    private final PacketTransporter commandTransporter;
+    private final QueuedPacketTransporter commandTransporter;
 
-    public LineFollower(WrappedLightSensor sensor, PacketTransporter commandTransporter) {
+    public LineFollower(WrappedLightSensor sensor, QueuedPacketTransporter commandTransporter) {
         this.lightSensor = sensor;
         this.commandTransporter = commandTransporter;
     }

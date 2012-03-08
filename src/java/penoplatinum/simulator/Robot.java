@@ -23,6 +23,7 @@ public interface Robot {
   /**
    * to allow external Communication to be processed by the Robot, a generic
    * String-based command processing.
+   * THIS METHOD SHOULD BE THREAD SAFE
    */
   public void processCommand(String cmd);
 
@@ -52,6 +53,6 @@ public interface Robot {
    * a method to stop the robot (immediately)
    */
   public void stop();
-  
+
   public String getName();
 }

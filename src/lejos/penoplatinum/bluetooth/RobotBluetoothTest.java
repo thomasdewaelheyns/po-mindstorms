@@ -63,7 +63,7 @@ public class RobotBluetoothTest {
         
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
         
-        PacketTransporter t = new PacketTransporter(conn);
+        QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
         
         conn.RegisterTransporter(t, buttonPacketId);
         

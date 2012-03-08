@@ -109,13 +109,23 @@
         <preferences xmlns="http://www.netbeans.org/ns/auxiliary-configuration-preferences/1">
             <module name="org-netbeans-modules-editor-indent">
                 <node name="CodeStyle">
-                    <property name="usedProfile" value="default"/>
+                    <property name="usedProfile" value="project"/>
                     <node name="project">
                         <property name="tab-size" value="8"/>
                         <property name="text-limit-width" value="80"/>
+                        <property name="spaces-per-tab" value="2"/>
+                        <property name="indent-shift-width" value="2"/>
+                    </node>
+                </node>
+                <node name="text">
+                    <node name="x-java">
+                        <node name="CodeStyle">
+                            <node name="project"/>
+                        </node>
                     </node>
                 </node>
             </module>
+            <module name="org-netbeans-modules-projectimport-eclipse-core"/>
         </preferences>
     </configuration>
 </project>

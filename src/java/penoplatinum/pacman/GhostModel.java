@@ -153,25 +153,32 @@ public class GhostModel implements Model {
     this.process();
   }
 
+  /**
+   * This is thread safe
+   * @param msg 
+   */
   public void addIncomingMessage(String msg) {
-    this.inbox.add(msg);
+    synchronized (this) {
+      this.inbox.add(msg);
+    }
   }
 
-  public List<String> getIncomingMessages() {
-    return this.inbox;
+  /**
+   * @param buffer 
+   */
+  public void receiveIncomingMessages(List<String> buffer) {
+    synchronized (this) {
+      buffer.addAll(inbox);
+      inbox.clear();
+    }
   }
 
   public List<String> getOutgoingMessages() {
     return this.outbox;
   }
 
-  public void processMessage(String msg)
-  {
+  public void processMessage(String msg) {
     protocol.receive(msg);
-  }
-  
-  public void clearInbox() {
-    this.inbox.clear();
   }
 
   public void clearOutbox() {
@@ -286,10 +293,10 @@ public class GhostModel implements Model {
     if (get == null) {
       get = new SimpleGrid();
       otherGrids.put(actorName, get);
-      
+
       SwingGridView view = new SwingGridView();
       get.displayOn(view);
-      
+
     }
     return get;
   }

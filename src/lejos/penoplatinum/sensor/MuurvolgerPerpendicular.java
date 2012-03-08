@@ -6,7 +6,7 @@ import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.Utils;
 import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.ui.UIView;
 
@@ -22,15 +22,15 @@ public class MuurvolgerPerpendicular {
     private int forwardTacho = Integer.MIN_VALUE;
     private final int cogMultiplier = 1;
     private PrintStream printStream;
-    PacketTransporter endpoint;
+    QueuedPacketTransporter endpoint;
     private boolean isRight = false;
-    private final PacketTransporter commandTransporter;
+    private final QueuedPacketTransporter commandTransporter;
 
-    public MuurvolgerPerpendicular(UltrasonicSensor ultra, RotationMovement m, Motor v, IConnection connection,PacketTransporter commandTransporter) {
+    public MuurvolgerPerpendicular(UltrasonicSensor ultra, RotationMovement m, Motor v, IConnection connection,QueuedPacketTransporter commandTransporter) {
         this.ultra = ultra;
         movement = m;
         verticalMotor = v;
-        endpoint = new PacketTransporter(connection);
+        endpoint = new QueuedPacketTransporter(connection);
         connection.RegisterTransporter(endpoint, UIView.SONAR);
         printStream = new PrintStream(endpoint.getSendStream());
         this.commandTransporter = commandTransporter;

@@ -11,7 +11,7 @@ import java.util.Scanner;
 import org.junit.Test;
 import penoplatinum.Utils;
 import penoplatinum.bluetooth.PCBluetoothConnection;
-import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.bluetooth.QueuedPacketTransporter;
 
 /**
  *
@@ -36,7 +36,7 @@ public class SonarTest {
 
         PCBluetoothConnection conn = new PCBluetoothConnection();
         conn.initializeConnection();
-        PacketTransporter t = new PacketTransporter(conn);
+        QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
         conn.RegisterTransporter(t, samplePacket);
         conn.RegisterTransporter(t, startPacket);
 

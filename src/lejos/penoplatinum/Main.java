@@ -5,7 +5,7 @@ import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import penoplatinum.IRSeekerV2.Mode;
-import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.ghost.GhostRobot;
 import penoplatinum.navigators.BehaviourNavigator;
@@ -110,7 +110,7 @@ public class Main {
            if (0 == 0) {
             return;
         }
-        final PacketTransporter transporter = new PacketTransporter(connection);
+        final QueuedPacketTransporter transporter = new QueuedPacketTransporter(connection);
         connection.RegisterTransporter(transporter, 123);
         final PrintStream stream = new PrintStream(transporter.getSendStream());
 

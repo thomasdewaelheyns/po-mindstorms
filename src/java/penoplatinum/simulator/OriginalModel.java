@@ -385,7 +385,7 @@ public class OriginalModel implements Model {
   public Model displayGridOn(GridView view) { return null; }
   public Grid getGrid() { return null; }
   public void addIncomingMessage(String msg) {}
-  public List<String> getIncomingMessages() { return null; }
+  public List<String> receiveIncomingMessages() { return null; }
   public List<String> getOutgoingMessages() { return null; }
   public void clearInbox() {}
   public void clearOutbox() {}
@@ -407,6 +407,11 @@ public class OriginalModel implements Model {
 
   @Override
   public LightColor getCurrentLightColor() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void receiveIncomingMessages(List<String> buffer) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

@@ -16,7 +16,7 @@ import penoplatinum.Utils;
 public class Console implements UICommandHandler {
 
     UIView ui;
-    PacketTransporter endpoint;
+    QueuedPacketTransporter endpoint;
     PrintStream endpointWrite;
     int msgType;
     String msg;
@@ -36,7 +36,7 @@ public class Console implements UICommandHandler {
 
     private void setupBluetooth() {
         connection = new PCBluetoothConnection();
-        this.endpoint = new PacketTransporter(connection);
+        this.endpoint = new QueuedPacketTransporter(connection);
         connection.RegisterTransporter(this.endpoint, UIView.LIGHT);
         connection.RegisterTransporter(this.endpoint, UIView.SONAR);
         connection.RegisterTransporter(this.endpoint, UIView.BARCODE);

@@ -24,7 +24,7 @@ public class BluetoothPerformanceTests {
         int completePacket = 97498873;
         int resultPacket = 16246876;
 
-        PacketTransporter t = new PacketTransporter(conn);
+        QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
 
         conn.RegisterTransporter(t, testPacket);
         conn.RegisterTransporter(t, completePacket);
@@ -83,7 +83,7 @@ public class BluetoothPerformanceTests {
         int resultPacket = 16246876;
 
 
-        PacketTransporter t = new PacketTransporter(conn);
+        QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
 
         conn.RegisterTransporter(t, testPacket);
         conn.RegisterTransporter(t, completePacket);

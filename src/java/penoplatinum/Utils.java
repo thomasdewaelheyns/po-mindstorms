@@ -2,7 +2,7 @@ package penoplatinum;
 
 import java.io.PrintStream;
 import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.bluetooth.QueuedPacketTransporter;
 
 /**
  * @author: Team Platinum
@@ -12,7 +12,7 @@ public class Utils {
   public final static int PACKETID_LOG = 672631252;
   public final static int PACKETID_STARTLOG = 356356545;
   private final static Object logLock = new Object();
-  private static PacketTransporter logTransporter;
+  private static QueuedPacketTransporter logTransporter;
   private static PrintStream logPrintStream;
 
   public static void Sleep(long milliseconds) {
@@ -72,7 +72,7 @@ public class Utils {
    */
   public static void EnableRemoteLogging(IConnection conn, String logname) {
 
-    PacketTransporter t = new PacketTransporter(conn);
+    QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
     conn.RegisterTransporter(t, PACKETID_LOG);
     conn.RegisterTransporter(t, PACKETID_STARTLOG);
 

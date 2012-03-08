@@ -88,8 +88,14 @@ public class GhostRobot implements Robot {
     nav.setModel(model);
   }
 
-  // incoming communication from other ghosts, used by RobotAgent to deliver
-  // incoming messages from the other ghosts
+  // 
+  // 
+  /**
+   * incoming communication from other ghosts, used by RobotAgent to deliver
+   * incoming messages from the other ghosts
+   * This is thread safe
+   * @param cmd 
+   */
   public void processCommand(String cmd) {
     this.model.addIncomingMessage(cmd);
   }

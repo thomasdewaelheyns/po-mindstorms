@@ -99,7 +99,7 @@ public class PCBluetoothTest {
         
         PCBluetoothConnection conn = new PCBluetoothConnection();
         
-        PacketTransporter t = new PacketTransporter(conn);
+        QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
         
         conn.RegisterTransporter(t, buttonPacketId);
         

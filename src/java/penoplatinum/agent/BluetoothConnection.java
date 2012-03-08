@@ -15,14 +15,14 @@ import penoplatinum.bluetooth.*;
 
 public class BluetoothConnection {
   private PCBluetoothConnection connection;
-  private PacketTransporter     endPoint;
+  private QueuedPacketTransporter     endPoint;
 
   private String nextMsg = "";
 
   public BluetoothConnection() {
     this.connection = new PCBluetoothConnection();
     this.connection.initializeConnection();
-    this.endPoint   = new PacketTransporter(this.connection);
+    this.endPoint   = new QueuedPacketTransporter(this.connection);
     this.connection.RegisterTransporter(this.endPoint, 123);
     this.connection.RegisterTransporter(this.endPoint, penoplatinum.Utils.PACKETID_LOG);
   }

@@ -28,9 +28,8 @@ public interface Model {
   public Model displayGridOn(GridView view);
   public Grid getGrid();
   public void addIncomingMessage(String msg);
-  public List<String> getIncomingMessages();
+  public void receiveIncomingMessages(List<String> buffer);
   public List<String> getOutgoingMessages();
-  public void clearInbox();
   public void clearOutbox();
   public Agent getAgent();
   public boolean hasNewSonarValues();

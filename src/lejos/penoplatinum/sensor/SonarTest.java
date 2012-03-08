@@ -9,7 +9,7 @@ import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.Utils;
-import penoplatinum.bluetooth.PacketTransporter;
+import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.movement.RotationMovement;
 
@@ -19,7 +19,7 @@ import penoplatinum.movement.RotationMovement;
  */
 public class SonarTest {
 
-    private PacketTransporter samplePacketTransporter;
+    private QueuedPacketTransporter samplePacketTransporter;
     private UltrasonicSensor sens;
     private RotationMovement mov;
     private final int samplePacket = 9898286;
@@ -84,8 +84,8 @@ public class SonarTest {
 
         RobotBluetoothConnection conn = new RobotBluetoothConnection();
         conn.initializeConnection();
-        samplePacketTransporter = new PacketTransporter(conn);
-        PacketTransporter t = samplePacketTransporter;
+        samplePacketTransporter = new QueuedPacketTransporter(conn);
+        QueuedPacketTransporter t = samplePacketTransporter;
         conn.RegisterTransporter(t, samplePacket);
         conn.RegisterTransporter(t, startPacket);
 
@@ -100,7 +100,7 @@ public class SonarTest {
     }
 
     public void driveAndSample(int minDistance) throws IOException {
-        PacketTransporter t = samplePacketTransporter;
+        QueuedPacketTransporter t = samplePacketTransporter;
         int sensor = Integer.MAX_VALUE;
         float tacho;
         while (minDistance < sensor) {
