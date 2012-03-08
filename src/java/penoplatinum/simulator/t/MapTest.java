@@ -3,6 +3,7 @@ package penoplatinum.simulator.t;
 import penoplatinum.map.Map;
 import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*; 
+import penoplatinum.map.MapArray;
 
 public class MapTest extends TestCase { 
   private Panel tile;
@@ -37,7 +38,7 @@ public class MapTest extends TestCase {
   }
 
   private Map createEmptyMapOfWidth( int width ) {
-    return new Map( width );
+    return new MapArray( width );
   }
 
   private Panel createEmptyTile() {

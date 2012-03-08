@@ -25,8 +25,8 @@ import com.rabbitmq.client.AMQP;
 
 public abstract class MQ {
 
-  //public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
-  public static String DefaultServer = "127.0.0.1";
+  public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
+  //public static String DefaultServer = "127.0.0.1";
   // configurable properties
   private String server = "127.0.0.1";
   private String me = "default";

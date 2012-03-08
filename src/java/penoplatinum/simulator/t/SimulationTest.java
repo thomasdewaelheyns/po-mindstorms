@@ -5,6 +5,7 @@ import penoplatinum.map.Map;
 import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*;
 import java.util.List;
+import penoplatinum.map.MapArray;
 import penoplatinum.simulator.*;
 
 public class SimulationTest extends TestCase implements GoalDecider {
@@ -34,7 +35,7 @@ public class SimulationTest extends TestCase implements GoalDecider {
 
   // we use a single-Panel Map
   private Map createMap() {
-    return new Map(2)
+    return new MapArray(2)
           .add(new Panel()
             .withWall(Baring.N)
             .withWall(Baring.W)

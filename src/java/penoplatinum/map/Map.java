@@ -1,107 +1,42 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package penoplatinum.map;
 
-/**
- * Map
- * 
- * Class representing a Map of Tiles that represents the world of our robot.
- *
- *  @author: Team Platinum
- */
 import penoplatinum.simulator.tiles.Tile;
-import java.util.ArrayList;
 
-public class Map {
-
-  private int width;
-  private ArrayList<Tile> tiles;
-
-  protected Map() {
-    this.tiles = new ArrayList<Tile>();
-  }
-
-  public Map(int width) {
-    this();
-    this.width = width;
-  }
-
-  public int getWidth() {
-    return this.width;
-  }
-
-  public int getHeight() {
-    return (int) Math.ceil(this.tiles.size() / 1.0 / this.width);
-  }
-
-  public int getTileCount() {
-    return this.tiles.size();
-  }
+/**
+ *
+ * @author Rupsbant
+ */
+public interface Map {
+  
+  Map add(Tile t);
 
   /**
-   * adds a tile to the end of the list. based on width left,top coordinates
-   * are applied to retrieve them later. this method is used to add a stream
-   * of tiles (e.g. reading them from a file).
+   * returns true if the tile exists at position left, top
+   * indexed from 1 (one)
    */
-  public Map add(Tile tile) {
-    this.tiles.add(tile);
-    return this;
-  }
-
-  // adds a tile at a given position. left,top 1-based
-  public Map put(Tile tile, int left, int top) {
-    // TODO if useful
-    int index = getPosition(left, top);
-    while (this.tiles.size() <= index) {
-      this.tiles.add(null);
-    }
-    this.tiles.set(index, tile);
-    return this;
-  }
+  Boolean exists(int left, int top);
 
   /**
    * returns a tile at position left, top. first row/column are 1 (one)
    */
-  public Tile get(int left, int top) {
-    if (left < 1) return null;
-    if (top < 1) return null;
-    int index = getPosition(left, top);
-    if (index >= tiles.size()) {
-      return null;
-    }
-
-    return this.tiles.get(index);
-  }
-  /*public Panel get(int left, int top, int level){
-  return get(left, top);
-  }/**/
-
-  private int getPosition(int left, int top) {
-    return ((top - 1) * this.width) + (left - 1);
-  }
-
-  /**
-   * returns true if the tile exists at position left, top 
-   * indexed from 1 (one)
-   */
-  /*public Boolean exists(int left, int top, int level){
-  return exists(left, top);
-  }/**/
-  public Boolean exists(int left, int top) {
-    int pos = getPosition(left, top);
-    if (pos < 0 && pos >= this.tiles.size()) {
-      return false;
-    }
-    return this.tiles.get(pos) != null;
-  }
+  Tile get(int left, int top);
 
   /**
    * Returns the first tile found.
    * This determines the type of the map.
    */
-  public Tile getFirst() {
-    return tiles.iterator().next();
-  }
-  
-  
-  
+  Tile getFirst();
+
+  int getHeight();
+
+  int getTileCount();
+
+  int getWidth();
+
+  Map put(Tile tile, int left, int top);
   
 }

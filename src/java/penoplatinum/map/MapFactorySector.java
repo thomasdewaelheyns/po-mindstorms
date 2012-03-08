@@ -27,7 +27,7 @@ public class MapFactorySector {
   public Map getMap(Scanner sc){
     int width = sc.nextInt();
     int length = sc.nextInt();
-    Map map = new Map(width);
+    Map map = new MapArray(width);
     for(int i = 0; i <length; i++){
       for(int j = 0; j <width; j++){
         String str = sc.next();
@@ -42,7 +42,7 @@ public class MapFactorySector {
           String direction = sc.next();
           next.addBarcode(barcode, directions.get(direction));
         }
-        map.add(next);
+        map.put(next, j, i);
       }
     }
     return map;

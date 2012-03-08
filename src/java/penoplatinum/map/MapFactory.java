@@ -21,7 +21,7 @@ public class MapFactory {
     int width = sc.nextInt();
     int length = sc.nextInt();
     int height = sc.nextInt();
-    Map map = new Map3D(length, width);
+    Map3D map = new Map3D(length, width);
     for(int i = 0; i <length; i++){
       for(int j = 0; j <width; j++){
         String str = sc.next();

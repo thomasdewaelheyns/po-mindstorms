@@ -1,6 +1,7 @@
 package penoplatinum.simulator;
 
 import penoplatinum.map.Map;
+import penoplatinum.map.MapArray;
 import penoplatinum.simulator.tiles.Panels;
 import penoplatinum.navigators.SonarNavigator;
 
@@ -21,7 +22,7 @@ class BenchmarkRunner {
     Robot     robot     = new NavigatorRobot(navigator);
 
     // construct a course
-    Map map = new Map(4)
+    Map map = new MapArray(4)
       .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_E) .add(Panels.W_S)
       .add(Panels.E_N) .add(Panels.E_W) .add(Panels.S_W) .add(Panels.N_S)
       .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_N) .add(Panels.N_S)

@@ -4,6 +4,7 @@ import penoplatinum.map.Map;
 import penoplatinum.simulator.tiles.Panels;
 import penoplatinum.simulator.view.SwingSimulationView;
 import org.apache.commons.cli.*;
+import penoplatinum.map.MapArray;
 
 /**
  * SimulationRunner
@@ -28,7 +29,7 @@ class SimulationRunner1 {
   // TODO: create MapFactory with support to load files
   //       add option to provide map file
   private void createMap() {
-    Map map = new Map(4)
+    Map map = new MapArray(4)
       .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_E) .add(Panels.W_S)
       .add(Panels.E_N) .add(Panels.E_W) .add(Panels.S_W) .add(Panels.N_S)
       .add(Panels.S_E) .add(Panels.W_E) .add(Panels.W_N) .add(Panels.N_S)

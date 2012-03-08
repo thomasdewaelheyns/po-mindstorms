@@ -47,7 +47,7 @@ public class GhostRobotTest {
   @Test
   public void testGhostRobotGhostNavigator() throws FileNotFoundException {
     Simulator sim = new Simulator();
-    sim.useMap(SimulatorTest.createSectorMap());
+    sim.useMap(SimulatorTest.createSectorMap2());
     SwingGridView view = new SwingGridView();
 
     Random r = new Random();
