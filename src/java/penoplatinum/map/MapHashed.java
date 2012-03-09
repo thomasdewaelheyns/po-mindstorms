@@ -1,11 +1,15 @@
 package penoplatinum.map;
 
-import java.awt.Point;
 import java.util.HashMap;
 import penoplatinum.simulator.tiles.Tile;
 
-public class MapHashed implements Map{
+public class MapHashed implements Map {
+
   HashMap<Point, Tile> map = new HashMap();
+  int minX = Integer.MAX_VALUE;
+  int maxX = Integer.MIN_VALUE;
+  int minY = Integer.MAX_VALUE;
+  int maxY = Integer.MIN_VALUE;
 
   @Override
   public Map add(Tile t) {
@@ -14,11 +18,15 @@ public class MapHashed implements Map{
 
   @Override
   public Boolean exists(int left, int top) {
-    return map.containsKey(new Point(left, top));
+    return map.containsKey(new Point(left+minX-1, top+minY-1));
   }
 
   @Override
   public Tile get(int left, int top) {
+    return map.get(new Point(left+minX-1, top+minY-1));
+  }
+  
+  public Tile getRaw(int left, int top) {
     return map.get(new Point(left, top));
   }
 
@@ -29,17 +37,12 @@ public class MapHashed implements Map{
 
   @Override
   public int getHeight() {
-    int max = Integer.MIN_VALUE;
-    int min = Integer.MAX_VALUE;
-    for(Point p : map.keySet()){
-      if(p.getY()>max){
-        max = (int) p.getY();
-      }
-      if(p.getY()<min){
-        min = (int) p.getY();
-      }
-    }
-    return max-min;
+    return maxY - minY+1;
+  }
+
+  @Override
+  public int getWidth() {
+    return maxX - minX+1;
   }
 
   @Override
@@ -48,24 +51,20 @@ public class MapHashed implements Map{
   }
 
   @Override
-  public int getWidth() {
-    int max = Integer.MIN_VALUE;
-    int min = Integer.MAX_VALUE;
-    for(Point p : map.keySet()){
-      if(p.getY()>max){
-        max = (int) p.getX();
-      }
-      if(p.getY()<min){
-        min = (int) p.getX();
-      }
-    }
-    return max-min;
-  }
-
-  @Override
   public Map put(Tile tile, int left, int top) {
+    if (top > maxY) {
+      maxY = top;
+    }
+    if (top < minY) {
+      minY = top;
+    }
+    if (left > maxX) {
+      maxX = left;
+    }
+    if (left < minX) {
+      minX = left;
+    }
     map.put(new Point(left, top), tile);
     return this;
   }
-  
 }

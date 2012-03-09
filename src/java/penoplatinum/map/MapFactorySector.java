@@ -13,7 +13,7 @@ import penoplatinum.simulator.tiles.Sectors;
  *
  * @author Thomas
  */
-public class MapFactorySector {
+public class MapFactorySector implements MapFactory {
   HashMap<String, Sector> sectors = new HashMap<String, Sector>();
   HashMap<String, Boolean> commands = new HashMap<String, Boolean>();
   HashMap<String, Integer> directions = new HashMap<String, Integer>();

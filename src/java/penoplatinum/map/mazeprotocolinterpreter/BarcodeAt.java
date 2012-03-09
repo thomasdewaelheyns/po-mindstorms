@@ -1,13 +1,13 @@
 package penoplatinum.map.mazeprotocolinterpreter;
 
 import java.util.Scanner;
-import penoplatinum.map.Map;
+import penoplatinum.map.MapHashed;
 import penoplatinum.simulator.tiles.Sector;
 
 public class BarcodeAt implements Commando {
 
   @Override
-  public void interpret(Map m, Scanner sc) {
+  public void interpret(MapHashed m, Scanner sc) {
     int x = sc.nextInt();
     int y = sc.nextInt();
     int code = sc.nextInt();
@@ -20,7 +20,7 @@ public class BarcodeAt implements Commando {
     s.removeWall(dir);
     s.addBarcode(code, dir);
     
-    m.put(s, x, y);
+    m.put(s, x, -y);
   }
 
   @Override

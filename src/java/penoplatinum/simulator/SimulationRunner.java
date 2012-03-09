@@ -9,7 +9,9 @@ import java.util.Scanner;
 import java.util.UUID;
 import org.apache.commons.cli.*;
 import penoplatinum.map.MapArray;
+import penoplatinum.map.MapFactory;
 import penoplatinum.map.MapFactorySector;
+import penoplatinum.map.mazeprotocolinterpreter.ProtocolMapFactory;
 
 /**
  * SimulationRunner
@@ -45,7 +47,8 @@ public class SimulationRunner {
       File f = new File(file);
       try {
         Scanner sc = new Scanner(f);
-        MapFactorySector fact = new MapFactorySector();
+        MapFactory fact = new MapFactorySector();
+        fact = new ProtocolMapFactory();
         m = fact.getMap(sc);
       } catch (FileNotFoundException ex) {
         System.err.println("File not found, using default map!");

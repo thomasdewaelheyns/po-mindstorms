@@ -1,0 +1,12 @@
+maze NAME maze-protocol-0.3
+maze DISCOVER 1,1 0 0 1 1
+maze DISCOVER 2,1 0 0 1 0
+maze DISCOVER 3,1 0 1 1 0
+maze DISCOVER 1,2 1 0 0 1
+maze DISCOVER 2,2 1 0 0 0
+maze DISCOVER 3,2 1 1 0 0
+maze POSITION 1,1
+maze POSITION 1,2
+maze POSITION 2,1
+maze POSITION 3,1
+maze PACMAN 2,2

@@ -10,7 +10,9 @@ import java.util.Scanner;
 import org.junit.*;
 import static org.junit.Assert.*;
 import penoplatinum.map.Map;
+import penoplatinum.map.MapFactory;
 import penoplatinum.map.MapFactorySector;
+import penoplatinum.map.mazeprotocolinterpreter.ProtocolMapFactory;
 
 /**
  *
@@ -42,6 +44,15 @@ public class SimulatorTest {
     File f = new File("..\\..\\src\\java\\map3.track");
     Scanner sc = new Scanner(f);
     MapFactorySector fact = new MapFactorySector();
+    m = fact.getMap(sc);
+    return m;
+  }
+  
+  public static Map createSectorMazeProtocol() throws FileNotFoundException {
+    Map m;
+    File f = new File("..\\..\\src\\wolfraam.txt");
+    Scanner sc = new Scanner(f);
+    MapFactory fact = new ProtocolMapFactory();
     m = fact.getMap(sc);
     return m;
   }

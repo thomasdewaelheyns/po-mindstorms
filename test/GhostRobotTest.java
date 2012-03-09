@@ -74,7 +74,6 @@ public class GhostRobotTest {
     sim.run();
   }
 
-
   @Test
   public void testGhostRobotMultiple() throws FileNotFoundException {
     Simulator sim = new Simulator();
@@ -113,6 +112,36 @@ public class GhostRobotTest {
 
     ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent("Thomas"), robot);
     ent.setPostition(100, 140, 0);
+    sim.addSimulatedEntity(ent);
+
+    sim.useStepRunnable(new Runnable() {
+
+      @Override
+      public void run() {
+      }
+    });
+
+    sim.displayOn(new SwingSimulationView());
+    sim.run();
+  }
+  
+  @Test
+  public void testGhostRobotMazeProtocol() throws FileNotFoundException {
+    Simulator sim = new Simulator();
+    sim.useMap(SimulatorTest.createSectorMazeProtocol());
+    SwingGridView view = new SwingGridView();
+
+    Random r = new Random();
+    final String name = r.nextInt() + "";
+
+
+    GhostRobot robot = new GhostRobot(name, view);
+    final GhostNavigator ghostNavigator = new GhostNavigator();
+    robot.useNavigator(ghostNavigator);
+    ghostNavigator.setModel(robot.getGhostModel());
+
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(name), robot);
+    ent.setPostition(20 + 1 * 40, 20 + 1 * 40, 0);
     sim.addSimulatedEntity(ent);
 
     sim.useStepRunnable(new Runnable() {
