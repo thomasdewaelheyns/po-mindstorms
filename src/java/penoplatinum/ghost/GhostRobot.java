@@ -36,7 +36,7 @@ public class GhostRobot implements Robot {
   private GridUpdateProcessor gridUpdateProcessor;
 
   public GhostRobot(String name) {
-    
+
     this.setupModel(name);
 
     for (int i = 0; i < sweepAngles.length; i++) {
@@ -98,6 +98,7 @@ public class GhostRobot implements Robot {
     this.model.addIncomingMessage(cmd);
   }
   // the external tick...
+
   public void step() {
 
 
@@ -136,6 +137,8 @@ public class GhostRobot implements Robot {
 
     this.driver.perform(this.navigator.nextAction());
 
+
+    model.printGridStats();
     // send outgoing messages
     this.sendMessages();
     System.gc();
@@ -162,9 +165,9 @@ public class GhostRobot implements Robot {
   @Override
   public GhostRobot useCommunicationAgent(RobotAgent agent) {
     this.agent = agent;
-    
+
     agent.setRobot(this);
-    
+
     agent.run();
     return this;
   }

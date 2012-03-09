@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import penoplatinum.SimpleHashMap;
+import penoplatinum.Utils;
 import penoplatinum.simulator.Line;
 import penoplatinum.modelprocessor.Buffer;
 
@@ -299,6 +300,16 @@ public class GhostModel implements Model {
 
     }
     return get;
+  }
+
+  public void printGridStats() {
+
+    for (int i = 0; i < otherGrids.values.size(); i++) {
+      Grid g = otherGrids.values.get(i);
+
+      Utils.Log("Grid " + i + ": " + g.getSectors().size());
+
+    }
   }
   private float positionX;
   private float positionY;
@@ -627,14 +638,15 @@ public class GhostModel implements Model {
   public void setCurrentLightColor(LightColor value) {
     currentLightColor = value;
   }
-
   boolean isReadingBarcode = false;
+
   @Override
   public void setReadingBarcode(boolean b) {
     this.isReadingBarcode = b;
   }
+
   @Override
-  public boolean isReadingBarcode(){
+  public boolean isReadingBarcode() {
     return this.isReadingBarcode;
   }
 }

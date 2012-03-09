@@ -124,7 +124,7 @@ public class GhostRobotTest {
     sim.displayOn(new SwingSimulationView());
     sim.run();
   }
-  
+
   @Test
   public void testGhostRobotMazeProtocol() throws FileNotFoundException {
     Simulator sim = new Simulator();
@@ -140,7 +140,7 @@ public class GhostRobotTest {
     robot.useNavigator(ghostNavigator);
     ghostNavigator.setModel(robot.getGhostModel());
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(name), robot);
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(20 + 1 * 40, 20 + 1 * 40, 0);
     sim.addSimulatedEntity(ent);
 
@@ -155,7 +155,59 @@ public class GhostRobotTest {
     sim.run();
   }
 
-   @Test
+  @Test
+  public void testGhostRobotMazeProtocol3() throws FileNotFoundException {
+    Simulator sim = new Simulator();
+    sim.useMap(SimulatorTest.createSectorMazeProtocol());
+
+    Random r = new Random();
+    String name = r.nextInt() + "";
+
+
+    GhostRobot robot = new GhostRobot(name, new SwingGridView());
+    GhostNavigator ghostNavigator = new GhostNavigator();
+    robot.useNavigator(ghostNavigator);
+    ghostNavigator.setModel(robot.getGhostModel());
+
+    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    ent.setPostition(20 + 1 * 40, 20 + 1 * 40, 0);
+    sim.addSimulatedEntity(ent);
+
+
+    name = r.nextInt() + "";
+    robot = new GhostRobot(name, new SwingGridView());
+    ghostNavigator = new GhostNavigator();
+    robot.useNavigator(ghostNavigator);
+    ghostNavigator.setModel(robot.getGhostModel());
+
+    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    ent.setPostition(20 + 3 * 40, 20 + 4 * 40, 0);
+    sim.addSimulatedEntity(ent);
+
+    name = r.nextInt() + "";
+    robot = new GhostRobot(name, new SwingGridView());
+    ghostNavigator = new GhostNavigator();
+    robot.useNavigator(ghostNavigator);
+    ghostNavigator.setModel(robot.getGhostModel());
+
+    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    ent.setPostition(20 + 5 * 40, 20 + 4 * 40, 0);
+    sim.addSimulatedEntity(ent);
+
+
+
+    sim.useStepRunnable(new Runnable() {
+
+      @Override
+      public void run() {
+      }
+    });
+
+    sim.displayOn(new SwingSimulationView());
+    sim.run();
+  }
+
+  @Test
   public void testGhostRobot3() throws FileNotFoundException {
     Simulator sim = new Simulator();
     sim.useMap(SimulatorTest.createSectorMap2());
@@ -199,7 +251,6 @@ public class GhostRobotTest {
     sim.run();
   }
 
-  
   @Test
   public void testBackupGapcorrection() throws FileNotFoundException {
     Simulator sim = new Simulator();

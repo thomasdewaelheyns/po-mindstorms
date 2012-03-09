@@ -77,7 +77,6 @@ public class AngieEventLoop {
 //            }
 //            Thread.yield();
             
-            Main.testGridMemory();
             
         }
 
