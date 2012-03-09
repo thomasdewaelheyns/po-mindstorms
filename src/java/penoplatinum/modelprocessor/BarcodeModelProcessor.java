@@ -1,5 +1,6 @@
 package penoplatinum.modelprocessor;
 
+import penoplatinum.Utils;
 import penoplatinum.barcode.BarcodeHammingCorrector;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Barcode;
@@ -77,6 +78,8 @@ public class BarcodeModelProcessor extends ModelProcessor {
 //      tempBuffer.unsetCheckPoint();
 //    }
     updateState(tempBuffer);
+    
+    Utils.Log("barcode: "+this.model.getBarcode());
 
 //    if (state != WAITING)
 //    {

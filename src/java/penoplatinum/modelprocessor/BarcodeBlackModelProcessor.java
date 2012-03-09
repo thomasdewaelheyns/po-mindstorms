@@ -112,7 +112,7 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
         break;
       case INTERPRET:
         BufferSubset subset = tempBuffer.getBufferSubset(brownCounter);
-        int barcode = interpreter.translate(subset);
+        int barcode = interpreter.translate(subset)/2;
         Utils.Log("Barcode 2: "+barcode);
         Utils.Log("Size : " + tempBuffer.getCheckpointSize());
         setState(WAITING);
