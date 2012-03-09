@@ -631,6 +631,7 @@ public class GhostModel implements Model {
   }
   private LightColor currentLightColor = LightColor.Brown;
   
+  @Override
   public LightColor getCurrentLightColor() {
     if (0 == 0) {
       return currentLightColor;
@@ -661,4 +662,21 @@ public class GhostModel implements Model {
   public boolean isReadingBarcode() {
     return this.isReadingBarcode;
   }
+
+  boolean isNextToPacman = false;
+  int pacmanX = 0;
+  int pacmanY = 0;
+
+  @Override
+  public boolean isIsNextToPacman() {
+    return isNextToPacman;
+  }
+
+  @Override
+  public void setPacManInNext(boolean b, int x, int y) {
+    this.isNextToPacman = true;
+    this.pacmanX = x;
+    this.pacmanY = y;
+  }
+  
 }

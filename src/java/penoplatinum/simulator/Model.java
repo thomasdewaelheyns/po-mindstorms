@@ -101,4 +101,7 @@ public interface Model {
   LightColor getCurrentLightColor();
   public void setReadingBarcode(boolean b);
   public boolean isReadingBarcode();
+
+  public void setPacManInNext(boolean b, int x, int y);
+  boolean isIsNextToPacman();
 }

@@ -420,4 +420,14 @@ public class OriginalModel implements Model {
   public boolean isReadingBarcode() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
+
+  @Override
+  public void setPacManInNext(boolean b, int x, int y) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public boolean isIsNextToPacman() {
+    return false;
+  }
 }
