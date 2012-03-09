@@ -37,7 +37,7 @@ public class Sector implements Tile, Cloneable{
     this.data = 0;
   }
   
-  public Sector(int data) {
+  private Sector(int data) {
     this.data = data;
   }
   
