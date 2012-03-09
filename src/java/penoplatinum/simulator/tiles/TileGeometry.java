@@ -4,59 +4,56 @@ import java.awt.Point;
 import penoplatinum.simulator.Baring;
 
 public class TileGeometry {
-  
-  
+
   /**
    * calculates the point where given an angle and position, the  robot will 
    * "hit" a wall of this/a tile.
    */
-  public static Point findHitPoint( double X, double Y, double angle, int size ) {
+  public static Point findHitPoint(double X, double Y, double angle, int size) {
     double x, y, dx, dy;
 
-    if( angle <= 90 ) {
+    if (angle <= 90) {
       dx = size - X;
-      dy = T( dx, angle );
-      if( dy > Y ) {
+      dy = T(dx, angle);
+      if (dy > Y) {
         dy = Y;
-        dx = T( dy, 90 - angle );
+        dx = T(dy, 90 - angle);
       }
       x = X + dx;
       y = Y - dy;
-    } else if( angle > 90 && angle <= 180 ) {
+    } else if (angle > 90 && angle <= 180) {
       dx = X;
-      dy = T( dx, 180-angle );
-      if( dy > Y ) {
+      dy = T(dx, 180 - angle);
+      if (dy > Y) {
         dy = Y;
-        dx = T( dy, angle - 90 );
+        dx = T(dy, angle - 90);
       }
       x = X - dx;
       y = Y - dy;
-    } else if( angle > 180 && angle <= 270 ) {
+    } else if (angle > 180 && angle <= 270) {
       dx = X;
-      dy = T( dx, angle - 180 );
-      if( dy > ( size - Y ) ) {
-        dy = ( size - Y );
-        dx = T( dy, 270 - angle );
+      dy = T(dx, angle - 180);
+      if (dy > (size - Y)) {
+        dy = (size - Y);
+        dx = T(dy, 270 - angle);
       }
       x = X - dx;
       y = Y + dy;
-    } else { 
+    } else {
       // angle > 270 && angle < 360
       dx = size - X;
-      dy = T( dx, 360 - angle );
-      if( dy > ( size - Y ) ) {
-        dy = ( size - Y );
-        dx = T( dy, angle - 270 );
+      dy = T(dx, 360 - angle);
+      if (dy > (size - Y)) {
+        dy = (size - Y);
+        dx = T(dy, angle - 270);
       }
       x = X + dx;
       y = Y + dy;
     }
-    return new Point((int)x,(int)y);
+    return new Point((int) x, (int) y);
   }
-  
-  
-  
-  private static double T( double x, double d ) {
+
+  private static double T(double x, double d) {
     /**
      * Geonometry used:
      *
@@ -71,32 +68,56 @@ public class TileGeometry {
      */
     return x * Math.tan(Math.toRadians(d));
   }
-  
-  
-  
+
   // simple application of a^2 + b^2 = c^2
-  public static double getDistance( double x, double y, Point hit ) {
-    return Math.sqrt( Math.pow(hit.x - x, 2 ) + Math.pow(hit.y - y, 2 ) );    
+  public static double getDistance(double x, double y, Point hit) {
+    return Math.sqrt(Math.pow(hit.x - x, 2) + Math.pow(hit.y - y, 2));
   }
-  
-  
-  
-  
- 
+
   /**
    * based on a hit determine the wall that has been hit
    */
-  public static int getHitWall(Point hit, int size) {
-    int wall;
-    if( hit.y == 0 ) {                          // North
-      wall = hit.x == 0 ? Baring.NW : ( hit.x == size ? Baring.NE : Baring.N );
-    } else if( hit.y == size ) {                  // South
-      wall = hit.x == 0 ? Baring.SW : ( hit.x == size ? Baring.SE : Baring.S );
+  public static int getHitWall(Point hit, int size, double angle) {
+    if (hit.y == 0) {                          // North
+      if (hit.x == 0) {
+        if (90 < angle && angle < 180) {
+          return Baring.NW;
+        } else if (angle <= 90) {
+          return Baring.N;
+        } else {
+          return Baring.W;
+        }
+      } else if (hit.x == size) {
+        if (0 < angle && angle < 90) {
+          return Baring.NE;
+        } else if (angle >= 90) {
+          return Baring.N;
+        } else {
+          return Baring.E;
+        }
+      } else {
+        return Baring.N;
+      }
+    } else if (hit.y == size) {                  // South
+      if (hit.x == 0) {
+        if (270 < angle) {
+          return Baring.SW;
+        } else if (angle < 90) {
+          return Baring.W;
+        } else {
+          return Baring.S;
+        }
+      } else if (hit.x == size) {
+        return Baring.SE;
+      } else {
+        return Baring.S;
+      }
     } else {                                    // East or West
-      wall = hit.x == 0 ? Baring.W : Baring.E;
+      if (hit.x == 0) {
+        return Baring.W;
+      } else {
+        return Baring.E;
+      }
     }
-    return wall;
   }
 }
-
-

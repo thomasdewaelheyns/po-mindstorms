@@ -99,12 +99,16 @@ public class Simulator {
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this baring
     double dist = 0;
-    int baring;
-    Tile tile;
-    Point hit;
+    int baring = 0;
+    Tile tile = null;
+    Point hit = null;
     do {
       tile = this.map.get(left, top);
 
+      if(tile == null){
+        System.out.println(left+" "+top+" "+hit.x+" " +hit.y+" "+angle);
+        left++;
+      }
       hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
 
       // distance from the starting point to the hit-point on this tile
@@ -114,9 +118,19 @@ public class Simulator {
       // at the same baring, starting at the hit point on the tile
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
-      baring = TileGeometry.getHitWall(hit, tile.getSize());
-      left = left + Baring.moveLeft(baring);
-      top = top + Baring.moveTop(baring);
+      baring = TileGeometry.getHitWall(hit, tile.getSize(), angle);
+      /*if(x == hit.x && y == hit.y){
+        System.out.println(left+" "+top+" "+angle+" "+angle/45+" "+hit.x+" "+hit.y+" "+x+" "+y);
+        int pos = angle/45;
+        int[] dLeft = new int[]{0, -1, 1, 0, 0, 1, -1, 0};
+        int[] dTop = new int[]{-1, 0, 0, 1, 1, 0, 0, -1};
+        left += dLeft[pos];
+        top += dTop[pos];
+      } else {/**/
+        left = left + Baring.moveLeft(baring);
+        top = top + Baring.moveTop(baring);
+      //}
+      //System.out.println(left + " " + top);
       x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
       y = hit.y == 0 ? tile.getSize() : (hit.y == tile.getSize() ? 0 : hit.y);
 

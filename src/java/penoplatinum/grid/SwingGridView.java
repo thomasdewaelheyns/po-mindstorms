@@ -152,9 +152,10 @@ public class SwingGridView extends JFrame implements GridView {
     int newWidth  = this.grid.getWidth(),
         newHeight = this.grid.getHeight();
     if( newWidth != this.width || newHeight != this.height ) {
+      final int width = Math.max(newWidth  * GridBoard.SECTOR_SIZE -  2, 200);
       // set our own size
-      this.setSize( newWidth  * GridBoard.SECTOR_SIZE -  2, 
-                    newHeight * GridBoard.SECTOR_SIZE + 20 );
+      this.setSize( width, 
+                    newHeight * GridBoard.SECTOR_SIZE + 30 );
       // set the board's size
       if( this.board != null ) {
         this.board.resizeTo(this.grid.getWidth(), this.grid.getHeight());

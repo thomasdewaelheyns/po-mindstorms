@@ -67,7 +67,7 @@ public class DistanceTest extends TestCase {
   
   private int findFacingWall( int x, int y, int angle ) {
     Point hit = TileGeometry.findHitPoint( x, y, angle, 80 );
-    return TileGeometry.getHitWall( hit, 80 );
+    return TileGeometry.getHitWall( hit, 80, angle );
   }
   
   public void testDistance() {
