@@ -42,7 +42,7 @@ public class MapFactorySector implements MapFactory {
           String direction = sc.next();
           next.addBarcode(barcode, directions.get(direction));
         }
-        map.put(next, j, i);
+        map.put(next, j+1, i+1);
       }
     }
     return map;

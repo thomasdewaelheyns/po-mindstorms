@@ -69,13 +69,18 @@ public class GridUpdateProcessor extends ModelProcessor {
   // if there are bearing without walls, providing access to unknown Sectors,
   // add such Sectors to the Grid
   private void addNewSectors() {
+    GhostModel model = (GhostModel) this.model;
+
+
     Sector current = ((GhostModel) this.model).getCurrentSector();
     for (int location = Bearing.N; location <= Bearing.W; location++) {
       if (current.givesAccessTo(location)
               && !current.hasNeighbour(location)) {
+        Sector neighbour = current.createNeighbour(location);
         // TODO: parameterize the value
         //System.out.println(current.getAgent().getName() + " : adding unknown sector(" + location +")" );
-        current.createNeighbour(location).setValue(5000);
+        neighbour.setValue(5000);
+        model.markSectorUpdated(neighbour);
       }
     }
   }

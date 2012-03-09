@@ -39,4 +39,6 @@ public interface Grid {
   public Grid wallsNeedRefresh();
   public Grid valuesNeedRefresh();
   public Grid agentsNeedRefresh();
+
+  void importGrid(Grid g, int localX, int localY, int otherX, int otherY, int rotation);
 }

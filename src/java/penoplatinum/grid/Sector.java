@@ -35,7 +35,8 @@ public class Sector {
   // the value associated with this sector
   private int value = 0;
   
-  private List<String> tags = new ArrayList<String>();
+  private int tagCode;
+  private int tagBearing;
 
 
   public Sector() {
@@ -182,11 +183,24 @@ public class Sector {
   public int getValue() {
     return this.agent != null ? this.agent.getValue() : this.value;
   }
-  
-  public Sector addTag(String tag) {
-    this.tags.add(tag);
-    return this;
+
+  public int getTagBearing() {
+    return tagBearing;
   }
+
+  public void setTagBearing(int tagBearing) {
+    this.tagBearing = tagBearing;
+  }
+
+  public int getTagCode() {
+    return tagCode;
+  }
+
+  public void setTagCode(int tagCode) {
+    this.tagCode = tagCode;
+  }
+
+  
   
   // adds a wall on this sector at given location
   public Sector addWall(int atLocation) {

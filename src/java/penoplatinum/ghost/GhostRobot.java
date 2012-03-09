@@ -60,12 +60,12 @@ public class GhostRobot implements Robot {
             //new GapModelProcessor(
             //new ProximityModelProcessor(
             //new LightCorruptionModelProcessor(
-            //new BarcodeBlackModelProcessor(
+            new BarcodeBlackModelProcessor(
             new LineModelProcessor(
             new WallDetectionModelProcessor(
             new InboxProcessor(
             new WallDetectorProcessor(
-            new GridUpdateProcessor()))))));
+            new GridUpdateProcessor())))))));
     this.model.setProcessor(processors);
 
   }

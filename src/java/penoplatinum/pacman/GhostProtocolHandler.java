@@ -8,6 +8,7 @@ package penoplatinum.pacman;
  * 
  * @author: Team Platinum
  */
+import java.util.ArrayList;
 import penoplatinum.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
@@ -15,7 +16,6 @@ import penoplatinum.grid.Sector;
 import penoplatinum.simulator.mini.Bearing;
 import penoplatinum.simulator.mini.MessageHandler;
 import penoplatinum.simulator.mini.Queue;
-
 
 public class GhostProtocolHandler implements MessageHandler {
 
@@ -105,7 +105,7 @@ public class GhostProtocolHandler implements MessageHandler {
     // update the agent's position
     int bearing = Bearing.N; //TODO: 
     final Grid grid = model.getGrid(agentName);
-    
+
     Sector sector = grid.getSector(x, y);
     if (sector == null) {
       sector = new Sector();
@@ -113,8 +113,7 @@ public class GhostProtocolHandler implements MessageHandler {
       grid.addSector(sector);
     }
     Agent agent = grid.getAgent(agentName);
-    if (agent == null)
-    {
+    if (agent == null) {
       // Add the agent when it doesn't exist
       agent = new GhostAgent(agentName);
       grid.addAgent(agent);
@@ -125,14 +124,13 @@ public class GhostProtocolHandler implements MessageHandler {
 
     Utils.Log("Grid refresh!");
     grid.refresh(); //TODO: this shouldn't run on the robot
-    
+
 
 
   }
 
   private void handleDiscover(String agentName, int x, int y,
           int n, int e, int s, int w) {
-
     final Grid grid = model.getGrid(agentName);
     Sector sector = grid.getSector(x, y);
 
@@ -147,7 +145,7 @@ public class GhostProtocolHandler implements MessageHandler {
     int[] values = new int[]{n, e, s, w};
 
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i <= 3; i++) {
 
       Boolean newVal = decodeTrit(values[i]);
 //      Boolean oldVal = sector.hasWall(i);
@@ -180,15 +178,63 @@ public class GhostProtocolHandler implements MessageHandler {
     // info set!! :P
 
     grid.refresh(); //TODO: this shouldn't run on the robot
-    
+
   }
 
   private void handleBarcode(String agentName, int code, int bearing) {
+
+
+
+    final Grid grid = model.getGrid(agentName);
+    Agent agent = grid.getAgent(agentName);
+    agent.getSector().setTagCode(code);
+    agent.getSector().setTagBearing(bearing);
+
     // tag the current sector of the agent with the given barcode
     // check if we have it too
     // if so, import the agents map in our grid,
     //        create translators to continously import its information
     //        in our own grid
+    ArrayList<Sector> bs = model.getBarcodeSectors();
+    for (int i = 0; i < bs.size(); i++) {
+      int ourCode = bs.get(i).getTagCode();
+
+      int invertedCode = invertCode(code);
+
+      if (ourCode == invertedCode) {
+        code = invertedCode;
+
+        // Switch bearing
+        bearing = Bearing.reverse(bearing);
+      }
+
+
+      // WARNING: this is cheat!!
+      bearing = Bearing.reverse(bearing);
+      code = ourCode;
+      // END WARNING
+
+      if (ourCode == code) {
+        final int relativeBearing = (bs.get(i).getTagBearing() - bearing + 4) % 4;
+        model.getGrid().importGrid(grid, bs.get(i).getLeft(), bs.get(i).getTop(), agent.getLeft(), agent.getTop(), relativeBearing);
+        model.getGrid().refresh();
+      }
+
+
+    }
+
+
+  }
+
+  private int invertCode(int code) {
+    int out = 0;
+    for (int i = 0; i < 8; i++) {
+      out |= code & 1;
+      code >>= 1;
+      out <<= 1;
+    }
+    out >>= 1;
+    return out;
   }
 
   private void sendJoin() {
@@ -208,7 +254,7 @@ public class GhostProtocolHandler implements MessageHandler {
 
   // TODO: change North and South
   public void sendDiscover(Sector sector) {
-    
+
     this.queue.send(this.agent.getName() + " DISCOVER "
             + sector.getLeft() + "," + sector.getTop() + " "
             + this.makeTrit(sector.hasWall(Bearing.N)) + " "
@@ -225,9 +271,9 @@ public class GhostProtocolHandler implements MessageHandler {
     return wall == 2 ? null : (wall == 1);
   }
 
-  public void sendBarcode() {
+  public void sendBarcode(int code, int bearing) {
     this.queue.send(this.agent.getName() + " BARCODE "
-            + "TODO" + " " + "TODO");
+            + code + " " + bearing);
   }
 
   // keep a reference to the outgoing queue and JOIN

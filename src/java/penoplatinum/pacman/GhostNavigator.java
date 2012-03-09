@@ -96,6 +96,7 @@ public class GhostNavigator implements Navigator {
     
     // choose randomly one of the best moves and create the required actions
     int forMove = moves[(int)(Math.random()*count)];
+    forMove = moves[0]; // Pick first !
 //    this.log( forMove + " out of " + Arrays.toString(moves) + " / " + count);
     
     // randomly don't do anything (20%)
