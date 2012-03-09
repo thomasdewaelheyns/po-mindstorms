@@ -201,19 +201,20 @@ public class GhostProtocolHandler implements MessageHandler {
   }
 
   public void sendPosition() {
-    this.queue.send(this.agent.getName() + " POSITION "
-            + this.agent.getSector().getLeft() + ","
-            + this.agent.getSector().getTop());
+//    this.queue.send(this.agent.getName() + " POSITION "
+//            + this.agent.getSector().getLeft() + ","
+//            + this.agent.getSector().getTop());
   }
 
   // TODO: change North and South
   public void sendDiscover(Sector sector) {
-    this.queue.send(this.agent.getName() + " DISCOVER "
-            + sector.getLeft() + "," + sector.getTop() + " "
-            + this.makeTrit(sector.hasWall(Bearing.N)) + " "
-            + this.makeTrit(sector.hasWall(Bearing.E)) + " "
-            + this.makeTrit(sector.hasWall(Bearing.S)) + " "
-            + this.makeTrit(sector.hasWall(Bearing.W)));
+    
+//    this.queue.send(this.agent.getName() + " DISCOVER "
+//            + sector.getLeft() + "," + sector.getTop() + " "
+//            + this.makeTrit(sector.hasWall(Bearing.N)) + " "
+//            + this.makeTrit(sector.hasWall(Bearing.E)) + " "
+//            + this.makeTrit(sector.hasWall(Bearing.S)) + " "
+//            + this.makeTrit(sector.hasWall(Bearing.W)));
   }
 
   private int makeTrit(Boolean wall) {

@@ -17,10 +17,8 @@ public class WallDetectorProcessor extends ModelProcessor {
     GhostModel model = (GhostModel)this.model;
     Sector detected  = model.getDetectedSector();
     int lastMovement = model.getLastMovement();
-    Agent agent      = model.getAgent();
-    int bearing      = agent.getBearing();
 
-    Sector sector    = new Sector();
+    
 
     // if we moved forward, the previously detected sector is no longer of
     // any interest
@@ -30,6 +28,12 @@ public class WallDetectorProcessor extends ModelProcessor {
 
     // only update when we have a complete set of sensorvalues
     if( ! model.hasNewSonarValues() ) { return; }
+    
+    Sector sector    = new Sector();
+    
+    Agent agent      = model.getAgent();
+    int bearing      = agent.getBearing();
+    
     
     // front = free distance front/bearing
     if( model.getFrontFreeDistance() < 35 ) {

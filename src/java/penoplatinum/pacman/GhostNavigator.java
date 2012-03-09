@@ -30,7 +30,7 @@ public class GhostNavigator implements Navigator {
   }
   
   private void log(String msg) {
-    Utils.Log(msg);
+//    Utils.Log(msg);
 //    System.out.printf( "[%10s] %2d,%2d / Navigator  : %s\n", 
 //                       this.model.getAgent().getName(),
 //                       this.model.getAgent().getLeft(),
@@ -43,12 +43,12 @@ public class GhostNavigator implements Navigator {
     //       create a new plan based on the new situation
     if( this.plan.size() == 0 ) {
       this.createNewPlan();
-      this.log("Got a new Plan : " + this.plan );
+//      this.log("Got a new Plan : " + this.plan );
     }
     if( this.plan.size() == 0 ) {
       throw new RuntimeException( "Out of plans ..." );
     }
-    this.log("Executing plan: " + this.plan);
+//    this.log("Executing plan: " + this.plan);
     return this.plan.remove(0);
   }
 
@@ -171,7 +171,7 @@ public class GhostNavigator implements Navigator {
         case  2: this.plan.add(GhostAction.TURN_RIGHT);
         case  1: this.plan.add(GhostAction.TURN_RIGHT); break;
       }
-      this.log( "turn needed: " + current + " -> " + target + " = " + diff );
+//      this.log( "turn needed: " + current + " -> " + target + " = " + diff );
     }
     
     // after turning, move forward

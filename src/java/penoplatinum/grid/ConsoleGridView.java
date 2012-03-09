@@ -11,11 +11,6 @@ package penoplatinum.grid;
 public class ConsoleGridView implements GridView {
   private Grid grid;
   
-  public GridView refresh(Grid grid) {
-    this.grid = grid;
-    return this;
-  }
-  
   public GridView refresh() {
     if( this.grid == null ) { return this; }
     
@@ -28,7 +23,7 @@ public class ConsoleGridView implements GridView {
     // draw the Grid using it's internal values
     for(int top=0; top<height; top++) {
       for(int left=0; left<width; left++ ) {
-        System.out.printf( "%5d ", this.grid.getValue(left,top) );
+        System.out.printf( "%5d ", this.grid.getSector(left,top).getValue() );
       }
       System.out.println("");
     }
@@ -41,4 +36,9 @@ public class ConsoleGridView implements GridView {
   
   public GridView changeTitle(String title)         { return this; }
   public GridView changeLocation(int left, int top) { return this; }
+
+  public GridView display(Grid grid) {
+    this.grid = grid;
+    return this;
+  }
 }

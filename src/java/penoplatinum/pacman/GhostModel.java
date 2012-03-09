@@ -284,7 +284,7 @@ public class GhostModel implements Model {
   }
 
   public int getLastMovement() {
-    this.log("inspecting last movement: " + this.lastMovement);
+//    this.log("inspecting last movement: " + this.lastMovement);
     return this.lastMovement;
   }
 

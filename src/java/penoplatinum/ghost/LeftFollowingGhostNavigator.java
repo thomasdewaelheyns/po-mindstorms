@@ -18,7 +18,7 @@ import penoplatinum.simulator.mini.Navigator;
  */
 public class LeftFollowingGhostNavigator implements Navigator {
 
-  private final GhostModel m;
+  private GhostModel m;
   private boolean forwardQueued = false;
 
   public LeftFollowingGhostNavigator(GhostModel model) {
@@ -28,7 +28,8 @@ public class LeftFollowingGhostNavigator implements Navigator {
 
   @Override
   public Navigator setModel(Model model) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    this.m = (GhostModel) model;
+    return this;
   }
 
   @Override
@@ -54,16 +55,16 @@ public class LeftFollowingGhostNavigator implements Navigator {
 
   @Override
   public double getDistance() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return 0;
   }
 
   @Override
   public double getAngle() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return 0;
   }
 
   @Override
   public Boolean reachedGoal() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return false;
   }
 }

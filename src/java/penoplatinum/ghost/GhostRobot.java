@@ -52,8 +52,6 @@ public class GhostRobot implements Robot {
 
   private void setupModel(String name) {
     this.model = new GhostModel(name);
-    gridUpdateProcessor = new GridUpdateProcessor();
-    gridUpdateProcessor.setModel(model);
     ModelProcessor processors =
             new HistogramModelProcessor(
             new LightColorModelProcessor(
@@ -62,12 +60,12 @@ public class GhostRobot implements Robot {
             //new GapModelProcessor(
             //new ProximityModelProcessor(
             //new LightCorruptionModelProcessor(
-            new BarcodeBlackModelProcessor(
+            //new BarcodeBlackModelProcessor(
             new LineModelProcessor(
             new WallDetectionModelProcessor(
             new InboxProcessor(
             new WallDetectorProcessor(
-            new GridUpdateProcessor())))))));
+            new GridUpdateProcessor()))))));
     this.model.setProcessor(processors);
 
   }
@@ -99,40 +97,8 @@ public class GhostRobot implements Robot {
   public void processCommand(String cmd) {
     this.model.addIncomingMessage(cmd);
   }
-  private ArrayList<String> buffer = new ArrayList<String>();
-
   // the external tick...
   public void step() {
-    //Utils.Log("Infrared Angle: "+model.getSensorValue(model.S1));
-    //buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
-    if (buffer.size() > 100) {
-      for (String s : buffer) {
-        Utils.Log(s);
-      }
-      buffer.clear();
-    }
-
-//    switch (model.getCurrentLightColor()) {
-//      case Black:
-//        buffer.add("Black, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
-//        break;
-//      case Brown:
-//        buffer.add("Brown, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
-//        break;
-//      case White:
-//        buffer.add("White, " + (int) model.getAverageLightValue() + ","  + (int) model.getLightSensorValue());
-//        break;
-//      default:
-//        break;
-//    }
-//    //buffer.add((int) model.getAverageBlackValue() + "," + (int) model.getAverageLightValue() + "," + (int) model.getAverageWhiteValue());
-//    //buffer.add(Integer.toString((int)model.getLightSensorValue()));
-//    if (buffer.size() > 30) {
-//      for (String s : buffer) {
-//        Utils.Log(s);
-//      }
-//      buffer.clear();
-//    }
 
 
     // poll other sensors and update model
@@ -172,6 +138,7 @@ public class GhostRobot implements Robot {
 
     // send outgoing messages
     this.sendMessages();
+    System.gc();
   }
 
   private void sendMessages() {
