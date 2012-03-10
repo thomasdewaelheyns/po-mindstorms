@@ -6,6 +6,7 @@ package penoplatinum.visualizer;
 
 import org.junit.Test;
 import penoplatinum.map.Map;
+import penoplatinum.map.MapArray;
 import penoplatinum.simulator.tiles.Sectors;
 import penoplatinum.simulator.view.SwingSimulationView;
 
@@ -21,7 +22,7 @@ public class BoardTest {
 
       public void run() {
         
-        Map m = new Map(10);
+        Map m = new MapArray(10);
         
         m.put(Sectors.ESW, 1, 1);
         m.put(Sectors.EW, 2, 3);

@@ -70,7 +70,7 @@ public class GridFactory {
         Agent agent;
         if (type.equals("tag")) {
           String tag = scanner.next();
-          sector.addTag(tag);
+          //sector.addTag(tag);
           
           //TODO: g.tags.put(tag, sector);
         } else {
