@@ -4,6 +4,13 @@ import penoplatinum.simulator.Model;
 
 public class IRModelProcessor extends ModelProcessor {
 
+  public IRModelProcessor() {
+  }
+
+  public IRModelProcessor(ModelProcessor nextProcessor) {
+    super(nextProcessor);
+  }
+
   @Override
   protected void work() {
     int sum = 0;
@@ -27,15 +34,15 @@ public class IRModelProcessor extends ModelProcessor {
         dx = 1;
         break;
     }
-    if ((model.getAgent().getBearing() & 1) == 1) {
+    if ((model.getAgent().getBearing() & 1) == 1) { //rottate
       int temp = dx;
       dx = -dy;
       dy = temp;
     }
-    if ((model.getAgent().getBearing() & 2) == 2) {
+    if ((model.getAgent().getBearing() & 2) == 2) {//mirror 
       dy = -dy;
       dx = -dx;
     }
-    model.setPacManInNext(true, model.getAgent().getLeft()+dx, model.getAgent().getTop()+dy);
+    model.setPacManInNext(true, model.getAgent().getLeft() + dx, model.getAgent().getTop() + dy);
   }
 }

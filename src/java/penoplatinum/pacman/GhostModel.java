@@ -686,4 +686,13 @@ public class GhostModel implements Model {
     this.pacmanX = x;
     this.pacmanY = y;
   }
+
+  public int getPacmanX() {
+    return pacmanX;
+  }
+
+  public int getPacmanY() {
+    return pacmanY;
+  }
+  
 }
