@@ -116,8 +116,8 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
 
         int corrected = barcode;
         if (barcode != Barcode.None) {
-          corrected = corrected / 2 & ((1 << 7) - 1);
-          corrected = interpreter.correct(barcode);
+          corrected = (corrected / 2) & ((1 << 7) - 1);
+//          corrected = interpreter.correct(corrected);
         }
         model.setBarcode(corrected);
 

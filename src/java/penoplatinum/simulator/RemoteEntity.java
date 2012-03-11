@@ -58,7 +58,7 @@ public class RemoteEntity implements RobotEntity {
 
   }
 
-  public RemoteEntity setOrigin(int originX, int originY,int originDirection) {
+  public RemoteEntity setOrigin(int originX, int originY, int originDirection) {
     this.originX = originX;
     this.originY = originY;
     this.originDirection = originDirection;
@@ -79,8 +79,8 @@ public class RemoteEntity implements RobotEntity {
       @Override
       public void handlePosition(String agentName, int x, int y) {
         penoplatinum.map.Point p = Bearing.mapToNorth(originDirection, x, y);
-        positionX = (p.getX() + originX) * Sector.SIZE + 20;
-        positionY = (p.getY() + originY) * Sector.SIZE + 20;
+        positionX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
+        positionY = (p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
       }
     });
   }

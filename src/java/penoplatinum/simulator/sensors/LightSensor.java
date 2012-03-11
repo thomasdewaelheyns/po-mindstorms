@@ -13,7 +13,6 @@ public class LightSensor implements Sensor {
   private static final int BLACK = 360;
   private static final int WHITE = 500;
   private static final int BROWN = 450;
-  
   private Simulator sim;
   private SimulatedEntity simEntity;
   public static final int LIGHTBUFFER_SIZE = 5;
@@ -29,10 +28,10 @@ public class LightSensor implements Sensor {
   @Override
   public int getValue() {
     // Insert a delay on the sensor
-//    int ret = lightValues.remove();
-//    lightValues.insert(getActualValue());
-//    return ret;
-    return getActualValue();
+    int ret = lightValues.remove();
+    lightValues.insert(getActualValue());
+    return ret;
+//    return getActualValue();
   }
 
   private int getActualValue() {

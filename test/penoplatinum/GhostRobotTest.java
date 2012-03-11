@@ -126,7 +126,7 @@ public class GhostRobotTest {
 
     String name = r.nextInt() + "";
 
-//    SimulatedEntity ent1 = putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
+    SimulatedEntity ent1 = putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
     SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
 //    putGhostRobot(20 + 5 * 40, 20 + 4 * 40, 0);
 
@@ -147,7 +147,7 @@ public class GhostRobotTest {
     SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
     putGhostRobot(20 + 5 * 40, 20 + 4 * 40, 0);
 
-//    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
+    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
 //    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
 
   }
@@ -219,7 +219,7 @@ public class GhostRobotTest {
 
   private SimulatedEntity putGhostRobot(int x, int y, int angle, Navigator nav, String name) {
     GhostRobot robot = new GhostRobot(name, new SwingGridView());
-    robot.useNavigator(new LeftFollowingGhostNavigator());
+    robot.useNavigator(nav);
 
     SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(x, y, angle);
