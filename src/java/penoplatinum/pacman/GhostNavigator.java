@@ -14,11 +14,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
-import penoplatinum.simulator.GoalDecider;
-import penoplatinum.simulator.Bearing;
+import penoplatinum.simulator.mini.Bearing;
 import penoplatinum.simulator.Model;
 
-import penoplatinum.simulator.Navigator;
+import penoplatinum.simulator.mini.Navigator;
 
 public class GhostNavigator implements Navigator {
   private GhostModel model;
@@ -97,7 +96,7 @@ public class GhostNavigator implements Navigator {
     
     // choose randomly one of the best moves and create the required actions
     int forMove = moves[(int)(r.nextDouble()*count)];
-    forMove = moves[0];
+    
 //    this.log( forMove + " out of " + Arrays.toString(moves) + " / " + count);
     
     // randomly don't do anything (20%)
@@ -178,10 +177,5 @@ public class GhostNavigator implements Navigator {
     
     // after turning, move forward
     this.plan.add(GhostAction.FORWARD);
-  }
-
-  @Override
-  public Navigator setControler(GoalDecider controler) {
-    throw new UnsupportedOperationException("Not supported yet.");
   }
 }
