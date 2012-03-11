@@ -35,7 +35,7 @@ public class Simulator {
   private Map map;                // the map that the robot will run on
   private List<RobotEntity> robotEntities = new ArrayList<RobotEntity>();
   private HashMap<String, RemoteEntity> remoteEntities = new HashMap<String, RemoteEntity>();
-  private SimulatedEntity pacmanEntity;
+  private RobotEntity pacmanEntity;
   private ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<String>();
   private Runnable stepRunnable;
 
@@ -279,8 +279,12 @@ public class Simulator {
             && dy < 0 && (posYOnTile - dy > this.getTileSize() - LENGTH_ROBOT));
   }
 
-  public SimulatedEntity getPacMan() {
-    return pacmanEntity;
+  public RobotEntity getPacMan() {
+    return this.pacmanEntity;
+  }
+
+  public void setPacmanEntity(RobotEntity pacmanEntity) {
+    this.pacmanEntity = pacmanEntity;
   }
 
   public int getTileSize() {

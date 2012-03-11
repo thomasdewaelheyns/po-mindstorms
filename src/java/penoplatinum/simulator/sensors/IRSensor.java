@@ -1,5 +1,6 @@
 package penoplatinum.simulator.sensors;
 
+import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
@@ -12,7 +13,7 @@ public class IRSensor implements Sensor {
   public int getValue() {
     
     // calculates the angles and distances needed
-    SimulatedEntity pacman = sim.getPacMan();
+    RobotEntity pacman = sim.getPacMan();
     double dx = pacman.getPosX() - simEntity.getPosX();
     double dy = pacman.getPosY() - simEntity.getPosY();
     double angleToNorth = Math.atan(dx/dy)/Math.PI*180;
