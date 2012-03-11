@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.actions;
 
-import lejos.nxt.Sound;
 import penoplatinum.Utils;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.pacman.GhostModel;
@@ -15,6 +10,7 @@ import penoplatinum.simulator.Navigator;
  *
  * @author: Team Platinum
  */
+
 public class AlignPerpendicularLine extends BaseAction {
 
   public static final int TARGET_ANGLE = 20;
