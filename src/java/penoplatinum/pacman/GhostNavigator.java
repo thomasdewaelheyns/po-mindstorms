@@ -8,11 +8,10 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
-import penoplatinum.Utils;
+import java.util.Random;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 import penoplatinum.simulator.mini.Bearing;
@@ -23,6 +22,7 @@ import penoplatinum.simulator.mini.Navigator;
 public class GhostNavigator implements Navigator {
   private GhostModel model;
   private List<Integer> plan = new ArrayList<Integer>();
+  private Random r = new Random(0);
   
   public Navigator setModel(Model model) {
     this.model = (GhostModel)model;
@@ -95,12 +95,12 @@ public class GhostNavigator implements Navigator {
     // TODO: maybe take into account the move with least turns ?
     
     // choose randomly one of the best moves and create the required actions
-    int forMove = moves[(int)(Math.random()*count)];
-    forMove = moves[0]; // Pick first !
+    int forMove = moves[(int)(r.nextDouble()*count)];
+    
 //    this.log( forMove + " out of " + Arrays.toString(moves) + " / " + count);
     
     // randomly don't do anything (20%)
-    if(Math.random()*5==3) { forMove = Bearing.NONE; }
+    if(r.nextDouble()*5==3) { forMove = Bearing.NONE; }
 
     if(forMove <= Bearing.NONE) {
       this.plan.add(GhostAction.NONE);
