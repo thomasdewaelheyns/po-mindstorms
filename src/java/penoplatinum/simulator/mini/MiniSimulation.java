@@ -14,7 +14,7 @@ import penoplatinum.grid.ProxyAgent;
 import penoplatinum.grid.StaticTargetAgent;
 import penoplatinum.grid.DiffusionGridProcessor;
 
-import penoplatinum.ghost.GhostRobot;
+import penoplatinum.pacman.GhostRobot;
 
 import penoplatinum.grid.GridFactory;
 import penoplatinum.simulator.Robot;

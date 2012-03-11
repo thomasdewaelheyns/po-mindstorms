@@ -8,7 +8,7 @@ import penoplatinum.IRSeekerV2.Mode;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothAgent;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
-import penoplatinum.ghost.GhostRobot;
+import penoplatinum.pacman.GhostRobot;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
 import penoplatinum.navigators.BehaviourNavigator;
