@@ -98,24 +98,24 @@ public class GridBoard extends JPanel {
     this.agentsG.setColor(color);
 
     Polygon triangle = new Polygon();
-    triangle.addPoint(left+10, top+3);
-    triangle.addPoint(left+17, top+17);
-    triangle.addPoint(left+3 , top+17);
+    triangle.addPoint(left+SECTOR_SIZE/2, top+3);
+    triangle.addPoint(left+SECTOR_SIZE-3, top+SECTOR_SIZE-3);
+    triangle.addPoint(left+3 , top+SECTOR_SIZE-3);
     
     double angle = orientation * Math.PI/2;
     
-    this.agentsG.rotate(angle, left+10, top+10);
+    this.agentsG.rotate(angle, left+SECTOR_SIZE/2, top+SECTOR_SIZE/2);
     this.agentsG.fillPolygon(triangle);
     // reset
-    this.agentsG.rotate(-1*angle, left+10, top+10);
+    this.agentsG.rotate(-1*angle, left+SECTOR_SIZE/2, top+SECTOR_SIZE/2);
     
     // add label
     FontMetrics fm = this.agentsG.getFontMetrics();
     this.agentsG.setColor(BLACK);
-    this.agentsG.setFont(this.agentsG.getFont().deriveFont(8F));
+    this.agentsG.setFont(this.agentsG.getFont().deriveFont(12F));
     int w = fm.charWidth(name.charAt(0));
     int h = fm.getHeight();
-    this.agentsG.drawString(name.substring(0,1), left+10-w/2, top+SECTOR_SIZE-h/2);
+    this.agentsG.drawString(name.substring(0,1), left+SECTOR_SIZE/2-w/2, top+SECTOR_SIZE-h/2);
   }
   
   private Color mapToHeatColor(int value) {

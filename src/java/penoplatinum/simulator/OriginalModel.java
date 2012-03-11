@@ -430,4 +430,9 @@ public class OriginalModel implements Model {
   public boolean isIsNextToPacman() {
     return false;
   }
+
+  @Override
+  public void receiveIncomingMessages(List<String> buffer) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

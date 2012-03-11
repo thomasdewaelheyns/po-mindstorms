@@ -21,8 +21,7 @@ public class LeftFollowingGhostNavigator implements Navigator {
   private GhostModel m;
   private boolean forwardQueued = false;
 
-  public LeftFollowingGhostNavigator(GhostModel model) {
-    this.m = model;
+  public LeftFollowingGhostNavigator() {
   }
   private ArrayList<Integer> outputBuffer = new ArrayList<Integer>();
 

@@ -22,11 +22,12 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP;
+import penoplatinum.Utils;
 
 public abstract class MQ {
 
-  public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
-  //public static String DefaultServer = "127.0.0.1";
+  //public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
+  public static String DefaultServer = "127.0.0.1";
   // configurable properties
   private String server = "127.0.0.1";
   private String me = "default";
@@ -58,7 +59,7 @@ public abstract class MQ {
   public MQ follow(String name) throws java.io.IOException,
           java.lang.InterruptedException {
     this.channel.exchangeDeclare(name, "fanout");
-    
+
     String queueName = this.channel.queueDeclare().getQueue();
     this.channel.queueBind(queueName, name, "");
     this.channel.basicConsume(queueName, true,
@@ -86,7 +87,12 @@ public abstract class MQ {
   // identification of the sender.
   public MQ sendMessage(String message) throws java.io.IOException {
     message = this.me + ":" + message;
-    this.channel.basicPublish(this.channelName, "", null, message.getBytes());
+    try {
+      this.channel.basicPublish(this.channelName, "", null, message.getBytes());
+
+    } catch (Exception e) {
+      Utils.Log("MQ error!");
+    }
     return this;
   }
 

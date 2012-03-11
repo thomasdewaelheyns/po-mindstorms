@@ -1,3 +1,5 @@
+package penoplatinum;
+
 
 import lejos.nxt.*;
 import penoplatinum.Utils;
