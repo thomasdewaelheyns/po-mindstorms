@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title>POC web client</title>
-  <link rel="stylesheet" type="text/css" href="client.css">
+  <link rel="stylesheet" type="text/css" href="grid.css">
+  <link rel="stylesheet" type="text/css" href="client.css"> 
+  <script src="grid.js"></script>
   <script src="client.js"></script>
 </head>
 
@@ -37,16 +39,28 @@
       <canvas id="sonarHistogram" width="150" height="150" class="sonar"></canvas>
     </div>
 
-    <div id="push" class="sensor">
-      <h4>Push Sensors</h4>
-      <div id="push-left" class="push">---</div>
-      <div id="push-right" class="push">---</div>
+    <div id="ir" class="sensor">
+      <h4>IR Sensor</h4>
+      <div id="IrValue">---</div>
+      <canvas id="irField" width="150" height="150" class="irfield"></canvas>
     </div>
+
+    <div id="sector" class="sensor">
+      <h4>Sector</h4>
+      <div id="SectorValue">---</div>      
+      <canvas id="sectorSituation" width="150" height="150" class="sector"></canvas>
+    </div>
+
+    <div class="sensor">
+      <h4>Aggregated Grid</h4>
+      <div class="viewer">
+        <canvas id="myGrid" class="grid" width="300" height="300"></canvas>
+      </div>
+    </div>
+
   </div>
   
   <div id="navigator" class="group">
-
-    <h3>Navigator</h3>
 
     <div id="event" class="action">
       <h4>Event</h4>
@@ -62,10 +76,32 @@
       <div id="actionArgument">---</div>
     </div>
 
-    <div id="meta" class="action">
-      <h4>Meta</h4>
-      <div id="rate">---</div>
+    <div class="sensor grids">
+      <h4>Other's Grids</h4>
+      <div class="gallery">
+        <table>
+          <tr><th>Other 1</th><th>Other 2</th><th>Other 3</th></tr>
+          <tr>
+            <td>
+              <div class="viewer">
+                <canvas id="others1" class="grid" width="0" height="0"></canvas>
+              </div>
+            </td>
+            <td>
+              <div class="viewer">
+                <canvas id="others2" class="grid" width="0" height="0"></canvas>
+              </div>
+            </td>
+            <td>
+              <div class="viewer">
+                <canvas id="others3" class="grid" width="0" height="0"></canvas>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
+    
   </div>
 
   <!-- activate JSONP stream ... -->

@@ -13,7 +13,7 @@
       org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter
     </exception-sorter-class-name>
     <check-valid-connection-sql>
-      SELECT COUNT(*) FROM logs
+      SELECT COUNT(*) FROM model
     </check-valid-connection-sql>
     <metadata>
       <type-mapping>MySQL</type-mapping>

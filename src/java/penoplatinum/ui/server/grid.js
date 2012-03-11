@@ -83,7 +83,12 @@
       getCanvas().fillRect(0, 0, getCanvas().width, 
                                  getCanvas().height);
     },
-    
+
+    // helper functions to update HTML parts
+    updateHTML = function updateHTML(id, value) { 
+      document.getElementById(id).innerHTML = value;
+    },
+
     getSector = function getSector(left, top) {
       return sectors[left+","+top];
     },
@@ -208,7 +213,10 @@
     // and add our public functionality:
 
     // public method add sectors
-    grid.updateWalls = function updateWalls(walls) {
+    grid.updateWalls = function updateWalls(ts, robot, walls) {
+      updateHTML( "timeStamp", ts    );
+      updateHTML( "robotName", robot );
+
       // copy the new info into the private sectors hash
       for(var key in walls) {
         // update boundaries
@@ -232,7 +240,10 @@
       render();
     }
     
-    grid.updateValues = function updateValues(values) {
+    grid.updateValues = function updateValues(ts, robot, values) {
+      updateHTML( "timeStamp", ts    );
+      updateHTML( "robotName", robot );
+
       // copy the new info into the private sectors hash
       for(var key in values) {
         if(sectors[key]) { // we only track values for sectors we know
@@ -243,7 +254,10 @@
       render();
     }
     
-    grid.updateAgents = function updateAgents(info) {
+    grid.updateAgents = function updateAgents(ts, robot, info) {
+      updateHTML( "timeStamp", ts    );
+      updateHTML( "robotName", robot );
+
       // copy the new info into the private agents hash
       for(var name in info) {
         agents[name] = info[name];

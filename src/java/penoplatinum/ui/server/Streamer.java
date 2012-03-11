@@ -16,24 +16,41 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import java.util.Map;
+import java.util.HashMap;
+
 // class wrapping all logic to stream a set of data ...
 public class Streamer {
   private InitialContext context;
   private DataSource     ds;
   private Connection     con;
-  private ResultSet      rsModel, rsWalls, rsAgents, rsWalls;
+  private ResultSet      rs;
   private Integer        lastModel = 0 , lastWalls = 0, lastAgents = 0,
                          lastValues = 0;
   private PrintWriter    out;
 
   public Streamer fastForward() {
-    if( this.connect() ) {
-      this.lastModel  = this.getLastId("model");
-      this.lastWalls  = this.getLastId("walls");
-      this.lastAgents = this.getLastId("agents");
-      this.lastValues = this.getLastId("values");
-    }
+    this.connect();
+    this.lastModel  = this.getLastId("model");
+    this.lastWalls  = this.getLastId("sectorWalls");
+    this.lastAgents = this.getLastId("sectorAgents");
+    this.lastValues = this.getLastId("sectorvalues");
     return this;
+  }
+  
+  private int getLastId(String source) {
+    final String sql = "SELECT MAX(id) FROM " + source + ";";
+    try {
+      this.rs = this.con.createStatement().executeQuery(sql);
+      if( this.rs.next() ) { 
+        int id = rs.getInt(1);
+        System.out.println( "Last " + source + ".id = " + id );
+        return id;
+      }
+    } catch( Exception e ) {
+      System.err.println( "Couldn't get last id... " + e );
+    }
+    return 0;
   }
   
   public Streamer rewind() {
@@ -52,15 +69,15 @@ public class Streamer {
 
     try {
       System.out.println( "Starting stream..." );
-      this.sendUpdate(out.println( "<script>parent.Dashboard.start();</script>" );
+      this.send( "start","" );
       out.flush();
 
       // while we don't encounter any errors writing to the client...
       while( ! out.checkError() ) {
         this.sendModelUpdates();
-        //this.sendWallUpdates();
-        //this.sendValueUpdates();
-        //this.sendAgentUpdates();
+        this.sendWallUpdates();
+        this.sendValueUpdates();
+        this.sendAgentUpdates();
         Thread.sleep(30);  // and breath ...
       }
     } catch( Exception e ) {
@@ -104,17 +121,27 @@ public class Streamer {
   // sends an method/msg combo to the client
   // we're hiding the details about the JS construction here
   private void send(String method, String msg) {
-    this.out.println( "<script>parent.Dashboard." + method + "('" + msg + "');</script>" );    
+    this.out.println( "<script>parent.Dashboard." + 
+                      method + "(" + msg + ");</script>" );    
   }
   
-  private void sendModelUpdates() {
-    final String sql = "SELECT * FROM model WHERE id > " + this.lastModel + ";";
-    this.rsModel = this.con.createStatement().executeQuery(sql);
+  private String makeSql(String table, int lastId) {
+    return "SELECT * FROM " + table + " WHERE id > " + lastId + ";";
+  }
+
+  private void getRS(String table, int lastId) throws java.sql.SQLException {
+    this.rs = this.con.createStatement()
+                  .executeQuery(this.makeSql(table, lastId));
+  }
+  
+  private void sendModelUpdates() throws java.sql.SQLException {
+    this.getRS("model", this.lastModel);
 
     int id = -1, lightValue, barcode, sonarAngle, sonarDistance, rate;
     String ts, robot, lightColor, pushLeft, pushRight, event, source,
            plan, queue, action, argument;
-    while(this.rsModel.next()) {
+
+    while(this.rs.next()) {
       id            = rs.getInt(1);
       ts            = rs.getString(2);
       robot         = rs.getString(3);
@@ -134,38 +161,152 @@ public class Streamer {
       rate          = rs.getInt(17);
 
       this.send( "update","'" + ts + "','" + robot + "'," +
-        lightValue + ",'" + lightColor + "'," + barcode + "," +
-        sonarAngle + "," + sonarDistance + "," +
-        pushLeft + "," + pushRight + "," +
-        "'" + event + "','" + source + "'," +
-        "'" + plan + "','" + queue + "'," +
-        "'" + action + "','" + argument + "'," +
-        rate + ");</script>\n" );
+                 lightValue + ",'" + lightColor + "'," + barcode + "," +
+                 sonarAngle + "," + sonarDistance + "," +
+                 pushLeft + "," + pushRight + "," +
+                 "'" + event + "','" + source + "'," +
+                 "'" + plan + "','" + queue + "'," +
+                 "'" + action + "','" + argument + "'," + rate );
     }
     out.print( " " ); // force output, causing exception when closed
     out.flush();      // flush to the browser for optimal UI experience
-    this.rsModel.close();  // close this recordset
+    this.rs.close();  // close this recordset
 
-    if( id > this.lastModel ) { this.lastModel = id; } // keep track last sent id
+    if( id > this.lastModel ) { this.lastModel = id; } // track last sent id
   }
 
-  private int getLastId(String source) {
-    final String sql = "SELECT MAX(id) FROM " + source + ";";
-    try {
-      this.rs = this.con.createStatement().executeQuery(sql);
-      if( this.rs.next() ) { 
-        int id = rs.getInt(1);
-        System.out.println( "Last " + source + ".id = " + id );
-        return id;
+  private void sendWallUpdates() throws java.sql.SQLException {
+    this.getRS("sectorWalls", this.lastWalls);
+
+    int id = -1, left, top, walls;
+    String ts = "", robot = "", grid;
+
+    // group the wall updates
+    Map<String,Map<String,Integer>> map = 
+      new HashMap<String,Map<String,Integer>>();
+    while(this.rs.next()) {
+      id    = rs.getInt(1);
+      ts    = rs.getString(2);
+      robot = rs.getString(3);
+      grid  = rs.getString(4);
+      left  = rs.getInt(5);
+      top   = rs.getInt(6);
+      walls = rs.getInt(7);
+
+      if(!map.containsKey(grid)) {
+        map.put(grid, new HashMap<String,Integer>());
       }
-    } catch( Exception e ) {
-      System.err.println( "Couldn't get last id... " + e );
+      map.get(grid).put(left+","+top, walls);
     }
-    return 0;
+
+    // send grouped updates for each grid
+    for(Map.Entry<String,Map<String,Integer>> e : map.entrySet()) {
+      grid = e.getKey();
+      String updateString = "";
+      Map<String,Integer> updates = e.getValue();
+      boolean first = true;
+      for(Map.Entry<String,Integer> w : updates.entrySet()) {
+        if(first) { first = false; } else { updateString += ","; }
+        updateString += "'" + w.getKey() + "' : " + w.getValue();
+      }
+      this.send( grid + ".updateWalls", "'" + ts + "','" + robot + "'," +
+                 "{" + updateString + "}" );
+    }
+    this.out.print( " " ); // force output, causing exception when closed
+    this.out.flush();      // flush to the browser for optimal UI experience
+    this.rs.close();       // close this recordset
+
+    if( id > this.lastWalls ) { this.lastWalls = id; } // track last sent id
   }
+
+  private void sendValueUpdates() throws java.sql.SQLException {
+    this.getRS("sectorValues", this.lastValues);
+
+    int id = -1, left, top, value;
+    String ts = "", robot = "", grid;
+
+    // group the wall updates
+    Map<String,Map<String,Integer>> map = 
+      new HashMap<String,Map<String,Integer>>();
+    while(this.rs.next()) {
+      id    = rs.getInt(1);
+      ts    = rs.getString(2);
+      robot = rs.getString(3);
+      grid  = rs.getString(4);
+      left  = rs.getInt(5);
+      top   = rs.getInt(6);
+      value = rs.getInt(7);
+
+      if(!map.containsKey(grid)) {
+        map.put(grid, new HashMap<String,Integer>());
+      }
+      map.get(grid).put(left+","+top, value);
+    }
+
+    // send grouped updates for each grid
+    for(Map.Entry<String,Map<String,Integer>> e : map.entrySet()) {
+      grid = e.getKey();
+      String updateString = "";
+      Map<String,Integer> updates = e.getValue();
+      boolean first = true;
+      for(Map.Entry<String,Integer> w : updates.entrySet()) {
+        if(first) { first = false; } else { updateString += ","; }
+        updateString += "'" + w.getKey() + "' : " + w.getValue();
+      }
+      this.send( grid + ".updateValues", "'" + ts + "','" + robot + "'," +
+                 "{" + updateString + "}" );
+    }
+    this.out.print( " " ); // force output, causing exception when closed
+    this.out.flush();      // flush to the browser for optimal UI experience
+    this.rs.close();       // close this recordset
+
+    if( id > this.lastValues ) { this.lastValues = id; } // track last sent id
+  }
+
+  private void sendAgentUpdates() throws java.sql.SQLException {
+    this.getRS("sectorAgents", this.lastAgents);
+
+    int id = -1, left, top, bearing;
+    String ts = "", robot = "", grid, name, color;
+
+    // group the agent updates
+    Map<String,Map<String,String>> map = 
+      new HashMap<String,Map<String,String>>();
+    while(this.rs.next()) {
+      id      = rs.getInt(1);
+      ts      = rs.getString(2);
+      robot   = rs.getString(3);
+      grid    = rs.getString(4);
+      name    = rs.getString(5);
+      left    = rs.getInt(6);
+      top     = rs.getInt(7);
+      bearing = rs.getInt(8);
+      color   = rs.getString(9);
+
+      if(!map.containsKey(grid)) {
+        map.put(grid, new HashMap<String,String>());
+      }
+      map.get(grid).put(name, "left:"+left+",top:"+top+",color:'"+color+"'");
+    }
+
+    // send grouped updates for each grid
+    for(Map.Entry<String,Map<String,String>> e : map.entrySet()) {
+      grid = e.getKey();
+      String updateString = "";
+      Map<String,String> updates = e.getValue();
+      boolean first = true;
+      for(Map.Entry<String,String> w : updates.entrySet()) {
+        if(first) { first = false; } else { updateString += ","; }
+        updateString += "'" + w.getKey() + "' : { " + w.getValue() + "}";
+      }
+      this.send( grid + ".updateAgents", "'" + ts + "','" + robot + "'," +
+                 "{" + updateString + "}" );
+    }
+    this.out.print( " " ); // force output, causing exception when closed
+    this.out.flush();      // flush to the browser for optimal UI experience
+    this.rs.close();       // close this recordset
+
+    if( id > this.lastAgents ) { this.lastAgents = id; } // track last sent id
+  }
+  
 }
-
-
-// HERE : TODO: reuse this.rs in genric way for all sequential connections
-
-
