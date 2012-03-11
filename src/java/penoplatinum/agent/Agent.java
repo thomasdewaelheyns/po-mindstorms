@@ -10,9 +10,12 @@ package penoplatinum.agent;
 import org.apache.log4j.Logger;
 
 public class Agent {
-  // setup the logger
+  // setup some loggers
+  static Logger modelLogger  = Logger.getLogger("model");   // 123
+  static Logger wallsLogger  = Logger.getLogger("walls");   // 124
+  static Logger valuesLogger = Logger.getLogger("values");  // 125
+  static Logger agentsLogger = Logger.getLogger("agents");  // 126
 
-  static Logger log = Logger.getLogger(Agent.class.getName());
   // the connection to the Robot
   BluetoothConnection source;
   private MQ mq;
@@ -30,14 +33,18 @@ public class Agent {
     
     mqDispatcher.startMQDispatcher();
     System.out.println("Agent:> Starting logging...");
-    while (this.source.hasNextModelInfo()) {
+    while (this.source.hasNext()) {
       String msg = source.getMessage();
       try {
-        if (msg.length() > 10) {
-          log.info(msg);
+        // TODO: this switch should be handled using polymorphism ;-)
+        switch(source.getType()) {
+          case 123: modelLogger.info(msg);  break;
+          case 124: wallsLogger.info(msg);  break;
+          case 125: valuesLogger.info(msg); break;
+          case 126: agentsLogger.info(msg); break;
         }
-      } catch (Exception e) {
-        System.err.println("failed to log message: " + msg);
+      } catch( Exception e ) {
+        System.err.println( "Failed to log message: " + msg );
       }
     }
     

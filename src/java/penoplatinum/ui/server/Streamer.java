@@ -21,18 +21,23 @@ public class Streamer {
   private InitialContext context;
   private DataSource     ds;
   private Connection     con;
-  private ResultSet      rs;
-  private Integer        last = 0;
+  private ResultSet      rsModel, rsWalls, rsAgents, rsWalls;
+  private Integer        lastModel = 0 , lastWalls = 0, lastAgents = 0,
+                         lastValues = 0;
+  private PrintWriter    out;
 
   public Streamer fastForward() {
     if( this.connect() ) {
-      this.last = this.getLastId();
+      this.lastModel  = this.getLastId("model");
+      this.lastWalls  = this.getLastId("walls");
+      this.lastAgents = this.getLastId("agents");
+      this.lastValues = this.getLastId("values");
     }
     return this;
   }
   
   public Streamer rewind() {
-    this.last = 0;
+    this.lastModel = this.lastWalls = this.lastAgents = this.lastValues = 0;
     return this;
   }
 
@@ -41,58 +46,21 @@ public class Streamer {
                        throws ServletException, IOException 
   {
     response.setContentType("text/html");
-    PrintWriter out = response.getWriter();
+    this.out = response.getWriter();
 
-    // try to connect to the database
-    if( ! this.connect() ) {
-      out.println( "<script>parent.Dashboard.error('failed to connect to DS');</script>" );
-      return;
-    }
+    this.connect();
 
     try {
       System.out.println( "Starting stream..." );
-      out.println( "<script>parent.Dashboard.start();</script>" );
+      this.sendUpdate(out.println( "<script>parent.Dashboard.start();</script>" );
       out.flush();
 
       // while we don't encounter any errors writing to the client...
       while( ! out.checkError() ) {
-        this.getNextBatch();
-        int id = -1, lightValue, barcode, sonarAngle, sonarDistance, rate;
-        String ts, robot, lightColor, pushLeft, pushRight, event, source,
-          plan, queue, action, argument;
-        while(this.rs.next()) {
-          id            = rs.getInt(1);
-          ts            = rs.getString(2);
-          robot         = rs.getString(3);
-          lightValue    = rs.getInt(4);
-          lightColor    = rs.getString(5);
-          barcode       = rs.getInt(6);
-          sonarAngle    = rs.getInt(7);
-          sonarDistance = rs.getInt(8);
-          pushLeft      = rs.getBoolean(9)  ? "true" : "false";
-          pushRight     = rs.getBoolean(10) ? "true" : "false";
-          event         = rs.getString(11);
-          source        = rs.getString(12);
-          plan          = rs.getString(13);
-          queue         = rs.getString(14);
-          action        = rs.getString(15);
-          argument      = rs.getString(16);
-          rate          = rs.getInt(17);
-
-          out.println( "<script>parent.Dashboard.update( " +
-            "'" + ts + "','" + robot + "'," +
-            lightValue + ",'" + lightColor + "'," + barcode + "," +
-            sonarAngle + "," + sonarDistance + "," +
-            pushLeft + "," + pushRight + "," +
-            "'" + event + "','" + source + "'," +
-            "'" + plan + "','" + queue + "'," +
-            "'" + action + "','" + argument + "'," +
-            rate + ");</script>\n" );
-        }
-        out.print( " " ); // force output, causing exception when closed
-        out.flush();      // flush to the browser for optimal UI experience
-        this.rs.close();  // close this recordset
-        if( id > this.last ) { this.last = id; } // keep track last sent id
+        this.sendModelUpdates();
+        //this.sendWallUpdates();
+        //this.sendValueUpdates();
+        //this.sendAgentUpdates();
         Thread.sleep(30);  // and breath ...
       }
     } catch( Exception e ) {
@@ -106,17 +74,16 @@ public class Streamer {
   }
 
   // connects to the datasource
-  private Boolean connect() {
-    if( this.con != null ) { return true; }
+  private void connect() {
+    if( this.con != null ) { return; } // we're already connected
     try {
       this.context = new InitialContext();
       this.ds      = (DataSource)context.lookup("java:db");
       this.con     = ds.getConnection();
     } catch(Exception e) {
-      System.out.println( "Couldn't connect to DataSource" );
-      return false;
+      this.sendError("Couldn't connect to DataSource.");
+      throw new RuntimeException(e);
     }
-    return true;
   }
 
   // disconnects from the datasource
@@ -124,22 +91,71 @@ public class Streamer {
     try {
       this.con.close();
     } catch( SQLException e ) {
-      System.out.println( "Couldn't disconnect from DataSource" );
+      System.err.println( "Couldn't disconnect from DataSource" );
+      throw new RuntimeException(e);
     }
   }
 
-  private void getNextBatch() throws NamingException, SQLException {
-    final String sql = "SELECT * FROM logs WHERE id > " + this.last + ";";
-    this.rs = this.con.createStatement().executeQuery(sql);
+  // sends an error to the client
+  private void sendError(String msg) {
+    this.send( "error", msg );
+  }
+  
+  // sends an method/msg combo to the client
+  // we're hiding the details about the JS construction here
+  private void send(String method, String msg) {
+    this.out.println( "<script>parent.Dashboard." + method + "('" + msg + "');</script>" );    
+  }
+  
+  private void sendModelUpdates() {
+    final String sql = "SELECT * FROM model WHERE id > " + this.lastModel + ";";
+    this.rsModel = this.con.createStatement().executeQuery(sql);
+
+    int id = -1, lightValue, barcode, sonarAngle, sonarDistance, rate;
+    String ts, robot, lightColor, pushLeft, pushRight, event, source,
+           plan, queue, action, argument;
+    while(this.rsModel.next()) {
+      id            = rs.getInt(1);
+      ts            = rs.getString(2);
+      robot         = rs.getString(3);
+      lightValue    = rs.getInt(4);
+      lightColor    = rs.getString(5);
+      barcode       = rs.getInt(6);
+      sonarAngle    = rs.getInt(7);
+      sonarDistance = rs.getInt(8);
+      pushLeft      = rs.getBoolean(9)  ? "true" : "false";
+      pushRight     = rs.getBoolean(10) ? "true" : "false";
+      event         = rs.getString(11);
+      source        = rs.getString(12);
+      plan          = rs.getString(13);
+      queue         = rs.getString(14);
+      action        = rs.getString(15);
+      argument      = rs.getString(16);
+      rate          = rs.getInt(17);
+
+      this.send( "update","'" + ts + "','" + robot + "'," +
+        lightValue + ",'" + lightColor + "'," + barcode + "," +
+        sonarAngle + "," + sonarDistance + "," +
+        pushLeft + "," + pushRight + "," +
+        "'" + event + "','" + source + "'," +
+        "'" + plan + "','" + queue + "'," +
+        "'" + action + "','" + argument + "'," +
+        rate + ");</script>\n" );
+    }
+    out.print( " " ); // force output, causing exception when closed
+    out.flush();      // flush to the browser for optimal UI experience
+    this.rsModel.close();  // close this recordset
+
+    if( id > this.lastModel ) { this.lastModel = id; } // keep track last sent id
   }
 
-  private int getLastId() {
-    final String sql = "SELECT MAX(id) FROM logs;";
+  private int getLastId(String source) {
+    final String sql = "SELECT MAX(id) FROM " + source + ";";
     try {
       this.rs = this.con.createStatement().executeQuery(sql);
       if( this.rs.next() ) { 
         int id = rs.getInt(1);
-        System.out.println( "LastID = " + id );
+        System.out.println( "Last " + source + ".id = " + id );
         return id;
       }
     } catch( Exception e ) {
@@ -148,3 +164,8 @@ public class Streamer {
     return 0;
   }
 }
+
+
+// HERE : TODO: reuse this.rs in genric way for all sequential connections
+
+

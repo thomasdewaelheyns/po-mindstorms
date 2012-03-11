@@ -7,6 +7,7 @@ package penoplatinum.agent;
  *
  * Author: Team Platinum
  */
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -17,6 +18,8 @@ public class BluetoothConnection {
   private PCBluetoothConnection connection;
   private QueuedPacketTransporter endPoint;
   private String nextMsg = "";
+  private int    nextType = 0;
+  private String nextMsg  = "";
 
   public BluetoothConnection() {
     this.connection = new PCBluetoothConnection();
@@ -26,11 +29,12 @@ public class BluetoothConnection {
     this.connection.RegisterTransporter(this.endPoint, penoplatinum.Utils.PACKETID_LOG);
   }
 
-  public Boolean hasNextModelInfo() {
-    int packet;
-    String data;
+  public Boolean hasNext() {
+    int     packet;
+    String  data;
     Boolean logging = true;
-    while (logging) {
+    
+    while(logging) {
       packet = this.endPoint.ReceivePacket();
       data = new Scanner(this.endPoint.getReceiveStream()).nextLine();
       switch (packet) {
@@ -38,13 +42,24 @@ public class BluetoothConnection {
           System.out.println("Log:>" + data);
           break;
         case 123:
-          this.nextMsg = data;
-          return true;
+        case 124:
+        case 125:
+        case 126:
+          if( msg.length() > 10 ) {
+            this.nextType = packet;
+            this.nextMsg  = data;
+            return true;
+          }
       }
     }
+    this.nextType = 0;
     return false;
   }
-
+  
+  public int getType() {
+    return this.nextType;
+  }
+  
   public String getMessage() {
     return this.nextMsg;
   }
@@ -52,6 +67,4 @@ public class BluetoothConnection {
   public PCBluetoothConnection getConnection() {
     return connection;
   }
-  
-  
 }
