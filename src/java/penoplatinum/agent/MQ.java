@@ -25,26 +25,8 @@ import com.rabbitmq.client.AMQP;
 import penoplatinum.Utils;
 
 public abstract class MQ {
-
-  public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
-//  public static String DefaultServer = "192.168.1.120";
-  // configurable properties
-  private String server = "127.0.0.1";
-  private String me = "default";
-  private String channelName = "default";
-  // the actual channel
+  private String  channelName = "default";
   private Channel channel;
-
-  // sets my name, identifying my messages
-  public MQ setMyName(String name) {
-    this.me = name;
-    return this;
-  }
-
-  // connects to a server, setting up the technical communication channel
-  public MQ connectToMQServer() throws java.io.IOException {
-    return connectToMQServer(DefaultServer);
-  }
 
   // connects to a server, setting up the technical communication channel
   public MQ connectToMQServer(String name) throws java.io.IOException {
@@ -57,28 +39,22 @@ public abstract class MQ {
 
   // connects to a queue
   public MQ follow(String name) throws java.io.IOException,
-          java.lang.InterruptedException {
+                                       java.lang.InterruptedException
+  {
     this.channel.exchangeDeclare(name, "fanout");
-
     String queueName = this.channel.queueDeclare().getQueue();
     this.channel.queueBind(queueName, name, "");
     this.channel.basicConsume(queueName, true,
-            new DefaultConsumer(this.channel) {
-
-              @Override
-              public void handleDelivery(String consumerTag,
-                      Envelope envelope,
-                      AMQP.BasicProperties properties,
-                      byte[] body) throws IOException {
-                String[] parts = new String(body).split(":");
-                String sender = parts[0];
-                String message = parts[1];
-                if (!me.equals(sender)) {
-                  handleIncomingMessage(sender, message);
-                }
-              }
-            });
-
+      new DefaultConsumer(this.channel) {
+        @Override
+        public void handleDelivery(String consumerTag,
+                                   Envelope envelope,
+                                   AMQP.BasicProperties properties,
+                                   byte[] body) throws IOException
+        {
+          handleIncomingMessage(new String(body));
+        }
+      });
     this.channelName = name;
     return this;
   }
@@ -86,10 +62,8 @@ public abstract class MQ {
   // public method to send a message. the implementation adds the internal
   // identification of the sender.
   public MQ sendMessage(String message) throws java.io.IOException {
-    message = this.me + ":" + message;
     try {
       this.channel.basicPublish(this.channelName, "", null, message.getBytes());
-
     } catch (Exception e) {
       Utils.Log("MQ error!");
     }
@@ -98,5 +72,5 @@ public abstract class MQ {
 
   // this class is abstract to allow users to provide a callback-style
   // method to handle the incoming messages at their level
-  protected abstract void handleIncomingMessage(String sender, String message);
+  protected abstract void handleIncomingMessage(String message);
 }

@@ -30,7 +30,6 @@ public class Agent {
 
   // start a loop that continues to fetch and dispatch messages
   public void start() {
-    
     mqDispatcher.startMQDispatcher();
     System.out.println("Agent:> Starting logging...");
     while (this.source.hasNext()) {
@@ -47,6 +46,5 @@ public class Agent {
         System.err.println( "Failed to log message: " + msg );
       }
     }
-    
   }
 }

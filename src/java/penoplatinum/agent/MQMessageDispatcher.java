@@ -18,33 +18,29 @@ import penoplatinum.bluetooth.IPacketHandler;
  * @author MHGameWork
  */
 public class MQMessageDispatcher {
-
   private CallbackPacketTransporter transporter;
   private final IConnection connection;
   private MQ mq;
 
   public MQMessageDispatcher(IConnection connection) {
     this.connection = connection;
-
   }
 
   public void startMQDispatcher() {
-
-
     this.mq = new MQ() {
-
       @Override
-      protected void handleIncomingMessage(String sender, String message) {
+      protected void handleIncomingMessage(String message) {
         try {
           transporter.getSendStream().write(message.getBytes());
           transporter.SendPacket(AgentConfig.MQRelayPacket);
         } catch (IOException ex) {
-          Logger.getLogger(MQMessageDispatcher.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(MQMessageDispatcher.class.getName())
+            .log(Level.SEVERE, null, ex);
         }
       }
     };
     try {
-      mq.setMyName("Banaan").connectToMQServer().follow(Config.GHOST_CHANNEL);
+      mq.connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
       // TODO: remove hard coded data
     } catch (IOException ex) {
       Utils.Log("Kaput!");
@@ -52,15 +48,16 @@ public class MQMessageDispatcher {
       Utils.Log("Kaput!");
     }
 
-    this.transporter = new CallbackPacketTransporter(connection, new IPacketHandler() {
-
+    this.transporter = new CallbackPacketTransporter(connection, 
+                                                     new IPacketHandler() {
       @Override
       public void receive(int packetID, byte[] dgram) {
         String s = new String(dgram);
         try {
           mq.sendMessage(s);
         } catch (IOException ex) {
-          Logger.getLogger(MQMessageDispatcher.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(MQMessageDispatcher.class.getName())
+            .log(Level.SEVERE, null, ex);
         }
       }
     });

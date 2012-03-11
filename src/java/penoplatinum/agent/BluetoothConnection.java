@@ -12,6 +12,7 @@ import java.io.*;
 import java.util.Scanner;
 
 import penoplatinum.bluetooth.*;
+import penoplatinum.Utils;
 
 public class BluetoothConnection {
 
@@ -19,14 +20,13 @@ public class BluetoothConnection {
   private QueuedPacketTransporter endPoint;
   private String nextMsg = "";
   private int    nextType = 0;
-  private String nextMsg  = "";
 
   public BluetoothConnection() {
     this.connection = new PCBluetoothConnection();
     this.connection.initializeConnection();
     this.endPoint = new QueuedPacketTransporter(this.connection);
     this.connection.RegisterTransporter(this.endPoint, 123);
-    this.connection.RegisterTransporter(this.endPoint, penoplatinum.Utils.PACKETID_LOG);
+    this.connection.RegisterTransporter(this.endPoint, Utils.PACKETID_LOG);
   }
 
   public Boolean hasNext() {
@@ -45,7 +45,7 @@ public class BluetoothConnection {
         case 124:
         case 125:
         case 126:
-          if( msg.length() > 10 ) {
+          if( data.length() > 10 ) {
             this.nextType = packet;
             this.nextMsg  = data;
             return true;
