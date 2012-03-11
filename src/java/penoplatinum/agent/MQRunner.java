@@ -7,7 +7,7 @@ package penoplatinum.agent;
  *
  * Author: Team Platinum
  */
-import java.io.IOException;
+import penoplatinum.Config;
 
 public class MQRunner {
 
@@ -23,7 +23,7 @@ public class MQRunner {
         // handling the incoming messages ...
         System.out.println("[" + sender + "] " + message);
       }
-    }.setMyName(argv[0]).connectToMQServer().follow("Ghost");
+    }.setMyName(argv[0]).connectToMQServer().follow(Config.GHOST_CHANNEL);
 
     // be nice ...
     mq.sendMessage("Hello everybody.");

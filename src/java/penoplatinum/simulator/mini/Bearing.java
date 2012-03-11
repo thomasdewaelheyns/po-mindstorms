@@ -81,8 +81,8 @@ public class Bearing {
         newY = -x;
         break;
       case Bearing.S:
-        newX = -y;
-        newY = -x;
+        newX = -x;
+        newY = -y;
         break;
       case Bearing.W:
         newX = -y;

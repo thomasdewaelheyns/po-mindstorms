@@ -3,6 +3,7 @@ package penoplatinum.simulator;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import penoplatinum.Config;
 import penoplatinum.agent.MQ;
 
 /**
@@ -42,7 +43,7 @@ public class SimulationRobotAgent implements RobotAgent {
       }
     };
     try {
-      mq.setMyName(robot.getName()).connectToMQServer().follow("Ghost");
+      mq.setMyName(robot.getName()).connectToMQServer().follow(Config.GHOST_CHANNEL);
       // TODO: remove hard coded data
     } catch (IOException ex) {
       System.err.println("IOException gevangen, zoek voor meer info");

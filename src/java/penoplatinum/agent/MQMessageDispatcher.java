@@ -7,11 +7,11 @@ package penoplatinum.agent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import penoplatinum.Config;
 import penoplatinum.Utils;
 import penoplatinum.bluetooth.CallbackPacketTransporter;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.IPacketHandler;
-import penoplatinum.bluetooth.PCBluetoothConnection;
 
 /**
  *
@@ -44,7 +44,7 @@ public class MQMessageDispatcher {
       }
     };
     try {
-      mq.setMyName("Banaan").connectToMQServer().follow("Ghost");
+      mq.setMyName("Banaan").connectToMQServer().follow(Config.GHOST_CHANNEL);
       // TODO: remove hard coded data
     } catch (IOException ex) {
       Utils.Log("Kaput!");

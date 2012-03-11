@@ -148,22 +148,6 @@ public class GhostProtocolHandler implements MessageHandler {
     for (int i = 0; i <= 3; i++) {
 
       Boolean newVal = decodeTrit(values[i]);
-//      Boolean oldVal = sector.hasWall(i);
-//      if (newVal == oldVal) {
-//        continue; // No changes
-//      }
-//      if (newVal == null) {
-//        continue; // Remote has no information
-//      }
-//
-//      if (oldVal == null) {
-//        // Use remote information (do nothing)
-//      } else {
-//        // Conflicting information, set to unknown
-//        newVal = null;
-//      }
-//
-//
       if (newVal == null) {
         sector.clearWall(i);
       } else if (newVal) {
@@ -215,7 +199,7 @@ public class GhostProtocolHandler implements MessageHandler {
       // END WARNING
 
       if (ourCode == code) {
-        final int relativeBearing = (bs.get(i).getTagBearing() - bearing + 4) % 4;
+        final int relativeBearing = (bearing - bs.get(i).getTagBearing() + 4) % 4;
         model.getGrid().importGrid(grid, bs.get(i).getLeft(), bs.get(i).getTop(), agent.getLeft(), agent.getTop(), relativeBearing);
         model.getGrid().refresh();
       }
@@ -228,7 +212,7 @@ public class GhostProtocolHandler implements MessageHandler {
 
   private int invertCode(int code) {
     int out = 0;
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 6; i++) { //TODO: hardcoded barcode length!!!
       out |= code & 1;
       code >>= 1;
       out <<= 1;

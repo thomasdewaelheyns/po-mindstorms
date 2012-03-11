@@ -411,6 +411,10 @@ public class GhostModel implements Model {
       getAgent().getSector().setTagCode(barcode);
       getAgent().getSector().setTagBearing(getAgent().getBearing());
       
+      
+      
+      //To fix protocol shitiness, send a position cmd for safety
+      protocol.sendPosition();
       protocol.sendBarcode(barcode, getAgent().getBearing());
     }
     this.barcode = barcode;

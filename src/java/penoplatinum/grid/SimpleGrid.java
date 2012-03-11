@@ -215,9 +215,13 @@ public class SimpleGrid implements Grid {
       int x = s.getLeft() - otherX;
       int y = s.getTop() - otherY;
 
-      // Now rotate this vector
-      Point p = Bearing.mapToNorth(rotation, x, y);
+      {
+        // Now rotate this vector
+        Point p = Bearing.mapToNorth(rotation, x, y);
 
+        x = p.getX();
+        y = p.getY();
+      }
       // Now apply this vector to our coordinates
       x += localX;
       y += localY;

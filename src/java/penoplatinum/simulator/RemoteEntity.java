@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import penoplatinum.Config;
 import penoplatinum.agent.MQ;
 import penoplatinum.bluetooth.CircularQueue;
 import penoplatinum.simulator.view.ViewRobot;
@@ -39,7 +40,7 @@ public class RemoteEntity implements RobotEntity {
             messageQueue.insert(message);
           }
         }
-      }.setMyName(entityName + "Remote").connectToMQServer().follow("ghost-protocol");
+      }.setMyName(entityName + "Remote").connectToMQServer().follow(Config.GHOST_CHANNEL);
     } catch (IOException ex) {
       Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
     } catch (InterruptedException ex) {

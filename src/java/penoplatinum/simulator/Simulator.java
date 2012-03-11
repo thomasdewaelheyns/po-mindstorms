@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import penoplatinum.Config;
 import penoplatinum.Utils;
 import penoplatinum.agent.MQ;
 
@@ -180,7 +179,7 @@ public class Simulator {
           messageQueue.add(sender);
 
         }
-      }.setMyName("Simulatorrrr").connectToMQServer().follow("ghost-protocol");
+      }.setMyName("Simulatorrrr").connectToMQServer().follow(Config.GHOST_CHANNEL);
     } catch (IOException ex) {
       System.err.println("IOException gevangen, zoek voor meer info");
       //Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
