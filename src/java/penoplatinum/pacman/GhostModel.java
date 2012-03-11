@@ -66,7 +66,7 @@ public class GhostModel implements Model {
     this.agent = new GhostAgent(name);
     this.setupGrid();
     
-    protocol = new GhostProtocolHandler(agent, this);
+    protocol = new GhostProtocolHandler(agent, this, new GhostProtocolModelCommandHandler(this));
     final Queue queue = new Queue();
     queue.subscribe(new MessageHandler() {
       

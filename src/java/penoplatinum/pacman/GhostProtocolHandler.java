@@ -28,12 +28,14 @@ public class GhostProtocolHandler implements MessageHandler {
   // a reference to the Agent
   private Agent agent;
   private final GhostModel model;
+  private final GhostProtocolCommandHandler commandHandler;
 
   // we need a least a reference to the Agent we're handling for
   // TODO: this should become a Model
-  public GhostProtocolHandler(Agent agent, GhostModel model) {
+  public GhostProtocolHandler(Agent agent, GhostModel model, GhostProtocolCommandHandler commandHandler) {
     this.agent = agent;
     this.model = model;
+    this.commandHandler = commandHandler;
 
   }
 
@@ -52,13 +54,13 @@ public class GhostProtocolHandler implements MessageHandler {
         if ("NAME".equals(command)) {
           this.handleName(agentName, scanner.next());
         } else if ("POSITION".equals(command)) {
-          this.handlePosition(agentName, scanner.nextInt(), scanner.nextInt());
+          commandHandler.handlePosition(agentName, scanner.nextInt(), scanner.nextInt());
         } else if ("DISCOVER".equals(command)) {
-          this.handleDiscover(agentName, scanner.nextInt(), scanner.nextInt(),
+          commandHandler.handleDiscover(agentName, scanner.nextInt(), scanner.nextInt(),
                   scanner.nextInt(), scanner.nextInt(),
                   scanner.nextInt(), scanner.nextInt());
         } else if ("BARCODE".equals(command)) {
-          this.handleBarcode(agentName, scanner.nextInt(), scanner.nextInt());
+          commandHandler.handleBarcode(agentName, scanner.nextInt(), scanner.nextInt());
         }
       }
     } catch (Exception e) {
@@ -101,126 +103,6 @@ public class GhostProtocolHandler implements MessageHandler {
     //TODO: this.agent.activate();
   }
 
-  private void handlePosition(String agentName, int x, int y) {
-    // update the agent's position
-    int bearing = Bearing.N; //TODO: 
-    final Grid grid = model.getGrid(agentName);
-
-    Sector sector = grid.getSector(x, y);
-    if (sector == null) {
-      sector = new Sector();
-      sector.setCoordinates(x, y);
-      grid.addSector(sector);
-    }
-    Agent agent = grid.getAgent(agentName);
-    if (agent == null) {
-      // Add the agent when it doesn't exist
-      agent = new GhostAgent(agentName);
-      grid.addAgent(agent);
-    }
-
-    grid.agentsNeedRefresh();
-    agent.assignSector(sector, bearing);
-
-    Utils.Log("Grid refresh!");
-    grid.refresh(); //TODO: this shouldn't run on the robot
-
-
-
-  }
-
-  private void handleDiscover(String agentName, int x, int y,
-          int n, int e, int s, int w) {
-    final Grid grid = model.getGrid(agentName);
-    Sector sector = grid.getSector(x, y);
-
-
-    if (sector == null) {
-      sector = new Sector();
-      sector.setCoordinates(x, y);
-      grid.addSector(sector);
-    }
-
-
-    int[] values = new int[]{n, e, s, w};
-
-
-    for (int i = 0; i <= 3; i++) {
-
-      Boolean newVal = decodeTrit(values[i]);
-      if (newVal == null) {
-        sector.clearWall(i);
-      } else if (newVal) {
-        sector.addWall(i);
-      } else {
-        sector.removeWall(i);
-      }
-
-    }
-
-
-    // info set!! :P
-
-    grid.refresh(); //TODO: this shouldn't run on the robot
-
-  }
-
-  private void handleBarcode(String agentName, int code, int bearing) {
-
-
-
-    final Grid grid = model.getGrid(agentName);
-    Agent agent = grid.getAgent(agentName);
-    agent.getSector().setTagCode(code);
-    agent.getSector().setTagBearing(bearing);
-
-    // tag the current sector of the agent with the given barcode
-    // check if we have it too
-    // if so, import the agents map in our grid,
-    //        create translators to continously import its information
-    //        in our own grid
-    ArrayList<Sector> bs = model.getBarcodeSectors();
-    for (int i = 0; i < bs.size(); i++) {
-      int ourCode = bs.get(i).getTagCode();
-
-      int invertedCode = invertCode(code);
-
-      if (ourCode == invertedCode) {
-        code = invertedCode;
-
-        // Switch bearing
-        bearing = Bearing.reverse(bearing);
-      }
-
-
-      // WARNING: this is cheat!!
-      bearing = Bearing.reverse(bearing);
-      code = ourCode;
-      // END WARNING
-
-      if (ourCode == code) {
-        final int relativeBearing = (bearing - bs.get(i).getTagBearing() + 4) % 4;
-        model.getGrid().importGrid(grid, bs.get(i).getLeft(), bs.get(i).getTop(), agent.getLeft(), agent.getTop(), relativeBearing);
-        model.getGrid().refresh();
-      }
-
-
-    }
-
-
-  }
-
-  private int invertCode(int code) {
-    int out = 0;
-    for (int i = 0; i < 6; i++) { //TODO: hardcoded barcode length!!!
-      out |= code & 1;
-      code >>= 1;
-      out <<= 1;
-    }
-    out >>= 1;
-    return out;
-  }
-
   private void sendJoin() {
     this.queue.send("JOIN");
   }
@@ -251,7 +133,7 @@ public class GhostProtocolHandler implements MessageHandler {
     return wall == null ? 2 : (wall ? 1 : 0);
   }
 
-  private Boolean decodeTrit(int wall) {
+  public static Boolean decodeTrit(int wall) {
     return wall == 2 ? null : (wall == 1);
   }
 
