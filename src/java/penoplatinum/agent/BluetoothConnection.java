@@ -57,7 +57,7 @@ public class BluetoothConnection {
         case 124:
         case 125:
         case 126:
-          if (data.length() > 10) {
+          if( data.length() > 10 ) {
             this.nextType = packet;
             this.nextMsg = data;
             return true;

@@ -9,7 +9,7 @@ CREATE TABLE model (
   robot         VARCHAR(50),  -- robot name
   lightValue    INTEGER,      -- value read by the light sensor
   lightColor    VARCHAR(10),  -- interpreted color by the robot
-  averageLightValue
+  avgLightValue INTEGER,      -- current average lightValue
   barcode       INTEGER,      -- detected barcode
   sonarAngle    INTEGER,      -- current sonar angle
   sonarDistance INTEGER,      -- current sonar distance
@@ -19,7 +19,7 @@ CREATE TABLE model (
   ir4           INTEGER,
   ir5           INTEGER,
   ir_dist       INTEGER,      -- the shortes distance
-  walls
+  walls         INTEGER,      -- walls configuration of current sector
   value_n       INTEGER,      -- value of the sector north of me
   value_e       INTEGER,      --                     east
   value_s       INTEGER,      --                     south
@@ -29,7 +29,8 @@ CREATE TABLE model (
   plan          VARCHAR(25),  -- navigator plan (e.g.: go north)
   queue         VARCHAR(128), --                (e.g.: turn left, go forward)
   action        VARCHAR(25),  -- current action (e.g.: go forward)
-  argument      VARCHAR(25)   -- e.g.: (distance)20cm (turn)-90deg
+  argument      VARCHAR(25),  -- e.g.: (distance)20cm (turn)-90deg
+  rate          INTEGER       -- frame rate
 );
 
 CREATE TABLE sectorWalls (

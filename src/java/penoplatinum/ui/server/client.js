@@ -26,9 +26,9 @@
     document.getElementById(id).className = className;
   },
 
-  updateLight = function updateLight( lightValue, lightColor ) {
+  updateLight = function updateLight( lightValue, lightColor, avgLightValue ) {
     var v = lightColor / 4;
-    updateHTML ( "lightValue", lightValue );
+    updateHTML ( "lightValue", lightValue + " / " + avgLightValue );
     updateStyle( "lightValue", "backgroundColor", "rgb("+v+","+v+","+v+")" );
     updateHTML ( "lightColor", lightColor );
     updateClass( "lightColor", lightColor );
@@ -192,7 +192,7 @@
       updateHTML( "timeStamp", update.timestamp );
       updateHTML( "robotName", update.robot     );
       // model
-      updateLight   ( update.lightValue, update.lightColor    );
+      updateLight   ( update.lightValue, update.lightColor, update.avgLightValue );
       updateBarcode ( update.barcode                          );
       updateSonar   ( update.sonarAngle, update.sonarDistance );
       updateIR      ( update.ir, update.irDist );
@@ -215,21 +215,21 @@
   // and expose our public functionality:
   
   // public method used by JSONP to update the dashboard
-  dashboard.update = function update( timestamp,       robot,
-                                      lightValue,      lightColor, 
+  dashboard.update = function update( timestamp,  robot,
+                                      lightValue, lightColor, avgLightValue
                                       barcode,
-                                      sonarAngle,      sonarDistance,
+                                      sonarAngle, sonarDistance,
                                       ir1, ir2, ir3, ir4, ir5, irDist,
                                       walls, valN, valE, valS, valW,
                                       navigatorEvent,  navigatorSource,
                                       navigatorAction, navigatorActionQueue,
-                                      actionKind,      actionArgument,
+                                      actionKind, actionArgument,
                                       rate )
   {
     // add the update to the queue ...
     queue.push( {
       timestamp : timestamp,             robot : robot,
-      lightValue : lightValue,           lightColor : lightColor,
+      lightValue : lightValue,           lightColor : lightColor, avgLightValue : avgLightValue,
       barcode : barcode,
       sonarAngle : sonarAngle -90,       sonarDistance : sonarDistance,
       ir : [ ir1, ir2, ir3, ir4, ir5 ],  irDist: irDist,

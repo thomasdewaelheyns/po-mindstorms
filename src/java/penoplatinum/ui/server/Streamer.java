@@ -82,6 +82,7 @@ public class Streamer {
       }
     } catch( Exception e ) {
       // nothing todo, it's in fact normal ending when client disconnects
+      throw new RuntimeException(e);
     } finally {
       // after not exposing the exception, clean up
       System.out.println( "Closing Stream..." );
@@ -137,7 +138,10 @@ public class Streamer {
   private void sendModelUpdates() throws java.sql.SQLException {
     this.getRS("model", this.lastModel);
 
-    int id = -1, lightValue, barcode, sonarAngle, sonarDistance, rate;
+    int id = -1, lightValue, avgLightValue, barcode, sonarAngle, 
+        ir1, ir2, ir3, ir4, ir5, ir_dist, 
+        walls, value_n, value_e, value_s, value_w,
+        sonarDistance, rate;
     String ts, robot, lightColor, pushLeft, pushRight, event, source,
            plan, queue, action, argument;
 
@@ -147,23 +151,37 @@ public class Streamer {
       robot         = rs.getString(3);
       lightValue    = rs.getInt(4);
       lightColor    = rs.getString(5);
-      barcode       = rs.getInt(6);
-      sonarAngle    = rs.getInt(7);
-      sonarDistance = rs.getInt(8);
-      pushLeft      = rs.getBoolean(9)  ? "true" : "false";
-      pushRight     = rs.getBoolean(10) ? "true" : "false";
-      event         = rs.getString(11);
-      source        = rs.getString(12);
-      plan          = rs.getString(13);
-      queue         = rs.getString(14);
-      action        = rs.getString(15);
-      argument      = rs.getString(16);
-      rate          = rs.getInt(17);
+      avgLightValue = rs.getInt(6);
+      barcode       = rs.getInt(7);
+      sonarAngle    = rs.getInt(8);
+      sonarDistance = rs.getInt(9);
+      ir1           = rs.getInt(10);
+      ir2           = rs.getInt(11);
+      ir3           = rs.getInt(12);
+      ir4           = rs.getInt(13);
+      ir5           = rs.getInt(14);
+      ir_dist       = rs.getInt(15);
+      walls         = rs.getInt(16);
+      value_n       = rs.getInt(17);
+      value_e       = rs.getInt(18);
+      value_s       = rs.getInt(19);
+      value_w       = rs.getInt(20);
+      event         = rs.getString(21);
+      source        = rs.getString(22);
+      plan          = rs.getString(23);
+      queue         = rs.getString(24);
+      action        = rs.getString(25);
+      argument      = rs.getString(26);
+      rate          = rs.getInt(27);
 
       this.send( "update","'" + ts + "','" + robot + "'," +
-                 lightValue + ",'" + lightColor + "'," + barcode + "," +
+                 lightValue + ",'" + lightColor + "'," + avgLightValue + "," +
+                 barcode + "," +
                  sonarAngle + "," + sonarDistance + "," +
-                 pushLeft + "," + pushRight + "," +
+                 ir1 + "," + ir2 + "," + ir3 + "," + ir4 + "," + ir5 + "," +
+                 ir_dist + "," +
+                 walls + "," + 
+                 value_n + "," + value_e + "," + value_s + "," + value_w + "," +
                  "'" + event + "','" + source + "'," +
                  "'" + plan + "','" + queue + "'," +
                  "'" + action + "','" + argument + "'," + rate );
