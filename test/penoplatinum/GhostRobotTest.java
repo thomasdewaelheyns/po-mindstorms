@@ -1,6 +1,5 @@
 package penoplatinum;
 
-
 import java.io.FileNotFoundException;
 import java.util.Random;
 import org.junit.After;
@@ -15,6 +14,7 @@ import penoplatinum.simulator.SimulationRobotAPI;
 import penoplatinum.simulator.SimulationRobotAgent;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
+import penoplatinum.simulator.mini.Bearing;
 import penoplatinum.simulator.mini.Navigator;
 import penoplatinum.simulator.view.SwingSimulationView;
 
@@ -119,16 +119,36 @@ public class GhostRobotTest {
   }
 
   @Test
-  public void testGhostRobotMazeProtocol3() throws FileNotFoundException {
+  public void testGhostRobotBarcodeMergeSimple() throws FileNotFoundException {
     sim.useMap(SimulatorTest.createSectorMap());
 
 
-    
+
     String name = r.nextInt() + "";
 
-    putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
-    putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
+    SimulatedEntity ent1 = putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
+    SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
 //    putGhostRobot(20 + 5 * 40, 20 + 4 * 40, 0);
+
+    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
+    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
+
+  }
+
+  @Test
+  public void testGhostRobotMazeProtocol3() throws FileNotFoundException {
+    sim.useMap(SimulatorTest.createSectorMazeProtocol());
+
+
+
+    String name = r.nextInt() + "";
+
+    SimulatedEntity ent1 = putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
+    SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
+    putGhostRobot(20 + 5 * 40, 20 + 4 * 40, 0);
+
+//    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
+//    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
 
   }
 

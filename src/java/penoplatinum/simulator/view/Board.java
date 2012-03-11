@@ -49,7 +49,6 @@ public class Board extends JPanel {
   private void setupImages() {
     URL resource = this.getClass().getResource("../images/robot40.png");
     ImageIcon ii = new ImageIcon(resource);
-    RemoteViewRobot.robot = ii.getImage();
     SimulatedViewRobot.robot = ii.getImage();
   }
 

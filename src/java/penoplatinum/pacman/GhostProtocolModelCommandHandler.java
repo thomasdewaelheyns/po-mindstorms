@@ -119,10 +119,10 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
       }
 
 
-      // WARNING: this is cheat!!
-      bearing = Bearing.reverse(bearing);
-      code = ourCode;
-      // END WARNING
+//      // WARNING: this is cheat!!
+//      bearing = Bearing.reverse(bearing);
+//      code = ourCode;
+//      // END WARNING
 
       if (ourCode == code) {
         final int relativeBearing = (bearing - bs.get(i).getTagBearing() + 4) % 4;

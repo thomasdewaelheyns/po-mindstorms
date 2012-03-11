@@ -188,7 +188,7 @@ public class GhostDriver implements Driver {
       return;
     }
     queue.clearActionQueue();
-    queue.add(new MoveAction(model, 0.2f).setIsNonInterruptable(true));
+    queue.add(new MoveAction(model, 0.05f).setIsNonInterruptable(false));
     
   }
   
@@ -202,6 +202,7 @@ public class GhostDriver implements Driver {
     if (model.getLine() == Line.NONE) {
       return;
     }
+    if (model.isReadingBarcode()) return;
     // Line detected
     //newEvent("Line " + (model.getLine() == Line.BLACK ? "Black" : "White"), "Lightsensor", "Align and evade"); //TODO: maybe
     queue.clearActionQueue();

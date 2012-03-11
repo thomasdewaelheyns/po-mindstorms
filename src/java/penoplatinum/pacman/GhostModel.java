@@ -61,28 +61,28 @@ public class GhostModel implements Model {
   private boolean isSweepDataChanged;
   private GhostProtocolHandler protocol;
   private ArrayList<Sector> barcodeSectors = new ArrayList<Sector>();
-  
+
   public GhostModel(String name) {
     this.agent = new GhostAgent(name);
     this.setupGrid();
-    
+
     protocol = new GhostProtocolHandler(agent, this, new GhostProtocolModelCommandHandler(this));
     final Queue queue = new Queue();
     queue.subscribe(new MessageHandler() {
-      
+
       @Override
       public void useQueue(Queue queue) {
       }
-      
+
       @Override
       public void receive(String msg) {
         outbox.add(msg);
       }
     });
     protocol.useQueue(queue);
-    
+
   }
-  
+
   private void log(String msg) {
     if (0 == 0) {
       return;
@@ -104,11 +104,11 @@ public class GhostModel implements Model {
     this.myGrid.displayOn(view);
     return this;
   }
-  
+
   public Grid getGrid() {
     return this.myGrid;
   }
-  
+
   public Model setProcessor(ModelProcessor processor) {
     this.processor = processor;
     this.processor.setModel(this);
@@ -117,7 +117,7 @@ public class GhostModel implements Model {
 
   // receive an update of the sensor values
   public Model updateSensorValues(int[] values) {
-    
+
     if (values.length != SENSORVALUES_NUM) {
       throw new RuntimeException("Invalid number of sensorvalues given!");
     }
@@ -125,33 +125,33 @@ public class GhostModel implements Model {
     //this.prevSensors = this.sensors.clone(); //TODO: WARNING GC
     this.sensors = values;
     this.process();
-    
+
     return this;
-    
-    
+
+
   }
 
   // triggers the processor(s) to start processing the sensordata and update
   // the grid
   private void process() {
-    
+
     setScanningLightData(false); // Resets this flag to false
     sweepComplete = false;
     if (this.processor != null) {
       this.processor.process();
     }
     isSweepDataChanged = false;
-    
+
   }
-  
+
   public void updateSonarValues(List<Integer> distances, List<Integer> angles) {
     this.distances = distances; //TODO: remove double
     this.sonarValues = distances;
     this.angles = angles;
-    
+
     this.newSonarValues = true;
     isSweepDataChanged = true;
-    
+
     this.process();
   }
 
@@ -174,68 +174,68 @@ public class GhostModel implements Model {
       inbox.clear();
     }
   }
-  
+
   public List<String> getOutgoingMessages() {
     return this.outbox;
   }
-  
+
   public void processMessage(String msg) {
     protocol.receive(msg);
   }
-  
+
   public void clearOutbox() {
     this.outbox.clear();
   }
-  
+
   public Agent getAgent() {
     return this.agent;
   }
-  
+
   public boolean hasNewSonarValues() {
     return this.newSonarValues;
   }
-  
+
   public void markSonarValuesProcessed() {
     this.newSonarValues = false;
   }
-  
+
   public void updateSector(Sector newSector) {
     this.prevSector = this.currentSector;
     this.currentSector = newSector;
     needsGridUpdate = true;
-    
-    
+
+
   }
   private boolean needsGridUpdate;
-  
+
   public boolean needsGridUpdate() {
     return needsGridUpdate;
   }
-  
+
   public void markGridUpdated() {
     needsGridUpdate = false;
   }
-  
+
   public void markSectorUpdated(Sector current) {
     protocol.sendDiscover(current);
   }
-  
+
   public Sector getDetectedSector() {
     return this.currentSector;
   }
-  
+
   public Sector getCurrentSector() {
     return this.agent.getSector();
   }
-  
+
   public int getLeftFreeDistance() {
     return getWallLeftDistance();
   }
-  
+
   public int getFrontFreeDistance() {
     return getWallFrontDistance();
   }
-  
+
   public int getRightFreeDistance() {
     return getWallRightDistance();
   }
@@ -247,7 +247,7 @@ public class GhostModel implements Model {
     //       bad sign
     return this.prevSector.getWalls() != this.currentSector.getWalls();
   }
-  
+
   public String explain() {
     Boolean n = this.currentSector.hasWall(Bearing.N);
     Boolean e = this.currentSector.hasWall(Bearing.E);
@@ -264,32 +264,42 @@ public class GhostModel implements Model {
             + "     Front: " + this.getFrontFreeDistance() + "\n"
             + "     Right: " + this.getRightFreeDistance() + "\n";
   }
-  
+
   public void moveForward() {
     this.agent.moveForward();
     this.lastMovement = GhostAction.FORWARD;
     protocol.sendPosition();
+
+    if (lastBarcode != -1) {
+      barcodeSectors.add(getAgent().getSector());
+      getAgent().getSector().setTagCode(lastBarcode);
+      getAgent().getSector().setTagBearing(getAgent().getBearing());
+      //To fix protocol shitiness, send a position cmd for safety
+      protocol.sendBarcode(lastBarcode, getAgent().getBearing());
+      lastBarcode = -1;
+    }
+
   }
-  
+
   public void turnLeft() {
     this.agent.turnLeft();
     this.lastMovement = GhostAction.TURN_LEFT;
   }
-  
+
   public void turnRight() {
     this.agent.turnRight();
     this.lastMovement = GhostAction.TURN_RIGHT;
   }
-  
+
   public void clearLastMovement() {
     this.lastMovement = GhostAction.NONE;
   }
-  
+
   public int getLastMovement() {
 //    this.log("inspecting last movement: " + this.lastMovement);
     return this.lastMovement;
   }
-  
+
   public Grid getGrid(String actorName) {
     Grid get = otherGrids.get(actorName);
     if (get == null) {
@@ -302,17 +312,17 @@ public class GhostModel implements Model {
     }
     return get;
   }
-  
+
   public void printGridStats() {
-    
+
     for (int i = 0; i < otherGrids.values.size(); i++) {
       Grid g = otherGrids.values.get(i);
-      
+
       Utils.Log("Grid " + i + ": " + g.getSectors().size());
-      
+
     }
   }
-  
+
   public ArrayList<Sector> getBarcodeSectors() {
     return barcodeSectors;
   }
@@ -347,11 +357,11 @@ public class GhostModel implements Model {
     this.distances = distances;
     this.angles = angles;
   }
-  
+
   public List<Integer> getDistances() {
     return this.distances;
   }
-  
+
   public List<Integer> getAngles() {
     return this.angles;
   }
@@ -363,24 +373,24 @@ public class GhostModel implements Model {
   public int getSensorValue(int num) {
     return this.sensors[num];
   }
-  
+
   public int getLightSensorValue() {
     return this.sensors[Model.S4];
   }
-  
+
   public Boolean isMoving() {
     return sensors[Model.MS1] != MOTORSTATE_STOPPED || sensors[Model.MS2] != MOTORSTATE_STOPPED;
 //    return this.sensors[Model.M1] != this.prevSensors[Model.M1] &&
 //           this.sensors[Model.M2] != this.prevSensors[Model.M2];
   }
-  
+
   public Boolean isTurning() {
     return isMoving() && (sensors[Model.MS1] != sensors[Model.MS2]);
 //    int changeLeft  = this.sensors[Model.M1] - this.prevSensors[Model.M1];
 //    int changeRight = this.sensors[Model.M2] - this.prevSensors[Model.M2];
 //    return changeLeft != 0 && changeLeft == changeRight * -1;
   }
-  
+
   public boolean isSweepDataChanged() {
     return isSweepDataChanged; //TODO: does this work???
   }
@@ -397,38 +407,33 @@ public class GhostModel implements Model {
     this.sweepChanged = false;
     return this.sweepValues.clone(); //TODO: WARNING GC
   }
-  
+
   public int getBarcode() {
     return this.barcode;
   }
-  private int lastBarcode;
-  
+  private int lastBarcode = -1;
+
   public void setBarcode(int barcode) {
     if (barcode != -1) {
       lastBarcode = barcode;
-      
-      barcodeSectors.add(getAgent().getSector());
-      getAgent().getSector().setTagCode(barcode);
-      getAgent().getSector().setTagBearing(getAgent().getBearing());
-      
-      
-      
-      //To fix protocol shitiness, send a position cmd for safety
-      protocol.sendPosition();
-      protocol.sendBarcode(barcode, getAgent().getBearing());
+
+
+      // Barcode update is sent on next position send!!
+
+
     }
     this.barcode = barcode;
-    
+
   }
-  
+
   public Buffer getLightValueBuffer() {
     return this.lightValueBuffer;
   }
-  
+
   public Line getLine() {
     return line;
   }
-  
+
   public void setLine(Line line) {
     this.line = line;
   }
@@ -440,16 +445,16 @@ public class GhostModel implements Model {
     return (getSensorValue(M1) + getSensorValue(M2)) / 2f;
   }
   private StringBuilder builder = new StringBuilder();
-  
+
   public String toString() {
     int lightValue = this.getSensorValue(S4);
-    
+
     String interpretedColor = "VIOLET!!"; //interpreter.getCurrentColor().toString();
     int sonarAngle = this.getSensorValue(M3) + 90;
     int sonarDistance = getSensorValue(S3);
     boolean pushLeft = this.getSensorValue(S1) == 255;
     boolean pushRight = this.getSensorValue(S2) == 255;
-    
+
     builder.delete(0, builder.length());
     builder.append(lightValue).append(",\"").append(interpretedColor.toLowerCase()).append("\",\"").append(lastBarcode).append("\",").append(sonarAngle).append(',').append(sonarDistance).append(',').append(pushLeft).append(',').append(pushRight);
     return builder.toString();
@@ -457,27 +462,27 @@ public class GhostModel implements Model {
   private boolean gapFound;
   private int gapStartAngle;
   private int gapEndAngle;
-  
+
   public int getGapEndAngle() {
     return gapEndAngle;
   }
-  
+
   public void setGapEndAngle(int gapEndAngle) {
     this.gapEndAngle = gapEndAngle;
   }
-  
+
   public boolean isGapFound() {
     return gapFound;
   }
-  
+
   public void setGapFound(boolean gapFound) {
     this.gapFound = gapFound;
   }
-  
+
   public int getGapStartAngle() {
     return gapStartAngle;
   }
-  
+
   public void setGapStartAngle(int gapStartAngle) {
     this.gapStartAngle = gapStartAngle;
   }
@@ -509,11 +514,11 @@ public class GhostModel implements Model {
   public void setPositionY(float positionY) {
     this.positionY = positionY;
   }
-  
+
   public float getDirection() {
     return direction;
   }
-  
+
   public void setDirection(float direction) {
     this.direction = direction;
   }
@@ -533,108 +538,108 @@ public class GhostModel implements Model {
   private int wallRightDistance;
   private int wallLeftClosestAngle;
   private int wallRightClosestAngle;
-  
+
   public boolean isWallFront() {
     return wallFront;
   }
-  
+
   public void setWallFront(boolean wallFront) {
     this.wallFront = wallFront;
   }
-  
+
   public boolean isWallLeft() {
     return wallLeft;
   }
-  
+
   public void setWallLeft(boolean wallLeft) {
     this.wallLeft = wallLeft;
   }
-  
+
   public boolean isWallRight() {
     return wallRight;
   }
-  
+
   public void setWallRight(boolean wallRight) {
     this.wallRight = wallRight;
   }
-  
+
   public int getWallFrontDistance() {
     return wallFrontDistance;
   }
-  
+
   public void setWallFrontDistance(int wallFrontDistance) {
     this.wallFrontDistance = wallFrontDistance;
   }
-  
+
   public int getWallLeftDistance() {
     return wallLeftDistance;
   }
-  
+
   public void setWallLeftDistance(int wallLeftDistance) {
     this.wallLeftDistance = wallLeftDistance;
   }
-  
+
   public int getWallRightDistance() {
     return wallRightDistance;
   }
-  
+
   public void setWallRightDistance(int wallRightDistance) {
     this.wallRightDistance = wallRightDistance;
   }
-  
+
   public int getWallLeftClosestAngle() {
     return wallLeftClosestAngle;
   }
-  
+
   public void setWallLeftClosestAngle(int wallLeftClosestAngle) {
     this.wallLeftClosestAngle = wallLeftClosestAngle;
   }
-  
+
   public int getWallRightClosestAngle() {
     return wallRightClosestAngle;
   }
-  
+
   public void setWallRightClosestAngle(int wallRightClosestAngle) {
     this.wallRightClosestAngle = wallRightClosestAngle;
   }
   private double totalTurnedAngle;
-  
+
   public double getTotalTurnedAngle() {
     return totalTurnedAngle;
   }
-  
+
   public void setTotalTurnedAngle(double totalTurnedAngle) {
     this.totalTurnedAngle = totalTurnedAngle;
   }
-  
+
   private void setScanningLightData(boolean b) {
   }
-  
+
   public float getAverageBlackValue() {
     return averageBlackValue;
   }
-  
+
   public void setAverageBlackValue(float averageBlackValue) {
     this.averageBlackValue = averageBlackValue;
   }
-  
+
   public float getAverageLightValue() {
     return averageLightValue;
   }
-  
+
   public void setAverageLightValue(float averageLightValue) {
     this.averageLightValue = averageLightValue;
   }
-  
+
   public float getAverageWhiteValue() {
     return averageWhiteValue;
   }
-  
+
   public void setAverageWhiteValue(float averageWhiteValue) {
     this.averageWhiteValue = averageWhiteValue;
   }
   private LightColor currentLightColor = LightColor.Brown;
-  
+
   @Override
   public LightColor getCurrentLightColor() {
     if (0 == 0) {
@@ -648,25 +653,24 @@ public class GhostModel implements Model {
     if (getLightSensorValue() > whiteBorder) {
       return LightColor.White;
     }
-    
+
     return LightColor.Brown;
   }
-  
+
   public void setCurrentLightColor(LightColor value) {
     currentLightColor = value;
   }
   boolean isReadingBarcode = false;
-  
+
   @Override
   public void setReadingBarcode(boolean b) {
     this.isReadingBarcode = b;
   }
-  
+
   @Override
   public boolean isReadingBarcode() {
     return this.isReadingBarcode;
   }
-
   boolean isNextToPacman = false;
   int pacmanX = 0;
   int pacmanY = 0;
@@ -682,5 +686,4 @@ public class GhostModel implements Model {
     this.pacmanX = x;
     this.pacmanY = y;
   }
-  
 }

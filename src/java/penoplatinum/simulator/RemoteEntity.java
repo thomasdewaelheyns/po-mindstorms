@@ -2,12 +2,16 @@ package penoplatinum.simulator;
 
 import java.awt.Point;
 import java.io.IOException;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import penoplatinum.Config;
 import penoplatinum.agent.MQ;
 import penoplatinum.bluetooth.CircularQueue;
+import penoplatinum.pacman.GhostModel;
+import penoplatinum.pacman.GhostProtocolCommandHandler;
+import penoplatinum.pacman.GhostProtocolHandler;
+import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.ViewRobot;
 
 public class RemoteEntity implements RobotEntity {
@@ -16,17 +20,22 @@ public class RemoteEntity implements RobotEntity {
   private double positionX;       // the position of the robot in the world
   private double positionY;       //   expressed in X,Y coordinates
   private double direction;       //   and a direction it's facing
-  SimulationRobotAgent robotAgent;  // the communication layer
   private Simulator simulator;
-  private MQ mq;
   private CircularQueue<String> messageQueue = new CircularQueue<String>(1000); //TODO: warning this can crash
   private String entityName;
+  private GhostProtocolHandler protocol;
+  private int originX;
+  private int originY;
+  private int originDirection;
 
   public RemoteEntity(final String entityName) {
-    this.robotAgent = robotAgent;
     this.entityName = entityName;
+    final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
+
+    createGhostProtocolHandler(ghostModel);
+
     try {
-      mq = new MQ() {
+      MQ mq = new MQ() {
 
         @Override
         protected void handleIncomingMessage(String sender, String message) {
@@ -47,6 +56,33 @@ public class RemoteEntity implements RobotEntity {
       Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
     }
 
+  }
+
+  public RemoteEntity setOrigin(int originX, int originY,int originDirection) {
+    this.originX = originX;
+    this.originY = originY;
+    this.originDirection = originDirection;
+    return this;
+  }
+
+  private void createGhostProtocolHandler(final GhostModel ghostModel) {
+    this.protocol = new GhostProtocolHandler(ghostModel.getAgent(), ghostModel, new GhostProtocolCommandHandler() {
+
+      @Override
+      public void handleBarcode(String agentName, int code, int bearing) {
+      }
+
+      @Override
+      public void handleDiscover(String agentName, int x, int y, int n, int e, int s, int w) {
+      }
+
+      @Override
+      public void handlePosition(String agentName, int x, int y) {
+        penoplatinum.map.Point p = Bearing.mapToNorth(originDirection, x, y);
+        positionX = (p.getX() + originX) * Sector.SIZE + 20;
+        positionY = (p.getY() + originY) * Sector.SIZE + 20;
+      }
+    });
   }
 
   public void useSimulator(Simulator simulator) {
@@ -98,7 +134,6 @@ public class RemoteEntity implements RobotEntity {
   public int getAngle() {
     return (int) ((this.direction + 90) % 360);
   }
-  LinkedBlockingQueue<String> tempQueue = new LinkedBlockingQueue<String>();
 
   // performs the next step in the movement currently executed by the robot
   public void step() {
@@ -106,24 +141,7 @@ public class RemoteEntity implements RobotEntity {
     synchronized (this) {
       while (!messageQueue.isEmpty()) {
         String msg = messageQueue.remove();
-        try {
-          //TODO: Temp message protocol
-          if (msg.charAt(0) == 'p') {
-            // Position msg
-            String[] coords = msg.substring(1).split(",");
-            positionX = Integer.parseInt(coords[0]);
-            positionY = Integer.parseInt(coords[1]);
-            direction = Integer.parseInt(coords[2]);
-            tempQueue.add(msg);
-          }
-
-        } catch (Exception e) {
-          System.out.println("Message error in RemoteEntity!! " + entityName);
-        }
-
-
-
-
+        protocol.receive(msg);
       }
 
     }

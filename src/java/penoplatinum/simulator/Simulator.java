@@ -49,6 +49,20 @@ public class Simulator {
     r.useSimulator(this);
   }
 
+  public RemoteEntity addRemoteEntity(String entityName, int originX, int originY, int originBearing) {
+
+    RemoteEntity ent = new RemoteEntity(entityName);
+    view.addRobot(ent.getViewRobot());
+
+    ent.useSimulator(this);
+
+    robotEntities.add(ent);
+    remoteEntities.put(entityName, ent);
+    ent.setOrigin(originX, originY, originBearing);
+
+    return ent;
+  }
+
   /**
    * On a SimulationView, the Simulator can visually show what happens during
    * the simulation.
@@ -104,8 +118,8 @@ public class Simulator {
     do {
       tile = this.map.get(left, top);
 
-      if(tile == null){
-        System.out.println(left+" "+top+" "+hit.x+" " +hit.y+" "+angle);
+      if (tile == null) {
+        System.out.println(left + " " + top + " " + hit.x + " " + hit.y + " " + angle);
         left++;
       }
       hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
@@ -119,15 +133,15 @@ public class Simulator {
       //        through walls.
       baring = TileGeometry.getHitWall(hit, tile.getSize(), angle);
       /*if(x == hit.x && y == hit.y){
-        System.out.println(left+" "+top+" "+angle+" "+angle/45+" "+hit.x+" "+hit.y+" "+x+" "+y);
-        int pos = angle/45;
-        int[] dLeft = new int[]{0, -1, 1, 0, 0, 1, -1, 0};
-        int[] dTop = new int[]{-1, 0, 0, 1, 1, 0, 0, -1};
-        left += dLeft[pos];
-        top += dTop[pos];
+      System.out.println(left+" "+top+" "+angle+" "+angle/45+" "+hit.x+" "+hit.y+" "+x+" "+y);
+      int pos = angle/45;
+      int[] dLeft = new int[]{0, -1, 1, 0, 0, 1, -1, 0};
+      int[] dTop = new int[]{-1, 0, 0, 1, 1, 0, 0, -1};
+      left += dLeft[pos];
+      top += dTop[pos];
       } else {/**/
-        left = left + Baring.moveLeft(baring);
-        top = top + Baring.moveTop(baring);
+      left = left + Baring.moveLeft(baring);
+      top = top + Baring.moveTop(baring);
       //}
       //System.out.println(left + " " + top);
       x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
@@ -224,14 +238,8 @@ public class Simulator {
         continue;
       }
 
-
-      RemoteEntity ent = new RemoteEntity(name);
-      view.addRobot(ent.getViewRobot());
-
-      ent.useSimulator(this);
-
-      robotEntities.add(ent);
-      remoteEntities.put(name, ent);
+      // dont auto-add remote entities anymore, we can't interpret their local positions anyways
+//      addRemoteEntity(name);
 
     }
   }

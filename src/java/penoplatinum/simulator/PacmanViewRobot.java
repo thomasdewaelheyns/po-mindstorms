@@ -31,7 +31,7 @@ public class PacmanViewRobot implements ViewRobot{
     AffineTransform affineTransform = new AffineTransform(); 
     affineTransform.setToTranslation( this.getX() - 20, this.getY() - 20 );
     affineTransform.rotate( -1 * Math.toRadians(this.getDirection()), 20, 20 ); 
-    g2d.drawImage( RemoteViewRobot.robot, affineTransform, board );
+    g2d.drawImage( SimulatedViewRobot.robot, affineTransform, board );
     
   }
   
