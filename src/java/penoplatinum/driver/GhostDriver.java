@@ -48,6 +48,17 @@ public class GhostDriver implements Driver {
   }
 
   public void step() {
+    
+//    if (model.isReadingBarcode())
+//    {
+//      api.setSpeed(Model.M1, 250);
+//      api.setSpeed(Model.M2, 250);
+//    }
+//    else
+//    {
+//      api.setSpeed(Model.M1, 500);
+//      api.setSpeed(Model.M2, 500);
+//    }
     // ask the navigator what to do next
     switch (nextAction()) {
       case Navigator.MOVE:
@@ -192,12 +203,6 @@ public class GhostDriver implements Driver {
     
   }
   
-  private void checkBarcodeEvent() {
-    if (model.getBarcode() == Barcode.None) {
-      return;
-    }
-  }
-
   private void checkLineEvent() {  //Dit werkt goed
     if (model.getLine() == Line.NONE) {
       return;

@@ -7,6 +7,7 @@ import penoplatinum.grid.GridView;
 import penoplatinum.modelprocessor.BarcodeBlackModelProcessor;
 import penoplatinum.modelprocessor.GridUpdateProcessor;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
+import penoplatinum.modelprocessor.IRModelProcessor;
 import penoplatinum.modelprocessor.InboxProcessor;
 import penoplatinum.modelprocessor.LightColorModelProcessor;
 import penoplatinum.modelprocessor.LineModelProcessor;
@@ -60,12 +61,13 @@ public class GhostRobot implements Robot {
             //new GapModelProcessor(
             //new ProximityModelProcessor(
             //new LightCorruptionModelProcessor(
+            new IRModelProcessor(
             new BarcodeBlackModelProcessor(
             new LineModelProcessor(
             new WallDetectionModelProcessor(
             new InboxProcessor(
             new WallDetectorProcessor(
-            new GridUpdateProcessor())))))));
+            new GridUpdateProcessor()))))))));
     this.model.setProcessor(processors);
 
   }

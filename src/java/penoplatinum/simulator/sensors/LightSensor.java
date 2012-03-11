@@ -29,9 +29,10 @@ public class LightSensor implements Sensor {
   @Override
   public int getValue() {
     // Insert a delay on the sensor
-    int ret = lightValues.remove();
-    lightValues.insert(getActualValue());
-    return ret;
+//    int ret = lightValues.remove();
+//    lightValues.insert(getActualValue());
+//    return ret;
+    return getActualValue();
   }
 
   private int getActualValue() {

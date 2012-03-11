@@ -8,8 +8,8 @@ import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.simulator.Baring;
 import penoplatinum.simulator.view.Board;
 
-public class Sector implements Tile, Cloneable{
-  
+public class Sector implements Tile, Cloneable {
+
   private int data;
   private static int startWalls = 0;
   private static int startBarcode = startWalls + 4;
@@ -31,35 +31,35 @@ public class Sector implements Tile, Cloneable{
   public static int NO_COLOR = -1;
   public static int WHITE = 0;
   public static int BLACK = 4;
-  public static final BarcodeCorrector barcode = new BarcodeBlackBlack();  
-  
+  public static final BarcodeCorrector barcode = new BarcodeBlackBlack();
+
   public Sector() {
     this.data = 0;
   }
-  
+
   private Sector(int data) {
     this.data = data;
   }
-  
+
   @Override
   public int getBarcode() {
     if (BitwiseOperations.hasBit(data, startIsItABarcode)) {
-      return barcode.getExpand()[BitwiseOperations.getBits(data, Sector.startBarcode, 4)]*2;
+      return barcode.getExpand()[BitwiseOperations.getBits(data, Sector.startBarcode, 4)] * 2;
     }
     return -1;
   }
-  
+
   @Override
   public int getColorAt(int x, int y) {
     if (IsOnLine(x, y)) {
       return Sector.WHITE;
     }
-    
+
     int color = this.getBarcodeColor(x, y);
     if (color != Sector.NO_COLOR) {
       return color;
     }
-    
+
     color = Sector.NO_COLOR;
     return color;
   }
@@ -69,35 +69,45 @@ public class Sector implements Tile, Cloneable{
     if (!this.robotIsOnBarcode(x, y)) {
       return Sector.NO_COLOR;
     }
+    
     int pos = ((getBarcodeLocation() & 1) != 0 ? x : y);
     pos -= (this.SIZE / 2);
     pos *= ((getBarcodeLocation() & 2) == 0 ? 1 : -1);
     pos += (this.BARCODE_WIDTH / 2);
-    if(pos<0){
-      return getBarcodeLine(pos);
+
+
+
+
+    if (pos < -0.01f) {
+      throw new RuntimeException("Error in barcode algorithm");
     }
     pos /= Sector.BARCODE_LINE_WIDTH;
+    
+//    float factor = pos - (int) pos;
+//    return (int)(getBarcodeLine((int) (pos)) * factor + getBarcodeLine((int) (pos) + 1));
+
     return getBarcodeLine(pos);
   }
-  
+
   private boolean hasBarcode() {
     return BitwiseOperations.hasBit(data, startIsItABarcode);
   }
   // check if the robot is on a barcode
+
   private boolean robotIsOnBarcode(int x, int y) {
     if (!hasBarcode()) {
       return false;
     }
-    
+
     int tempBarcodeSize = BARCODE_WIDTH / 2;
     int tempSize = Sector.SIZE / 2;
     if (BitwiseOperations.hasBit(data, startBarcodeDirection)) {
-      return (x > (tempSize - tempBarcodeSize)) && (x < (tempSize + tempBarcodeSize));
+      return (x >= (tempSize - tempBarcodeSize)) && (x < (tempSize + tempBarcodeSize));
     } else {
-      return (y > (tempSize - tempBarcodeSize)) && (y < (tempSize + tempBarcodeSize));
+      return (y >= (tempSize - tempBarcodeSize)) && (y < (tempSize + tempBarcodeSize));
     }
   }
-  
+
   public int getBarcodeLocation() {
     return BitwiseOperations.getBits(data, Sector.startBarcodeDirection, 2);
   }
@@ -106,7 +116,7 @@ public class Sector implements Tile, Cloneable{
     return (this.getBarcode() & (1 << (Sector.BARCODE_LINES - line - 1))) == 0
             ? Sector.BLACK : Sector.WHITE;
   }
-  
+
   private boolean IsOnLine(int x, int y) {
     int start = Sector.SIZE - Sector.LINE_WIDTH;
     int end = Sector.SIZE;
@@ -125,7 +135,7 @@ public class Sector implements Tile, Cloneable{
 
     return false;
   }
-  
+
   @Override
   public Boolean hasWall(int location) {
     switch (location) {
@@ -142,7 +152,7 @@ public class Sector implements Tile, Cloneable{
         return BitwiseOperations.hasBit(data, Sector.startWalls + location);
     }
   }
-  
+
   @Override
   public int toInteger() {
     return this.data;
@@ -187,19 +197,20 @@ public class Sector implements Tile, Cloneable{
     data = BitwiseOperations.setBits(data, startBarcodeDirection, 2, direction);
     return this;
   }
+
   public void removeWall(int pos) {
     data = BitwiseOperations.unsetBit(data, pos);
   }
-  
+
   public void removeBarcode() {
     data = BitwiseOperations.unsetBit(data, startIsItABarcode);
   }
-  
+
   @Override
   public int getSize() {
     return this.SIZE;
   }
-  
+
   @Override
   public void drawTile(Graphics2D g2d, int left, int top) {
     g2d.setColor(Board.BROWN);
@@ -209,7 +220,7 @@ public class Sector implements Tile, Cloneable{
     renderBarcode(g2d, left, top);
     renderWalls(g2d, left, top);
   }
-  
+
   @Override
   public int drawSize() {
     return Sector.SIZE * Board.SCALE;
@@ -259,7 +270,6 @@ public class Sector implements Tile, Cloneable{
             DRAW_WALL_LINE_WIDTH,
             DRAW_TILE_SIZE));
   }
-  
 
   private void renderBarcode(Graphics2D g2d, int left, int top) {
     if (!hasBarcode()) {
@@ -270,10 +280,10 @@ public class Sector implements Tile, Cloneable{
       g2d.setColor(getBarcodeLine(line) == Sector.BLACK ? Board.BLACK : Board.WHITE);
       int baseX = DRAW_TILE_SIZE * (left - 1);
       int baseY = DRAW_TILE_SIZE * (top - 1);
-      
+
       int lijnRichting = ((getBarcodeLocation() & 2) == 0 ? line : (8 - line - 1));
       int dx = DRAW_TILE_SIZE / 2 - DRAW_BARCODE_WIDTH / 2 + DRAW_BARCODE_LINE_WIDTH * lijnRichting;
-      
+
       int lengthX = 0;
       int lengthY = 0;
       if ((getBarcodeLocation() & 1) == 0) {
@@ -292,8 +302,8 @@ public class Sector implements Tile, Cloneable{
               lengthY));
     }
   }
-  
-  public Sector clone(){
+
+  public Sector clone() {
     return new Sector(data);
   }
 }

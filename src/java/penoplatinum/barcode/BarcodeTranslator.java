@@ -17,17 +17,21 @@ public class BarcodeTranslator {
     }
     int val = 0;
     int pos = 1;
+    boolean fail = false;
     for (int i = 0; i < barcodeLength; i++) {
       int sum = 0;
-      Utils.print("[");
-      for (int j = (i * list.size()) / barcodeLength; j < (i + 1) * list.size() / barcodeLength; j++) {
+      Utils.print("\n[");
+      System.out.print((((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength))+" ");
+      for (int j = i * list.size() / barcodeLength + 2; j < (i + 1) * list.size() / barcodeLength - 2; j++) {
         sum += list.get(j);
-        Utils.print(list.get(j)+1 + ",");
+        Utils.print(list.get(j)+1 + ":");
       }
       //int averageValue = sum / (((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength));
       if (sum < MINIMUM_BETTER && sum > -MINIMUM_BETTER) {
-        return -1;
+        Utils.print("]\n");
+        fail = true;
       }
+      System.out.print(sum);
       sum = (sum > 0 ? 1 : 0);
       if (reverse) {
         val += pos * sum;
@@ -36,6 +40,10 @@ public class BarcodeTranslator {
         val *= 2;
         val += sum;
       }
+    }
+    Utils.print("]\n");
+    if(fail){
+      return -1;
     }
     return val;
   }

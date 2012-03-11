@@ -20,203 +20,205 @@ import penoplatinum.simulator.RobotAPI;
  */
 public class AngieRobotAPI implements RobotAPI {
 
-    private Motor motorLeft;
-    private Motor motorRight;
-    private TouchSensor touchLeft;
-    private TouchSensor touchRight;
-    private WrappedLightSensor light;
-    private RotatingSonarSensor sonar;
-    private IRSeekerV2 irSeeker;
-    private AngieCalibrationData calibrationData;
-    private RotationMovement movement;
-    private static final int sensorNumberTouchLeft = Model.S1;
-    private static final int sensorNumberTouchRight = Model.S2;
-    private static final int sensorNumberInfraRed = Model.S1;
-    private static final int sensorNumberLight = Model.S4;
-    private static final int sensorNumberSonar = Model.S3;
-    private static final int sensorNumberMotorLeft = Model.M1;
-    private static final int sensorNumberMotorRight = Model.M2;
-    private static final int sensorNumberMotorSonar = Model.M3;
+  private Motor motorLeft;
+  private Motor motorRight;
+  private TouchSensor touchLeft;
+  private TouchSensor touchRight;
+  private WrappedLightSensor light;
+  private RotatingSonarSensor sonar;
+  private IRSeekerV2 irSeeker;
+  private AngieCalibrationData calibrationData;
+  private RotationMovement movement;
+  private static final int sensorNumberTouchLeft = Model.S1;
+  private static final int sensorNumberTouchRight = Model.S2;
+  private static final int sensorNumberInfraRed = Model.S1;
+  private static final int sensorNumberLight = Model.S4;
+  private static final int sensorNumberSonar = Model.S3;
+  private static final int sensorNumberMotorLeft = Model.M1;
+  private static final int sensorNumberMotorRight = Model.M2;
+  private static final int sensorNumberMotorSonar = Model.M3;
 
-    public AngieRobotAPI() {
+  public AngieRobotAPI() {
 
-        //Reset tacho's
-        Motor.A.resetTachoCount();
-        Motor.B.resetTachoCount();
-        Motor.C.resetTachoCount();
-
-
-        motorLeft = Motor.B;
-        motorRight = Motor.C;
+    //Reset tacho's
+    Motor.A.resetTachoCount();
+    Motor.B.resetTachoCount();
+    Motor.C.resetTachoCount();
 
 
-        /*
-        touchLeft = new TouchSensor(SensorPort.S2);
-        touchRight = new TouchSensor(SensorPort.S1);
-        /**/
-        light = new WrappedLightSensor(null, null);
+    motorLeft = Motor.B;
+    motorRight = Motor.C;
+
+
+    /*
+    touchLeft = new TouchSensor(SensorPort.S2);
+    touchRight = new TouchSensor(SensorPort.S1);
+    /**/
+    light = new WrappedLightSensor(null, null);
 //        light.calibrate();
-        sonar = new RotatingSonarSensor(Motor.A, new UltrasonicSensor(SensorPort.S3));
-        irSeeker = new IRSeekerV2(SensorPort.S1, IRSeekerV2.Mode.AC);
-        
+    sonar = new RotatingSonarSensor(Motor.A, new UltrasonicSensor(SensorPort.S3));
+    irSeeker = new IRSeekerV2(SensorPort.S1, IRSeekerV2.Mode.AC);
 
-        calibrationData = new AngieCalibrationData();
-        movement = new RotationMovement();
 
-        //TODO: WARNING: Depedency inconsistent between Angie and RotationMovement
+    calibrationData = new AngieCalibrationData();
+    movement = new RotationMovement();
 
+    //TODO: WARNING: Depedency inconsistent between Angie and RotationMovement
+
+  }
+
+  public void step() {
+    sonar.updateSonarMovement();
+  }
+
+  public RotationMovement getMovement() {
+    return movement;
+  }
+
+  public AngieCalibrationData getCalibrationData() {
+    return calibrationData;
+  }
+
+  public WrappedLightSensor getLight() {
+    return light;
+  }
+
+  public Motor getMotorLeft() {
+    return motorLeft;
+  }
+
+  public Motor getMotorRight() {
+    return motorRight;
+  }
+
+  public RotatingSonarSensor getSonar() {
+    return sonar;
+  }
+
+  public TouchSensor getTouchLeft() {
+    return touchLeft;
+  }
+
+  public TouchSensor getTouchRight() {
+    return touchRight;
+  }
+
+  public IRSeekerV2 getIrSeeker() {
+    return irSeeker;
+  }
+
+  public boolean move(double distance) {
+    getMovement().driveDistance(distance);
+    return true;
+  }
+
+  public void turn(double angle) {
+    getMovement().turnAngle(angle);
+  }
+
+  public void stop() {
+    getMovement().stop();
+  }
+
+  public int[] getSensorValues() {
+    //TODO: GC
+    int[] values = new int[Model.SENSORVALUES_NUM];
+    values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
+    values[sensorNumberMotorRight] = motorRight.getTachoCount();
+    values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
+
+    /*
+    values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
+    values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
+    /**/
+    values[sensorNumberLight] = light.getRawLightValue();
+    values[sensorNumberInfraRed] = irSeeker.getDirection();
+    values[sensorNumberSonar] = (int) sonar.getDistance();
+    values[Model.IR0] = irSeeker.getSensorValue(1);
+    values[Model.IR1] = irSeeker.getSensorValue(2);
+    values[Model.IR2] = irSeeker.getSensorValue(3);
+    values[Model.IR3] = irSeeker.getSensorValue(4);
+    values[Model.IR4] = irSeeker.getSensorValue(5);
+
+
+    //TODO: change on port change
+    values[Model.MS3] = getMotorState(Motor.A);
+    values[Model.MS1] = getMotorState(Motor.B);
+    values[Model.MS2] = getMotorState(Motor.C);
+
+
+
+    return values;
+  }
+
+  private int getMotorState(Motor m) {
+    for (int i = 0; i < 3; i++) {
+      if (!m.isMoving() || m.isStopped() || m.isFloating()) {
+        return Model.MOTORSTATE_STOPPED;
+      }
+      if (m.isForward()) {
+        return Model.MOTORSTATE_FORWARD;
+      }
+      if (m.isBackward()) {
+        return Model.MOTORSTATE_BACKWARD;
+      }
+    }
+    Utils.Error("Syncronized??? " + (m.isMoving() ? 1 : 0) + "," + (m.isForward() ? 1 : 0) + "," + (m.isBackward() ? 1 : 0) + "," + (m.isStopped() ? 1 : 0) + "," + (m.isFloating() ? 1 : 0));
+    //1, 0, 0, 1, 0
+    Utils.Error("I M P O S S I B L E !");
+    return 0;
+  }
+
+  public void turn(int angle) {
+    getMovement().turnAngle(angle);
+  }
+
+  public void setSpeed(int motor, int speed) {
+
+    switch (motor) {
+      case Model.M3:
+        Motor.A.setSpeed(speed);
+        break;
+      case Model.M1:
+        movement.SPEEDFORWARD = speed > 400 ? 400 : speed;
+        break;
+      case Model.M2:
+        movement.SPEEDFORWARD = speed > 400 ? 400 : speed;
+        break;
     }
 
-    public void step() {
-        sonar.updateSonarMovement();
+  }
+
+  public void beep() {
+    lejos.nxt.Sound.beep();
+  }
+  private ExtendedVector outVector = new ExtendedVector();
+
+  public void setReferencePoint(ReferencePosition reference) {
+    reference.internalValue.set(movement.getInternalOrientation());
+  }
+
+  public ExtendedVector getRelativePosition(ReferencePosition reference) {
+    if (reference.internalValue == null) {
+      throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
     }
-
-    public RotationMovement getMovement() {
-        return movement;
-    }
-
-    public AngieCalibrationData getCalibrationData() {
-        return calibrationData;
-    }
-
-    public WrappedLightSensor getLight() {
-        return light;
-    }
-
-    public Motor getMotorLeft() {
-        return motorLeft;
-    }
-
-    public Motor getMotorRight() {
-        return motorRight;
-    }
-
-    public RotatingSonarSensor getSonar() {
-        return sonar;
-    }
-
-    public TouchSensor getTouchLeft() {
-        return touchLeft;
-    }
-
-    public TouchSensor getTouchRight() {
-        return touchRight;
-    }
-    
-    public IRSeekerV2 getIrSeeker(){
-        return irSeeker;
-    }
-
-    public boolean move(double distance) {
-        getMovement().driveDistance(distance);
-        return true;
-    }
-
-    public void turn(double angle) {
-        getMovement().turnAngle(angle);
-    }
-
-    public void stop() {
-        getMovement().stop();
-    }
-
-    public int[] getSensorValues() {
-        //TODO: GC
-        int[] values = new int[Model.SENSORVALUES_NUM];
-        values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
-        values[sensorNumberMotorRight] = motorRight.getTachoCount();
-        values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
-
-        /*
-        values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
-        values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
-		/**/
-		values[sensorNumberLight] = light.getRawLightValue();        values[sensorNumberInfraRed] = irSeeker.getDirection();        values[sensorNumberSonar] = (int) sonar.getDistance();        
-        values[Model.IR0] = irSeeker.getSensorValue(1);
-        values[Model.IR1] = irSeeker.getSensorValue(2);
-        values[Model.IR2] = irSeeker.getSensorValue(3);
-        values[Model.IR3] = irSeeker.getSensorValue(4);
-        values[Model.IR4] = irSeeker.getSensorValue(5);
-        
-
-        //TODO: change on port change
-        values[Model.MS3] = getMotorState(Motor.A);
-        values[Model.MS1] = getMotorState(Motor.B);
-        values[Model.MS2] = getMotorState(Motor.C);
+    outVector.set(reference.internalValue);
+    outVector.negate();
+    outVector.add(movement.getInternalOrientation());
 
 
+    return outVector;
+  }
 
-        return values;
-    }
+  public boolean sweepInProgress() {
+    return sonar.sweepInProgress();
+  }
 
-    private int getMotorState(Motor m) {
-        for (int i = 0; i < 3; i++) {
-            if (!m.isMoving() || m.isStopped() || m.isFloating()) {
-                return Model.MOTORSTATE_STOPPED;
-            }
-            if (m.isForward()) {
-                return Model.MOTORSTATE_FORWARD;
-            }
-            if (m.isBackward()) {
-                return Model.MOTORSTATE_BACKWARD;
-            }
-        }
-        Utils.Error("Syncronized??? " + (m.isMoving() ? 1 : 0) + "," + (m.isForward() ? 1 : 0) + "," + (m.isBackward() ? 1 : 0) + "," + (m.isStopped() ? 1 : 0) + "," + (m.isFloating() ? 1 : 0));
-        //1, 0, 0, 1, 0
-        Utils.Error("I M P O S S I B L E !");
-        return 0;
-    }
+  public void sweep(int[] i) {
+    sonar.sweep(i);
+  }
 
-    public void turn(int angle) {
-        getMovement().turnAngle(angle);
-    }
-
-    public void setSpeed(int motor, int speed) {
-
-        switch (motor) {
-            case Model.M3:
-                Motor.A.setSpeed(speed);
-                break;
-            case Model.M1:
-                Motor.B.setSpeed(speed);
-                break;
-            case Model.M2:
-                Motor.C.setSpeed(speed);
-                break;
-        }
-
-    }
-
-    public void beep() {
-        lejos.nxt.Sound.beep();
-    }
-    private ExtendedVector outVector = new ExtendedVector();
-
-    public void setReferencePoint(ReferencePosition reference) {
-        reference.internalValue.set(movement.getInternalOrientation());
-    }
-
-    public ExtendedVector getRelativePosition(ReferencePosition reference) {
-        if (reference.internalValue == null) {
-            throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
-        }
-        outVector.set(reference.internalValue);
-        outVector.negate();
-        outVector.add(movement.getInternalOrientation());
-        
-        
-        return outVector;
-    }
-
-    public boolean sweepInProgress() {
-        return sonar.sweepInProgress();
-    }
-
-    public void sweep(int[] i) {
-        sonar.sweep(i);
-    }
-
-    public List<Integer> getSweepResult() {
-        return sonar.getSweepResult();
-    }
+  public List<Integer> getSweepResult() {
+    return sonar.getSweepResult();
+  }
 }

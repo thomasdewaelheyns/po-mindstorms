@@ -8,10 +8,8 @@ package penoplatinum.pacman;
  * 
  * @author: Team Platinum
  */
-import java.util.ArrayList;
 import penoplatinum.Utils;
 import penoplatinum.grid.Agent;
-import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.simulator.mini.Bearing;
 import penoplatinum.simulator.mini.MessageHandler;
@@ -45,6 +43,7 @@ public class GhostProtocolHandler implements MessageHandler {
     try {
       MyScanner scanner = new MyScanner(msg);//.useDelimiter("[ ,]");
       String agentName = scanner.next();
+      
       if ("JOIN".equals(agentName) && !scanner.hasNext()) {
         this.handleJoin();
       } else if (this.agent.getName().equals(agentName)) {

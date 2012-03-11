@@ -37,6 +37,7 @@ public class LightColorModelProcessor extends ModelProcessor {
     GhostModel model = (GhostModel) this.model;
 
     int value = this.model.getSensorValue(this.model.S4);
+    //Utils.Log("color: "+value);
     float averageLightValue = model.getAverageLightValue();
     if (averageLightValue < BROWN_START || averageLightValue > BROWN_END) {
       averageLightValue = (BROWN_END + BROWN_START) * 0.5f;
@@ -75,6 +76,8 @@ public class LightColorModelProcessor extends ModelProcessor {
 
     //Utils.Log((int)  model.getAverageBlackValue() + "," + (int) averageLightValue + "," + (int) model.getAverageWhiteValue());
 
+//    Utils.Log(prevColor+"");
+    
     prevValue = value;
   }
 }

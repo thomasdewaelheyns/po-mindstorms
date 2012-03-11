@@ -8,11 +8,6 @@ import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Model;
 
 /**
- * FrontPushModelProcessor
- * 
- * Implements a ModelProcessor that detects frontpushes based on a central
- * front pushsensor.
- * 
  * Author: Team Platinum
  */
 public class BarcodeBlackModelProcessor extends ModelProcessor {
@@ -112,14 +107,16 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
         break;
       case INTERPRET:
         BufferSubset subset = tempBuffer.getBufferSubset(brownCounter);
-        int barcode = (interpreter.translate(subset)/2) & ((1<<7)-1);
-        Utils.Log("Barcode 2: "+barcode);
+        int barcode = (interpreter.translate(subset));
+
+        Utils.Log("Barcode 2: " + barcode);
         Utils.Log("Size : " + tempBuffer.getCheckpointSize());
         setState(WAITING);
         tempBuffer.unsetCheckPoint();
 
         int corrected = barcode;
         if (barcode != Barcode.None) {
+          corrected = corrected / 2 & ((1 << 7) - 1);
           corrected = interpreter.correct(barcode);
         }
         model.setBarcode(corrected);

@@ -26,8 +26,8 @@ import penoplatinum.Utils;
 
 public abstract class MQ {
 
-  //public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
-  public static String DefaultServer = "192.168.1.120";
+  public static String DefaultServer = "leuven.cs.kotnet.kuleuven.be";
+//  public static String DefaultServer = "192.168.1.120";
   // configurable properties
   private String server = "127.0.0.1";
   private String me = "default";
