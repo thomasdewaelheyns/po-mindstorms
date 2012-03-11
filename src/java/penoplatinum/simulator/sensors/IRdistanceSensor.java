@@ -9,6 +9,13 @@ public class IRdistanceSensor implements Sensor {
 
   private Simulator sim;
   private SimulatedEntity simEntity;
+  private int centerAngle;
+  private final static int VIEW_ANGLE = 60;
+
+  public IRdistanceSensor(int centerAngle) {
+    this.centerAngle = centerAngle;
+  }
+  
 
   @Override
   public int getValue() {
@@ -21,11 +28,11 @@ public class IRdistanceSensor implements Sensor {
     int distanceToWall = sim.getFreeDistance(simEntity.getCurrentTileCoordinates(), simEntity.getCurrentOnTileCoordinates(), (int) angleToNorth);
     int distanceToPacman = (int) Math.sqrt(dx * dx + dy * dy);
 
-    if(distanceToPacman<40){
-      return 170;
-    } else {
+    if(distanceToPacman>=40){
       return 0;
-    }
+    } 
+    return 0;
+    
   }
 
   @Override

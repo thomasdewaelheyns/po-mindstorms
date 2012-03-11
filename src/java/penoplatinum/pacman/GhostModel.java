@@ -682,7 +682,7 @@ public class GhostModel implements Model {
 
   @Override
   public void setPacManInNext(boolean b, int x, int y) {
-    this.isNextToPacman = true;
+    this.isNextToPacman = b;
     this.pacmanX = x;
     this.pacmanY = y;
   }

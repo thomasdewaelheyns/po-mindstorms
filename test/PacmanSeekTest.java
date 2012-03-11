@@ -19,7 +19,7 @@ public class PacmanSeekTest {
   @Test
   public void testGhostRobotMazeProtocol3() throws FileNotFoundException {
     Simulator sim = new Simulator();
-    PacmanEntity p = new PacmanEntity(20, 20, 0);
+    PacmanEntity p = new PacmanEntity(60, 60, 0);
     sim.useMap(SimulatorTest.createSectorMap2());
     sim.setPacmanEntity(p);
     Random r = new Random();
@@ -31,7 +31,7 @@ public class PacmanSeekTest {
     ghostNavigator.setModel(robot.getGhostModel());
     SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(20 + 3 * 40, 20 + 3 * 40, 180);
-    sim.addSimulatedEntity(ent);
+    //sim.addSimulatedEntity(ent);
 
     name = r.nextInt() + "";
     robot = new GhostRobot(name, new SwingGridView());
