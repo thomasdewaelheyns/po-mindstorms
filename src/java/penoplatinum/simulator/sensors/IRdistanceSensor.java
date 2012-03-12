@@ -62,7 +62,7 @@ public class IRdistanceSensor implements Sensor {
     if(distanceToPacman>=60){
       return 0;
     }
-    System.out.println(Utils.ClampLooped(centerAngle, -180, 180));
+//    System.out.println(Utils.ClampLooped(centerAngle, -180, 180));
     return 170;
   }
 

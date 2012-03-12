@@ -26,7 +26,7 @@ public class BarcodeTranslator {
         sum += list.get(j);
         Utils.print(list.get(j)+1 + ":");
       }
-      //int averageValue = sum / (((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength));
+      int averageValue = sum / (((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength));
       if (sum < MINIMUM_BETTER && sum > -MINIMUM_BETTER) {
         Utils.print("]\n");
         fail = true;
@@ -41,7 +41,7 @@ public class BarcodeTranslator {
         val += sum;
       }
     }
-    Utils.print("]\n");
+//    Utils.print("]\n");
     if(fail){
       return -1;
     }

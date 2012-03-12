@@ -86,7 +86,7 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
     switch (state) {
       case WAITING:
         if (model.getCurrentLightColor() == LightColor.Black) {
-          Utils.Log("Barcode Start");
+//          Utils.Log("Barcode Start");
           setState(RECORDING);
           tempBuffer.setCheckPoint();
           brownCounter = 0;
@@ -109,8 +109,8 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
         BufferSubset subset = tempBuffer.getBufferSubset(brownCounter);
         int barcode = (interpreter.translate(subset));
 
-        Utils.Log("Barcode 2: " + barcode);
-        Utils.Log("Size : " + tempBuffer.getCheckpointSize());
+//        Utils.Log("Barcode 2: " + barcode);
+//        Utils.Log("Size : " + tempBuffer.getCheckpointSize());
         setState(WAITING);
         tempBuffer.unsetCheckPoint();
 

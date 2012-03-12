@@ -163,7 +163,7 @@ public class GhostRobot implements Robot {
     this.driver.perform(this.navigator.nextAction());
 
 
-    model.printGridStats();
+//    model.printGridStats();
     // send outgoing messages
     this.sendMessages();
     if (dashboardAgent != null) {

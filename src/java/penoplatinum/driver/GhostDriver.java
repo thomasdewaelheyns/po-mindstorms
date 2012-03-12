@@ -214,7 +214,7 @@ public class GhostDriver implements Driver {
     queue.add(new MoveAction(model, 0.02f));
     queue.add(new AlignPerpendicularLine(model, true).setIsNonInterruptable(true));
     queue.add(new MoveAction(model, 0.18f + 0.03f));
-    Utils.Log("LINE!!");
+//    Utils.Log("LINE!!");
   }
 
   public GhostDriver setModel(Model model) {
