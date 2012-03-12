@@ -28,13 +28,22 @@ public class GridBoard extends JPanel {
   public static final Color YELLOW = new Color(255,255,0);
   public static final Color BROWN  = new Color(205,165,100);
   
-  public static final int SECTOR_SIZE = 40;
+  private int sectorSize = 40;
 
   public GridBoard resizeTo(int width, int height) {
     this.width  = width;
     this.height = height;
     this.setupCanvas();
     return this;
+  }
+
+  public GridBoard setSectorSize(int size) {
+    this.sectorSize = size;
+    return this;
+  }
+  
+  public int getSectorSize() {
+    return this.sectorSize;
   }
   
   private void setupCanvas() {
@@ -66,16 +75,18 @@ public class GridBoard extends JPanel {
   
   public void addSector(int left, int top) {
     this.sectorsG.setColor(BLACK);
-    this.sectorsG.fill(new Rectangle(SECTOR_SIZE * left, SECTOR_SIZE * top, SECTOR_SIZE, SECTOR_SIZE));
+    this.sectorsG.fill(new Rectangle(this.sectorSize * left, 
+                                     this.sectorSize * top,
+                                     this.sectorSize, this.sectorSize));
   }
   
   public void addWall(int left, int top, int location) {
     Rectangle r;
     switch(location) {
-      case Bearing.N: r = new Rectangle(left*SECTOR_SIZE,       top*SECTOR_SIZE-3,     SECTOR_SIZE,  6); break;
-      case Bearing.W: r = new Rectangle(left*SECTOR_SIZE-3,     top*SECTOR_SIZE,        6, SECTOR_SIZE); break;
-      case Bearing.E: r = new Rectangle((left+1)*SECTOR_SIZE-6, top*SECTOR_SIZE,        6, SECTOR_SIZE); break;
-      case Bearing.S: r = new Rectangle(left*SECTOR_SIZE,       (top+1)*SECTOR_SIZE-6, SECTOR_SIZE,  6); break;
+      case Bearing.N: r = new Rectangle(left*this.sectorSize,       top*this.sectorSize-3,     this.sectorSize,  6); break;
+      case Bearing.W: r = new Rectangle(left*this.sectorSize-3,     top*this.sectorSize,        6, this.sectorSize); break;
+      case Bearing.E: r = new Rectangle((left+1)*this.sectorSize-6, top*this.sectorSize,        6, this.sectorSize); break;
+      case Bearing.S: r = new Rectangle(left*this.sectorSize,       (top+1)*this.sectorSize-6, this.sectorSize,  6); break;
       default:        r = new Rectangle(0,0,0,0);
     }
     this.wallsG.setColor(WHITE);
@@ -86,28 +97,28 @@ public class GridBoard extends JPanel {
     if( value > 0 ) {
       Color color = this.mapToHeatColor(value);
       this.valuesG.setColor(color);
-      this.valuesG.fill(new Rectangle(SECTOR_SIZE * left+3, SECTOR_SIZE * top+3, SECTOR_SIZE - 6, SECTOR_SIZE - 6 ));
+      this.valuesG.fill(new Rectangle(this.sectorSize * left+3, this.sectorSize * top+3, this.sectorSize - 6, this.sectorSize - 6 ));
     }
   }
 
   public void addAgent(int left, int top, int orientation, String name, 
                        Color color)
   {
-    left *= SECTOR_SIZE;
-    top  *= SECTOR_SIZE;
+    left *= this.sectorSize;
+    top  *= this.sectorSize;
     this.agentsG.setColor(color);
 
     Polygon triangle = new Polygon();
-    triangle.addPoint(left+SECTOR_SIZE/2, top+3);
-    triangle.addPoint(left+SECTOR_SIZE-3, top+SECTOR_SIZE-3);
-    triangle.addPoint(left+3 , top+SECTOR_SIZE-3);
+    triangle.addPoint(left+this.sectorSize/2, top+3);
+    triangle.addPoint(left+this.sectorSize-3, top+this.sectorSize-3);
+    triangle.addPoint(left+3 , top+this.sectorSize-3);
     
     double angle = orientation * Math.PI/2;
     
-    this.agentsG.rotate(angle, left+SECTOR_SIZE/2, top+SECTOR_SIZE/2);
+    this.agentsG.rotate(angle, left+this.sectorSize/2, top+this.sectorSize/2);
     this.agentsG.fillPolygon(triangle);
     // reset
-    this.agentsG.rotate(-1*angle, left+SECTOR_SIZE/2, top+SECTOR_SIZE/2);
+    this.agentsG.rotate(-1*angle, left+this.sectorSize/2, top+this.sectorSize/2);
     
     // add label
     FontMetrics fm = this.agentsG.getFontMetrics();
@@ -115,7 +126,7 @@ public class GridBoard extends JPanel {
     this.agentsG.setFont(this.agentsG.getFont().deriveFont(12F));
     int w = fm.charWidth(name.charAt(0));
     int h = fm.getHeight();
-    this.agentsG.drawString(name.substring(0,1), left+SECTOR_SIZE/2-w/2, top+SECTOR_SIZE-h/2);
+    this.agentsG.drawString(name.substring(0,1), left+this.sectorSize/2-w/2, top+this.sectorSize-h/2);
   }
   
   private Color mapToHeatColor(int value) {
@@ -170,7 +181,7 @@ public class GridBoard extends JPanel {
     
     
     this.wallsG.setColor(BLACK);
-    this.wallsG.drawRect(0, 0, width* GridBoard.SECTOR_SIZE, height* GridBoard.SECTOR_SIZE);
+    this.wallsG.drawRect(0, 0, width* this.sectorSize, height* this.sectorSize);
     
     // draw layers, bottom to top
     g2d.drawImage( this.sectors, null, 0, 0 );
@@ -183,8 +194,8 @@ public class GridBoard extends JPanel {
   }    
 
   private BufferedImage createBuffer() {
-    int w = this.width * SECTOR_SIZE;
-    int h = this.height * SECTOR_SIZE;
+    int w = this.width * this.sectorSize;
+    int h = this.height * this.sectorSize;
     return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
   }
 }

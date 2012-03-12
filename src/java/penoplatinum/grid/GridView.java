@@ -12,6 +12,8 @@ package penoplatinum.grid;
 public interface GridView {
   public GridView display(Grid grid);
 
+  public GridView setSectorSize(int size);
+
   public GridView refresh();
   public GridView sectorsNeedRefresh();
   public GridView valuesNeedRefresh();

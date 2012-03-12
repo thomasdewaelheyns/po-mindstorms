@@ -106,8 +106,9 @@ public abstract class MovingAgent implements Agent {
   public boolean canMoveForward() {
     int bearing = this.getBearing();
     Sector current = this.getSector();
-
-    if (current.isKnown(bearing) && current.hasWall(bearing)) {
+    if( ! current.isKnown(bearing) ) {
+      System.err.println(this.name + " ERROR: Don't know that wall." );
+    } else if( current.hasWall(bearing) ) {
       System.err.println(this.name + " ERROR: Can't move through wall.");
 //      try { System.in.read(); } catch(Exception e) {}
     } else if (!current.isKnown(bearing)) {

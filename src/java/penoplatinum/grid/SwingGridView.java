@@ -19,7 +19,8 @@ public class SwingGridView extends JFrame implements GridView {
   private int    left   = -1,
                  top    = -1,
                  width  = 0,
-                 height = 0;
+                 height = 0,
+                 size   = 40;
 
   private boolean refreshSectors = true;
   private boolean refreshValues  = true;
@@ -37,10 +38,17 @@ public class SwingGridView extends JFrame implements GridView {
 
     return this;
   }
+  
+  public GridView setSectorSize(int size) {
+    this.size = size;
+    if(this.board != null) { this.board.setSectorSize(this.size); }
+    return this;
+  }
 
   private void setupBoard() {
     this.board = new GridBoard();
     this.add(this.board);
+    this.board.setSectorSize(this.size);
   }
   
   private void setupWindow() {
@@ -152,10 +160,10 @@ public class SwingGridView extends JFrame implements GridView {
     int newWidth  = this.grid.getWidth(),
         newHeight = this.grid.getHeight();
     if( newWidth != this.width || newHeight != this.height ) {
-      final int width = Math.max(newWidth  * GridBoard.SECTOR_SIZE -  2, 200);
+      final int width = Math.max(newWidth  * this.board.getSectorSize() -  2, this.board.getSectorSize() * 5);
       // set our own size
       this.setSize( width, 
-                    newHeight * GridBoard.SECTOR_SIZE + 30 );
+                    newHeight * this.board.getSectorSize() + 30 );
       // set the board's size
       if( this.board != null ) {
         this.board.resizeTo(this.grid.getWidth(), this.grid.getHeight());

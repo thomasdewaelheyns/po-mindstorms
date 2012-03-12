@@ -14,8 +14,6 @@ import penoplatinum.grid.ProxyAgent;
 import penoplatinum.grid.StaticTargetAgent;
 import penoplatinum.grid.DiffusionGridProcessor;
 
-import penoplatinum.pacman.GhostRobot;
-
 import penoplatinum.grid.GridFactory;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
@@ -28,9 +26,9 @@ public class MiniSimulation {
   public static void main(String[] args) {
 
     // we use a Grid+View+ProxyAgents to create a mini-simualtor
-    GridView goalView    = new SwingGridView()
-                            .changeTitle("Goal")
-                            .changeLocation(100,100);
+    GridView goalView    = new SwingGridView().changeTitle("Goal")
+                                              .changeLocation(50,100)
+                                              .setSectorSize(20);
 
     // TEMPORARY CHEATING TRICK !!!                      
     // we're using a globally static variable to make it accessible to
@@ -48,7 +46,7 @@ public class MiniSimulation {
             .displayOn(goalView);
 
     // we instantiate 4 GhostRobots
-    Robot[] robots = new GhostRobot[4];
+    Robot[] robots = new MiniGhostRobot[4];
     // each with its own view
     GridView[] views  = new GridView[4];
     // a RobotAPI that uses a proxy to provid valid info about the world
@@ -64,11 +62,12 @@ public class MiniSimulation {
     // TODO: create GhostFactory
     for( int r=0; r<4; r++ ) {
       apis[r] = new MiniSimulationRobotAPI(proxies[r]);
-      views[r] = new SwingGridView().changeTitle("Discoverer " + r)
-                                    .changeLocation(300+(r*200),100);
+      views[r] = new SwingGridView().setSectorSize(20)
+                                    .changeTitle("Discoverer " + r)
+                                    .changeLocation(250+(r*200),100);
       robotAgents[r] = new MiniSimulationRobotAgent();
       queue.subscribe(robotAgents[r]);
-      robots[r] = new GhostRobot(""+r, views[r])
+      robots[r] = new MiniGhostRobot(""+r, views[r])
                     .useRobotAPI(apis[r])
                     .useCommunicationAgent(robotAgents[r]);
     }

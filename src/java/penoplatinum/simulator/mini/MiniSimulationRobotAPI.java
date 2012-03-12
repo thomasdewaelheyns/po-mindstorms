@@ -10,6 +10,8 @@ import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.ExtendedVector;
 
+import penoplatinum.simulator.Model;
+
 public class MiniSimulationRobotAPI implements RobotAPI {
   private Agent proxy;
   
@@ -38,7 +40,7 @@ public class MiniSimulationRobotAPI implements RobotAPI {
   }
   
   public int[] getSensorValues() {
-    return new int[] {};
+    return new int[Model.SENSORVALUES_NUM];
   }
   
   public void setSpeed(int motor, int speed) {
@@ -87,6 +89,6 @@ public class MiniSimulationRobotAPI implements RobotAPI {
   
   public void setReferencePoint(ReferencePosition reference) {}
   public ExtendedVector getRelativePosition(ReferencePosition reference) {
-    return null;
+    return new ExtendedVector();
   }
 }
