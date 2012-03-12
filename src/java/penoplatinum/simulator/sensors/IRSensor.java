@@ -15,6 +15,9 @@ public class IRSensor implements Sensor {
 
     // calculates the angles and distances needed
     RobotEntity pacman = sim.getPacMan();
+    if(pacman == null){
+      return 0;
+    }
     double dx = pacman.getPosX() - simEntity.getPosX();
     double dy = pacman.getPosY() - simEntity.getPosY();
     double angleToNorth = 0;

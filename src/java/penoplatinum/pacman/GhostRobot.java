@@ -4,8 +4,8 @@ import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
 import penoplatinum.driver.Driver;
 import penoplatinum.grid.GridView;
-import penoplatinum.grid.Sector;
 import penoplatinum.modelprocessor.BarcodeBlackModelProcessor;
+import penoplatinum.modelprocessor.GridRecalcModelProcessor;
 import penoplatinum.modelprocessor.GridUpdateProcessor;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
 import penoplatinum.modelprocessor.IRModelProcessor;
@@ -22,6 +22,7 @@ import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.RobotAgent;
 import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.Navigator;
+import penoplatinum.simulator.mini.Navigator;
 
 public class GhostRobot implements Robot {
 
@@ -63,13 +64,16 @@ public class GhostRobot implements Robot {
             //new GapModelProcessor(
             //new ProximityModelProcessor(
             //new LightCorruptionModelProcessor(
-            new IRModelProcessor(
+            //new IRModelProcessor(
             new BarcodeBlackModelProcessor(
             new LineModelProcessor(
             new WallDetectionModelProcessor(
-            new InboxProcessor(
             new WallDetectorProcessor(
-            new GridUpdateProcessor()))))))));
+            new InboxProcessor(
+            new GridUpdateProcessor(
+            new IRModelProcessor(
+            new GridRecalcModelProcessor(
+                            ))))))))));
     this.model.setProcessor(processors);
 
   }

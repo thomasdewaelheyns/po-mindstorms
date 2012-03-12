@@ -158,7 +158,6 @@ public class GhostModel implements Model {
 
     this.newSonarValues = true;
     isSweepDataChanged = true;
-
     this.process();
   }
 
@@ -751,9 +750,19 @@ public class GhostModel implements Model {
 
   @Override
   public void setPacManInNext(boolean b, int x, int y) {
+    if(this.isNextToPacman){
+      Sector s = this.getGrid().getSector(pacmanX, pacmanY);
+      getGrid().removeAgent(s.getAgent());
+      s.removeAgent();
+    }
     this.isNextToPacman = b;
     this.pacmanX = x;
     this.pacmanY = y;
+    if(b){
+      Sector s = this.getGrid().getSector(pacmanX, pacmanY);
+      PacmanAgent p = new PacmanAgent();
+      s.put(p, 0);
+    }
     protocol.sendPacman();
   }
 

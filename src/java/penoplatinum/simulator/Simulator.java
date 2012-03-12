@@ -72,7 +72,9 @@ public class Simulator {
     for (RobotEntity s : robotEntities) {
       view.addRobot(s.getViewRobot());
     }
-    view.addRobot(pacmanEntity.getViewRobot());
+    if(pacmanEntity != null){
+      view.addRobot(pacmanEntity.getViewRobot());
+    }
     return this;
   }
 
