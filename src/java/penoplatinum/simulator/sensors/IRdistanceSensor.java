@@ -50,10 +50,6 @@ public class IRdistanceSensor implements Sensor {
       return 0;
     }
 
-    if (distanceToPacman >= 40) {
-      return 0;
-    }
-
     actualAngle = Utils.ClampLooped(actualAngle, -180, 180);
     int minAngle = Utils.ClampLooped(centerAngle-VIEW_ANGLE/2, -180, 180);
     int maxAngle = Utils.ClampLooped(centerAngle+VIEW_ANGLE/2, -180, 180);
