@@ -14,15 +14,16 @@ import java.util.ArrayList;
 import java.util.Random;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
+import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Model;
 
-import penoplatinum.simulator.mini.Navigator;
+import penoplatinum.simulator.Navigator;
 
 public class GhostNavigator implements Navigator {
   private GhostModel model;
   private List<Integer> plan = new ArrayList<Integer>();
-  private Random r = new Random(0);
+  private Random r = new Random(1);
   
   public Navigator setModel(Model model) {
     this.model = (GhostModel)model;
@@ -176,5 +177,10 @@ public class GhostNavigator implements Navigator {
     
     // after turning, move forward
     this.plan.add(GhostAction.FORWARD);
+  }
+
+  @Override
+  public Navigator setControler(GoalDecider controler) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

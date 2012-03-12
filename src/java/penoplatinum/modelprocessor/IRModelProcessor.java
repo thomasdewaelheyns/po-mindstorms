@@ -55,6 +55,7 @@ public class IRModelProcessor extends ModelProcessor {
       dy = -dy;
       dx = -dx;
     }
+    System.out.println("PACMAN");
     model.setPacManInNext(true, model.getAgent().getLeft() + dx, model.getAgent().getTop() + dy);
   }
 }

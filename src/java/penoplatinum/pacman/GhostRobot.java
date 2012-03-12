@@ -20,9 +20,7 @@ import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.RobotAgent;
-import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.Navigator;
-import penoplatinum.simulator.mini.Navigator;
 
 public class GhostRobot implements Robot {
 

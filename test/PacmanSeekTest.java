@@ -39,7 +39,7 @@ public class PacmanSeekTest {
     robot.useNavigator(ghostNavigator);
     ghostNavigator.setModel(robot.getGhostModel());
     ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
-    ent.setPostition(20 + 3 * 40, 20 + 2 * 40, 0);
+    ent.setPostition(20 + 2 * 40, 20 + 3 * 40, 90);
 
     sim.addSimulatedEntity(ent);
 
