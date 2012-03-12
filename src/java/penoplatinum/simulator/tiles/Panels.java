@@ -1,7 +1,7 @@
 package penoplatinum.simulator.tiles;
 
 import penoplatinum.simulator.Barcode;
-import penoplatinum.simulator.Baring;
+import penoplatinum.simulator.Bearing;
 
 /**
  * Enumeration of commonly used Panels
@@ -14,95 +14,95 @@ public class Panels {
   
   // up-down, down-up
   public static Panel N_S = new Panel()
-    .withBarcode(Barcode.Forward)       .putBarcodeAt(Baring.N)
-    .withWall   (Baring.E)              .withWall    (Baring.W)
-    .withLine   (Baring.E,  Panel.WHITE) .withLine    (Baring.W, Panel.BLACK);
+    .withBarcode(Barcode.Forward)       .putBarcodeAt(Bearing.N)
+    .withWall   (Bearing.E)              .withWall    (Bearing.W)
+    .withLine   (Bearing.E,  Panel.WHITE) .withLine    (Bearing.W, Panel.BLACK);
   public static Panel S_N = new Panel()
-    .withBarcode(Barcode.Forward)       .putBarcodeAt(Baring.S)
-    .withWall   (Baring.E)              .withWall    (Baring.W)
-    .withLine   (Baring.E,  Panel.BLACK) .withLine    (Baring.W, Panel.WHITE);
+    .withBarcode(Barcode.Forward)       .putBarcodeAt(Bearing.S)
+    .withWall   (Bearing.E)              .withWall    (Bearing.W)
+    .withLine   (Bearing.E,  Panel.BLACK) .withLine    (Bearing.W, Panel.WHITE);
 
   // left-right, right-left
   public static Panel W_E = new Panel()
-    .withBarcode(Barcode.Forward)       .putBarcodeAt(Baring.W)
-    .withWall   (Baring.S)              .withWall    (Baring.N)
-    .withLine   (Baring.N,  Panel.WHITE) .withLine    (Baring.S, Panel.BLACK);
+    .withBarcode(Barcode.Forward)       .putBarcodeAt(Bearing.W)
+    .withWall   (Bearing.S)              .withWall    (Bearing.N)
+    .withLine   (Bearing.N,  Panel.WHITE) .withLine    (Bearing.S, Panel.BLACK);
   public static Panel E_W = new Panel()
-    .withBarcode(Barcode.Forward)       .putBarcodeAt(Baring.E)
-    .withWall   (Baring.N)              .withWall    (Baring.S)
-    .withLine   (Baring.N,  Panel.BLACK) .withLine    (Baring.S, Panel.WHITE);
+    .withBarcode(Barcode.Forward)       .putBarcodeAt(Bearing.E)
+    .withWall   (Bearing.N)              .withWall    (Bearing.S)
+    .withLine   (Bearing.N,  Panel.BLACK) .withLine    (Bearing.S, Panel.WHITE);
 
   // up-right, right-up
   public static Panel N_E = new Panel()
-    .withBarcode(Barcode.Left)          .putBarcodeAt(Baring.N)
-    .withWall   (Baring.S)              .withWall    (Baring.W)
-    .withLine   (Baring.S,  Panel.BLACK) .withLine    (Baring.W, Panel.BLACK)
-    .withCorner (Baring.NE, Panel.WHITE);
+    .withBarcode(Barcode.Left)          .putBarcodeAt(Bearing.N)
+    .withWall   (Bearing.S)              .withWall    (Bearing.W)
+    .withLine   (Bearing.S,  Panel.BLACK) .withLine    (Bearing.W, Panel.BLACK)
+    .withCorner (Bearing.NE, Panel.WHITE);
   public static Panel E_N = new Panel()
-    .withBarcode(Barcode.Right)         .putBarcodeAt(Baring.E)
-    .withWall   (Baring.S)              .withWall    (Baring.W)
-    .withLine   (Baring.S,  Panel.WHITE) .withLine    (Baring.W, Panel.WHITE)
-    .withCorner (Baring.NE, Panel.BLACK);
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Bearing.E)
+    .withWall   (Bearing.S)              .withWall    (Bearing.W)
+    .withLine   (Bearing.S,  Panel.WHITE) .withLine    (Bearing.W, Panel.WHITE)
+    .withCorner (Bearing.NE, Panel.BLACK);
 
   // down-right, right-down
   public static Panel S_E = new Panel()
-    .withBarcode(Barcode.Right)         .putBarcodeAt(Baring.S)
-    .withWall   (Baring.N)              .withWall    (Baring.W)
-    .withLine   (Baring.N,  Panel.WHITE) .withLine    (Baring.W, Panel.WHITE)
-    .withCorner (Baring.SE, Panel.BLACK);
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Bearing.S)
+    .withWall   (Bearing.N)              .withWall    (Bearing.W)
+    .withLine   (Bearing.N,  Panel.WHITE) .withLine    (Bearing.W, Panel.WHITE)
+    .withCorner (Bearing.SE, Panel.BLACK);
   public static Panel E_S = new Panel()
-    .withBarcode(Barcode.Left)          .putBarcodeAt(Baring.E)
-    .withWall   (Baring.N)              .withWall    (Baring.W)
-    .withLine   (Baring.N,  Panel.WHITE) .withLine    (Baring.W, Panel.WHITE)
-    .withCorner (Baring.SE, Panel.BLACK);
+    .withBarcode(Barcode.Left)          .putBarcodeAt(Bearing.E)
+    .withWall   (Bearing.N)              .withWall    (Bearing.W)
+    .withLine   (Bearing.N,  Panel.WHITE) .withLine    (Bearing.W, Panel.WHITE)
+    .withCorner (Bearing.SE, Panel.BLACK);
 
   // down-left, left-down
   public static Panel S_W = new Panel()
-    .withBarcode(Barcode.Left)          .putBarcodeAt(Baring.S)
-    .withWall   (Baring.N)              .withWall    (Baring.E)
-    .withLine   (Baring.N,  Panel.BLACK) .withLine    (Baring.E, Panel.BLACK)
-    .withCorner (Baring.SW, Panel.WHITE);
+    .withBarcode(Barcode.Left)          .putBarcodeAt(Bearing.S)
+    .withWall   (Bearing.N)              .withWall    (Bearing.E)
+    .withLine   (Bearing.N,  Panel.BLACK) .withLine    (Bearing.E, Panel.BLACK)
+    .withCorner (Bearing.SW, Panel.WHITE);
   public static Panel W_S = new Panel()
-    .withBarcode(Barcode.Right)         .putBarcodeAt(Baring.W)
-    .withWall   (Baring.N)              .withWall    (Baring.E)
-    .withLine   (Baring.N,  Panel.WHITE) .withLine    (Baring.E, Panel.WHITE)
-    .withCorner (Baring.SW, Panel.BLACK);
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Bearing.W)
+    .withWall   (Bearing.N)              .withWall    (Bearing.E)
+    .withLine   (Bearing.N,  Panel.WHITE) .withLine    (Bearing.E, Panel.WHITE)
+    .withCorner (Bearing.SW, Panel.BLACK);
 
   // up-left, left-up
   public static Panel N_W = new Panel()
-    .withBarcode(Barcode.Right)         .putBarcodeAt(Baring.N)
-    .withWall   (Baring.S)              .withWall    (Baring.E)
-    .withLine   (Baring.S,  Panel.WHITE) .withLine    (Baring.E, Panel.WHITE)
-    .withCorner (Baring.NW, Panel.BLACK);
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Bearing.N)
+    .withWall   (Bearing.S)              .withWall    (Bearing.E)
+    .withLine   (Bearing.S,  Panel.WHITE) .withLine    (Bearing.E, Panel.WHITE)
+    .withCorner (Bearing.NW, Panel.BLACK);
   
   public static Panel W_N = new Panel()  
-    .withBarcode(Barcode.Left)          .putBarcodeAt(Baring.W)
-    .withWall   (Baring.S)              .withWall    (Baring.E)
-    .withLine   (Baring.S,  Panel.BLACK) .withLine    (Baring.E, Panel.BLACK)
-    .withCorner (Baring.NW, Panel.WHITE);
+    .withBarcode(Barcode.Left)          .putBarcodeAt(Bearing.W)
+    .withWall   (Bearing.S)              .withWall    (Bearing.E)
+    .withLine   (Bearing.S,  Panel.BLACK) .withLine    (Bearing.E, Panel.BLACK)
+    .withCorner (Bearing.NW, Panel.WHITE);
   public static Panel NONE = new Panel()
-          .withWall(Baring.N)
-          .withWall(Baring.E)
-          .withWall(Baring.S)
-          .withWall(Baring.W);
+          .withWall(Bearing.N)
+          .withWall(Bearing.E)
+          .withWall(Bearing.S)
+          .withWall(Bearing.W);
   public static Panel N = new Panel()
-          .withWall(Baring.E)
-          .withWall(Baring.S)
-          .withWall(Baring.W);
+          .withWall(Bearing.E)
+          .withWall(Bearing.S)
+          .withWall(Bearing.W);
   public static Panel E = new Panel()
-          .withWall(Baring.N)
-          .withWall(Baring.S)
-          .withWall(Baring.W);
+          .withWall(Bearing.N)
+          .withWall(Bearing.S)
+          .withWall(Bearing.W);
   public static Panel S = new Panel()
-          .withWall(Baring.N)
-          .withWall(Baring.E)
-          .withWall(Baring.W);
+          .withWall(Bearing.N)
+          .withWall(Bearing.E)
+          .withWall(Bearing.W);
   public static Panel W = new Panel()
-          .withWall(Baring.N)
-          .withWall(Baring.E)
-          .withWall(Baring.S);
+          .withWall(Bearing.N)
+          .withWall(Bearing.E)
+          .withWall(Bearing.S);
   public static Panel E_S_W = new Panel()
-          .withWall(Baring.N);
+          .withWall(Bearing.N);
     public static Panel N_E_W = new Panel()
-          .withWall(Baring.S);
+          .withWall(Bearing.S);
 }

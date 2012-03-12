@@ -9,12 +9,12 @@ import penoplatinum.pacman.GhostRobot;
 import penoplatinum.pacman.LeftFollowingGhostNavigator;
 import penoplatinum.grid.SwingGridView;
 import penoplatinum.pacman.GhostNavigator;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
 import penoplatinum.simulator.SimulationRobotAgent;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
-import penoplatinum.simulator.mini.Bearing;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.view.SwingSimulationView;
 

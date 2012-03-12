@@ -182,26 +182,6 @@ public class Simulator {
    */
   public Simulator run() {
     this.view.showMap(this.map);
-    try {
-      /*for(RobotEntity s:robotEntities){
-      s.robotAgent.run();
-      }*/
-      MQ mq = new MQ() {
-
-        @Override
-        protected void handleIncomingMessage(String sender, String message) {
-          messageQueue.add(sender);
-
-        }
-      }.setMyName("Simulatorrrr").connectToMQServer().follow(Config.GHOST_CHANNEL);
-    } catch (IOException ex) {
-      System.err.println("IOException gevangen, zoek voor meer info");
-      //Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (InterruptedException ex) {
-      System.err.println("InterruptedException gevangen, zoek voor meer info");
-      //Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-    }
-
 
 
     while (true) {
@@ -216,7 +196,6 @@ public class Simulator {
   }
 
   private void step() {
-    processRemoteMessages();
     for (RobotEntity robotEntity : robotEntities) {
       robotEntity.step();
     }
@@ -227,21 +206,6 @@ public class Simulator {
 
 //    Utils.Sleep(20);
 
-  }
-
-  private void processRemoteMessages() {
-
-    while (!messageQueue.isEmpty()) {
-
-      String name = messageQueue.poll();
-      if (remoteEntities.containsKey(name)) {
-        continue;
-      }
-
-      // dont auto-add remote entities anymore, we can't interpret their local positions anyways
-//      addRemoteEntity(name);
-
-    }
   }
 
   boolean hasTile(double positionX, double positionY) {

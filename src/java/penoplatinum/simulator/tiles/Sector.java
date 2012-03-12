@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import penoplatinum.BitwiseOperations;
 import penoplatinum.barcode.BarcodeBlackBlack;
 import penoplatinum.barcode.BarcodeCorrector;
-import penoplatinum.simulator.Baring;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.view.Board;
 
 public class Sector implements Tile, Cloneable {
@@ -139,14 +139,14 @@ public class Sector implements Tile, Cloneable {
   @Override
   public Boolean hasWall(int location) {
     switch (location) {
-      case Baring.NE:
-        return this.hasWall(Baring.N) || this.hasWall(Baring.E);
-      case Baring.SE:
-        return this.hasWall(Baring.S) || this.hasWall(Baring.E);
-      case Baring.SW:
-        return this.hasWall(Baring.S) || this.hasWall(Baring.W);
-      case Baring.NW:
-        return this.hasWall(Baring.N) || this.hasWall(Baring.W);
+      case Bearing.NE:
+        return this.hasWall(Bearing.N) || this.hasWall(Bearing.E);
+      case Bearing.SE:
+        return this.hasWall(Bearing.S) || this.hasWall(Bearing.E);
+      case Bearing.SW:
+        return this.hasWall(Bearing.S) || this.hasWall(Bearing.W);
+      case Bearing.NW:
+        return this.hasWall(Bearing.N) || this.hasWall(Bearing.W);
       default:
         // "simple" location, just check the bit
         return BitwiseOperations.hasBit(data, Sector.startWalls + location);
@@ -229,7 +229,7 @@ public class Sector implements Tile, Cloneable {
   private void renderWalls(Graphics2D g2d, int left, int top) {
     // walls are 2cm width = 4px
     g2d.setColor(Board.DARK_BROWN);
-    if (hasWall(Baring.N)) {
+    if (hasWall(Bearing.N)) {
       g2d.setColor(Board.DARK_BROWN);
     } else {
       g2d.setColor(Board.WHITE);
@@ -239,7 +239,7 @@ public class Sector implements Tile, Cloneable {
             DRAW_TILE_SIZE * (top - 1),
             DRAW_TILE_SIZE,
             DRAW_WALL_LINE_WIDTH));
-    if (hasWall(Baring.E)) {
+    if (hasWall(Bearing.E)) {
       g2d.setColor(Board.DARK_BROWN);
     } else {
       g2d.setColor(Board.WHITE);
@@ -249,7 +249,7 @@ public class Sector implements Tile, Cloneable {
             DRAW_TILE_SIZE * (top - 1),
             4,
             DRAW_TILE_SIZE));
-    if (hasWall(Baring.S)) {
+    if (hasWall(Bearing.S)) {
       g2d.setColor(Board.DARK_BROWN);
     } else {
       g2d.setColor(Board.WHITE);
@@ -259,7 +259,7 @@ public class Sector implements Tile, Cloneable {
             DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
             DRAW_TILE_SIZE,
             4));
-    if (hasWall(Baring.W)) {
+    if (hasWall(Bearing.W)) {
       g2d.setColor(Board.DARK_BROWN);
     } else {
       g2d.setColor(Board.WHITE);

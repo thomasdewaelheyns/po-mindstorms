@@ -10,7 +10,7 @@ import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
 import penoplatinum.grid.SwingGridView;
 import penoplatinum.pacman.TransformationTRT;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 /**
  *

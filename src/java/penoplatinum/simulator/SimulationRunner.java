@@ -65,7 +65,7 @@ public class SimulationRunner {
   }
 
   private static Map michielMap() {
-    Map map = new MapArray(4).add(Panels.S_E).add(Panels.W_E).add(Panels.W_E.withoutBarcodeLocation()).add(Panels.W_S).add(Panels.E_N.withoutBarcodeLocation()).add(Panels.E_W).add(Panels.S_W).add(Panels.N_S.withoutBarcodeLocation()).add(Panels.S_E.withoutLine(Baring.N).withoutLine(Baring.W)).add(Panels.W_E).add(Panels.W_N.setNarrowingOrientation(Baring.W)).add(Panels.N_S).add(Panels.E_N).add(Panels.E_W).add(Panels.E_W).add(Panels.N_W);
+    Map map = new MapArray(4).add(Panels.S_E).add(Panels.W_E).add(Panels.W_E.withoutBarcodeLocation()).add(Panels.W_S).add(Panels.E_N.withoutBarcodeLocation()).add(Panels.E_W).add(Panels.S_W).add(Panels.N_S.withoutBarcodeLocation()).add(Panels.S_E.withoutLine(Bearing.N).withoutLine(Bearing.W)).add(Panels.W_E).add(Panels.W_N.setNarrowingOrientation(Bearing.W)).add(Panels.N_S).add(Panels.E_N).add(Panels.E_W).add(Panels.E_W).add(Panels.N_W);
     return map;
   }
 

@@ -1,6 +1,6 @@
 package penoplatinum.simulator.t;
 
-import penoplatinum.simulator.Baring;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*; 
 
@@ -13,85 +13,85 @@ public class TileTest extends TestCase {
   
   public void testNorthWall() {
     Panel tile = this.createEmptyTile();
-    tile.withWall(Baring.N);
+    tile.withWall(Bearing.N);
     assertEquals("10000000000000000000000000000000", tile.toString() ); 
-    assertTrue(tile.hasWall(Baring.N));
-    tile.withoutWall(Baring.N);
+    assertTrue(tile.hasWall(Bearing.N));
+    tile.withoutWall(Bearing.N);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testEastWall() {
     Panel tile = this.createEmptyTile();
-    tile.withWall(Baring.E);
+    tile.withWall(Bearing.E);
     assertEquals("01000000000000000000000000000000", tile.toString() ); 
-    assertTrue(tile.hasWall(Baring.E));
-    tile.withoutWall(Baring.E);
+    assertTrue(tile.hasWall(Bearing.E));
+    tile.withoutWall(Bearing.E);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testSouthWall() {
     Panel tile = this.createEmptyTile();
-    tile.withWall(Baring.S);
+    tile.withWall(Bearing.S);
     assertEquals("00100000000000000000000000000000", tile.toString() ); 
-    assertTrue(tile.hasWall(Baring.S));
-    tile.withoutWall(Baring.S);
+    assertTrue(tile.hasWall(Bearing.S));
+    tile.withoutWall(Bearing.S);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testWestWall() {
     Panel tile = this.createEmptyTile();
-    tile.withWall(Baring.W);
+    tile.withWall(Bearing.W);
     assertEquals("00010000000000000000000000000000", tile.toString() ); 
-    assertTrue(tile.hasWall(Baring.W));
-    tile.withoutWall(Baring.W);
+    assertTrue(tile.hasWall(Bearing.W));
+    tile.withoutWall(Bearing.W);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
   
   public void testNorthLine() {
     Panel tile = this.createEmptyTile();
-    tile.withLine(Baring.N, Panel.WHITE);
+    tile.withLine(Bearing.N, Panel.WHITE);
     assertEquals("00001000000000000000000000000000", tile.toString() ); 
-    assertTrue(tile.hasLine(Baring.N));
-    tile.withoutLine(Baring.N);
+    assertTrue(tile.hasLine(Bearing.N));
+    tile.withoutLine(Bearing.N);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testEastLine() {
     Panel tile = this.createEmptyTile();
-    tile.withLine(Baring.E, Panel.WHITE);
+    tile.withLine(Bearing.E, Panel.WHITE);
     assertEquals("00000100000000000000000000000000", tile.toString() ); 
-    assertTrue(tile.hasLine(Baring.E));
-    tile.withoutLine(Baring.E);
+    assertTrue(tile.hasLine(Bearing.E));
+    tile.withoutLine(Bearing.E);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testSouthLine() {
     Panel tile = this.createEmptyTile();
-    tile.withLine(Baring.S, Panel.WHITE);
+    tile.withLine(Bearing.S, Panel.WHITE);
     assertEquals("00000010000000000000000000000000", tile.toString() ); 
-    assertTrue(tile.hasLine(Baring.S));
-    tile.withoutLine(Baring.S);
+    assertTrue(tile.hasLine(Bearing.S));
+    tile.withoutLine(Bearing.S);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testWestLine() {
     Panel tile = this.createEmptyTile();
-    tile.withLine(Baring.W, Panel.WHITE);
+    tile.withLine(Bearing.W, Panel.WHITE);
     assertEquals("00000001000000000000000000000000", tile.toString() ); 
-    assertTrue(tile.hasLine(Baring.W));
-    tile.withoutLine(Baring.W);
+    assertTrue(tile.hasLine(Bearing.W));
+    tile.withoutLine(Bearing.W);
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
   
   public void testCombinationOfLines() {
     Panel tile = this.createEmptyTile();
-    tile.withLine(Baring.N, Panel.WHITE);
-    tile.withLine(Baring.W, Panel.WHITE);
+    tile.withLine(Bearing.N, Panel.WHITE);
+    tile.withLine(Bearing.W, Panel.WHITE);
     assertEquals("00001001000000000000000000000000", tile.toString() );
-    assertTrue(tile.hasLine(Baring.N));
-    assertTrue(tile.hasLine(Baring.N, Panel.WHITE));
-    assertFalse(tile.hasLine(Baring.N, Panel.BLACK));
-    assertFalse(tile.hasLine(Baring.S));
+    assertTrue(tile.hasLine(Bearing.N));
+    assertTrue(tile.hasLine(Bearing.N, Panel.WHITE));
+    assertFalse(tile.hasLine(Bearing.N, Panel.BLACK));
+    assertFalse(tile.hasLine(Bearing.S));
   }
   
   public void testBarcode() {
@@ -105,72 +105,72 @@ public class TileTest extends TestCase {
   
   public void testBarcodeLocationNorth() {
     Panel tile = this.createEmptyTile();
-    tile.withBarcodeLocation(Baring.N);
+    tile.withBarcodeLocation(Bearing.N);
     assertEquals("00000000000000000000000010000000", tile.toString() ); 
-    assertEquals(Baring.N, tile.getBarcodeLocation());
+    assertEquals(Bearing.N, tile.getBarcodeLocation());
     tile.withoutBarcodeLocation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testBarcodeLocationEast() {
     Panel tile = this.createEmptyTile();
-    tile.withBarcodeLocation(Baring.E);
+    tile.withBarcodeLocation(Bearing.E);
     assertEquals("00000000000000000000000001000000", tile.toString() ); 
-    assertEquals(Baring.E, tile.getBarcodeLocation());
+    assertEquals(Bearing.E, tile.getBarcodeLocation());
     tile.withoutBarcodeLocation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testBarcodeLocationSouth() {
     Panel tile = this.createEmptyTile();
-    tile.withBarcodeLocation(Baring.S);
+    tile.withBarcodeLocation(Bearing.S);
     assertEquals("00000000000000000000000011000000", tile.toString() ); 
-    assertEquals(Baring.S, tile.getBarcodeLocation());
+    assertEquals(Bearing.S, tile.getBarcodeLocation());
     tile.withoutBarcodeLocation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testBarcodeLocationWest() {
     Panel tile = this.createEmptyTile();
-    tile.withBarcodeLocation(Baring.W);
+    tile.withBarcodeLocation(Bearing.W);
     assertEquals("00000000000000000000000000100000", tile.toString() ); 
-    assertEquals(Baring.W, tile.getBarcodeLocation());
+    assertEquals(Bearing.W, tile.getBarcodeLocation());
     tile.withoutBarcodeLocation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
   
   public void testNarrowingOrientationNorth() {
     Panel tile = this.createEmptyTile();
-    tile.setNarrowingOrientation(Baring.N);
+    tile.setNarrowingOrientation(Bearing.N);
     assertEquals("00000000000000000000000000010000", tile.toString() ); 
-    assertEquals(Baring.N, tile.getNarrowingOrientation());
+    assertEquals(Bearing.N, tile.getNarrowingOrientation());
     tile.unsetNarrowingOrientation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testNarrowingOrientationEast() {
     Panel tile = this.createEmptyTile();
-    tile.setNarrowingOrientation(Baring.E);
+    tile.setNarrowingOrientation(Bearing.E);
     assertEquals("00000000000000000000000000001000", tile.toString() ); 
-    assertEquals(Baring.E, tile.getNarrowingOrientation());
+    assertEquals(Bearing.E, tile.getNarrowingOrientation());
     tile.unsetNarrowingOrientation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testNarrowingOrientationSouth() {
     Panel tile = this.createEmptyTile();
-    tile.setNarrowingOrientation(Baring.S);
+    tile.setNarrowingOrientation(Bearing.S);
     assertEquals("00000000000000000000000000011000", tile.toString() ); 
-    assertEquals(Baring.S, tile.getNarrowingOrientation());
+    assertEquals(Bearing.S, tile.getNarrowingOrientation());
     tile.unsetNarrowingOrientation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
 
   public void testNarrowingOrientationWest() {
     Panel tile = this.createEmptyTile();
-    tile.setNarrowingOrientation(Baring.W);
+    tile.setNarrowingOrientation(Bearing.W);
     assertEquals("00000000000000000000000000000100", tile.toString() ); 
-    assertEquals(Baring.W, tile.getNarrowingOrientation());
+    assertEquals(Bearing.W, tile.getNarrowingOrientation());
     tile.unsetNarrowingOrientation();
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }

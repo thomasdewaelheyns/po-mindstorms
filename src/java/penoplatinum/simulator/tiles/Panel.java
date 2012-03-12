@@ -35,7 +35,7 @@ import java.awt.Rectangle;
 import penoplatinum.BitwiseOperations;
 import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.barcode.BarcodeHammingCorrector;
-import penoplatinum.simulator.Baring;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.view.Board;
 
 public class Panel implements Tile {
@@ -98,14 +98,14 @@ public class Panel implements Tile {
   @Override
   public Boolean hasWall(int location) {
     switch( location ) {
-      case Baring.NE:
-        return this.hasWall(Baring.N) || this.hasWall(Baring.E);
-      case Baring.SE:
-        return this.hasWall(Baring.S) || this.hasWall(Baring.E);
-      case Baring.SW:
-        return this.hasWall(Baring.S) || this.hasWall(Baring.W);
-      case Baring.NW:
-        return this.hasWall(Baring.N) || this.hasWall(Baring.W);
+      case Bearing.NE:
+        return this.hasWall(Bearing.N) || this.hasWall(Bearing.E);
+      case Bearing.SE:
+        return this.hasWall(Bearing.S) || this.hasWall(Bearing.E);
+      case Bearing.SW:
+        return this.hasWall(Bearing.S) || this.hasWall(Bearing.W);
+      case Bearing.NW:
+        return this.hasWall(Bearing.N) || this.hasWall(Bearing.W);
       default:
         // "simple" location, just check the bit
         return BitwiseOperations.hasBit(this.data, Panel.startWalls + location);
@@ -256,10 +256,10 @@ public class Panel implements Tile {
     if( ! this.robotIsOnBarcode(x,y) ) { return Panel.NO_COLOR; }
     int line = 0;
     switch(this.getBarcodeLocation()){
-      case Baring.N: line = y;             break;
-      case Baring.S: line = Panel.SIZE - y; break;
-      case Baring.E: line = Panel.SIZE - x; break;
-      case Baring.W: line = x;             break;
+      case Bearing.N: line = y;             break;
+      case Bearing.S: line = Panel.SIZE - y; break;
+      case Bearing.E: line = Panel.SIZE - x; break;
+      case Bearing.W: line = x;             break;
     }
     line /= Panel.BARCODE_LINE_WIDTH;
     return getBarcodeLine(line);
@@ -268,10 +268,10 @@ public class Panel implements Tile {
   // check if the robot is on a barcode
   private boolean robotIsOnBarcode(int x, int y) {
     switch(this.getBarcodeLocation()){
-      case Baring.N: return y < Panel.BARCODE_WIDTH;
-      case Baring.E: return x > Panel.SIZE - Panel.BARCODE_WIDTH;
-      case Baring.S: return y > Panel.SIZE - Panel.BARCODE_WIDTH;
-      case Baring.W: return x < Panel.BARCODE_WIDTH;
+      case Bearing.N: return y < Panel.BARCODE_WIDTH;
+      case Bearing.E: return x > Panel.SIZE - Panel.BARCODE_WIDTH;
+      case Bearing.S: return y > Panel.SIZE - Panel.BARCODE_WIDTH;
+      case Bearing.W: return x < Panel.BARCODE_WIDTH;
     }
     return false;
   }
@@ -280,41 +280,41 @@ public class Panel implements Tile {
     int color = Panel.NO_COLOR;
 
     // determine which line might be hit
-    int position = Baring.NONE;
-    if( y == Panel.LINE_OFFSET && this.hasLine(Baring.N) ) { 
-      position = Baring.N;
+    int position = Bearing.NONE;
+    if( y == Panel.LINE_OFFSET && this.hasLine(Bearing.N) ) { 
+      position = Bearing.N;
     }
-    if( x == Panel.SIZE - Panel.LINE_OFFSET && this.hasLine(Baring.E) ) { 
-      position = Baring.E;
+    if( x == Panel.SIZE - Panel.LINE_OFFSET && this.hasLine(Bearing.E) ) { 
+      position = Bearing.E;
     }
-    if( y == Panel.SIZE - Panel.LINE_OFFSET && this.hasLine(Baring.S) ) { 
-      position = Baring.S;
+    if( y == Panel.SIZE - Panel.LINE_OFFSET && this.hasLine(Bearing.S) ) { 
+      position = Bearing.S;
     }
-    if( x == Panel.LINE_OFFSET && this.hasLine(Baring.W) ) { 
-      position = Baring.W;
+    if( x == Panel.LINE_OFFSET && this.hasLine(Bearing.W) ) { 
+      position = Bearing.W;
     }    
     
     // if the line forms a corner with a related line, we need to limit the 
     // scope of the line
-    if (position == Baring.N || position == Baring.S){
-      if(this.hasLine(Baring.W) && x < Panel.LINE_OFFSET){
-        position = Baring.NONE;
+    if (position == Bearing.N || position == Bearing.S){
+      if(this.hasLine(Bearing.W) && x < Panel.LINE_OFFSET){
+        position = Bearing.NONE;
       }        
-      if(this.hasLine(Baring.E) && x > Panel.SIZE - Panel.LINE_OFFSET) {
-        position = Baring.NONE;
+      if(this.hasLine(Bearing.E) && x > Panel.SIZE - Panel.LINE_OFFSET) {
+        position = Bearing.NONE;
       }
     }
-    if ((position == Baring.E || position == Baring.W)) {
-      if (this.hasLine(Baring.N) && y < Panel.LINE_OFFSET){
-        position = Baring.NONE;
+    if ((position == Bearing.E || position == Bearing.W)) {
+      if (this.hasLine(Bearing.N) && y < Panel.LINE_OFFSET){
+        position = Bearing.NONE;
       }
-      if (this.hasLine(Baring.S) && y > Panel.SIZE - Panel.LINE_OFFSET) {
-        position = Baring.NONE;
+      if (this.hasLine(Bearing.S) && y > Panel.SIZE - Panel.LINE_OFFSET) {
+        position = Bearing.NONE;
       }
     }
     
     // check color of hit
-    if(position != Baring.NONE && this.hasLine(position)) {
+    if(position != Bearing.NONE && this.hasLine(position)) {
       if(this.hasLine(position, Panel.WHITE))      { color = Panel.WHITE; }
       else if(this.hasLine(position, Panel.BLACK)) { color = Panel.BLACK; }
     }
@@ -326,32 +326,32 @@ public class Panel implements Tile {
     int color = Panel.NO_COLOR;
 
     // determine which corner might be hit
-    int position = Baring.NONE;
+    int position = Bearing.NONE;
     if (x < Panel.LINE_OFFSET) {
       
-      if (onLine(y, Panel.LINE_OFFSET))                                      {position = Baring.NW;}
-      else if (onLine(y, Panel.SIZE - Panel.LINE_OFFSET - Panel.LINE_WIDTH ))  {position = Baring.SW;}
+      if (onLine(y, Panel.LINE_OFFSET))                                      {position = Bearing.NW;}
+      else if (onLine(y, Panel.SIZE - Panel.LINE_OFFSET - Panel.LINE_WIDTH ))  {position = Bearing.SW;}
       
     } else if (x > Panel.SIZE - Panel.LINE_OFFSET) {
       
-      if (onLine(y, Panel.LINE_OFFSET))                                      {position = Baring.NE;}
-      else if (onLine(y, Panel.SIZE - Panel.LINE_OFFSET - Panel.LINE_WIDTH ))  {position = Baring.SE;}
+      if (onLine(y, Panel.LINE_OFFSET))                                      {position = Bearing.NE;}
+      else if (onLine(y, Panel.SIZE - Panel.LINE_OFFSET - Panel.LINE_WIDTH ))  {position = Bearing.SE;}
       
     } else if (onLine(x, Panel.LINE_OFFSET)) {
       
-      if (y < Panel.LINE_OFFSET || onLine(y, Panel.LINE_OFFSET))              {position = Baring.NW;}
+      if (y < Panel.LINE_OFFSET || onLine(y, Panel.LINE_OFFSET))              {position = Bearing.NW;}
       else if (y >= Panel.SIZE - Panel.LINE_OFFSET 
-              || onLine(y, Panel.SIZE - Panel.LINE_OFFSET-Panel.LINE_WIDTH))   {position = Baring.SW;}
+              || onLine(y, Panel.SIZE - Panel.LINE_OFFSET-Panel.LINE_WIDTH))   {position = Bearing.SW;}
       
     } else if (onLine(x, Panel.SIZE - Panel.LINE_OFFSET)) {
       
-      if (y < Panel.LINE_OFFSET || onLine(y, Panel.LINE_OFFSET))              {position = Baring.NE;}
+      if (y < Panel.LINE_OFFSET || onLine(y, Panel.LINE_OFFSET))              {position = Bearing.NE;}
       else if (y >= Panel.SIZE - Panel.LINE_OFFSET 
-              || onLine(y, Panel.SIZE - Panel.LINE_OFFSET-Panel.LINE_WIDTH))   {position = Baring.SE;}
+              || onLine(y, Panel.SIZE - Panel.LINE_OFFSET-Panel.LINE_WIDTH))   {position = Bearing.SE;}
       
     }
     // check color of hit
-    if(position != Baring.NONE && this.hasCorner(position)) {
+    if(position != Bearing.NONE && this.hasCorner(position)) {
       if(this.hasCorner(position, Panel.WHITE))      { color = Panel.WHITE; }
       else if(this.hasCorner(position, Panel.BLACK)) { color = Panel.BLACK; }
     }
@@ -406,15 +406,15 @@ public class Panel implements Tile {
   }
 
   private void renderLines(Graphics2D g2d, int left, int top) {
-    this.renderLine(g2d, left, top, Baring.N);
-    this.renderLine(g2d, left, top, Baring.E);
-    this.renderLine(g2d, left, top, Baring.S);
-    this.renderLine(g2d, left, top, Baring.W);
+    this.renderLine(g2d, left, top, Bearing.N);
+    this.renderLine(g2d, left, top, Bearing.E);
+    this.renderLine(g2d, left, top, Bearing.S);
+    this.renderLine(g2d, left, top, Bearing.W);
 
-    this.renderCorner(g2d, left, top, Baring.NE);
-    this.renderCorner(g2d, left, top, Baring.SE);
-    this.renderCorner(g2d, left, top, Baring.SW);
-    this.renderCorner(g2d, left, top, Baring.NW);
+    this.renderCorner(g2d, left, top, Bearing.NE);
+    this.renderCorner(g2d, left, top, Bearing.SE);
+    this.renderCorner(g2d, left, top, Bearing.SW);
+    this.renderCorner(g2d, left, top, Bearing.NW);
   }
 
   // TODO: further refactor this code, the switch is still ugly as hell ;-)
@@ -423,33 +423,33 @@ public class Panel implements Tile {
       g2d.setColor(hasLine(line, Panel.WHITE) ? Board.WHITE : Board.BLACK);
       int length = DRAW_TILE_SIZE;
       int offset = 0;
-      if (hasLine(Baring.getLeftNeighbour(line)) || hasLine(Baring.getRightNeighbour(line))) {
+      if (hasLine(Bearing.getLeftNeighbour(line)) || hasLine(Bearing.getRightNeighbour(line))) {
         length -= DRAW_LINE_START;
       }
-      if (hasLine(Baring.getLeftNeighbour(line))) {
+      if (hasLine(Bearing.getLeftNeighbour(line))) {
         offset += DRAW_LINE_START;
       }
       int x = 0, y = 0, dX = 0, dY = 0;
       switch (line) {
-        case Baring.N:
+        case Bearing.N:
           dX = length;
           dY = DRAW_LINE_WIDTH;
           x = offset;
           y = DRAW_LINE_START;
           break;
-        case Baring.S:
+        case Bearing.S:
           dX = length;
           dY = DRAW_LINE_WIDTH;
           x = offset;
           y = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
           break;
-        case Baring.E:
+        case Bearing.E:
           dX = DRAW_LINE_WIDTH;
           dY = length;
           x = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
           y = offset;
           break;
-        case Baring.W:
+        case Bearing.W:
           dX = DRAW_LINE_WIDTH;
           dY = length;
           x = DRAW_LINE_START;
@@ -472,22 +472,22 @@ public class Panel implements Tile {
       int offsetLeftH = 0, offsetTopH = 0,
               offsetLeftV = 0, offsetTopV = 0;
       switch (corner) {
-        case Baring.NE:
+        case Bearing.NE:
           offsetLeftH = offsetLeftV = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
           offsetTopH = DRAW_LINE_START;
           offsetTopV = 0;
           break;
-        case Baring.SE:
+        case Bearing.SE:
           offsetLeftH = offsetLeftV = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
           offsetTopH = offsetTopV = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
           break;
-        case Baring.SW:
+        case Bearing.SW:
           offsetLeftH = 0;
           offsetLeftV = DRAW_LINE_START;
           offsetTopH = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
           offsetTopV = DRAW_TILE_SIZE - DRAW_LINE_START - DRAW_LINE_WIDTH;
           break;
-        case Baring.NW:
+        case Bearing.NW:
           offsetLeftH = 0;
           offsetLeftV = DRAW_LINE_START;
           offsetTopV = 0;
@@ -519,28 +519,28 @@ public class Panel implements Tile {
       g2d.setColor(getBarcodeLine(line) == Panel.BLACK ? Board.BLACK : Board.WHITE);
 
       switch (getBarcodeLocation()) {
-        case Baring.N:
+        case Bearing.N:
           g2d.fill(new Rectangle(
                   DRAW_TILE_SIZE * (left - 1),
                   DRAW_TILE_SIZE * (top - 1) + DRAW_BARCODE_LINE_WIDTH * line,
                   DRAW_TILE_SIZE,
                   DRAW_BARCODE_LINE_WIDTH));
           break;
-        case Baring.E:
+        case Bearing.E:
           g2d.fill(new Rectangle(
                   DRAW_TILE_SIZE * (left) - DRAW_BARCODE_LINE_WIDTH * (line + 1),
                   DRAW_TILE_SIZE * (top - 1),
                   DRAW_BARCODE_LINE_WIDTH,
                   DRAW_TILE_SIZE));
           break;
-        case Baring.S:
+        case Bearing.S:
           g2d.fill(new Rectangle(
                   DRAW_TILE_SIZE * (left - 1),
                   DRAW_TILE_SIZE * (top) - DRAW_BARCODE_LINE_WIDTH * (line + 1),
                   DRAW_TILE_SIZE,
                   DRAW_BARCODE_LINE_WIDTH));
           break;
-        case Baring.W:
+        case Bearing.W:
           g2d.fill(new Rectangle(
                   DRAW_TILE_SIZE * (left - 1) + DRAW_BARCODE_LINE_WIDTH * line,
                   DRAW_TILE_SIZE * (top - 1) + DRAW_WALL_LINE_WIDTH,
@@ -558,28 +558,28 @@ public class Panel implements Tile {
   private void renderWalls(Graphics2D g2d, int left, int top) {
     // walls are 2cm width = 4px
     g2d.setColor(Board.DARK_BROWN);
-    if (hasWall(Baring.N)) {
+    if (hasWall(Bearing.N)) {
       g2d.fill(new Rectangle(
               DRAW_TILE_SIZE * (left - 1),
               DRAW_TILE_SIZE * (top - 1),
               DRAW_TILE_SIZE,
               DRAW_WALL_LINE_WIDTH));
     }
-    if (hasWall(Baring.E)) {
+    if (hasWall(Bearing.E)) {
       g2d.fill(new Rectangle(
               DRAW_TILE_SIZE * left - DRAW_WALL_LINE_WIDTH,
               DRAW_TILE_SIZE * (top - 1),
               4,
               DRAW_TILE_SIZE));
     }
-    if (hasWall(Baring.S)) {
+    if (hasWall(Bearing.S)) {
       g2d.fill(new Rectangle(
               DRAW_TILE_SIZE * (left - 1),
               DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
               DRAW_TILE_SIZE,
               4));
     }
-    if (hasWall(Baring.W)) {
+    if (hasWall(Bearing.W)) {
       g2d.fill(new Rectangle(
               DRAW_TILE_SIZE * (left - 1),
               DRAW_TILE_SIZE * (top - 1),

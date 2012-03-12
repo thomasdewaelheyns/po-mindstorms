@@ -37,14 +37,14 @@ public class SimulationTest extends TestCase implements GoalDecider {
   private Map createMap() {
     return new MapArray(2)
           .add(new Panel()
-            .withWall(Baring.N)
-            .withWall(Baring.W)
-            .withWall(Baring.NONE)
-            .withWall(Baring.S))
+            .withWall(Bearing.N)
+            .withWall(Bearing.W)
+            .withWall(Bearing.NONE)
+            .withWall(Bearing.S))
           .add(new Panel()
-            .withWall(Baring.N)
-            .withWall(Baring.NONE)
-            .withWall(Baring.E)
-            .withWall(Baring.S));
+            .withWall(Bearing.N)
+            .withWall(Bearing.NONE)
+            .withWall(Bearing.E)
+            .withWall(Bearing.S));
   }
 }

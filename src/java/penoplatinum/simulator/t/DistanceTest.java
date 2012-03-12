@@ -1,6 +1,6 @@
 package penoplatinum.simulator.t;
 
-import penoplatinum.simulator.Baring;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*; 
 
@@ -49,20 +49,20 @@ public class DistanceTest extends TestCase {
   }
 
   public void testFacingWall() {
-    assertEquals( Baring.E, this.findFacingWall(50, 50,   0 ) );
-    assertEquals( Baring.E, this.findFacingWall(50, 50,  20 ) );
-    assertEquals( Baring.N, this.findFacingWall(50, 50,  70 ) );
-    assertEquals( Baring.N, this.findFacingWall(50, 50,  90 ) );
-    assertEquals( Baring.N, this.findFacingWall(50, 50, 110 ) );
-    assertEquals( Baring.W, this.findFacingWall(50, 50, 160 ) );
-    assertEquals( Baring.W, this.findFacingWall(50, 50, 180 ) );
-    assertEquals( Baring.W, this.findFacingWall(50, 50, 200 ) );
-    assertEquals( Baring.S, this.findFacingWall(50, 50, 250 ) );
-    assertEquals( Baring.S, this.findFacingWall(50, 50, 270 ) );
-    assertEquals( Baring.S, this.findFacingWall(50, 50, 290 ) );
-    assertEquals( Baring.E, this.findFacingWall(50, 50, 340 ) );
-    assertEquals( Baring.E, this.findFacingWall(50, 50, 360 ) );
-    assertEquals( Baring.E, this.findFacingWall(50, 50, 380 ) );
+    assertEquals( Bearing.E, this.findFacingWall(50, 50,   0 ) );
+    assertEquals( Bearing.E, this.findFacingWall(50, 50,  20 ) );
+    assertEquals( Bearing.N, this.findFacingWall(50, 50,  70 ) );
+    assertEquals( Bearing.N, this.findFacingWall(50, 50,  90 ) );
+    assertEquals( Bearing.N, this.findFacingWall(50, 50, 110 ) );
+    assertEquals( Bearing.W, this.findFacingWall(50, 50, 160 ) );
+    assertEquals( Bearing.W, this.findFacingWall(50, 50, 180 ) );
+    assertEquals( Bearing.W, this.findFacingWall(50, 50, 200 ) );
+    assertEquals( Bearing.S, this.findFacingWall(50, 50, 250 ) );
+    assertEquals( Bearing.S, this.findFacingWall(50, 50, 270 ) );
+    assertEquals( Bearing.S, this.findFacingWall(50, 50, 290 ) );
+    assertEquals( Bearing.E, this.findFacingWall(50, 50, 340 ) );
+    assertEquals( Bearing.E, this.findFacingWall(50, 50, 360 ) );
+    assertEquals( Bearing.E, this.findFacingWall(50, 50, 380 ) );
   }
   
   private int findFacingWall( int x, int y, int angle ) {

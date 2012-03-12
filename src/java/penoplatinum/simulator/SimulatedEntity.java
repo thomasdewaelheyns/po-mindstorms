@@ -81,6 +81,7 @@ public class SimulatedEntity implements RobotEntity{
     //setSensor(Model.S1, new TouchSensor(45));
     //setSensor(Model.S2, new TouchSensor(315));
     setSensor(Model.S1, new IRSensor());
+    setSensor(Model.S2, new NoneSensor());
     setSensor(Model.S3, new Sonar());
     setSensor(Model.S4, new LightSensor());
     setSensor(Model.IR0, new IRdistanceSensor(240));

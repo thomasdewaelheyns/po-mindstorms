@@ -1,7 +1,7 @@
 package penoplatinum.simulator.tiles;
 
 import java.awt.Point;
-import penoplatinum.simulator.Baring;
+import penoplatinum.simulator.Bearing;
 
 public class TileGeometry {
 
@@ -81,42 +81,42 @@ public class TileGeometry {
     if (hit.y == 0) {                          // North
       if (hit.x == 0) {
         if (90 < angle && angle < 180) {
-          return Baring.NW;
+          return Bearing.NW;
         } else if (angle <= 90) {
-          return Baring.N;
+          return Bearing.N;
         } else {
-          return Baring.W;
+          return Bearing.W;
         }
       } else if (hit.x == size) {
         if (0 < angle && angle < 90) {
-          return Baring.NE;
+          return Bearing.NE;
         } else if (angle >= 90) {
-          return Baring.N;
+          return Bearing.N;
         } else {
-          return Baring.E;
+          return Bearing.E;
         }
       } else {
-        return Baring.N;
+        return Bearing.N;
       }
     } else if (hit.y == size) {                  // South
       if (hit.x == 0) {
         if (270 < angle) {
-          return Baring.SW;
+          return Bearing.SW;
         } else if (angle < 90) {
-          return Baring.W;
+          return Bearing.W;
         } else {
-          return Baring.S;
+          return Bearing.S;
         }
       } else if (hit.x == size) {
-        return Baring.SE;
+        return Bearing.SE;
       } else {
-        return Baring.S;
+        return Bearing.S;
       }
     } else {                                    // East or West
       if (hit.x == 0) {
-        return Baring.W;
+        return Bearing.W;
       } else {
-        return Baring.E;
+        return Bearing.E;
       }
     }
   }
