@@ -23,7 +23,7 @@ public class SimpleGrid implements Grid {
   int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
   // mapping from coordinates to allocating Sector
   private SimpleHashMap<String, Sector> sectors = new SimpleHashMap<String, Sector>();
-  private SimpleHashMap<String, Sector> tags = new SimpleHashMap<String, Sector>();
+  private List<Sector> taggedSectors = new ArrayList<Sector>();
   // all agents in a row
   private List<Agent> agents = new ArrayList<Agent>();
   // visualization for the Grid, by default none, is used by Simulator
@@ -252,4 +252,17 @@ public class SimpleGrid implements Grid {
     }
 
   }
+  
+  public void addTaggedSector(Sector s)
+  {
+    taggedSectors.add(s);
+    
+  }
+
+  public List<Sector> getTaggedSectors() {
+    return taggedSectors;
+  }
+  
+  
+  
 }

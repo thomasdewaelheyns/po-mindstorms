@@ -6,6 +6,7 @@ package penoplatinum;
 
 import java.util.ArrayList;
 import java.util.List;
+import penoplatinum.grid.Grid;
 
 /**
  *
@@ -56,5 +57,13 @@ public class SimpleHashMap<K, T> {
 
   public List<T> values() {
     return values;
+  }
+
+  public K findKey(T g) {
+    for (int i = 0; i < values.size(); i++) {
+      if (g.equals(values.get(i)))
+        return keys.get(i);
+    }
+    return null;
   }
 }

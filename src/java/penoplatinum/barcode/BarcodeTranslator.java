@@ -47,4 +47,16 @@ public class BarcodeTranslator {
     }
     return val;
   }
+  
+  
+  public static int invertBarcode(int code) {
+    int out = 0;
+    for (int i = 0; i < 6; i++) { //TODO: hardcoded barcode length!!!
+      out |= code & 1;
+      code >>= 1;
+      out <<= 1;
+    }
+    out >>= 1;
+    return out;
+  }
 }

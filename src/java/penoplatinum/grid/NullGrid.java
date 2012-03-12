@@ -122,5 +122,14 @@ public class NullGrid implements Grid{
   @Override
   public void importGrid(Grid g, TransformationTRT transformation) {
   }
+
+  @Override
+  public void addTaggedSector(Sector s) {
+  }
+
+  @Override
+  public List<Sector> getTaggedSectors() {
+    return null;
+  }
   
 }

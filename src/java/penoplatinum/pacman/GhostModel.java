@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import penoplatinum.SimpleHashMap;
 import penoplatinum.Utils;
+import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.simulator.Line;
 import penoplatinum.modelprocessor.Buffer;
 
@@ -62,7 +63,6 @@ public class GhostModel implements Model {
   private GhostProtocolHandler protocol;
   private ArrayList<Sector> barcodeSectors = new ArrayList<Sector>();
   private ArrayList<OtherGhost> otherGhosts = new ArrayList<OtherGhost>();
-  
   private DashboardAgent dashboardAgent;
 
   public GhostModel(String name) {
@@ -85,9 +85,8 @@ public class GhostModel implements Model {
     protocol.useQueue(queue);
 
   }
-  
-  public void useDashboardAgent(DashboardAgent agent)
-  {
+
+  public void useDashboardAgent(DashboardAgent agent) {
     this.dashboardAgent = agent;
   }
 
@@ -226,7 +225,9 @@ public class GhostModel implements Model {
 
   public void markSectorUpdated(Sector current) {
     protocol.sendDiscover(current);
-    dashboardAgent.sendSectorWalls(getAgent().getName(), "myGrid", current);
+    if (dashboardAgent != null) {
+      dashboardAgent.sendSectorWalls(getAgent().getName(), "myGrid", current);
+    }
   }
 
   public Sector getDetectedSector() {
@@ -286,7 +287,14 @@ public class GhostModel implements Model {
       getAgent().getSector().setTagCode(lastBarcode);
       getAgent().getSector().setTagBearing(getAgent().getBearing());
 
-      //TODO: find this barcode in the othergrids and map!!
+      //Find this barcode in the othergrids and map!!
+
+      for (Grid g : otherGrids.values()) {
+        String name = otherGrids.findKey(g);
+        for (Sector s : g.getTaggedSectors()) {
+          attempMapBarcode(getAgent().getSector(), s, g, name);
+        }
+      }
 
 
       //To fix protocol shitiness, send a position cmd for safety
@@ -294,6 +302,33 @@ public class GhostModel implements Model {
       lastBarcode = -1;
     }
 
+  }
+
+  public boolean attempMapBarcode(Sector ourSector, Sector otherSector, final Grid otherGrid, String otherAgentName) {
+    int ourCode = ourSector.getTagCode();
+    int code = otherSector.getTagCode();
+    int bearing = otherSector.getTagBearing();
+    int invertedCode = BarcodeTranslator.invertBarcode(ourSector.getTagCode());
+
+    if (ourCode == invertedCode) {
+      code = invertedCode;
+
+      // Switch bearing
+      bearing = Bearing.reverse(bearing);
+    }
+
+    if (ourCode != code) {
+      return false;
+    }
+    final int relativeBearing = (bearing - ourSector.getTagBearing() + 4) % 4;
+
+    TransformationTRT transform = new TransformationTRT().setTransformation(ourSector.getLeft(), ourSector.getTop(), relativeBearing, otherSector.getLeft(), otherSector.getTop());
+
+    setOtherGhostInitialOrientation(otherAgentName, transform);
+
+    getGrid().importGrid(otherGrid, transform);
+    //model.getGrid().refresh();
+    return true;
   }
 
   public void turnLeft() {

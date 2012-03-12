@@ -158,48 +158,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     //        in our own grid
     ArrayList<Sector> bs = model.getBarcodeSectors();
     for (int i = 0; i < bs.size(); i++) {
-      int ourCode = bs.get(i).getTagCode();
-
-      int invertedCode = invertCode(code);
-
-      if (ourCode == invertedCode) {
-        code = invertedCode;
-
-        // Switch bearing
-        bearing = Bearing.reverse(bearing);
-      }
-
-
-//      // WARNING: this is cheat!!
-//      bearing = Bearing.reverse(bearing);
-//      code = ourCode;
-//      // END WARNING
-
-      if (ourCode == code) {
-        final int relativeBearing = (bearing - bs.get(i).getTagBearing() + 4) % 4;
-
-        TransformationTRT transform = new TransformationTRT().setTransformation(bs.get(i).getLeft(), bs.get(i).getTop(), relativeBearing, agent.getLeft(), agent.getTop());
-
-        model.setOtherGhostInitialOrientation(agentName, transform);
-
-        model.getGrid().importGrid(grid, transform);
-        model.getGrid().refresh();
-      }
-
-
+      model.attempMapBarcode(bs.get(i), agent.getSector(), grid, agentName);
     }
 
 
-  }
-
-  private int invertCode(int code) {
-    int out = 0;
-    for (int i = 0; i < 6; i++) { //TODO: hardcoded barcode length!!!
-      out |= code & 1;
-      code >>= 1;
-      out <<= 1;
-    }
-    out >>= 1;
-    return out;
   }
 }

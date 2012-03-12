@@ -9,8 +9,6 @@ package penoplatinum.grid;
  * 
  * @author: Team Platinum
  */
-import java.util.List;
-import java.util.ArrayList;
 
 import penoplatinum.simulator.mini.Bearing;
 
@@ -215,6 +213,7 @@ public class Sector {
 
   public void setTagCode(int tagCode) {
     this.tagCode = tagCode;
+    grid.addTaggedSector(this);
   }
 
   // adds a wall on this sector at given location
