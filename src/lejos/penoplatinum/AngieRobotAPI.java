@@ -22,21 +22,22 @@ public class AngieRobotAPI implements RobotAPI {
 
   private Motor motorLeft;
   private Motor motorRight;
-  private TouchSensor touchLeft;
-  private TouchSensor touchRight;
+  //private TouchSensor touchLeft;
+  //private TouchSensor touchRight;
   private WrappedLightSensor light;
   private RotatingSonarSensor sonar;
   private IRSeekerV2 irSeeker;
   private AngieCalibrationData calibrationData;
   private RotationMovement movement;
-  private static final int sensorNumberTouchLeft = Model.S1;
-  private static final int sensorNumberTouchRight = Model.S2;
+  //private static final int sensorNumberTouchLeft = Model.S1;
+  //private static final int sensorNumberTouchRight = Model.S2;
   private static final int sensorNumberInfraRed = Model.S1;
   private static final int sensorNumberLight = Model.S4;
   private static final int sensorNumberSonar = Model.S3;
   private static final int sensorNumberMotorLeft = Model.M1;
   private static final int sensorNumberMotorRight = Model.M2;
   private static final int sensorNumberMotorSonar = Model.M3;
+  int[] values = new int[Model.SENSORVALUES_NUM];
 
   public AngieRobotAPI() {
 
@@ -96,11 +97,13 @@ public class AngieRobotAPI implements RobotAPI {
   }
 
   public TouchSensor getTouchLeft() {
-    return touchLeft;
+    return null;
+    //return touchLeft;
   }
 
   public TouchSensor getTouchRight() {
-    return touchRight;
+    return null;
+    //return touchRight;
   }
 
   public IRSeekerV2 getIrSeeker() {
@@ -122,7 +125,7 @@ public class AngieRobotAPI implements RobotAPI {
 
   public int[] getSensorValues() {
     //TODO: GC
-    int[] values = new int[Model.SENSORVALUES_NUM];
+    
     values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
     values[sensorNumberMotorRight] = motorRight.getTachoCount();
     values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
@@ -132,21 +135,21 @@ public class AngieRobotAPI implements RobotAPI {
     values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
     /**/
     values[sensorNumberLight] = light.getRawLightValue();
-    values[sensorNumberInfraRed] = irSeeker.getDirection();
-    values[sensorNumberSonar] = (int) sonar.getDistance();
-    values[Model.IR0] = irSeeker.getSensorValue(1);
-    values[Model.IR1] = irSeeker.getSensorValue(2);
-    values[Model.IR2] = irSeeker.getSensorValue(3);
-    values[Model.IR3] = irSeeker.getSensorValue(4);
-    values[Model.IR4] = irSeeker.getSensorValue(5);
+    if(this.isSweeping()){
+      values[sensorNumberSonar] = (int) sonar.getDistance();
+      values[sensorNumberInfraRed] = irSeeker.getDirection();
+      values[Model.IR0] = irSeeker.getSensorValue(1);
+      values[Model.IR1] = irSeeker.getSensorValue(2);
+      values[Model.IR2] = irSeeker.getSensorValue(3);
+      values[Model.IR3] = irSeeker.getSensorValue(4);
+      values[Model.IR4] = irSeeker.getSensorValue(5);
+    }
 
 
     //TODO: change on port change
     values[Model.MS3] = getMotorState(Motor.A);
     values[Model.MS1] = getMotorState(Motor.B);
     values[Model.MS2] = getMotorState(Motor.C);
-
-
 
     return values;
   }
@@ -220,5 +223,13 @@ public class AngieRobotAPI implements RobotAPI {
 
   public List<Integer> getSweepResult() {
     return sonar.getSweepResult();
+  }
+
+  boolean isSweeping = false;
+  public void setSweeping(boolean b){
+    isSweeping = b;
+  }
+  public boolean isSweeping() {
+    return isSweeping;
   }
 }

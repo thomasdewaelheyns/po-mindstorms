@@ -163,4 +163,11 @@ public class SimulationRobotAPI implements RobotAPI {
 
 
   }
+  boolean isSweeping = false;
+  public void setSweeping(boolean b){
+    isSweeping = b;
+  }
+  public boolean isSweeping() {
+    return isSweeping;
+  }
 }

@@ -93,4 +93,12 @@ public class MiniSimulationRobotAPI implements RobotAPI {
   public ExtendedVector getRelativePosition(ReferencePosition reference) {
     return new ExtendedVector();
   }
+  
+  boolean isSweeping = false;
+  public void setSweeping(boolean b){
+    isSweeping = b;
+  }
+  public boolean isSweeping() {
+    return isSweeping;
+  }
 }
