@@ -37,13 +37,20 @@ public class DashboardAgent {
 
   }
   StringBuilder builder = new StringBuilder();
+  long nextTime = 0;
 
   public void sendModelDeltas() {
+    long now = System.nanoTime();
+
+    if(now < this.nextTime) {
+      return;
+    }
+    
+    this.nextTime = now + 300000000;
 
     builder.delete(0, builder.length());
     
     Sector s;
-
 
     builder.append("\"").append(robot.getName()).append("\",");
     builder.append(model.getLightSensorValue()).append(",");
@@ -109,9 +116,9 @@ public class DashboardAgent {
     builder.delete(0, builder.length());
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
-    builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getWalls());
+    builder.append(s.getLeft()).append(",")
+    .append(s.getTop()).append(",").append((int)s.getWalls());
     sendBuffer(124);
-    
   }
 
   public void sendSectorValues(String name, String grid, Sector s) {
@@ -126,14 +133,13 @@ public class DashboardAgent {
     builder.delete(0, builder.length());
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
-    builder.append(ag.getName()).append(",");
+    builder.append("\"").append(ag.getName()).append("\",");
     builder.append(ag.getSector().getLeft()).append(",");
     builder.append(ag.getSector().getTop()).append(",");
     builder.append(ag.getBearing() + 1).append(",");
-    builder.append("white");
+    builder.append("\"white\"");
     
     sendBuffer(126);
-
   }
 
   void setRobot(GhostRobot robot) {

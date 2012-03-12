@@ -11,6 +11,7 @@ import penoplatinum.grid.SwingGridView;
 import penoplatinum.pacman.DashboardAgent;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.pacman.LeftFollowingGhostNavigator;
+import penoplatinum.pacman.GhostNavigator;
 
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
@@ -40,16 +41,21 @@ public class test {
 
     GhostRobot robot = new GhostRobot("Ikke!", new SwingGridView());
     robot.useDashboardAgent(new DashboardAgent(conn));
-    robot.useNavigator(new LeftFollowingGhostNavigator());
+    robot.useNavigator(new GhostNavigator());
 
     SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(20, 20, 0);
     sim.addSimulatedEntity(ent);
 
+    GhostRobot robot2 = new GhostRobot("robot2", new SwingGridView());
+    //robot2.useDashboardAgent(new DashboardAgent(conn));
+    robot2.useNavigator(new GhostNavigator());
 
+    SimulatedEntity ent2 = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot2);
+    ent2.setPostition(140, 60, 0);
+    sim.addSimulatedEntity(ent2);
 
     Thread t = new Thread(new Runnable() {
-
       @Override
       public void run() {
         Agent ag = new Agent();
