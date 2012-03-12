@@ -13,7 +13,7 @@ import penoplatinum.grid.MovingAgent;
 
 
 public class PacmanAgent extends MovingAgent {
-  public static int VALUE = 10000;
+  public static int VALUE =-1;// 10000;
   private Color color = new Color(255,255,0);
   
   public PacmanAgent() { super("pacman"); }
