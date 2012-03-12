@@ -33,11 +33,7 @@ public class GridUpdateProcessor extends ModelProcessor {
 
     this.updateWallInfo();
     this.addNewSectors();
-    for (int i = 0; i < 10; i++) {
-      updateHillClimbingInfo();
-    }
 
-    model.markGridUpdated();
   }
 
   // update the current Sector on the Grid to reflect the currently selected
@@ -71,7 +67,6 @@ public class GridUpdateProcessor extends ModelProcessor {
   private void addNewSectors() {
     GhostModel model = (GhostModel) this.model;
 
-
     Sector current = ((GhostModel) this.model).getCurrentSector();
     for (int location = Bearing.N; location <= Bearing.W; location++) {
       if (current.givesAccessTo(location)
@@ -83,9 +78,5 @@ public class GridUpdateProcessor extends ModelProcessor {
         model.markSectorUpdated(neighbour);
       }
     }
-  }
-
-  private void updateHillClimbingInfo() {
-    ((GhostModel) this.model).getGrid().refresh();
   }
 }

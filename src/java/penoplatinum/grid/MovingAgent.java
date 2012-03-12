@@ -56,7 +56,7 @@ public abstract class MovingAgent implements Agent {
   }
 
   public int getValue() {
-    return 0;
+    return -1;
   }
 
   public int getLeft() {

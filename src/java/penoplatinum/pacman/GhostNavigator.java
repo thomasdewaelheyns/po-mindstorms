@@ -72,15 +72,14 @@ public class GhostNavigator implements Navigator {
   private void createNewPlan() {
     int[] values = this.getadjacentSectorInfo();
 
-    // if any of the moves brings us onto the 10000 pos, we hold our position
-    for(int bearing=Bearing.N;bearing<=Bearing.W;bearing++) {
-      if( values[bearing] == 10000 ) {
-        this.plan.add(GhostAction.NONE);
-      }
-    }
     
-    // else move towards the higher ground/scent/value
+    // move towards the higher ground/scent/value
     int max = this.getMax(values);
+    // if any of the moves brings us onto the 10000 pos, we hold our position
+    if(max == PacmanAgent.VALUE){
+      this.plan.add(GhostAction.NONE);
+      return;
+    }
     
     // retain moves with highest value
     int[] moves = {-1, -1, -1, -1};
@@ -124,15 +123,15 @@ public class GhostNavigator implements Navigator {
       hasNeighbour = sector.hasNeighbour(atLocation);
       hasWall      = sector.hasWall(atLocation);
       hasWall      = hasWall != null && hasWall;
-      info[atLocation] = ! sector.hasNeighbour(atLocation) || hasWall ?
+      info[atLocation] = ! hasNeighbour || hasWall ?
                          -1 : sector.getNeighbour(atLocation).getValue();
       // if we know there is an agent on the next sector, lower the value
       // drastically
-      if( sector.hasNeighbour(atLocation) && 
+      /*if( hasNeighbour &&   //Dit werkt niet indien er een pacman op staat, dan rijdt hij weg!
           sector.getNeighbour(atLocation).hasAgent() )
       {
         info[atLocation] = -1;
-      } else {
+      } else {/**/
         // TEMPORARY CHEATING TO SOLVE DETECT-OTHER-AGENT-AS-WALL PROBLEM
         // we don't want to allow multiple agents on the same sector
 //        Agent proxy = MiniSimulation.goalGrid.getAgent(agent.getName());
@@ -144,7 +143,7 @@ public class GhostNavigator implements Navigator {
 //          // try { System.in.read(); } catch(Exception e) {}
 //          info[atLocation] = -1;
 //        }
-      }
+      /*}/**/
     }
 
     return info;

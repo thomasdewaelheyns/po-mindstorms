@@ -72,6 +72,7 @@ public class Simulator {
     for (RobotEntity s : robotEntities) {
       view.addRobot(s.getViewRobot());
     }
+    view.addRobot(pacmanEntity.getViewRobot());
     return this;
   }
 
@@ -249,6 +250,7 @@ public class Simulator {
 
   public void setPacmanEntity(RobotEntity pacmanEntity) {
     this.pacmanEntity = pacmanEntity;
+    view.addRobot(pacmanEntity.getViewRobot());
   }
 
   public int getTileSize() {

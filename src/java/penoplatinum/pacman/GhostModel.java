@@ -140,7 +140,7 @@ public class GhostModel implements Model {
 
   // triggers the processor(s) to start processing the sensordata and update
   // the grid
-  private void process() {
+  public void process() {
 
     setScanningLightData(false); // Resets this flag to false
     sweepComplete = false;

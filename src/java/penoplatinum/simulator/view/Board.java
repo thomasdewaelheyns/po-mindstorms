@@ -17,6 +17,7 @@ import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import penoplatinum.map.Map;
+import penoplatinum.simulator.PacmanViewRobot;
 import penoplatinum.simulator.RemoteViewRobot;
 import penoplatinum.simulator.SimulatedViewRobot;
 import penoplatinum.simulator.tiles.Tile;
@@ -50,6 +51,9 @@ public class Board extends JPanel {
     URL resource = this.getClass().getResource("../images/robot40.png");
     ImageIcon ii = new ImageIcon(resource);
     SimulatedViewRobot.robot = ii.getImage();
+    resource = this.getClass().getResource("../images/pacman-1974.png");
+    ii = new ImageIcon(resource);
+    PacmanViewRobot.robot = ii.getImage();
   }
 
   public void showMap(Map map) {

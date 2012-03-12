@@ -98,4 +98,17 @@ public class Utils {
 
     return val;
   }
+  
+    public static double ClampLooped(double val, int start, int end) {
+    val -= start;
+    end -= start;
+
+    if (val < 0) {
+      val += (-val / end + 1) * end;
+    }
+    val = val % end;
+    val += start;
+
+    return val;
+  }
 }

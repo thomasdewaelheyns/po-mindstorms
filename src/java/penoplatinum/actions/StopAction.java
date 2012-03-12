@@ -1,15 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.actions;
 
 import penoplatinum.simulator.Navigator;
 
-/**
- *
- * @author MHGameWork
- */
 public class StopAction extends BaseAction {
 
   public StopAction() {
@@ -27,6 +19,7 @@ public class StopAction extends BaseAction {
   @Override
   public int getNextAction() {
     if(first){
+      first = false;
       startTime = System.currentTimeMillis();
       return Navigator.STOP;
     }
@@ -35,7 +28,8 @@ public class StopAction extends BaseAction {
 
   @Override
   public boolean isComplete() {
-    return (startTime+lengthTime<System.currentTimeMillis()); // Never complete!
+    boolean temp = (startTime+lengthTime<System.currentTimeMillis()); // Never complete!
+    return temp;
   }
    @Override
   public String getKind() {

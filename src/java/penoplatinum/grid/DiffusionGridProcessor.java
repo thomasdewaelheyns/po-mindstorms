@@ -17,20 +17,16 @@ public class DiffusionGridProcessor extends GridProcessor {
 
     for (int top = minTop; top <= maxTop; top++) {
       for (int left = minLeft; left <= maxLeft; left++) {
-
         Sector sector = this.grid.getSector(left, top);
-
-
         if (sector != null) {
           int total = 0;
           int count = 0;
-          if (!sector.isFullyKnown()) {
-            total = 5000;
-            count = 1;
-          } else {
-            // a hunting agent resets the value of its sector
-            if (!sector.hasAgent()) {
-
+          // a hunting agent resets the value of its sector
+          if (!sector.hasAgent()) {
+            if (!sector.isFullyKnown()) {
+              total = 5000;
+              count = 1;
+            } else {
               for (int atLocation = Bearing.N; atLocation <= Bearing.W; atLocation++) {
                 // if we know about walls and there is NO wall take the sector's
                 // value into account
