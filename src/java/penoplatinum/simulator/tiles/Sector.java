@@ -11,9 +11,10 @@ import penoplatinum.simulator.view.Board;
 public class Sector implements Tile, Cloneable {
 
   private int data;
+  public static final int barcodeLength = 5;
   private static int startWalls = 0;
   private static int startBarcode = startWalls + 4;
-  private static int startIsItABarcode = startBarcode + 5;
+  private static int startIsItABarcode = startBarcode + barcodeLength;
   private static int startBarcodeDirection = startIsItABarcode + 1;
   private static int endBarcodeDirection = startIsItABarcode + 2;
   // logical measurements of a Sector, these are equal to the actual dimensions
@@ -44,7 +45,7 @@ public class Sector implements Tile, Cloneable {
   @Override
   public int getBarcode() {
     if (BitwiseOperations.hasBit(data, startIsItABarcode)) {
-      return barcode.getExpand()[BitwiseOperations.getBits(data, Sector.startBarcode, 4)] * 2;
+      return barcode.getExpand()[BitwiseOperations.getBits(data, Sector.startBarcode, Sector.barcodeLength)] * 2;
     }
     return -1;
   }
