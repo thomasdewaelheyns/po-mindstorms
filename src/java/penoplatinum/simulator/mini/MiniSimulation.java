@@ -38,9 +38,9 @@ public class MiniSimulation {
                                new ProxyAgent("2"), new ProxyAgent("3") };
     goalGrid.getSector(2,2).put(new StaticTargetAgent(), Bearing.E);
     goalGrid.getSector(0,0).put(proxies[0], Bearing.N);
-    goalGrid.getSector(9,0).put(proxies[1], Bearing.N);
-    goalGrid.getSector(0,9).put(proxies[2], Bearing.N);
-    goalGrid.getSector(9,9).put(proxies[3], Bearing.N);
+    goalGrid.getSector(9,0).put(proxies[1], Bearing.E);
+    goalGrid.getSector(0,9).put(proxies[2], Bearing.S);
+    goalGrid.getSector(9,9).put(proxies[3], Bearing.W);
 
     goalGrid.setProcessor(new DiffusionGridProcessor())
             .displayOn(goalView);

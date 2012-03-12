@@ -63,10 +63,13 @@ public class Bearing {
   // bearings are N-based, this method allows to transform such a bearing
   // to a bearing, based on a different origin
   public static int withOrigin(int bearing, int origin) {
-    if (origin == Bearing.N) {
-      return bearing;
+    int newBearing = bearing;
+    switch(origin) {
+      case(Bearing.E): newBearing += 1; break;
+      case(Bearing.S): newBearing += 2; break;
+      case(Bearing.W): newBearing -= 1; break;
     }
-    throw new RuntimeException("Bearing::withOrigin not fully implemented.");
+    return (newBearing + 4) % 4;
   }
 
   public static Point mapToNorth(int rotation, int x, int y) {
