@@ -66,6 +66,7 @@ public abstract class MQ {
       this.channel.basicPublish(this.channelName, "", null, message.getBytes());
     } catch (Exception e) {
       Utils.Log("MQ error!");
+      System.out.println(e.toString());
     }
     return this;
   }

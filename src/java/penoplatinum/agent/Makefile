@@ -20,6 +20,7 @@ JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
 JAVA=java -d32 -cp ${CP}:${BUILD_DIR}:${LIBS}
 
 MYSQL=/usr/local/mysql/bin/mysql -uplatinum -pplatinum
+MYSQLDUMP=/usr/local/mysql/bin/mysqldump -uplatinum -pplatinum
 
 OPTIONS=
 
@@ -50,6 +51,9 @@ ${BUILD_DIR}:
 
 dashboard: test.class ../Utils.class
 	${JAVA} penoplatinum.agent.test
+
+backup:
+	  ${MYSQLDUMP} robots > demo1.sql
 
 test:
 	@( cd t; make test )
