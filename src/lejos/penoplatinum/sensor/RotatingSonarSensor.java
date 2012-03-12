@@ -96,6 +96,7 @@ public class RotatingSonarSensor {
         currentSweepAngleIndex = 0;
         //WARNING: the result list can be used after the next sweep is requested! resultBuffer.clear();
         resultBuffer = new ArrayList<Integer>();
+        //resultBuffer.clear();
     }
 
     public List<Integer> getSweepResult() {

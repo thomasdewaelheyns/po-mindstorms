@@ -2,6 +2,7 @@ package penoplatinum.pacman;
 
 import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
+import penoplatinum.Utils;
 import penoplatinum.driver.Driver;
 import penoplatinum.grid.GridView;
 import penoplatinum.modelprocessor.BarcodeBlackModelProcessor;
@@ -55,8 +56,8 @@ public class GhostRobot implements Robot {
   private void setupModel(String name) {
     this.model = new GhostModel(name);
     ModelProcessor processors =
-            new HistogramModelProcessor(
             new LightColorModelProcessor(
+            new HistogramModelProcessor(
             //new FrontPushModelProcessor(
             //new SonarModelProcessor(
             //new GapModelProcessor(
@@ -118,10 +119,15 @@ public class GhostRobot implements Robot {
   }
   // the external tick...
 
+    public static long delta = 0;
+    public static int count = 0;
+    public static long start = 0;
+    
   public void step() {
 
 
     // poll other sensors and update model
+    GhostRobot.start = System.nanoTime();
     this.model.updateSensorValues(this.api.getSensorValues());
     this.model.setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
@@ -133,7 +139,16 @@ public class GhostRobot implements Robot {
 
     // let the driver do his thing
     if (this.driver.isBusy()) {
+
       this.driver.step();
+      delta += System.nanoTime() - start;
+      if (delta > 1000L * 1000 * 1000) {
+        int fps = (int) (count / (double) delta * 1000d * 1000d * 1000d);
+        Utils.Log("FPS: " + Integer.toString(fps));
+        count = 0;
+        delta = 0;
+      }
+      count++;
       return;
     }
 
@@ -146,8 +161,10 @@ public class GhostRobot implements Robot {
     // if the sweep is ready ...
     if (this.waitingForSweep) {
       this.model.updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
+      this.api.setSweeping(false);
       this.waitingForSweep = false;
     } else {
+      this.api.setSweeping(true);
       this.api.sweep(sweepAngles);
       this.waitingForSweep = true;
       return; // to wait for results

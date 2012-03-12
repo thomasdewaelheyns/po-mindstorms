@@ -39,7 +39,7 @@ import penoplatinum.simulator.mini.Queue;
 public class GhostModel implements Model {
   // little bit of configuration
 
-  private List<Integer> sonarValues = new ArrayList<Integer>();
+  //private List<Integer> sonarValues = new ArrayList<Integer>(); //unused
   private boolean newSonarValues = false;
   // two queue-like lists for in- and out-goinging messages
   private List<String> inbox = new ArrayList<String>();
@@ -130,7 +130,11 @@ public class GhostModel implements Model {
     }
 
     //this.prevSensors = this.sensors.clone(); //TODO: WARNING GC
-    this.sensors = values;
+    //this.sensors = values;
+    for(int i = 0; i<SENSORVALUES_NUM; i++){
+      this.sensors[i] = values[i];
+    }
+    
     this.process();
 
     return this;
@@ -153,7 +157,7 @@ public class GhostModel implements Model {
 
   public void updateSonarValues(List<Integer> distances, List<Integer> angles) {
     this.distances = distances; //TODO: remove double
-    this.sonarValues = distances;
+    //this.sonarValues = distances; 
     this.angles = angles;
 
     this.newSonarValues = true;
