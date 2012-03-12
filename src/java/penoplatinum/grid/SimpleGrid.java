@@ -10,6 +10,7 @@ package penoplatinum.grid;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.util.Stack;
 import penoplatinum.SimpleHashMap;
 import penoplatinum.map.Point;
 import penoplatinum.pacman.TransformationTRT;
@@ -261,6 +262,17 @@ public class SimpleGrid implements Grid {
   public List<Sector> getTaggedSectors() {
     return taggedSectors;
   }
+  
+  
+  
+}
+  
+  private void disengage(){
+    for(Sector s : sectors.values()){
+      s.disengage();
+    }
+  }
+}
 
   @Override
   public Sector getOrCreateSector(int x, int y) {

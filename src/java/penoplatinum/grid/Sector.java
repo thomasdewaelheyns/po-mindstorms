@@ -409,4 +409,12 @@ public class Sector {
     return ( data & (1<<p) ) != 0;
   }
 
+
+  void disengage() {
+    for(int i = 0; i < 4; i++){
+      neighbours[i] = null;
+    }
+    grid = null;
+    agent = null;
+  }
 }

@@ -1,18 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum;
 
 import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.grid.Grid;
 
-/**
- *
- * @author MHGameWork
- */
-public class SimpleHashMap<K, T> {
+public class SimpleHashMap<K, T>{
 
   public List<K> keys = new ArrayList<K>();
   public List<T> values = new ArrayList<T>();
