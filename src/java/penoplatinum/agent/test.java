@@ -65,13 +65,13 @@ public class test {
     });
     t.start();
     
-    sim.displayOn(new SwingSimulationView());
+//    sim.displayOn(new SwingSimulationView());
     sim.run();
   }
   
   public static Map createSectorMap() throws FileNotFoundException {
     Map m;
-    File f = new File("../simulator/map2.track");
+    File f = new File("..\\..\\src\\java\\penoplatinum\\simulator\\map2.track");
     Scanner sc = new Scanner(f);
     MapFactorySector fact = new MapFactorySector();
     m = fact.getMap(sc);

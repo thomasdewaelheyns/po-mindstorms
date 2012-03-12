@@ -192,7 +192,7 @@ public class Simulator {
       if (false) {
         break;
       }
-      Utils.Sleep(2);
+//      Utils.Sleep(2);
     }
     this.view.log("");
     return this;
