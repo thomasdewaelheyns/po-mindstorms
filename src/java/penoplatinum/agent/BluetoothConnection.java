@@ -7,7 +7,6 @@ package penoplatinum.agent;
  *
  * Author: Team Platinum
  */
-
 import java.io.*;
 import java.util.Scanner;
 
@@ -16,14 +15,24 @@ import penoplatinum.Utils;
 
 public class BluetoothConnection {
 
-  private PCBluetoothConnection connection;
+  private IConnection connection;
   private QueuedPacketTransporter endPoint;
   private String nextMsg = "";
-  private int    nextType = 0;
+  private int nextType = 0;
 
   public BluetoothConnection() {
-    this.connection = new PCBluetoothConnection();
-    this.connection.initializeConnection();
+    PCBluetoothConnection connection = new PCBluetoothConnection();
+    connection.initializeConnection();
+    this.connection = connection;
+    initTransporter();
+  }
+
+  public BluetoothConnection(IConnection connection) {
+    this.connection = connection;
+    initTransporter();
+  }
+
+  public void initTransporter() {
     this.endPoint = new QueuedPacketTransporter(this.connection);
     this.connection.RegisterTransporter(this.endPoint, 123);
     this.connection.RegisterTransporter(this.endPoint, 124);
@@ -33,11 +42,11 @@ public class BluetoothConnection {
   }
 
   public Boolean hasNext() {
-    int     packet;
-    String  data;
+    int packet;
+    String data;
     Boolean logging = true;
-    
-    while(logging) {
+
+    while (logging) {
       packet = this.endPoint.ReceivePacket();
       data = new Scanner(this.endPoint.getReceiveStream()).nextLine();
       switch (packet) {
@@ -48,9 +57,9 @@ public class BluetoothConnection {
         case 124:
         case 125:
         case 126:
-          if( data.length() > 10 ) {
+          if (data.length() > 10) {
             this.nextType = packet;
-            this.nextMsg  = data;
+            this.nextMsg = data;
             return true;
           }
       }
@@ -58,16 +67,16 @@ public class BluetoothConnection {
     this.nextType = 0;
     return false;
   }
-  
+
   public int getType() {
     return this.nextType;
   }
-  
+
   public String getMessage() {
     return this.nextMsg;
   }
 
-  public PCBluetoothConnection getConnection() {
+  public IConnection getConnection() {
     return connection;
   }
 }

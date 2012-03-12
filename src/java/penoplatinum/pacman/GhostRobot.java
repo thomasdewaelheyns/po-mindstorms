@@ -2,6 +2,7 @@ package penoplatinum.pacman;
 
 import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
+import penoplatinum.driver.Driver;
 import penoplatinum.grid.GridView;
 import penoplatinum.grid.Sector;
 import penoplatinum.modelprocessor.BarcodeBlackModelProcessor;
@@ -26,7 +27,7 @@ public class GhostRobot implements Robot {
 
   private GhostModel model;
   private RobotAPI api;   // provided from the outside
-  private GhostDriver driver;
+  private Driver driver;
   private Navigator navigator;
 //  private int[] sweepAngles = new int[]{-105, -90, -75, -30, 0, 30, 75, 90, 105};
   private int[] sweepAngles = new int[]{-90, 0, 90};
@@ -35,6 +36,7 @@ public class GhostRobot implements Robot {
   private RobotAgent agent;
   private ReferencePosition initialReference = new ReferencePosition();
   private GridUpdateProcessor gridUpdateProcessor;
+  private DashboardAgent dashboardAgent;
 
   public GhostRobot(String name) {
 
@@ -88,6 +90,20 @@ public class GhostRobot implements Robot {
     nav.setModel(model);
   }
 
+  public GhostRobot useDriver(Driver driver)
+  {
+    this.driver = driver;
+    return this;
+  }
+  
+  public GhostRobot useDashboardAgent(DashboardAgent agent)
+  {
+    this.dashboardAgent = agent;
+    agent.setRobot(this);
+    agent.setModel(this.model);
+    return this;
+  }
+  
   // 
   // 
   /**
@@ -109,6 +125,11 @@ public class GhostRobot implements Robot {
     this.model.setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
     // Send dashboard info
+    if (dashboardAgent != null)
+    {
+      dashboardAgent.sendModelDeltas();
+    }
+      
     
     // let the driver do his thing
     if (this.driver.isBusy()) {

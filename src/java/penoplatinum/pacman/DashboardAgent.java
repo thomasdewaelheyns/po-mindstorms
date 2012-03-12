@@ -5,8 +5,6 @@
 package penoplatinum.pacman;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import penoplatinum.Utils;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
@@ -21,14 +19,12 @@ import penoplatinum.simulator.mini.Bearing;
 public class DashboardAgent {
 
   private final IConnection connection;
-  private final GhostModel model;
-  private final GhostRobot robot;
+  private GhostModel model;
+  private GhostRobot robot;
   private final QueuedPacketTransporter transporter;
 
-  public DashboardAgent(IConnection connection, GhostModel model, GhostRobot robot) {
+  public DashboardAgent(IConnection connection) {
     this.connection = connection;
-    this.model = model;
-    this.robot = robot;
     
     this.transporter = new QueuedPacketTransporter(connection);
     connection.RegisterTransporter(transporter, 123);
@@ -40,7 +36,7 @@ public class DashboardAgent {
   }
   StringBuilder builder = new StringBuilder();
 
-  private void sendModelDeltas() {
+  public void sendModelDeltas() {
 
 
     Sector s;
@@ -90,5 +86,13 @@ public class DashboardAgent {
     
     
 
+  }
+
+  void setRobot(GhostRobot robot) {
+    this.robot = robot;
+  }
+
+  void setModel(GhostModel model) {
+    this.model = model;
   }
 }
