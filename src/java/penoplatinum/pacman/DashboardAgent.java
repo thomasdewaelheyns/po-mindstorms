@@ -40,7 +40,8 @@ public class DashboardAgent {
 
   public void sendModelDeltas() {
 
-
+    builder.setLength(0);
+    
     Sector s;
 
 
@@ -70,17 +71,19 @@ public class DashboardAgent {
     builder.append(s == null ? 0 : s.getValue()).append(",");
 
     String event = "", source = "", plan = "", queue = "", action = "", argument = "";
-
+    int fps = 0;
 
     builder.append("\"").append(event).append("\",");
     builder.append("\"").append(source).append("\",");
     builder.append("\"").append(plan).append("\",");
     builder.append("\"").append(queue).append("\",").append("\"");
-    builder.append(action).append("\",").append("\"").append(argument);
+    builder.append(action).append("\",")
+    .append("\"").append(argument).append("\",")
+    .append(fps);
 
     String data = builder.toString();
-    builder.delete(0, builder.length()-1);
-    try {
+<<<<<<< .mine    builder.delete(0, builder.length()-1);
+=======>>>>>>> .theirs    try {
       transporter.getSendStream().writeBytes(data);
       transporter.SendPacket(123);
     } catch (IOException ex) {

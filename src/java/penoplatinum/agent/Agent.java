@@ -12,11 +12,11 @@ import penoplatinum.bluetooth.SimulatedConnection;
 
 public class Agent {
   // setup some loggers
+  static CustomLogger modelLogger  = new ModelLogger();    // 123
+  static CustomLogger wallsLogger  = new WallsLogger();    // 124
+  static CustomLogger valuesLogger = new ValuesLogger();   // 125
+  static CustomLogger agentsLogger = new AgentsLogger();   // 126
 
-  static Logger modelLogger = Logger.getLogger("model");   // 123
-  static Logger wallsLogger = Logger.getLogger("walls");   // 124
-  static Logger valuesLogger = Logger.getLogger("values");  // 125
-  static Logger agentsLogger = Logger.getLogger("agents");  // 126
   // the connection to the Robot
   BluetoothConnection source;
   private MQ mq;
@@ -46,16 +46,16 @@ public class Agent {
         // TODO: this switch should be handled using polymorphism ;-)
         switch (source.getType()) {
           case 123:
-            modelLogger.info(msg);
+            modelLogger.log(msg);
             break;
           case 124:
-            wallsLogger.info(msg);
+            wallsLogger.log(msg);
             break;
           case 125:
-            valuesLogger.info(msg);
+            valuesLogger.log(msg);
             break;
           case 126:
-            agentsLogger.info(msg);
+            agentsLogger.log(msg);
             break;
         }
       } catch (Exception e) {

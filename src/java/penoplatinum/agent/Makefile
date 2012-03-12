@@ -48,6 +48,9 @@ config: ${BUILD_DIR}
 ${BUILD_DIR}:
 	@mkdir ${BUILD_DIR}
 
+dashboard: test.class ../Utils.class
+	${JAVA} penoplatinum.agent.test
+
 test:
 	@( cd t; make test )
 
