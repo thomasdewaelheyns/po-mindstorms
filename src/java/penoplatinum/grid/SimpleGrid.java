@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import penoplatinum.SimpleHashMap;
 import penoplatinum.map.Point;
+import penoplatinum.pacman.TransformationTRT;
 import penoplatinum.simulator.mini.Bearing;
 
 // we're using commons collections HashedMap because HashMap isn't implemented
@@ -207,61 +208,48 @@ public class SimpleGrid implements Grid {
     return this;
   }
 
-  public void importGrid(Grid g, int localX, int localY, int otherX, int otherY, int rotation) {
+  public void importGrid(Grid g, TransformationTRT transformation) {
     for (int i = 0; i < g.getSectors().size(); i++) {
       Sector s = g.getSectors().get(i);
 
-      // Relative current other sector to otherx and y
-      int x = s.getLeft() - otherX;
-      int y = s.getTop() - otherY;
+      Point p = transformation.transform(s.getLeft(), s.getTop());
 
-      {
-        // Now rotate this vector
-        Point p = Bearing.mapToNorth(rotation, x, y);
-
-        x = p.getX();
-        y = p.getY();
-      }
-      // Now apply this vector to our coordinates
-      x += localX;
-      y += localY;
-
+      int x = p.getX();
+      int y = p.getY();
 
       Sector thisSector = getSector(x, y);
-
       if (thisSector == null) {
         thisSector = new Sector(this).setCoordinates(x, y);
         addSector(thisSector);
       }
 
-      for (int j = Bearing.N; j <= Bearing.W; j++) {
-        int otherBearing = (j + rotation) % 4; // TODO check direction
-
-        Boolean newVal = s.hasWall(otherBearing);
-        Boolean oldVal = thisSector.hasWall(j);
-        if (newVal == oldVal) {
-          continue; // No changes
-        }
-        if (newVal == null) {
-          continue; // Remote has no information
-        }
-
-        if (oldVal == null) {
-          // Use remote information (do nothing) (keep newval)
-        } else {
-          // Conflicting information, set to unknown
-          newVal = null;
-        }
-
-        if (newVal == null) {
-          thisSector.clearWall(j);
-        } else if (newVal) {
-          thisSector.addWall(j);
-        } else {
-          thisSector.removeWall(j);
-        }
-      }
+      mergeSector(thisSector, transformation.getRotation(), s);
 
     }
+  }
+
+  public static void mergeSector(Sector thisSector, int rotation, Sector s) {
+    for (int j = Bearing.N; j <= Bearing.W; j++) {
+      int otherBearing = (j + rotation) % 4; // TODO check direction
+
+      Boolean newVal = s.hasWall(otherBearing);
+      Boolean oldVal = thisSector.hasWall(j);
+      if (newVal == oldVal) {
+        continue; // No changes
+      }
+      if (newVal == null) {
+        continue; // Remote has no information
+      }
+
+      if (oldVal == null) {
+        // Use remote information (do nothing) (keep newval)
+      } else {
+        // Conflicting information, set to unknown
+        newVal = null;
+      }
+
+      thisSector.placeWall(j, newVal);
+    }
+
   }
 }

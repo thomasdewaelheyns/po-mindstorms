@@ -61,6 +61,7 @@ public class GhostModel implements Model {
   private boolean isSweepDataChanged;
   private GhostProtocolHandler protocol;
   private ArrayList<Sector> barcodeSectors = new ArrayList<Sector>();
+  private ArrayList<OtherGhost> otherGhosts = new ArrayList<OtherGhost>();
 
   public GhostModel(String name) {
     this.agent = new GhostAgent(name);
@@ -271,9 +272,15 @@ public class GhostModel implements Model {
     protocol.sendPosition();
 
     if (lastBarcode != -1) {
+      // We drove over a barcode on this tile
+
       barcodeSectors.add(getAgent().getSector());
       getAgent().getSector().setTagCode(lastBarcode);
       getAgent().getSector().setTagBearing(getAgent().getBearing());
+
+      //TODO: find this barcode in the othergrids and map!!
+
+
       //To fix protocol shitiness, send a position cmd for safety
       protocol.sendBarcode(lastBarcode, getAgent().getBearing());
       lastBarcode = -1;
@@ -311,6 +318,25 @@ public class GhostModel implements Model {
 
     }
     return get;
+  }
+
+  public void setOtherGhostInitialOrientation(String name, TransformationTRT transform) {
+    OtherGhost g = findOtherGhost(name);
+    if (g == null) {
+      g = new OtherGhost();
+      g.setName(name);
+      otherGhosts.add(g);
+    }
+    g.setTransformationTRT(transform);
+  }
+
+  public OtherGhost findOtherGhost(String actorName) {
+    for (int i = 0; i < otherGhosts.size(); i++) {
+      if (otherGhosts.get(i).getName().equals(actorName)) {
+        return otherGhosts.get(i);
+      }
+    }
+    return null;
   }
 
   public void printGridStats() {
@@ -694,5 +720,4 @@ public class GhostModel implements Model {
   public int getPacmanY() {
     return pacmanY;
   }
-  
 }

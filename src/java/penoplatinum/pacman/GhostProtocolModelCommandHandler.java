@@ -9,6 +9,8 @@ import penoplatinum.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
+import penoplatinum.grid.SimpleGrid;
+import penoplatinum.map.Point;
 import penoplatinum.simulator.mini.Bearing;
 
 /**
@@ -56,9 +58,46 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
   @Override
   public void handleDiscover(String agentName, int x, int y,
           int n, int e, int s, int w) {
-    final Grid grid = model.getGrid(agentName);
-    Sector sector = grid.getSector(x, y);
 
+    // Check if there is a othergrid, or whether the file can be merged directly
+
+    OtherGhost ghost = model.findOtherGhost(agentName);
+    if (ghost == null) {
+      // There is no mapping, add sector to the othergrid
+      Grid grid = model.getGrid(agentName);
+      setSector(grid, x, y, n, e, s, w);
+    } else {
+      // Merge the discovered sector into the models grid, using the stored 
+      //    relative coordinates
+
+      // transform the x and y coord
+      Point p = ghost.getTransformationTRT().transform(x, y);
+
+
+      Sector sector = model.getGrid().getSector(p.getX(), p.getY());
+      if (sector == null) {
+        sector = new Sector(model.getGrid()).setCoordinates(x, y);
+        model.getGrid().addSector(sector);
+      }
+
+
+      Sector otherSector = new Sector();//.setCoordinates(x, y);
+
+      int[] values = new int[]{n, e, s, w};
+
+      for (int i = 0; i <= 3; i++) {
+        Boolean newVal = GhostProtocolHandler.decodeTrit(values[i]);
+        otherSector.placeWall(i, newVal);
+      }
+
+      SimpleGrid.mergeSector(sector, ghost.getTransformationTRT().getRotation(), otherSector);
+    }
+
+  }
+
+  public void setSector(Grid grid, int x, int y, int n, int e, int s, int w) {
+
+    Sector sector = grid.getSector(x, y);
 
     if (sector == null) {
       sector = new Sector();
@@ -66,9 +105,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
       grid.addSector(sector);
     }
 
-
     int[] values = new int[]{n, e, s, w};
-
 
     for (int i = 0; i <= 3; i++) {
 
@@ -82,12 +119,8 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
       }
 
     }
-
-
     // info set!! :P
-
-    grid.refresh(); //TODO: this shouldn't run on the robot
-
+    // grid.refresh(); //TODO: this shouldn't run on the robot
   }
 
   @Override
@@ -126,7 +159,12 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
       if (ourCode == code) {
         final int relativeBearing = (bearing - bs.get(i).getTagBearing() + 4) % 4;
-        model.getGrid().importGrid(grid, bs.get(i).getLeft(), bs.get(i).getTop(), agent.getLeft(), agent.getTop(), relativeBearing);
+
+        TransformationTRT transform = new TransformationTRT().setTransformation(bs.get(i).getLeft(), bs.get(i).getTop(), relativeBearing, agent.getLeft(), agent.getTop());
+
+        model.setOtherGhostInitialOrientation(agentName, transform);
+
+        model.getGrid().importGrid(grid, transform);
         model.getGrid().refresh();
       }
 
