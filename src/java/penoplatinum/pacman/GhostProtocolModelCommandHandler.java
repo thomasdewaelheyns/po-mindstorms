@@ -5,7 +5,6 @@
 package penoplatinum.pacman;
 
 import java.util.ArrayList;
-import penoplatinum.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
