@@ -80,17 +80,20 @@ public class DashboardAgent {
     builder.append(action).append("\",")
     .append("\"").append(argument).append("\",")
     .append(fps);
+    sendBuffer(123);
 
+
+
+  }
+
+  public void sendBuffer(int packetIdentifier) {
     String data = builder.toString();
     try {
       transporter.getSendStream().writeBytes(data);
-      transporter.SendPacket(123);
+      transporter.SendPacket(packetIdentifier);
     } catch (IOException ex) {
       Utils.Log("Dashboard M send error");
     }
-
-
-
   }
 
   public void sendGrid(String gridName, Grid grid) {
@@ -107,6 +110,8 @@ public class DashboardAgent {
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
     builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getWalls());
+    sendBuffer(124);
+    
   }
 
   public void sendSectorValues(String name, String grid, Sector s) {
@@ -114,6 +119,7 @@ public class DashboardAgent {
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
     builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getValue());
+    sendBuffer(125);
   }
 
   public void sendSectorAgents(String name, String grid, Agent ag) {
@@ -125,6 +131,8 @@ public class DashboardAgent {
     builder.append(ag.getSector().getTop()).append(",");
     builder.append(ag.getBearing() + 1).append(",");
     builder.append("white");
+    
+    sendBuffer(126);
 
   }
 

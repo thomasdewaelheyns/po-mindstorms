@@ -485,6 +485,7 @@ public class GhostModel implements Model {
     if (barcode != -1) {
       lastBarcode = barcode;
 
+      Utils.Log(barcode + "");
 
       // Barcode update is sent on next position send!!
 
