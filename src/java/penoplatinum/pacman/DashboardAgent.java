@@ -79,7 +79,7 @@ public class DashboardAgent {
     builder.append(action).append("\",").append("\"").append(argument);
 
     String data = builder.toString();
-    builder.setLength(0);
+    builder.delete(0, builder.length()-1);
     try {
       transporter.getSendStream().writeBytes(data);
       transporter.SendPacket(123);
@@ -101,21 +101,21 @@ public class DashboardAgent {
   }
 
   public void sendSectorWalls(String name, String grid, Sector s) {
-    builder.setLength(0);
+    builder.delete(0, builder.length()-1);
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
     builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getWalls());
   }
 
   public void sendSectorValues(String name, String grid, Sector s) {
-    builder.setLength(0);
+    builder.delete(0, builder.length()-1);
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
     builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getValue());
   }
 
   public void sendSectorAgents(String name, String grid, Agent ag) {
-    builder.setLength(0);
+    builder.delete(0, builder.length()-1);
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
     builder.append(ag.getName()).append(",");
