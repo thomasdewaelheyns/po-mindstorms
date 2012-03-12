@@ -8,9 +8,11 @@ import java.io.IOException;
 import penoplatinum.Utils;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
+import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.grid.Agent;
 
 /**
  * Collects and sends messages to the dashboard via bluetooth
@@ -25,13 +27,13 @@ public class DashboardAgent {
 
   public DashboardAgent(IConnection connection) {
     this.connection = connection;
-    
+
     this.transporter = new QueuedPacketTransporter(connection);
     connection.RegisterTransporter(transporter, 123);
     connection.RegisterTransporter(transporter, 124);
     connection.RegisterTransporter(transporter, 125);
     connection.RegisterTransporter(transporter, 126);
-    
+
 
   }
   StringBuilder builder = new StringBuilder();
@@ -77,14 +79,50 @@ public class DashboardAgent {
     builder.append(action).append("\",").append("\"").append(argument);
 
     String data = builder.toString();
+    builder.setLength(0);
     try {
       transporter.getSendStream().writeBytes(data);
       transporter.SendPacket(123);
     } catch (IOException ex) {
       Utils.Log("Dashboard M send error");
     }
-    
-    
+
+
+
+  }
+
+  public void sendGrid(String gridName, Grid grid) {
+    for (Sector s : grid.getSectors()) {
+      sendSectorValues(model.getAgent().getName(), gridName, s);
+    }
+    for (Agent af : grid.getAgents()) {
+      sendSectorAgents(model.getAgent().getName(), gridName, af);
+    }
+  }
+
+  public void sendSectorWalls(String name, String grid, Sector s) {
+    builder.setLength(0);
+    builder.append("\"").append(name).append("\",");
+    builder.append("\"").append(grid).append("\",");
+    builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getWalls());
+  }
+
+  public void sendSectorValues(String name, String grid, Sector s) {
+    builder.setLength(0);
+    builder.append("\"").append(name).append("\",");
+    builder.append("\"").append(grid).append("\",");
+    builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getValue());
+  }
+
+  public void sendSectorAgents(String name, String grid, Agent ag) {
+    builder.setLength(0);
+    builder.append("\"").append(name).append("\",");
+    builder.append("\"").append(grid).append("\",");
+    builder.append(ag.getName()).append(",");
+    builder.append(ag.getSector().getLeft()).append(",");
+    builder.append(ag.getSector().getTop()).append(",");
+    builder.append(ag.getBearing() + 1).append(",");
+    builder.append("white");
 
   }
 

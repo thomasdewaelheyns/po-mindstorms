@@ -90,20 +90,19 @@ public class GhostRobot implements Robot {
     nav.setModel(model);
   }
 
-  public GhostRobot useDriver(Driver driver)
-  {
+  public GhostRobot useDriver(Driver driver) {
     this.driver = driver;
     return this;
   }
-  
-  public GhostRobot useDashboardAgent(DashboardAgent agent)
-  {
+
+  public GhostRobot useDashboardAgent(DashboardAgent agent) {
     this.dashboardAgent = agent;
     agent.setRobot(this);
     agent.setModel(this.model);
+    this.model.useDashboardAgent(agent);
     return this;
   }
-  
+
   // 
   // 
   /**
@@ -125,12 +124,11 @@ public class GhostRobot implements Robot {
     this.model.setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
     // Send dashboard info
-    if (dashboardAgent != null)
-    {
+    if (dashboardAgent != null) {
       dashboardAgent.sendModelDeltas();
     }
-      
-    
+
+
     // let the driver do his thing
     if (this.driver.isBusy()) {
       this.driver.step();
@@ -166,6 +164,9 @@ public class GhostRobot implements Robot {
     model.printGridStats();
     // send outgoing messages
     this.sendMessages();
+    if (dashboardAgent != null) {
+      dashboardAgent.sendGrid("myGrid", model.getGrid());
+    }
     System.gc();
   }
 
@@ -220,7 +221,4 @@ public class GhostRobot implements Robot {
   public String getName() {
     return model.getAgent().getName();
   }
-
-  
-
 }

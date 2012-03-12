@@ -62,6 +62,8 @@ public class GhostModel implements Model {
   private GhostProtocolHandler protocol;
   private ArrayList<Sector> barcodeSectors = new ArrayList<Sector>();
   private ArrayList<OtherGhost> otherGhosts = new ArrayList<OtherGhost>();
+  
+  private DashboardAgent dashboardAgent;
 
   public GhostModel(String name) {
     this.agent = new GhostAgent(name);
@@ -82,6 +84,11 @@ public class GhostModel implements Model {
     });
     protocol.useQueue(queue);
 
+  }
+  
+  public void useDashboardAgent(DashboardAgent agent)
+  {
+    this.dashboardAgent = agent;
   }
 
   private void log(String msg) {
@@ -219,6 +226,7 @@ public class GhostModel implements Model {
 
   public void markSectorUpdated(Sector current) {
     protocol.sendDiscover(current);
+    dashboardAgent.sendSectorWalls(getAgent().getName(), "myGrid", current);
   }
 
   public Sector getDetectedSector() {

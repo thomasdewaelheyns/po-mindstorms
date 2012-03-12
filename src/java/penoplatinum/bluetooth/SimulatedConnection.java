@@ -12,6 +12,7 @@ import java.io.PipedOutputStream;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import penoplatinum.Utils;
 
 /**
  *
@@ -19,56 +20,61 @@ import java.util.logging.Logger;
  */
 public class SimulatedConnection implements IConnection {
 
-    private SimulatedConnection endPoint;
-    private PacketBuilder builder;
-    private HashMap<Integer, IPacketTransporter> map = new HashMap<Integer, IPacketTransporter>();
-    private PipedInputStream internalStream;
-    private PipedOutputStream externalStream;
+  private SimulatedConnection endPoint;
+  private PacketBuilder builder;
+  private HashMap<Integer, IPacketTransporter> map = new HashMap<Integer, IPacketTransporter>();
+  private PipedInputStream internalStream;
+  private PipedOutputStream externalStream;
 
-    public SimulatedConnection() {
-        internalStream = new PipedInputStream();
-        try {
-            externalStream = new PipedOutputStream(internalStream);
-        } catch (IOException ex) {
-            Logger.getLogger(SimulatedConnection.class.getName()).log(Level.SEVERE, null, ex);
+  public SimulatedConnection() {
+    internalStream = new PipedInputStream();
+    try {
+      externalStream = new PipedOutputStream(internalStream);
+    } catch (IOException ex) {
+      Logger.getLogger(SimulatedConnection.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+
+  }
+
+  public void setEndPoint(SimulatedConnection endPoint) {
+    this.endPoint = endPoint;
+
+    createPacketBuilder();
+    builder.startReceiving();
+  }
+
+  private void createPacketBuilder() {
+    builder = new PacketBuilder(new DataOutputStream(endPoint.externalStream), new DataInputStream(internalStream), new IPacketReceiver() {
+
+      @Override
+      public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
+        final IPacketTransporter transporter = map.get(packetIdentifier);
+        if (transporter == null) {
+          Utils.Log("Unknown packet type: " + packetIdentifier);
+          return;
         }
 
+        transporter.onPacketReceived(packetIdentifier, dgram, 0, size);
 
-    }
+      }
 
-    public void setEndPoint(SimulatedConnection endPoint) {
-        this.endPoint = endPoint;
+      @Override
+      public void onError(Exception ex) {
+        //TODO: will probably not occur
+      }
+    });
+  }
 
-        createPacketBuilder();
-        builder.startReceiving();
-    }
+  @Override
+  public void RegisterTransporter(IPacketTransporter transporter, int packetIdentifier) {
+    map.put(packetIdentifier, transporter);
+  }
 
-    private void createPacketBuilder() {
-        builder = new PacketBuilder(new DataOutputStream(endPoint.externalStream), new DataInputStream(internalStream), new IPacketReceiver() {
+  @Override
+  public void SendPacket(IPacketTransporter transporter, int packetIdentifier, byte[] dgram) {
 
-            @Override
-            public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
+    builder.sendPacket(packetIdentifier, dgram);
 
-                map.get(packetIdentifier).onPacketReceived(packetIdentifier, dgram, 0, size);
-
-            }
-
-            @Override
-            public void onError(Exception ex) {
-                //TODO: will probably not occur
-            }
-        });
-    }
-
-    @Override
-    public void RegisterTransporter(IPacketTransporter transporter, int packetIdentifier) {
-        map.put(packetIdentifier, transporter);
-    }
-
-    @Override
-    public void SendPacket(IPacketTransporter transporter, int packetIdentifier, byte[] dgram) {
-
-        builder.sendPacket(packetIdentifier, dgram);
-
-    }
+  }
 }
