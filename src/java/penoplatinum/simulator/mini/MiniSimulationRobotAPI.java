@@ -9,6 +9,8 @@ import penoplatinum.grid.Agent;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.ExtendedVector;
+import penoplatinum.simulator.Bearing;
+
 
 import penoplatinum.simulator.Model;
 

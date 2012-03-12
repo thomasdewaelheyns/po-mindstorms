@@ -1,4 +1,4 @@
-package penoplatinum.simulator.mini;
+package penoplatinum.simulator;
 
 import penoplatinum.map.Point;
 
@@ -6,17 +6,21 @@ import penoplatinum.map.Point;
  * Bearing
  * 
  * Basic enumeration of bearings with a few utility functions.
- * TODO: merge with old Baring
  * 
  * @author: Team Platinum
  */
-public class Bearing {
 
+public class Bearing {
   public static final int NONE = -1;
-  public static final int N = 0;
-  public static final int E = 1;
-  public static final int S = 2;
-  public static final int W = 3;
+  public static final int N    = 0;
+  public static final int E    = 1;
+  public static final int S    = 2;
+  public static final int W    = 3;
+  public static final int NE   = 4;
+  public static final int SE   = 5;
+  public static final int SW   = 6;
+  public static final int NW   = 7;
+
 
   public static int reverse(int bearing) {
     switch (bearing) {
@@ -96,4 +100,39 @@ public class Bearing {
     }
     return new Point(newX, newY);
   }
+  
+  // returns the move in left/right direction given a bearing
+  public static int moveLeft(int bearing) {
+    int move = 0;
+    if (bearing == Bearing.NE || bearing == Bearing.E || bearing == Bearing.SE) {
+      move = +1;
+    }
+    if (bearing == Bearing.NW || bearing == Bearing.W || bearing == Bearing.SW) {
+      move = -1;
+    }
+    return move;
+  }
+
+  // returns the move in top/down direction given a bearing
+  public static int moveTop(int bearing) {
+    int move = 0;
+    if (bearing == Bearing.NE || bearing == Bearing.N || bearing == Bearing.NW) {
+      move = -1;
+    }
+    if (bearing == Bearing.SE || bearing == Bearing.S || bearing == Bearing.SW) {
+      move = +1;
+    }
+    return move;
+  }
+
+  // returns the neighbour line that influences a position in two ways
+  public static int getLeftNeighbour(int bearing) {
+    return bearing == Bearing.N || bearing == Bearing.S ? Bearing.W : Bearing.N;
+  }
+
+  // returns the neighbour line that influences a position in one ways
+  public static int getRightNeighbour(int bearing) {
+    return bearing == Bearing.N || bearing == Bearing.S ? Bearing.E : Bearing.S;
+  }
+
 }

@@ -32,7 +32,7 @@ import penoplatinum.grid.SimpleGrid;
 import penoplatinum.modelprocessor.LightColor;
 import penoplatinum.simulator.Model;
 
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.mini.MessageHandler;
 import penoplatinum.simulator.mini.Queue;
 

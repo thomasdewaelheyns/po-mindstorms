@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import penoplatinum.SimpleHashMap;
 import penoplatinum.map.Point;
 import penoplatinum.pacman.TransformationTRT;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 // we're using commons collections HashedMap because HashMap isn't implemented
 // on Lejos.

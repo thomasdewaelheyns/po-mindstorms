@@ -11,7 +11,7 @@ import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.simulator.Model;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.grid.Agent;
 
 /**

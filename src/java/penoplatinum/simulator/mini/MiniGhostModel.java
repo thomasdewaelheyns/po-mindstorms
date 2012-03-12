@@ -35,7 +35,7 @@ import penoplatinum.grid.DiffusionGridProcessor;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.RobotAgent;
 
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 public class MiniGhostModel implements Model {
   // little bit of configuration

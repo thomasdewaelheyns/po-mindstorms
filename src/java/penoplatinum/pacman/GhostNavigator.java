@@ -15,7 +15,7 @@ import java.util.Random;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 import penoplatinum.simulator.GoalDecider;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.Model;
 
 import penoplatinum.simulator.Navigator;

@@ -7,6 +7,8 @@ import penoplatinum.grid.Agent;
 
 import penoplatinum.modelprocessor.ModelProcessor;
 
+import penoplatinum.simulator.Bearing;
+
 
 public class MiniWallDetectorProcessor extends ModelProcessor {
   public MiniWallDetectorProcessor() { super(); }

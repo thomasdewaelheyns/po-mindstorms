@@ -3,7 +3,7 @@ package penoplatinum.modelprocessor;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.pacman.GhostModel;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 public class BarcodeWallDetectorModelProcessor extends ModelProcessor {
 

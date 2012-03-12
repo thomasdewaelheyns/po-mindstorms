@@ -100,8 +100,8 @@ public class Simulator {
   }
 
   /**
-   * determines the distance to the first hit wall at the current baring.
-   * if the hit is not on a wall on the current tile, we follow the baring
+   * determines the distance to the first hit wall at the current bearing.
+   * if the hit is not on a wall on the current tile, we follow the bearing
    * to the next tile and recursively try to find the hit-distance
    */
   int findHitDistance(int angle, int left, int top, double x, double y) {
@@ -110,9 +110,9 @@ public class Simulator {
     //if (angle < 0 || angle > 360) throw new IllegalArgumentException();
 
     // determine the point on the (virtual) wall on the current tile, where
-    // the robot would hit at this baring
+    // the robot would hit at this bearing
     double dist = 0;
-    int baring = 0;
+    int bearing = 0;
     Tile tile = null;
     Point hit = null;
     do {
@@ -127,11 +127,11 @@ public class Simulator {
       // distance from the starting point to the hit-point on this tile
       dist += TileGeometry.getDistance(x, y, hit);
 
-      // if we don't have a wall on this tile at this baring, move to the next
-      // at the same baring, starting at the hit point on the tile
+      // if we don't have a wall on this tile at this bearing, move to the next
+      // at the same bearing, starting at the hit point on the tile
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
-      baring = TileGeometry.getHitWall(hit, tile.getSize(), angle);
+      bearing = TileGeometry.getHitWall(hit, tile.getSize(), angle);
       /*if(x == hit.x && y == hit.y){
       System.out.println(left+" "+top+" "+angle+" "+angle/45+" "+hit.x+" "+hit.y+" "+x+" "+y);
       int pos = angle/45;
@@ -140,14 +140,14 @@ public class Simulator {
       left += dLeft[pos];
       top += dTop[pos];
       } else {/**/
-      left = left + Baring.moveLeft(baring);
-      top = top + Baring.moveTop(baring);
+      left = left + Bearing.moveLeft(bearing);
+      top = top + Bearing.moveTop(bearing);
       //}
       //System.out.println(left + " " + top);
       x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
       y = hit.y == 0 ? tile.getSize() : (hit.y == tile.getSize() ? 0 : hit.y);
 
-    } while (!tile.hasWall(baring));
+    } while (!tile.hasWall(bearing));
     return (int) Math.round(dist);
   }
 
@@ -182,6 +182,27 @@ public class Simulator {
    */
   public Simulator run() {
     this.view.showMap(this.map);
+    try {
+      /*for(RobotEntity s:robotEntities){
+      s.robotAgent.run();
+      }*/
+      MQ mq = new MQ() {
+
+        @Override
+        protected void handleIncomingMessage(String sender, String message) {
+          messageQueue.add(sender);
+
+        }
+      }.setMyName("Simulatorrrr").connectToMQServer().follow(Config.GHOST_CHANNEL);
+    } catch (IOException ex) {
+      System.err.println("IOException gevangen, zoek voor meer info");
+      //Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (InterruptedException ex) {
+      System.err.println("InterruptedException gevangen, zoek voor meer info");
+      //Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+
 
     while (true) {
       this.step();
@@ -195,6 +216,7 @@ public class Simulator {
   }
 
   private void step() {
+    processRemoteMessages();
     for (RobotEntity robotEntity : robotEntities) {
       robotEntity.step();
     }
@@ -207,6 +229,20 @@ public class Simulator {
 
   }
 
+  private void processRemoteMessages() {
+
+    while (!messageQueue.isEmpty()) {
+
+      String name = messageQueue.poll();
+      if (remoteEntities.containsKey(name)) {
+        continue;
+      }
+
+      // dont auto-add remote entities anymore, we can't interpret their local positions anyways
+//      addRemoteEntity(name);
+
+    }
+  }
 
   boolean hasTile(double positionX, double positionY) {
     int x = (int) positionX / this.getTileSize() + 1;
@@ -222,9 +258,9 @@ public class Simulator {
     double posXOnTile = positionX % this.getTileSize();
     int tileX = (int) positionX / this.getTileSize() + 1;
     int tileY = (int) positionY / this.getTileSize() + 1;
-    return (this.map.get(tileX, tileY).hasWall(Baring.W)
+    return (this.map.get(tileX, tileY).hasWall(Bearing.W)
             && dx < 0 && (posXOnTile + dx < LENGTH_ROBOT))
-            || (this.map.get(tileX, tileY).hasWall(Baring.E)
+            || (this.map.get(tileX, tileY).hasWall(Bearing.E)
             && dx > 0 && (posXOnTile + dx > this.getTileSize() - LENGTH_ROBOT));
   }
 
@@ -237,9 +273,9 @@ public class Simulator {
     int tileX = (int) positionX / this.getTileSize() + 1;
     int tileY = (int) positionY / this.getTileSize() + 1;
 
-    return (this.map.get(tileX, tileY).hasWall(Baring.N)
+    return (this.map.get(tileX, tileY).hasWall(Bearing.N)
             && dy > 0 && (posYOnTile - dy < LENGTH_ROBOT))
-            || (this.map.get(tileX, tileY).hasWall(Baring.S)
+            || (this.map.get(tileX, tileY).hasWall(Bearing.S)
             && dy < 0 && (posYOnTile - dy > this.getTileSize() - LENGTH_ROBOT));
   }
 

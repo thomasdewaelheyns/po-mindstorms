@@ -11,7 +11,7 @@ package penoplatinum.pacman;
 import penoplatinum.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.mini.MessageHandler;
 import penoplatinum.simulator.mini.Queue;
 

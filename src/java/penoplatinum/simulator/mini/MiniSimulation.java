@@ -15,9 +15,12 @@ import penoplatinum.grid.StaticTargetAgent;
 import penoplatinum.grid.DiffusionGridProcessor;
 
 import penoplatinum.grid.GridFactory;
+
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.RobotAgent;
+import penoplatinum.simulator.Bearing;
+
 
 public class MiniSimulation {
   // TEMPORARY CHEATING TRICK !!!

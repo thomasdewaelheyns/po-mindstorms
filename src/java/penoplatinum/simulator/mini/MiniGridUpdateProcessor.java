@@ -14,6 +14,9 @@ import penoplatinum.grid.Sector;
 
 import penoplatinum.modelprocessor.ModelProcessor;
 
+import penoplatinum.simulator.Bearing;
+
+
 public class MiniGridUpdateProcessor extends ModelProcessor {
 
   public MiniGridUpdateProcessor() { super(); }

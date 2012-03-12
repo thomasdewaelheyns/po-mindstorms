@@ -1,11 +1,11 @@
 package penoplatinum.simulator;
 
 /**
- * Enumeration of barings
+ * Enumeration of bearings
  * 
  * @author: Team Platinum
  */
-public class Baring {
+public class Bearing {
 
   public static final int NONE = -1;
   public static final int N = 0;
@@ -17,38 +17,38 @@ public class Baring {
   public static final int SW = 6;
   public static final int NW = 7;
 
-  // returns the move in left/right direction given a baring
-  public static int moveLeft(int baring) {
+  // returns the move in left/right direction given a bearing
+  public static int moveLeft(int bearing) {
     int move = 0;
-    if (baring == Baring.NE || baring == Baring.E || baring == Baring.SE) {
+    if (bearing == Bearing.NE || bearing == Bearing.E || bearing == Bearing.SE) {
       move = +1;
     }
-    if (baring == Baring.NW || baring == Baring.W || baring == Baring.SW) {
+    if (bearing == Bearing.NW || bearing == Bearing.W || bearing == Bearing.SW) {
       move = -1;
     }
     return move;
   }
 
-  // returns the move in top/down direction given a baring
-  public static int moveTop(int baring) {
+  // returns the move in top/down direction given a bearing
+  public static int moveTop(int bearing) {
     int move = 0;
-    if (baring == Baring.NE || baring == Baring.N || baring == Baring.NW) {
+    if (bearing == Bearing.NE || bearing == Bearing.N || bearing == Bearing.NW) {
       move = -1;
     }
-    if (baring == Baring.SE || baring == Baring.S || baring == Baring.SW) {
+    if (bearing == Bearing.SE || bearing == Bearing.S || bearing == Bearing.SW) {
       move = +1;
     }
     return move;
   }
 
   // returns the neighbour line that influences a position in two ways
-  public static int getLeftNeighbour(int baring) {
-    return baring == Baring.N || baring == Baring.S ? Baring.W : Baring.N;
+  public static int getLeftNeighbour(int bearing) {
+    return bearing == Bearing.N || bearing == Bearing.S ? Bearing.W : Bearing.N;
   }
 
   // returns the neighbour line that influences a position in one ways
-  public static int getRightNeighbour(int baring) {
-    return baring == Baring.N || baring == Baring.S ? Baring.E : Baring.S;
+  public static int getRightNeighbour(int bearing) {
+    return bearing == Bearing.N || bearing == Bearing.S ? Bearing.E : Bearing.S;
   }
 
   
@@ -57,33 +57,33 @@ public class Baring {
    * @param angle
    * @return 
    */
-  public static int getBaringFromAngle(int angle) {
+  public static int getBearingFromAngle(int angle) {
 //    if (angle < 0) {
 //      angle += (angle / 360 + 1) * 360;
 //    }
 //    angle = angle % 360;
 //    if (angle == 45 + 0 * 90) {
-//      return Baring.NE;
+//      return Bearing.NE;
 //    }
 //    if (angle == 45 + 1 * 90) {
-//      return Baring.NW;
+//      return Bearing.NW;
 //    }
 //    if (angle == 45 + 2 * 90) {
-//      return Baring.SW;
+//      return Bearing.SW;
 //    }
 //    if (angle == 45 + 3 * 90) {
-//      return Baring.SE;
+//      return Bearing.SE;
 //    }
 //
 //    switch ((45 + angle) / 90) {
 //      case 0:
-//        return Baring.E;
+//        return Bearing.E;
 //      case 1:
-//        return Baring.N;
+//        return Bearing.N;
 //      case 2:
-//        return Baring.S;
+//        return Bearing.S;
 //      case 3:
-//        return Baring.W;
+//        return Bearing.W;
 //    }
 //    
     throw new RuntimeException("Algoritm error!!");

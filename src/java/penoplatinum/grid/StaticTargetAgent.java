@@ -10,7 +10,7 @@ package penoplatinum.grid;
 
 
 import penoplatinum.Color;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 public class StaticTargetAgent implements Agent {
   // our position

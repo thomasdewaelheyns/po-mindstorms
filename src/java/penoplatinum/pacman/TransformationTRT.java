@@ -5,7 +5,7 @@
 package penoplatinum.pacman;
 
 import penoplatinum.map.Point;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 /**
  * This class represents a translation + rotation + translation transformation

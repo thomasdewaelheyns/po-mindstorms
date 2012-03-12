@@ -11,7 +11,7 @@ import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
 import penoplatinum.map.Point;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 /**
  *

@@ -10,7 +10,7 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
 
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 public class Sector {
   // back-link to the Grid we live in

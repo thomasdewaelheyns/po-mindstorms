@@ -14,7 +14,7 @@ import java.awt.event.*;
 import java.awt.image.*; 
 import javax.swing.*; 
 
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 public class GridBoard extends JPanel {
   private int width = 0, height = 0;

@@ -12,7 +12,7 @@ import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.pacman.GhostModel;
 
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 public class GridUpdateProcessor extends ModelProcessor {
 

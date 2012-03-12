@@ -20,6 +20,7 @@ import penoplatinum.pacman.GhostAction;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.GoalDecider;
+import penoplatinum.simulator.Bearing;
 
 
 // TEMP TRICK

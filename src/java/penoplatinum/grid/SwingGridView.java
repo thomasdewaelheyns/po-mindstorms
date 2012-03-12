@@ -11,7 +11,7 @@ package penoplatinum.grid;
 import javax.swing.JFrame;
 
 import penoplatinum.Color;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 
 public class SwingGridView extends JFrame implements GridView {
   private Grid   grid;

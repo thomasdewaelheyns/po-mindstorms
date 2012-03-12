@@ -10,7 +10,7 @@ import penoplatinum.bluetooth.CircularQueue;
 import penoplatinum.pacman.GhostModel;
 import penoplatinum.pacman.GhostProtocolCommandHandler;
 import penoplatinum.pacman.GhostProtocolHandler;
-import penoplatinum.simulator.mini.Bearing;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.ViewRobot;
 
@@ -37,17 +37,19 @@ public class RemoteEntity implements RobotEntity {
     try {
       MQ mq = new MQ() {
 
-
         @Override
-        protected void handleIncomingMessage(String message) {
-           synchronized (this) {
+        protected void handleIncomingMessage(String sender, String message) {
+          synchronized (this) {
+            if (!sender.equals(entityName)) {
+              return;
+            }
             if (message == null) {
               throw new RuntimeException("Impossible??");
             }
             messageQueue.insert(message);
           }
         }
-      }.connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
+      }.setMyName(entityName + "Remote").connectToMQServer().follow(Config.GHOST_CHANNEL);
     } catch (IOException ex) {
       Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
     } catch (InterruptedException ex) {
@@ -56,7 +58,7 @@ public class RemoteEntity implements RobotEntity {
 
   }
 
-  public RemoteEntity setOrigin(int originX, int originY, int originDirection) {
+  public RemoteEntity setOrigin(int originX, int originY,int originDirection) {
     this.originX = originX;
     this.originY = originY;
     this.originDirection = originDirection;
@@ -77,8 +79,8 @@ public class RemoteEntity implements RobotEntity {
       @Override
       public void handlePosition(String agentName, int x, int y) {
         penoplatinum.map.Point p = Bearing.mapToNorth(originDirection, x, y);
-        positionX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
-        positionY = (p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
+        positionX = (p.getX() + originX) * Sector.SIZE + 20;
+        positionY = (p.getY() + originY) * Sector.SIZE + 20;
       }
     });
   }
@@ -125,7 +127,7 @@ public class RemoteEntity implements RobotEntity {
   }
 
   /**
-   * Our internal representation of the baring uses zero pointing north.
+   * Our internal representation of the bearing uses zero pointing north.
    * Math functions use zero pointing east.
    * We also only want an angle from 0 to 359.
    */
