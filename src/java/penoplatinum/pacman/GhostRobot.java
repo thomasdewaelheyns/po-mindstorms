@@ -2,8 +2,8 @@ package penoplatinum.pacman;
 
 import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
-import penoplatinum.Utils;
 import penoplatinum.grid.GridView;
+import penoplatinum.grid.Sector;
 import penoplatinum.modelprocessor.BarcodeBlackModelProcessor;
 import penoplatinum.modelprocessor.GridUpdateProcessor;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
@@ -14,12 +14,12 @@ import penoplatinum.modelprocessor.LineModelProcessor;
 import penoplatinum.modelprocessor.ModelProcessor;
 import penoplatinum.modelprocessor.WallDetectionModelProcessor;
 import penoplatinum.modelprocessor.WallDetectorProcessor;
-import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.RobotAgent;
+import penoplatinum.simulator.mini.Bearing;
 import penoplatinum.simulator.mini.Navigator;
 
 public class GhostRobot implements Robot {
@@ -108,6 +108,8 @@ public class GhostRobot implements Robot {
     this.model.updateSensorValues(this.api.getSensorValues());
     this.model.setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
+    // Send dashboard info
+    
     // let the driver do his thing
     if (this.driver.isBusy()) {
       this.driver.step();
@@ -197,4 +199,7 @@ public class GhostRobot implements Robot {
   public String getName() {
     return model.getAgent().getName();
   }
+
+  
+
 }

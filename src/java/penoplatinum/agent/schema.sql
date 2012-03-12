@@ -9,6 +9,7 @@ CREATE TABLE model (
   robot         VARCHAR(50),  -- robot name
   lightValue    INTEGER,      -- value read by the light sensor
   lightColor    VARCHAR(10),  -- interpreted color by the robot
+  averageLightValue
   barcode       INTEGER,      -- detected barcode
   sonarAngle    INTEGER,      -- current sonar angle
   sonarDistance INTEGER,      -- current sonar distance
@@ -18,6 +19,7 @@ CREATE TABLE model (
   ir4           INTEGER,
   ir5           INTEGER,
   ir_dist       INTEGER,      -- the shortes distance
+  walls
   value_n       INTEGER,      -- value of the sector north of me
   value_e       INTEGER,      --                     east
   value_s       INTEGER,      --                     south

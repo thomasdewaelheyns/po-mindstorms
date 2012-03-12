@@ -9,6 +9,7 @@ import org.junit.Test;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
 import penoplatinum.grid.SwingGridView;
+import penoplatinum.pacman.TransformationTRT;
 import penoplatinum.simulator.mini.Bearing;
 
 /**
@@ -36,7 +37,7 @@ public class SimpleGridTest {
     SimpleGrid grid;
 
     grid = new SimpleGrid();
-    grid.importGrid(baseGrid, 0, 0, 0, 0, 1);
+    grid.importGrid(baseGrid, new TransformationTRT().setTransformation(0, 0, 0, 0, 1));
     grid.displayOn(new SwingGridView());
 
     Utils.Sleep(5000);
@@ -48,7 +49,7 @@ public class SimpleGridTest {
     SimpleGrid grid;
 
     grid = new SimpleGrid();
-    grid.importGrid(baseGrid, 0, 0, 0, 0, 2);
+    grid.importGrid(baseGrid, new TransformationTRT().setTransformation(0, 0, 0, 0, 2));
     grid.displayOn(new SwingGridView());
 
     Utils.Sleep(5000);
@@ -60,7 +61,7 @@ public class SimpleGridTest {
     SimpleGrid grid;
 
     grid = new SimpleGrid();
-    grid.importGrid(baseGrid, 0, 0, 0, 0, 3);
+    grid.importGrid(baseGrid, new TransformationTRT().setTransformation(0, 0, 0, 0, 3));
     grid.displayOn(new SwingGridView());
 
     Utils.Sleep(5000);
@@ -73,10 +74,10 @@ public class SimpleGridTest {
     SimpleGrid grid;
 
     grid = new SimpleGrid();
-    grid.importGrid(baseGrid, 0, 0, 0, 0, 1);
+    grid.importGrid(baseGrid, new TransformationTRT().setTransformation(0, 0, 0, 0, 1));
     grid.displayOn(new SwingGridView());
 
-    baseGrid.importGrid(grid, 0, 1, 0, -1, 0);
+    baseGrid.importGrid(grid, new TransformationTRT().setTransformation(0, 1, 0, -1, 0));
     baseGrid.refresh();
 
     Utils.Sleep(5000);
@@ -89,10 +90,10 @@ public class SimpleGridTest {
     SimpleGrid grid;
 
     grid = new SimpleGrid();
-    grid.importGrid(baseGrid, 0, 0, 0, 0, 0);
+    grid.importGrid(baseGrid, new TransformationTRT().setTransformation(0, 0, 0, 0, 0));
     grid.displayOn(new SwingGridView());
 
-    baseGrid.importGrid(grid, 0, 1, 1, 0, 1);
+    baseGrid.importGrid(grid, new TransformationTRT().setTransformation(0, 1, 1, 0, 1));
     baseGrid.refresh();
 
     Utils.Sleep(5000);

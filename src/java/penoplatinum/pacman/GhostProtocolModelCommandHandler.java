@@ -28,9 +28,21 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
   @Override
   public void handlePosition(String agentName, int x, int y) {
-    // update the agent's position
-    int bearing = Bearing.N; //TODO: 
-    final Grid grid = model.getGrid(agentName);
+
+    OtherGhost ghost = model.findOtherGhost(agentName);
+    Grid grid;
+    if (ghost == null) {
+      // update the agent's position
+      grid = model.getGrid(agentName);
+
+
+    } else {
+      grid = model.getGrid();
+      // transform the x and y coord
+      Point p = ghost.getTransformationTRT().transform(x, y);
+      x = p.getX();
+      y = p.getY();
+    }
 
     Sector sector = grid.getSector(x, y);
     if (sector == null) {
@@ -45,11 +57,17 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
       grid.addAgent(agent);
     }
 
+    if (agent.getSector() != null) {
+      agent.getSector().removeAgent();
+    }
+
+    int bearing = Bearing.N; //TODO: 
+
+
     grid.agentsNeedRefresh();
     agent.assignSector(sector, bearing);
 
-    Utils.Log("Grid refresh!");
-    grid.refresh(); //TODO: this shouldn't run on the robot
+    //grid.refresh(); //TODO: this shouldn't run on the robot
 
 
 

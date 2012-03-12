@@ -26,6 +26,9 @@ public class BluetoothConnection {
     this.connection.initializeConnection();
     this.endPoint = new QueuedPacketTransporter(this.connection);
     this.connection.RegisterTransporter(this.endPoint, 123);
+    this.connection.RegisterTransporter(this.endPoint, 124);
+    this.connection.RegisterTransporter(this.endPoint, 125);
+    this.connection.RegisterTransporter(this.endPoint, 126);
     this.connection.RegisterTransporter(this.endPoint, Utils.PACKETID_LOG);
   }
 
