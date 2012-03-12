@@ -279,7 +279,7 @@
       timestamp : timestamp,             robot : robot,
       lightValue : lightValue,           lightColor : lightColor, avgLightValue : avgLightValue,
       barcode : barcode,
-      sonarAngle : sonarAngle -90,       sonarDistance : sonarDistance,
+      sonarAngle : sonarAngle,       sonarDistance : sonarDistance,
       ir : [ ir1, ir2, ir3, ir4, ir5 ],  irDist: irDist,
       walls:walls,  values : {N:valN, E:valE, S:valS, W:valW },
       navigatorEvent : navigatorEvent,   navigatorSource : navigatorSource,
