@@ -139,5 +139,10 @@ public class NullGrid implements Grid {
   public List<Sector> getTaggedSectors() {
     return null;
   }
+
+  @Override
+  public Sector getOrCreateSector(int x, int y) {
+    return null;
+  }
   
 }

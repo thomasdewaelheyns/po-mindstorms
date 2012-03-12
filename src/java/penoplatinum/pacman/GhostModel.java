@@ -754,6 +754,7 @@ public class GhostModel implements Model {
     this.isNextToPacman = b;
     this.pacmanX = x;
     this.pacmanY = y;
+    protocol.sendPacman();
   }
 
   public int getPacmanX() {

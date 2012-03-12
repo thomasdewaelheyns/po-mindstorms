@@ -59,4 +59,6 @@ public interface Grid {
   void addTaggedSector(Sector s);
 
   List<Sector> getTaggedSectors();
+
+  public Sector getOrCreateSector(int x, int y);
 }

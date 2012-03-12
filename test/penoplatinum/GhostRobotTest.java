@@ -16,6 +16,7 @@ import penoplatinum.simulator.SimulationRobotAgent;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
 import penoplatinum.simulator.Navigator;
+import penoplatinum.simulator.PacmanEntity;
 import penoplatinum.simulator.view.SwingSimulationView;
 
 /**
@@ -151,7 +152,8 @@ public class GhostRobotTest {
 //    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
 
   }
-   @Test
+
+  @Test
   public void testBarcodeReverse() throws FileNotFoundException {
     sim.useMap(SimulatorTest.createSectorMap());
 
@@ -205,6 +207,22 @@ public class GhostRobotTest {
     sim.useMap(SimulatorTest.createSectorMap());
 
     putGhostRobot(9, 20, 90, new LeftFollowingGhostNavigator(), "Michiel");
+
+  }
+
+  @Test
+  public void testPacman() throws FileNotFoundException {
+    sim.useMap(SimulatorTest.createSectorMap());
+
+
+
+    String name = r.nextInt() + "";
+
+    SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
+
+    sim.setPacmanEntity(new PacmanEntity(20, 20, 0));
+//    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
+//    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
 
   }
 

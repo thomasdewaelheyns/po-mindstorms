@@ -80,6 +80,11 @@ public class RemoteEntity implements RobotEntity {
         positionX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
         positionY = (p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
       }
+
+      @Override
+      public void handlePacman(String agentName, int x, int y) {
+        
+      }
     });
   }
 

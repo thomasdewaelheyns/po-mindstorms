@@ -92,11 +92,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
       Point p = ghost.getTransformationTRT().transform(x, y);
 
 
-      Sector sector = model.getGrid().getSector(p.getX(), p.getY());
-      if (sector == null) {
-        sector = new Sector(model.getGrid()).setCoordinates(x, y);
-        model.getGrid().addSector(sector);
-      }
+      Sector sector = model.getGrid().getOrCreateSector(p.getX(), p.getY());
+
+
 
 
       Sector otherSector = new Sector();//.setCoordinates(x, y);
@@ -160,6 +158,31 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     for (int i = 0; i < bs.size(); i++) {
       model.attempMapBarcode(bs.get(i), agent.getSector(), grid, agentName);
     }
+
+
+  }
+
+  @Override
+  public void handlePacman(String agentName, int x, int y) {
+
+    OtherGhost ghost = model.findOtherGhost(agentName);
+    Grid grid;
+    if (ghost == null) {
+      // There is no mapping, add sector to the othergrid
+      grid = model.getGrid(agentName);
+
+    } else {
+      grid = model.getGrid();
+
+    }
+
+    Agent ag = grid.getAgent("pacman");
+    if (ag == null) {
+      ag = new PacmanAgent();
+
+    }
+
+    ag.assignSector(grid.getOrCreateSector(x, y), Bearing.N);
 
 
   }

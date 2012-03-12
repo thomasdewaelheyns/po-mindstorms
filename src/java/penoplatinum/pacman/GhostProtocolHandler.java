@@ -60,6 +60,8 @@ public class GhostProtocolHandler implements MessageHandler {
                   scanner.nextInt(), scanner.nextInt());
         } else if ("BARCODE".equals(command)) {
           commandHandler.handleBarcode(agentName, scanner.nextInt(), scanner.nextInt());
+        } else if ("PACMAN".equals(command)) {
+          commandHandler.handlePacman(agentName, scanner.nextInt(), scanner.nextInt());
         }
       }
     } catch (Exception e) {
@@ -141,6 +143,12 @@ public class GhostProtocolHandler implements MessageHandler {
             + code + " " + bearing);
   }
 
+   public void sendPacman() {
+    this.queue.send(this.agent.getName() + " PACMAN "
+            + this.model.getPacmanX()+ ","
+            + this.model.getPacmanY());
+  }
+  
   // keep a reference to the outgoing queue and JOIN
   public void useQueue(Queue queue) {
     this.queue = queue;

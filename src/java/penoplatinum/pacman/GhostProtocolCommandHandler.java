@@ -15,5 +15,7 @@ public interface GhostProtocolCommandHandler {
   void handleDiscover(String agentName, int x, int y, int n, int e, int s, int w);
 
   void handlePosition(String agentName, int x, int y);
+
+  public void handlePacman(String agentName, int x, int y);
   
 }

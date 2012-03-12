@@ -252,17 +252,24 @@ public class SimpleGrid implements Grid {
     }
 
   }
-  
-  public void addTaggedSector(Sector s)
-  {
+
+  public void addTaggedSector(Sector s) {
     taggedSectors.add(s);
-    
+
   }
 
   public List<Sector> getTaggedSectors() {
     return taggedSectors;
   }
-  
-  
-  
+
+  @Override
+  public Sector getOrCreateSector(int x, int y) {
+    Sector sector = getSector(x, y);
+    if (sector == null) {
+      sector = new Sector().setCoordinates(x, y);
+      addSector(sector);
+    }
+
+    return sector;
+  }
 }
