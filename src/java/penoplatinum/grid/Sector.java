@@ -31,8 +31,7 @@ public class Sector {
   private int tagBearing;
 
   public Sector() {
-    //TODO: is this allowed?
-    this.putOn(new NullGrid()); // a dummy one, untill we get one assigned
+    this.putOn(NullGrid.getInstance());
   }
 
   public Sector(Grid grid) {

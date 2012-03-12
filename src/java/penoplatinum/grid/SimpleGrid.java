@@ -27,7 +27,7 @@ public class SimpleGrid implements Grid {
   // all agents in a row
   private List<Agent> agents = new ArrayList<Agent>();
   // visualization for the Grid, by default none, is used by Simulator
-  private GridView view = new NullGridView();
+  private GridView view = NullGridView.getInstance();
   private GridProcessor processor;
 
   public Grid setProcessor(GridProcessor processor) {

@@ -10,8 +10,20 @@ package penoplatinum.grid;
  */
 
 public class NullGridView implements GridView {
-  public GridView display(Grid Grid)                { return null; }
+  private static GridView instance = null;
 
+  private NullGridView() {}
+  
+  public static GridView getInstance() {
+    if(instance == null) {
+      synchronized(NullGridView.class) { 
+        instance = new NullGridView();
+      }
+    }
+    return instance;
+  }
+
+  public GridView display(Grid Grid)                { return null; }
   public GridView setSectorSize(int size)           { return this; }
 
   public GridView refresh()                         { return this; }

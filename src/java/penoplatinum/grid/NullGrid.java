@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.grid;
 
 import java.util.List;
@@ -11,7 +7,19 @@ import penoplatinum.pacman.TransformationTRT;
  *
  * @author MHGameWork
  */
-public class NullGrid implements Grid{
+public class NullGrid implements Grid {
+  private static Grid instance = null;
+
+  private NullGrid() {}
+  
+  public static Grid getInstance() {
+    if(instance == null) {
+      synchronized(NullGrid.class) { 
+        instance = new NullGrid();
+      }
+    }
+    return instance;
+  }
 
   @Override
   public Grid setProcessor(GridProcessor processor) {
