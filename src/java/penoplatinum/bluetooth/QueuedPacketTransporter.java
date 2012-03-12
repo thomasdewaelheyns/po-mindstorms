@@ -115,6 +115,11 @@ public class QueuedPacketTransporter implements IPacketTransporter {
     p.Dgram = copyOfRange(dgram, offset, size);
 
     synchronized (receivedQueue) {
+      if (receivedQueue.isFull())
+      {
+        Utils.Log("Discarding packet!");
+        return;
+      }
       receivedQueue.insert(p);
       receivedQueue.notify();
     }

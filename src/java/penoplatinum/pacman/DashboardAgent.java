@@ -47,7 +47,7 @@ public class DashboardAgent {
     builder.append("\"").append(robot.getName()).append("\",");
     builder.append(model.getLightSensorValue()).append(",");
     builder.append("\"").append(model.getCurrentLightColor().toString()).append("\",");
-    builder.append(model.getAverageLightValue()).append(",");
+    builder.append((int)model.getAverageLightValue()).append(",");
     builder.append(model.getBarcode()).append(",");
     builder.append(this.model.getSensorValue(Model.M3)).append(",");
     builder.append(this.model.getSensorValue(Model.S3)).append(",");
