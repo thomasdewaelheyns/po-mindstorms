@@ -41,4 +41,9 @@ public class ConsoleGridView implements GridView {
     this.grid = grid;
     return this;
   }
+
+  @Override
+  public GridView setSectorSize(int size) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

@@ -15,7 +15,7 @@ import penoplatinum.simulator.SimulationRobotAgent;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
 import penoplatinum.simulator.mini.Bearing;
-import penoplatinum.simulator.mini.Navigator;
+import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.view.SwingSimulationView;
 
 /**
