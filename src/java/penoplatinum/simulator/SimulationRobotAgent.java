@@ -32,18 +32,18 @@ public class SimulationRobotAgent implements RobotAgent {
 
   @Override
   public void run() {
-    
+
     // in the Simulator, we don't use threading
     System.out.println("Agent:> Starting logging...");
     mq = new MQ() {
 
       @Override
-      protected void handleIncomingMessage(String sender, String message) {
+      protected void handleIncomingMessage(String message) {
         receive(message);
       }
     };
     try {
-      mq.setMyName(robot.getName()).connectToMQServer().follow(Config.GHOST_CHANNEL);
+      mq.connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
       // TODO: remove hard coded data
     } catch (IOException ex) {
       System.err.println("IOException gevangen, zoek voor meer info");
@@ -77,5 +77,4 @@ public class SimulationRobotAgent implements RobotAgent {
     this.simulator = simulator;
     this.send("SimulationAgent Ready");
   }
-
 }

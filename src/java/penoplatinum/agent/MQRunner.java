@@ -19,11 +19,11 @@ public class MQRunner {
 
     MQ mq = new MQ() {
 
-      protected void handleIncomingMessage(String sender, String message) {
+      protected void handleIncomingMessage(String message) {
         // handling the incoming messages ...
-        System.out.println("[" + sender + "] " + message);
+        System.out.println(message);
       }
-    }.setMyName(argv[0]).connectToMQServer().follow(Config.GHOST_CHANNEL);
+    }.connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
 
     // be nice ...
     mq.sendMessage("Hello everybody.");

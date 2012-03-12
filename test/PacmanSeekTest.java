@@ -3,9 +3,9 @@
 import java.io.FileNotFoundException;
 import java.util.Random;
 import org.junit.Test;
-import penoplatinum.ghost.GhostRobot;
 import penoplatinum.grid.SwingGridView;
 import penoplatinum.pacman.GhostNavigator;
+import penoplatinum.pacman.GhostRobot;
 import penoplatinum.simulator.PacmanEntity;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;

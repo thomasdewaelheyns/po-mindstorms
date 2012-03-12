@@ -37,19 +37,17 @@ public class RemoteEntity implements RobotEntity {
     try {
       MQ mq = new MQ() {
 
+
         @Override
-        protected void handleIncomingMessage(String sender, String message) {
-          synchronized (this) {
-            if (!sender.equals(entityName)) {
-              return;
-            }
+        protected void handleIncomingMessage(String message) {
+           synchronized (this) {
             if (message == null) {
               throw new RuntimeException("Impossible??");
             }
             messageQueue.insert(message);
           }
         }
-      }.setMyName(entityName + "Remote").connectToMQServer().follow(Config.GHOST_CHANNEL);
+      }.connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
     } catch (IOException ex) {
       Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
     } catch (InterruptedException ex) {
