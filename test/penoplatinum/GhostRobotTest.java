@@ -228,13 +228,13 @@ public class GhostRobotTest {
 
   @Test
   public void testGhostRobotMazeProtocol3Pacman() throws FileNotFoundException {
-    sim.useMap(SimulatorTest.createSectorMazeProtocol());
+    sim.useMap(SimulatorTest.createSectorMazeProtocol2());
 
 
 
     String name = r.nextInt() + "";
 
-    SimulatedEntity ent1 = putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
+    SimulatedEntity ent1 = putGhostRobot(20 + 5 * 40, 20 + 2 * 40, 0);
     SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
     putGhostRobot(20 + 5 * 40, 20 + 4 * 40, 0);
 
