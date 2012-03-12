@@ -261,13 +261,13 @@ public class SimpleGrid implements Grid {
   public List<Sector> getTaggedSectors() {
     return taggedSectors;
   }
-  
-  private void disengage(){
-    for(Sector s : sectors.values()){
+
+  private void disengage() {
+    for (Sector s : sectors.values()) {
       s.disengage();
     }
+
   }
-}
 
   @Override
   public Sector getOrCreateSector(int x, int y) {
@@ -279,4 +279,10 @@ public class SimpleGrid implements Grid {
 
     return sector;
   }
+
+  @Override
+  public void removeAgent(Agent agent) {
+    agents.remove(agent);
+  }
 }
+

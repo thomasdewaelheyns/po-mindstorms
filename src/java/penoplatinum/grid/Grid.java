@@ -42,6 +42,8 @@ public interface Grid {
 
   public Agent getAgent(String name);
 
+  public void removeAgent(Agent agent);
+
   public List<Agent> getAgents();
 
   public Grid clearAgents();
@@ -61,4 +63,5 @@ public interface Grid {
   List<Sector> getTaggedSectors();
 
   public Sector getOrCreateSector(int x, int y);
+
 }
