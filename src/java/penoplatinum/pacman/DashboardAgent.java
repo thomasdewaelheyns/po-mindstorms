@@ -57,7 +57,7 @@ public class DashboardAgent {
     builder.append(this.model.getSensorValue(Model.IR3)).append(",");
     builder.append(this.model.getSensorValue(Model.IR4)).append(",");
     builder.append(-1).append(","); // ir_dist the shortest distance
-    builder.append(this.model.getAgent().getSector().getWalls()).append(",");
+    builder.append((int)this.model.getAgent().getSector().getWalls()).append(",");
 
 
     s = this.model.getAgent().getSector().getNeighbour(Bearing.N);
