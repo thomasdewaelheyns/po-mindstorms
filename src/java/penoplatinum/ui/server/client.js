@@ -157,22 +157,70 @@
     canvas.fill();
   },
   
+  valueToColor = function valueToColor(value) {
+    if( value == 0 ) { return "rgb(0,0,0)"; }
+    value *= 2;
+    
+    var r, g, b, v = value;
+    v = (v/1000) * 400 + 350;
+
+    if(v>=350 && v<=439) {            // violet
+      r = (440-v) * 255 / 90;
+      g = 0;
+      b = 255;
+    } else if( v>=440 && v<=489 ) {   // blue
+      r = 0;
+      g = (v-440) * 255 / 50;
+      b = 255;
+    } else if( v>=490 && v<=509 ) {   // cyan
+      r = 0;
+      g = 255;
+      b = (510-v) * 255 / 20;
+    } else if ( v>=510 && v<=579 ) {  // green
+      r = (v-510) * 255 / 70;
+      g = 255;
+      b = 0;
+    } else if( v>=580 && v<=644 ) {   // yellow
+      r = 255;
+      g = (645-v) * 255 / 65;
+      b = 0;
+    } else if( v>=645 ) {   // red
+      r = 255;
+      g = 0;
+      b = 0;
+    } else {                          // black
+      r = 0;
+      g = 0;
+      b = 0;
+    }
+    return "rgb("+Math.round(r)+","+Math.round(g)+","+Math.round(b)+")";
+  },
+  
   updateSector = function updateSector( walls, values ) {
     var canvas = document.getElementById("sectorSituation").getContext("2d");
     canvas.fillStyle = "black";
     canvas.fillRect(0,0,150,150);
 
-    // tiles
-    canvas.fillStyle = "white";
+    // sectors
+    // N
+    canvas.fillStyle = valueToColor(values.N);
     canvas.fillRect( 60, 10, 30, 30 );
+
+    // W
+    canvas.fillStyle = valueToColor(values.W);
     canvas.fillRect( 10, 60, 30, 30 );
+
+    // Current
+    canvas.fillStyle = "white";
     canvas.fillRect( 60, 60, 30, 30 );
+
+    // E
+    canvas.fillStyle = valueToColor(values.E);
     canvas.fillRect( 110, 60, 30, 30 );
+
+    // S
+    canvas.fillStyle = valueToColor(values.S);
     canvas.fillRect( 60, 110, 30, 30 );
-    
-    // TODO: get minimum
-    canvas.fillStyle = "green";
-    canvas.fillRect( 10, 60, 30, 30 );    
     
     // walls
     canvas.fillStyle = "brown";
@@ -216,7 +264,7 @@
   
   // public method used by JSONP to update the dashboard
   dashboard.update = function update( timestamp,  robot,
-                                      lightValue, lightColor, avgLightValue
+                                      lightValue, lightColor, avgLightValue,
                                       barcode,
                                       sonarAngle, sonarDistance,
                                       ir1, ir2, ir3, ir4, ir5, irDist,
