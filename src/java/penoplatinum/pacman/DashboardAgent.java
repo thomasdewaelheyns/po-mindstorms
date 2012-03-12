@@ -40,7 +40,7 @@ public class DashboardAgent {
 
   public void sendModelDeltas() {
 
-    builder.setLength(0);
+    builder.delete(0, builder.length());
     
     Sector s;
 
@@ -82,8 +82,7 @@ public class DashboardAgent {
     .append(fps);
 
     String data = builder.toString();
-<<<<<<< .mine    builder.delete(0, builder.length()-1);
-=======>>>>>>> .theirs    try {
+    try {
       transporter.getSendStream().writeBytes(data);
       transporter.SendPacket(123);
     } catch (IOException ex) {
@@ -104,21 +103,21 @@ public class DashboardAgent {
   }
 
   public void sendSectorWalls(String name, String grid, Sector s) {
-    builder.delete(0, builder.length()-1);
+    builder.delete(0, builder.length());
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
     builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getWalls());
   }
 
   public void sendSectorValues(String name, String grid, Sector s) {
-    builder.delete(0, builder.length()-1);
+    builder.delete(0, builder.length());
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
     builder.append(s.getLeft()).append(",").append(s.getTop()).append(",").append(s.getValue());
   }
 
   public void sendSectorAgents(String name, String grid, Agent ag) {
-    builder.delete(0, builder.length()-1);
+    builder.delete(0, builder.length());
     builder.append("\"").append(name).append("\",");
     builder.append("\"").append(grid).append("\",");
     builder.append(ag.getName()).append(",");
