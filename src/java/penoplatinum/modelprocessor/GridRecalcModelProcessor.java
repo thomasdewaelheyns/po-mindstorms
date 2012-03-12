@@ -7,6 +7,9 @@ public class GridRecalcModelProcessor extends ModelProcessor{
   @Override
   protected void work() {
     GhostModel model = (GhostModel) this.model;
+    if (!model.needsGridUpdate()) {
+      return;
+    }
     for (int i = 0; i < 10; i++) {
       updateHillClimbingInfo();
     }

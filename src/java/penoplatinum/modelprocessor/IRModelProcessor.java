@@ -1,5 +1,6 @@
 package penoplatinum.modelprocessor;
 
+import penoplatinum.pacman.GhostModel;
 import penoplatinum.simulator.Model;
 
 public class IRModelProcessor extends ModelProcessor {
@@ -13,6 +14,10 @@ public class IRModelProcessor extends ModelProcessor {
 
   @Override
   protected void work() {
+    GhostModel model = (GhostModel) this.model;
+    if (!model.needsGridUpdate()) {
+      return;
+    }
     int dir = model.getSensorValue(Model.S1);
     int dx = 0, dy = 0;
     switch (dir) {

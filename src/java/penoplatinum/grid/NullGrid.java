@@ -141,6 +141,10 @@ public class NullGrid implements Grid {
   }
 
   @Override
+  public void removeAgent(Agent agent) {
+  }
+
+  @Override
   public Sector getOrCreateSector(int x, int y) {
     return null;
   }

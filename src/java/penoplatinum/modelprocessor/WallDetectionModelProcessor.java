@@ -14,6 +14,9 @@ import penoplatinum.pacman.GhostModel;
  */
 public class WallDetectionModelProcessor extends ModelProcessor {
 
+  public WallDetectionModelProcessor() {
+  }
+
   public WallDetectionModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
