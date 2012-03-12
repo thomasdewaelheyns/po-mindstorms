@@ -10,7 +10,6 @@ import penoplatinum.grid.SwingGridView;
 
 import penoplatinum.pacman.DashboardAgent;
 import penoplatinum.pacman.GhostRobot;
-import penoplatinum.pacman.LeftFollowingGhostNavigator;
 import penoplatinum.pacman.GhostNavigator;
 
 import penoplatinum.simulator.SimulatedEntity;
@@ -20,9 +19,7 @@ import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.view.SwingSimulationView;
 
 import penoplatinum.map.Map;
-import penoplatinum.map.MapFactory;
 import penoplatinum.map.MapFactorySector;
-import penoplatinum.map.mazeprotocolinterpreter.ProtocolMapFactory;
 
 public class test {
   public static void main(String[] args) {
@@ -40,7 +37,7 @@ public class test {
     conn.setEndPoint(remoteConn);
 
     GhostRobot robot = new GhostRobot("Ikke!", new SwingGridView());
-    robot.useDashboardAgent(new DashboardAgent(conn));
+//    robot.useDashboardAgent(new DashboardAgent(conn));
     robot.useNavigator(new GhostNavigator());
 
     SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);

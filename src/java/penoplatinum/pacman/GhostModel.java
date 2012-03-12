@@ -61,7 +61,6 @@ public class GhostModel implements Model {
   private int lastMovement = GhostAction.NONE;
   private boolean isSweepDataChanged;
   private GhostProtocolHandler protocol;
-  private ArrayList<Sector> barcodeSectors = new ArrayList<Sector>();
   private ArrayList<OtherGhost> otherGhosts = new ArrayList<OtherGhost>();
   private DashboardAgent dashboardAgent;
 
@@ -131,10 +130,10 @@ public class GhostModel implements Model {
 
     //this.prevSensors = this.sensors.clone(); //TODO: WARNING GC
     //this.sensors = values;
-    for(int i = 0; i<SENSORVALUES_NUM; i++){
+    for (int i = 0; i < SENSORVALUES_NUM; i++) {
       this.sensors[i] = values[i];
     }
-    
+
     this.process();
 
     return this;
@@ -286,7 +285,6 @@ public class GhostModel implements Model {
     if (lastBarcode != -1) {
       // We drove over a barcode on this tile
 
-      barcodeSectors.add(getAgent().getSector());
       getAgent().getSector().setTagCode(lastBarcode);
       getAgent().getSector().setTagBearing(getAgent().getBearing());
 
@@ -295,7 +293,7 @@ public class GhostModel implements Model {
       for (Grid g : otherGrids.values()) {
         String name = otherGrids.findKey(g);
         for (Sector s : g.getTaggedSectors()) {
-          attempMapBarcode(getAgent().getSector(), s, g, name);
+          attemptMapBarcode(getAgent().getSector(), s, g, name);
         }
       }
 
@@ -305,14 +303,23 @@ public class GhostModel implements Model {
       lastBarcode = -1;
     }
 
-  }
 
-  public boolean attempMapBarcode(Sector ourSector, Sector otherSector, final Grid otherGrid, String otherAgentName) {
+  }
+  int magic = 0;
+
+  public boolean attemptMapBarcode(Sector ourSector, Sector otherSector, final Grid otherGrid, String otherAgentName) {
+    magic++;
+    if (magic > 8) {
+      int a = magic * 33;
+    }
     int ourCode = ourSector.getTagCode();
     int code = otherSector.getTagCode();
     int bearing = otherSector.getTagBearing();
-    int invertedCode = BarcodeTranslator.invertBarcode(ourSector.getTagCode());
+    int invertedCode = BarcodeTranslator.invertBarcode(code);
 
+    if (invertedCode == code) {
+      return false; // THis barcode is symmetrical??
+    }
     if (ourCode == invertedCode) {
       code = invertedCode;
 
@@ -393,10 +400,6 @@ public class GhostModel implements Model {
       Utils.Log("Grid " + i + ": " + g.getSectors().size());
 
     }
-  }
-
-  public ArrayList<Sector> getBarcodeSectors() {
-    return barcodeSectors;
   }
   private float positionX;
   private float positionY;
@@ -486,13 +489,15 @@ public class GhostModel implements Model {
   private int lastBarcode = -1;
 
   public void setBarcode(int barcode) {
+    if (barcode == 0) {
+      barcode = -1;
+    }
     if (barcode != -1) {
       lastBarcode = barcode;
 
       Utils.Log(barcode + "");
 
       // Barcode update is sent on next position send!!
-
 
     }
     this.barcode = barcode;
@@ -755,7 +760,7 @@ public class GhostModel implements Model {
 
   @Override
   public void setPacManInNext(boolean b, int x, int y) {
-    if(this.isNextToPacman){
+    if (this.isNextToPacman) {
       Sector s = this.getGrid().getSector(pacmanX, pacmanY);
       getGrid().removeAgent(s.getAgent());
       s.removeAgent();
@@ -763,7 +768,7 @@ public class GhostModel implements Model {
     this.isNextToPacman = b;
     this.pacmanX = x;
     this.pacmanY = y;
-    if(b){
+    if (b) {
       Sector s = this.getGrid().getSector(pacmanX, pacmanY);
       PacmanAgent p = new PacmanAgent();
       s.put(p, 0);

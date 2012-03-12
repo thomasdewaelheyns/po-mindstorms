@@ -5,6 +5,7 @@ import java.util.Random;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.pacman.LeftFollowingGhostNavigator;
 import penoplatinum.grid.SwingGridView;
@@ -40,6 +41,13 @@ public class GhostRobotTest {
     sim.run();
   }
 
+  @Test
+  public void testInvertBarcode()
+  {
+    int a = BarcodeTranslator.invertBarcode(12);
+    int magic = 4;
+  }
+  
   @Test
   public void testGhostRobotLeftFollowing() throws FileNotFoundException {
 

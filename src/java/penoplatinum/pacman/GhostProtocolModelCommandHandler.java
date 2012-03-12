@@ -4,7 +4,7 @@
  */
 package penoplatinum.pacman;
 
-import java.util.ArrayList;
+import java.util.List;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
@@ -153,9 +153,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     // if so, import the agents map in our grid,
     //        create translators to continously import its information
     //        in our own grid
-    ArrayList<Sector> bs = model.getBarcodeSectors();
+    List<Sector> bs = model.getGrid().getTaggedSectors();
     for (int i = 0; i < bs.size(); i++) {
-      model.attempMapBarcode(bs.get(i), agent.getSector(), grid, agentName);
+      model.attemptMapBarcode(bs.get(i), agent.getSector(), grid, agentName);
     }
 
 

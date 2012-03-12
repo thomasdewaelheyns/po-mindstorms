@@ -254,6 +254,11 @@ public class SimpleGrid implements Grid {
   }
 
   public void addTaggedSector(Sector s) {
+    for (int i = 0; i < taggedSectors.size(); i++) {
+      if (taggedSectors.get(i) == s) {
+        return;
+      }
+    }
     taggedSectors.add(s);
 
   }
@@ -285,4 +290,3 @@ public class SimpleGrid implements Grid {
     agents.remove(agent);
   }
 }
-

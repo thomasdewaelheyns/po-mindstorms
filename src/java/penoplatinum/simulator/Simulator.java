@@ -39,6 +39,8 @@ public class Simulator {
   private ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<String>();
   private Runnable stepRunnable;
 
+  
+  
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
   }

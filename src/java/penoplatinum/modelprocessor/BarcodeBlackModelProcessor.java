@@ -1,6 +1,5 @@
 package penoplatinum.modelprocessor;
 
-import java.awt.Color;
 import penoplatinum.Utils;
 import penoplatinum.barcode.BarcodeBlackBlack;
 import penoplatinum.barcode.BarcodeCorrector;
@@ -114,11 +113,14 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
         setState(WAITING);
         tempBuffer.unsetCheckPoint();
 
+        
+//        Utils.Log(" BAAAAAAAARRRRRCOOOOOOODEEEEE: " + barcode + "");
         int corrected = barcode;
         if (barcode != Barcode.None) {
           corrected = (corrected / 2) & ((1 << 7) - 1);
 //          corrected = interpreter.correct(corrected);
         }
+        
         model.setBarcode(corrected);
 
     }
