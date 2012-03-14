@@ -279,6 +279,7 @@ public class GhostModel implements Model {
 
   public void moveForward() {
     this.agent.moveForward();
+    
     this.lastMovement = GhostAction.FORWARD;
     protocol.sendPosition();
 

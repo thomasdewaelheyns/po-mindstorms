@@ -19,8 +19,8 @@ public class Main {
 
   public static void main(String[] args) throws Exception {
 
-    
-    
+
+
 //    byte[] b = new byte[55 * 1024];
 //    testCountMemory();
     //Runtime.getRuntime().gc();
@@ -39,10 +39,16 @@ public class Main {
     final AngieEventLoop angie = new AngieEventLoop(robot);
 
     RobotBluetoothConnection conn = new RobotBluetoothConnection();
-        conn.initializeConnection();
-        Utils.EnableRemoteLogging(conn);
+    conn.initializeConnection();
+    Utils.EnableRemoteLogging(conn);
 
-    robot.useCommunicationAgent(new RobotBluetoothAgent().useConnection(conn));
+
+    final RobotBluetoothAgent robotBluetoothAgent = new RobotBluetoothAgent();
+
+    robot.useCommunicationAgent(robotBluetoothAgent.useConnection(conn));
+
+    robotBluetoothAgent.run();
+
 
 //        initializeAgent(angie);
     Runnable runnable = new Runnable() {
@@ -57,7 +63,7 @@ public class Main {
   }
 
   public static void testCountMemory() {
-    int step = 1024*3;
+    int step = 1024 * 3;
     int size = step;
     byte[] buffer;
     for (int i = 0; i < 1000; i++) {

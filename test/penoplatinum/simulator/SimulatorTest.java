@@ -60,7 +60,7 @@ public class SimulatorTest {
 
   public static Map createSectorMazeProtocol2() throws FileNotFoundException {
     Map m;
-    File f = new File("..\\..\\src\\wolfraam2.txt");
+    File f = new File("..\\..\\src\\wolfraam3.txt");
     Scanner sc = new Scanner(f);
     MapFactory fact = new ProtocolMapFactory();
     m = fact.getMap(sc);

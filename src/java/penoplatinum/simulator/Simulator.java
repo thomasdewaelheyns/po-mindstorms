@@ -194,7 +194,7 @@ public class Simulator {
       if (false) {
         break;
       }
-//      Utils.Sleep(2);
+      Utils.Sleep(3);
     }
     this.view.log("");
     return this;

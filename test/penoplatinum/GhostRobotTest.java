@@ -245,9 +245,11 @@ public class GhostRobotTest {
     SimulatedEntity ent1 = putGhostRobot(20 + 5 * 40, 20 + 2 * 40, 0);
     SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
     putGhostRobot(20 + 5 * 40, 20 + 4 * 40, 0);
+    
+    
 
-    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
-    sim.setPacmanEntity(new PacmanEntity(100, 140, 0));
+//    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
+//    sim.setPacmanEntity(new PacmanEntity(260, 180, 0));
 //    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
 
   }
