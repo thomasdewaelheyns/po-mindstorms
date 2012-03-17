@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.pacman;
+package penoplatinum.util;
 
 import java.util.StringTokenizer;
 
@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
  *
  * @author MHGameWork
  */
-class MyScanner {
+public class MyScanner {
 
   private final StringTokenizer tokenizer;
 

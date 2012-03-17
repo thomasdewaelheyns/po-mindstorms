@@ -125,7 +125,7 @@ public class PCBluetoothTest {
     public void testSendSpeed() throws IOException {
         PCBluetoothConnection conn = new PCBluetoothConnection();
         conn.initializeConnection();
-        penoplatinum.bluetooth.BluetoothPerformanceTests test = new BluetoothPerformanceTests();
+        penoplatinum.bluetooth.BluetoothPerformanceTest test = new BluetoothPerformanceTest();
         test.testSendSpeed_Send(conn);
         
     }

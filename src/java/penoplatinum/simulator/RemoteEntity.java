@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import penoplatinum.Config;
 import penoplatinum.agent.MQ;
-import penoplatinum.bluetooth.CircularQueue;
+import penoplatinum.util.CircularQueue;
 import penoplatinum.pacman.GhostModel;
 import penoplatinum.pacman.GhostProtocolCommandHandler;
 import penoplatinum.pacman.GhostProtocolHandler;
@@ -76,7 +76,7 @@ public class RemoteEntity implements RobotEntity {
 
       @Override
       public void handlePosition(String agentName, int x, int y) {
-        penoplatinum.map.Point p = Bearing.mapToNorth(originDirection, x, y);
+        penoplatinum.util.Point p = Bearing.mapToNorth(originDirection, x, y);
         positionX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
         positionY = (p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
       }

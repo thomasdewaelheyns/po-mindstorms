@@ -4,14 +4,20 @@
  */
 package penoplatinum.pacman;
 
+import penoplatinum.util.TransformationTRT;
+
 /**
- *
+ * This class represents another ghost the model knows about. The ghost can be
+ * identified by his name.
+ * A transformation is provided which transforms coordinates from the remote
+ * ghost to the model's coordinate system
+ * 
  * @author MHGameWork
  */
 public class OtherGhost {
 
   private String name;
-private TransformationTRT transformationTRT;
+  private TransformationTRT transformationTRT;
 
   public String getName() {
     return name;
@@ -28,8 +34,4 @@ private TransformationTRT transformationTRT;
   public void setTransformationTRT(TransformationTRT transformationTRT) {
     this.transformationTRT = transformationTRT;
   }
-  
-  
-
-
 }

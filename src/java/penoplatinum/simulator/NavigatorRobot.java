@@ -1,6 +1,6 @@
 package penoplatinum.simulator;
 
-import penoplatinum.modelprocessor.SonarModelProcessor;
+import penoplatinum.util.ExtendedVector;
 import penoplatinum.modelprocessor.HistogramModelProcessor;
 import penoplatinum.modelprocessor.ModelProcessor;
 
@@ -39,13 +39,13 @@ public class NavigatorRobot implements Robot {
     ModelProcessor histoBuilder =
             new HistogramModelProcessor(
             //new FrontPushModelProcessor(
-            new SonarModelProcessor(
+//            new SonarModelProcessor(
             //new GapModelProcessor(
             //new ProximityModelProcessor(
             //new LightCorruptionModelProcessor(
             //new BarcodeModelProcessor(
             new LineModelProcessor(
-            new WallDetectionModelProcessor(null))));
+            new WallDetectionModelProcessor(null)));
 
     this.model.setProcessor(histoBuilder);
   }

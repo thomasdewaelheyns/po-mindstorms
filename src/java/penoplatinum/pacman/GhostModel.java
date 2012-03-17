@@ -7,6 +7,7 @@ package penoplatinum.pacman;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.util.TransformationTRT;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ import penoplatinum.SimpleHashMap;
 import penoplatinum.Utils;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.simulator.Line;
-import penoplatinum.modelprocessor.Buffer;
+import penoplatinum.util.Buffer;
 
 // we're using commons collections HashedMap because HashMap isn't implemented
 // on Lejos.
@@ -29,7 +30,7 @@ import penoplatinum.grid.DiffusionGridProcessor;
 
 import penoplatinum.grid.SimpleGrid;
 //import penoplatinum.grid.SwingGridView;
-import penoplatinum.modelprocessor.LightColor;
+import penoplatinum.util.LightColor;
 import penoplatinum.simulator.Model;
 
 import penoplatinum.simulator.Bearing;

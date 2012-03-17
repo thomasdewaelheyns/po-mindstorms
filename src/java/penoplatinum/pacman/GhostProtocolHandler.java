@@ -14,6 +14,7 @@ import penoplatinum.grid.Sector;
 import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.mini.MessageHandler;
 import penoplatinum.simulator.mini.Queue;
+import penoplatinum.util.MyScanner;
 
 public class GhostProtocolHandler implements MessageHandler {
 

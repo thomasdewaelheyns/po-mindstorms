@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.modelprocessor;
+package penoplatinum.util;
 
 /**
  *Buffer for the read lightValues
@@ -70,7 +70,7 @@ public class Buffer {
         return new BufferSubset(this, startCheckpoint, start, maxElements);
     }
     
-    BufferSubset getBufferSubset(int beforeEnd){
+    public BufferSubset getBufferSubset(int beforeEnd){
         return new BufferSubset(this, startCheckpoint, (start+maxElements-beforeEnd)%maxElements, maxElements);
     }
     

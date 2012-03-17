@@ -1,6 +1,8 @@
 package penoplatinum.modelprocessor;
 
-import penoplatinum.Utils;
+import penoplatinum.util.LightColor;
+import penoplatinum.util.BufferSubset;
+import penoplatinum.util.Buffer;
 import penoplatinum.barcode.BarcodeBlackBlack;
 import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.simulator.Barcode;

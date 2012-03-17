@@ -8,7 +8,7 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
 import java.util.List;
-import penoplatinum.pacman.TransformationTRT;
+import penoplatinum.util.TransformationTRT;
 
 public interface Grid {
 

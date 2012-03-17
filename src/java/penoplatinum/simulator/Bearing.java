@@ -1,6 +1,6 @@
 package penoplatinum.simulator;
 
-import penoplatinum.map.Point;
+import penoplatinum.util.Point;
 
 /**
  * Bearing

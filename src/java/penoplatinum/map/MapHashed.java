@@ -1,5 +1,6 @@
 package penoplatinum.map;
 
+import penoplatinum.util.Point;
 import java.util.HashMap;
 import penoplatinum.simulator.tiles.Tile;
 

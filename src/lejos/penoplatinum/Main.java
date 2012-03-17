@@ -11,7 +11,6 @@ import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
-import penoplatinum.navigators.BehaviourNavigator;
 import penoplatinum.pacman.GhostNavigator;
 import penoplatinum.simulator.NavigatorRobot;
 
@@ -144,25 +143,7 @@ public class Main {
   }
   static byte[] buf = new byte[1];
 
-  private static void runRobotSemester1() {
-
-    NavigatorRobot nav = new NavigatorRobot();
-    nav.useNavigator(new BehaviourNavigator());
-
-    final AngieEventLoop angie = new AngieEventLoop(nav);
-
-    initializeAgent(angie);
-
-    Runnable robot = new Runnable() {
-
-      public void run() {
-        Utils.Log("Started!");
-        angie.runEventLoop();
-      }
-    };
-
-    robot.run();
-  }
+ 
 
   private static void initializeAgent(final AngieEventLoop angie) {
 

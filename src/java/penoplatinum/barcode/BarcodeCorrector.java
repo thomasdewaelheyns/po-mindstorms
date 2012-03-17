@@ -4,7 +4,7 @@
  */
 package penoplatinum.barcode;
 
-import penoplatinum.modelprocessor.BufferSubset;
+import penoplatinum.util.BufferSubset;
 
 /**
  *

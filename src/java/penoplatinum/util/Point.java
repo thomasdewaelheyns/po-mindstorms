@@ -1,6 +1,7 @@
-package penoplatinum.map;
+package penoplatinum.util;
 
 public class Point {
+
   int x;
   int y;
 
@@ -19,13 +20,13 @@ public class Point {
 
   @Override
   public boolean equals(Object obj) {
-    if(!(obj instanceof Point)){
+    if (!(obj instanceof Point)) {
       return false;
     }
-    if(((Point) obj).getX() != getX()){
+    if (((Point) obj).getX() != getX()) {
       return false;
     }
-    if(((Point) obj).getY() != getY()){
+    if (((Point) obj).getY() != getY()) {
       return false;
     }
     return true;
@@ -33,9 +34,6 @@ public class Point {
 
   @Override
   public int hashCode() {
-    return x*43+y*113;
+    return x * 43 + y * 113;
   }
-  
-  
-  
 }

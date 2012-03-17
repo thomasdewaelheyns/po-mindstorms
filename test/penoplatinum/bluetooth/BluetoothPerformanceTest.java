@@ -6,12 +6,14 @@ package penoplatinum.bluetooth;
 
 import java.io.IOException;
 import penoplatinum.Utils;
+import penoplatinum.bluetooth.IConnection;
+import penoplatinum.bluetooth.QueuedPacketTransporter;
 
 /**
  *
  * @author: Team Platinum
  */
-public class BluetoothPerformanceTests {
+public class BluetoothPerformanceTest {
 
     /**
      * Returns true on success

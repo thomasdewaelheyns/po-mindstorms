@@ -1,7 +1,7 @@
 package penoplatinum.grid;
 
 import java.util.List;
-import penoplatinum.pacman.TransformationTRT;
+import penoplatinum.util.TransformationTRT;
 
 /**
  *

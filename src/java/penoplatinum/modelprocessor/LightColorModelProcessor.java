@@ -4,6 +4,7 @@
  */
 package penoplatinum.modelprocessor;
 
+import penoplatinum.util.LightColor;
 import penoplatinum.Utils;
 import penoplatinum.pacman.GhostModel;
 

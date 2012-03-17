@@ -1,5 +1,6 @@
 package penoplatinum.simulator;
 
+import penoplatinum.util.ExtendedVector;
 import java.util.List;
 
 

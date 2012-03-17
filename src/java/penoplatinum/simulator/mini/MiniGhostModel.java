@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 import penoplatinum.simulator.Line;
 
-import penoplatinum.modelprocessor.Buffer;
-import penoplatinum.modelprocessor.LightColor;
+import penoplatinum.util.Buffer;
+import penoplatinum.util.LightColor;
 
 import penoplatinum.pacman.GhostAction;
 import penoplatinum.pacman.GhostAgent;

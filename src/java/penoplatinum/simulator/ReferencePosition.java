@@ -4,6 +4,8 @@
  */
 package penoplatinum.simulator;
 
+import penoplatinum.util.ExtendedVector;
+
 /**
  *
  * @author MHGameWork

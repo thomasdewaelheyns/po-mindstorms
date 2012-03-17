@@ -1,4 +1,4 @@
-package penoplatinum.modelprocessor;
+package penoplatinum.util;
 
 public class BufferSubset {
     Buffer original;

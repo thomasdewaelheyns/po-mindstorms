@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import penoplatinum.Utils;
-import penoplatinum.modelprocessor.Buffer;
-import penoplatinum.modelprocessor.LightColor;
+import penoplatinum.util.Buffer;
+import penoplatinum.util.LightColor;
 import penoplatinum.modelprocessor.ModelProcessor;
 
 import penoplatinum.grid.Agent;

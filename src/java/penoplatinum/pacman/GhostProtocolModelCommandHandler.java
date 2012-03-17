@@ -9,7 +9,7 @@ import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
-import penoplatinum.map.Point;
+import penoplatinum.util.Point;
 import penoplatinum.simulator.Bearing;
 
 /**

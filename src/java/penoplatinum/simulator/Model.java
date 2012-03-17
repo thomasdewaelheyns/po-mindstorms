@@ -11,8 +11,8 @@ import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.GridView;
-import penoplatinum.modelprocessor.Buffer;
-import penoplatinum.modelprocessor.LightColor;
+import penoplatinum.util.Buffer;
+import penoplatinum.util.LightColor;
 import penoplatinum.modelprocessor.ModelProcessor;
 
 public interface Model {

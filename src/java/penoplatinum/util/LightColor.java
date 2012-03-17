@@ -1,4 +1,4 @@
-package penoplatinum.modelprocessor;
+package penoplatinum.util;
 
 /**
  * An enumeration of the Colors with values BLACK, WHITE and BROWN

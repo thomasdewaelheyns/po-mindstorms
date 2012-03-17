@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.pacman;
+package penoplatinum.util;
 
-import penoplatinum.map.Point;
 import penoplatinum.simulator.Bearing;
 
 /**

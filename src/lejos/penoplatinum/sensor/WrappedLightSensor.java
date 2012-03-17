@@ -10,7 +10,6 @@ import penoplatinum.Utils;
 import penoplatinum.barcode.ILightSensor;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
-import penoplatinum.ui.UIView;
 
 public class WrappedLightSensor implements ILightSensor {
 
@@ -35,12 +34,12 @@ public class WrappedLightSensor implements ILightSensor {
         light.setLow(344);
         light.setHigh(508);
 
-        if (conn != null) {
-            lightTransporter = new QueuedPacketTransporter(conn);
-            conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
-            printStream = new PrintStream(lightTransporter.getSendStream());
-
-        }
+//        if (conn != null) {
+//            lightTransporter = new QueuedPacketTransporter(conn);
+//            conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
+//            printStream = new PrintStream(lightTransporter.getSendStream());
+//
+//        }
 
         updateBorders();
         this.commandTransporter = commandTransporter;
@@ -112,15 +111,15 @@ public class WrappedLightSensor implements ILightSensor {
         int ret = light.readValue();
         float rawValue = light.getNormalizedLightValue(); // I know, this is confusing
         //Utils.Log(ret + "");
-        if (printStream != null) {
-            printStream.print((int) rawValue);
-            printStream.print(",");
+//        if (printStream != null) {
+//            printStream.print((int) rawValue);
+//            printStream.print(",");
 
-            printStream.print(getCurrentColor(ret).toUIViewColor());
-            printStream.println();
+//            printStream.print(getCurrentColor(ret).toUIViewColor());
+//            printStream.println();
 
-            lightTransporter.SendPacket(UIView.LIGHT);
-        }
+//            lightTransporter.SendPacket(UIView.LIGHT);
+//        }
 
 
         return ret;
@@ -134,18 +133,18 @@ public class WrappedLightSensor implements ILightSensor {
 
         Black, White, Brown;
 
-        public int toUIViewColor() {
-            switch (this) {
-                case Black:
-                    return UIView.BLACK;
-                case Brown:
-                    return UIView.BROWN;
-                case White:
-                    return UIView.WHITE;
-                default:
-                    throw new RuntimeException("THE IMPOSSIBLE IS POSSIBLE!");
-            }
-        }
+//        public int toUIViewColor() {
+//            switch (this) {
+//                case Black:
+//                    return UIView.BLACK;
+//                case Brown:
+//                    return UIView.BROWN;
+//                case White:
+//                    return UIView.WHITE;
+//                default:
+//                    throw new RuntimeException("THE IMPOSSIBLE IS POSSIBLE!");
+//            }
+//        }
     }
 
     public boolean isColor(Color col, double val) {

@@ -1,6 +1,6 @@
 package penoplatinum.modelprocessor;
 
-import penoplatinum.modelprocessor.LightColor;
+import penoplatinum.util.LightColor;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.OriginalModel;

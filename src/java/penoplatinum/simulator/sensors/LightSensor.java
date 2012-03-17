@@ -1,7 +1,7 @@
 package penoplatinum.simulator.sensors;
 
 import java.awt.Point;
-import penoplatinum.bluetooth.CircularQueue;
+import penoplatinum.util.CircularQueue;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.Simulator;

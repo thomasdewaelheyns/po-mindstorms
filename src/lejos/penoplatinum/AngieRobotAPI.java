@@ -8,7 +8,7 @@ import lejos.nxt.UltrasonicSensor;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.RotatingSonarSensor;
 import penoplatinum.sensor.WrappedLightSensor;
-import penoplatinum.simulator.ExtendedVector;
+import penoplatinum.util.ExtendedVector;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.RobotAPI;

@@ -1,6 +1,6 @@
 package penoplatinum.barcode;
 
-import penoplatinum.modelprocessor.BufferSubset;
+import penoplatinum.util.BufferSubset;
 
 public class BarcodeBlackBlack implements BarcodeCorrector {
 

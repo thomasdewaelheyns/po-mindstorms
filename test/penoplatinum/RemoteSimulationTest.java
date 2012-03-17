@@ -1,7 +1,5 @@
 package penoplatinum;
 
-
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -12,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import penoplatinum.navigators.BehaviourNavigator;
 import penoplatinum.simulator.NavigatorRobot;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
@@ -48,14 +45,14 @@ public class RemoteSimulationTest {
 
   @Test
   public void testRemoteSimulation() throws IOException, InterruptedException {
-
-    Simulator sim1 = new Simulator();
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), new NavigatorRobot(new BehaviourNavigator()));
-    ent.setPostition(200, 200, 10);
-    sim1.addSimulatedEntity(ent);
-    sim1.useMap(SimulationRunner.createDefaultMap());
-    sim1.displayOn(new SwingSimulationView());
-    sim1.run();
+    throw new UnsupportedOperationException();
+//    Simulator sim1 = new Simulator();
+//    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), new NavigatorRobot(new BehaviourNavigator()));
+//    ent.setPostition(200, 200, 10);
+//    sim1.addSimulatedEntity(ent);
+//    sim1.useMap(SimulationRunner.createDefaultMap());
+//    sim1.displayOn(new SwingSimulationView());
+//    sim1.run();
 
 
   }
@@ -75,7 +72,7 @@ public class RemoteSimulationTest {
 
   }
 
-   @Test
+  @Test
   public void test2Simulators() throws InterruptedException {
 
 
@@ -85,7 +82,7 @@ public class RemoteSimulationTest {
     t2.join();
 
   }
-  
+
   private String createArgs(int x, int y, int angle, String name) {
     return "-n penoplatinum.navigators.BehaviourNavigator -p " + x + "," + y + "," + angle + " -m ..\\..\\src\\java\\penoplatinum\\simulator\\map2.track -name " + name;
   }
