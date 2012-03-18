@@ -616,8 +616,6 @@ public class GhostModel implements Model {
   private int wallLeftDistance;
   private int wallFrontDistance;
   private int wallRightDistance;
-  private int wallLeftClosestAngle;
-  private int wallRightClosestAngle;
 
   public boolean isWallFront() {
     return wallFront;
@@ -667,21 +665,6 @@ public class GhostModel implements Model {
     this.wallRightDistance = wallRightDistance;
   }
 
-  public int getWallLeftClosestAngle() {
-    return wallLeftClosestAngle;
-  }
-
-  public void setWallLeftClosestAngle(int wallLeftClosestAngle) {
-    this.wallLeftClosestAngle = wallLeftClosestAngle;
-  }
-
-  public int getWallRightClosestAngle() {
-    return wallRightClosestAngle;
-  }
-
-  public void setWallRightClosestAngle(int wallRightClosestAngle) {
-    this.wallRightClosestAngle = wallRightClosestAngle;
-  }
   private double totalTurnedAngle;
 
   public double getTotalTurnedAngle() {
@@ -695,24 +678,12 @@ public class GhostModel implements Model {
   private void setScanningLightData(boolean b) {
   }
 
-  public float getAverageBlackValue() {
-    return averageBlackValue;
-  }
-
-  public void setAverageBlackValue(float averageBlackValue) {
-    this.averageBlackValue = averageBlackValue;
-  }
-
-  public float getAverageLightValue() {
-    return averageLightValue;
-  }
-
   public void setAverageLightValue(float averageLightValue) {
     this.averageLightValue = averageLightValue;
   }
 
-  public float getAverageWhiteValue() {
-    return averageWhiteValue;
+  public float getAverageLightValue() {
+    return averageLightValue;
   }
 
   public void setAverageWhiteValue(float averageWhiteValue) {

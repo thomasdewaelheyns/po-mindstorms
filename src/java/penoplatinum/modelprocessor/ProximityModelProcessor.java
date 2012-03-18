@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.ArrayList;
 import penoplatinum.Utils;
 import penoplatinum.simulator.Model;
-import penoplatinum.simulator.OriginalModel;
 
 public class ProximityModelProcessor extends ModelProcessor {
 
@@ -27,7 +26,6 @@ public class ProximityModelProcessor extends ModelProcessor {
 
   public void work() {
     if (model == null) throw new RuntimeException();
-    OriginalModel model = (OriginalModel)this.model;
     int angle = getAngle();
     int distance = getDistance();
 

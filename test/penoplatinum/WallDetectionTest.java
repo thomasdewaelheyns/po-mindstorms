@@ -6,7 +6,6 @@ import org.junit.Test;
 import penoplatinum.Utils;
 //import penoplatinum.navigators.BehaviourNavigator;
 import penoplatinum.pacman.GhostModel;
-import penoplatinum.simulator.NavigatorRobot;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
 import penoplatinum.simulator.SimulationRobotAgent;

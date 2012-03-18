@@ -64,14 +64,12 @@ public class LightColorModelProcessor extends ModelProcessor {
     switch (prevColor) {
       case WHITE:
         model.setCurrentLightColor(LightColor.White);
-        model.setAverageWhiteValue(model.getAverageWhiteValue() * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT);
         break;
       case BROWN:
         model.setCurrentLightColor(LightColor.Brown);
         break;
       case BLACK:
         model.setCurrentLightColor(LightColor.Black);
-        model.setAverageBlackValue(model.getAverageBlackValue() * (1 - AVERAGE_COLOR_EXPONENT) + value * AVERAGE_COLOR_EXPONENT);
         break;
     }
 
