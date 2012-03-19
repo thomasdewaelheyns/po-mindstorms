@@ -61,7 +61,11 @@ Elk team wordt tijdens de demo afzonderlijk beoordeeld.
  
 \section{Demo 2}
  
-De scope van de tweede demo dient nog door de commissie besproken, besloten en gecommuniceerd te worden.
+De doelstellingen voor demo 2 werden vastgelegd met de resultaten van de eerste demo in het hoofd. Deze waren voor sommigen niet zo goed, maar we proberen de kern van de opdracht niet op de lange baan te schuiven. Om de lat niet te hoog te leggen blijft de Pac-Man nog stil staan. De tweede demo draait daarom volledig rond het collaboreren met de andere teams. Dit is duidelijk een van de essentiele aspecten voor de uiteindelijke demo. 
+
+We volgen de raad op om op voorhand samen te zitten met de andere drie groepen. Natuurlijk is het behalen van de doelstellingen een inspanning van de vier teams samen en om onverwachte resultaten te voorkomen is samen testen dan ook vanzelfsprekend.
+
+Het doel van deze demo ligt dus in het samen verkennen van de doolhof en het samen insluiten van een stilstaande Pac-Man. We doen dit zowel met de virtuele versie van de simulator als met de gedistribueerde. Initieel krijgt ook elk team de kans om eerst nogmaals zijn hybride simulator te tonen en de vooruitgang ten opzichte van de eerste demo aan te duiden.
 
 \section{Demo 3}
 
@@ -93,6 +97,8 @@ De spelwereld bestaat uit aangepaste panelen uit het eerste semester. Er is een 
 De Pac-Man wordt zichtbaar gemaakt door een infrarood-beacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen ``ghosts'' bevinden.
 
 De beweging van Pac-Man is beperkt tot het rechtdoor oversteken van de witte lijnen die de sectoren scheiden.
+
+Insluiting van Pac-Man is gedefinieerd als het niet meer kunnen bewegen van de Pac-Man of het ingesloten zijn in een doodlopend pad.
 
 \subsection{Ghosts}
 
@@ -136,6 +142,12 @@ Voor ons algoritme is dit commando tevens volledig overbodig. Onze robot rijdt o
 Nog een algemene opmerking is dat het protocol moeilijk te parsen is door combinatie van strings en numerieke waardes, inconsistenties in de structuur van de commando's, gebruik van verschillende soorten scheidingstekens, enz.
 
 Oorspronkelijk was het idee dat het Ghost Protocol letterlijk gebruikt zou worden in het Maze Protocol - het Maze Protocol is een doorslag van het Ghost Protocol en wordt gebruikt om doolhoven te beschrijven, bvb. voor de simulator. Op deze manier zou de implementatie van het Ghost Protocol kunnen herbruikt worden. Spijtig genoeg zijn er enkele aanpassingen doorgevoerd waardoor het nu niet meer 100\% compatibel is met het Ghost Protocol. Deze aanpassingen waren naar ons mening beter doorgevoerd geweest op het Ghost Protocol zelf.
+
+\subsection{Aanpassingen Demo 2}
+
+Het BARCODE commando wordt vervangen door een BARCODEAT commando, dit is een vooruitgang aangezien er nu geen logica meer voorzien moet worden om de barcodes aan een positie te linken. 
+Er werd eveneens een REMOVEBARCODE toegevoegd om teams toe te laten eerdere transmissies omtrent barcodes ongedaan te maken.
+
 
 \chapter{Robot}
 
@@ -391,7 +403,11 @@ Zo wordt de mini-simulator ook gebruikt om onderzoek te doen naar het geheugenge
 
 \section{Demo 2}
 
-Dit deel wordt later toegevoegd.
+De huidige simulator is zeer geschikt om visuele simulaties uit te voeren met de robot. Echter zouden we ook unit testen willen kunnen uitvoeren. Hiervoor hebben we besloten om visuele representatie optioneel te maken. Dit zorgt ervoor dat we in deze eenvoudigere modus niet langer gebonden zijn aan de ingebouwde vertragingen. Deze zijn impliciet verbonden met visualisatie.
+Dit stelt ons in staat om snel uitgebreide tests uit voeren en data te verzamelen voor analyse.
+Deze functionaliteit zit al gedeeltelijk in onze simulator. De enige functionaliteit die we moeten toevoegen zijn functies om onze gesimuleerde robots te ondervragen, zoals hun positie, richting en sensorwaarden.
+
+Overigens werden andere doelstellingen voor demo 2 met betrekking tot de simulator reeds gehaald. De simulator werkte immers al op continue niveau en ook onzekerheden waren reeds geimplementeerd.
 
 \section{Demo 3}
 
@@ -403,7 +419,20 @@ Dit deel wordt later toegevoegd.
 
 \section{Demo 1}
 
-Dit deel wordt later toegevoegd.
+\subsection{Feedback}
+
+Eerst en vooral zit het project op de goede weg en behoorde de demo tot \"e\"en van de betere onder de groepen. Er is duidelijk goed nagedacht over de softwarearchitectuur, zowel op niveau van robuustheid, uitbreidbaarheid als structuur. De gebruikte strategie i.v.m. Collaborative diffusion is goed gevonden en werkt duidelijk goed door zijn eenvoud. Op de dashboard gui werd positief gereageerd alsook op de inhoud en opmaak van het verslag.
+
+Naast opmerkingen over opmaak en verduidelijking, waren er ook tips met zicht op verbetering van de presentatie en het rijgedrag van de robots. Hierbij kozen we voor het implementeren van een config klasse om de opstartsnelheid te verhogen, ook het presenteren zelf wordt vanaf nu voorbereidt. Het rijgedrag wordt vooral geoptimaliseerd door het verwijderen van redundantie.
+
+\subsection{Reflectie}
+
+Hoewel we allemaal zeer tevreden waren met de prestatie die we leverden op de demo, zijn we nog niet tevreden over het niveau dat we willen bereiken met dit project.
+We beslisten initieel om een week van code review te doen en daaruit beslissingen te nemen omtrent wat en hoe we gaan refactoren. Hieruit volgde ook een planning die de doelstellingen voor de overige demo\'s definieert. Dit houdt in welke features en aanpassingen we nog willen implementeren.
+Verdere uitleg over dit proces is te vinden in hoofdstuk 9.
+
+In het algemeen hebben we beslist om te blijven bij een volledig autonome robot, hoewel dit een zekere memory management inhoudt. Dit zal worden aangevuld met testresultaten. Verder waren we het eens met de feedback dat de rijsnelheid nog omhoog moet, maar we raken hierbij niet aan de robuustheid. 
+
 
 \section{Demo 2}
 
