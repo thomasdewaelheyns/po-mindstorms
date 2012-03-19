@@ -12,7 +12,7 @@ package penoplatinum.simulator.mini;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 
-import penoplatinum.modelprocessor.ModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 
 import penoplatinum.simulator.Bearing;
 

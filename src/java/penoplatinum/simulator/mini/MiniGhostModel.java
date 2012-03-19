@@ -24,7 +24,7 @@ import penoplatinum.pacman.GhostAgent;
 // on Lejos.
 import org.apache.commons.collections.map.HashedMap;
 
-import penoplatinum.modelprocessor.ModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;

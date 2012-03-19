@@ -10,7 +10,7 @@ package penoplatinum.simulator.mini;
 
 import java.util.Arrays;
 
-import penoplatinum.modelprocessor.ModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Robot;

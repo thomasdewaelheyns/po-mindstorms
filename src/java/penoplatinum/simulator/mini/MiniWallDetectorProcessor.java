@@ -5,7 +5,7 @@ import penoplatinum.pacman.GhostAction;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 
-import penoplatinum.modelprocessor.ModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 
 import penoplatinum.simulator.Bearing;
 

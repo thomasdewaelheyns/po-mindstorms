@@ -20,7 +20,7 @@ import penoplatinum.util.Buffer;
 // we're using commons collections HashedMap because HashMap isn't implemented
 // on Lejos.
 
-import penoplatinum.modelprocessor.ModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;

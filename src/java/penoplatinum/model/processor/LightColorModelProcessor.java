@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.modelprocessor;
+package penoplatinum.model.processor;
 
 import penoplatinum.util.LightColor;
 import penoplatinum.Utils;

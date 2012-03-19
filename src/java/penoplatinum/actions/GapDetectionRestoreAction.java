@@ -4,7 +4,7 @@
  */
 package penoplatinum.actions;
 
-import penoplatinum.modelprocessor.GapModelProcessor;
+import penoplatinum.model.processor.GapModelProcessor;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.RobotAPI;

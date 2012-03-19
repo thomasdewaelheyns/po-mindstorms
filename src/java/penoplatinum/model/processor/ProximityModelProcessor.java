@@ -1,4 +1,4 @@
-package penoplatinum.modelprocessor;
+package penoplatinum.model.processor;
 
 /**
  * 

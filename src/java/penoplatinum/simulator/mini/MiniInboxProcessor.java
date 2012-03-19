@@ -1,6 +1,6 @@
 package penoplatinum.simulator.mini;
 
-import penoplatinum.modelprocessor.ModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 
 public class MiniInboxProcessor extends ModelProcessor{
 

@@ -13,7 +13,7 @@ import penoplatinum.grid.Grid;
 import penoplatinum.grid.GridView;
 import penoplatinum.util.Buffer;
 import penoplatinum.util.LightColor;
-import penoplatinum.modelprocessor.ModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 
 public interface Model {
   // slightly common
