@@ -10,7 +10,7 @@ package penoplatinum.model.processor;
  */
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 
 import penoplatinum.simulator.Bearing;
 

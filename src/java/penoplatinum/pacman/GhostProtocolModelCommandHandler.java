@@ -4,6 +4,7 @@
  */
 package penoplatinum.pacman;
 
+import penoplatinum.model.GhostModel;
 import java.util.List;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;

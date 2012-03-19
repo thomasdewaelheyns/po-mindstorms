@@ -13,7 +13,7 @@ import penoplatinum.actions.MoveAction;
 import penoplatinum.actions.StopAction;
 import penoplatinum.actions.TurnAction;
 import penoplatinum.pacman.GhostAction;
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;

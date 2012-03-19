@@ -4,6 +4,7 @@
  */
 package penoplatinum.pacman;
 
+import penoplatinum.model.GhostModel;
 import java.io.IOException;
 import penoplatinum.Utils;
 import penoplatinum.bluetooth.IConnection;

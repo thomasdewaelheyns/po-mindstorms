@@ -9,7 +9,9 @@ package java.util;
  * @author MHGameWork
  */
 public class Arrays {
-  
+
+  private static final int REVERSE_THRESHOLD = 18;
+
   /**
    * Copies the specified range of the specified array into a new array.
    * The initial index of the range (<tt>from</tt>) must lie between zero
@@ -45,5 +47,29 @@ public class Arrays {
     System.arraycopy(original, from, copy, 0,
             Math.min(original.length - from, newLength));
     return copy;
+  }
+
+  @SuppressWarnings("unchecked")
+  public static void reverse(List<?> list) {
+    int size = list.size();
+    if (size < REVERSE_THRESHOLD) {
+      for (int i = 0, mid = size >> 1, j = size - 1; i < mid; i++, j--) {
+        swap(list, i, j);
+      }
+    } else {
+      ListIterator fwd = list.listIterator();
+      ListIterator rev = list.listIterator(size);
+      for (int i = 0, mid = list.size() >> 1; i < mid; i++) {
+        Object tmp = fwd.next();
+        fwd.set(rev.previous());
+        rev.set(tmp);
+      }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public static void swap(List<?> list, int i, int j) {
+    final List l = list;
+    l.set(i, l.set(j, l.get(i)));
   }
 }

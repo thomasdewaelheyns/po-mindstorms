@@ -1,6 +1,6 @@
 package penoplatinum.model.processor;
 
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 
 public class GridRecalcModelProcessor extends ModelProcessor{
 

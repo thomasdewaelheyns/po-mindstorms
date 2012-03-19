@@ -1,4 +1,4 @@
-package penoplatinum.pacman;
+package penoplatinum.model;
 
 /**
  * GhostModel
@@ -30,6 +30,13 @@ import penoplatinum.grid.DiffusionGridProcessor;
 
 import penoplatinum.grid.SimpleGrid;
 //import penoplatinum.grid.SwingGridView;
+import penoplatinum.pacman.DashboardAgent;
+import penoplatinum.pacman.GhostAction;
+import penoplatinum.pacman.GhostAgent;
+import penoplatinum.pacman.GhostProtocolHandler;
+import penoplatinum.pacman.GhostProtocolModelCommandHandler;
+import penoplatinum.pacman.OtherGhost;
+import penoplatinum.pacman.PacmanAgent;
 import penoplatinum.util.LightColor;
 import penoplatinum.simulator.Model;
 
@@ -280,7 +287,7 @@ public class GhostModel implements Model {
 
   public void moveForward() {
     this.agent.moveForward();
-    
+
     this.lastMovement = GhostAction.FORWARD;
     protocol.sendPosition();
 
@@ -664,7 +671,6 @@ public class GhostModel implements Model {
   public void setWallRightDistance(int wallRightDistance) {
     this.wallRightDistance = wallRightDistance;
   }
-
   private double totalTurnedAngle;
 
   public double getTotalTurnedAngle() {

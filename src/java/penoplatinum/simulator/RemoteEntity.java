@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import penoplatinum.Config;
 import penoplatinum.agent.MQ;
 import penoplatinum.util.CircularQueue;
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 import penoplatinum.pacman.GhostProtocolCommandHandler;
 import penoplatinum.pacman.GhostProtocolHandler;
 import penoplatinum.simulator.Bearing;

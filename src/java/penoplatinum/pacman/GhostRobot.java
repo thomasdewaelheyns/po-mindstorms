@@ -1,5 +1,6 @@
 package penoplatinum.pacman;
 
+import penoplatinum.model.GhostModel;
 import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
 import penoplatinum.Utils;

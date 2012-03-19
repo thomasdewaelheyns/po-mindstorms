@@ -1,6 +1,6 @@
 package penoplatinum.model.processor;
 
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 import penoplatinum.simulator.Model;
 
 public class IRModelProcessor extends ModelProcessor {

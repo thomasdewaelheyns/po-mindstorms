@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import penoplatinum.pacman.GhostAction;
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.RobotAPI;

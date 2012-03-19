@@ -2,7 +2,7 @@ package penoplatinum.model.processor;
 
 import java.util.ArrayList;
 import java.util.List;
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 
 public class InboxProcessor extends ModelProcessor {
 

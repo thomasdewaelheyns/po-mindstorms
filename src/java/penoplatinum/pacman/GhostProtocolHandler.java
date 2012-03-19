@@ -8,6 +8,7 @@ package penoplatinum.pacman;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.model.GhostModel;
 import penoplatinum.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;

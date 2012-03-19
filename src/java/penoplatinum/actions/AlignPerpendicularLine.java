@@ -2,7 +2,7 @@ package penoplatinum.actions;
 
 import penoplatinum.Utils;
 import penoplatinum.util.LightColor;
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 

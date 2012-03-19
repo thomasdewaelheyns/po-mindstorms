@@ -8,6 +8,7 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 
+import penoplatinum.model.GhostModel;
 import java.util.List;
 import java.util.ArrayList;
 

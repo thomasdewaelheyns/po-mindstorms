@@ -4,6 +4,7 @@
  */
 package penoplatinum.pacman;
 
+import penoplatinum.model.GhostModel;
 import java.util.ArrayList;
 import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Model;

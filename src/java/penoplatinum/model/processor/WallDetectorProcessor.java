@@ -1,7 +1,7 @@
 package penoplatinum.model.processor;
 
 import penoplatinum.simulator.Bearing;
-import penoplatinum.pacman.GhostModel;
+import penoplatinum.model.GhostModel;
 import penoplatinum.pacman.GhostAction;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
