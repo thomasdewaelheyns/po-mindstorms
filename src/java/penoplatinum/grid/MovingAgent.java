@@ -111,9 +111,6 @@ public abstract class MovingAgent implements Agent {
     } else if( current.hasWall(bearing) ) {
       System.err.println(this.name + " ERROR: Can't move through wall.");
 //      try { System.in.read(); } catch(Exception e) {}
-    } else if (!current.isKnown(bearing)) {
-      // niet inrijden dus!
-      
     } else if (!current.hasNeighbour(bearing)) {
 //      System.err.println(this.name + "ERROR: No neighbour to move to.");
 //      try { System.in.read(); } catch(Exception e) {}      

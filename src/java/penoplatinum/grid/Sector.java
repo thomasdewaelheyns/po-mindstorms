@@ -1,4 +1,5 @@
 package penoplatinum.grid;
+import penoplatinum.BitwiseOperations;
 
 /**
  * Sector
@@ -15,17 +16,13 @@ import penoplatinum.simulator.Bearing;
 public class Sector {
   // back-link to the Grid we live in
   private Grid grid;
-
   // links to the adjacent Sectors
   private Sector[] neighbours = new Sector[4];
-
   // position within Grid
   private int left, top;
-
   // walls and the certainty about them
   private char walls     = 0;
   private char certainty = 0;
-
   // the agent currently on this Sector
   private Agent agent;
   // the value associated with this sector
@@ -310,8 +307,8 @@ public class Sector {
 
   // clears all knowledge about a wall
   public Sector clearWall(int atLocation) {
-    this.walls     = this.unsetBit(this.walls, atLocation);
-    this.certainty = this.unsetBit(this.certainty, atLocation);
+    this.walls     = (char) BitwiseOperations.unsetBit(this.walls, atLocation);
+    this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, atLocation);
     return this;
   }
 
@@ -337,8 +334,8 @@ public class Sector {
   }
   
   private void withWall(int location) { 
-    this.walls     = this.setBit(this.walls,     location);
-    this.certainty = this.setBit(this.certainty, location);
+    this.walls     = (char) BitwiseOperations.setBit(this.walls,     location);
+    this.certainty = (char) BitwiseOperations.setBit(this.certainty, location);
   }
 
   public void withWalls(char walls) {
@@ -347,20 +344,20 @@ public class Sector {
   }
 
   public void withoutWall(int location)  { 
-    this.walls     = this.unsetBit(this.walls,     location);
-    this.certainty = this.setBit(this.certainty, location);
+    this.walls     = (char) BitwiseOperations.unsetBit(this.walls,     location);
+    this.certainty = (char) BitwiseOperations.setBit(this.certainty, location);
   }
 
   public void dontKnow(int location)  { 
-    this.certainty = this.unsetBit(this.certainty, location);
+    this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, location);
   }
 
   public boolean hasRawWall(int location) {
-    return this.hasBit(this.walls, location);
+    return BitwiseOperations.hasBit(this.walls, location);
   }
 
   public boolean knowsWall(int location) {
-    return this.hasBit(this.certainty, location);
+    return BitwiseOperations.hasBit(this.certainty, location);
   }
 
   // public String toString() {
@@ -378,38 +375,6 @@ public class Sector {
   /* elementary bitwise operations */
 
   // sets one bit at position to 1
-  private char setBit(char data, int p) {
-    data |= (1<<p);
-    return data;
-  }
-
-  // sets one bit at position to 0
-  private char unsetBit(char data, int p) {
-    data &= ~(1<<p);
-    return data;
-  }
-
-  // sets a range of bits, represented by value
-  private char setBits(char data, int start, int length, int value) {
-    data = this.unsetBits( data, start, length );
-    value <<= start;
-    data |= value;
-    return data;
-  }
-
-  // sets a range of bits to 0
-  private char unsetBits(char data, int start, int length) {
-    int mask = ( ( 1 << length ) - 1 ) << start;
-    data &= ~(mask);
-    return data;
-  }
-
-  // checks if at position the bit is set to 1
-  private boolean hasBit(char data, int p) {
-    return ( data & (1<<p) ) != 0;
-  }
-
-
   void disengage() {
     for(int i = 0; i < 4; i++){
       neighbours[i] = null;

@@ -4,8 +4,6 @@
  */
 package penoplatinum.driver;
 
-import java.util.ArrayList;
-import java.util.List;
 import penoplatinum.Utils;
 import penoplatinum.actions.ActionQueue;
 import penoplatinum.actions.AlignPerpendicularLine;
@@ -14,15 +12,14 @@ import penoplatinum.actions.StopAction;
 import penoplatinum.actions.TurnAction;
 import penoplatinum.pacman.GhostAction;
 import penoplatinum.model.GhostModel;
-import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.RobotAPI;
 
 /**
- *
- * @author MHGameWork
+ * 
+ * @author PenoPlatinum
  */
 public class GhostDriver implements Driver {
 
@@ -180,7 +177,7 @@ public class GhostDriver implements Driver {
     //  checkProximityEvent();
     //}
     //checkBarcodeEvent();
-    isReadingBarcodeEvent();
+    checkBarcodeEvent();
     checkLineEvent();
     //checkSonarCollisionEvent();
     //checkCollisionEvent();
@@ -194,7 +191,7 @@ public class GhostDriver implements Driver {
     queue.clearActionQueue();
   }
 
-  private void isReadingBarcodeEvent(){
+  private void checkBarcodeEvent(){
     if(!model.isReadingBarcode()){
       return;
     }

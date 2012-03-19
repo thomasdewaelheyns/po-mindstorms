@@ -47,3 +47,4 @@ public class ConsoleGridView implements GridView {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 }
+

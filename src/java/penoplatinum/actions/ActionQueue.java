@@ -7,7 +7,7 @@ package penoplatinum.actions;
 import java.util.ArrayList;
 
 /**
- *
+ *  This class implements a queue for actions
  * @author: Team Platinum
  */
 public class ActionQueue {
