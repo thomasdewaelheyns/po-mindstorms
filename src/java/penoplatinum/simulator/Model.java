@@ -104,4 +104,8 @@ public interface Model {
 
   public void setPacManInNext(boolean b, int x, int y);
   boolean isIsNextToPacman();
+
+  public void setLeftObstacle(boolean b);
+
+  public void setRightObstacle(boolean b);
 }

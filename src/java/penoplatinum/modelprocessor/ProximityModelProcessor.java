@@ -4,9 +4,6 @@ package penoplatinum.modelprocessor;
  * 
  * Author: Team Platinum
  */
-import java.util.List;
-import java.util.ArrayList;
-import penoplatinum.Utils;
 import penoplatinum.simulator.Model;
 
 public class ProximityModelProcessor extends ModelProcessor {

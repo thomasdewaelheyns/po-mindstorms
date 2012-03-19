@@ -756,4 +756,14 @@ public class GhostModel implements Model {
   public int getPacmanY() {
     return pacmanY;
   }
+
+  @Override
+  public void setLeftObstacle(boolean b) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public void setRightObstacle(boolean b) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

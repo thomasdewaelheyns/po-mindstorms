@@ -5,7 +5,6 @@
 package penoplatinum;
 
 import penoplatinum.simulator.Navigator;
-import penoplatinum.simulator.NavigatorRobot;
 import penoplatinum.simulator.Robot;
 
 /**

@@ -12,7 +12,6 @@ import penoplatinum.pacman.GhostRobot;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
 import penoplatinum.pacman.GhostNavigator;
-import penoplatinum.simulator.NavigatorRobot;
 
 public class Main {
 
