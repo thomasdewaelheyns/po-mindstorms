@@ -376,7 +376,7 @@ Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelij
 
 \subsection{Mini-Simulator}
 
-Om het onderzoek naar het algoritme onafhankelijk te laten verlopen van de echte simulator en tevens niet te belasten met details van deze laatste, werd een mini-simulator gemaakt. Deze maakt een abstractie van de wereld en kent alleen een resolutie op niveau van sectoren. Figuur \ref{fig:mini-simulator} toont de mini-simulator in actie met vier gesimuleerde robots, elk vertrokken op een andere positie en met een andere ori\"entatie.
+Om het onderzoek naar het algoritme onafhankelijk te laten verlopen van de echte simulator en tevens niet te belasten met details van deze laatste, werd een mini-simulator gemaakt. Deze maakt een abstractie van de wereld en kent alleen een resolutie op niveau van sectoren zoals dit het geval is in de simulator. Figuur \ref{fig:mini-simulator} toont de mini-simulator in actie met vier gesimuleerde robots, elk vertrokken op een andere positie en met een andere ori\"entatie.
 
 \begin{figure}[htbp]
   \centering
@@ -384,6 +384,10 @@ Om het onderzoek naar het algoritme onafhankelijk te laten verlopen van de echte
   \caption{Mini-simulator in actie}
   \label{fig:mini-simulator}
 \end{figure}
+
+Door de introductie van de ``Driver'' naast de ``Navigator'' is er een duidelijke opdeling tussen het effectieve rijden van sector naar sector en de keuze van de volgende sector waarheen gereden moet worden. Deze abstractie is doorgetrokken in de mini-simulator die zich louter met het ``Navigator'' niveau bezighoudt, waar de (volledige) simulator ook het niveau van de ``Driver'' in beschouwing neemt.
+
+Zo wordt de mini-simulator ook gebruikt om onderzoek te doen naar het geheugengebruik, nodig om al de navigator-informatie bij te houden. Net zoals bij de (volledige) simulator, is het ook mogelijk om zonder visualisatie te werken, waardoor veel scenario's kunnen getest worden.
 
 \section{Demo 2}
 
