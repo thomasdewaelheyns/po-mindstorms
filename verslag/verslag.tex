@@ -464,8 +464,6 @@ Dit deel wordt later toegevoegd.
 
 De robot reed consistent en robuust. Zelfs wanneer de robot fouten maakte werden deze hersteld. In het begin las de lichtsensor foute waarden en reed de robot heen en weer. De introductie van het nieuwe algoritme om deze sensor automatisch te kalibreren lag hier aan de oorsprong. Na enige tijd was de kalibratie duidelijk beter en begon de robot alsnog het speelveld verder te verkennen. Hierbij viel op robuust de implementatie van de Driver is.
 
-De simulator werkte niet zoals verwacht. Barcodes werden niet goed gelezen en dus hebben de robots geen gemeenschappelijke barcodes ontdekt en konden zij dus geen informatie over de sectoren uitwisselen.
-
 De feedback van het didactische team was overwegend positief. Er is duidelijk goed nagedacht over de softwarearchitectuur, zowel op niveau van robuustheid, uitbreidbaarheid als structuur. De gebruikte strategie i.v.m. Collaborative diffusion is goed gevonden en werkt duidelijk goed door zijn eenvoud. Het dashboard werd positief vermeld en de inhoud en opmaak van het verslag waren in lijn met de overige kwaliteit.
 
 Naast opmerkingen over opmaak en verduidelijking, waren er ook tips met zicht op verbetering van de presentatie en het rijgedrag van de robots. Hierbij kozen we voor het implementeren van een config klasse om de opstartsnelheid te verhogen, ook het presenteren zelf wordt vanaf nu voorbereidt. Het rijgedrag wordt vooral geoptimaliseerd door het verwijderen van redundantie.
@@ -474,10 +472,11 @@ Naast opmerkingen over opmaak en verduidelijking, waren er ook tips met zicht op
 
 Hoewel we allemaal zeer tevreden waren met de prestatie die we leverden op de demo, zijn we nog niet tevreden over het niveau dat we willen bereiken met dit project.
 
-We beslisten initieel om een week van code review te doen en daaruit beslissingen te nemen omtrent wat en hoe we gaan refactoren. Hieruit volgde ook een planning die de doelstellingen voor de overige demo\'s definieert. Dit houdt in welke features en aanpassingen we nog willen implementeren.
-Verdere uitleg over dit proces is te vinden in hoofdstuk \ref{ch:process}.
+We beslisten daarom om een week in te lassen en een code review te doen. Op basis van de resultaten van die review beslissen we vervolgens wie wat zal doen en hoe grotere delen zullen aangepakt worden. Hieruit volgt dan een planning die de doelstellingen voor de overige demo\'s definieert. Meer uitleg over dit proces is te vinden in hoofdstuk \ref{ch:process}.
 
 In het algemeen hebben we beslist om te blijven bij een volledig autonome robot, hoewel dit beperkingen inhoudt ten gevolgen van het beperkte geheugen van de robot. Naast een doorgedreven optimalisatie van het geheugengebruik, hebben we dit ook cijfermatig onderzocht en is dit een van de parameters waar we rekening mee houden tijdens de uitvoering van de logica op de robot. Sectie \ref{sect:performance} gaat dieper in om dit aspect.
+
+De simulator werkte niet zoals verwacht. Barcodes werden niet goed gelezen en dus hebben de robots geen gemeenschappelijke barcodes gevonden. Ook verdween de Pac-Man te snel en werden de robots terug door de nog niet verkende sector waar de Pac-Man op stond aangetrokken. Zo werd de rest van het veld niet meer verkend.
 
 \section{Demo 2}
 
