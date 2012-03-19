@@ -204,7 +204,18 @@ Ondanks het feit dat we geen overeenstemming met de andere teams konden bereiken
 
 Wanneer de Pac-Man gezien wordt, stuurt deze een ``geur'' uit. Deze plant zich langs gekende sectoren voort. Dit wordt gedaan door het gemiddelde van de 4 omliggende sectoren te berekenen, indien er een muur staat is de waarde 0. Zo ontstaat er een ``hoogte-kaart'' met aan de top een Pac-Man. De ``ghosts'' kunnen nu aan de hand van een eenvoudig ``Hill Climbing'' algoritme een optimale weg volgen naar de Pac-Man.
 
-Wanneer een ``ghost'' de Pac-Man opmerkt, kan deze positie op de kaart een zeer hoge waarde gegeven worden. Deze kaart wordt vaak herberekend en de geur van een Pac-Man zal dus snel verdwijnen. En dit is zoals het in de realiteit ook zal zijn. De Pac-Man beweegt zich doorheen het doolhof en zal niet op \'e\'en plek blijven wachten. Als een Pac-Man meerdere keren gezien wordt, zal zijn positie ook een constantere ``geur'' verspreiden, waardoor de ``ghosts'' van alle kanten op hem kunnen naderen. Figuur \ref{fig:hillclimbing1} toont het principe aan de hand van een visualisatie van de hoogte of geur van de Pac-Man door middel van een kleurenpallet. Hierbij zijn hoge waarden rood gekleurd en lage waarden violet.
+Wanneer een ``ghost'' de Pac-Man opmerkt, kan deze positie op de kaart een zeer hoge waarde gegeven worden. Deze kaart wordt vaak herberekend en de geur van een Pac-Man zal dus snel verdwijnen. En dit is zoals het in de realiteit ook zal zijn. De Pac-Man beweegt zich doorheen het doolhof en zal niet op \'e\'en plek blijven wachten. Als een Pac-Man meerdere keren gezien wordt, zal zijn positie ook een constantere ``geur'' verspreiden, waardoor de ``ghosts'' van alle kanten op hem kunnen naderen. 
+
+Een handige manier om de geur van een Pac-Man te visualiseren is door middel van een kleurenpallet. We hebben hierbij gekozen voor het natuurlijke kleurenpallet zoals dit in de natuur voorkomt. Figuur \ref{fig:colormap} toont dit kleurenpallet met een aanduiding van de overeenkomstige interne numerieke waarde die aan een sector toegekend wordt om de intensiteit van de ``geur'' voor te stellen.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=150mm]{resources/colormap.png}
+  \caption{Kleuren en voorgestelde interne ``geur''-waarden}
+  \label{fig:colormap}
+\end{figure}
+
+Figuur \ref{fig:hillclimbing1} toont een uitgangssituatie met een Pac-Man die een een uitdijende ``geur'' verspreidt.
 
 \begin{figure}[htbp]
   \centering
@@ -213,7 +224,7 @@ Wanneer een ``ghost'' de Pac-Man opmerkt, kan deze positie op de kaart een zeer 
   \label{fig:hillclimbing1}
 \end{figure}
 
-Om te voorkomen dat ``ghosts'' allemaal dezelfde weg volgen en enkel achter Pac-Man lopen slorpt iedere ``ghost'' de geur op door de waarde van zijn huidige sector op 0 te zetten. Hierdoor ontstaat er een dal rond iedere ``ghost'' en zullen de anderen een omweg zoeken. Dit zorgt er ook voor dat de ``ghosts'' elkaar van nature uit ontwijken en niet zullen botsen. Figuur \ref{fig:hillclimbing2} illustreert dat, eens een ``ghost'' een bepaalde ``beste'' route naar de Pac-Man heeft ingeslagen, het pad achter hem minder interessant wordt voor de overige achtervolgers.
+Om te voorkomen dat ``ghosts'' allemaal dezelfde weg volgen en enkel achter Pac-Man lopen slorpt iedere ``ghost'' de geur op door de waarde van zijn huidige sector op 0 te zetten. Hierdoor ontstaat er een dal rond iedere ``ghost'' en zullen de anderen een omweg zoeken. Dit zorgt er ook voor dat de ``ghosts'' elkaar van nature uit ontwijken en niet zullen botsen. Figuur \ref{fig:hillclimbing2} illustreert dat, eens een ``ghost'' een bepaalde ``beste'' route naar de Pac-Man heeft ingeslagen, het pad achter hem minder interessant wordt voor de overige achtervolgers. In de voorstelling ontstaat er een ``deuk'' in de ``geur'' achter de ``ghost''. Andere ``ghosts'' zullen daarom eerdere andere paden, parallel aan het reeds ingeslagen pad, kiezen.
 
 \begin{figure}[htbp]
   \centering
