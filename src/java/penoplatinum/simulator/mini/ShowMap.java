@@ -27,8 +27,10 @@ public class ShowMap {
                                     .displayOn(view);
     
     // 10x results in a stable CD
-    grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh();
-    grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh();
+    if( args.length < 2 || ! args[1].equals("--no-cd-update") ) {
+      grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh();
+      grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh(); grid.refresh();
+    }
     
     grid.dump();
 

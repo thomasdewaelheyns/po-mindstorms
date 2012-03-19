@@ -43,8 +43,12 @@ public class GridFactory {
     Sector currentSector;
     for (int top = 0; top < height; top++) {
       for (int left = 0; left < width; left++) {
-        int v = scanner.nextInt();
-        Sector sector = new Sector(g).setCoordinates(left, top).addWalls((char) v);
+        int v = scanner.nextInt(), value = 0;
+        if( v > 15 ) { value = v; v = 0; }
+        Sector sector = new Sector(g)
+                          .setCoordinates(left, top)
+                          .addWalls((char) v)
+                          .setValue(value);
         g.addSector(sector); // add it to the grid, this will connect it
         // to its neighbours
       }

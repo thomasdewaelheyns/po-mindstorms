@@ -12,6 +12,7 @@ JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
 JAVA=java -cp ${BUILD_DIR}:${LIBS}
 
 MAP=test.map
+SHOW_OPTS=
 SLEEP=25
 
 PKG=penoplatinum.simulator.mini
@@ -19,7 +20,7 @@ PKG=penoplatinum.simulator.mini
 all: 
 
 show: ShowMap.class
-	${JAVA} ${PKG}.${<:.class=} ${MAP}
+	${JAVA} ${PKG}.${<:.class=} ${MAP} ${SHOW_OPTS}
 
 discover: MiniSimulation.class
 	${JAVA} ${PKG}.${<:.class=} ${MAP} ${SLEEP}
