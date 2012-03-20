@@ -39,7 +39,7 @@ public class SideWallCorrectAction extends BaseAction {
 
     }
 
-    if (model.isTurning() || model.isMoving()) {
+    if (model.getSensorPart().isTurning() || model.getSensorPart().isMoving()) {
       return Navigator.NONE;
     }
 

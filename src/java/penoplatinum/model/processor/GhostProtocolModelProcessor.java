@@ -14,7 +14,6 @@ import penoplatinum.pacman.GhostProtocolHandler;
 
 /**
  * Responsible for sending robot information to the Ghost communication channel
- * Responsible for sending dashboard updates?
  * 
  * @author MHGameWork
  */

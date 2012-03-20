@@ -106,7 +106,7 @@ public class GhostDriver implements Driver {
       case STARTING:
         Integer a = navigatorAction;
 
-        if (model.getWallFrontDistance() < 10) {
+        if (model.getWallsPart().getWallFrontDistance() < 10) {
           Utils.Log("TOOO CLOOOSE");
           queue.clearActionQueue();
           queue.add(new MoveAction(model, -0.1f));
@@ -133,11 +133,11 @@ public class GhostDriver implements Driver {
 
         if (prevAction == GhostAction.NONE) {
         } else if (prevAction == GhostAction.TURN_LEFT) {
-          model.turnLeft();
+          model.getGridPart().turnLeft();
         } else if (prevAction == GhostAction.TURN_RIGHT) {
-          model.turnRight();
+          model.getGridPart().turnRight();
         } else if (prevAction == GhostAction.FORWARD) {
-          model.moveForward();
+          model.getGridPart().moveForward();
         } else {
           throw new RuntimeException("Unknown GhostAction");
         }
@@ -159,10 +159,10 @@ public class GhostDriver implements Driver {
   private void queueProximityCorrectionAction() {
     GhostModel m = (GhostModel) model;
 
-    if (m.getWallLeftDistance() < 18 && !m.isWallFront()) {
+    if (m.getWallsPart().getWallLeftDistance() < 18 && !m.getWallsPart().isWallFront()) {
       queue.add(new TurnAction(m, -15).setIsNonInterruptable(true));
 
-    } else if (m.getWallRightDistance() < 18 && !m.isWallFront()) {
+    } else if (m.getWallsPart().getWallRightDistance() < 18 && !m.getWallsPart().isWallFront()) {
       queue.add(new TurnAction(m, 15).setIsNonInterruptable(true));
 
     }
@@ -192,7 +192,7 @@ public class GhostDriver implements Driver {
   }
 
   private void checkBarcodeEvent(){
-    if(!model.isReadingBarcode()){
+    if(!model.getBarcodePart().isReadingBarcode()){
       return;
     }
     queue.clearActionQueue();
@@ -201,10 +201,10 @@ public class GhostDriver implements Driver {
   }
   
   private void checkLineEvent() {  //Dit werkt goed
-    if (model.getLine() == Line.NONE) {
+    if (model.getLightPart().getLine() == Line.NONE) {
       return;
     }
-    if (model.isReadingBarcode()) return;
+    if (model.getBarcodePart().isReadingBarcode()) return;
     // Line detected
     //newEvent("Line " + (model.getLine() == Line.BLACK ? "Black" : "White"), "Lightsensor", "Align and evade"); //TODO: maybe
     queue.clearActionQueue();

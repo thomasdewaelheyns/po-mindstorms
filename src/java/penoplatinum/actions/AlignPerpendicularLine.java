@@ -37,14 +37,14 @@ public class AlignPerpendicularLine extends BaseAction {
 
   @Override
   public int getNextAction() {
-    if (getModel().isTurning()) {
+    if (getModel().getSensorPart().isTurning()) {
       // processing state
       switch (state) {
         case 0:
-          if ( getModel().getCurrentLightColor() == LightColor.White && leftStart == null) {
+          if ( getModel().getLightPart().getCurrentLightColor() == LightColor.White && leftStart == null) {
             leftStart = getRelativeAngle();
           }
-          if (getModel().getCurrentLightColor() == LightColor.Brown && leftStart != null) {
+          if (getModel().getLightPart().getCurrentLightColor() == LightColor.Brown && leftStart != null) {
             leftEnd = getRelativeAngle();
             return Navigator.STOP;
           }
@@ -52,10 +52,10 @@ public class AlignPerpendicularLine extends BaseAction {
         case 1:
           break;
         case 2:
-          if (getModel().getCurrentLightColor() == LightColor.White && rightStart == null) {
+          if (getModel().getLightPart().getCurrentLightColor() == LightColor.White && rightStart == null) {
             rightStart = getRelativeAngle();
           }
-          if (getModel().getCurrentLightColor() == LightColor.Brown && rightStart != null) {
+          if (getModel().getLightPart().getCurrentLightColor() == LightColor.Brown && rightStart != null) {
             rightEnd = getRelativeAngle();
             return Navigator.STOP;
           }

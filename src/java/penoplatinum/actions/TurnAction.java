@@ -31,7 +31,7 @@ public class TurnAction extends BaseAction {
 
   @Override
   public boolean isComplete() {
-    return !getModel().isMoving() && !first;
+    return !getModel().getSensorPart().isMoving() && !first;
   }
 
   @Override

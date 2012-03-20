@@ -33,7 +33,7 @@ public class GapDetectionRestoreAction extends BaseAction {
   @Override
   public int getNextAction() {
 
-    if (model.isTurning()) {
+    if (model.getSensorPart().isTurning()) {
       return Navigator.NONE;
     }
 
@@ -50,8 +50,8 @@ public class GapDetectionRestoreAction extends BaseAction {
     if (state == 0) {
 
       proc.performGapDetectionOnBuffer();
-      if (model.isGapFound()) {
-        int diff = (model.getGapStartAngle() + model.getGapEndAngle()) / 2;
+      if (model.getGapPart().isGapFound()) {
+        int diff = (model.getGapPart().getGapStartAngle() + model.getGapPart().getGapEndAngle()) / 2;
 
         setAngle(diff);
 

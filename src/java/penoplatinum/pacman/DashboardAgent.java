@@ -54,28 +54,28 @@ public class DashboardAgent {
     Sector s;
 
     builder.append("\"").append(robot.getName()).append("\",");
-    builder.append(model.getLightSensorValue()).append(",");
-    builder.append("\"").append(model.getCurrentLightColor().toString()).append("\",");
-    builder.append((int)model.getAverageLightValue()).append(",");
-    builder.append(model.getBarcode()).append(",");
-    builder.append(this.model.getSensorValue(Model.M3)).append(",");
-    builder.append(this.model.getSensorValue(Model.S3)).append(",");
-    builder.append(this.model.getSensorValue(Model.IR0)).append(",");
-    builder.append(this.model.getSensorValue(Model.IR1)).append(",");
-    builder.append(this.model.getSensorValue(Model.IR2)).append(",");
-    builder.append(this.model.getSensorValue(Model.IR3)).append(",");
-    builder.append(this.model.getSensorValue(Model.IR4)).append(",");
+    builder.append(model.getSensorPart().getLightSensorValue()).append(",");
+    builder.append("\"").append(model.getLightPart().getCurrentLightColor().toString()).append("\",");
+    builder.append((int)model.getLightPart().getAverageLightValue()).append(",");
+    builder.append(model.getBarcodePart().getBarcode()).append(",");
+    builder.append(this.model.getSensorPart().getSensorValue(Model.M3)).append(",");
+    builder.append(this.model.getSensorPart().getSensorValue(Model.S3)).append(",");
+    builder.append(this.model.getSensorPart().getSensorValue(Model.IR0)).append(",");
+    builder.append(this.model.getSensorPart().getSensorValue(Model.IR1)).append(",");
+    builder.append(this.model.getSensorPart().getSensorValue(Model.IR2)).append(",");
+    builder.append(this.model.getSensorPart().getSensorValue(Model.IR3)).append(",");
+    builder.append(this.model.getSensorPart().getSensorValue(Model.IR4)).append(",");
     builder.append(-1).append(","); // ir_dist the shortest distance
-    builder.append((int)this.model.getAgent().getSector().getWalls()).append(",");
+    builder.append((int)this.model.getGridPart().getAgent().getSector().getWalls()).append(",");
 
 
-    s = this.model.getAgent().getSector().getNeighbour(Bearing.N);
+    s = this.model.getGridPart().getAgent().getSector().getNeighbour(Bearing.N);
     builder.append(s == null ? 0 : s.getValue()).append(",");
-    s = this.model.getAgent().getSector().getNeighbour(Bearing.E);
+    s = this.model.getGridPart().getAgent().getSector().getNeighbour(Bearing.E);
     builder.append(s == null ? 0 : s.getValue()).append(",");
-    s = this.model.getAgent().getSector().getNeighbour(Bearing.S);
+    s = this.model.getGridPart().getAgent().getSector().getNeighbour(Bearing.S);
     builder.append(s == null ? 0 : s.getValue()).append(",");
-    s = this.model.getAgent().getSector().getNeighbour(Bearing.W);
+    s = this.model.getGridPart().getAgent().getSector().getNeighbour(Bearing.W);
     builder.append(s == null ? 0 : s.getValue()).append(",");
 
     String event = "", source = "", plan = "", queue = "", action = "", argument = "";
@@ -106,10 +106,10 @@ public class DashboardAgent {
 
   public void sendGrid(String gridName, Grid grid) {
     for (Sector s : grid.getSectors()) {
-      sendSectorValues(model.getAgent().getName(), gridName, s);
+      sendSectorValues(model.getGridPart().getAgent().getName(), gridName, s);
     }
     for (Agent af : grid.getAgents()) {
-      sendSectorAgents(model.getAgent().getName(), gridName, af);
+      sendSectorAgents(model.getGridPart().getAgent().getName(), gridName, af);
     }
   }
 

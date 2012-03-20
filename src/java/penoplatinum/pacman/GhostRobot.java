@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import penoplatinum.util.Utils;
 import penoplatinum.driver.Driver;
 import penoplatinum.grid.GridView;
+import penoplatinum.grid.Sector;
 import penoplatinum.model.processor.BarcodeBlackModelProcessor;
 import penoplatinum.model.processor.GridRecalcModelProcessor;
 import penoplatinum.model.processor.GridUpdateProcessor;
@@ -124,7 +125,6 @@ public class GhostRobot implements Robot {
     this.dashboardAgent = agent;
     agent.setRobot(this);
     agent.setModel(this.model);
-    this.model.useDashboardAgent(agent);
     return this;
   }
 
@@ -137,7 +137,7 @@ public class GhostRobot implements Robot {
    * @param cmd 
    */
   public void processCommand(String cmd) {
-    this.model.addIncomingMessage(cmd);
+    this.model.getMessagePart().addIncomingMessage(cmd);
   }
   // the external tick...
   public static long delta = 0;
@@ -151,15 +151,14 @@ public class GhostRobot implements Robot {
     this.model.getSensorPart().markSensorValuesProcessed();
     this.model.getGridPart().markChangedSectorsProcessed();
 
-    setScanningLightData(false); // Resets this flag to false
-    sweepComplete = false;//TODO
+    this.model.getSonarPart().setSweepComplete(false);
 
 
     // poll other sensors and update model
     GhostRobot.start = System.nanoTime();
     this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
     this.model.process();
-    isSweepDataChanged = false; //TODO
+    this.model.getSonarPart().setSweepDataChanged(false);
     this.model.getSensorPart().setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
     // Send dashboard info
@@ -217,6 +216,16 @@ public class GhostRobot implements Robot {
     this.sendMessages();
     if (dashboardAgent != null) {
       dashboardAgent.sendGrid("myGrid", model.getGridPart().getGrid());
+      // Send changed sectors
+      ArrayList<Sector> changed = model.getGridPart().getChangedSectors();
+      for (int i = 0; i < changed.size(); i++) {
+        Sector current = changed.get(i);
+
+        // for each changed sector
+        if (dashboardAgent != null) {
+          dashboardAgent.sendSectorWalls(model.getGridPart().getAgent().getName(), "myGrid", current);
+        }
+      }
     }
     System.gc();
   }

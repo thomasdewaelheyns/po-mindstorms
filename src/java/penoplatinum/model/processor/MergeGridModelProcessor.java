@@ -10,6 +10,7 @@ import penoplatinum.grid.Sector;
 import penoplatinum.model.GridModelPart;
 import penoplatinum.pacman.GhostAction;
 import penoplatinum.simulator.Bearing;
+import penoplatinum.simulator.Model;
 import penoplatinum.util.TransformationTRT;
 
 /**
@@ -45,7 +46,7 @@ public class MergeGridModelProcessor extends ModelProcessor {
     for (Grid g : gridPart.getOtherGrids().values()) {
       String name = gridPart.getOtherGrids().findKey(g);
       for (Sector s : g.getTaggedSectors()) {
-        attemptMapBarcode(gridPart.getAgent().getSector(), s, g, name);
+        attemptMapBarcode(model, gridPart.getAgent().getSector(), s, g, name);
       }
     }
 
@@ -57,7 +58,8 @@ public class MergeGridModelProcessor extends ModelProcessor {
 
   }
 
-  public boolean attemptMapBarcode(Sector ourSector, Sector otherSector, final Grid otherGrid, String otherAgentName) {
+  // TODO: move this somewhere usefull
+  public static boolean attemptMapBarcode(Model model, Sector ourSector, Sector otherSector, final Grid otherGrid, String otherAgentName) {
     int ourCode = ourSector.getTagCode();
     int code = otherSector.getTagCode();
     int bearing = otherSector.getTagBearing();

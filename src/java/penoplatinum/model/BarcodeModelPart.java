@@ -52,8 +52,6 @@ public class BarcodeModelPart {
     return this.isReadingBarcode;
   }
 
-  private void setScanningLightData(boolean b) {
-  }
   boolean isReadingBarcode = false;
 
   public int getLastBarcode() {

@@ -83,4 +83,12 @@ public class SonarModelPart {
    * This value is true on the step that the sweep was completed
    */
   private Boolean sweepComplete;
+
+  public void setSweepComplete(boolean b) {
+    sweepComplete = b;
+  }
+
+  public void setSweepDataChanged(boolean b) {
+    isSweepDataChanged = b;
+  }
 }

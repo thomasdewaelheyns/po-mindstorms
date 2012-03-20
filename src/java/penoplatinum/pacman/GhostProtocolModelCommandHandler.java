@@ -10,6 +10,7 @@ import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
+import penoplatinum.model.processor.MergeGridModelProcessor;
 import penoplatinum.util.Point;
 import penoplatinum.simulator.Bearing;
 
@@ -29,15 +30,15 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
   @Override
   public void handlePosition(String agentName, int x, int y) {
 
-    OtherGhost ghost = model.findOtherGhost(agentName);
+    OtherGhost ghost = model.getGridPart(). findOtherGhost(agentName);
     Grid grid;
     if (ghost == null) {
       // update the agent's position
-      grid = model.getGrid(agentName);
+      grid = model.getGridPart().getGrid(agentName);
 
 
     } else {
-      grid = model.getGrid();
+      grid = model.getGridPart().getGrid();
       // transform the x and y coord
       Point p = ghost.getTransformationTRT().transform(x, y);
       x = p.getX();
@@ -79,10 +80,10 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
     // Check if there is a othergrid, or whether the file can be merged directly
 
-    OtherGhost ghost = model.findOtherGhost(agentName);
+    OtherGhost ghost = model.getGridPart().findOtherGhost(agentName);
     if (ghost == null) {
       // There is no mapping, add sector to the othergrid
-      Grid grid = model.getGrid(agentName);
+      Grid grid = model.getGridPart().getGrid(agentName);
       setSector(grid, x, y, n, e, s, w);
     } else {
       // Merge the discovered sector into the models grid, using the stored 
@@ -92,7 +93,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
       Point p = ghost.getTransformationTRT().transform(x, y);
 
 
-      Sector sector = model.getGrid().getOrCreateSector(p.getX(), p.getY());
+      Sector sector = model.getGridPart().getGrid().getOrCreateSector(p.getX(), p.getY());
 
 
 
@@ -144,7 +145,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
 
 
-    final Grid grid = model.getGrid(agentName);
+    final Grid grid = model.getGridPart().getGrid(agentName);
     Agent agent = grid.getAgent(agentName);
     agent.getSector().setTagCode(code);
     agent.getSector().setTagBearing(bearing);
@@ -154,9 +155,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     // if so, import the agents map in our grid,
     //        create translators to continously import its information
     //        in our own grid
-    List<Sector> bs = model.getGrid().getTaggedSectors();
+    List<Sector> bs = model.getGridPart().getGrid().getTaggedSectors();
     for (int i = 0; i < bs.size(); i++) {
-      model.attemptMapBarcode(bs.get(i), agent.getSector(), grid, agentName);
+      MergeGridModelProcessor.attemptMapBarcode(model,bs.get(i), agent.getSector(), grid, agentName);
     }
 
 
@@ -165,14 +166,14 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
   @Override
   public void handlePacman(String agentName, int x, int y) {
 
-    OtherGhost ghost = model.findOtherGhost(agentName);
+    OtherGhost ghost = model.getGridPart().findOtherGhost(agentName);
     Grid grid;
     if (ghost == null) {
       // There is no mapping, add sector to the othergrid
-      grid = model.getGrid(agentName);
+      grid = model.getGridPart().getGrid(agentName);
 
     } else {
-      grid = model.getGrid();
+      grid = model.getGridPart().getGrid();
 
     }
 

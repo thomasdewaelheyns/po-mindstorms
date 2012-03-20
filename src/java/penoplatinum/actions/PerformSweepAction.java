@@ -57,7 +57,7 @@ public class PerformSweepAction extends BaseAction {
         api.sweep(array);
         break;
       case 1:
-        this.model.updateSonarValues(this.api.getSweepResult(), arrayList);
+        this.model.getSonarPart().updateSonarValues(this.api.getSweepResult(), arrayList);
         break;
     }
     return Navigator.STOP;
