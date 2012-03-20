@@ -51,6 +51,7 @@ public class PCBluetoothConnection implements IConnection {
         while (!connect()) {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
+            Utils.Log("Restarting connection");
         }
         Utils.Log("Connected!");
 
