@@ -101,7 +101,7 @@ public class GhostNavigator implements Navigator {
 //    this.log( forMove + " out of " + Arrays.toString(moves) + " / " + count);
     
     // randomly don't do anything (20%)
-    if(r.nextDouble()*5==3) { forMove = Bearing.NONE; }
+    if((int)(r.nextDouble()*5)==3) { forMove = Bearing.NONE; }
 
     if(forMove <= Bearing.NONE) {
       this.plan.add(GhostAction.NONE);
