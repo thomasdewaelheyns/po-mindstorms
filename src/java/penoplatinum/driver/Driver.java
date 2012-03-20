@@ -12,7 +12,7 @@ import penoplatinum.simulator.Model;
 import penoplatinum.simulator.RobotAPI;
 
 public interface Driver {
-  public Driver setModel(Model model);
+  public Driver useModel(Model model);
   public Driver useRobotAPI(RobotAPI api);
 
   public boolean isBusy();
@@ -20,4 +20,5 @@ public interface Driver {
   public void step();
 
   public void perform(int action);
+
 }

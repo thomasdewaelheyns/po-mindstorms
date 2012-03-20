@@ -25,9 +25,7 @@ public class GhostDriver implements Driver {
 
   private RobotAPI api;
 
-  public GhostDriver(GhostModel model, RobotAPI api) {
-    this.api = api;
-    this.model = model;
+  public GhostDriver() {
     queue.add(new StopAction());
   }
 
@@ -214,7 +212,7 @@ public class GhostDriver implements Driver {
 //    Utils.Log("LINE!!");
   }
 
-  public GhostDriver setModel(Model model) {
+  public GhostDriver useModel(Model model) {
     this.model = model;
     return this;
   }

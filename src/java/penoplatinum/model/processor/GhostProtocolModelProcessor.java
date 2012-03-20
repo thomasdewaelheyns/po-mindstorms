@@ -10,7 +10,7 @@ import penoplatinum.model.GhostModel;
 import penoplatinum.model.GridModelPart;
 import penoplatinum.pacman.DashboardAgent;
 import penoplatinum.pacman.GhostAction;
-import penoplatinum.pacman.GhostProtocolHandler;
+import penoplatinum.pacman.ProtocolHandler;
 
 /**
  * Responsible for sending robot information to the Ghost communication channel
@@ -36,7 +36,7 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
   protected void work() {
     GridModelPart grid = ((GhostModel) model).getGridPart();
 
-    GhostProtocolHandler protocol = model.getMessagePart().getProtocol();
+    ProtocolHandler protocol = model.getMessagePart().getProtocol();
 
     if (!grid.hasRobotMoved()) {
       return;

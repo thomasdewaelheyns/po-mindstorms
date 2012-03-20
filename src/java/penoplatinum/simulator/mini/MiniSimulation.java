@@ -7,7 +7,6 @@ package penoplatinum.simulator.mini;
  * 
  */
 import penoplatinum.grid.Grid;
-import penoplatinum.grid.SimpleGrid;
 import penoplatinum.grid.GridView;
 import penoplatinum.grid.SwingGridView;
 import penoplatinum.grid.ProxyAgent;
@@ -16,9 +15,9 @@ import penoplatinum.grid.DiffusionGridProcessor;
 
 import penoplatinum.grid.GridFactory;
 
+import penoplatinum.pacman.GhostNavigator;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
-import penoplatinum.simulator.RobotAgent;
 import penoplatinum.simulator.Bearing;
 
 
@@ -71,7 +70,9 @@ public class MiniSimulation {
       robotAgents[r] = new MiniSimulationRobotAgent();
       queue.subscribe(robotAgents[r]);
       robots[r] = new MiniGhostRobot(""+r, views[r])
+                    .useDriver(new MiniManhattanDriver())
                     .useRobotAPI(apis[r])
+                    .useNavigator(new GhostNavigator())
                     .useCommunicationAgent(robotAgents[r]);
     }
 

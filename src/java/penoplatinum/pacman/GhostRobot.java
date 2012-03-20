@@ -3,6 +3,7 @@ package penoplatinum.pacman;
 import penoplatinum.model.GhostModel;
 import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
+import penoplatinum.model.GridModelPart;
 import penoplatinum.util.Utils;
 import penoplatinum.driver.Driver;
 import penoplatinum.grid.GridView;
@@ -31,7 +32,7 @@ import penoplatinum.simulator.mini.Queue;
 
 public class GhostRobot implements Robot {
 
-  private GhostModel model;
+  protected GhostModel model;
   private RobotAPI api;   // provided from the outside
   private Driver driver;
   private Navigator navigator;
@@ -41,7 +42,6 @@ public class GhostRobot implements Robot {
   private boolean waitingForSweep = false;
   private RobotAgent agent;
   private ReferencePosition initialReference = new ReferencePosition();
-  private GridUpdateProcessor gridUpdateProcessor;
   private DashboardAgent dashboardAgent;
 
   public GhostRobot(String name) {
@@ -56,11 +56,16 @@ public class GhostRobot implements Robot {
 
   public GhostRobot(String name, GridView view) {
     this(name);
-    this.model.getGridPart().displayGridOn(view);
+    GridModelPart gridPart = this.model.getGridPart();
+    gridPart.displayGridOn(view);
   }
 
-  private void setupModel(String name) {
+  protected void setupModel(String name) {
     this.model = new GhostModel(name);
+
+    
+
+
     ModelProcessor processors =
             new LightColorModelProcessor(
             new HistogramModelProcessor(
@@ -96,27 +101,47 @@ public class GhostRobot implements Robot {
     });
     model.getMessagePart().getProtocol().useQueue(queue);
 
+
+
   }
 
   @Override
   public GhostRobot useRobotAPI(RobotAPI api) {
     this.api = api;
-    this.driver = new GhostDriver(this.model, this.api);
+
     api.setReferencePoint(initialReference);
     this.api.setSpeed(Model.M3, 250); // set sonar speed to double of default
     this.api.setSpeed(Model.M2, 500); // set sonar speed to double of default
     this.api.setSpeed(Model.M1, 500); // set sonar speed to double of default
+    linkComponents();
     return this;
   }
 
-  public void useNavigator(Navigator nav) {
+  public GhostRobot useNavigator(Navigator nav) {
     this.navigator = nav;
-    nav.setModel(model);
+    linkComponents();
+    return this;
   }
 
   public GhostRobot useDriver(Driver driver) {
     this.driver = driver;
+    linkComponents();
     return this;
+  }
+
+  /**
+   * This function links the driver, navigator and api correctly
+   */
+  protected void linkComponents() {
+    if (driver != null) {
+      driver.useRobotAPI(api);
+      driver.useModel(model);
+
+    }
+    if (navigator != null) {
+      navigator.setModel(model);
+    }
+
   }
 
   public GhostRobot useDashboardAgent(DashboardAgent agent) {
@@ -142,14 +167,14 @@ public class GhostRobot implements Robot {
 
   public void step() {
 
-  
+
 
 
     // poll other sensors and update model
     GhostRobot.start = System.nanoTime();
     this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
     this.model.process();
-      
+
     this.model.getSensorPart().setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
     // Send dashboard info
@@ -204,11 +229,11 @@ public class GhostRobot implements Robot {
     // send outgoing messages
     this.sendMessages();
     if (dashboardAgent != null) {
-      
-      
+
+
       dashboardAgent.sendGrid("myGrid", model.getGridPart().getGrid());
-      
-      
+
+
       // Send changed sectors
       // TODO: this will probably not work since the changes were cleared previously
       ArrayList<Sector> changed = model.getGridPart().getChangedSectors();

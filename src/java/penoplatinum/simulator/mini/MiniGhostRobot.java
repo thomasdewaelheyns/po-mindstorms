@@ -8,149 +8,73 @@ package penoplatinum.simulator.mini;
  * @author: Team Platinum
  */
 
-import java.util.Arrays;
 
 import penoplatinum.model.processor.ModelProcessor;
 
-import penoplatinum.simulator.Model;
-import penoplatinum.simulator.Robot;
-import penoplatinum.simulator.RobotAgent;
-import penoplatinum.simulator.RobotAPI;
 
-import penoplatinum.simulator.Navigator;
 
-import penoplatinum.driver.Driver;
 
 import penoplatinum.grid.GridView;
+import penoplatinum.model.GhostModel;
+import penoplatinum.model.processor.GhostProtocolModelProcessor;
+import penoplatinum.model.processor.GridRecalcModelProcessor;
+import penoplatinum.model.processor.GridUpdateProcessor;
+import penoplatinum.model.processor.InboxProcessor;
+import penoplatinum.model.processor.MergeGridModelProcessor;
+import penoplatinum.model.processor.WallDetectionModelProcessor;
+import penoplatinum.model.processor.WallDetectorProcessor;
+import penoplatinum.pacman.GhostRobot;
 
-public class MiniGhostRobot implements Robot {
-  private Model      model;
-  private RobotAPI   api;   // provided from the outside
-  private Driver     driver;
-  private Navigator  navigator;
-  private RobotAgent communicationAgent;
-  private String     name;
-  
-  private boolean waitingForSweep = false;
+public class MiniGhostRobot extends GhostRobot {
   
   public MiniGhostRobot(String name) {
-    this.setupModel(name);
+    super(name);
   }
 
   public MiniGhostRobot(String name, GridView view) {
-    this.setupModel(name);
-    this.model.getGridPart().displayGridOn(view);
+    super(name,view);
   }
   
-  public String getName() {
-    return this.name;
-  }
-  
-  private void setupModel(String name) {
-    this.name = name;
-    this.model = new MiniGhostModel(name);
+  @Override
+  protected void setupModel(String name) {
+    this.model = new GhostModel(name);
+    
+    linkComponents();
+    
+    
     ModelProcessor processors =
-      new MiniInboxProcessor        (
-      new MiniWallDetectorProcessor (
-      new MiniGridUpdateProcessor   (
-    )));
+//            new BarcodeBlackModelProcessor(
+            new WallDetectionModelProcessor(
+            new WallDetectorProcessor(
+            new InboxProcessor(
+            new GridUpdateProcessor(
+//            new IRModelProcessor(
+            new GridRecalcModelProcessor(
+            new GhostProtocolModelProcessor(
+            new MergeGridModelProcessor()))))));
     this.model.setProcessor(processors);
+
+    // --- Set initial model state ---
+
+
+    // Set the implementation of the ghost protocol to use
+
+    model.getMessagePart().setProtocol(new NullGhostProtocolHandler());
+//    model.getMessagePart().setProtocol(new GhostProtocolHandler(model, new GhostProtocolModelCommandHandler(model)));
+//    final Queue queue = new Queue();
+//    queue.subscribe(new MessageHandler() {
+//
+//      @Override
+//      public void useQueue(Queue queue) {
+//      }
+//
+//      @Override
+//      public void receive(String msg) {
+//        model.getMessagePart().queueOutgoingMessage(msg);
+//      }
+//    });
+//    model.getMessagePart().getProtocol().useQueue(queue);
+
   }
 
-  public Model getModel() {
-    return this.model;
-  }
-  
-  public String getModelState() {
-    // TODO
-    return "";
-  }
-  
-  public String getNavigatorState() {
-    // TODO
-    return "";
-  }
-
-  public Robot useRobotAPI( RobotAPI api ) {
-    this.api       = api;
-    this.driver    = new MiniManhattanDriver()
-                      .setModel(this.model)
-                      .useRobotAPI(this.api);
-    this.navigator = new MiniGhostNavigator().setModel(this.model);
-    return this;
-  }
-
-  public Robot useCommunicationAgent( RobotAgent agent ) {
-    this.communicationAgent = agent;
-    return this;
-  }
-
-  // incoming communication from other ghosts, used by RobotAgent to deliver
-  // incoming messages from the other ghosts
-  public void processCommand(String cmd) {
-    this.model.getMessagePart().addIncomingMessage(cmd);
-  }
-
-  private void log(String msg) {
-    System.out.printf( "[%10s] %2d,%2d / Robot  : %s\n", 
-                       this.model.getGridPart().getAgent().getName(),
-                       this.model.getGridPart().getAgent().getLeft(),
-                       this.model.getGridPart().getAgent().getTop(),
-                       msg );
-  }
-  
-  // one step in the event-loop of the Robot
-  public void step() {
-    //TODO: set all flag shizzle
-    
-    // poll other sensors and update model
-    this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
-
-    // let the driver do his thing
-    if( this.driver.isBusy() ) {
-      this.driver.step();
-      return;
-    }
-    
-    // we want obstacle-information based on Sonar-values
-    // as long as this is in progress, we wait
-    if( this.api.sweepInProgress() ) { 
-      this.log( "waiting for sweep in progress" );
-      return;
-    }
-    
-    // if the sweep is ready ...
-    if( this.waitingForSweep ) {
-      this.model.getSonarPart().updateSonarValues( this.api.getSweepResult(),
-                                    Arrays.asList(-90, 0, 90) );
-      this.waitingForSweep = false;
-    } else {
-      this.api.sweep( new int[] { -90, 0, 90 } );
-      this.waitingForSweep = true;
-      return; // to wait for results
-    }
-    
-    // ask navigator what to do and ...
-    // let de driver drive, manhattan style ;-)
-    this.driver.perform(this.navigator.nextAction());
-    
-    // send outgoing messages
-    this.sendMessages();
-  }
-  
-  private void sendMessages() {
-    if( this.communicationAgent == null ) { return; }
-    for( String msg : this.model.getMessagePart().getOutgoingMessages() ) {
-      this.communicationAgent.send(msg);
-    }
-    this.model.getMessagePart().clearOutbox();
-  }
-  
-  public Boolean reachedGoal() {
-    return this.navigator.reachedGoal();
-  }
-  
-  public void stop() {
-    this.api.stop();
-  }
 }

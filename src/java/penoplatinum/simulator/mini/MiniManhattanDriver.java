@@ -1,7 +1,5 @@
 package penoplatinum.simulator.mini;
 
-import java.util.List;
-import java.util.ArrayList;
 
 import penoplatinum.pacman.GhostAction;
 
@@ -10,16 +8,15 @@ import penoplatinum.simulator.RobotAPI;
 
 import penoplatinum.driver.Driver;
 
-
 public class MiniManhattanDriver implements Driver {
-  private MiniGhostModel model;   // TODO: change GhostModel to minimal interface
+  private Model model;   // TODO: change GhostModel to minimal interface
   private RobotAPI   api;         //       needed by a ManhattanDriver
 
   private int todo   = GhostAction.NONE;
   private int action = GhostAction.NONE;
   
-  public Driver setModel(Model model) {
-    this.model = (MiniGhostModel)model;
+  public Driver useModel(Model model) {
+    this.model = model;
     return this;
   }
 

@@ -16,7 +16,7 @@ public class ManhattanDriver implements Driver {
   private int todo   = GhostAction.NONE;
   private int action = GhostAction.NONE;
   
-  public Driver setModel(Model model) {
+  public Driver useModel(Model model) {
     this.model = (GhostModel)model;
     return this;
   }

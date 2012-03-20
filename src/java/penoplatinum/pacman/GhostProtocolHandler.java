@@ -13,11 +13,10 @@ import penoplatinum.util.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.simulator.Bearing;
-import penoplatinum.simulator.mini.MessageHandler;
 import penoplatinum.simulator.mini.Queue;
 import penoplatinum.util.MyScanner;
 
-public class GhostProtocolHandler implements MessageHandler {
+public class GhostProtocolHandler implements ProtocolHandler {
 
   private static String version = "1.0-partial";
   // counter for received join commands
@@ -115,6 +114,7 @@ public class GhostProtocolHandler implements MessageHandler {
             + GhostProtocolHandler.version);
   }
 
+  @Override
   public void sendPosition() {
     this.queue.send(this.agent.getName() + " POSITION "
             + this.agent.getSector().getLeft() + ","
@@ -122,6 +122,7 @@ public class GhostProtocolHandler implements MessageHandler {
   }
 
   // TODO: change North and South
+  @Override
   public void sendDiscover(Sector sector) {
 
     this.queue.send(this.agent.getName() + " DISCOVER "
@@ -140,11 +141,13 @@ public class GhostProtocolHandler implements MessageHandler {
     return wall == 2 ? null : (wall == 1);
   }
 
+  @Override
   public void sendBarcode(int code, int bearing) {
     this.queue.send(this.agent.getName() + " BARCODE "
             + code + " " + bearing);
   }
 
+  @Override
   public void sendPacman() {
     this.queue.send(this.agent.getName() + " PACMAN "
             + this.model.getGridPart().getPacmanAgent().getLeft() + ","
@@ -152,6 +155,7 @@ public class GhostProtocolHandler implements MessageHandler {
   }
 
   // keep a reference to the outgoing queue and JOIN
+  @Override
   public void useQueue(Queue queue) {
     this.queue = queue;
     this.sendJoin();
