@@ -9,28 +9,26 @@ package penoplatinum;
  * @author MHGameWork
  */
 public class Color {
-  private final int r;
-  private final int g;
-  private final int b;
-  public Color(int r, int g, int b)
-  {
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    
+
+  private final int rgb;
+
+  public Color(byte r, byte g, byte b) {
+    this.rgb = (r << 16) | (g << 8) | b;
+  }
+
+  public Color(int r, int g, int b) {
+    this.rgb = (r << 16) | (g << 8) | b;
   }
 
   public int getB() {
-    return b;
+    return rgb & 0xFF;
   }
 
   public int getG() {
-    return g;
+    return (rgb >> 8) & 0xFF;
   }
 
   public int getR() {
-    return r;
+    return (rgb >> 16) & 0XFF;
   }
-  
-  
 }
