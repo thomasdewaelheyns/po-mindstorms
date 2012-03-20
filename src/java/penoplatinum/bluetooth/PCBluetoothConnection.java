@@ -19,6 +19,7 @@ import penoplatinum.util.Utils;
  * @author: Team Platinum
  */
 public class PCBluetoothConnection implements IConnection {
+    private final String ROBOT_NAME = Utils.PROPERTIES.getProperty("robot.name");
 
     private DataOutputStream outputStream;
     private DataInputStream inputStream;
@@ -127,9 +128,8 @@ public class PCBluetoothConnection implements IConnection {
             NXTInfo[] infos = conn.search(null, null, NXTCommFactory.ALL_PROTOCOLS);
 
             NXTInfo lejosInfo = null;
-
             for (NXTInfo inf : infos) {
-                if (inf.name.equals("NXJ Platinum")) {
+                if (inf.name.equals(ROBOT_NAME)) {
                     lejosInfo = inf;
 
                 }

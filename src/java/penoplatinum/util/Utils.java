@@ -1,8 +1,14 @@
 package penoplatinum.util;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Properties;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.ListIterator;
+import java.util.logging.Logger;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 
@@ -10,6 +16,9 @@ import penoplatinum.bluetooth.QueuedPacketTransporter;
  * @author: Team Platinum
  */
 public class Utils {
+  
+  private static final String PROPERTIES_PATH = "robot.properties";
+  public static final Properties PROPERTIES = getProperties();
 
   private static final int REVERSE_THRESHOLD = 18;
   public final static int PACKETID_LOG = 672631252;
@@ -137,5 +146,17 @@ public class Utils {
   public static void swap(List<?> list, int i, int j) {
     final List l = list;
     l.set(i, l.set(j, l.get(i)));
+  }
+
+  private static Properties getProperties(){
+    try {
+      Properties p = new Properties();
+      p.load(new FileInputStream(PROPERTIES_PATH));
+      return p;
+    } catch (IOException ex) {
+      Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+      System.exit(-1);
+      return null;
+    }
   }
 }
