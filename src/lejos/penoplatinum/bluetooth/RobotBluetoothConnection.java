@@ -45,7 +45,9 @@ public class RobotBluetoothConnection implements IConnection {
         while (!connect()) {
             Utils.Log("Connection failed, trying again");
             Utils.Sleep(1000);
+            Utils.Log("Restarting connecting");
         }
+        Utils.Log("Connected");
         // Connected to NXJ, perform packet ID synchronization here
 
         IPacketReceiver r = null;
