@@ -139,13 +139,14 @@ public class PCBluetoothConnection implements IConnection {
             if (lejosInfo != null) {
             } else if (infos.length == 1) {
                 lejosInfo = infos[0];
+                Utils.Log("Default robot not found, picking only found robot:"+lejosInfo.name);
             } else if (infos.length > 1) {
                 Utils.Log("Multiple possible connections found, aborting!");
                 return false;
             }
 
             if (lejosInfo == null) {
-                Utils.Log("Platinum not found!");
+                Utils.Log("No robot found!");
                 return false;
             }
 
