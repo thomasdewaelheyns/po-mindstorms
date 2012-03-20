@@ -42,7 +42,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
       return;
     }
     this.board.showMap(map);
-    int size = map.getFirst().drawSize();
+    int size = map.getFirst().getDrawer().drawSize();
     // a tile is 80cm in reality, we apply a scale of 2px/cm
     this.setSize(map.getWidth() * size, map.getHeight() * size + 22);
   }

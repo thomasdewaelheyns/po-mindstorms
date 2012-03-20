@@ -30,22 +30,19 @@ package penoplatinum.simulator.tiles;
  *  @author: Team Platinum
  */
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import penoplatinum.BitwiseOperations;
-import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.view.Board;
 
 public class Panel implements Tile {
   // these are the positions in the bitstring where relevant information
   // is stored. these variables allow for easier configuration of the bits
-  private static int startWalls           = 0;
-  private static int startLines           = startWalls   + 4;
-  private static int startCorners         = startLines   + 8;
-  private static int startBarcode         = startCorners + 8;
-  private static int startBarcodeLocation = startBarcode + 4;
-  private static int startNarrowing       = startBarcodeLocation + 3;
+  private final static int startWalls           = 0;
+  private final static int startLines           = startWalls   + 4;
+  private final static int startCorners         = startLines   + 8;
+  private final static int startBarcode         = startCorners + 8;
+  private final static int startBarcodeLocation = startBarcode + 4;
+  private final static int startNarrowing       = startBarcodeLocation + 3;
 
   // Lines and corners are divided into two sets for white and black
   public static int NO_COLOR = -1;

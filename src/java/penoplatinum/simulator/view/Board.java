@@ -73,7 +73,7 @@ public class Board extends JPanel {
         if (t == null) {
           // No tile set, keep black
         } else {
-          t.drawTile(g2d, left, top);
+          t.getDrawer().drawTile(g2d, left, top);
         }
       }
     }
@@ -89,7 +89,7 @@ public class Board extends JPanel {
 
 
     if (map.getTileCount() != 0) {
-      drawSize = this.map.getFirst().drawSize();
+      drawSize = this.map.getFirst().getDrawer().drawSize();
     }
 
     int w = this.map.getWidth() * drawSize;
