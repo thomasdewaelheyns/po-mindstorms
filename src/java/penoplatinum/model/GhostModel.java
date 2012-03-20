@@ -7,15 +7,11 @@ package penoplatinum.model;
  * 
  * @author: Team Platinum
  */
-
-
 // we're using commons collections HashedMap because HashMap isn't implemented
 // on Lejos.
-
 import penoplatinum.model.processor.ModelProcessor;
 
 import penoplatinum.simulator.Model;
-
 
 public class GhostModel implements Model {
   // little bit of configuration
@@ -41,10 +37,9 @@ public class GhostModel implements Model {
     sonarPart = new SonarModelPart();
     wallsPart = new WallsModelPart();
 
-  
+
 
   }
-
 
   public Model setProcessor(ModelProcessor processor) {
     this.processor = processor;
@@ -58,12 +53,16 @@ public class GhostModel implements Model {
     if (this.processor != null) {
       this.processor.process();
     }
+
+    getSensorPart().markSensorValuesProcessed();
+    getGridPart().markChangedSectorsProcessed();
+    getSonarPart().setSweepComplete(false);
+    getSonarPart().setSweepDataChanged(false);
   }
 
   public String toString() {
     return "This iz ze model!";
   }
- 
 
   public BarcodeModelPart getBarcodePart() {
     return barcodePart;

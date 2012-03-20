@@ -31,16 +31,19 @@ public class WallDetectorProcessor extends ModelProcessor {
 
 
 
+
     // if we moved forward, the previously detected sector is no longer of
     // any interest
     if (lastMovement == GhostAction.FORWARD) {
       detected.clearCertainty();
     } // else we keep it, so we can access it
-
+    
     // only update when we have a complete set of sensorvalues
     if (!sonar.hasNewSonarValues()) {
       return;
     }
+
+
 
     Sector sector = new Sector();
 

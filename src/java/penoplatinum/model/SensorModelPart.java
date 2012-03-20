@@ -97,7 +97,7 @@ public class SensorModelPart {
   }
   private boolean hasNewSensorValues;
 
-  public boolean isHasNewSensorValues() {
+  public boolean hasNewSensorValues() {
     return hasNewSensorValues;
   }
 

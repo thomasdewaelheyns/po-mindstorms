@@ -18,8 +18,8 @@ public class WallsModelPart {
   private int wallFrontDistance;
   private int wallRightDistance;
   private static final int WALL_DISTANCE = 35;
-  private Sector currentSector;
-  private Sector prevSector;
+  private Sector currentSector = new Sector();
+  private Sector prevSector = new Sector();
 
   public boolean isWallFront() {
     return getWallFrontDistance() < WALL_DISTANCE;

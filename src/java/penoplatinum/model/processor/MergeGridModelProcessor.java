@@ -54,6 +54,9 @@ public class MergeGridModelProcessor extends ModelProcessor {
     //To fix protocol shitiness, send a position cmd for safety
     model.getMessagePart().getProtocol().sendBarcode(model.getBarcodePart().getLastBarcode(), gridPart.getAgent().getBearing());
     //TODO: is this needed?          lastBarcode = -1;
+    
+    
+    this.model.getGridPart().clearLastMovement(); //TODO:
 
 
   }

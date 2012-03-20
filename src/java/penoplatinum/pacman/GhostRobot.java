@@ -8,6 +8,7 @@ import penoplatinum.driver.Driver;
 import penoplatinum.grid.GridView;
 import penoplatinum.grid.Sector;
 import penoplatinum.model.processor.BarcodeBlackModelProcessor;
+import penoplatinum.model.processor.GhostProtocolModelProcessor;
 import penoplatinum.model.processor.GridRecalcModelProcessor;
 import penoplatinum.model.processor.GridUpdateProcessor;
 import penoplatinum.model.processor.HistogramModelProcessor;
@@ -15,6 +16,7 @@ import penoplatinum.model.processor.IRModelProcessor;
 import penoplatinum.model.processor.InboxProcessor;
 import penoplatinum.model.processor.LightColorModelProcessor;
 import penoplatinum.model.processor.LineModelProcessor;
+import penoplatinum.model.processor.MergeGridModelProcessor;
 import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.model.processor.WallDetectionModelProcessor;
 import penoplatinum.model.processor.WallDetectorProcessor;
@@ -62,12 +64,6 @@ public class GhostRobot implements Robot {
     ModelProcessor processors =
             new LightColorModelProcessor(
             new HistogramModelProcessor(
-            //new FrontPushModelProcessor(
-            //new SonarModelProcessor(
-            //new GapModelProcessor(
-            //new ProximityModelProcessor(
-            //new LightCorruptionModelProcessor(
-            //new IRModelProcessor(
             new BarcodeBlackModelProcessor(
             new LineModelProcessor(
             new WallDetectionModelProcessor(
@@ -75,10 +71,12 @@ public class GhostRobot implements Robot {
             new InboxProcessor(
             new GridUpdateProcessor(
             new IRModelProcessor(
-            new GridRecalcModelProcessor())))))))));
+            new GridRecalcModelProcessor(
+            new GhostProtocolModelProcessor(
+            new MergeGridModelProcessor())))))))))));
     this.model.setProcessor(processors);
 
-    // Set initial model state
+    // --- Set initial model state ---
 
 
     // Set the implementation of the ghost protocol to use
@@ -128,8 +126,6 @@ public class GhostRobot implements Robot {
     return this;
   }
 
-  // 
-  // 
   /**
    * incoming communication from other ghosts, used by RobotAgent to deliver
    * incoming messages from the other ghosts
@@ -146,19 +142,14 @@ public class GhostRobot implements Robot {
 
   public void step() {
 
-    this.model.getGridPart().clearLastMovement(); //TODO:
-    this.model.getGridPart().markPacmanPositionChangeProcessed();
-    this.model.getSensorPart().markSensorValuesProcessed();
-    this.model.getGridPart().markChangedSectorsProcessed();
-
-    this.model.getSonarPart().setSweepComplete(false);
+  
 
 
     // poll other sensors and update model
     GhostRobot.start = System.nanoTime();
     this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
     this.model.process();
-    this.model.getSonarPart().setSweepDataChanged(false);
+      
     this.model.getSensorPart().setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
     // Send dashboard info
@@ -203,8 +194,6 @@ public class GhostRobot implements Robot {
 
 
 
-    // NOTE: wallmodelprocessor hasn't run yet at this point, 
-    //    so the model still contains old wall information!!!
     // ask navigator what to do and ...
     // let de driver drive, manhattan style ;-)
 
@@ -215,8 +204,13 @@ public class GhostRobot implements Robot {
     // send outgoing messages
     this.sendMessages();
     if (dashboardAgent != null) {
+      
+      
       dashboardAgent.sendGrid("myGrid", model.getGridPart().getGrid());
+      
+      
       // Send changed sectors
+      // TODO: this will probably not work since the changes were cleared previously
       ArrayList<Sector> changed = model.getGridPart().getChangedSectors();
       for (int i = 0; i < changed.size(); i++) {
         Sector current = changed.get(i);

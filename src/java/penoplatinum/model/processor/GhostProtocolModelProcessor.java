@@ -21,6 +21,13 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
 
   DashboardAgent dashboardCommunicator;
 
+  public GhostProtocolModelProcessor(ModelProcessor p) {
+    super(p);
+  }
+  public GhostProtocolModelProcessor() {
+    super();
+  }
+
   public void useDashboardCommunicator(DashboardAgent communicator) {
     dashboardCommunicator = communicator;
   }
@@ -58,6 +65,8 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
     }
 
 
+    
+    this.model.getGridPart().markPacmanPositionChangeProcessed();
 
 
   }

@@ -6,7 +6,7 @@ import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 
 public class LineModelProcessor extends ModelProcessor {
-  
+
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
@@ -67,6 +67,10 @@ public class LineModelProcessor extends ModelProcessor {
    */
   @Override
   protected void work() {
+    if (!model.getSensorPart().hasNewSensorValues()) {
+      return;
+    }
+
     LightModelPart lightPart = model.getLightPart();
     lightPart.setLine(Line.NONE);
     if (model.getSensorPart().isTurning()) {

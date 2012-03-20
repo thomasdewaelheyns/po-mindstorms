@@ -8,13 +8,20 @@ import penoplatinum.model.WallsModelPart;
  * This modelprocessor is responsible for updating the hillclimbing info
  * @author MHGameWork
  */
-public class GridRecalcModelProcessor extends ModelProcessor{
+public class GridRecalcModelProcessor extends ModelProcessor {
+
+  public GridRecalcModelProcessor(ModelProcessor p) {
+    super(p);
+  }
+
+  public GridRecalcModelProcessor() {
+  }
 
   @Override
   protected void work() {
     WallsModelPart walls = ((GhostModel) this.model).getWallsPart();
-    
-    
+
+
     if (!walls.needsGridUpdate()) {
       return;
     }
@@ -27,5 +34,4 @@ public class GridRecalcModelProcessor extends ModelProcessor{
   private void updateHillClimbingInfo() {
     ((GhostModel) this.model).getGridPart().getGrid().refresh();
   }
-  
 }
