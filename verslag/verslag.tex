@@ -448,7 +448,7 @@ De huidige simulator is zeer geschikt om visuele simulaties uit te voeren met de
 Dit stelt ons in staat om snel uitgebreide tests uit voeren en data te verzamelen voor analyse.
 Deze functionaliteit zit al gedeeltelijk in onze simulator. De enige functionaliteit die we moeten toevoegen zijn functies om onze gesimuleerde robots te ondervragen, zoals hun positie, richting en sensorwaarden.
 
-Overigens werden andere doelstellingen voor demo 2 met betrekking tot de simulator reeds gehaald. De simulator werkte immers al op continue niveau en ook onzekerheden waren reeds geimplementeerd.
+Overigens werden andere doelstellingen voor demo 2 met betrekking tot de simulator reeds gehaald. De simulator werkte immers al op continue niveau en ook onzekerheden waren reeds ge\"implementeerd.
 
 \section{Demo 3}
 
@@ -456,24 +456,22 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Conclusies}
 
-Dit deel wordt later toegevoegd.
-
 \section{Demo 1}
 
 \subsection{Feedback}
 
-Eerst en vooral zit het project op de goede weg en behoorde de demo tot \"e\"en van de betere onder de groepen. Er is duidelijk goed nagedacht over de softwarearchitectuur, zowel op niveau van robuustheid, uitbreidbaarheid als structuur. De gebruikte strategie i.v.m. Collaborative diffusion is goed gevonden en werkt duidelijk goed door zijn eenvoud. Op de dashboard gui werd positief gereageerd alsook op de inhoud en opmaak van het verslag.
+De feedback van het didactische team was overwegend positief. Er is duidelijk goed nagedacht over de softwarearchitectuur, zowel op niveau van robuustheid, uitbreidbaarheid als structuur. De gebruikte strategie i.v.m. Collaborative diffusion is goed gevonden en werkt duidelijk goed door zijn eenvoud. Het dashboard werd positief vermeld en de inhoud en opmaak van het verslag waren in lijn met de overige kwaliteit.
 
 Naast opmerkingen over opmaak en verduidelijking, waren er ook tips met zicht op verbetering van de presentatie en het rijgedrag van de robots. Hierbij kozen we voor het implementeren van een config klasse om de opstartsnelheid te verhogen, ook het presenteren zelf wordt vanaf nu voorbereidt. Het rijgedrag wordt vooral geoptimaliseerd door het verwijderen van redundantie.
 
 \subsection{Reflectie}
 
 Hoewel we allemaal zeer tevreden waren met de prestatie die we leverden op de demo, zijn we nog niet tevreden over het niveau dat we willen bereiken met dit project.
+
 We beslisten initieel om een week van code review te doen en daaruit beslissingen te nemen omtrent wat en hoe we gaan refactoren. Hieruit volgde ook een planning die de doelstellingen voor de overige demo\'s definieert. Dit houdt in welke features en aanpassingen we nog willen implementeren.
-Verdere uitleg over dit proces is te vinden in hoofdstuk 9.
+Verdere uitleg over dit proces is te vinden in hoofdstuk \ref{ch:process}.
 
-In het algemeen hebben we beslist om te blijven bij een volledig autonome robot, hoewel dit een zekere memory management inhoudt. Dit zal worden aangevuld met testresultaten. Verder waren we het eens met de feedback dat de rijsnelheid nog omhoog moet, maar we raken hierbij niet aan de robuustheid. 
-
+In het algemeen hebben we beslist om te blijven bij een volledig autonome robot, hoewel dit beperkingen inhoudt ten gevolgen van het beperkte geheugen van de robot. Naast een doorgedreven optimalisatie van het geheugengebruik, hebben we dit ook cijfermatig onderzocht en is dit een van de parameters waar we rekening mee houden tijdens de uitvoering van de logica op de robot. Sectie \ref{sect:performance} gaat dieper in om dit aspect.
 
 \section{Demo 2}
 
@@ -484,6 +482,7 @@ Dit deel wordt later toegevoegd.
 Dit deel wordt later toegevoegd.
 
 \chapter{Procesbeschrijving}
+\label{ch:process}
 
 Onze werkwijze tijdens het eerste semester heeft zijn vruchten afgeworpen. We willen deze aanpak ook in het tweede semester verder zetten. Zo volgen we opnieuw twee paden naar ons doel: enerzijds wordt er verder gewerkt aan de simulator en wordt de robot verder verbeterd. Anderzijds starten we ook een traject op dat zich focust op het einddoel.
 
