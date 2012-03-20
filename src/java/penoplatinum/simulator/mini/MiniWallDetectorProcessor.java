@@ -17,10 +17,9 @@ public class MiniWallDetectorProcessor extends ModelProcessor {
   }
 
   protected void work() {
-    MiniGhostModel model = (MiniGhostModel)this.model;
-    Sector detected      = model.getDetectedSector();
-    int lastMovement     = model.getLastMovement();
-    Agent agent          = model.getAgent();
+    Sector detected      = model.getWallsPart().getDetectedSector();
+    int lastMovement     = model.getGridPart().getLastMovement();
+    Agent agent          = model.getGridPart().getAgent();
     int bearing          = agent.getBearing();
 
     Sector sector = new Sector();
@@ -32,10 +31,10 @@ public class MiniWallDetectorProcessor extends ModelProcessor {
     } // else we keep it, so we can access it
 
     // only update when we have a complete set of sensorvalues
-    if( ! model.hasNewSonarValues() ) { return; }
+    if( ! model.getSonarPart().hasNewSonarValues() ) { return; }
     
     // front = free distance front/bearing
-    if( model.getFrontFreeDistance() < 35 ) {
+    if( model.getWallsPart().isWallFront() ) {
       sector.addWall(bearing);
     } else {
       sector.removeWall(bearing);
@@ -84,14 +83,14 @@ public class MiniWallDetectorProcessor extends ModelProcessor {
     }
     
     // left = leftFrom(bearing)
-    if( model.getLeftFreeDistance() < 35 ) {
+    if( model.getWallsPart().isWallLeft() ) {
       sector.addWall(Bearing.leftFrom(bearing));
     } else {
       sector.removeWall(Bearing.leftFrom(bearing));
     }
 
     // right = rightFrom(bearing)
-    if( model.getRightFreeDistance() < 35 ) {
+    if( model.getWallsPart().isWallRight() ) {
       sector.addWall(Bearing.rightFrom(bearing));
     } else {
       sector.removeWall(Bearing.rightFrom(bearing));
@@ -101,7 +100,7 @@ public class MiniWallDetectorProcessor extends ModelProcessor {
     // System.out.println( sector );
     // try { System.in.read(); } catch( Exception e ) {}
 
-    model.updateSector(sector);
-    model.markSonarValuesProcessed();
+    model.getWallsPart().updateSector(sector);
+    model.getSonarPart().markSonarValuesProcessed();
   }
 }

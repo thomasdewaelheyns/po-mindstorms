@@ -39,7 +39,7 @@ public class MiniGhostRobot implements Robot {
 
   public MiniGhostRobot(String name, GridView view) {
     this.setupModel(name);
-    this.model.displayGridOn(view);
+    this.model.getGridPart().displayGridOn(view);
   }
   
   public String getName() {
@@ -88,21 +88,23 @@ public class MiniGhostRobot implements Robot {
   // incoming communication from other ghosts, used by RobotAgent to deliver
   // incoming messages from the other ghosts
   public void processCommand(String cmd) {
-    this.model.addIncomingMessage(cmd);
+    this.model.getMessagePart().addIncomingMessage(cmd);
   }
 
   private void log(String msg) {
     System.out.printf( "[%10s] %2d,%2d / Robot  : %s\n", 
-                       this.model.getAgent().getName(),
-                       this.model.getAgent().getLeft(),
-                       this.model.getAgent().getTop(),
+                       this.model.getGridPart().getAgent().getName(),
+                       this.model.getGridPart().getAgent().getLeft(),
+                       this.model.getGridPart().getAgent().getTop(),
                        msg );
   }
   
   // one step in the event-loop of the Robot
   public void step() {
+    //TODO: set all flag shizzle
+    
     // poll other sensors and update model
-    this.model.updateSensorValues(this.api.getSensorValues());
+    this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
 
     // let the driver do his thing
     if( this.driver.isBusy() ) {
@@ -119,7 +121,7 @@ public class MiniGhostRobot implements Robot {
     
     // if the sweep is ready ...
     if( this.waitingForSweep ) {
-      this.model.updateSonarValues( this.api.getSweepResult(),
+      this.model.getSonarPart().updateSonarValues( this.api.getSweepResult(),
                                     Arrays.asList(-90, 0, 90) );
       this.waitingForSweep = false;
     } else {
@@ -138,10 +140,10 @@ public class MiniGhostRobot implements Robot {
   
   private void sendMessages() {
     if( this.communicationAgent == null ) { return; }
-    for( String msg : this.model.getOutgoingMessages() ) {
+    for( String msg : this.model.getMessagePart().getOutgoingMessages() ) {
       this.communicationAgent.send(msg);
     }
-    this.model.clearOutbox();
+    this.model.getMessagePart().clearOutbox();
   }
   
   public Boolean reachedGoal() {

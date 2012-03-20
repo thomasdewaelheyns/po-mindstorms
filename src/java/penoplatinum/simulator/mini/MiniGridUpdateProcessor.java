@@ -35,8 +35,8 @@ public class MiniGridUpdateProcessor extends ModelProcessor {
   private void updateWallInfo() {
     MiniGhostModel model = (MiniGhostModel)this.model;
 
-    Sector detected = model.getDetectedSector();
-    Sector current  = model.getCurrentSector();
+    Sector detected = model.getWallsPart().getDetectedSector();
+    Sector current  = model.getGridPart().getCurrentSector();
     for(int atLocation=Bearing.N; atLocation<=Bearing.W; atLocation++ ) {
       if( detected.isKnown(atLocation) ) {
         if( detected.hasWall(atLocation) ) {
@@ -59,7 +59,7 @@ public class MiniGridUpdateProcessor extends ModelProcessor {
   // if there are bearing without walls, providing access to unknown Sectors,
   // add such Sectors to the Grid
   private void addNewSectors() {
-    Sector current = ((MiniGhostModel)this.model).getCurrentSector();
+    Sector current = ((MiniGhostModel)this.model).getGridPart().getCurrentSector();
     for(int location=Bearing.N; location<=Bearing.W; location++) {
       if( current.givesAccessTo(location) &&
           ! current.hasNeighbour(location) )
@@ -72,6 +72,6 @@ public class MiniGridUpdateProcessor extends ModelProcessor {
   }
   
   private void updateHillClimbingInfo() {
-    ((MiniGhostModel)this.model).getGrid().refresh();
+    ((MiniGhostModel)this.model).getGridPart().getGrid().refresh();
   }
 }

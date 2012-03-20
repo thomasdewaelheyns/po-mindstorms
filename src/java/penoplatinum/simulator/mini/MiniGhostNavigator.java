@@ -37,9 +37,9 @@ public class MiniGhostNavigator implements Navigator {
   
   private void log(String msg) {
     System.out.printf( "[%10s] %2d,%2d / Navigator  : %s\n", 
-                       this.model.getAgent().getName(),
-                       this.model.getAgent().getLeft(),
-                       this.model.getAgent().getTop(),
+                       this.model.getGridPart().getAgent().getName(),
+                       this.model.getGridPart().getAgent().getLeft(),
+                       this.model.getGridPart().getAgent().getTop(),
                        msg );
   }
 
@@ -118,7 +118,7 @@ public class MiniGhostNavigator implements Navigator {
   // and there shouldn't be a wall in between).
   // if there is an agent on the adjacent Sector, we don't go there...
   private int[] getadjacentSectorInfo() {
-    Agent  agent  = this.model.getAgent();
+    Agent  agent  = this.model.getGridPart().getAgent();
     Sector sector = agent.getSector();
 
     Boolean hasNeighbour, hasWall;
@@ -164,7 +164,7 @@ public class MiniGhostNavigator implements Navigator {
   }
   
   private void createActions(int target) {
-    int current = this.model.getAgent().getBearing();
+    int current = this.model.getGridPart().getAgent().getBearing();
     
     if( target != current ) {
       int diff = target - current;
