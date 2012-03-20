@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
-import penoplatinum.IRSeekerV2.Mode;
+import penoplatinum.sensor.IRSeekerV2.Mode;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothAgent;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
@@ -13,6 +13,7 @@ import penoplatinum.pacman.GhostRobot;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
 import penoplatinum.pacman.GhostNavigator;
+import penoplatinum.sensor.IRSeekerV2;
 
 public class Main {
 

@@ -1,4 +1,4 @@
-package penoplatinum; 
+package penoplatinum.sensor; 
 
 import lejos.nxt.I2CPort; 
 import lejos.nxt.I2CSensor; 

@@ -16,7 +16,6 @@ public class AngieEventLoop {
 
     private Robot robot;
     private AngieRobotAPI angie;
-    private Navigator navigator;
     private String lastState = "";
 
     public AngieEventLoop(Robot robot) {
@@ -27,12 +26,6 @@ public class AngieEventLoop {
 
     }
 
-    private void cacheState() {
-//        synchronized (this) {
-//            //TODO: WARNING, this was copied/moved to NavigatorRobot, fps was removed
-//            this.lastState = this.navigatorRobot.getStatusMessage();
-//        }
-    }
 
     /**
      * This method is thread safe, it invokes the eventloop to update the state
@@ -66,17 +59,6 @@ public class AngieEventLoop {
             }
             count++;
 
-//            synchronized(updateLock)
-//            {
-//                if (updateStateInvoked)
-//                {
-//                    this.cacheState();
-//                    updateStateInvoked =false;
-//                    updateLock.notify();
-//                }
-//            }
-//            Thread.yield();
-            
             
         }
 

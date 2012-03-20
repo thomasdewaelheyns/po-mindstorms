@@ -1,5 +1,6 @@
 package penoplatinum;
 
+import penoplatinum.sensor.IRSeekerV2;
 import penoplatinum.util.Utils;
 import java.util.List;
 import lejos.nxt.Motor;
@@ -28,7 +29,6 @@ public class AngieRobotAPI implements RobotAPI {
   private WrappedLightSensor light;
   private RotatingSonarSensor sonar;
   private IRSeekerV2 irSeeker;
-  private AngieCalibrationData calibrationData;
   private RotationMovement movement;
   //private static final int sensorNumberTouchLeft = Model.S1;
   //private static final int sensorNumberTouchRight = Model.S2;
@@ -62,7 +62,6 @@ public class AngieRobotAPI implements RobotAPI {
     irSeeker = new IRSeekerV2(SensorPort.S1, IRSeekerV2.Mode.AC);
 
 
-    calibrationData = new AngieCalibrationData();
     movement = new RotationMovement();
 
     //TODO: WARNING: Depedency inconsistent between Angie and RotationMovement
@@ -77,9 +76,6 @@ public class AngieRobotAPI implements RobotAPI {
     return movement;
   }
 
-  public AngieCalibrationData getCalibrationData() {
-    return calibrationData;
-  }
 
   public WrappedLightSensor getLight() {
     return light;

@@ -7,11 +7,10 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
 import penoplatinum.util.Utils;
-import penoplatinum.barcode.ILightSensor;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 
-public class WrappedLightSensor implements ILightSensor {
+public class WrappedLightSensor  {
 
     final LightSensor light;
     private int WHITEVAL = 100;
