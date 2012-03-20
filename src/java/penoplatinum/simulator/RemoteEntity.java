@@ -64,7 +64,7 @@ public class RemoteEntity implements RobotEntity {
   }
 
   private void createGhostProtocolHandler(final GhostModel ghostModel) {
-    this.protocol = new GhostProtocolHandler(ghostModel.getAgent(), ghostModel, new GhostProtocolCommandHandler() {
+    this.protocol = new GhostProtocolHandler( ghostModel, new GhostProtocolCommandHandler() {
 
       @Override
       public void handleBarcode(String agentName, int code, int bearing) {
