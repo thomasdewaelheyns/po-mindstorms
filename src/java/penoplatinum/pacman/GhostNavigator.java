@@ -115,7 +115,7 @@ public class GhostNavigator implements Navigator {
   // and there shouldn't be a wall in between).
   // if there is an agent on the adjacent Sector, we don't go there...
   private int[] getadjacentSectorInfo() {
-    Agent  agent  = this.model.getAgent();
+    Agent  agent  = this.model.getGridPart(). getAgent();
     Sector sector = agent.getSector();
 
     Boolean hasNeighbour, hasWall;
@@ -161,7 +161,7 @@ public class GhostNavigator implements Navigator {
   }
   
   private void createActions(int target) {
-    int current = this.model.getAgent().getBearing();
+    int current = this.model.getGridPart().getAgent().getBearing();
     
     if( target != current ) {
       int diff = target - current;

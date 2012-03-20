@@ -1,6 +1,6 @@
 package penoplatinum.actions;
 
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.util.LightColor;
 import penoplatinum.model.GhostModel;
 import penoplatinum.simulator.Model;
@@ -74,7 +74,7 @@ public class AlignPerpendicularLine extends BaseAction {
   private double initialAngle;
 
   private int getRelativeAngle() {
-    return (int) (((GhostModel) model).getTotalTurnedAngle() - initialAngle);
+    return (int) (((GhostModel) model).getSensorPart().getTotalTurnedAngle() - initialAngle);
   }
 
   private int getStateStart() {
@@ -84,7 +84,7 @@ public class AlignPerpendicularLine extends BaseAction {
     switch (state) {
       case 0:
         // sweep over line left 
-        initialAngle = ((GhostModel) model).getTotalTurnedAngle();
+        initialAngle = ((GhostModel) model).getSensorPart().getTotalTurnedAngle();
         setAngle(-sweepSize);
         return Navigator.TURN;
       case 1:

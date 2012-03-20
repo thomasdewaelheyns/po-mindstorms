@@ -2,7 +2,7 @@ package penoplatinum.bluetooth;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.agent.AgentConfig;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAgent;

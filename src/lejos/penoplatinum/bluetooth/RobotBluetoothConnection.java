@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTConnection;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 /**
  * Responsible for sending and receiving bluetooth packets on the PC

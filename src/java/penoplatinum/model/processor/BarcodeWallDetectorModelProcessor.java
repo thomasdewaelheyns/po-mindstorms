@@ -2,9 +2,14 @@ package penoplatinum.model.processor;
 
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
-import penoplatinum.model.GhostModel;
 import penoplatinum.simulator.Bearing;
 
+/**
+ * Reponsible for setting the correct walls on a sector when a barcode has been
+ * detected on that sector
+ * 
+ * @author
+ */
 public class BarcodeWallDetectorModelProcessor extends ModelProcessor {
 
   public BarcodeWallDetectorModelProcessor() {
@@ -18,7 +23,7 @@ public class BarcodeWallDetectorModelProcessor extends ModelProcessor {
 
   @Override
   public void work() {
-    if (!model.isReadingBarcode()) {
+    if (!model.getBarcodePart().isReadingBarcode()) {
       doOnce = false;
       return;
     }
@@ -27,7 +32,7 @@ public class BarcodeWallDetectorModelProcessor extends ModelProcessor {
       return;
     }
     doOnce = true;
-    Agent agent = model.getAgent();
+    Agent agent = model.getGridPart().getAgent();
     int bearing = agent.getBearing();
     Sector sector = new Sector();
 
@@ -40,14 +45,14 @@ public class BarcodeWallDetectorModelProcessor extends ModelProcessor {
     // right has a wall
     sector.addWall(Bearing.rightFrom(bearing));
 
-    model.updateSector(sector);
+    model.getWallsPart().updateSector(sector);
     addNewSectors();
   }
-  
+
   // if there are bearing without walls, providing access to unknown Sectors,
   // add such Sectors to the Grid
   private void addNewSectors() {
-    Sector current = this.model.getCurrentSector();
+    Sector current = this.model.getGridPart().getCurrentSector();
     for (int location = Bearing.N; location <= Bearing.W; location++) {
       if (current.givesAccessTo(location)
               && !current.hasNeighbour(location)) {

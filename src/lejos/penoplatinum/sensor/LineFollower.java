@@ -1,6 +1,6 @@
 package penoplatinum.sensor;
 
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.WrappedLightSensor.Color;

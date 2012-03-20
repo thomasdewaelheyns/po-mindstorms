@@ -4,6 +4,7 @@
  */
 package penoplatinum;
 
+import penoplatinum.util.Utils;
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;

@@ -8,10 +8,11 @@ package penoplatinum.model.processor;
  * 
  * @author: Team Platinum
  */
-import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.model.GhostModel;
 
+import penoplatinum.model.GridModelPart;
+import penoplatinum.model.WallsModelPart;
 import penoplatinum.simulator.Bearing;
 
 public class GridUpdateProcessor extends ModelProcessor {
@@ -26,8 +27,7 @@ public class GridUpdateProcessor extends ModelProcessor {
 
   // update the agent
   public void work() {
-    GhostModel model = (GhostModel) this.model;
-    if (!model.needsGridUpdate()) {
+    if (!((GhostModel) this.model).getWallsPart().needsGridUpdate()) {
       return;
     }
 
@@ -40,8 +40,11 @@ public class GridUpdateProcessor extends ModelProcessor {
   private void updateWallInfo() {
     GhostModel model = (GhostModel) this.model;
 
-    Sector detected = model.getDetectedSector();
-    Sector current = model.getCurrentSector();
+    GridModelPart grid = model.getGridPart();
+    WallsModelPart walls = model.getWallsPart();
+    
+    Sector detected = walls.getDetectedSector();
+    Sector current = grid.getCurrentSector();
     for (int atLocation = Bearing.N; atLocation <= Bearing.W; atLocation++) {
       if (detected.isKnown(atLocation)) {
         if (detected.hasWall(atLocation)) {
@@ -59,15 +62,15 @@ public class GridUpdateProcessor extends ModelProcessor {
         }
       }
     }
-    model.markSectorUpdated(current);
+    grid.markSectorChanged(current);
   }
 
   // if there are bearing without walls, providing access to unknown Sectors,
   // add such Sectors to the Grid
   private void addNewSectors() {
-    GhostModel model = (GhostModel) this.model;
+    GridModelPart grid = ((GhostModel) this.model).getGridPart();
 
-    Sector current = ((GhostModel) this.model).getCurrentSector();
+    Sector current = grid.getCurrentSector();
     for (int location = Bearing.N; location <= Bearing.W; location++) {
       if (current.givesAccessTo(location)
               && !current.hasNeighbour(location)) {
@@ -75,7 +78,7 @@ public class GridUpdateProcessor extends ModelProcessor {
         // TODO: parameterize the value
         //System.out.println(current.getAgent().getName() + " : adding unknown sector(" + location +")" );
         neighbour.setValue(5000);
-        model.markSectorUpdated(neighbour);
+        grid.markSectorChanged(neighbour);
       }
     }
   }

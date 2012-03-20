@@ -22,7 +22,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 public abstract class MQ {
   private String  channelName = "default";

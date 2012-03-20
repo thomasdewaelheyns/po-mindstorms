@@ -1,7 +1,7 @@
 package penoplatinum.movement;
 
 import lejos.nxt.Button;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 public class RotationMovementTest {
 

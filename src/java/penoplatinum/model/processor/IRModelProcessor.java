@@ -1,8 +1,15 @@
 package penoplatinum.model.processor;
 
 import penoplatinum.model.GhostModel;
+import penoplatinum.model.GridModelPart;
+import penoplatinum.model.SensorModelPart;
 import penoplatinum.simulator.Model;
 
+/**
+ * Responsible for processing IR information and detecting pacman
+ * 
+ * @author MHGameWork
+ */
 public class IRModelProcessor extends ModelProcessor {
 
   public IRModelProcessor() {
@@ -15,10 +22,16 @@ public class IRModelProcessor extends ModelProcessor {
   @Override
   protected void work() {
     GhostModel model = (GhostModel) this.model;
-    if (!model.needsGridUpdate()) {
+    
+    
+    SensorModelPart sensor = model.getSensorPart();
+    GridModelPart grid = model.getGridPart();
+    
+    
+    if (!model.getWallsPart().needsGridUpdate()) {
       return;
     }
-    int dir = model.getSensorValue(Model.S1);
+    int dir = sensor.getSensorValue(Model.S1);
     int dx = 0, dy = 0;
     switch (dir) {
       case 2:
@@ -31,31 +44,31 @@ public class IRModelProcessor extends ModelProcessor {
         dx = 1;
         break;
       default: 
-        model.setPacManInNext(false, 0, 0);
+        grid.setPacManInNext(false, 0, 0);
         return;
     }
     int sum = 0;
     if(dir % 2 == 0){
-      sum += model.getSensorValue(Model.IR0+dir/2-1);
-      sum += model.getSensorValue(Model.IR0+dir/2);
+      sum += sensor.getSensorValue(Model.IR0+dir/2-1);
+      sum += sensor.getSensorValue(Model.IR0+dir/2);
       sum/=2;
     } else {
-      sum += model.getSensorValue(Model.IR0+dir/2);
+      sum += sensor.getSensorValue(Model.IR0+dir/2);
     }
     if (sum <= 150) {
-      model.setPacManInNext(false, 0, 0);
+      grid.setPacManInNext(false, 0, 0);
       return;
     }
-    if ((model.getAgent().getBearing() & 1) == 1) { //rottate
+    if ((grid.getAgent().getBearing() & 1) == 1) { //rottate
       int temp = dx;
       dx = -dy;
       dy = temp;
     }
-    if ((model.getAgent().getBearing() & 2) == 2) {//mirror 
+    if ((grid.getAgent().getBearing() & 2) == 2) {//mirror 
       dy = -dy;
       dx = -dx;
     }
 //    System.out.println("PACMAN");
-    model.setPacManInNext(true, model.getAgent().getLeft() + dx, model.getAgent().getTop() + dy);
+    grid.setPacManInNext(true, grid.getAgent().getLeft() + dx, grid.getAgent().getTop() + dy);
   }
 }

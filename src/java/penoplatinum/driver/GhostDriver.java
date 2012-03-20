@@ -4,7 +4,7 @@
  */
 package penoplatinum.driver;
 
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.actions.ActionQueue;
 import penoplatinum.actions.AlignPerpendicularLine;
 import penoplatinum.actions.MoveAction;

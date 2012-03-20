@@ -3,7 +3,14 @@ package penoplatinum.model.processor;
 import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.model.GhostModel;
+import penoplatinum.model.MessageModelPart;
 
+/**
+ * Responsible for processing received messages from the ghost communication 
+ * channel
+ * 
+ * @author MHGameWork
+ */
 public class InboxProcessor extends ModelProcessor {
 
   public InboxProcessor() {
@@ -17,14 +24,14 @@ public class InboxProcessor extends ModelProcessor {
   private List<String> buffer = new ArrayList<String>();
   
   protected void work() {
-    GhostModel model = (GhostModel) this.model;
+    MessageModelPart message = ((GhostModel) this.model).getMessagePart();
     
     buffer.clear();
     
-    model.receiveIncomingMessages(buffer);
+    message.receiveIncomingMessages(buffer);
     
     for (int i = 0; i < buffer.size(); i++) {
-      model.processMessage(buffer.get(i));
+      message.getProtocol().receive(buffer.get(i));
     }
   }
 }

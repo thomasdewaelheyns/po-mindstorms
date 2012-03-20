@@ -6,7 +6,7 @@ import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.barcode.ILightSensor;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;

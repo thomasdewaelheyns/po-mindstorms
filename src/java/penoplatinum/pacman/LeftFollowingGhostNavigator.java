@@ -35,13 +35,13 @@ public class LeftFollowingGhostNavigator implements Navigator {
       forwardQueued = false;
       return GhostAction.FORWARD;
     }
-    if (!m.isWallLeft()) {
+    if (!m.getWallsPart().isWallLeft()) {
       forwardQueued = true;
       return GhostAction.TURN_LEFT;
-    } else if (!m.isWallFront()) {
+    } else if (!m.getWallsPart().isWallFront()) {
       return GhostAction.FORWARD;
 
-    } else if (!m.isWallRight()) {
+    } else if (!m.getWallsPart().isWallRight()) {
       forwardQueued = true;
 
       return GhostAction.TURN_RIGHT;

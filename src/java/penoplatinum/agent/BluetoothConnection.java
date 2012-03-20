@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.Scanner;
 
 import penoplatinum.bluetooth.*;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 public class BluetoothConnection {
 
@@ -50,7 +50,7 @@ public class BluetoothConnection {
       packet = this.endPoint.ReceivePacket();
       data = new Scanner(this.endPoint.getReceiveStream()).nextLine();
       switch (packet) {
-        case penoplatinum.Utils.PACKETID_LOG:
+        case penoplatinum.util.Utils.PACKETID_LOG:
           System.out.println("Log:>" + data);
           break;
         case 123:

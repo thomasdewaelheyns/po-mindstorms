@@ -11,6 +11,14 @@ import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.GridView;
+import penoplatinum.model.BarcodeModelPart;
+import penoplatinum.model.GapModelPart;
+import penoplatinum.model.GridModelPart;
+import penoplatinum.model.LightModelPart;
+import penoplatinum.model.MessageModelPart;
+import penoplatinum.model.SensorModelPart;
+import penoplatinum.model.SonarModelPart;
+import penoplatinum.model.WallsModelPart;
 import penoplatinum.util.Buffer;
 import penoplatinum.util.LightColor;
 import penoplatinum.model.processor.ModelProcessor;
@@ -18,34 +26,6 @@ import penoplatinum.model.processor.ModelProcessor;
 public interface Model {
   // slightly common
   public Model  setProcessor(ModelProcessor processor);
-  public Model  updateSensorValues(int[] values);
-  public void   updateSonarValues(List<Integer> distances, List<Integer> angles);
-  public String explain();
-
-  // from GhostModel
-  
-  // when running in a UI environment we can provide a View for the Grid
-  public Model displayGridOn(GridView view);
-  public Grid getGrid();
-  public void addIncomingMessage(String msg);
-  public void receiveIncomingMessages(List<String> buffer);
-  public List<String> getOutgoingMessages();
-  public void clearOutbox();
-  public Agent getAgent();
-  public boolean hasNewSonarValues();
-  public void markSonarValuesProcessed();
-  public void updateSector(Sector newSector);
-  public Sector getDetectedSector();
-  public Sector getCurrentSector();
-  public int getLeftFreeDistance();
-  public int getFrontFreeDistance();
-  public int getRightFreeDistance();
-  public boolean sectorHasChanged();
-  public void moveForward();
-  public void turnLeft();
-  public void turnRight();
-  public void clearLastMovement();
-  public int getLastMovement();
   
   // from OriginalModel
   // shorthands mapping the sensors/numbers to their technical ports
@@ -70,42 +50,19 @@ public interface Model {
   public static final int MOTORSTATE_BACKWARD = 2;
   public static final int MOTORSTATE_STOPPED = 3;
 
-  public void updateDistances(List<Integer> distances, List<Integer> angles);
-  public List<Integer> getDistances();
-  public List<Integer> getAngles();
-  public int getSensorValue(int num);
-  public Boolean isMoving();
-  public Boolean isTurning();
-  public int[] getSonarValues();
-  public int getBarcode();
-  public void setBarcode(int barcode);
-  public Buffer getLightValueBuffer();
-  public Line getLine();
-  public void setLine(Line line);
-  public float getAverageTacho();
-  public String toString();
-  public int getGapEndAngle();
-  public void setGapEndAngle(int gapEndAngle);
-  public boolean isGapFound();
-  public void setGapFound(boolean gapFound);
-  public int getGapStartAngle();
-  public void setGapStartAngle(int gapStartAngle);
-  public float getPositionX();
-  public void setPositionX(float positionX);
-  public float getPositionY();
-  public void setPositionY(float positionY);
-  public float getDirection();
-  public void setDirection(float direction);
-  public Boolean isSweepComplete();
+  BarcodeModelPart getBarcodePart();
 
-  LightColor getCurrentLightColor();
-  public void setReadingBarcode(boolean b);
-  public boolean isReadingBarcode();
+  GapModelPart getGapPart();
 
-  public void setPacManInNext(boolean b, int x, int y);
-  boolean isIsNextToPacman();
+  GridModelPart getGridPart();
 
-  public void setLeftObstacle(boolean b);
+  LightModelPart getLightPart();
 
-  public void setRightObstacle(boolean b);
+  MessageModelPart getMessagePart();
+
+  SensorModelPart getSensorPart();
+
+  SonarModelPart getSonarPart();
+
+  WallsModelPart getWallsPart();
 }

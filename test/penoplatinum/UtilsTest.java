@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import org.junit.*;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import static org.junit.Assert.*;
 import penoplatinum.map.MapFactorySector;
 import penoplatinum.simulator.tiles.TileGeometry;

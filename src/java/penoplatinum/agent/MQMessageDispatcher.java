@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import penoplatinum.Config;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.bluetooth.CallbackPacketTransporter;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.IPacketHandler;

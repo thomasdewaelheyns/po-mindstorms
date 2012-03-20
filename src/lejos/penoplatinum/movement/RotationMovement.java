@@ -1,7 +1,7 @@
 package penoplatinum.movement;
 
 import lejos.nxt.*;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.util.ExtendedVector;
 
 public class RotationMovement {

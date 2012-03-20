@@ -4,12 +4,13 @@
  */
 package penoplatinum.model.processor;
 
+import penoplatinum.model.LightModelPart;
 import penoplatinum.util.LightColor;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.model.GhostModel;
 
 /**
- *
+ * Responsible for detecting lines in the lightsensor's data
  * @author Thomas
  */
 public class LightColorModelProcessor extends ModelProcessor {
@@ -35,9 +36,9 @@ public class LightColorModelProcessor extends ModelProcessor {
 
   @Override
   protected void work() {
-    GhostModel model = (GhostModel) this.model;
+    LightModelPart model = ((GhostModel) this.model).getLightPart();
 
-    int value = this.model.getSensorValue(this.model.S4);
+    int value = this.model.getSensorPart().getLightSensorValue();
     //Utils.Log("color: "+value);
     float averageLightValue = model.getAverageLightValue();
     if (averageLightValue < BROWN_START || averageLightValue > BROWN_END) {
@@ -76,7 +77,7 @@ public class LightColorModelProcessor extends ModelProcessor {
     //Utils.Log((int)  model.getAverageBlackValue() + "," + (int) averageLightValue + "," + (int) model.getAverageWhiteValue());
 
 //    Utils.Log(prevColor+"");
-    
+
     prevValue = value;
   }
 }

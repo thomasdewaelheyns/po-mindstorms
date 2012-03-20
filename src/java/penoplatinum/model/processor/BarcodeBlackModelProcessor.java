@@ -1,5 +1,6 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.model.BarcodeModelPart;
 import penoplatinum.util.LightColor;
 import penoplatinum.util.BufferSubset;
 import penoplatinum.util.Buffer;
@@ -9,6 +10,9 @@ import penoplatinum.simulator.Barcode;
 import penoplatinum.simulator.Model;
 
 /**
+ * This model processor watches the lightsensordata for barcodes.
+ * These barcodes start and end with a black line
+ * 
  * Author: Team Platinum
  */
 public class BarcodeBlackModelProcessor extends ModelProcessor {
@@ -64,10 +68,13 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
    */
   @Override
   protected void work() {
-    Buffer tempBuffer = this.model.getLightValueBuffer();
-    model.setBarcode(Barcode.None);
+
+    BarcodeModelPart barcode = model.getBarcodePart();
+
+    Buffer tempBuffer = barcode.getLightValueBuffer();
+    barcode.setBarcode(Barcode.None);
     updateState(tempBuffer);
-    model.setReadingBarcode(state != WAITING);
+    barcode.setReadingBarcode(state != WAITING);
   }
 
   /**
@@ -86,7 +93,7 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
   private void updateState(Buffer tempBuffer) {
     switch (state) {
       case WAITING:
-        if (model.getCurrentLightColor() == LightColor.Black) {
+        if (model.getLightPart().getCurrentLightColor() == LightColor.Black) {
 //          Utils.Log("Barcode Start");
           setState(RECORDING);
           tempBuffer.setCheckPoint();
@@ -94,7 +101,7 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
         }
         break;
       case RECORDING:
-        if (model.getCurrentLightColor() == LightColor.Brown) {
+        if (model.getLightPart().getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
           if (brownCounter > 5 && tempBuffer.getCheckpointSize() < 10) {
             setState(WAITING);
@@ -115,15 +122,15 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
         setState(WAITING);
         tempBuffer.unsetCheckPoint();
 
-        
+
 //        Utils.Log(" BAAAAAAAARRRRRCOOOOOOODEEEEE: " + barcode + "");
         int corrected = barcode;
         if (barcode != Barcode.None) {
           corrected = (corrected / 2) & ((1 << 7) - 1);
 //          corrected = interpreter.correct(corrected);
         }
-        
-        model.setBarcode(corrected);
+
+        model.getBarcodePart().setBarcode(corrected);
 
     }
   }

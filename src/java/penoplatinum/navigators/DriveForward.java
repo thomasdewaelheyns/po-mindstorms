@@ -1,7 +1,7 @@
 package penoplatinum.navigators;
 
 import penoplatinum.simulator.*;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 /*
  * LineFollowerNavigator

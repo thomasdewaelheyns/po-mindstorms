@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import penoplatinum.Config;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.agent.MQ;
 
 public class Simulator {
@@ -111,7 +111,7 @@ public class Simulator {
    */
   int findHitDistance(int angle, int left, int top, double x, double y) {
     // Force angles between 0 and 360 !!!
-    angle = penoplatinum.Utils.ClampLooped(angle, 0, 360);
+    angle = penoplatinum.util.Utils.ClampLooped(angle, 0, 360);
     //if (angle < 0 || angle > 360) throw new IllegalArgumentException();
 
     // determine the point on the (virtual) wall on the current tile, where

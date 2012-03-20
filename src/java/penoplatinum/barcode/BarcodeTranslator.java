@@ -1,6 +1,6 @@
 package penoplatinum.barcode;
 
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.util.BufferSubset;
 
 public class BarcodeTranslator {

@@ -1,6 +1,6 @@
 package penoplatinum.simulator.sensors;
 
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.SimulatedEntity;

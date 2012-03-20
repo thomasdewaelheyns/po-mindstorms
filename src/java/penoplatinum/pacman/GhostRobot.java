@@ -3,7 +3,7 @@ package penoplatinum.pacman;
 import penoplatinum.model.GhostModel;
 import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.driver.Driver;
 import penoplatinum.grid.GridView;
 import penoplatinum.model.processor.BarcodeBlackModelProcessor;
@@ -23,6 +23,8 @@ import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.RobotAgent;
 import penoplatinum.simulator.Navigator;
+import penoplatinum.simulator.mini.MessageHandler;
+import penoplatinum.simulator.mini.Queue;
 
 public class GhostRobot implements Robot {
 
@@ -51,7 +53,7 @@ public class GhostRobot implements Robot {
 
   public GhostRobot(String name, GridView view) {
     this(name);
-    this.model.displayGridOn(view);
+    this.model.getGridPart().displayGridOn(view);
   }
 
   private void setupModel(String name) {
@@ -72,9 +74,28 @@ public class GhostRobot implements Robot {
             new InboxProcessor(
             new GridUpdateProcessor(
             new IRModelProcessor(
-            new GridRecalcModelProcessor(
-                            ))))))))));
+            new GridRecalcModelProcessor())))))))));
     this.model.setProcessor(processors);
+
+    // Set initial model state
+
+
+    // Set the implementation of the ghost protocol to use
+
+    model.getMessagePart().setProtocol(new GhostProtocolHandler(model, new GhostProtocolModelCommandHandler(model)));
+    final Queue queue = new Queue();
+    queue.subscribe(new MessageHandler() {
+
+      @Override
+      public void useQueue(Queue queue) {
+      }
+
+      @Override
+      public void receive(String msg) {
+        model.getMessagePart().queueOutgoingMessage(msg);
+      }
+    });
+    model.getMessagePart().getProtocol().useQueue(queue);
 
   }
 
@@ -119,18 +140,27 @@ public class GhostRobot implements Robot {
     this.model.addIncomingMessage(cmd);
   }
   // the external tick...
+  public static long delta = 0;
+  public static int count = 0;
+  public static long start = 0;
 
-    public static long delta = 0;
-    public static int count = 0;
-    public static long start = 0;
-    
   public void step() {
+
+    this.model.getGridPart().clearLastMovement(); //TODO:
+    this.model.getGridPart().markPacmanPositionChangeProcessed();
+    this.model.getSensorPart().markSensorValuesProcessed();
+    this.model.getGridPart().markChangedSectorsProcessed();
+
+    setScanningLightData(false); // Resets this flag to false
+    sweepComplete = false;//TODO
 
 
     // poll other sensors and update model
     GhostRobot.start = System.nanoTime();
-    this.model.updateSensorValues(this.api.getSensorValues());
-    this.model.setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
+    this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
+    this.model.process();
+    isSweepDataChanged = false; //TODO
+    this.model.getSensorPart().setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
     // Send dashboard info
     if (dashboardAgent != null) {
@@ -161,7 +191,8 @@ public class GhostRobot implements Robot {
 
     // if the sweep is ready ...
     if (this.waitingForSweep) {
-      this.model.updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
+      this.model.getSonarPart().updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
+      this.model.process(); // TODO: double call
       this.api.setSweeping(false);
       this.waitingForSweep = false;
     } else {
@@ -185,7 +216,7 @@ public class GhostRobot implements Robot {
     // send outgoing messages
     this.sendMessages();
     if (dashboardAgent != null) {
-      dashboardAgent.sendGrid("myGrid", model.getGrid());
+      dashboardAgent.sendGrid("myGrid", model.getGridPart().getGrid());
     }
     System.gc();
   }
@@ -194,10 +225,10 @@ public class GhostRobot implements Robot {
     if (this.agent == null) {
       return;
     }
-    for (String msg : this.model.getOutgoingMessages()) {
+    for (String msg : this.model.getMessagePart().getOutgoingMessages()) {
       this.agent.send(msg);
     }
-    this.model.clearOutbox();
+    this.model.getMessagePart().clearOutbox();
   }
 
   public Boolean reachedGoal() {
@@ -239,6 +270,6 @@ public class GhostRobot implements Robot {
 
   @Override
   public String getName() {
-    return model.getAgent().getName();
+    return model.getGridPart().getAgent().getName();
   }
 }

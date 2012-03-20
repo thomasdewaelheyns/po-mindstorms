@@ -44,8 +44,8 @@ public class RemoteFileLogger {
         int testNum = 0;
 
         pt = new QueuedPacketTransporter(conn);
-        conn.RegisterTransporter(pt, penoplatinum.Utils.PACKETID_LOG);
-        conn.RegisterTransporter(pt, penoplatinum.Utils.PACKETID_STARTLOG);
+        conn.RegisterTransporter(pt, penoplatinum.util.Utils.PACKETID_LOG);
+        conn.RegisterTransporter(pt, penoplatinum.util.Utils.PACKETID_STARTLOG);
         this.directory = directory;
         directory.mkdirs();
 
@@ -71,7 +71,7 @@ public class RemoteFileLogger {
                     int id = pt.ReceivePacket();
                     Scanner scanner = new Scanner(pt.getReceiveStream()); //TODO: GC
 
-                    if (id == penoplatinum.Utils.PACKETID_LOG) {
+                    if (id == penoplatinum.util.Utils.PACKETID_LOG) {
                         String s;
                         s = scanner.nextLine();
                         fs.println(s);
@@ -81,7 +81,7 @@ public class RemoteFileLogger {
                             extraOutputStream.onLog(s);
                         }
 
-                    } else if (id == penoplatinum.Utils.PACKETID_STARTLOG) {
+                    } else if (id == penoplatinum.util.Utils.PACKETID_STARTLOG) {
                         String baseFilename = scanner.nextLine();
                         if (baseFilename.length() == 0) {
                             baseFilename = "DEFAULT";

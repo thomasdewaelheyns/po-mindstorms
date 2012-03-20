@@ -1,5 +1,6 @@
 package penoplatinum;
 
+import penoplatinum.util.Utils;
 import java.util.List;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;

@@ -5,7 +5,7 @@
 package penoplatinum.client;
 
 import java.io.File;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.bluetooth.PCBluetoothConnection;
 import penoplatinum.bluetooth.RemoteFileLogger;
 

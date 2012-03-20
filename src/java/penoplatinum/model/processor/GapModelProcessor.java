@@ -29,7 +29,7 @@ public class GapModelProcessor extends ModelProcessor {
   }
 
   public void work() {
-    model.setGapFound(false);
+    model.getGapPart().setGapFound(false);
     // if we changed direction
     if (this.changedDirection()) {
       // Reached the end of this gap detection pass
@@ -38,7 +38,7 @@ public class GapModelProcessor extends ModelProcessor {
       startGapDetectionPass();
     }
 
-    if (model.isTurning()) {
+    if (model.getSensorPart().isTurning()) {
       fail = true; // Fail when robot turns
     }
 
@@ -55,10 +55,10 @@ public class GapModelProcessor extends ModelProcessor {
     closeGap(getAngle());
 
     // push a copy of the info to model
-    model.setGapFound(!fail && uniqueGapFound);
-    if (model.isGapFound()) {
-      model.setGapEndAngle(gapEndAngle);
-      model.setGapStartAngle(gapStartAngle);
+    model.getGapPart().setGapFound(!fail && uniqueGapFound);
+    if (model.getGapPart().isGapFound()) {
+      model.getGapPart().setGapEndAngle(gapEndAngle);
+      model.getGapPart().setGapStartAngle(gapStartAngle);
     }
 
   }
@@ -157,8 +157,8 @@ public class GapModelProcessor extends ModelProcessor {
    * Detects a gap in the current sonar buffer 
    */
   public void performGapDetectionOnBuffer() {
-    List<Integer> distances = model.getDistances();
-    List<Integer> angles = model.getAngles();
+    List<Integer> distances = model.getSonarPart(). getDistances();
+    List<Integer> angles = model.getSonarPart().getAngles();
 
     startGapDetectionPass();
     for (int i = 0; i < distances.size(); i++) {
@@ -168,10 +168,10 @@ public class GapModelProcessor extends ModelProcessor {
   }
 
   private int getDistance() {
-    return this.model.getSensorValue(Model.S3);
+    return model.getSensorPart().getSonarDistance();
   }
 
   private int getAngle() {
-    return this.model.getSensorValue(Model.M3);// - middleTacho;
+    return model.getSensorPart().getSonarAngle();
   }
 }

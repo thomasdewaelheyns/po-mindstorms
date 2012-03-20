@@ -37,9 +37,9 @@ public class ManhattanDriver implements Driver {
   
   private void log(String msg) {
     System.out.printf( "[%10s] %2d,%2d / Driver : %s\n", 
-                       this.model.getAgent().getName(),
-                       this.model.getAgent().getLeft(),
-                       this.model.getAgent().getTop(),
+                       this.model.getGridPart(). getAgent().getName(),
+                       this.model.getGridPart().getAgent().getLeft(),
+                       this.model.getGridPart().getAgent().getTop(),
                        msg );
   }
 
@@ -47,7 +47,7 @@ public class ManhattanDriver implements Driver {
   public void step() {
     this.postProcessPreviousStep();
     // at this point, the real-world and the Model are in sync
-    this.model.getGrid().refresh();
+    this.model.getGridPart().getGrid().refresh();
     this.performNextStep();
   }
 
@@ -56,18 +56,18 @@ public class ManhattanDriver implements Driver {
     switch(this.action) {
       case GhostAction.FORWARD:
         this.log( "moving model forward..." );
-        this.model.moveForward();
+        this.model.getGridPart().moveForward();
         break;
       case GhostAction.TURN_LEFT:
         this.log( "turning model left..." );
-        this.model.turnLeft();
+        this.model.getGridPart().turnLeft();
         break;
       case GhostAction.TURN_RIGHT:
         this.log( "turning model right..." );
-        this.model.turnRight();
+        this.model.getGridPart().turnRight();
         break;
       default:
-        this.model.clearLastMovement();
+        this.model.getGridPart().clearLastMovement();
     }
     this.action = GhostAction.NONE;
   }

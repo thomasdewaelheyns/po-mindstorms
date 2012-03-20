@@ -1,5 +1,6 @@
 package penoplatinum;
 
+import penoplatinum.util.Utils;
 import java.io.PrintStream;
 import lejos.nxt.Button;
 import lejos.nxt.Motor;

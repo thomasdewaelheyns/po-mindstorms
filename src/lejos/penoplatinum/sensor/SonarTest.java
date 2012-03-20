@@ -8,7 +8,7 @@ import java.io.IOException;
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.UltrasonicSensor;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.movement.RotationMovement;

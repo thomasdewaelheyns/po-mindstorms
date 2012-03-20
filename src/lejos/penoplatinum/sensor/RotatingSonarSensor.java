@@ -5,7 +5,7 @@ import java.util.List;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
 import lejos.nxt.UltrasonicSensor;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 /**
  * Abstraction for a new type of sensor: a sonar mounted on top of a motor.

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
 import org.junit.Test;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.bluetooth.PCBluetoothConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 

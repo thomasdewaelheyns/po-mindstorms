@@ -9,7 +9,7 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 import penoplatinum.model.GhostModel;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.simulator.Bearing;
@@ -32,8 +32,8 @@ public class GhostProtocolHandler implements MessageHandler {
 
   // we need a least a reference to the Agent we're handling for
   // TODO: this should become a Model
-  public GhostProtocolHandler(Agent agent, GhostModel model, GhostProtocolCommandHandler commandHandler) {
-    this.agent = agent;
+  public GhostProtocolHandler(GhostModel model, GhostProtocolCommandHandler commandHandler) {
+    this.agent = model.getGridPart().getAgent();
     this.model = model;
     this.commandHandler = commandHandler;
 
@@ -45,7 +45,7 @@ public class GhostProtocolHandler implements MessageHandler {
     try {
       MyScanner scanner = new MyScanner(msg);//.useDelimiter("[ ,]");
       String agentName = scanner.next();
-      
+
       if ("JOIN".equals(agentName) && !scanner.hasNext()) {
         this.handleJoin();
       } else if (this.agent.getName().equals(agentName)) {
@@ -145,12 +145,12 @@ public class GhostProtocolHandler implements MessageHandler {
             + code + " " + bearing);
   }
 
-   public void sendPacman() {
+  public void sendPacman() {
     this.queue.send(this.agent.getName() + " PACMAN "
-            + this.model.getPacmanX()+ ","
-            + this.model.getPacmanY());
+            + this.model.getGridPart().getPacmanAgent().getLeft() + ","
+            + this.model.getGridPart().getPacmanAgent().getTop());
   }
-  
+
   // keep a reference to the outgoing queue and JOIN
   public void useQueue(Queue queue) {
     this.queue = queue;

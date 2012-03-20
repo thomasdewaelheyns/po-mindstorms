@@ -4,6 +4,7 @@
  */
 package penoplatinum;
 
+import penoplatinum.util.Utils;
 import lejos.nxt.Button;
 import lejos.nxt.Sound;
 import lejos.nxt.comm.Bluetooth;

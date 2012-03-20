@@ -3,7 +3,7 @@ package penoplatinum;
 
 import java.io.FileNotFoundException;
 import org.junit.Test;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 //import penoplatinum.navigators.BehaviourNavigator;
 import penoplatinum.model.GhostModel;
 import penoplatinum.simulator.SimulatedEntity;

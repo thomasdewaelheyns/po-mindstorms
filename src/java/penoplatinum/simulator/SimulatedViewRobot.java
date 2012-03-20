@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.ImageObserver;
 import java.util.List;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 import penoplatinum.simulator.view.Board;
 import penoplatinum.simulator.view.ViewRobot;
 

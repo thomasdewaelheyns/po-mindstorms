@@ -1,12 +1,12 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.model.LightModelPart;
 import penoplatinum.util.LightColor;
-import penoplatinum.Utils;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 
 public class LineModelProcessor extends ModelProcessor {
-
+  
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
@@ -67,9 +67,9 @@ public class LineModelProcessor extends ModelProcessor {
    */
   @Override
   protected void work() {
-    model.setLine(Line.NONE);
-    if (model.isTurning())
-    {
+    LightModelPart lightPart = model.getLightPart();
+    lightPart.setLine(Line.NONE);
+    if (model.getSensorPart().isTurning()) {
       state = WAITING;
     }
 //    if (model.isLightDataCorrupt()) {
@@ -78,7 +78,7 @@ public class LineModelProcessor extends ModelProcessor {
 
     switch (state) {
       case END_BARCODE:
-        if (model.getCurrentLightColor() == LightColor.Brown) {
+        if (lightPart.getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
           if (brownCounter > 5) {
             state = WAITING;
@@ -88,8 +88,8 @@ public class LineModelProcessor extends ModelProcessor {
         }
         break;
       case WAITING:
-        if (model.getCurrentLightColor() != LightColor.Brown) {
-          readingColor = model.getCurrentLightColor();
+        if (lightPart.getCurrentLightColor() != LightColor.Brown) {
+          readingColor = lightPart.getCurrentLightColor();
           //Utils.Log("RECORD LINE");
           state = RECORDING;
           brownCounter = 0;
@@ -97,7 +97,7 @@ public class LineModelProcessor extends ModelProcessor {
         }
         break;
       case RECORDING:
-        if (model.getCurrentLightColor() == LightColor.Brown) {
+        if (lightPart.getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
           if (brownCounter > 5 && colorCounter < 2) {
             //Utils.Log("False alarm");
@@ -110,7 +110,7 @@ public class LineModelProcessor extends ModelProcessor {
             //Utils.Log("INTERPRET" + colorCounter);
           }
         } else {
-          if (model.getCurrentLightColor() != readingColor) {
+          if (lightPart.getCurrentLightColor() != readingColor) {
             state = END_BARCODE;
             break;
           }
@@ -122,9 +122,9 @@ public class LineModelProcessor extends ModelProcessor {
         state = WAITING;
         //Utils.Log(readingColor+"");
         if (readingColor.equals(LightColor.Black)) {
-          model.setLine(Line.BLACK);
+          lightPart.setLine(Line.BLACK);
         } else {
-          model.setLine(Line.WHITE);
+          lightPart.setLine(Line.WHITE);
         }
         break;
     }

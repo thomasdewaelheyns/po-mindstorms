@@ -1,9 +1,12 @@
 package penoplatinum.model.processor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 import penoplatinum.model.GhostModel;
+import penoplatinum.model.SonarModelPart;
+import penoplatinum.model.WallsModelPart;
+import penoplatinum.util.Utils;
 
 /**
  * Implements a modelProcessor that gathers the information of the SonarSweep
@@ -25,7 +28,13 @@ public class WallDetectionModelProcessor extends ModelProcessor {
 
   public void work() {
     GhostModel model = (GhostModel) this.model;
-    if (!model.isSweepDataChanged()) {
+    
+    
+    SonarModelPart sonar = model.getSonarPart();
+    WallsModelPart walls = model.getWallsPart();
+    
+    
+    if (!sonar.isSweepDataChanged()) {
       return;
     }
 
@@ -33,39 +42,31 @@ public class WallDetectionModelProcessor extends ModelProcessor {
 
     currentIndex = 0;
 
-    distances = model.getDistances();
-    angles = model.getAngles();
+    distances = sonar.getDistances();
+    angles = sonar.getAngles();
 
     if (angles.get(0) > angles.get(1)) {
       distances = new ArrayList<Integer>();
       angles = new ArrayList<Integer>();
-      distances.addAll(model.getDistances());
-      angles.addAll(model.getAngles());
-      reverse(angles);
-      reverse(distances);
+      distances.addAll(sonar.getDistances());
+      angles.addAll(sonar.getAngles());
+      Utils.reverse(angles);
+      Utils.reverse(distances);
 
     }
 
 
-    model.setWallRightDistance(getEstimatedWallDistance(-110, -70));
+    walls.setWallRightDistance(getEstimatedWallDistance(-110, -70));
 //    model.setWallRightClosestAngle(cheatOutputAngle);
 
-    model.setWallFrontDistance(getEstimatedWallDistance(-25, 25));
+    walls.setWallFrontDistance(getEstimatedWallDistance(-25, 25));
 
-    model.setWallLeftDistance(getEstimatedWallDistance(70, 110));
+    walls.setWallLeftDistance(getEstimatedWallDistance(70, 110));
 //    model.setWallLeftClosestAngle(cheatOutputAngle);
 
 
 
-    model.setWallLeft(model.getWallLeftDistance() < 35);
-    model.setWallFront(model.getWallFrontDistance() < 35);
-    model.setWallRight(model.getWallRightDistance() < 35);
-
-
-
-
   }
-  int cheatOutputAngle;
   int currentIndex;
   
 
@@ -99,7 +100,6 @@ public class WallDetectionModelProcessor extends ModelProcessor {
 
 
     }
-    cheatOutputAngle = (minEndAngle + minStartAngle) / 2;
     if (num == 0) {
       return 2000000;
     }

@@ -3,7 +3,7 @@ package penoplatinum.bluetooth;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 /**
  *

@@ -4,6 +4,7 @@
  */
 package penoplatinum;
 
+import penoplatinum.util.Utils;
 import org.junit.Before;
 import org.junit.Test;
 import penoplatinum.grid.Sector;

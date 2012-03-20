@@ -7,7 +7,7 @@ import lejos.nxt.Button;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTConnection;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 public class RobotBluetoothTest {
 

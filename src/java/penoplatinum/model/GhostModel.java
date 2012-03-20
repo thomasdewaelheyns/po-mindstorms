@@ -7,121 +7,44 @@ package penoplatinum.model;
  * 
  * @author: Team Platinum
  */
-import penoplatinum.util.TransformationTRT;
-import java.util.List;
-import java.util.ArrayList;
 
-import penoplatinum.SimpleHashMap;
-import penoplatinum.Utils;
-import penoplatinum.barcode.BarcodeTranslator;
-import penoplatinum.simulator.Line;
-import penoplatinum.util.Buffer;
 
 // we're using commons collections HashedMap because HashMap isn't implemented
 // on Lejos.
 
 import penoplatinum.model.processor.ModelProcessor;
-import penoplatinum.grid.Sector;
-import penoplatinum.grid.Agent;
-import penoplatinum.grid.Grid;
-import penoplatinum.grid.AggregatedGrid;
-import penoplatinum.grid.GridView;
-import penoplatinum.grid.DiffusionGridProcessor;
 
-import penoplatinum.grid.SimpleGrid;
-//import penoplatinum.grid.SwingGridView;
-import penoplatinum.pacman.DashboardAgent;
-import penoplatinum.pacman.GhostAction;
-import penoplatinum.pacman.GhostAgent;
-import penoplatinum.pacman.GhostProtocolHandler;
-import penoplatinum.pacman.GhostProtocolModelCommandHandler;
-import penoplatinum.pacman.OtherGhost;
-import penoplatinum.pacman.PacmanAgent;
-import penoplatinum.util.LightColor;
 import penoplatinum.simulator.Model;
 
-import penoplatinum.simulator.Bearing;
-import penoplatinum.simulator.mini.MessageHandler;
-import penoplatinum.simulator.mini.Queue;
 
 public class GhostModel implements Model {
   // little bit of configuration
 
-  //private List<Integer> sonarValues = new ArrayList<Integer>(); //unused
-  private boolean newSonarValues = false;
-  // two queue-like lists for in- and out-goinging messages
-  private List<String> inbox = new ArrayList<String>();
-  private List<String> outbox = new ArrayList<String>();
   // ModelProcessors are a chain of Decorators
   private ModelProcessor processor;
-  // Data specific to the GhostNavigator
-  // the agent on the grid
-  private Agent agent;
-  // sector representing the current/prev current-sector
-  private Sector currentSector = new Sector(); // THIS IS NOT a reference to the Grid
-  private Sector prevSector = new Sector(); // THIS IS NOT a reference to the Grid
-  // This is our grid
-  private Grid myGrid;
-  // This is a map of the other robots. It consists of a key representing the
-  // name of the other robot/ghost and a value that contains a Grid.
-  private SimpleHashMap<String, Grid> otherGrids = new SimpleHashMap<String, Grid>();
-  // we keep track of the last movement
-  private int lastMovement = GhostAction.NONE;
-  private boolean isSweepDataChanged;
-  private GhostProtocolHandler protocol;
-  private ArrayList<OtherGhost> otherGhosts = new ArrayList<OtherGhost>();
-  private DashboardAgent dashboardAgent;
+  private BarcodeModelPart barcodePart;
+  private GapModelPart gapPart;
+  private GridModelPart gridPart;
+  private LightModelPart lightPart;
+  private MessageModelPart messagePart;
+  private SensorModelPart sensorPart;
+  private SonarModelPart sonarPart;
+  private WallsModelPart wallsPart;
 
   public GhostModel(String name) {
-    this.agent = new GhostAgent(name);
-    this.setupGrid();
+    barcodePart = new BarcodeModelPart();
+    gapPart = new GapModelPart();
+    gridPart = new GridModelPart(name);
+    lightPart = new LightModelPart();
+    messagePart = new MessageModelPart();
+    sensorPart = new SensorModelPart();
+    sonarPart = new SonarModelPart();
+    wallsPart = new WallsModelPart();
 
-    protocol = new GhostProtocolHandler(agent, this, new GhostProtocolModelCommandHandler(this));
-    final Queue queue = new Queue();
-    queue.subscribe(new MessageHandler() {
-
-      @Override
-      public void useQueue(Queue queue) {
-      }
-
-      @Override
-      public void receive(String msg) {
-        outbox.add(msg);
-      }
-    });
-    protocol.useQueue(queue);
+  
 
   }
 
-  public void useDashboardAgent(DashboardAgent agent) {
-    this.dashboardAgent = agent;
-  }
-
-  private void log(String msg) {
-    if (0 == 0) {
-      return;
-    }
-//    System.out.printf("[%10s] %2d,%2d / Model  : %s\n",
-//            this.getAgent().getName(),
-//            this.getAgent().getLeft(),
-//            this.getAgent().getTop(),
-//            msg);
-  }
-
-  // we create a new Grid, add the first sector, the starting point
-  private void setupGrid() {
-    this.myGrid = new AggregatedGrid().setProcessor(new DiffusionGridProcessor()).addSector(new Sector().setCoordinates(0, 0).put(this.agent, Bearing.N));
-  }
-
-  // when running in a UI environment we can provide a View for the Grid
-  public GhostModel displayGridOn(GridView view) {
-    this.myGrid.displayOn(view);
-    return this;
-  }
-
-  public Grid getGrid() {
-    return this.myGrid;
-  }
 
   public Model setProcessor(ModelProcessor processor) {
     this.processor = processor;
@@ -129,647 +52,48 @@ public class GhostModel implements Model {
     return this;
   }
 
-  // receive an update of the sensor values
-  public Model updateSensorValues(int[] values) {
-
-    if (values.length != SENSORVALUES_NUM) {
-      throw new RuntimeException("Invalid number of sensorvalues given!");
-    }
-
-    //this.prevSensors = this.sensors.clone(); //TODO: WARNING GC
-    //this.sensors = values;
-    for (int i = 0; i < SENSORVALUES_NUM; i++) {
-      this.sensors[i] = values[i];
-    }
-
-    this.process();
-
-    return this;
-
-
-  }
-
   // triggers the processor(s) to start processing the sensordata and update
   // the grid
   public void process() {
-
-    setScanningLightData(false); // Resets this flag to false
-    sweepComplete = false;
     if (this.processor != null) {
       this.processor.process();
     }
-    isSweepDataChanged = false;
-
   }
-
-  public void updateSonarValues(List<Integer> distances, List<Integer> angles) {
-    this.distances = distances; //TODO: remove double
-    //this.sonarValues = distances; 
-    this.angles = angles;
-
-    this.newSonarValues = true;
-    isSweepDataChanged = true;
-    this.process();
-  }
-
-  /**
-   * This is thread safe
-   * @param msg 
-   */
-  public void addIncomingMessage(String msg) {
-    synchronized (this) {
-      this.inbox.add(msg);
-    }
-  }
-
-  /**
-   * @param buffer 
-   */
-  public void receiveIncomingMessages(List<String> buffer) {
-    synchronized (this) {
-      buffer.addAll(inbox);
-      inbox.clear();
-    }
-  }
-
-  public List<String> getOutgoingMessages() {
-    return this.outbox;
-  }
-
-  public void processMessage(String msg) {
-    protocol.receive(msg);
-  }
-
-  public void clearOutbox() {
-    this.outbox.clear();
-  }
-
-  public Agent getAgent() {
-    return this.agent;
-  }
-
-  public boolean hasNewSonarValues() {
-    return this.newSonarValues;
-  }
-
-  public void markSonarValuesProcessed() {
-    this.newSonarValues = false;
-  }
-
-  public void updateSector(Sector newSector) {
-    this.prevSector = this.currentSector;
-    this.currentSector = newSector;
-    needsGridUpdate = true;
-
-
-  }
-  private boolean needsGridUpdate;
-
-  public boolean needsGridUpdate() {
-    return needsGridUpdate;
-  }
-
-  public void markGridUpdated() {
-    needsGridUpdate = false;
-  }
-
-  public void markSectorUpdated(Sector current) {
-    protocol.sendDiscover(current);
-    if (dashboardAgent != null) {
-      dashboardAgent.sendSectorWalls(getAgent().getName(), "myGrid", current);
-    }
-  }
-
-  public Sector getDetectedSector() {
-    return this.currentSector;
-  }
-
-  public Sector getCurrentSector() {
-    return this.agent.getSector();
-  }
-
-  public int getLeftFreeDistance() {
-    return getWallLeftDistance();
-  }
-
-  public int getFrontFreeDistance() {
-    return getWallFrontDistance();
-  }
-
-  public int getRightFreeDistance() {
-    return getWallRightDistance();
-  }
-
-  // Future Use: detect changes (e.g. keep track of change ratio)
-  public boolean sectorHasChanged() {
-    // TODO: make this more intelligent, going from unknown to known is not a
-    //       negative change, but going from known/wall to known/nowall is a 
-    //       bad sign
-    return this.prevSector.getWalls() != this.currentSector.getWalls();
-  }
-
-  public String explain() {
-    Boolean n = this.currentSector.hasWall(Bearing.N);
-    Boolean e = this.currentSector.hasWall(Bearing.E);
-    Boolean s = this.currentSector.hasWall(Bearing.S);
-    Boolean w = this.currentSector.hasWall(Bearing.W);
-    return "Agent @ " + this.agent.getLeft() + "," + this.agent.getTop() + "\n"
-            + "AgentBearing: " + this.agent.getBearing() + "\n"
-            + "Detected Sector:\n"
-            + "  N: " + (n == null ? "?" : (n ? "yes" : "")) + "\n"
-            + "  E: " + (e == null ? "?" : (e ? "yes" : "")) + "\n"
-            + "  S: " + (s == null ? "?" : (s ? "yes" : "")) + "\n"
-            + "  W: " + (w == null ? "?" : (w ? "yes" : "")) + "\n"
-            + "Free Left : " + this.getLeftFreeDistance() + "\n"
-            + "     Front: " + this.getFrontFreeDistance() + "\n"
-            + "     Right: " + this.getRightFreeDistance() + "\n";
-  }
-
-  public void moveForward() {
-    this.agent.moveForward();
-
-    this.lastMovement = GhostAction.FORWARD;
-    protocol.sendPosition();
-
-    if (lastBarcode != -1) {
-      // We drove over a barcode on this tile
-
-      getAgent().getSector().setTagCode(lastBarcode);
-      getAgent().getSector().setTagBearing(getAgent().getBearing());
-
-      //Find this barcode in the othergrids and map!!
-
-      for (Grid g : otherGrids.values()) {
-        String name = otherGrids.findKey(g);
-        for (Sector s : g.getTaggedSectors()) {
-          attemptMapBarcode(getAgent().getSector(), s, g, name);
-        }
-      }
-
-
-      //To fix protocol shitiness, send a position cmd for safety
-      protocol.sendBarcode(lastBarcode, getAgent().getBearing());
-      lastBarcode = -1;
-    }
-
-
-  }
-  int magic = 0;
-
-  public boolean attemptMapBarcode(Sector ourSector, Sector otherSector, final Grid otherGrid, String otherAgentName) {
-    magic++;
-    if (magic > 8) {
-      int a = magic * 33;
-    }
-    int ourCode = ourSector.getTagCode();
-    int code = otherSector.getTagCode();
-    int bearing = otherSector.getTagBearing();
-    int invertedCode = BarcodeTranslator.invertBarcode(code);
-
-    if (invertedCode == code) {
-      return false; // THis barcode is symmetrical??
-    }
-    if (ourCode == invertedCode) {
-      code = invertedCode;
-
-      // Switch bearing
-      bearing = Bearing.reverse(bearing);
-    }
-
-    if (ourCode != code) {
-      return false;
-    }
-    final int relativeBearing = (bearing - ourSector.getTagBearing() + 4) % 4;
-
-    TransformationTRT transform = new TransformationTRT().setTransformation(ourSector.getLeft(), ourSector.getTop(), relativeBearing, otherSector.getLeft(), otherSector.getTop());
-
-    setOtherGhostInitialOrientation(otherAgentName, transform);
-
-    getGrid().importGrid(otherGrid, transform);
-    //model.getGrid().refresh();
-    return true;
-  }
-
-  public void turnLeft() {
-    this.agent.turnLeft();
-    this.lastMovement = GhostAction.TURN_LEFT;
-  }
-
-  public void turnRight() {
-    this.agent.turnRight();
-    this.lastMovement = GhostAction.TURN_RIGHT;
-  }
-
-  public void clearLastMovement() {
-    this.lastMovement = GhostAction.NONE;
-  }
-
-  public int getLastMovement() {
-//    this.log("inspecting last movement: " + this.lastMovement);
-    return this.lastMovement;
-  }
-
-  public Grid getGrid(String actorName) {
-    Grid get = otherGrids.get(actorName);
-    if (get == null) {
-      get = new SimpleGrid();
-      otherGrids.put(actorName, get);
-
-      //SwingGridView view = new SwingGridView();
-      //get.displayOn(view);
-
-    }
-    return get;
-  }
-
-  public void setOtherGhostInitialOrientation(String name, TransformationTRT transform) {
-    OtherGhost g = findOtherGhost(name);
-    if (g == null) {
-      g = new OtherGhost();
-      g.setName(name);
-      otherGhosts.add(g);
-    }
-    g.setTransformationTRT(transform);
-  }
-
-  public OtherGhost findOtherGhost(String actorName) {
-    for (int i = 0; i < otherGhosts.size(); i++) {
-      if (otherGhosts.get(i).getName().equals(actorName)) {
-        return otherGhosts.get(i);
-      }
-    }
-    return null;
-  }
-
-  public void printGridStats() {
-
-    for (int i = 0; i < otherGrids.values.size(); i++) {
-      Grid g = otherGrids.values.get(i);
-
-      Utils.Log("Grid " + i + ": " + g.getSectors().size());
-
-    }
-  }
-  private float positionX;
-  private float positionY;
-  private float direction;
-  /**
-   * the raw data of the sensors: three motors, sensors 1, 2, 3, 4 
-   * and the states of the three motors defined by the MOTORSTATE enumeration
-   */
-  private int[] sensors = new int[SENSORVALUES_NUM];
-  // processors are chained using a Decorator pattern
-  private List<Integer> distances = new ArrayList<Integer>();
-  private List<Integer> angles = new ArrayList<Integer>();
-  private int[] sweepValues = new int[4];
-  private boolean sweepChanged = true;
-  private int barcode = -1;
-  private Line line = Line.NONE;
-  private int bufferSize = 1000;
-  private Buffer lightValueBuffer = new Buffer(bufferSize);
-  /**
-   * This value is true on the step that the sweep was completed
-   */
-  private Boolean sweepComplete;
-  private float averageLightValue;
-  private float averageWhiteValue;
-  private float averageBlackValue;
-
-  // method to update a set of distances and angles
-  public void updateDistances(List<Integer> distances,
-          List<Integer> angles) {
-    this.distances = distances;
-    this.angles = angles;
-  }
-
-  public List<Integer> getDistances() {
-    return this.distances;
-  }
-
-  public List<Integer> getAngles() {
-    return this.angles;
-  }
-
-  /**
-   * accessors to give access to the sensor and map data. these are mainly
-   * used by the ModelProcessors.
-   */
-  public int getSensorValue(int num) {
-    return this.sensors[num];
-  }
-
-  public int getLightSensorValue() {
-    return this.sensors[Model.S4];
-  }
-
-  public Boolean isMoving() {
-    return sensors[Model.MS1] != MOTORSTATE_STOPPED || sensors[Model.MS2] != MOTORSTATE_STOPPED;
-//    return this.sensors[Model.M1] != this.prevSensors[Model.M1] &&
-//           this.sensors[Model.M2] != this.prevSensors[Model.M2];
-  }
-
-  public Boolean isTurning() {
-    return isMoving() && (sensors[Model.MS1] != sensors[Model.MS2]);
-//    int changeLeft  = this.sensors[Model.M1] - this.prevSensors[Model.M1];
-//    int changeRight = this.sensors[Model.M2] - this.prevSensors[Model.M2];
-//    return changeLeft != 0 && changeLeft == changeRight * -1;
-  }
-
-  public boolean isSweepDataChanged() {
-    return isSweepDataChanged; //TODO: does this work???
-  }
-
-  // indicates whether the sweep-values have changed since the last time
-  // they are consulted
-  public boolean hasUpdatedSonarValues() {
-    return this.sweepChanged;
-  }
-
-  // TODO: refactor this to more function name about extrema
-  //       or separate methods to get extrema
-  public int[] getSonarValues() {
-    this.sweepChanged = false;
-    return this.sweepValues.clone(); //TODO: WARNING GC
-  }
-
-  public int getBarcode() {
-    return this.barcode;
-  }
-  private int lastBarcode = -1;
-
-  public void setBarcode(int barcode) {
-    if (barcode == 0) {
-      barcode = -1;
-    }
-    if (barcode != -1) {
-      lastBarcode = barcode;
-
-      Utils.Log(barcode + "");
-
-      // Barcode update is sent on next position send!!
-
-    }
-    this.barcode = barcode;
-
-  }
-
-  public Buffer getLightValueBuffer() {
-    return this.lightValueBuffer;
-  }
-
-  public Line getLine() {
-    return line;
-  }
-
-  public void setLine(Line line) {
-    this.line = line;
-  }
-
-  /**
-   * Returns the average tacho count of the 2 motors
-   */
-  public float getAverageTacho() {
-    return (getSensorValue(M1) + getSensorValue(M2)) / 2f;
-  }
-  private StringBuilder builder = new StringBuilder();
 
   public String toString() {
-    int lightValue = this.getSensorValue(S4);
-
-    String interpretedColor = "VIOLET!!"; //interpreter.getCurrentColor().toString();
-    int sonarAngle = this.getSensorValue(M3) + 90;
-    int sonarDistance = getSensorValue(S3);
-    boolean pushLeft = this.getSensorValue(S1) == 255;
-    boolean pushRight = this.getSensorValue(S2) == 255;
-
-    builder.delete(0, builder.length());
-    builder.append(lightValue).append(",\"").append(interpretedColor.toLowerCase()).append("\",\"").append(lastBarcode).append("\",").append(sonarAngle).append(',').append(sonarDistance).append(',').append(pushLeft).append(',').append(pushRight);
-    return builder.toString();
+    return "This iz ze model!";
   }
-  private boolean gapFound;
-  private int gapStartAngle;
-  private int gapEndAngle;
+ 
 
-  public int getGapEndAngle() {
-    return gapEndAngle;
+  public BarcodeModelPart getBarcodePart() {
+    return barcodePart;
   }
 
-  public void setGapEndAngle(int gapEndAngle) {
-    this.gapEndAngle = gapEndAngle;
+  public GapModelPart getGapPart() {
+    return gapPart;
   }
 
-  public boolean isGapFound() {
-    return gapFound;
+  public GridModelPart getGridPart() {
+    return gridPart;
   }
 
-  public void setGapFound(boolean gapFound) {
-    this.gapFound = gapFound;
+  public LightModelPart getLightPart() {
+    return lightPart;
   }
 
-  public int getGapStartAngle() {
-    return gapStartAngle;
+  public MessageModelPart getMessagePart() {
+    return messagePart;
   }
 
-  public void setGapStartAngle(int gapStartAngle) {
-    this.gapStartAngle = gapStartAngle;
+  public SensorModelPart getSensorPart() {
+    return sensorPart;
   }
 
-  /**
-   * @return the positionX
-   */
-  public float getPositionX() {
-    return positionX;
+  public SonarModelPart getSonarPart() {
+    return sonarPart;
   }
 
-  /**
-   * @param positionX the positionX to set
-   */
-  public void setPositionX(float positionX) {
-    this.positionX = positionX;
-  }
-
-  /**
-   * @return the positionY
-   */
-  public float getPositionY() {
-    return positionY;
-  }
-
-  /**
-   * @param positionY the positionY to set
-   */
-  public void setPositionY(float positionY) {
-    this.positionY = positionY;
-  }
-
-  public float getDirection() {
-    return direction;
-  }
-
-  public void setDirection(float direction) {
-    this.direction = direction;
-  }
-
-  /**
-   * Returns true when the sweep was completed this step
-   * @return 
-   */
-  public Boolean isSweepComplete() {
-    return sweepComplete;
-  }
-  private boolean wallLeft;
-  private boolean wallFront;
-  private boolean wallRight;
-  private int wallLeftDistance;
-  private int wallFrontDistance;
-  private int wallRightDistance;
-
-  public boolean isWallFront() {
-    return wallFront;
-  }
-
-  public void setWallFront(boolean wallFront) {
-    this.wallFront = wallFront;
-  }
-
-  public boolean isWallLeft() {
-    return wallLeft;
-  }
-
-  public void setWallLeft(boolean wallLeft) {
-    this.wallLeft = wallLeft;
-  }
-
-  public boolean isWallRight() {
-    return wallRight;
-  }
-
-  public void setWallRight(boolean wallRight) {
-    this.wallRight = wallRight;
-  }
-
-  public int getWallFrontDistance() {
-    return wallFrontDistance;
-  }
-
-  public void setWallFrontDistance(int wallFrontDistance) {
-    this.wallFrontDistance = wallFrontDistance;
-  }
-
-  public int getWallLeftDistance() {
-    return wallLeftDistance;
-  }
-
-  public void setWallLeftDistance(int wallLeftDistance) {
-    this.wallLeftDistance = wallLeftDistance;
-  }
-
-  public int getWallRightDistance() {
-    return wallRightDistance;
-  }
-
-  public void setWallRightDistance(int wallRightDistance) {
-    this.wallRightDistance = wallRightDistance;
-  }
-  private double totalTurnedAngle;
-
-  public double getTotalTurnedAngle() {
-    return totalTurnedAngle;
-  }
-
-  public void setTotalTurnedAngle(double totalTurnedAngle) {
-    this.totalTurnedAngle = totalTurnedAngle;
-  }
-
-  private void setScanningLightData(boolean b) {
-  }
-
-  public void setAverageLightValue(float averageLightValue) {
-    this.averageLightValue = averageLightValue;
-  }
-
-  public float getAverageLightValue() {
-    return averageLightValue;
-  }
-
-  public void setAverageWhiteValue(float averageWhiteValue) {
-    this.averageWhiteValue = averageWhiteValue;
-  }
-  private LightColor currentLightColor = LightColor.Brown;
-
-  @Override
-  public LightColor getCurrentLightColor() {
-    if (0 == 0) {
-      return currentLightColor;
-    }
-    float blackBorder = (averageLightValue + averageBlackValue) * 0.5f;
-    float whiteBorder = (averageLightValue + averageWhiteValue) * 0.5f;
-    if (getLightSensorValue() < blackBorder) {
-      return LightColor.Black;
-    }
-    if (getLightSensorValue() > whiteBorder) {
-      return LightColor.White;
-    }
-
-    return LightColor.Brown;
-  }
-
-  public void setCurrentLightColor(LightColor value) {
-    currentLightColor = value;
-  }
-  boolean isReadingBarcode = false;
-
-  @Override
-  public void setReadingBarcode(boolean b) {
-    this.isReadingBarcode = b;
-  }
-
-  @Override
-  public boolean isReadingBarcode() {
-    return this.isReadingBarcode;
-  }
-  boolean isNextToPacman = false;
-  int pacmanX = 0;
-  int pacmanY = 0;
-
-  @Override
-  public boolean isIsNextToPacman() {
-    return isNextToPacman;
-  }
-
-  @Override
-  public void setPacManInNext(boolean b, int x, int y) {
-    if (this.isNextToPacman) {
-      Sector s = this.getGrid().getSector(pacmanX, pacmanY);
-      getGrid().removeAgent(s.getAgent());
-      s.removeAgent();
-    }
-    this.isNextToPacman = b;
-    this.pacmanX = x;
-    this.pacmanY = y;
-    if (b) {
-      Sector s = this.getGrid().getSector(pacmanX, pacmanY);
-      PacmanAgent p = new PacmanAgent();
-      s.put(p, 0);
-    }
-    protocol.sendPacman();
-  }
-
-  public int getPacmanX() {
-    return pacmanX;
-  }
-
-  public int getPacmanY() {
-    return pacmanY;
-  }
-
-  @Override
-  public void setLeftObstacle(boolean b) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public void setRightObstacle(boolean b) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public WallsModelPart getWallsPart() {
+    return wallsPart;
   }
 }

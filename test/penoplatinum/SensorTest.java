@@ -2,7 +2,7 @@ package penoplatinum;
 
 
 import lejos.nxt.*;
-import penoplatinum.Utils;
+import penoplatinum.util.Utils;
 
 /**
  * This is a test of remote reading of sensors from the PC
