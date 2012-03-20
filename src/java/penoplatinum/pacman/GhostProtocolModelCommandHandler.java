@@ -104,7 +104,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
       for (int i = 0; i <= 3; i++) {
         Boolean newVal = GhostProtocolHandler.decodeTrit(values[i]);
-        otherSector.placeWall(i, newVal);
+        otherSector.setWall(i, newVal);
       }
 
       SimpleGrid.mergeSector(sector, ghost.getTransformationTRT().getRotation(), otherSector);

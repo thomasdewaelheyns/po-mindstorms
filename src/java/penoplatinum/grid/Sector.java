@@ -277,7 +277,7 @@ public class Sector {
     return this.knowsWall(wall) ? this.hasRawWall(wall) : null;
   }
 
-  public void placeWall(int wall, Boolean value) {
+  public void setWall(int wall, Boolean value) {
     if (value == null) {
       clearWall(wall);
     } else if (value) {

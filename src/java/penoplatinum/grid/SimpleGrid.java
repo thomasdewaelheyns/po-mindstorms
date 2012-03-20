@@ -248,7 +248,7 @@ public class SimpleGrid implements Grid {
         newVal = null;
       }
 
-      thisSector.placeWall(j, newVal);
+      thisSector.setWall(j, newVal);
     }
 
   }
@@ -267,7 +267,7 @@ public class SimpleGrid implements Grid {
     return taggedSectors;
   }
 
-  private void disengage() {
+  public void disengage() {
     for (Sector s : sectors.values()) {
       s.disengage();
     }
