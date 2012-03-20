@@ -330,6 +330,47 @@ De eigen AggregatedGrid beschikt ook over een DiffusingGridProcessor die het alg
 
 Het GhostModel is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de GhostNavigator beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende Grids in het GhostModel. Anderzijds is er de WallDetectorProcessor die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige Sector. Tot slot is er de GridUpdateProcessor die de nieuwe muur-informatie zal verwerken in de eigen Grid en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie ModelProcessoren zijn er nog andere actief. Het betreft hier bvb. de LineModelProcessor of de WallDetectionModelProcessor. Deze zorgen voor informatie die door de Driver zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze ModelProcessoren maakten reeds deel uit van de robots uit het eerste semester.}
 
+\subsection{Performantie}
+\label{sect:performance}
+
+Met de expliciete keuze om alle software op de robot zelf te implementeren, zijn we natuurlijk gebonden aan de beperkingen van de robot. Enerzijds heeft deze geen processor die te vergelijken is met de processors van hedendaagse computers. Dit is echter voor onze architectuur en gekozen zoekstrategie geen probleem. Door gebruik te maken van een zeer eenvoudig ``local hill climbing'' algoritme, gebaseerd op het principe van ``Collaborate Diffusion'', vragen we zeer weinig van de processor. We slagen er in om een ``frame rate'' te bekomen die rond de 80 FPS \footnote{Frames Per Second is een term die uit de grafische sector komt en weergeeft hoeveel beelden per seconde gemaakt worden, maar wordt ook gebruikt in andere contexten. Een ``frame'' is dan het geheel van taken. Voor onze robot bestaat \'e\'en frame uit het opvragen van de sensorwaarden, het bijwerken van het Model, het kiezen van een volgende actie en het initi\"eren van de uitvoering.} ligt, wat betekent dat de frequentie waarmee de robot al zijn taken uitvoert meer dan hoog genoeg is voor de taken die moeten uitgevoerd worden. Proefondervindelijk hebben we vastgesteld dat een frame rate van 60 FPS een minimum is om de verschillende taken naar behoren uit te voeren.
+
+\subsubsection{Geheugengebruik}
+
+Het aspect geheugen is dan weer wel een sterk beperkende factor. De robot beschikt slechts over een werkgeheugen van 64KB, hiervan wordt een deel ingenomen door het geladen programma. Tijdens het eerste semester was de hoeveelheid informatie die opgeslagen werd in het Model nagenoeg constant, of had ten minste een gekende bovengrens. In het tweede semester moeten we echter informatie bijhouden over het speelveld waarop we ons bewegen. Aangezien we op voorhand niet weten hoe groot die speelveld kunnen we niet op voorhand een bovengrens bepalen voor het geheugen nodig om deze informatie op te slagen. Daarbij komt dat we dit speelveld niet alleen moeten bijhouden voor onze eigen robot, maar ook voor de drie andere robots.
+
+Intern stellen we het speelveld of Map voor als een verzameling sectoren, die verbonden zijn met elkaar door bi-directionele verwijzingen. Telkens een robot een nieuwe sector ``ontdekt'' wordt er intern ook een nieuw Sector object aangemaakt. De grootte van zo'n Sector object is dus bepalend voor de hoeveelheid sectoren we maximaal kunnen bijhouden in het geheugen van de robot.
+
+Vlak voor demo 1, was een Sector ongeveer 370 bytes groot en konden we ongeveer 145 Sectoren opslaan ons geheugen. In een worst-case scenario betekent dit dat we per robot 36 sectoren konden opslaan, wat overeenkomt met een speelveld van 6 bij 6. We hebben vervolgens twee pistes gestart om dit probleem aan te pakken. Enerzijds hebben we het geheugengebruik van de Sector klasse aangepakt en gereduceerd tot 280 bytes. Anderzijds hebben we besloten om binnenkomende informatie van andere robots slechts te bewaren totdat deze informatie op basis van een barcode kon ge\"importeerd worden in de Map van de eigen robot. Op dat ogenblik gooien we de Map van de andere robot weg en voegen de nog volgende binnenkomende informatie rechtstreeks toe aan onze eigen Map.
+
+Op deze manier zal er een trapsgewijs verval zijn van het totale aantal sectoren die moeten bijgehouden worden. Immers wanneer alle robots een gemeenschappelijke barcode hebben gevonden, zal er slechts \'e\'en Map overblijven, nl. die van de eigen robot.
+
+Met deze aanpassingen konden we voor demo 1 een maximaal aantal van 200 sectoren opslaan, ofwel 50 per Robot, wat overeenkomt met een speelveld van 7 bij 7. Rekening houdend dat deze situatie zich niet kan voordoen, omdat de robots nooit allemaal afzonderlijk het hele speelveld moeten ontdekken en sowieso gemeenschappelijke barcodes zullen tegenkomen, ligt de bovengrens voor de dimensies van het speelveld in realiteit hogen. Simulaties wezen uit dat we met 200 sectoren in staat waren om een (realistisch) speelveld van 10 bij 10 zonder problemen te kunnen verkennen met vier robots.
+
+We hebben deze simulaties gedaan aan de hand van de mini-simulator (zie sectie \ref{sect:mini-simulator}). Wanneer 4 robots een speelveld van 10 bij 10 verkennen, zonder gebruik te maken van barcodes om informatie uit te wisselen, dan zal het totaal aantal sectoren in het geheugen van onze robot oplopen tot 400. Figuur \ref{chart:sectors-no-merge} toont een grafiek die het verloop van zo'n sessie weergeeft.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=100mm]{resources/sectors-no-merge.png}
+  \caption{Verloop van het aantal sectoren zonder uitwisseling van informatie.}
+  \label{chart:sectors-no-merge}
+\end{figure}
+
+Figuur \ref{chart:sectors-with-merge} toont vervolgens het resultaat van dezelfde simulatie, echter nu zal onze robot de door andere robots verkende sectoren importeren in zijn eigen map, de Map van de andere robot uit zijn geheugen verwijderen en alle volgende nieuwe informatie rechtstreeks toepassen op zijn eigen Map.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=100mm]{resources/sectors-with-merge.png}
+  \caption{Verloop van het aantal sectoren met uitwisseling van informatie.}
+  \label{chart:sectors-with-merge}
+\end{figure}
+
+We zien hier duidelijk twee zaken naar voor komen: enerzijds beschikt de robot veel sneller over informatie van het hele speelveld en anderzijds wordt het totale geheugengebruik ook drastisch beperkt.
+
+Deze aanpak heeft natuurlijk een groot nadeel. Eens de gegevens van een andere robot ge\"importeerd zijn, is het niet mogelijk om deze terug te verwijderen. De architectuur voorziet een AggregatedGrid die de gegevens van de echte Grids dynamisch aggregeert. Hierbij moeten de Grids  van de verschillende robots echter wel in het geheugen bewaard blijven.
+
+Met het oog op demo 2 en 3 willen we nog verdere optimalisaties doorvoeren op het vlak van het geheugengebruik van een Sector. Anderzijds onderzoeken we een oplossing waarbij er Sectoren uit de verschillende Mappen van andere Robots verwijderd worden na een bepaalde tijd en vooral in functie van het nog beschikbare geheugen.
+
 \section{PC}
 
 Op het vlak van de PC kunnen we opnieuw verder bouwen op onze bestaande ServiceAgent. Naast het logging-kanaal, zal deze nu ook een tweede Bluetooth kanaal volgen, langs het welke de boodschappen van het GhostProtocol kunnen uitgewisseld worden met de Exchange-queue op de RabbitMQ server.
@@ -387,7 +428,7 @@ Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelij
 \end{figure}
 
 \subsection{Mini-Simulator}
-
+\label{sect:mini-simulator}
 Om het onderzoek naar het algoritme onafhankelijk te laten verlopen van de echte simulator en tevens niet te belasten met details van deze laatste, werd een mini-simulator gemaakt. Deze maakt een abstractie van de wereld en kent alleen een resolutie op niveau van sectoren zoals dit het geval is in de simulator. Figuur \ref{fig:mini-simulator} toont de mini-simulator in actie met vier gesimuleerde robots, elk vertrokken op een andere positie en met een andere ori\"entatie.
 
 \begin{figure}[htbp]
