@@ -1,7 +1,5 @@
 package penoplatinum.simulator.tiles;
 
-import java.awt.Graphics2D;
-
 public interface Tile {
   int getBarcode();
   int getColorAt(int x, int y);
@@ -10,6 +8,5 @@ public interface Tile {
   @Override
   String toString();
   int getSize();
-  void drawTile(Graphics2D g2d, int left, int top);  
-  int drawSize();
+  TileDraw getDrawer();
 }
