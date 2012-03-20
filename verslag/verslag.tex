@@ -389,10 +389,21 @@ Het Dashboard zelf wordt voorzien van de nodige visualisaties voor deze nieuwe i
 \end{figure}
 
 \section{Refactoring}
-Een groot deel van de tijd voor demo 2 is gespendeerd geweest aan het refactoren van onze code. Aan de hand van een grondige analyse van de code zijn bepaalde pijnpunten aangeduid die door de grote veranderingen tussen semester 1 en semester 2 niet uitbreidbaar meer waren. Deze punten zijn besproken geweest en zijn voor demo 2 indien mogelijk aangepakt geweest. 
 
-Zo is de grote hoeveelheid informatie in het GhostModel opgesplits geweest in verschillende delen om de koppeling te verminderen. Verder zijn er kleine aanpassingen gedaan om het geheugengebruik verder te verminderen. En algemene bruikbaarheid.
+Een groot deel van de tijd tussen demo 1 en 2 is besteed aan het refactoren van de code. Aan de hand van een grondige analyse zijn verschillende historisch gegroeide pijnpunten aangeduid. Tot op dit moment was er veelal rond deze problemen gewerkt onder druk van de verschillende demo's. Met een functioneel volledig uitgewerkte oplossing, konden we nu zorgen dat de kwaliteit van de hele repository in lijn was met het niveau van de functionaliteit.
 
+De belangrijkste streefdoelen waren het wegwerken van redundantie in de code, het correct benoemen van de verschillende klassen en namespaces, het toevoegen van duidelijke startpunten en het toevoegen van vele kleine extra's die het geheel tot een flexibel en gepolijst resultaat omtoveren.
+
+Een van de grootste acties bestond er in om het sterk uitgegroeide Model op te splitsen in functionele deelmodellen en het verplaatsen van functionaliteit uit deze gegevensdragers naar de ModelProcessors. Figuur \ref{uml:refactoring} illustreert deze aanpassing.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=120mm]{resources/refactoring-model.png}
+  \caption{Refactoring van Model}
+  \label{uml:refactoring}
+\end{figure}
+
+Daarnaast wordt er ook bij elke verbetering rekening gehouden met het geheugengebruik. Waar mogelijk worden zo klein mogelijke datastructuren gebruikt om het onnodig reserveren van geheugenruimte te beperken. Dit geldt natuurlijk alleen voor klassen die effectief op de robot gebruikt worden.
 
 \chapter{Simulator}
 
