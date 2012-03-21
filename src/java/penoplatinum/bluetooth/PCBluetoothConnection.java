@@ -12,6 +12,7 @@ import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
+import penoplatinum.util.PCUtils;
 import penoplatinum.util.Utils;
 
 /**
@@ -19,7 +20,7 @@ import penoplatinum.util.Utils;
  * @author: Team Platinum
  */
 public class PCBluetoothConnection implements IConnection {
-    private final String ROBOT_NAME = Utils.PROPERTIES.getProperty("robot.name");
+    private final String ROBOT_NAME = PCUtils.PROPERTIES.getProperty("robot.name");
 
     private DataOutputStream outputStream;
     private DataInputStream inputStream;

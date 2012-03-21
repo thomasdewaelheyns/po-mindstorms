@@ -9,6 +9,7 @@ import penoplatinum.sensor.IRSeekerV2.Mode;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothAgent;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
+import penoplatinum.driver.GhostDriver;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
@@ -18,9 +19,6 @@ import penoplatinum.sensor.IRSeekerV2;
 public class Main {
 
   public static void main(String[] args) throws Exception {
-
-
-
 //    byte[] b = new byte[55 * 1024];
 //    testCountMemory();
     //Runtime.getRuntime().gc();
@@ -29,11 +27,10 @@ public class Main {
 //      return;
 //    }
 
-
-
     GhostRobot robot = new GhostRobot("Michiel");
     //robot.useNavigator(new LeftFollowingGhostNavigator(robot.getGhostModel()));
-    robot.useNavigator(new GhostNavigator().setModel(robot.getGhostModel()));
+    robot.useNavigator(new GhostNavigator());
+    robot.useDriver(new GhostDriver());
 
 
     final AngieEventLoop angie = new AngieEventLoop(robot);
@@ -42,12 +39,9 @@ public class Main {
     conn.initializeConnection();
     Utils.EnableRemoteLogging(conn);
 
-
     final RobotBluetoothAgent robotBluetoothAgent = new RobotBluetoothAgent();
-
     robot.useCommunicationAgent(robotBluetoothAgent.useConnection(conn));
-
-    robotBluetoothAgent.run();
+    //robotBluetoothAgent.run(); This is started in robot.useCommunicationAgent(agent)
 
 
 //        initializeAgent(angie);
@@ -143,8 +137,6 @@ public class Main {
     return false;
   }
   static byte[] buf = new byte[1];
-
- 
 
   private static void initializeAgent(final AngieEventLoop angie) {
 
