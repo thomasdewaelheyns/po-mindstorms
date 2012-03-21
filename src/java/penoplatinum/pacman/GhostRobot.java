@@ -52,6 +52,7 @@ public class GhostRobot implements Robot {
       sweepAnglesList.add(sweepAngles[i]);
     }
 
+    useDriver(new GhostDriver()); // default
   }
 
   public GhostRobot(String name, GridView view) {

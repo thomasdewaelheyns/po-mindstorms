@@ -14,8 +14,8 @@ public interface BarcodeCorrector {
 
   int correct(int in);
 
-  byte[] getExpand();
-
   int translate(BufferSubset list);
+  
+  public byte expandBarcode(int compressed);
   
 }

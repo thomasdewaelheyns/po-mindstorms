@@ -19,64 +19,68 @@ public class SectorDraw implements TileDraw{
     this.s = s;
   }
   
-  @Override
+   @Override
   public void drawTile(Graphics2D g2d, int left, int top) {
-    g2d.setColor(Board.BROWN);
-    g2d.fill(new Rectangle(DRAW_TILE_SIZE * (left - 1), DRAW_TILE_SIZE * (top - 1),
-            DRAW_TILE_SIZE, DRAW_TILE_SIZE));
+    renderBackground(g2d, left, top);
     //renderLinesCross(g2d, left, top);
     renderBarcode(g2d, left, top);
-    renderWalls(g2d, left, top);
+    g2d.setColor(Board.WHITE);
+    renderWalls(g2d, left, top,false);
+    g2d.setColor(Board.DARK_BROWN);
+    renderWalls(g2d, left, top,true);
   }
 
   @Override
   public int drawSize() {
     return Sector.SIZE * Board.SCALE;
   }
+ private void renderBackground(Graphics2D g2d, int left, int top) {
+    g2d.setColor(Board.BROWN);
+    g2d.fill(new Rectangle(DRAW_TILE_SIZE * (left - 1), DRAW_TILE_SIZE * (top - 1),
+            DRAW_TILE_SIZE, DRAW_TILE_SIZE));
+  }
 
-  private void renderWalls(Graphics2D g2d, int left, int top) {
+  /**
+   * This renders lines at wall positions, where hasWall equals wallValue
+   * @param g2d
+   * @param left
+   * @param top
+   * @param wallValue 
+   */
+  private void renderWalls(Graphics2D g2d, int left, int top, boolean wallValue) {
     // walls are 2cm width = 4px
-    g2d.setColor(Board.DARK_BROWN);
-    if (s.hasWall(Bearing.N)) {
-      g2d.setColor(Board.DARK_BROWN);
-    } else {
-      g2d.setColor(Board.WHITE);
+    if (s.hasWall(Bearing.N) == wallValue) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top - 1),
+              DRAW_TILE_SIZE,
+              DRAW_WALL_LINE_WIDTH));
     }
-    g2d.fill(new Rectangle(
-            DRAW_TILE_SIZE * (left - 1),
-            DRAW_TILE_SIZE * (top - 1),
-            DRAW_TILE_SIZE,
-            DRAW_WALL_LINE_WIDTH));
-    if (s.hasWall(Bearing.E)) {
-      g2d.setColor(Board.DARK_BROWN);
-    } else {
-      g2d.setColor(Board.WHITE);
+
+    if (s.hasWall(Bearing.E) == wallValue) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * left - DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE * (top - 1),
+              4,
+              DRAW_TILE_SIZE));
     }
-    g2d.fill(new Rectangle(
-            DRAW_TILE_SIZE * left - DRAW_WALL_LINE_WIDTH,
-            DRAW_TILE_SIZE * (top - 1),
-            4,
-            DRAW_TILE_SIZE));
-    if (s.hasWall(Bearing.S)) {
-      g2d.setColor(Board.DARK_BROWN);
-    } else {
-      g2d.setColor(Board.WHITE);
+
+    if (s.hasWall(Bearing.S) == wallValue) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE,
+              4));
     }
-    g2d.fill(new Rectangle(
-            DRAW_TILE_SIZE * (left - 1),
-            DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
-            DRAW_TILE_SIZE,
-            4));
-    if (s.hasWall(Bearing.W)) {
-      g2d.setColor(Board.DARK_BROWN);
-    } else {
-      g2d.setColor(Board.WHITE);
+
+    if (s.hasWall(Bearing.W) == wallValue) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top - 1),
+              DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE));
     }
-    g2d.fill(new Rectangle(
-            DRAW_TILE_SIZE * (left - 1),
-            DRAW_TILE_SIZE * (top - 1),
-            DRAW_WALL_LINE_WIDTH,
-            DRAW_TILE_SIZE));
+
   }
 
   private void renderBarcode(Graphics2D g2d, int left, int top) {

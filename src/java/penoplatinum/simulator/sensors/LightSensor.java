@@ -5,7 +5,7 @@ import penoplatinum.util.CircularQueue;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
-import penoplatinum.simulator.tiles.Panel;
+import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Tile;
 
 public class LightSensor implements Sensor {
@@ -46,34 +46,34 @@ public class LightSensor implements Sensor {
     int dx = 0, dy = 0;
     if (x < 0) {
       dx = -1;
-      x += Panel.SIZE;
+      x += Sector.SIZE;
     }
-    if (x >= Panel.SIZE) {
+    if (x >= Sector.SIZE) {
       dx = +1;
-      x -= Panel.SIZE;
+      x -= Sector.SIZE;
     }
     if (y < 0) {
       dy = -1;
-      y += Panel.SIZE;
+      y += Sector.SIZE;
     }
-    if (y >= Panel.SIZE) {
+    if (y >= Sector.SIZE) {
       dy = +1;
-      y -= Panel.SIZE;
+      y -= Sector.SIZE;
     }
     // get correct tile
     Point tilePos = simEntity.getCurrentTileCoordinates();
     tilePos.translate(dx, dy);
     Tile tile = sim.getCurrentTile(tilePos);
     if (tile == null) {
-      return Panel.BLACK;
+      return Sector.BLACK;
     }
 
     int color = tile.getColorAt(x, y);
 
     // TODO: add random abberations
     //this.sensorValues[Model.S4] =
-    //        color == Panel.WHITE ? 100 : (color == Panel.BLACK ? 0 : 70);
-    return color == Panel.WHITE ? WHITE : (color == Panel.BLACK ? BLACK : BROWN);
+    //        color == Sector.WHITE ? 100 : (color == Sector.BLACK ? 0 : 70);
+    return color == Sector.WHITE ? WHITE : (color == Sector.BLACK ? BLACK : BROWN);
   }
 
   @Override

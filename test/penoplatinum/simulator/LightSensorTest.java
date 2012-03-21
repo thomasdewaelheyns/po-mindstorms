@@ -12,6 +12,7 @@ import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -22,6 +23,7 @@ import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Sectors;
 import org.junit.Assert.*;
 import org.junit.Test;
+import penoplatinum.simulator.tiles.SectorDraw;
 import penoplatinum.simulator.view.Board;
 
 /**
@@ -37,14 +39,29 @@ public class LightSensorTest {
   @Test
   public void testLightSensorCorrectness() {
 
-    Sector s = Sectors.N;
+    ArrayList<Sector> sectors = new ArrayList<Sector>();
 
-    showImages(createTileImage(s), createImageFromLightsensor(s));
-    validateLightvalues(s);
+
+    for (int i = 0; i < (1 << 12); i++) {
+//      i = 2560;
+      Sector s = new Sector(i);
+      try {
+//        showImages(createTileImage(s), createImageFromLightsensor(s));
+
+      } catch (Exception e) {
+        System.out.println("Skipping invalid tile");
+        continue;
+      }
+      validateLightvalues(s);
+    }
+
+
+
 
   }
 
   private void validateLightvalues(Sector s) {
+    System.out.println(s.getData());
     BufferedImage img = createTileImage(s);
 
     for (int x = 0; x < Sector.SIZE; x++) {
@@ -65,16 +82,17 @@ public class LightSensorTest {
 
 
         final int color = s.getColorAt(x, y);
-        System.out.println(x + ", " + y + "Light: " + color + " Rendered: " + renderedColor);
+//        System.out.println("Data: " + s.getData() + " pos: " +  x + ", " + y + "Light: " + color + " Rendered: " + renderedColor);
         org.junit.Assert.assertEquals(renderedColor, color);
       }
     }
   }
 
   private BufferedImage createTileImage(Sector s) {
-    final BufferedImage img = new BufferedImage(Sector.DRAW_TILE_SIZE, Sector.DRAW_TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
+
+    final BufferedImage img = new BufferedImage(SectorDraw.DRAW_TILE_SIZE, SectorDraw.DRAW_TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g = img.createGraphics();
-    s.drawTile(g, 1, 1);
+    s.getDrawer().drawTile(g, 1, 1);
     return img;
   }
 
@@ -87,7 +105,7 @@ public class LightSensorTest {
         g.setColor(Color.BLUE);
         g.fillRect(0, 0, 300, 300);
         g.drawImage(img, 40 - 24, 40, null);
-        g.drawImage(lightImage, 40 - 24 + 10 + Sector.DRAW_TILE_SIZE, 40, null);
+        g.drawImage(lightImage, 40 - 24 + 10 + SectorDraw.DRAW_TILE_SIZE, 40, null);
       }
     };
     f.setSize(300, 300);
@@ -95,7 +113,7 @@ public class LightSensorTest {
   }
 
   private BufferedImage createImageFromLightsensor(Sector s) {
-    final BufferedImage img = new BufferedImage(Sector.DRAW_TILE_SIZE, Sector.DRAW_TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
+    final BufferedImage img = new BufferedImage(SectorDraw.DRAW_TILE_SIZE, SectorDraw.DRAW_TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g = img.createGraphics();
     for (int x = 0; x < Sector.SIZE; x++) {
       for (int y = 0; y < Sector.SIZE; y++) {

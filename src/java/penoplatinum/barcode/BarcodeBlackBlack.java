@@ -22,8 +22,18 @@ public class BarcodeBlackBlack implements BarcodeCorrector {
                                            17, 19, 21, 22, 23, 25, 27, 29, 31, 35, 37, 
                                            39, 43, 47, 55};
 
-  @Override
   public byte[] getExpand() {
     return expand;
+  }
+  
+  @Override
+  public byte expandBarcode(int compressed)
+  {
+    if (compressed >= expand.length)
+    {
+//      System.out.println("Warning: unknown compressed barcode " + compressed);
+      return 0;
+    }
+    return expand[compressed];
   }
 }
