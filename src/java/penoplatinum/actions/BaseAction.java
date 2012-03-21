@@ -22,7 +22,6 @@ public abstract class BaseAction {
   }
 
   public BaseAction() {
-    this.model = model;
   }
 
   public BaseAction(Model model) {
