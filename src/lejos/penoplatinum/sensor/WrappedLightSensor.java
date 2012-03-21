@@ -1,14 +1,11 @@
 package penoplatinum.sensor;
 
-import java.io.PrintStream;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
 import penoplatinum.util.Utils;
-import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.QueuedPacketTransporter;
 
 public class WrappedLightSensor  {
 
@@ -16,32 +13,12 @@ public class WrappedLightSensor  {
     private int WHITEVAL = 100;
     private int BROWNVAL = 63;
     private int BLACKVAL = -3;
-    private int blackBorder;
-    private int whiteBorder;
-    PrintStream printStream;
-    QueuedPacketTransporter lightTransporter;
-    private final QueuedPacketTransporter commandTransporter;
 
-    /**
-     * TODO: remove this misery
-     * @param conn
-     * @param commandTransporter 
-     */
-    public WrappedLightSensor(IConnection conn, QueuedPacketTransporter commandTransporter) {
+    public WrappedLightSensor() {
         //TODO: move out the sensorport
         light = new LightSensor(SensorPort.S4, true);
         light.setLow(344);
         light.setHigh(508);
-
-//        if (conn != null) {
-//            lightTransporter = new QueuedPacketTransporter(conn);
-//            conn.RegisterTransporter(lightTransporter, UIView.LIGHT);
-//            printStream = new PrintStream(lightTransporter.getSendStream());
-//
-//        }
-
-        updateBorders();
-        this.commandTransporter = commandTransporter;
     }
 
     public void calibrate() {
@@ -83,20 +60,10 @@ public class WrappedLightSensor  {
 
         LCD.clear();
 
-        updateBorders();
-
         Utils.Log(BLACKVAL + "," + BROWNVAL + "," + WHITEVAL);
         Utils.Log(light.getLow() + "," + light.getHigh());
         Utils.Sleep(10000);
 
-
-
-
-    }
-
-    private void updateBorders() {
-        blackBorder = (BLACKVAL + BROWNVAL) / 2;
-        whiteBorder = (WHITEVAL + BROWNVAL) / 2;
 
     }
 
@@ -104,88 +71,5 @@ public class WrappedLightSensor  {
         return light.readNormalizedValue();
         
     }
-    
-    public int getLightValue() {
 
-        int ret = light.readValue();
-        float rawValue = light.getNormalizedLightValue(); // I know, this is confusing
-        //Utils.Log(ret + "");
-//        if (printStream != null) {
-//            printStream.print((int) rawValue);
-//            printStream.print(",");
-
-//            printStream.print(getCurrentColor(ret).toUIViewColor());
-//            printStream.println();
-
-//            lightTransporter.SendPacket(UIView.LIGHT);
-//        }
-
-
-        return ret;
-    }
-
-    public byte readValue() {
-        return (byte) getLightValue();
-    }
-
-    public enum Color {
-
-        Black, White, Brown;
-
-//        public int toUIViewColor() {
-//            switch (this) {
-//                case Black:
-//                    return UIView.BLACK;
-//                case Brown:
-//                    return UIView.BROWN;
-//                case White:
-//                    return UIView.WHITE;
-//                default:
-//                    throw new RuntimeException("THE IMPOSSIBLE IS POSSIBLE!");
-//            }
-//        }
-    }
-
-    public boolean isColor(Color col, double val) {
-
-        switch (col) {
-            case Brown:
-                return val >= blackBorder && val <= whiteBorder;
-            case Black:
-                return val < blackBorder;
-            case White:
-                return val > whiteBorder;
-
-
-        }
-        throw new AssertionError("Unknown op: " + this);
-    }
-
-    public boolean isColor(Color col) {
-        return isColor(col, getLightValue());
-    }
-
-    public Color getCurrentColor() {
-        return getCurrentColor(getLightValue());
-    }
-
-    public Color getCurrentColor(int val) {
-        if (isColor(Color.Brown, val)) {
-            return Color.Brown;
-        }
-        if (isColor(Color.Black, val)) {
-            return Color.Black;
-        }
-        return Color.White;
-
-
-    }
-
-    public int isBlackOrWhite(int value) {
-        if (value < ((blackBorder + whiteBorder) / 2)) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
 }
