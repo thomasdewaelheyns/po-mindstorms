@@ -52,9 +52,9 @@ public class Sector implements Tile, Cloneable {
 
 
     int color = this.getBarcodeColor(x, y);
-//    if (color != Sector.NO_COLOR) {
-//      return color;
-//    }
+    if (color != Sector.NO_COLOR) {
+      return color;
+    }
 
     color = Sector.NO_COLOR;
     return color;
