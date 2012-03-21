@@ -1,9 +1,9 @@
 package penoplatinum.model.processor;
 
 import penoplatinum.model.LightModelPart;
-import penoplatinum.util.LightColor;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
+import penoplatinum.util.LightColor;
 
 public class LineModelProcessor extends ModelProcessor {
 
@@ -13,7 +13,6 @@ public class LineModelProcessor extends ModelProcessor {
   private static final int END_BARCODE = 3;
   private int brownCounter = 0;
   int state = WAITING;
-  LightColor readingColor;
   private int colorCounter = 0;
 
   /**
@@ -92,8 +91,7 @@ public class LineModelProcessor extends ModelProcessor {
         }
         break;
       case WAITING:
-        if (lightPart.getCurrentLightColor() != LightColor.Brown) {
-          readingColor = lightPart.getCurrentLightColor();
+        if (lightPart.getCurrentLightColor() == LightColor.White) {
           //Utils.Log("RECORD LINE");
           state = RECORDING;
           brownCounter = 0;
@@ -114,7 +112,7 @@ public class LineModelProcessor extends ModelProcessor {
             //Utils.Log("INTERPRET" + colorCounter);
           }
         } else {
-          if (lightPart.getCurrentLightColor() != readingColor) {
+          if (lightPart.getCurrentLightColor() != LightColor.White) {
             state = END_BARCODE;
             break;
           }
@@ -125,11 +123,7 @@ public class LineModelProcessor extends ModelProcessor {
       case INTERPRET:
         state = WAITING;
         //Utils.Log(readingColor+"");
-        if (readingColor.equals(LightColor.Black)) {
-          lightPart.setLine(Line.BLACK);
-        } else {
-          lightPart.setLine(Line.WHITE);
-        }
+        lightPart.setLine(Line.WHITE);
         break;
     }
   }
