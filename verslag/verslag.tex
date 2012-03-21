@@ -43,13 +43,13 @@ Het project wordt zoals in het eerste semester begeleid door het gebruik van tus
 
 Het doel van de eerste demo is een vereenvoudigde vorm van het einddoel waarbij we een stilstaande Pac-Man zoeken binnen het doolhof. De simulator dient  reeds beschikbaar te zijn en moet drie virtuele robots de fysieke laten bijstaan. Voor de tweede demo mag de commissie beslissen welke doelstellingen passen in het verdere proces richting het einddoel.
 
-Tijdens het eerste semester zijn we er in geslaagd zijn om zeer herbruikbare code te produceren in het eerste semester: de architecturale concepten, zoals Robot, Navigator en Model zijn duidelijk binnen het team en de verdere uitwerking van deze concepten in het tweede semester werd ervaren als een natuurlijke evolutie. Aangezien we te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
+Tijdens het eerste semester zijn we er in geslaagd om zeer herbruikbare code te produceren in het eerste semester: de architecturale concepten, zoals Robot, Navigator en Model, zijn duidelijk binnen het team en de verdere uitwerking van deze concepten in het tweede semester werd ervaren als een natuurlijke evolutie. Aangezien we te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
 
-Het verslag is anders opgebouwd ten opzichte van het vorige semester: er is gekozen voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is erg gelijkend hoewel natuurlijk de inhoud veranderd is t.o.v. het eerste semester. Nieuw zijn de stukken over de strategie i.v.m. de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
+Het verslag is anders opgebouwd ten opzichte van het vorige semester: er werd gekozen voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is erg gelijkend hoewel natuurlijk de inhoud veranderd is t.o.v. het eerste semester. Nieuw zijn de stukken over de strategie i.v.m. de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
 
 \chapter{Probleemstelling}
 
-De doelstellingen van de demo's worden hier achtereenvolgens beschreven. Zij volgen stapsgewijs een ontwerpproces dat tracht een autonome robot te leveren, die samen met drie andere ``ghosts'', probeert de Pac-Man in te sluiten.
+De doelstellingen van de demo's worden hier achtereenvolgens beschreven. Zij volgen stapsgewijs een ontwerpproces dat tracht een autonome robot op te leveren, die samen met drie andere ``ghosts'', probeert de Pac-Man in te sluiten.
 
 \section{Demo 1}
 
@@ -61,11 +61,11 @@ Elk team wordt tijdens de demo afzonderlijk beoordeeld.
  
 \section{Demo 2}
  
-De doelstellingen voor demo 2 werden vastgelegd met de resultaten van de eerste demo in het achterhoofd. Deze waren voor sommige teams niet zo goed. Om de kern van de opdracht niet op de lange baan te schuiven wordt in demo 2 toch getracht een stap in de goede richting te nemen. Om de lat niet te hoog te leggen werd beslist om de Pac-Man nog steeds stil te laten staan. De tweede demo draait daarom volledig rond het collaboreren met de andere teams. Dit is duidelijk een van de essenti\"ele aspecten voor de uiteindelijke demo dat niet uit het oog mag verloren worden.
+De doelstellingen voor demo 2 werden vastgelegd met de resultaten van de eerste demo in het achterhoofd. Deze waren voor sommige teams niet zo goed. Om de kern van de opdracht niet op de lange baan te schuiven wordt in demo 2 toch getracht een stap in de goede richting te nemen. Om de doelstellingen voor demo 2 haalbaar te houden, werd beslist om de Pac-Man nog steeds stil te laten staan. De tweede demo draait daarom volledig rond het samenwerken met de andere teams. Dit is duidelijk een van de essenti\"ele aspecten voor de uiteindelijke demo dat niet uit het oog mag verloren worden.
 
 We volgen de raad op om op voorhand samen te zitten met de andere drie groepen. Het behalen van de doelstellingen is een inspanning van de vier teams samen. Om onverwachte resultaten te voorkomen is samen testen dan ook een noodzaak.
 
-Het doel van deze demo ligt dus in het samen verkennen van de doolhof en het samen insluiten van een stilstaande Pac-Man. We doen dit zowel met de virtuele versie van de simulator als met de gedistribueerde. Initieel krijgt ook elk team de kans om eerst nogmaals zijn hybride simulator te tonen en de vooruitgang ten opzichte van de eerste demo aan te duiden.
+Het doel van deze demo ligt dus in het samen verkennen van het doolhof en het samen insluiten van een stilstaande Pac-Man. We doen dit zowel met de virtuele versie van de simulator als met de gedistribueerde. Initieel krijgt ook elk team de kans om eerst nogmaals zijn hybride simulator te tonen en de vooruitgang ten opzichte van de eerste demo aan te duiden.
 
 \section{Demo 3}
 
@@ -145,7 +145,7 @@ Oorspronkelijk was het idee dat het Ghost Protocol letterlijk gebruikt zou worde
 
 \subsection{Aanpassingen Demo 2}
 
-Het ``barcode'' commando wordt vervangen door een ``barcode'' commando, dit is een vooruitgang aangezien er nu geen logica meer voorzien moet worden om de barcodes aan een positie te linken. 
+Het ``barcode'' commando wordt vervangen door een ``barcodeat'' commando, dit is een vooruitgang aangezien er nu geen logica meer voorzien moet worden om de barcodes aan een positie te linken. 
 
 Er werd eveneens een ``removebarcode'' toegevoegd om teams toe te laten eerdere transmissies omtrent barcodes ongedaan te maken.
 
@@ -342,7 +342,7 @@ Het aspect geheugen is dan weer wel een sterk beperkende factor. De robot beschi
 
 Intern stellen we het speelveld of Map voor als een verzameling sectoren, die verbonden zijn met elkaar door bi-directionele verwijzingen. Telkens een robot een nieuwe sector ``ontdekt'' wordt er intern ook een nieuw Sector object aangemaakt. De grootte van zo'n Sector object is dus bepalend voor de hoeveelheid sectoren we maximaal kunnen bijhouden in het geheugen van de robot.
 
-Vlak voor demo 1, was een Sector ongeveer 370 bytes groot en konden we ongeveer 145 Sectoren opslaan ons geheugen. In een worst-case scenario betekent dit dat we per robot 36 sectoren konden opslaan, wat overeenkomt met een speelveld van 6 bij 6. We hebben vervolgens twee pistes gestart om dit probleem aan te pakken. Enerzijds hebben we het geheugengebruik van de Sector klasse aangepakt en gereduceerd tot 280 bytes. Anderzijds hebben we besloten om binnenkomende informatie van andere robots slechts te bewaren totdat deze informatie op basis van een barcode kon ge\"importeerd worden in de Map van de eigen robot. Op dat ogenblik gooien we de Map van de andere robot weg en voegen de nog volgende binnenkomende informatie rechtstreeks toe aan onze eigen Map.
+Vlak voor demo 1, was een Sector ongeveer 370 bytes groot en konden we ongeveer 145 Sectoren opslaan in ons geheugen. In een worst-case scenario betekent dit dat we per robot 36 sectoren konden opslaan, wat overeenkomt met een speelveld van 6 bij 6. We hebben vervolgens twee pistes gestart om dit probleem aan te pakken. Enerzijds hebben we het geheugengebruik van de Sector klasse aangepakt en gereduceerd tot 280 bytes. Anderzijds hebben we besloten om binnenkomende informatie van andere robots slechts te bewaren totdat deze informatie op basis van een barcode kon ge\"importeerd worden in de Map van de eigen robot. Op dat ogenblik gooien we de Map van de andere robot weg en voegen de nog volgende binnenkomende informatie rechtstreeks toe aan onze eigen Map.
 
 Op deze manier zal er een trapsgewijs verval zijn van het totale aantal sectoren die moeten bijgehouden worden. Immers wanneer alle robots een gemeenschappelijke barcode hebben gevonden, zal er slechts \'e\'en Map overblijven, nl. die van de eigen robot.
 
@@ -402,7 +402,7 @@ Een van de grootste acties bestond er in om het sterk uitgegroeide Model op te s
   \label{uml:refactoring}
 \end{figure}
 
-Samen met deze refactoring werd ook de redundante code die ontstond bij de introductie van de mini-simulator maximaal weggewerkt. Beide simulatoren gebruiken nu
+Samen met deze refactoring werd ook de redundante code die ontstond bij de introductie van de mini-simulator maximaal weggewerkt. Beide simulatoren gebruiken nu zo veel mogelijk dezelfde code.
 
 Daarnaast wordt er ook bij elke verbetering rekening gehouden met het geheugengebruik. Waar mogelijk worden zo klein mogelijke datastructuren gebruikt om het onnodig reserveren van geheugenruimte te beperken. Dit geldt natuurlijk alleen voor klassen die effectief op de robot gebruikt worden.
 
@@ -484,7 +484,9 @@ De robot reed consistent en robuust. Zelfs wanneer de robot fouten maakte werden
 
 De feedback van het didactische team was overwegend positief. Er werd duidelijk goed nagedacht over de softwarearchitectuur, zowel op niveau van robuustheid, uitbreidbaarheid als structuur. De gebruikte strategie i.v.m. Collaborative diffusion is goed gevonden en werkt duidelijk goed door zijn eenvoud. Het dashboard werd positief vermeld en de inhoud en opmaak van het verslag waren in lijn met de overige kwaliteit.
 
-Naast opmerkingen over opmaak en verduidelijking, waren er ook tips met zicht op verbetering van de presentatie en het rijgedrag van de robots. Hierbij kozen we voor het implementeren van een config klasse om de opstartsnelheid te verhogen, ook het presenteren zelf wordt vanaf nu beter voorbereid. Het rijgedrag wordt vooral geoptimaliseerd door het verwijderen van redundantie.
+Naast opmerkingen over opmaak en verduidelijking, waren er ook tips met zicht op verbetering van de presentatie en het rijgedrag van de robot.
+
+Als directe antwoord op deze opmerkingen kozen we voor het implementeren van een configuratie-klasse om de opstartsnelheid te verhogen, ook het presenteren zelf wordt vanaf nu beter voorbereid. Het rijgedrag wordt vooral geoptimaliseerd door het verwijderen van redundantie.
 
 \subsection{Reflectie}
 
