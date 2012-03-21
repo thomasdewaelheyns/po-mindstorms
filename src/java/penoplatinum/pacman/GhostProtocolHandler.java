@@ -17,6 +17,7 @@ import penoplatinum.simulator.mini.Queue;
 import penoplatinum.util.MyScanner;
 
 public class GhostProtocolHandler implements ProtocolHandler {
+  private final boolean HANDLE_END_LINE = true;
 
   private static String version = "1.0-partial";
   // counter for received join commands
@@ -43,6 +44,10 @@ public class GhostProtocolHandler implements ProtocolHandler {
   public void receive(String msg) {
     try {
       MyScanner scanner = new MyScanner(msg);//.useDelimiter("[ ,]");
+      if (HANDLE_END_LINE) {
+        msg = msg.substring(0, msg.length() - 2);
+      }
+
       String agentName = scanner.next();
 
       if ("JOIN".equals(agentName) && !scanner.hasNext()) {

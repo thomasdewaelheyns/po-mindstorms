@@ -8,15 +8,11 @@ import java.util.StringTokenizer;
  * @author Team Platinum
  */
 public class MyScanner {
-  private final boolean handleEndLine = true;
 
   private final StringTokenizer tokenizer;
 
   public MyScanner(String msg) {
     msg = replace(msg, ',', ' ');
-    if(handleEndLine){
-      msg = replace(msg, '\\', ' ');
-    }
     this.tokenizer = new StringTokenizer(msg, " ");
   }
 
