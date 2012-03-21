@@ -289,4 +289,9 @@ public class SimpleGrid implements Grid {
   public void removeAgent(Agent agent) {
     agents.remove(agent);
   }
+
+  @Override
+  public int getSize() {
+    return sectors.size();
+  }
 }

@@ -148,5 +148,10 @@ public class NullGrid implements Grid {
   public Sector getOrCreateSector(int x, int y) {
     return null;
   }
+
+  @Override
+  public int getSize() {
+    return 0;
+  }
   
 }

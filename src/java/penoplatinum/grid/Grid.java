@@ -64,4 +64,6 @@ public interface Grid {
 
   public Sector getOrCreateSector(int x, int y);
 
+  public int getSize();
+
 }
