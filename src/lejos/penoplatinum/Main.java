@@ -93,31 +93,8 @@ public class Main {
         }
       }
     }
-
   }
 
-  private static boolean IRTestRuben() {
-    RobotBluetoothConnection conn = new RobotBluetoothConnection();
-    conn.initializeConnection();
-    Utils.EnableRemoteLogging(conn);
-    IRSeekerV2 seeker = new IRSeekerV2(SensorPort.S3, Mode.AC);
-    Motor m = Motor.A;
-    int startAngle = m.getTachoCount();
-    int range = 120;
-    int step = 15;
-    int curr = -range;
-    int[] angles = new int[(range * 2) / step + 1];
-    for (int i = 0; i < angles.length; i++) {
-      angles[i] = curr;
-      curr += step;
-    }
-    System.out.println(angles[0]);
-    if (startMeasurement(seeker, angles, m, startAngle)) {
-      return true;
-    }
-    m.rotateTo(startAngle, false);
-    return false;
-  }
 
   private static boolean startMeasurement(IRSeekerV2 seeker, int[] angles, Motor m, int startAngle) {
     int count = 0;
