@@ -1,5 +1,6 @@
 package penoplatinum.simulator.tiles;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import penoplatinum.BitwiseOperations;
@@ -19,14 +20,14 @@ public class Sector implements Tile, Cloneable {
   private static int endBarcodeDirection = startIsItABarcode + 2;
   // logical measurements of a Sector, these are equal to the actual dimensions
   public static int SIZE = 40;
-  public static int LINE_WIDTH = 1;
+  public static int LINE_WIDTH = 2;
   public static int BARCODE_LINE_WIDTH = 2;
   public static int BARCODE_LINES = 8;
   public static int BARCODE_WIDTH = BARCODE_LINES * BARCODE_LINE_WIDTH;
   // Lines and corners are divided into two sets for white and black
-  public static int NO_COLOR = -1;
-  public static int WHITE = 0;
-  public static int BLACK = 4;
+  public static final int NO_COLOR = -1;
+  public static final int WHITE = 0;
+  public static final int BLACK = 4;
   public static final BarcodeCorrector barcode = new BarcodeBlackBlack();
 
   public Sector() {
@@ -51,6 +52,8 @@ public class Sector implements Tile, Cloneable {
       return Sector.WHITE;
     }
 
+
+
     int color = this.getBarcodeColor(x, y);
     if (color != Sector.NO_COLOR) {
       return color;
@@ -65,7 +68,7 @@ public class Sector implements Tile, Cloneable {
     if (!this.robotIsOnBarcode(x, y)) {
       return Sector.NO_COLOR;
     }
-    
+
     int pos = ((getBarcodeLocation() & 1) != 0 ? x : y);
     pos -= (this.SIZE / 2);
     pos *= ((getBarcodeLocation() & 2) == 0 ? 1 : -1);
@@ -78,7 +81,7 @@ public class Sector implements Tile, Cloneable {
       throw new RuntimeException("Error in barcode algorithm");
     }
     pos /= Sector.BARCODE_LINE_WIDTH;
-    
+
 //    float factor = pos - (int) pos;
 //    return (int)(getBarcodeLine((int) (pos)) * factor + getBarcodeLine((int) (pos) + 1));
 
@@ -114,22 +117,28 @@ public class Sector implements Tile, Cloneable {
   }
 
   private boolean IsOnLine(int x, int y) {
-    int start = Sector.SIZE - Sector.LINE_WIDTH;
+    int start = Sector.SIZE - Sector.LINE_WIDTH - 1;
     int end = Sector.SIZE;
-    if (!hasWall(1) && start <= x && x < end) {
-      return true;
-    }
-    if (!hasWall(2) && start <= y && y < end) {
-      return true;
-    }
-    if (!hasWall(3) && x <= Sector.LINE_WIDTH) {
-      return true;
-    }
-    if (!hasWall(0) && y <= Sector.LINE_WIDTH) {
-      return true;
+
+    if (x >= Sector.LINE_WIDTH && x <= start && y >= Sector.LINE_WIDTH && y <= start) {
+      return false;
     }
 
-    return false;
+    if (hasWall(1) && start <= x && x < end) {
+      return false;
+    }
+    if (hasWall(2) && start <= y && y < end) {
+      return false;
+    }
+    if (hasWall(3) && x < Sector.LINE_WIDTH) {
+      return false;
+    }
+    if (hasWall(0) && y < Sector.LINE_WIDTH) {
+      return false;
+    }
+
+
+    return true;
   }
 
   @Override
@@ -209,11 +218,105 @@ public class Sector implements Tile, Cloneable {
 
   public Sector clone() {
     return new Sector(data);
+  @Override
+  public void drawTile(Graphics2D g2d, int left, int top) {
+    renderBackground(g2d, left, top);
+    //renderLinesCross(g2d, left, top);
+    renderBarcode(g2d, left, top);
+    g2d.setColor(Board.WHITE);
+    renderWalls(g2d, left, top,false);
+    g2d.setColor(Board.DARK_BROWN);
+    renderWalls(g2d, left, top,true);
   }
 
   private final TileDraw draw = new SectorDraw(this);
   @Override
   public TileDraw getDrawer() {
     return draw;
+  }
+
+  private void renderBackground(Graphics2D g2d, int left, int top) {
+    g2d.setColor(Board.BROWN);
+    g2d.fill(new Rectangle(DRAW_TILE_SIZE * (left - 1), DRAW_TILE_SIZE * (top - 1),
+            DRAW_TILE_SIZE, DRAW_TILE_SIZE));
+  }
+
+  /**
+   * This renders lines at wall positions, where hasWall equals wallValue
+   * @param g2d
+   * @param left
+   * @param top
+   * @param wallValue 
+   */
+  private void renderWalls(Graphics2D g2d, int left, int top, boolean wallValue) {
+    // walls are 2cm width = 4px
+    if (hasWall(Bearing.N) == wallValue) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top - 1),
+              DRAW_TILE_SIZE,
+              DRAW_WALL_LINE_WIDTH));
+    }
+
+    if (hasWall(Bearing.E) == wallValue) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * left - DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE * (top - 1),
+              4,
+              DRAW_TILE_SIZE));
+    }
+
+    if (hasWall(Bearing.S) == wallValue) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top) - DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE,
+              4));
+    }
+
+    if (hasWall(Bearing.W) == wallValue) {
+      g2d.fill(new Rectangle(
+              DRAW_TILE_SIZE * (left - 1),
+              DRAW_TILE_SIZE * (top - 1),
+              DRAW_WALL_LINE_WIDTH,
+              DRAW_TILE_SIZE));
+    }
+
+  }
+
+  private void renderBarcode(Graphics2D g2d, int left, int top) {
+    if (!hasBarcode()) {
+      return;
+    }
+    // every bar of the barcode has a 2cm width = 4px
+    for (int line = 0; line < 8; line++) {
+      g2d.setColor(getBarcodeLine(line) == Sector.BLACK ? Board.BLACK : Board.WHITE);
+      int baseX = DRAW_TILE_SIZE * (left - 1);
+      int baseY = DRAW_TILE_SIZE * (top - 1);
+
+      int lijnRichting = ((getBarcodeLocation() & 2) == 0 ? line : (8 - line - 1));
+      int dx = DRAW_TILE_SIZE / 2 - DRAW_BARCODE_WIDTH / 2 + DRAW_BARCODE_LINE_WIDTH * lijnRichting;
+
+      int lengthX = 0;
+      int lengthY = 0;
+      if ((getBarcodeLocation() & 1) == 0) {
+        baseY += dx;
+        lengthX = DRAW_TILE_SIZE;
+        lengthY = DRAW_BARCODE_LINE_WIDTH;
+      } else {
+        baseX += dx;
+        lengthX = DRAW_BARCODE_LINE_WIDTH;
+        lengthY = DRAW_TILE_SIZE;
+      }
+      g2d.fill(new Rectangle(
+              baseX,
+              baseY,
+              lengthX,
+              lengthY));
+    }
+  }
+
+  public Sector clone() {
+    return new Sector(data);
   }
 }
