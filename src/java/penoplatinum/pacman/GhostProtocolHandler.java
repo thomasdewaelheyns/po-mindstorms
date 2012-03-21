@@ -43,11 +43,11 @@ public class GhostProtocolHandler implements ProtocolHandler {
   @Override
   public void receive(String msg) {
     try {
-      MyScanner scanner = new MyScanner(msg);//.useDelimiter("[ ,]");
       if (HANDLE_END_LINE) {
         msg = msg.substring(0, msg.length() - 2);
       }
 
+      MyScanner scanner = new MyScanner(msg);//.useDelimiter("[ ,]");
       String agentName = scanner.next();
 
       if ("JOIN".equals(agentName) && !scanner.hasNext()) {
