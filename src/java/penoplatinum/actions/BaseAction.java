@@ -1,13 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.actions;
 
 import penoplatinum.simulator.Model;
 
 /**
- *
+ * This implements a base action to drive the robot with or gather inputdata.
+ * Actions can be non-interruptable.
  * @author: Team Platinum
  */
 public abstract class BaseAction {
