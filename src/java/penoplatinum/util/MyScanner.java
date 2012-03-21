@@ -1,21 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.util;
 
 import java.util.StringTokenizer;
 
 /**
- *
- * @author MHGameWork
+ * This is a basic implementation to interpret strings.
+ * Made to replace the unsupported Scanner on Lejos
+ * @author Team Platinum
  */
 public class MyScanner {
+  private final boolean handleEndLine = true;
 
   private final StringTokenizer tokenizer;
 
   public MyScanner(String msg) {
     msg = replace(msg, ',', ' ');
+    if(handleEndLine){
+      msg = replace(msg, '\\', ' ');
+    }
     this.tokenizer = new StringTokenizer(msg, " ");
   }
 
