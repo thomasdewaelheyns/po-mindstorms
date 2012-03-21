@@ -160,18 +160,9 @@ public class GhostRobot implements Robot {
   public void processCommand(String cmd) {
     this.model.getMessagePart().addIncomingMessage(cmd);
   }
-  // the external tick...
-  public static long delta = 0;
-  public static int count = 0;
-  public static long start = 0;
 
   public void step() {
-
-
-
-
     // poll other sensors and update model
-    GhostRobot.start = System.nanoTime();
     this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
     this.model.process();
 
@@ -185,16 +176,7 @@ public class GhostRobot implements Robot {
 
     // let the driver do his thing
     if (this.driver.isBusy()) {
-
       this.driver.step();
-      delta += System.nanoTime() - start;
-      if (delta > 1000L * 1000 * 1000) {
-        int fps = (int) (count / (double) delta * 1000d * 1000d * 1000d);
-        Utils.Log("FPS: " + Integer.toString(fps));
-        count = 0;
-        delta = 0;
-      }
-      count++;
       return;
     }
 

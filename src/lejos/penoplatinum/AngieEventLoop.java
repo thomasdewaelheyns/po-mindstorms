@@ -1,11 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum;
 
-import penoplatinum.util.Utils;
-import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.Robot;
 
 /**
@@ -42,24 +36,10 @@ public class AngieEventLoop {
     }
     private Object updateLock = new Object();
     private boolean updateStateInvoked;
-    private int fps;
 
     public void runEventLoop() {
-        int count = 0;
-        int delta = 0;
         while (true) {
-            long start = System.nanoTime();
             step();
-            delta += System.nanoTime() - start;
-            if (delta > 1000L * 1000 * 1000) {
-                fps = (int) (count / (double) delta * 1000d * 1000d * 1000d);
-                Utils.Log("FPS: " + Integer.toString(fps));
-                count = 0;
-                delta = 0;
-            }
-            count++;
-
-            
         }
 
     }
