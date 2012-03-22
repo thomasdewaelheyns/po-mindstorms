@@ -1,17 +1,63 @@
 (function (globals) {
 
   // first we define some privates...
-  var
-  
+  var xmlhttp,
+
+      initAjax = function initAjax() {
+        xmlhttp = null;
+        if(window.XMLHttpRequest) {
+          // code for IE7+, Firefox, Chrome, Opera, Safari
+          xmlhttp=new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+          // code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        } else {
+          alert("Your browser does not support XMLHTTP!");
+        }
+      },
+
+      ajaxFetch = function ajaxFetch(url, callback) {
+        xmlhttp.open("GET", url, false );
+        xmlhttp.onreadystatechange = function () {
+		      if (xmlhttp.readyState != 4) return;
+		      if (xmlhttp.status != 200 && xmlhttp.status != 304) {
+            //			alert('HTTP error ' + req.status);
+			      return;
+		      }
+		      callback(xmlhttp.responseText);
+	      }
+        xmlhttp.send(null);
+      },
+
+      currentRobot = "",
+
   queue = [],
   streaming = true,
 
   // TODO: fix sharing with grid.js ;-)
   N = 0x1, E = 0x2, S = 0x4, W = 0x8,
 
-
   lightHistogram = [],
   sonarHistogram = [],
+  
+  clearDashboard = function clearDashboard() {
+    lightHistogram = [];
+    sonarHistogram = [];
+    queue = [];
+    updateLight   ( "&nbsp;", "&nbsp;", "&nbsp;" );
+    updateBarcode ( "&nbsp;" );
+    updateSonar   ( " ", " " );
+    updateIR      ( " ", " " );
+    updateSector  ( " ", " " );
+    // navigator
+    updateEvent   ( " ", " " );
+    updatePlan    ( " ", " " );
+    updateAction  ( " ", " " );
+
+    var canvas = document.getElementById("lightHistogram").getContext("2d");
+    canvas.fillStyle = "white";
+    canvas.fillRect(0,0,500,70);
+  }
 
   // helper functions to update HTML parts
   updateHTML = function updateHTML(id, value) { 
@@ -238,7 +284,6 @@
 
       // time / robot
       updateHTML( "timeStamp", update.timestamp );
-      updateHTML( "robotName", update.robot     );
       // model
       updateLight   ( update.lightValue, update.lightColor, update.avgLightValue );
       updateBarcode ( update.barcode                          );
@@ -320,4 +365,26 @@
   dashboard.others[0] = globals.Grid.create("others1");
   dashboard.others[1] = globals.Grid.create("others2");
   dashboard.others[2] = globals.Grid.create("others3");
+  
+  dashboard.refreshRobots = function refreshRobots() {
+    ajaxFetch( "./robots", function(data) {
+      var html = "<option value=\"stop\">selecteer een robot...</option>";
+      var robots = data.split("\n");
+      for(var r in robots) {
+        if( robots[r] != "" )  {
+          html += '<option value="'+robots[r]+'"' + 
+          (currentRobot == robots[r] ? 'selected' : '') + '>' + 
+          robots[r]+'</option>';
+        }
+      }
+      document.getElementById("robotSelection").innerHTML = html;
+    } );
+  };
+  
+  dashboard.showRobot = function showRobot(robot) {
+    clearDashboard();
+    document.getElementById("iframe").src = "./replay?robot=" + robot;
+  }
+  
+  initAjax();
 }(window));
