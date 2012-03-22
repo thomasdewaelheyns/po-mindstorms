@@ -55,7 +55,7 @@ public class Streamer {
 
     try {
       System.out.println( "Starting stream : " + this.robot );
-      this.send( "start","" );
+      this.send( JSWrapper.start() );
       out.flush();
 
       // while we don't encounter any errors writing to the client...
@@ -79,14 +79,13 @@ public class Streamer {
 
   // sends an error to the client
   private void sendError(String msg) {
-    this.send( "error", msg );
+    this.send( JSWrapper.error(msg) );
   }
   
   // sends an method/msg combo to the client
   // we're hiding the details about the JS construction here
-  private void send(String method, String msg) {
-    this.out.println( "<script>parent.Dashboard." + 
-                      method + "(" + msg + ");</script>" );    
+  private void send(String msg) {
+    this.out.println( "<script>parent." + msg + "</script>" );    
   }
   
   private void sendModelUpdates() throws java.sql.SQLException {
@@ -128,17 +127,14 @@ public class Streamer {
       argument      = rs.getString(26);
       rate          = rs.getInt(27);
 
-      this.send( "update","'" + ts + "','" + robot + "'," +
-                 lightValue + ",'" + lightColor + "'," + avgLightValue + "," +
-                 barcode + "," +
-                 sonarAngle + "," + sonarDistance + "," +
-                 ir1 + "," + ir2 + "," + ir3 + "," + ir4 + "," + ir5 + "," +
-                 ir_dist + "," +
-                 walls + "," + 
-                 value_n + "," + value_e + "," + value_s + "," + value_w + "," +
-                 "'" + event + "','" + source + "'," +
-                 "'" + plan + "','" + queue + "'," +
-                 "'" + action + "','" + argument + "'," + rate );
+      this.send( JSWrapper.updateModel(ts, robot, 
+                                       lightValue, lightColor, avgLightValue,
+                                       barcode, 
+                                       sonarAngle, sonarDistance,
+                                       ir1, ir2, ir3, ir4, ir5, ir_dist,
+                                       walls, value_n, value_e, value_s, value_w,
+                                       event, source, plan, queue, action,
+                                       argument, rate ) );
     }
     out.print( " " ); // force output, causing exception when closed
     out.flush();      // flush to the browser for optimal UI experience
@@ -181,8 +177,7 @@ public class Streamer {
         if(first) { first = false; } else { updateString += ","; }
         updateString += "'" + w.getKey() + "' : " + w.getValue();
       }
-      this.send( grid + ".updateWalls", "'" + ts + "','" + robot + "'," +
-                 "{" + updateString + "}" );
+      this.send( JSWrapper.updateWalls(grid, ts, robot, updateString) );
     }
     this.out.print( " " ); // force output, causing exception when closed
     this.out.flush();      // flush to the browser for optimal UI experience
@@ -225,8 +220,7 @@ public class Streamer {
         if(first) { first = false; } else { updateString += ","; }
         updateString += "'" + w.getKey() + "' : " + w.getValue();
       }
-      this.send( grid + ".updateValues", "'" + ts + "','" + robot + "'," +
-                 "{" + updateString + "}" );
+      this.send( JSWrapper.updateValues(grid, ts, robot, updateString ) );
     }
     this.out.print( " " ); // force output, causing exception when closed
     this.out.flush();      // flush to the browser for optimal UI experience
@@ -271,8 +265,7 @@ public class Streamer {
         if(first) { first = false; } else { updateString += ","; }
         updateString += "'" + w.getKey() + "' : { " + w.getValue() + "}";
       }
-      this.send( grid + ".updateAgents", "'" + ts + "','" + robot + "'," +
-                 "{" + updateString + "}" );
+      this.send( JSWrapper.updateAgents(grid, ts, robot, updateString ) );
     }
     this.out.print( " " ); // force output, causing exception when closed
     this.out.flush();      // flush to the browser for optimal UI experience

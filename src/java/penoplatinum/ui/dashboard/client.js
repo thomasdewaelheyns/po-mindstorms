@@ -20,14 +20,17 @@
         xmlhttp.open("GET", url, false );
         xmlhttp.onreadystatechange = function () {
 		      if (xmlhttp.readyState != 4) return;
-		      if (xmlhttp.status != 200 && xmlhttp.status != 304) {
-            //			alert('HTTP error ' + req.status);
+		      if (xmlhttp.status != 200 && xmlhttp.status != 304 && xmlhttp.status != 0) {
+            console.log('HTTP error ' + xmlhttp.status);
 			      return;
 		      }
 		      callback(xmlhttp.responseText);
 	      }
         xmlhttp.send(null);
       },
+      
+      REFRESH_INTERVAL_LOCAL_FILE = 250,
+      continueProcessingFile = false,
 
       currentRobot = "",
 
@@ -300,7 +303,36 @@
     updateHTML( "queueStatus", "(" + queue.length +")" );
     // schedule the next update in 30ms
     if( streaming ) { setTimeout(processQueue, 30); }
-  }
+  },
+  
+  refreshRobots = function refreshRobots() {
+    ajaxFetch( "./robots", function(data) {
+      var html = "<option value=\"stop\">selecteer een robot...</option>";
+      var robots = data.split("\n");
+      for(var r in robots) {
+        if( robots[r] != "" )  {
+          html += '<option value="'+robots[r]+'"' + 
+          (currentRobot == robots[r] ? 'selected' : '') + '>' + 
+          robots[r]+'</option>';
+        }
+      }
+      document.getElementById("robotSelection").innerHTML = html;
+    } );
+  },
+
+  processFile = function processFile() {
+    ajaxFetch( "./updates.js?"+(Math.floor(Math.random()*10000)),
+      function(data) {
+        try { 
+          eval(data);
+          if(continueProcessingFile) {
+            setTimeout( processFile, REFRESH_INTERVAL_LOCAL_FILE );
+          }
+        } catch(err) {
+          console.log(err);
+        }
+      } );
+  },
 
   // then we define a public global namespace/object
   dashboard = globals.Dashboard = {};
@@ -366,20 +398,18 @@
   dashboard.others[1] = globals.Grid.create("others2");
   dashboard.others[2] = globals.Grid.create("others3");
   
-  dashboard.refreshRobots = function refreshRobots() {
-    ajaxFetch( "./robots", function(data) {
-      var html = "<option value=\"stop\">selecteer een robot...</option>";
-      var robots = data.split("\n");
-      for(var r in robots) {
-        if( robots[r] != "" )  {
-          html += '<option value="'+robots[r]+'"' + 
-          (currentRobot == robots[r] ? 'selected' : '') + '>' + 
-          robots[r]+'</option>';
-        }
-      }
-      document.getElementById("robotSelection").innerHTML = html;
-    } );
-  };
+  dashboard.useSource = function useSource(source) {
+    clearDashboard();
+    document.getElementById("robotSelection").style.display = "none";
+    continueProcessingFile = false;
+    if(source == "file") {
+      continueProcessingFile = true;
+      processFile();
+    } else if(source == "server" ) {
+      document.getElementById("robotSelection").style.display = "inline";
+      refreshRobots();
+    }
+  }
   
   dashboard.showRobot = function showRobot(robot) {
     clearDashboard();
