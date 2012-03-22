@@ -46,5 +46,10 @@ public class ConsoleGridView implements GridView {
   public GridView setSectorSize(int size) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
+
+  @Override
+  public GridView barcodesNeedsRefresh() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }
 

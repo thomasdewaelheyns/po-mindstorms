@@ -130,6 +130,11 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
 //          corrected = interpreter.correct(corrected);
         }
 
+        if (corrected == 1)
+        {
+          int magic = 3;
+        }
+        
         model.getBarcodePart().setBarcode(corrected);
 
     }

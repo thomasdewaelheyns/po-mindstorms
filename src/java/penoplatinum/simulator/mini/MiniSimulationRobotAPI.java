@@ -4,11 +4,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.grid.Agent;
 
 import penoplatinum.grid.Sector;
-import penoplatinum.pacman.GhostAgent;
-import penoplatinum.pacman.PacmanAgent;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.util.ExtendedVector;
@@ -33,7 +32,7 @@ public class MiniSimulationRobotAPI implements RobotAPI {
     if (neighbour.getAgent() == null) {
       return false;
     }
-  
+
     return true;
   }
 
@@ -129,5 +128,21 @@ public class MiniSimulationRobotAPI implements RobotAPI {
 
   public boolean isSweeping() {
     return isSweeping;
+  }
+
+  public Agent getProxy() {
+    return proxy;
+  }
+
+  public int readBarcode() {
+    int code = proxy.getSector().getTagCode();
+    if (code == -1) {
+      return code;
+    }
+    if (proxy.getSector().getTagBearing() != proxy.getBearing()) {
+      // maybe safety check whether the tagbearing is opposite?
+      code = BarcodeTranslator.invertBarcode(code);
+    }
+    return code;
   }
 }

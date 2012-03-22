@@ -21,14 +21,14 @@ public class BarcodeTranslator {
     for (int i = 0; i < barcodeLength; i++) {
       int sum = 0;
 //      Utils.print("\n[");
-//      System.out.print((((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength))+" ");
+      System.out.print((((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength))+" ");
       for (int j = i * list.size() / barcodeLength + 2; j < (i + 1) * list.size() / barcodeLength - 2; j++) {
         sum += list.get(j);
-//        Utils.print(list.get(j)+1 + ":");
+        Utils.print(list.get(j)+1 + ":");
       }
       int averageValue = sum / (((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength));
       if (sum < MINIMUM_BETTER && sum > -MINIMUM_BETTER) {
-//        Utils.print("]\n");
+        Utils.print("]\n");
         fail = true;
       }
 //      System.out.print(sum);

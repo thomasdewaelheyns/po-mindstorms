@@ -23,7 +23,12 @@ import penoplatinum.model.processor.InboxProcessor;
 import penoplatinum.model.processor.MergeGridModelProcessor;
 import penoplatinum.model.processor.WallDetectionModelProcessor;
 import penoplatinum.model.processor.WallDetectorProcessor;
+import penoplatinum.pacman.GhostAction;
+import penoplatinum.pacman.GhostProtocolHandler;
+import penoplatinum.pacman.GhostProtocolModelCommandHandler;
 import penoplatinum.pacman.GhostRobot;
+import penoplatinum.simulator.RobotAPI;
+import penoplatinum.simulator.SimulationRobotAPI;
 
 public class MiniGhostRobot extends GhostRobot {
   
@@ -41,9 +46,8 @@ public class MiniGhostRobot extends GhostRobot {
     
     linkComponents();
     
-    
     ModelProcessor processors =
-//            new BarcodeBlackModelProcessor(
+//            new MiniBarcodeModelprocessor(((MiniSimulationRobotAPI)api).getProxy(),
             new WallDetectionModelProcessor(
             new WallDetectorProcessor(
             new InboxProcessor(
@@ -59,22 +63,49 @@ public class MiniGhostRobot extends GhostRobot {
 
     // Set the implementation of the ghost protocol to use
 
-    model.getMessagePart().setProtocol(new NullGhostProtocolHandler());
-//    model.getMessagePart().setProtocol(new GhostProtocolHandler(model, new GhostProtocolModelCommandHandler(model)));
-//    final Queue queue = new Queue();
-//    queue.subscribe(new MessageHandler() {
-//
-//      @Override
-//      public void useQueue(Queue queue) {
-//      }
-//
-//      @Override
-//      public void receive(String msg) {
-//        model.getMessagePart().queueOutgoingMessage(msg);
-//      }
-//    });
-//    model.getMessagePart().getProtocol().useQueue(queue);
+//    model.getMessagePart().setProtocol(new NullGhostProtocolHandler());
+    model.getMessagePart().setProtocol(new GhostProtocolHandler(model, new GhostProtocolModelCommandHandler(model)));
+    final Queue queue = new Queue();
+    queue.subscribe(new MessageHandler() {
+
+      @Override
+      public void useQueue(Queue queue) {
+      }
+
+      @Override
+      public void receive(String msg) {
+        model.getMessagePart().queueOutgoingMessage(msg);
+      }
+    });
+    model.getMessagePart().getProtocol().useQueue(queue);
 
   }
 
+  @Override
+  public void step() {
+    // Not so sure this is a good idea
+    readBarcodeFromApi();
+    super.step();
+  }
+  
+  private void readBarcodeFromApi()
+  {
+    if (!model.getGridPart().hasRobotMoved() || model.getGridPart().getLastMovement() != GhostAction.FORWARD) {
+      return;
+    }
+    
+    model.getBarcodePart().setBarcode(((MiniSimulationRobotAPI)api).readBarcode());
+    
+  }
+
+  
+  
+  @Override
+  public GhostRobot useRobotAPI(RobotAPI api) {
+    
+    return super.useRobotAPI(api);
+  }
+
+  
+  
 }

@@ -58,5 +58,9 @@ public class BarcodeModelPart {
     return lastBarcode;
   }
   
+  public void clearLastBarcode()
+  {
+    lastBarcode = -1;
+  }
   
 }

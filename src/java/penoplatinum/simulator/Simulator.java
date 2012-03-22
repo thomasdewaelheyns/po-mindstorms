@@ -17,14 +17,11 @@ import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
 import penoplatinum.simulator.view.SimulationView;
 import java.awt.Point;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import penoplatinum.Config;
 import penoplatinum.util.Utils;
-import penoplatinum.agent.MQ;
 
 public class Simulator {
   // the Simulator can run until different goals are reached
@@ -194,7 +191,7 @@ public class Simulator {
       if (false) {
         break;
       }
-      Utils.Sleep(3);
+//      Utils.Sleep(3);
     }
     this.view.log("");
     return this;

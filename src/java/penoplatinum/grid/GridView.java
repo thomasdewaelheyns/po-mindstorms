@@ -21,4 +21,6 @@ public interface GridView {
 
   public GridView changeTitle(String title);
   public GridView changeLocation(int left, int top);
+
+  GridView barcodesNeedsRefresh();
 }

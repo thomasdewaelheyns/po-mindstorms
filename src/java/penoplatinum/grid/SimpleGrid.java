@@ -208,6 +208,10 @@ public class SimpleGrid implements Grid {
     return this;
   }
 
+  public void barcodesNeedRefresh() {
+    this.view.barcodesNeedsRefresh();
+  }
+
   public void importGrid(Grid g, TransformationTRT transformation) {
     for (int i = 0; i < g.getSectors().size(); i++) {
       Sector s = g.getSectors().get(i);
@@ -288,6 +292,43 @@ public class SimpleGrid implements Grid {
   @Override
   public void removeAgent(Agent agent) {
     agents.remove(agent);
+  }
+
+  public boolean areSectorsEqual(Grid other) {
+
+    if (other == this) {
+      return true;
+    }
+
+    if (getSectors().size() != other.getSectors().size()) {
+      return false;
+    }
+
+    for (Sector s : getSectors()) {
+      boolean match = false;
+      for (Sector otherS : other.getSectors()) {
+        if (s.getLeft() != otherS.getLeft() || s.getTop() != otherS.getTop()) {
+          continue;
+        }
+        match = true;
+
+        if (s.getWalls() != otherS.getWalls()) {
+          return false;
+        }
+        if (s.getTagBearing() != otherS.getTagBearing()) {
+          return false;
+        }
+        if (s.getTagCode() != otherS.getTagCode()) {
+          return false;
+        }
+      }
+      if (!match) {
+        return false;
+      }
+    }
+
+    return true;
+
   }
 
   @Override

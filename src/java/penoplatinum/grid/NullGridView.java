@@ -30,7 +30,10 @@ public class NullGridView implements GridView {
   public GridView sectorsNeedRefresh()              { return this; }
   public GridView valuesNeedRefresh()               { return this; }
   public GridView agentsNeedRefresh()               { return this; }
+  public GridView barcodesNeedsRefresh()            { return this; }
 
+  
   public GridView changeTitle(String title)         { return this; }
   public GridView changeLocation(int left, int top) { return this; }
+
 }

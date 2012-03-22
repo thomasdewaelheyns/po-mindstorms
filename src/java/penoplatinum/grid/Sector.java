@@ -27,7 +27,7 @@ public class Sector {
   private Agent agent;
   // the value associated with this sector
   private int value = 0;
-  private int tagCode;
+  private int tagCode = -1;
   private int tagBearing;
 
   public Sector() {
@@ -213,6 +213,7 @@ public class Sector {
   public void setTagCode(int tagCode) {
     this.tagCode = tagCode;
     grid.addTaggedSector(this);
+    grid.barcodesNeedRefresh();
   }
 
   // adds a wall on this sector at given location

@@ -33,7 +33,7 @@ import penoplatinum.simulator.mini.Queue;
 public class GhostRobot implements Robot {
 
   protected GhostModel model;
-  private RobotAPI api;   // provided from the outside
+  protected RobotAPI api;   // provided from the outside
   private Driver driver;
   private Navigator navigator;
 //  private int[] sweepAngles = new int[]{-105, -90, -75, -30, 0, 30, 75, 90, 105};

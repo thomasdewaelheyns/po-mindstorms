@@ -150,6 +150,15 @@ public class NullGrid implements Grid {
   }
 
   @Override
+  public void barcodesNeedRefresh() {
+  }
+
+  @Override
+  public boolean areSectorsEqual(Grid other) {
+    return false;
+  }
+
+  @Override
   public int getSize() {
     return 0;
   }

@@ -69,10 +69,9 @@ public class GridFactory {
       if (sector != null) {
         Agent agent;
         if (type.equals("tag")) {
-          String tag = scanner.next();
-          //sector.addTag(tag);
+          sector.setTagBearing(orientation);
+          sector.setTagCode(scanner.nextInt());
           
-          //TODO: g.tags.put(tag, sector);
         } else {
           if (type.equals("ghost")) {
             name = scanner.next();

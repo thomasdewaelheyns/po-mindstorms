@@ -25,11 +25,14 @@ public class MergeGridModelProcessor extends ModelProcessor {
   @Override
   protected void work() {
 
-    // check if we moved forward, and if we detected a barcode
+    // check if we moved forward
     if (!model.getGridPart().hasRobotMoved() || model.getGridPart().getLastMovement() != GhostAction.FORWARD) {
+      
       return;
     }
+    this.model.getGridPart().clearLastMovement(); //TODO:
 
+    // check if we detected a barcode
     if (model.getBarcodePart().getLastBarcode() == -1) {
       return;
     }
@@ -54,10 +57,9 @@ public class MergeGridModelProcessor extends ModelProcessor {
     //To fix protocol shitiness, send a position cmd for safety
     model.getMessagePart().getProtocol().sendBarcode(model.getBarcodePart().getLastBarcode(), gridPart.getAgent().getBearing());
     //TODO: is this needed?          lastBarcode = -1;
-    
-    
-    this.model.getGridPart().clearLastMovement(); //TODO:
 
+
+    this.model.getBarcodePart().clearLastBarcode();
 
   }
 

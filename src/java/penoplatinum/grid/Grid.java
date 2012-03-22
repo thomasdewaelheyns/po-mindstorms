@@ -64,6 +64,10 @@ public interface Grid {
 
   public Sector getOrCreateSector(int x, int y);
 
+  public void barcodesNeedRefresh();
+
+  boolean areSectorsEqual(Grid other);
+
   public int getSize();
 
 }
