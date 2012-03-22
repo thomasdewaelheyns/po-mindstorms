@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import penoplatinum.Color;
 import penoplatinum.simulator.Bearing;
+import penoplatinum.simulator.ColorLink;
 
 public class SwingGridView extends JFrame implements GridView {
 
@@ -145,10 +146,10 @@ public class SwingGridView extends JFrame implements GridView {
             minTop = this.grid.getMinTop();
 
     for (Agent agent : this.grid.getAgents()) {
-      final Color c = agent.getColor();
-      this.board.addAgent(agent.getLeft() - minLeft, agent.getTop() - minTop,
-              agent.getBearing(), agent.getName(),
-              new java.awt.Color(c.getR(), c.getG(), c.getB()));
+      final java.awt.Color c = ColorLink.getColorByName(agent.getName());
+      
+      this.board.addAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
+                          agent.getBearing(), agent.getName(), c);
     }
   }
 
