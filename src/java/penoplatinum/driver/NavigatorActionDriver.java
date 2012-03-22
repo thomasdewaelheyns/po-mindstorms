@@ -10,7 +10,7 @@ import penoplatinum.driverevents.ProximityCorrectionEvent;
 import penoplatinum.driverevents.ToCloseDriverEvent;
 import penoplatinum.navigatoractions.AllNavigatorActions;
 import penoplatinum.navigatoractions.NavigatorAction;
-import penoplatinum.pacman.GhostActions;
+import penoplatinum.pacman.GhostAction;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.RobotAPI;
@@ -78,7 +78,7 @@ public class NavigatorActionDriver implements Driver {
         ToCloseDriverEvent.singleton.checkEvent(model, queue);
 
         Integer a = navigatorAction;
-        if (a == GhostActions.FORWARD) { //TODO change this
+        if (a == GhostAction.FORWARD) { //TODO change this
           ProximityCorrectionEvent.singleton.checkEvent(model, queue);
         }
 
