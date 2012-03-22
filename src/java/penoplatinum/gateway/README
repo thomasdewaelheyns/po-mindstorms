@@ -6,9 +6,9 @@ This strategy is reflected in the way we deal with the interaction with the robo
 
 The different components are:
 
-- (Robot) Agent (see src/java/penoplatinum/agent)
+- Gateway (see src/java/penoplatinum/gateway)
 	a small Java program that terminates the bluetooth connection and delivers
-	all incoming packets to log4j.
+	all incoming packets to log4j and/or to an MQ Server
 
 - log4j (see also: http://logging.apache.org/log4j/)
 	is a general purpose logging framework, we use it to insert all incoming

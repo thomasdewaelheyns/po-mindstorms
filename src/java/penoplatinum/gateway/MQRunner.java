@@ -1,4 +1,4 @@
-package penoplatinum.agent;
+package penoplatinum.gateway;
 
 /**
  * MQRunner
@@ -7,6 +7,7 @@ package penoplatinum.agent;
  *
  * Author: Team Platinum
  */
+
 import penoplatinum.Config;
 
 public class MQRunner {
@@ -26,13 +27,13 @@ public class MQRunner {
     }.connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
 
     // be nice ...
-//    mq.sendMessage("Hello everybody.");
+    // mq.sendMessage("Hello everybody.");
 
     // our actual event loop
     System.out.println("Waiting for messages. To exit press CTRL+C");
     while (true) {
       Thread.sleep(100);
-//      mq.sendMessage("Some message");
+      // mq.sendMessage("Some message");
     }
   }
 }

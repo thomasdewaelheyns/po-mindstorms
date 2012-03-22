@@ -1,4 +1,4 @@
-package penoplatinum.agent;
+package penoplatinum.gateway;
 
 /**
  * BluetoothConnection

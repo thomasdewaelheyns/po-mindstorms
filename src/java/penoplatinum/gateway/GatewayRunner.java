@@ -1,21 +1,21 @@
-package penoplatinum.agent;
+package penoplatinum.gateway;
 
 /**
- * AgentRunner
+ * GatewayRunner
  * 
- * Processes CLI parameters, constructs an Agent and starts it.
+ * Processes CLI parameters, constructs an Gateway and starts it.
  *
  * Author: Team Platinum
  */
 
 import org.apache.commons.cli.*;
 
-public class AgentRunner {
+public class GatewayRunner {
 
   public static void main(String[] args) {
     String defaultRobot = "platinum";
     
-    Agent agent = new Agent();
+    Gateway gateway = new Gateway();
 
     Boolean setupComplete = false;
     
@@ -30,22 +30,22 @@ public class AgentRunner {
       CommandLine line = parser.parse( options, args );
 
       if( line.hasOption("help") ) { 
-        AgentRunner.showHelpFor(options);
+        GatewayRunner.showHelpFor(options);
       } else {
-        agent.connect( line.getOptionValue( "robot", defaultRobot ) );
+        gateway.connect( line.getOptionValue( "robot", defaultRobot ) );
         setupComplete = true;
       }
     } catch( ParseException exp ) {
       System.err.println( "ERROR:" + exp.getMessage() );
-      AgentRunner.showHelpFor(options);
+      GatewayRunner.showHelpFor(options);
     }
 
-    if( setupComplete ) { agent.start(); }
+    if( setupComplete ) { gateway.start(); }
   }
 
   public static void showHelpFor(Options options) {
     HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp( "AgentRunner", options );    
+    formatter.printHelp( "GatewayRunner", options );    
   }
 
 }

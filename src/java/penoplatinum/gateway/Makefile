@@ -3,7 +3,7 @@ RM=rm -rf
 LIB_DIR=../../../../lib
 LEJOS_DIR=../../../../../lejos_nxj
 
-TARGETS=AgentRunner.class
+TARGETS=GatewayRunner.class UpdatesJSAppender.class
 JAR_LOG4J=${LIB_DIR}/log4j-1.2.16.jar
 JAR_MYSQL=${LIB_DIR}/mysql-connector-java-5.0.8-bin.jar
 JAR_CLI=${LIB_DIR}/commons-cli-1.2.jar
@@ -34,10 +34,10 @@ db:
 	${MYSQL} < schema.sql
 
 run: ${TARGETS} config
-	@${JAVA} penoplatinum.agent.${<:.class=} ${OPTIONS}
+	@${JAVA} penoplatinum.gateway.${<:.class=} ${OPTIONS}
 
 run-mq: MQRunner.class
-	@${JAVA} penoplatinum.agent.MQRunner ${ME}
+	@${JAVA} penoplatinum.gateway.MQRunner ${ME}
 
 %.class: %.java ${BUILD_DIR}
 	@echo "*** building ${<:.class=}"
@@ -50,7 +50,7 @@ ${BUILD_DIR}:
 	@mkdir ${BUILD_DIR}
 
 dashboard: test.class ../Utils.class
-	${JAVA} penoplatinum.agent.test
+	${JAVA} penoplatinum.gateway.test
 
 backup:
 	  ${MYSQLDUMP} robots > demo1.sql

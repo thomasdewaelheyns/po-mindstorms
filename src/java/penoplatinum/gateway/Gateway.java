@@ -1,21 +1,22 @@
-package penoplatinum.agent;
+package penoplatinum.gateway;
 
 /**
- * Agent
+ * Gateway
  * 
  * Connects to a Robot and dispatches all incoming information to log4j.
  *
  * Author: Team Platinum
  */
+
 import org.apache.log4j.Logger;
 import penoplatinum.bluetooth.SimulatedConnection;
 
-public class Agent {
+public class Gateway {
   // setup some loggers
-  static CustomLogger modelLogger  = new ModelLogger();    // 123
-  static CustomLogger wallsLogger  = new WallsLogger();    // 124
-  static CustomLogger valuesLogger = new ValuesLogger();   // 125
-  static CustomLogger agentsLogger = new AgentsLogger();   // 126
+  static Logger modelLogger  = Logger.getLogger("model");  // 123
+  static Logger wallsLogger  = Logger.getLogger("walls");  // 124
+  static Logger valuesLogger = Logger.getLogger("values"); // 125
+  static Logger agentsLogger = Logger.getLogger("agents"); // 126
 
   // the connection to the Robot
   BluetoothConnection source;
@@ -23,14 +24,14 @@ public class Agent {
   private MQMessageDispatcher mqDispatcher;
 
   // connects to a Robot (by bluetooth name => currently ignored)
-  public Agent connect(String name) {
+  public Gateway connect(String name) {
     this.source = new BluetoothConnection();
     this.mqDispatcher = new MQMessageDispatcher(source.getConnection());
     return this;
   }
 
   // connects to a Robot (by bluetooth name => currently ignored)
-  public Agent connect(SimulatedConnection conn) {
+  public Gateway connect(SimulatedConnection conn) {
     this.source = new BluetoothConnection(conn);
     this.mqDispatcher = new MQMessageDispatcher(conn);
     return this;
@@ -39,23 +40,23 @@ public class Agent {
   // start a loop that continues to fetch and dispatch messages
   public void start() {
     mqDispatcher.startMQDispatcher();
-    System.out.println("Agent:> Starting logging...");
+    System.out.println("Gateway:> Starting logging...");
     while (this.source.hasNext()) {
       String msg = source.getMessage();
       try {
         // TODO: this switch should be handled using polymorphism ;-)
         switch (source.getType()) {
           case 123:
-            modelLogger.log(msg);
+            modelLogger.info(msg);
             break;
           case 124:
-            wallsLogger.log(msg);
+            wallsLogger.info(msg);
             break;
           case 125:
-            valuesLogger.log(msg);
+            valuesLogger.info(msg);
             break;
           case 126:
-            agentsLogger.log(msg);
+            agentsLogger.info(msg);
             break;
         }
       } catch (Exception e) {

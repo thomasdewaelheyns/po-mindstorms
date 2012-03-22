@@ -1,4 +1,4 @@
-package penoplatinum.agent;
+package penoplatinum.gateway;
 
 /**
  * MQ
@@ -15,6 +15,7 @@ package penoplatinum.agent;
  *
  * Author: Team Platinum
  */
+
 import java.io.IOException;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;

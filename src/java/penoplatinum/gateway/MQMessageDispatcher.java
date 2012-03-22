@@ -1,8 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+package penoplatinum.gateway;
+
+/**
+ * 
+ * 
+ * @author Team Platinum
  */
-package penoplatinum.agent;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -13,10 +15,6 @@ import penoplatinum.bluetooth.CallbackPacketTransporter;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.IPacketHandler;
 
-/**
- *
- * @author MHGameWork
- */
 public class MQMessageDispatcher {
   private CallbackPacketTransporter transporter;
   private final IConnection connection;
@@ -32,7 +30,7 @@ public class MQMessageDispatcher {
       protected void handleIncomingMessage(String message) {
         try {
           transporter.getSendStream().write(message.getBytes());
-          transporter.SendPacket(AgentConfig.MQRelayPacket);
+          transporter.SendPacket(GatewayConfig.MQRelayPacket);
         } catch (IOException ex) {
           Logger.getLogger(MQMessageDispatcher.class.getName())
             .log(Level.SEVERE, null, ex);
@@ -61,6 +59,6 @@ public class MQMessageDispatcher {
         }
       }
     });
-    connection.RegisterTransporter(transporter, AgentConfig.MQRelayPacket);
+    connection.RegisterTransporter(transporter, GatewayConfig.MQRelayPacket);
   }
 }

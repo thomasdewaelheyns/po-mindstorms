@@ -55,13 +55,13 @@ CREATE TABLE sectorValues (
   value         INTEGER       -- value of the sector
 );
 
-CREATE TABLE sectorAgents (
+CREATE TABLE sectorGateways (
   id            INTEGER       PRIMARY KEY AUTO_INCREMENT,
   ts            TIMESTAMP     DEFAULT NOW(),
 
   robot         VARCHAR(50),  -- robot name
   grid          VARCHAR(50),  -- myGrid, others[0], others[1], others[2]
-  name          VARCHAR(50),  -- name of the agent
+  name          VARCHAR(50),  -- name of the gateway
   x             INTEGER,      -- sector left
   y             INTEGER,      -- sector top
   bearing       INTEGER,      -- bearing 1,2,3,4
