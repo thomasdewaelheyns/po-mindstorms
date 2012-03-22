@@ -1,7 +1,7 @@
 package penoplatinum.navigatoractions;
 
 import java.util.HashMap;
-import penoplatinum.pacman.GhostActions;
+import penoplatinum.pacman.GhostAction;
 
 /**
  * This is a static class to hold all singleton actions in.
@@ -16,10 +16,10 @@ public class AllNavigatorActions {
 
   private static HashMap<Integer, NavigatorAction> getActionHashMap() {
     HashMap<Integer, NavigatorAction> out = new HashMap<Integer, NavigatorAction>();
-    out.put(GhostActions.FORWARD, MOVE_FORWARD);
-    out.put(GhostActions.TURN_LEFT, TURN_LEFT);
-    out.put(GhostActions.TURN_RIGHT, TURN_RIGHT);
-    out.put(GhostActions.NONE, WAIT);
+    out.put(GhostAction.FORWARD, MOVE_FORWARD);
+    out.put(GhostAction.TURN_LEFT, TURN_LEFT);
+    out.put(GhostAction.TURN_RIGHT, TURN_RIGHT);
+    out.put(GhostAction.NONE, WAIT);
     return out;
   }
   
