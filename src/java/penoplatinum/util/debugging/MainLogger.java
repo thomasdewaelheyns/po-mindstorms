@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.client;
+package penoplatinum.util.debugging;
 
 import java.io.File;
 import penoplatinum.util.Utils;
