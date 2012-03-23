@@ -8,7 +8,7 @@ import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAgent;
 
 /**
- * SimulationRobotAgent
+ * RobotBluetoothAgent
  * 
  * Implements the RobotAgent interface for use in the SimulationEnvironment.
  * It provides additional methods for the Simulator to set up links between
