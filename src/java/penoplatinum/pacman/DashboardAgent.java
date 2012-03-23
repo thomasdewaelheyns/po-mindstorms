@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.pacman;
 
 import penoplatinum.model.GhostModel;
@@ -34,9 +30,8 @@ public class DashboardAgent {
     connection.RegisterTransporter(transporter, 124);
     connection.RegisterTransporter(transporter, 125);
     connection.RegisterTransporter(transporter, 126);
-
-
   }
+  
   StringBuilder builder = new StringBuilder();
   long nextTime = 0;
 

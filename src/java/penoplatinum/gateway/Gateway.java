@@ -9,58 +9,49 @@ package penoplatinum.gateway;
  */
 
 import org.apache.log4j.Logger;
+
 import penoplatinum.bluetooth.SimulatedConnection;
+import penoplatinum.util.Utils;
 
 public class Gateway {
-  // setup some loggers
+  static Logger logger = Logger.getLogger("Gateway");
+
+  // setup some specific loggers
   static Logger modelLogger  = Logger.getLogger("model");  // 123
   static Logger wallsLogger  = Logger.getLogger("walls");  // 124
   static Logger valuesLogger = Logger.getLogger("values"); // 125
   static Logger agentsLogger = Logger.getLogger("agents"); // 126
 
-  // the connection to the Robot
-  BluetoothConnection source;
-  private MQ mq;
-  private MQMessageDispatcher mqDispatcher;
+  private Connection connection;
+  private Queue  queue;
 
-  // connects to a Robot (by bluetooth name => currently ignored)
-  public Gateway connect(String name) {
-    this.source = new BluetoothConnection();
-    this.mqDispatcher = new MQMessageDispatcher(source.getConnection());
+  public Gateway connect(Connection connection) {
+    this.connection = connection;
     return this;
   }
 
-  // connects to a Robot (by bluetooth name => currently ignored)
-  public Gateway connect(SimulatedConnection conn) {
-    this.source = new BluetoothConnection(conn);
-    this.mqDispatcher = new MQMessageDispatcher(conn);
+  public Gateway useQueue(Queue queue) {
+    this.queue = queue;
     return this;
   }
 
   // start a loop that continues to fetch and dispatch messages
   public void start() {
-    mqDispatcher.startMQDispatcher();
-    System.out.println("Gateway:> Starting logging...");
-    while (this.source.hasNext()) {
-      String msg = source.getMessage();
+    logger.info("Starting logging...");
+    while(this.connection.hasNext()) {
+      String msg = this.connection.getMessage();
       try {
-        // TODO: this switch should be handled using polymorphism ;-)
-        switch (source.getType()) {
-          case 123:
-            modelLogger.info(msg);
-            break;
-          case 124:
-            wallsLogger.info(msg);
-            break;
-          case 125:
-            valuesLogger.info(msg);
-            break;
-          case 126:
-            agentsLogger.info(msg);
-            break;
+        switch(this.connection.getType()) {
+          case Utils.PACKETID_LOG: logger.debug(msg); break;
+          // TODO: now it makes sens to do this using a logger ;-)
+          case GatewayConfig.MQRelayPacket: this.queue.sendMessage(msg); break;
+          case 123: modelLogger.info(msg);  break;
+          case 124: wallsLogger.info(msg);  break;
+          case 125: valuesLogger.info(msg); break;
+          case 126: agentsLogger.info(msg); break;
         }
       } catch (Exception e) {
-        System.err.println("Failed to log message: " + msg);
+        logger.error( "Failed to log message: " + msg);
       }
     }
   }

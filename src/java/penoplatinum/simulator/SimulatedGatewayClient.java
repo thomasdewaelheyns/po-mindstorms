@@ -4,8 +4,9 @@ package penoplatinum.simulator;
  * SimulatedGatewayClient
  * 
  * Implements the GatewayClient interface for use in the Simulator.
- * It provides additional methods for the Simulator to set up links between
- * them.
+ * On the real Robot, this implementation contains logic to send everything
+ * over the bluetooth connection to the actual Gateway. Here we short-cut this
+ * step and directly implement the logic of the Gateway.
  * 
  * @author: Team Platinum
  */

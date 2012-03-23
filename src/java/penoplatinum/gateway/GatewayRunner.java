@@ -10,20 +10,36 @@ package penoplatinum.gateway;
 
 import org.apache.commons.cli.*;
 
+import penoplatinum.Config;
+
 public class GatewayRunner {
+  private static final String DEFAULT_ROBOT = "platinum";
 
   public static void main(String[] args) {
-    String defaultRobot = "platinum";
-    
-    Gateway gateway = new Gateway();
-
     Boolean setupComplete = false;
+    final BluetoothConnection connection = new BluetoothConnection();
+    Gateway gateway = new Gateway();
+    
+    MQ mq = new MQ() {
+      protected void handleIncomingMessage(String message) {
+        connection.send(message, GatewayConfig.MQRelayPacket);
+      }
+    };
+    
+    gateway.useQueue(mq);
+
+    try {
+      mq.connectToMQServer(Config.MQ_SERVER)
+        .follow(Config.GHOST_CHANNEL);
+    } catch (Exception ex) {
+      System.err.println("Could not connect to MQ.");
+    }
     
     // process command line arguments
     Options options = new Options();
     options.addOption( "h", "help", false, "show this helpful information." );
     options.addOption( "r", "robot", true, "connect to robot <name>. " +
-                                           "default=" + defaultRobot );
+                                           "default=" + DEFAULT_ROBOT );
 
     CommandLineParser parser = new GnuParser();
     try {
@@ -32,7 +48,8 @@ public class GatewayRunner {
       if( line.hasOption("help") ) { 
         GatewayRunner.showHelpFor(options);
       } else {
-        gateway.connect( line.getOptionValue( "robot", defaultRobot ) );
+        connection.setName(line.getOptionValue("robot", DEFAULT_ROBOT));
+        gateway.connect(connection);
         setupComplete = true;
       }
     } catch( ParseException exp ) {
@@ -47,5 +64,4 @@ public class GatewayRunner {
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp( "GatewayRunner", options );    
   }
-
 }

@@ -25,7 +25,7 @@ import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP;
 import penoplatinum.util.Utils;
 
-public abstract class MQ {
+public abstract class MQ implements Queue {
   private String  channelName = "default";
   private Channel channel;
 
@@ -62,7 +62,7 @@ public abstract class MQ {
 
   // public method to send a message. the implementation adds the internal
   // identification of the sender.
-  public MQ sendMessage(String message) throws java.io.IOException {
+  public MQ sendMessage(String message) {
     try {
       this.channel.basicPublish(this.channelName, "", null, message.getBytes());
     } catch (Exception e) {
