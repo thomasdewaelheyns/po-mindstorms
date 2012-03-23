@@ -2,7 +2,6 @@ package penoplatinum.simulator;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ImageObserver;
 import penoplatinum.simulator.view.Board;
@@ -28,7 +27,7 @@ public class RemoteViewRobot implements ViewRobot {
     AffineTransform affineTransform = new AffineTransform();
     affineTransform.setToTranslation(this.getX() - 20, this.getY() - 20);
     affineTransform.rotate(-1 * Math.toRadians(this.getDirection()), 20, 20);
-    g2d.drawImage(SimulatedViewRobot.robot, affineTransform, board);
+    g2d.drawImage(ColorLink.getFileByColor(ColorLink.getColorByName(this.original.getEntityName())), affineTransform, board);
 
   }
 

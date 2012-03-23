@@ -163,4 +163,8 @@ public class RemoteEntity implements RobotEntity {
     int top = (int) (this.positionY % simulator.getTileSize());
     return new Point(left, top);
   }
+  
+  public String getEntityName(){
+    return this.entityName;
+  }
 }
