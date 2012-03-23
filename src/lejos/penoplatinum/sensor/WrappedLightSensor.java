@@ -10,15 +10,9 @@ import penoplatinum.util.Utils;
 public class WrappedLightSensor  {
 
     final LightSensor light;
-    private int WHITEVAL = 100;
-    private int BROWNVAL = 63;
-    private int BLACKVAL = -3;
 
-    public WrappedLightSensor() {
-        //TODO: move out the sensorport
-        light = new LightSensor(SensorPort.S4, true);
-        light.setLow(344);
-        light.setHigh(508);
+    public WrappedLightSensor(SensorPort sensor) {
+        light = new LightSensor(sensor, true);
     }
 
     public void calibrate() {

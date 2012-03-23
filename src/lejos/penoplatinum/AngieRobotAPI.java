@@ -1,8 +1,10 @@
 package penoplatinum;
 
+import lejos.nxt.I2CPort;
 import penoplatinum.sensor.IRSeekerV2;
 import penoplatinum.util.Utils;
 import java.util.List;
+import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.TouchSensor;
@@ -21,17 +23,18 @@ import penoplatinum.simulator.RobotAPI;
  * @author: Team Platinum
  */
 public class AngieRobotAPI implements RobotAPI {
-
-  private Motor motorLeft;
-  private Motor motorRight;
-  //private TouchSensor touchLeft;
-  //private TouchSensor touchRight;
-  private WrappedLightSensor light;
+  private final SensorPort LIGHT_SENSORPORT = SensorPort.S4;
+  private final SensorPort SONAR_SENSORPORT = SensorPort.S3;
+  private final SensorPort IR_SENSORPORT = SensorPort.S1;
+  private final Motor motorLeft = Motor.B;
+  private final Motor motorRight = Motor.C;
+  private final Motor motorSonar = Motor.A;
+  
+  private LightSensor light;
   private RotatingSonarSensor sonar;
   private IRSeekerV2 irSeeker;
   private RotationMovement movement;
-  //private static final int sensorNumberTouchLeft = Model.S1;
-  //private static final int sensorNumberTouchRight = Model.S2;
+
   private static final int sensorNumberInfraRed = Model.S1;
   private static final int sensorNumberLight = Model.S4;
   private static final int sensorNumberSonar = Model.S3;
@@ -41,31 +44,15 @@ public class AngieRobotAPI implements RobotAPI {
   int[] values = new int[Model.SENSORVALUES_NUM];
 
   public AngieRobotAPI() {
-
     //Reset tacho's
-    Motor.A.resetTachoCount();
-    Motor.B.resetTachoCount();
-    Motor.C.resetTachoCount();
+    motorSonar.resetTachoCount();
+    motorLeft.resetTachoCount();
+    motorRight.resetTachoCount();
+    movement = new RotationMovement(motorLeft, motorRight);
 
-
-    motorLeft = Motor.B;
-    motorRight = Motor.C;
-
-
-    /*
-    touchLeft = new TouchSensor(SensorPort.S2);
-    touchRight = new TouchSensor(SensorPort.S1);
-    /**/
-    light = new WrappedLightSensor();
-//        light.calibrate();
-    sonar = new RotatingSonarSensor(Motor.A, new UltrasonicSensor(SensorPort.S3));
-    irSeeker = new IRSeekerV2(SensorPort.S1, IRSeekerV2.Mode.AC);
-
-
-    movement = new RotationMovement();
-
-    //TODO: WARNING: Depedency inconsistent between Angie and RotationMovement
-
+    light = new LightSensor(LIGHT_SENSORPORT, true);
+    sonar = new RotatingSonarSensor(motorSonar, new UltrasonicSensor(SONAR_SENSORPORT));
+    irSeeker = new IRSeekerV2(IR_SENSORPORT, IRSeekerV2.Mode.AC);
   }
 
   public void step() {
@@ -77,7 +64,7 @@ public class AngieRobotAPI implements RobotAPI {
   }
 
 
-  public WrappedLightSensor getLight() {
+  public LightSensor getLight() {
     return light;
   }
 
@@ -121,17 +108,14 @@ public class AngieRobotAPI implements RobotAPI {
   }
 
   public int[] getSensorValues() {
-    //TODO: GC
-    
     values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
     values[sensorNumberMotorRight] = motorRight.getTachoCount();
     values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
+    values[Model.MS1] = getMotorState(motorLeft);
+    values[Model.MS2] = getMotorState(motorRight);
+    values[Model.MS3] = getMotorState(motorSonar);
 
-    /*
-    values[sensorNumberTouchLeft] = touchLeft.isPressed() ? 255 : 0;
-    values[sensorNumberTouchRight] = touchRight.isPressed() ? 255 : 0;
-    /**/
-    values[sensorNumberLight] = light.getRawLightValue();
+    values[sensorNumberLight] = light.getNormalizedLightValue();
     if(this.isSweeping()){
       values[sensorNumberSonar] = (int) sonar.getDistance();
       values[sensorNumberInfraRed] = irSeeker.getDirection();
@@ -141,12 +125,6 @@ public class AngieRobotAPI implements RobotAPI {
       values[Model.IR3] = irSeeker.getSensorValue(4);
       values[Model.IR4] = irSeeker.getSensorValue(5);
     }
-
-
-    //TODO: change on port change
-    values[Model.MS3] = getMotorState(Motor.A);
-    values[Model.MS1] = getMotorState(Motor.B);
-    values[Model.MS2] = getMotorState(Motor.C);
 
     return values;
   }
@@ -177,7 +155,7 @@ public class AngieRobotAPI implements RobotAPI {
 
     switch (motor) {
       case Model.M3:
-        Motor.A.setSpeed(speed);
+        motorSonar.setSpeed(speed);
         break;
       case Model.M1:
         movement.SPEEDFORWARD = speed > 400 ? 400 : speed;
