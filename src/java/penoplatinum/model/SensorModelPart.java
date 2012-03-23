@@ -13,7 +13,7 @@ import penoplatinum.simulator.Model;
  * 
  * @author MHGameWork
  */
-public class SensorModelPart {
+public class SensorModelPart implements IModelPart {
 
   private int[] sensors = new int[Model.SENSORVALUES_NUM];
 
@@ -101,7 +101,8 @@ public class SensorModelPart {
     return hasNewSensorValues;
   }
 
-  public void markSensorValuesProcessed() {
+  @Override
+  public void clearDirty() {
     this.hasNewSensorValues = false;
   }
 }

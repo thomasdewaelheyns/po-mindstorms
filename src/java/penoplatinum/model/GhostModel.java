@@ -9,6 +9,8 @@ package penoplatinum.model;
  */
 // we're using commons collections HashedMap because HashMap isn't implemented
 // on Lejos.
+import java.util.ArrayList;
+import java.util.List;
 import penoplatinum.model.processor.ModelProcessor;
 
 import penoplatinum.simulator.Model;
@@ -26,6 +28,7 @@ public class GhostModel implements Model {
   private SensorModelPart sensorPart;
   private SonarModelPart sonarPart;
   private WallsModelPart wallsPart;
+  private List<IModelPart> parts = new ArrayList<IModelPart>();
 
   public GhostModel(String name) {
     barcodePart = new BarcodeModelPart();
@@ -37,6 +40,16 @@ public class GhostModel implements Model {
     sonarPart = new SonarModelPart();
     wallsPart = new WallsModelPart();
 
+
+
+    parts.add(barcodePart);
+    parts.add(gapPart);
+    parts.add(gridPart);
+    parts.add(lightPart);
+    parts.add(messagePart);
+    parts.add(sensorPart);
+    parts.add(sonarPart);
+    parts.add(wallsPart);
 
 
   }
@@ -53,11 +66,9 @@ public class GhostModel implements Model {
     if (this.processor != null) {
       this.processor.process();
     }
-
-    getSensorPart().markSensorValuesProcessed();
-    getGridPart().markChangedSectorsProcessed();
-    getSonarPart().setSweepComplete(false);
-    getSonarPart().setSweepDataChanged(false);
+    for (int i = 0; i < parts.size(); i++) {
+      parts.get(i).clearDirty();
+    }
   }
 
   public String toString() {

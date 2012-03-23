@@ -9,7 +9,7 @@ import penoplatinum.util.Utils;
  * 
  * @author MHGameWork
  */
-public class BarcodeModelPart {
+public class BarcodeModelPart implements IModelPart {
 
   private int bufferSize = 1000;
   private int barcode = -1;
@@ -51,16 +51,28 @@ public class BarcodeModelPart {
   public boolean isReadingBarcode() {
     return this.isReadingBarcode;
   }
-
   boolean isReadingBarcode = false;
 
   public int getLastBarcode() {
     return lastBarcode;
   }
   
+  /**
+   * This should be called after the robot has moved to the next tile.
+   * 
+   */
   public void clearLastBarcode()
   {
     lastBarcode = -1;
   }
   
+
+//  public void clearLastBarcode() {
+//    lastBarcode = -1;
+//  }
+
+  @Override
+  public void clearDirty() {
+    barcode = -1;
+  }
 }

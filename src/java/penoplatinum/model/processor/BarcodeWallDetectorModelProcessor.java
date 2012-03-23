@@ -18,11 +18,15 @@ public class BarcodeWallDetectorModelProcessor extends ModelProcessor {
 
   public BarcodeWallDetectorModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
+    
   }
   boolean doOnce = false;
 
   @Override
   public void work() {
+    
+    //TODO: maybe check if barcode was valid
+    
     if (!model.getBarcodePart().isReadingBarcode()) {
       doOnce = false;
       return;

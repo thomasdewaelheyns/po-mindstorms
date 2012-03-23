@@ -67,7 +67,6 @@ public class ManhattanDriver implements Driver {
         this.model.getGridPart().turnRight();
         break;
       default:
-        this.model.getGridPart().clearLastMovement();
     }
     this.action = GhostAction.NONE;
   }

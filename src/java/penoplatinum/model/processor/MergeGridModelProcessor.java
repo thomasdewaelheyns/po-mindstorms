@@ -27,10 +27,8 @@ public class MergeGridModelProcessor extends ModelProcessor {
 
     // check if we moved forward
     if (!model.getGridPart().hasRobotMoved() || model.getGridPart().getLastMovement() != GhostAction.FORWARD) {
-      
       return;
     }
-    this.model.getGridPart().clearLastMovement(); //TODO:
 
     // check if we detected a barcode
     if (model.getBarcodePart().getLastBarcode() == -1) {
@@ -59,7 +57,7 @@ public class MergeGridModelProcessor extends ModelProcessor {
     //TODO: is this needed?          lastBarcode = -1;
 
 
-    this.model.getBarcodePart().clearLastBarcode();
+    this.model.getBarcodePart().clearLastBarcode(); // This might be better in a seperate modelprocessor, but anyways :D
 
   }
 

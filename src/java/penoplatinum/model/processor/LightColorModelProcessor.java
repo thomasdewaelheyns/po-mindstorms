@@ -36,6 +36,10 @@ public class LightColorModelProcessor extends ModelProcessor {
 
   @Override
   protected void work() {
+    if (!model.getSensorPart().hasNewSensorValues()) {
+      return;
+    }
+
     LightModelPart model = ((GhostModel) this.model).getLightPart();
 
     int value = this.model.getSensorPart().getLightSensorValue();

@@ -66,7 +66,6 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
 
 
     
-    this.model.getGridPart().markPacmanPositionChangeProcessed();
 
 
   }

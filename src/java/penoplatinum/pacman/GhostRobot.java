@@ -8,10 +8,11 @@ import penoplatinum.util.Utils;
 import penoplatinum.driver.Driver;
 import penoplatinum.grid.GridView;
 import penoplatinum.grid.Sector;
+import penoplatinum.model.processor.AgentWallsUpdateProcessor;
 import penoplatinum.model.processor.BarcodeBlackModelProcessor;
 import penoplatinum.model.processor.GhostProtocolModelProcessor;
 import penoplatinum.model.processor.GridRecalcModelProcessor;
-import penoplatinum.model.processor.GridUpdateProcessor;
+import penoplatinum.model.processor.NewSectorsUpdateProcessor;
 import penoplatinum.model.processor.HistogramModelProcessor;
 import penoplatinum.model.processor.IRModelProcessor;
 import penoplatinum.model.processor.InboxProcessor;
@@ -75,11 +76,12 @@ public class GhostRobot implements Robot {
             new WallDetectionModelProcessor(
             new WallDetectorProcessor(
             new InboxProcessor(
-            new GridUpdateProcessor(
+            new AgentWallsUpdateProcessor(
+            new NewSectorsUpdateProcessor(
             new IRModelProcessor(
             new GridRecalcModelProcessor(
             new GhostProtocolModelProcessor(
-            new MergeGridModelProcessor())))))))))));
+            new MergeGridModelProcessor()))))))))))));
     this.model.setProcessor(processors);
 
     // --- Set initial model state ---

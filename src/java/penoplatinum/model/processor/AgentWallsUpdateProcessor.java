@@ -15,24 +15,22 @@ import penoplatinum.model.GridModelPart;
 import penoplatinum.model.WallsModelPart;
 import penoplatinum.simulator.Bearing;
 
-public class GridUpdateProcessor extends ModelProcessor {
+public class AgentWallsUpdateProcessor extends ModelProcessor {
 
-  public GridUpdateProcessor() {
+  public AgentWallsUpdateProcessor() {
     super();
   }
 
-  public GridUpdateProcessor(ModelProcessor nextProcessor) {
+  public AgentWallsUpdateProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
 
   // update the agent
   public void work() {
-    if (!((GhostModel) this.model).getWallsPart().needsGridUpdate()) {
+    if (!((GhostModel) this.model).getWallsPart().hasUpdatedSector()) {
       return;
     }
-
     this.updateWallInfo();
-    this.addNewSectors();
 
   }
 
@@ -65,21 +63,4 @@ public class GridUpdateProcessor extends ModelProcessor {
     grid.markSectorChanged(current);
   }
 
-  // if there are bearing without walls, providing access to unknown Sectors,
-  // add such Sectors to the Grid
-  private void addNewSectors() {
-    GridModelPart grid = ((GhostModel) this.model).getGridPart();
-
-    Sector current = grid.getCurrentSector();
-    for (int location = Bearing.N; location <= Bearing.W; location++) {
-      if (current.givesAccessTo(location)
-              && !current.hasNeighbour(location)) {
-        Sector neighbour = current.createNeighbour(location);
-        // TODO: parameterize the value
-        //System.out.println(current.getAgent().getName() + " : adding unknown sector(" + location +")" );
-        neighbour.setValue(5000);
-        grid.markSectorChanged(neighbour);
-      }
-    }
-  }
 }

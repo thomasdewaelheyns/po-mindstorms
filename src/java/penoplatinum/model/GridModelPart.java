@@ -29,7 +29,7 @@ import penoplatinum.util.Utils;
  * 
  * @author MHGameWork
  */
-public class GridModelPart {
+public class GridModelPart implements IModelPart {
 
   // This is our grid
   private Grid myGrid;
@@ -42,7 +42,6 @@ public class GridModelPart {
   private Agent agent;
   private ArrayList<Sector> changedSectors = new ArrayList<Sector>();
 
-  
   public GridModelPart(String name) {
     this.agent = new GhostAgent(name);
     this.setupGrid();
@@ -66,26 +65,22 @@ public class GridModelPart {
     // TODO: potential fps eater, may be better to just cache everything in the
     //       list and filter doubles later on
     for (int i = 0; i < changedSectors.size(); i++) {
-      if (changedSectors.get(i) ==current)
+      if (changedSectors.get(i) == current) {
         return;
+      }
     }
     changedSectors.add(current);
+    
+
   }
 
   public ArrayList<Sector> getChangedSectors() {
     return changedSectors;
   }
 
-  public boolean hasChangedSectors()
-  {
+  public boolean hasChangedSectors() {
     return changedSectors.size() != 0;
   }
-          
-  public void markChangedSectorsProcessed()
-  {
-    changedSectors.clear();
-  }
-
 
   public Grid getGrid(String actorName) {
     Grid get = otherGrids.get(actorName);
@@ -104,8 +99,6 @@ public class GridModelPart {
     return otherGrids;
   }
 
-  
-  
   public void setOtherGhostInitialOrientation(String name, TransformationTRT transform) {
     OtherGhost g = findOtherGhost(name);
     if (g == null) {
@@ -191,11 +184,6 @@ public class GridModelPart {
     hasRobotMoved = true;
   }
 
-  public void clearLastMovement() {
-    this.lastMovement = GhostAction.NONE;
-    hasRobotMoved = false;
-  }
-
   public int getLastMovement() {
 //    this.log("inspecting last movement: " + this.lastMovement);
     return this.lastMovement;
@@ -239,9 +227,12 @@ public class GridModelPart {
     return pacmanPositionChanged;
   }
 
-  public void markPacmanPositionChangeProcessed() {
+  @Override
+  public void clearDirty() {
+    changedSectors.clear();
     this.pacmanPositionChanged = false;
+
+    this.lastMovement = GhostAction.NONE;
+    hasRobotMoved = false;
   }
-  
-  
 }

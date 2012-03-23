@@ -9,7 +9,7 @@ package penoplatinum.model;
  * 
  * @author MHGameWork
  */
-public class GapModelPart {
+public class GapModelPart implements IModelPart {
 
   private boolean gapFound;
   private int gapStartAngle;
@@ -37,5 +37,9 @@ public class GapModelPart {
 
   public void setGapStartAngle(int gapStartAngle) {
     this.gapStartAngle = gapStartAngle;
+  }
+
+  @Override
+  public void clearDirty() {
   }
 }

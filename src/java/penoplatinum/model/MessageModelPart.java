@@ -14,19 +14,16 @@ import penoplatinum.pacman.ProtocolHandler;
  * 
  * @author MHGameWork
  */
-public class MessageModelPart {
+public class MessageModelPart implements IModelPart {
   // two queue-like lists for in- and out-goinging messages
+
   private List<String> inbox = new ArrayList<String>();
   private List<String> outbox = new ArrayList<String>();
-  
   private ProtocolHandler protocol;
-  
-  
-  public MessageModelPart()
-  {
-   
+
+  public MessageModelPart() {
   }
-  
+
   /**
    * This is thread safe
    * @param msg 
@@ -59,8 +56,6 @@ public class MessageModelPart {
     this.protocol = protocol;
   }
 
-
-  
   public void clearOutbox() {
     this.outbox.clear();
   }
@@ -69,4 +64,8 @@ public class MessageModelPart {
     outbox.add(msg);
   }
 
+  @Override
+  public void clearDirty() {
+    
+  }
 }

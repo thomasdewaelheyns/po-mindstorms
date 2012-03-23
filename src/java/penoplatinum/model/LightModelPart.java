@@ -13,7 +13,7 @@ import penoplatinum.util.LightColor;
  * 
  * @author MHGameWork
  */
-public class LightModelPart {
+public class LightModelPart implements IModelPart {
 
   private LightColor currentLightColor = LightColor.Brown;
   private float averageLightValue;
@@ -41,5 +41,9 @@ public class LightModelPart {
 
   public void setLine(Line line) {
     this.line = line;
+  }
+
+  @Override
+  public void clearDirty() {
   }
 }

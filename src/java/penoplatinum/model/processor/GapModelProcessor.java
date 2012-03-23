@@ -29,6 +29,9 @@ public class GapModelProcessor extends ModelProcessor {
   }
 
   public void work() {
+    
+    if (!model.getSensorPart().hasNewSensorValues()) return;
+    
     model.getGapPart().setGapFound(false);
     // if we changed direction
     if (this.changedDirection()) {

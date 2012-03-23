@@ -18,7 +18,7 @@ import penoplatinum.grid.GridView;
 import penoplatinum.model.GhostModel;
 import penoplatinum.model.processor.GhostProtocolModelProcessor;
 import penoplatinum.model.processor.GridRecalcModelProcessor;
-import penoplatinum.model.processor.GridUpdateProcessor;
+import penoplatinum.model.processor.NewSectorsUpdateProcessor;
 import penoplatinum.model.processor.InboxProcessor;
 import penoplatinum.model.processor.MergeGridModelProcessor;
 import penoplatinum.model.processor.WallDetectionModelProcessor;
@@ -51,7 +51,7 @@ public class MiniGhostRobot extends GhostRobot {
             new WallDetectionModelProcessor(
             new WallDetectorProcessor(
             new InboxProcessor(
-            new GridUpdateProcessor(
+            new NewSectorsUpdateProcessor(
 //            new IRModelProcessor(
             new GridRecalcModelProcessor(
             new GhostProtocolModelProcessor(

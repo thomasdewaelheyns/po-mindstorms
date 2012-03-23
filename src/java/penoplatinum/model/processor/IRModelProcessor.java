@@ -28,7 +28,7 @@ public class IRModelProcessor extends ModelProcessor {
     GridModelPart grid = model.getGridPart();
     
     
-    if (!model.getWallsPart().needsGridUpdate()) {
+    if (!model.getGridPart().hasRobotMoved()) {
       return;
     }
     int dir = sensor.getSensorValue(Model.S1);

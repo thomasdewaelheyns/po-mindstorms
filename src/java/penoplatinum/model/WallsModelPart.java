@@ -12,7 +12,7 @@ import penoplatinum.grid.Sector;
  * 
  * @author MHGameWork
  */
-public class WallsModelPart {
+public class WallsModelPart implements IModelPart {
 
   private int wallLeftDistance;
   private int wallFrontDistance;
@@ -64,18 +64,13 @@ public class WallsModelPart {
   public void updateSector(Sector newSector) {
     this.prevSector = this.currentSector;
     this.currentSector = newSector;
-    needsGridUpdate = true;
-
+    hasUpdatedSector = true;
 
   }
-  private boolean needsGridUpdate;
+  private boolean hasUpdatedSector;
 
-  public boolean needsGridUpdate() {
-    return needsGridUpdate;
-  }
-
-  public void markGridUpdated() {
-    needsGridUpdate = false;
+  public boolean hasUpdatedSector() {
+    return this.hasUpdatedSector;
   }
 
   // Future Use: detect changes (e.g. keep track of change ratio)
@@ -84,5 +79,10 @@ public class WallsModelPart {
     //       negative change, but going from known/wall to known/nowall is a 
     //       bad sign
     return this.prevSector.getWalls() != this.currentSector.getWalls();
+  }
+
+  @Override
+  public void clearDirty() {
+    hasUpdatedSector = false;
   }
 }

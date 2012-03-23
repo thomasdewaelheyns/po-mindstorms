@@ -1,8 +1,6 @@
 package penoplatinum.model.processor;
 
 import penoplatinum.model.GhostModel;
-import penoplatinum.model.GridModelPart;
-import penoplatinum.model.WallsModelPart;
 
 /**
  * This modelprocessor is responsible for updating the hillclimbing info
@@ -19,19 +17,17 @@ public class GridRecalcModelProcessor extends ModelProcessor {
 
   @Override
   protected void work() {
-    WallsModelPart walls = ((GhostModel) this.model).getWallsPart();
-
-
-    if (!walls.needsGridUpdate()) {
+    if (!model.getGridPart().hasChangedSectors()) {
       return;
     }
+
     for (int i = 0; i < 10; i++) {
       updateHillClimbingInfo();
     }
-    walls.markGridUpdated();
   }
 
   private void updateHillClimbingInfo() {
     ((GhostModel) this.model).getGridPart().getGrid().refresh();
+
   }
 }

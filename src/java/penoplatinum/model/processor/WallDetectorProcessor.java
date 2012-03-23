@@ -87,6 +87,5 @@ public class WallDetectorProcessor extends ModelProcessor {
     }
 
     walls.updateSector(sector);
-    sonar.markSonarValuesProcessed();
   }
 }
