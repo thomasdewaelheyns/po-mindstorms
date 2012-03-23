@@ -15,10 +15,9 @@ import penoplatinum.model.GhostModel;
  */
 public class LightColorModelProcessor extends ModelProcessor {
 
-  private final int BROWN_START = 440;
-  private final int BROWN_END = 470;
+  private final int BROWN_START = 470;
+  private final int BROWN_END = 540;
   private final float AVERAGE_EXPONENT = 0.001f;
-  private final float AVERAGE_COLOR_EXPONENT = 0.80f;
   private final int SENSOR_VARIATION = 30;
   public static final int BLACK = -1;
   public static final int BROWN = 0;
@@ -77,11 +76,6 @@ public class LightColorModelProcessor extends ModelProcessor {
         model.setCurrentLightColor(LightColor.Black);
         break;
     }
-
-    //Utils.Log((int)  model.getAverageBlackValue() + "," + (int) averageLightValue + "," + (int) model.getAverageWhiteValue());
-
-//    Utils.Log(prevColor+"");
-
     prevValue = value;
   }
 }

@@ -132,8 +132,16 @@ public class GhostProtocolHandler implements ProtocolHandler {
             + GhostProtocolHandler.version);
   }
 
+  int prevLeft = -1;
+  int prevTop  = -1;
   @Override
   public void sendPosition() {
+    if(this.agent.getSector().getLeft() == prevLeft && this.agent.getSector().getTop() == prevTop){
+      return;
+    }
+    //TODO search origin of this bug
+    this.prevLeft = this.agent.getSector().getLeft();
+    this.prevTop = this.agent.getSector().getTop();
     send(this.agent.getName() + " POSITION "
             + this.agent.getSector().getLeft() + ","
             + this.agent.getSector().getTop());
