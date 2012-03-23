@@ -8,6 +8,8 @@ CP=../../../:${LIBS}
 
 BUILD_DIR=build
 
+LOG4J_PROPERTIES=../../../log4j.properties
+
 JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
 JAVA=java -cp ${BUILD_DIR}:${LIBS}
 
@@ -22,7 +24,7 @@ all:
 show: ShowMap.class
 	${JAVA} ${PKG}.${<:.class=} ${MAP} ${SHOW_OPTS}
 
-discover: MiniSimulation.class
+discover: MiniSimulation.class files
 	${JAVA} ${PKG}.${<:.class=} ${MAP} ${SLEEP}
 
 %.class: %.java ${BUILD_DIR}
@@ -31,6 +33,11 @@ discover: MiniSimulation.class
 
 ${BUILD_DIR}:
 	@mkdir ${BUILD_DIR}
+
+files: ${BUILD_DIR}
+	@mkdir -p ${BUILD_DIR}/penoplatinum/simulator/images
+	@cp -r ../images ${BUILD_DIR}/penoplatinum/simulator/
+	@cp ${LOG4J_PROPERTIES} ${BUILD_DIR}
 
 clean:
 	@${RM} ${BUILD_DIR} *.class

@@ -34,7 +34,6 @@ public class ColorLink {
   private static HashMap<Color, Image> fillFiles() {
     HashMap<Color, Image> temp = new HashMap<Color, Image>();
     URL resource = ColorLink.class.getResource("images/ghost_cyan.png");
-    System.out.println(resource.toString());
     ImageIcon ii = new ImageIcon(resource);
     SimulatedViewRobot.robot = ii.getImage();
     temp.put(Color.CYAN, ii.getImage());
@@ -51,18 +50,19 @@ public class ColorLink {
   }
 
   public static Color getColorByName(String name) {
-    if (link.get(name) == null) {
+    if( link.get(name) == null ) {
       addName(name);
     }
     return link.get(name);
   }
 
   public static void addName(String name) {
-    if (colors.isEmpty()) {
-      throw new IllegalArgumentException("Cannot add another robot.");
+    if( colors.isEmpty() ) {
+      link.put(name, Color.GRAY);
+    } else {
+      link.put(name, colors.get(0));
+      colors.remove(0);
     }
-    link.put(name, colors.get(0));
-    colors.remove(0);
   }
 
   public static Image getFileByColor(Color c) {
