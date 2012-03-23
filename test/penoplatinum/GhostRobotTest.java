@@ -5,18 +5,19 @@ import java.util.Random;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import penoplatinum.driver.NavigatorActionDriver;
+import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.pacman.LeftFollowingGhostNavigator;
 import penoplatinum.grid.SwingGridView;
 import penoplatinum.pacman.GhostNavigator;
 import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.SimulatedEntity;
+import penoplatinum.simulator.SimulationRobotAPI;
+import penoplatinum.simulator.SimulationRobotAgent;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
 import penoplatinum.simulator.Navigator;
 import penoplatinum.simulator.PacmanEntity;
-import penoplatinum.simulator.SimulationRobotAgent;
 import penoplatinum.simulator.view.SwingSimulationView;
 
 /**
@@ -26,7 +27,7 @@ import penoplatinum.simulator.view.SwingSimulationView;
 public class GhostRobotTest {
 
   Simulator sim;
-  Random r = new Random(457); // was 456
+  Random r = new Random(456);
 
   @Before
   public void setup() {
@@ -39,10 +40,19 @@ public class GhostRobotTest {
     sim.displayOn(new SwingSimulationView());
     sim.run();
   }
+
+  @Test
+  public void testInvertBarcode()
+  {
+    int a = BarcodeTranslator.invertBarcode(12);
+    int magic = 4;
+  }
   
   @Test
   public void testGhostRobotLeftFollowing() throws FileNotFoundException {
+
     sim.useMap(SimulatorTest.createSectorMap());
+
     putGhostRobot(20, 20, 0, new LeftFollowingGhostNavigator(), "Michiel");
 
   }
@@ -50,49 +60,11 @@ public class GhostRobotTest {
   @Test
   public void testGhostRobotGhostNavigator() throws FileNotFoundException {
      sim.useMap(SimulatorTest.createSectorMap());
+
     putGhostRobot(20, 20, 0);
-  }
-
-  @Test
-  public void testGhostRobotMultiple() throws FileNotFoundException {
-    sim.useMap(SimulatorTest.createSectorMap2());
-
-    GhostRobot robot = new GhostRobot("Michiel", new SwingGridView());
-    GhostNavigator ghostNavigator = new GhostNavigator();
-    robot.useNavigator(ghostNavigator);
-
-
-    SimulatedEntity ent = new SimulatedEntity(robot);
-    ent.setPostition(20, 20, 0);
-    sim.addSimulatedEntity(ent);
-
-
-    robot = new GhostRobot("Christophe", new SwingGridView());
-    ghostNavigator = new GhostNavigator();
-    robot.useNavigator(ghostNavigator);
-
-    ent = new SimulatedEntity(robot);
-    ent.setPostition(60, 60, 0);
-    sim.addSimulatedEntity(ent);
-
-
-    robot = new GhostRobot("Ruben", new SwingGridView());
-    ghostNavigator = new GhostNavigator();
-    robot.useNavigator(ghostNavigator);
-
-    ent = new SimulatedEntity(robot);
-    ent.setPostition(100, 100, 0);
-    sim.addSimulatedEntity(ent);
-
-    robot = new GhostRobot("Thomas", new SwingGridView());
-    ghostNavigator = new GhostNavigator();
-    robot.useNavigator(ghostNavigator);
-
-    ent = new SimulatedEntity(robot);
-    ent.setPostition(100, 140, 0);
-    sim.addSimulatedEntity(ent);
 
   }
+
 
   @Test
   public void testGhostRobotMazeProtocol() throws FileNotFoundException {
@@ -106,10 +78,13 @@ public class GhostRobotTest {
   @Test
   public void testGhostRobotBarcodeMergeSimple() throws FileNotFoundException {
     sim.useMap(SimulatorTest.createSectorMap());
+
+
+
     String name = r.nextInt() + "";
 
-    putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
-    putGhostRobot(20 + 3 * 40, 20 + 1 * 40, 90);
+    SimulatedEntity ent1 = putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
+    SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, 90);
 //    putGhostRobot(20 + 5 * 40, 20 + 4 * 40, 0);
 
 //    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
@@ -120,6 +95,9 @@ public class GhostRobotTest {
   @Test
   public void testGhostRobotMazeProtocol3() throws FileNotFoundException {
     sim.useMap(SimulatorTest.createSectorMazeProtocol());
+
+
+
     String name = r.nextInt() + "";
 
     SimulatedEntity ent1 = putGhostRobot(20 + 0 * 40, 20 + 2 * 40, 0);
@@ -134,46 +112,15 @@ public class GhostRobotTest {
   @Test
   public void testBarcodeReverse() throws FileNotFoundException {
     sim.useMap(SimulatorTest.createSectorMap());
+
+
+
     String name = r.nextInt() + "";
 
     SimulatedEntity ent2 = putGhostRobot(20 + 3 * 40, 20 + 1 * 40, -90);
 
 //    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
 //    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
-
-  }
-
-  @Test
-  public void testGhostRobot3() throws FileNotFoundException {
-    sim.useMap(SimulatorTest.createSectorMap2());
-
-    GhostRobot robot = new GhostRobot("Michiel", new SwingGridView());
-    GhostNavigator ghostNavigator = new GhostNavigator();
-    robot.useNavigator(ghostNavigator);
-
-
-    SimulatedEntity ent = new SimulatedEntity(robot);
-    ent.setPostition(20, 20, 0);
-    sim.addSimulatedEntity(ent);
-
-
-    robot = new GhostRobot("Christophe", new SwingGridView());
-    ghostNavigator = new GhostNavigator();
-    robot.useNavigator(ghostNavigator);
-
-    ent = new SimulatedEntity(robot);
-    ent.setPostition(60, 60, 0);
-    sim.addSimulatedEntity(ent);
-
-
-    robot = new GhostRobot("Ruben", new SwingGridView());
-    ghostNavigator = new GhostNavigator();
-    robot.useNavigator(ghostNavigator);
-
-    ent = new SimulatedEntity(robot);
-    ent.setPostition(100, 100, 0);
-    sim.addSimulatedEntity(ent);
-
 
   }
 
@@ -215,9 +162,9 @@ public class GhostRobotTest {
     
     
 
-    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
-    sim.setPacmanEntity(new PacmanEntity(260, 180, 0));
-    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
+//    sim.addRemoteEntity(ent1.getRobot().getName(), 0, 2, Bearing.N);
+//    sim.setPacmanEntity(new PacmanEntity(260, 180, 0));
+//    sim.addRemoteEntity(ent2.getRobot().getName(), 3, 1, Bearing.W);
 
   }
   
@@ -233,8 +180,8 @@ public class GhostRobotTest {
   private SimulatedEntity putGhostRobot(int x, int y, int angle, Navigator nav, String name) {
     GhostRobot robot = new GhostRobot(name, new SwingGridView());
     robot.useNavigator(nav);
+    robot.useRobotAPI(new SimulationRobotAPI());
     robot.useGatewayClient(new SimulationRobotAgent());
-    robot.useDriver(new NavigatorActionDriver());
    
     SimulatedEntity ent = new SimulatedEntity(robot);
     ent.setPostition(x, y, angle);

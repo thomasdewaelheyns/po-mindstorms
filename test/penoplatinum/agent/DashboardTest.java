@@ -39,6 +39,8 @@ public class DashboardTest {
     GhostRobot robot = new GhostRobot("Ikke!", new SwingGridView());
     robot.useDashboardAgent(new DashboardAgent(conn));
     robot.useNavigator(new LeftFollowingGhostNavigator());
+    robot.useGatewayClient(new SimulationRobotAgent());
+    robot.useRobotAPI(new SimulationRobotAPI());
 
     SimulatedEntity ent = new SimulatedEntity(robot);
     ent.setPostition(20, 20, 0);
@@ -56,10 +58,10 @@ public class DashboardTest {
       }
     });
     t.start();
-            
-    
-    
-    
+
+
+
+
     sim.displayOn(new SwingSimulationView());
     sim.run();
   }

@@ -1,5 +1,4 @@
 
-
 import java.io.FileNotFoundException;
 import java.util.Random;
 import org.junit.Test;
@@ -22,10 +21,12 @@ public class PacmanSeekTest {
     sim.setPacmanEntity(p);
     Random r = new Random();
     String name = r.nextInt() + "";
-    
+
     GhostRobot robot = new GhostRobot(name, new SwingGridView());
     GhostNavigator ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
+    robot.useRobotAPI(new SimulationRobotAPI());
+    robot.useGatewayClient(new SimulationRobotAgent());;
     ghostNavigator.setModel(robot.getGhostModel());
     SimulatedEntity ent = new SimulatedEntity(robot);
     ent.setPostition(20 + 3 * 40, 20 + 3 * 40, 180);
@@ -35,6 +36,8 @@ public class PacmanSeekTest {
     robot = new GhostRobot(name, new SwingGridView());
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
+    robot.useRobotAPI(new SimulationRobotAPI());
+    robot.useGatewayClient(new SimulationRobotAgent());;
     ghostNavigator.setModel(robot.getGhostModel());
     ent = new SimulatedEntity(robot);
     ent.setPostition(20 + 2 * 40, 20 + 3 * 40, 90);
@@ -44,6 +47,7 @@ public class PacmanSeekTest {
 
 
     sim.useStepRunnable(new Runnable() {
+
       @Override
       public void run() {
       }
