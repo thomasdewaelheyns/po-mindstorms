@@ -4,7 +4,8 @@ TARGETS=SimulationRunner.class \
 			  ../../penoplatinum/pacman/GhostRobot.class \
 			  ../../penoplatinum/driver/GhostDriver.class \
 				../../penoplatinum/pacman/GhostNavigator.class \
-				../../penoplatinum/simulator/SimulationRobotAgent.class
+				../../penoplatinum/simulator/SimulationRobotAgent.class \
+				../../penoplatinum/simulator/ColorLink.class
 LIB_DIR=../../../../lib
 LIB_CLI=${LIB_DIR}/commons-cli-1.2.jar
 LIB_COLL=${LIB_DIR}/commons-collections-3.2.1.jar
@@ -21,7 +22,7 @@ OPTIONS=
 
 all: ${TARGETS}
 
-run: ${TARGETS} images
+run: ${TARGETS} copy_images
 	@${JAVA} penoplatinum.simulator.${<:.class=} ${OPTIONS}
 
 benchmark: BenchmarkRunner.class
@@ -34,7 +35,7 @@ benchmark: BenchmarkRunner.class
 ${BUILD_DIR}:
 	@mkdir ${BUILD_DIR}
 
-images: ${BUILD_DIR}
+copy_images: ${BUILD_DIR}
 	@mkdir -p ${BUILD_DIR}/penoplatinum/simulator/
 	@cp -r images ${BUILD_DIR}/penoplatinum/simulator/
 
