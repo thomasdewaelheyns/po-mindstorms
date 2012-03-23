@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
-import penoplatinum.simulator.SimulationRobotAgent;
+import penoplatinum.simulator.SimulatedGatewayClient;
 import penoplatinum.simulator.SimulationRunner;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.view.SwingSimulationView;
@@ -46,7 +46,7 @@ public class RemoteSimulationTest {
   public void testRemoteSimulation() throws IOException, InterruptedException {
     throw new UnsupportedOperationException();
 //    Simulator sim1 = new Simulator();
-//    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), new NavigatorRobot(new BehaviourNavigator()));
+//    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulatedGatewayClient(), new NavigatorRobot(new BehaviourNavigator()));
 //    ent.setPostition(200, 200, 10);
 //    sim1.addSimulatedEntity(ent);
 //    sim1.useMap(SimulationRunner.createDefaultMap());

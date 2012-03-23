@@ -54,7 +54,7 @@ public class MiniSimulation {
     // a RobotAPI that uses a proxy to provid valid info about the world
     RobotAPI[] apis   = new MiniSimulationRobotAPI[4];
     // and a RobotAgent
-    MiniSimulationRobotAgent[] robotAgents = new MiniSimulationRobotAgent[4];
+    MiniSimulatedGatewayClient[] robotAgents = new MiniSimulatedGatewayClient[4];
     // and one common Queue (for the Agents)
     Queue queue = new Queue();
     // and one Spy for logging the conversation
@@ -67,7 +67,7 @@ public class MiniSimulation {
       views[r] = new SwingGridView().setSectorSize(20)
                                     .changeTitle("Discoverer " + r)
                                     .changeLocation(250+(r*200),100);
-      robotAgents[r] = new MiniSimulationRobotAgent();
+      robotAgents[r] = new MiniSimulatedGatewayClient();
       queue.subscribe(robotAgents[r]);
       robots[r] = new MiniGhostRobot(""+r, views[r])
                     .useDriver(new MiniManhattanDriver())

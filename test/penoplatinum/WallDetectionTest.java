@@ -3,7 +3,15 @@ package penoplatinum;
 
 import java.io.FileNotFoundException;
 import org.junit.Test;
+import penoplatinum.util.Utils;
 //import penoplatinum.navigators.BehaviourNavigator;
+import penoplatinum.model.GhostModel;
+import penoplatinum.simulator.SimulatedEntity;
+import penoplatinum.simulator.SimulationRobotAPI;
+import penoplatinum.simulator.SimulatedGatewayClient;
+import penoplatinum.simulator.Simulator;
+import penoplatinum.simulator.SimulatorTest;
+import penoplatinum.simulator.view.SwingSimulationView;
 
 /*
  * To change this template, choose Tools | Templates
@@ -23,7 +31,7 @@ public class WallDetectionTest {
 //
 //    final NavigatorRobot robot = new NavigatorRobot();
 //    robot.useNavigator(new BehaviourNavigator());
-//    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+//    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulatedGatewayClient(), robot);
 //    ent.setPostition(20, 20, 0);
 //    sim.addSimulatedEntity(ent);
 //
