@@ -75,9 +75,13 @@ public class MapHashed implements Map {
     map.put(new Point(left, top), tile);
     return this;
   }
+
+  private Point transformPosition(Point position) {
+    return new Point(position.getX(), this.getHeight() - position.getY() - 1);
+  }
   
   public MapHashed addGhostPosition(Point position) {
-    this.ghosts.add(position);
+    this.ghosts.add(this.transformPosition(position));
     return this;
   }
   
@@ -86,7 +90,7 @@ public class MapHashed implements Map {
   }
 
   public MapHashed setPacmanPosition(Point position) {
-    this.pacman = position;
+    this.pacman = this.transformPosition(position);
     return this;
   }
   
