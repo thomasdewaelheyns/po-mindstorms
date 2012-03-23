@@ -5,6 +5,7 @@
 package penoplatinum.grid;
 
 import java.util.List;
+import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
 
 /**
@@ -23,7 +24,6 @@ public class AggregatedSubGrid implements Grid {
 
   private Grid decoratedGrid;
   private TransformationTRT transformation;
-
 
   public Grid getDecoratedGrid() {
     return decoratedGrid;
@@ -48,29 +48,36 @@ public class AggregatedSubGrid implements Grid {
 
   @Override
   public Grid addSector(Sector sector) {
+
+    Point p = transformation.transform(sector.getLeft(), sector.getTop());
+
+    sector.setCoordinates(p.getX(), p.getY());
+
     return decoratedGrid.addSector(sector);
   }
 
   @Override
   public Sector getSector(int left, int top) {
-//     grid = model.getGridPart().getGrid();
-//      // transform the x and y coord
-//      Point p = ghost.getTransformationTRT().transform(x, y);
-//      x = p.getX();
-//      y = p.getY();
-    
-    
+    // transform the x and y coord
+    Point p = transformation.transform(left, top);
+    left = p.getX();
+    top = p.getY();
+
+
     return decoratedGrid.getSector(left, top);
   }
 
   @Override
   public List<Sector> getSectors() {
-    return decoratedGrid.getSectors();
+    throw new UnsupportedOperationException();
+
+//    return decoratedGrid.getSectors();
   }
 
   @Override
   public Grid displayOn(GridView view) {
-    return decoratedGrid.displayOn(view);
+    throw new UnsupportedOperationException();
+//    return decoratedGrid.displayOn(view);
   }
 
   @Override
@@ -80,41 +87,50 @@ public class AggregatedSubGrid implements Grid {
 
   @Override
   public Grid dump() {
-    return decoratedGrid.dump();
+    throw new UnsupportedOperationException();
+//    return decoratedGrid.dump();
   }
 
   @Override
   public int getMinLeft() {
-    return decoratedGrid.getMinLeft();
+    throw new UnsupportedOperationException();
+//    return decoratedGrid.getMinLeft();
   }
 
   @Override
   public int getMaxLeft() {
-    return decoratedGrid.getMaxLeft();
+    throw new UnsupportedOperationException();
+//    return decoratedGrid.getMaxLeft();
   }
 
   @Override
   public int getMinTop() {
-    return decoratedGrid.getMinTop();
+    throw new UnsupportedOperationException();
+//    return decoratedGrid.getMinTop();
   }
 
   @Override
   public int getMaxTop() {
-    return decoratedGrid.getMaxTop();
+    throw new UnsupportedOperationException();
+//    return decoratedGrid.getMaxTop();
   }
 
   @Override
   public int getWidth() {
-    return decoratedGrid.getWidth();
+    throw new UnsupportedOperationException();
+//    return decoratedGrid.getWidth();
   }
 
   @Override
   public int getHeight() {
-    return decoratedGrid.getHeight();
+    throw new UnsupportedOperationException();
+//    return decoratedGrid.getHeight();
   }
 
   @Override
   public Grid addAgent(Agent agent) {
+    //TODO: transform?
+    
     return decoratedGrid.addAgent(agent);
   }
 
@@ -170,6 +186,11 @@ public class AggregatedSubGrid implements Grid {
 
   @Override
   public Sector getOrCreateSector(int x, int y) {
+     // transform the x and y coord
+    Point p = transformation.transform(x, y);
+    x = p.getX();
+    y = p.getY();
+
     return decoratedGrid.getOrCreateSector(x, y);
   }
 
