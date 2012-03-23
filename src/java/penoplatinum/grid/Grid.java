@@ -56,8 +56,6 @@ public interface Grid {
 
   public Grid agentsNeedRefresh();
 
-  void importGrid(Grid g, TransformationTRT transformation);
-
   void addTaggedSector(Sector s);
 
   List<Sector> getTaggedSectors();
@@ -69,5 +67,7 @@ public interface Grid {
   boolean areSectorsEqual(Grid other);
 
   public int getSize();
+
+  void disengage();
 
 }

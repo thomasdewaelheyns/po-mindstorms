@@ -11,6 +11,13 @@ import penoplatinum.simulator.Bearing;
  * @author MHGameWork
  */
 public class TransformationTRT {
+  public static TransformationTRT Identity;
+  
+  static
+  {
+    Identity = new TransformationTRT();
+    Identity.setTransformation(0, 0, 0, 0, 0);
+  }
 
   private int translationAX;
   private int translationAY;

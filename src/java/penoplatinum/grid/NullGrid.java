@@ -126,11 +126,6 @@ public class NullGrid implements Grid {
     return this;
   }
 
-
-  @Override
-  public void importGrid(Grid g, TransformationTRT transformation) {
-  }
-
   @Override
   public void addTaggedSector(Sector s) {
   }
@@ -161,6 +156,10 @@ public class NullGrid implements Grid {
   @Override
   public int getSize() {
     return 0;
+  }
+
+  @Override
+  public void disengage() {
   }
   
 }

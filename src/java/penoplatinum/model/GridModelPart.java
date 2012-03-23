@@ -32,11 +32,8 @@ import penoplatinum.util.Utils;
 public class GridModelPart implements IModelPart {
 
   // This is our grid
-  private Grid myGrid;
-  // This is a map of the other robots. It consists of a key representing the
-  // name of the other robot/ghost and a value that contains a Grid.
-  private SimpleHashMap<String, Grid> otherGrids = new SimpleHashMap<String, Grid>();
-  private ArrayList<OtherGhost> otherGhosts = new ArrayList<OtherGhost>();
+  private AggregatedGrid myGrid;
+  
   // Data specific to the GhostNavigator
   // the agent on the grid
   private Agent agent;
@@ -49,7 +46,8 @@ public class GridModelPart implements IModelPart {
 
   // we create a new Grid, add the first sector, the starting point
   private void setupGrid() {
-    this.myGrid = new AggregatedGrid().setProcessor(new DiffusionGridProcessor()).addSector(new Sector().setCoordinates(0, 0).put(this.agent, Bearing.N));
+    this.myGrid = new AggregatedGrid();
+    this.myGrid.setProcessor(new DiffusionGridProcessor()).addSector(new Sector().setCoordinates(0, 0).put(this.agent, Bearing.N));
   }
 
   // when running in a UI environment we can provide a View for the Grid
@@ -57,10 +55,15 @@ public class GridModelPart implements IModelPart {
     this.myGrid.displayOn(view);
   }
 
-  public Grid getGrid() {
+  public AggregatedGrid getGrid() {
     return this.myGrid;
   }
 
+  
+  public Grid getGrid(String actorName) {
+    return getGrid().getGhostGrid(actorName);
+  }
+  
   public void markSectorChanged(Sector current) {
     // TODO: potential fps eater, may be better to just cache everything in the
     //       list and filter doubles later on
@@ -70,7 +73,7 @@ public class GridModelPart implements IModelPart {
       }
     }
     changedSectors.add(current);
-    
+
 
   }
 
@@ -82,51 +85,15 @@ public class GridModelPart implements IModelPart {
     return changedSectors.size() != 0;
   }
 
-  public Grid getGrid(String actorName) {
-    Grid get = otherGrids.get(actorName);
-    if (get == null) {
-      get = new SimpleGrid();
-      otherGrids.put(actorName, get);
-
-      //SwingGridView view = new SwingGridView();
-      //get.displayOn(view);
-
-    }
-    return get;
-  }
-
-  public SimpleHashMap<String, Grid> getOtherGrids() {
-    return otherGrids;
-  }
-
-  public void setOtherGhostInitialOrientation(String name, TransformationTRT transform) {
-    OtherGhost g = findOtherGhost(name);
-    if (g == null) {
-      g = new OtherGhost();
-      g.setName(name);
-      otherGhosts.add(g);
-    }
-    g.setTransformationTRT(transform);
-  }
-
-  public OtherGhost findOtherGhost(String actorName) {
-    for (int i = 0; i < otherGhosts.size(); i++) {
-      if (otherGhosts.get(i).getName().equals(actorName)) {
-        return otherGhosts.get(i);
-      }
-    }
-    return null;
-  }
-
-  public void printGridStats() {
-
-    for (int i = 0; i < otherGrids.values.size(); i++) {
-      Grid g = otherGrids.values.get(i);
-
-      Utils.Log("Grid " + i + ": " + g.getSectors().size());
-
-    }
-  }
+//  public void printGridStats() {
+//
+//    for (int i = 0; i < otherGrids.values.size(); i++) {
+//      Grid g = otherGrids.values.get(i);
+//
+//      Utils.Log("Grid " + i + ": " + g.getSectors().size());
+//
+//    }
+//  }
 
   public Agent getAgent() {
     return this.agent;

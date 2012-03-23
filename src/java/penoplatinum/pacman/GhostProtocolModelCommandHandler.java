@@ -29,28 +29,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
   @Override
   public void handlePosition(String agentName, int x, int y) {
+    Grid grid = model.getGridPart().getGrid(agentName);
 
-    OtherGhost ghost = model.getGridPart(). findOtherGhost(agentName);
-    Grid grid;
-    if (ghost == null) {
-      // update the agent's position
-      grid = model.getGridPart().getGrid(agentName);
-
-
-    } else {
-      grid = model.getGridPart().getGrid();
-      // transform the x and y coord
-      Point p = ghost.getTransformationTRT().transform(x, y);
-      x = p.getX();
-      y = p.getY();
-    }
-
-    Sector sector = grid.getSector(x, y);
-    if (sector == null) {
-      sector = new Sector();
-      sector.setCoordinates(x, y);
-      grid.addSector(sector);
-    }
+    Sector sector = grid.getOrCreateSector(x, y);
     Agent agent = grid.getAgent(agentName);
     if (agent == null) {
       // Add the agent when it doesn't exist
@@ -80,35 +61,30 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
     // Check if there is a othergrid, or whether the file can be merged directly
 
-    OtherGhost ghost = model.getGridPart().findOtherGhost(agentName);
-    if (ghost == null) {
-      // There is no mapping, add sector to the othergrid
-      Grid grid = model.getGridPart().getGrid(agentName);
-      setSector(grid, x, y, n, e, s, w);
-    } else {
-      // Merge the discovered sector into the models grid, using the stored 
-      //    relative coordinates
+//    OtherGhost ghost = model.getGridPart().findOtherGhost(agentName);
+//    if (ghost == null) {
+//      // There is no mapping, add sector to the othergrid
+//      Grid grid = model.getGridPart().getGrid(agentName);
+//      setSector(grid, x, y, n, e, s, w);
+//    } else {
+    // Merge the discovered sector into the models grid, using the stored 
+    //    relative coordinates
 
-      // transform the x and y coord
-      Point p = ghost.getTransformationTRT().transform(x, y);
+    // transform the x and y coord
 
+    Grid grid = model.getGridPart().getGrid(agentName);
+    Sector sector = grid.getOrCreateSector(x, y);
 
-      Sector sector = model.getGridPart().getGrid().getOrCreateSector(p.getX(), p.getY());
+    int[] values = new int[]{n, e, s, w};
 
-
-
-
-      Sector otherSector = new Sector();//.setCoordinates(x, y);
-
-      int[] values = new int[]{n, e, s, w};
-
-      for (int i = 0; i <= 3; i++) {
-        Boolean newVal = GhostProtocolHandler.decodeTrit(values[i]);
-        otherSector.setWall(i, newVal);
-      }
-
-      SimpleGrid.mergeSector(sector, ghost.getTransformationTRT().getRotation(), otherSector);
+    for (int i = 0; i <= 3; i++) {
+      Boolean newVal = GhostProtocolHandler.decodeTrit(values[i]);
+      //TODO: dont simply set the remote sector, but set to unknown when changed first
+      sector.setWall(i, newVal);
     }
+
+//    SimpleGrid.mergeSector(sector, ghost.getTransformationTRT().getRotation(), otherSector);
+//    }
 
   }
 
@@ -157,7 +133,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     //        in our own grid
     List<Sector> bs = model.getGridPart().getGrid().getTaggedSectors();
     for (int i = 0; i < bs.size(); i++) {
-      MergeGridModelProcessor.attemptMapBarcode(model,bs.get(i), agent.getSector(), grid, agentName);
+      MergeGridModelProcessor.attemptMapBarcode(model, bs.get(i), agent.getSector(), grid, agentName);
     }
 
 
@@ -166,16 +142,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
   @Override
   public void handlePacman(String agentName, int x, int y) {
 
-    OtherGhost ghost = model.getGridPart().findOtherGhost(agentName);
     Grid grid;
-    if (ghost == null) {
-      // There is no mapping, add sector to the othergrid
-      grid = model.getGridPart().getGrid(agentName);
+    grid = model.getGridPart().getGrid(agentName);
 
-    } else {
-      grid = model.getGridPart().getGrid();
-
-    }
 
     Agent ag = grid.getAgent("pacman");
     if (ag == null) {

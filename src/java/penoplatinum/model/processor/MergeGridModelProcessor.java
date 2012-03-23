@@ -4,6 +4,7 @@
  */
 package penoplatinum.model.processor;
 
+import java.util.List;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
@@ -44,8 +45,10 @@ public class MergeGridModelProcessor extends ModelProcessor {
 
     //Find this barcode in the othergrids and map!!
 
-    for (Grid g : gridPart.getOtherGrids().values()) {
-      String name = gridPart.getOtherGrids().findKey(g);
+    List<Grid> otherGrids = gridPart.getGrid().getUnmergedGrids();
+    
+    for (Grid g : otherGrids) {
+      String name = gridPart.getGrid().getGhostNameForGrid(g);
       for (Sector s : g.getTaggedSectors()) {
         attemptMapBarcode(model, gridPart.getAgent().getSector(), s, g, name);
       }
@@ -82,11 +85,11 @@ public class MergeGridModelProcessor extends ModelProcessor {
       return false;
     }
     final int relativeBearing = (bearing - ourSector.getTagBearing() + 4) % 4;
-    TransformationTRT transform = new TransformationTRT()
-            .setTransformation(ourSector.getLeft(), ourSector.getTop(), 
-                                relativeBearing, 
-                                otherSector.getLeft(), otherSector.getTop());
-    model.getGridPart().setOtherGhostInitialOrientation(otherAgentName, transform);
+
+    TransformationTRT transform = new TransformationTRT().setTransformation(ourSector.getLeft(), ourSector.getTop(), relativeBearing, otherSector.getLeft(), otherSector.getTop());
+
+    model.getGridPart().getGrid().setGhostRelativeTransformation(otherAgentName, transform);
+
     model.getGridPart().getGrid().importGrid(otherGrid, transform);
     //model.getGrid().refresh();
     return true;
