@@ -113,9 +113,9 @@ public class GhostRobot implements Robot {
     this.api = api;
 
     api.setReferencePoint(initialReference);
-    this.api.setSpeed(Model.M3, 250); // set sonar speed to double of default
-    this.api.setSpeed(Model.M2, 500); // set sonar speed to double of default
-    this.api.setSpeed(Model.M1, 500); // set sonar speed to double of default
+    this.api.setSpeed(Model.M3, 250); // set sonar speed
+    this.api.setSpeed(Model.M2, 500); // set right speed
+    this.api.setSpeed(Model.M1, 500); // set left speed
     linkComponents();
     return this;
   }

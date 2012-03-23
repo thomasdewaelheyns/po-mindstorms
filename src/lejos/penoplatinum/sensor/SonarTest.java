@@ -78,7 +78,7 @@ public class SonarTest {
 
     public void calibrateSonar(UltrasonicSensor sens) throws IOException {
         this.sens = sens;
-        mov = new RotationMovement();
+        mov = new RotationMovement(Motor.B, Motor.C);
 
         orientSonarHead(sens, Motor.A);
 

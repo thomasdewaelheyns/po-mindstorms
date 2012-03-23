@@ -1,6 +1,5 @@
 package penoplatinum;
 
-import lejos.nxt.I2CPort;
 import penoplatinum.sensor.IRSeekerV2;
 import penoplatinum.util.Utils;
 import java.util.List;
@@ -11,7 +10,6 @@ import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.sensor.RotatingSonarSensor;
-import penoplatinum.sensor.WrappedLightSensor;
 import penoplatinum.util.ExtendedVector;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.ReferencePosition;

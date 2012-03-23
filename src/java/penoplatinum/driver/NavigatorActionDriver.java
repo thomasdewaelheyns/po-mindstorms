@@ -70,9 +70,7 @@ public class NavigatorActionDriver implements Driver {
       queue.add(new StopAction());
       return;
     }
-
     driverState++;
-
     switch (driverState) {
       case STARTING:
         ToCloseDriverEvent.singleton.checkEvent(model, queue);

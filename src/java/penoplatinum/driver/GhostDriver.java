@@ -114,7 +114,7 @@ public class GhostDriver implements Driver {
         }
 
         if (a == GhostAction.NONE) {
-          queue.add(new StopAction(500));
+          queue.add(new StopAction(100));
         } else if (a == GhostAction.TURN_LEFT) {
           queue.add(new TurnAction(model, 90).setIsNonInterruptable(true));
         } else if (a == GhostAction.TURN_RIGHT) {
