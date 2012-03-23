@@ -19,7 +19,7 @@ STATICS=dashboard/*.*
 
 BUILD_DIR=build
 
-LIB_SERVLET=${JBOSS_INSTANCE}/lib/servlet-api.jar
+LIB_SERVLET=../../../../lib/servlet-api.jar
 
 all: ${WAR}
 
