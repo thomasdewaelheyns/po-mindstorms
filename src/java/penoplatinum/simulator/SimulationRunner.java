@@ -224,8 +224,12 @@ public class SimulationRunner {
 
     driver.useRobotAPI(simulatedEntity.getRobotAPI());
 
-    robot.useNavigator(navigator).useGatewayClient(gatewayClient).useRobotAPI(simulatedEntity.getRobotAPI()).useDriver(driver).getModel().getGridPart().displayGridOn(new SwingGridView());
-
+    robot.useNavigator(navigator)
+         .useGatewayClient(gatewayClient)
+         .useRobotAPI(simulatedEntity.getRobotAPI())
+         .useDriver(driver)
+         .getModel().getGridPart().displayGridOn(new SwingGridView());
+    
     this.simulator.addSimulatedEntity(simulatedEntity);
 
     return this;
