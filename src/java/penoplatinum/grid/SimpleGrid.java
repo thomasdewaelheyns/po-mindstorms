@@ -14,6 +14,7 @@ import penoplatinum.SimpleHashMap;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.simulator.Bearing;
+import penoplatinum.util.CantorDiagonal;
 
 // we're using commons collections HashedMap because HashMap isn't implemented
 // on Lejos.
@@ -22,7 +23,7 @@ public class SimpleGrid implements Grid {
 
   int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
   // mapping from coordinates to allocating Sector
-  private SimpleHashMap<String, Sector> sectors = new SimpleHashMap<String, Sector>();
+  private SimpleHashMap<Integer, Sector> sectors = new SimpleHashMap<Integer, Sector>();
   private List<Sector> taggedSectors = new ArrayList<Sector>();
   // all agents in a row
   private List<Agent> agents = new ArrayList<Agent>();
@@ -48,7 +49,7 @@ public class SimpleGrid implements Grid {
     this.resize(left, top);
 
     // add the sector to the list of all sectors in this grid
-    this.sectors.put(left + "," + top, sector);
+    this.sectors.put(CantorDiagonal.transform(left, top), sector);
     // connect neighbours
     this.connect(sector, this.getSector(left, top - 1), Bearing.N);
     this.connect(sector, this.getSector(left + 1, top), Bearing.E);
@@ -101,7 +102,7 @@ public class SimpleGrid implements Grid {
 
   // returns the sector at given absolute/relative coordinates or null
   public Sector getSector(int left, int top) {
-    return (Sector) this.sectors.get(left + "," + top);
+    return (Sector) this.sectors.get(CantorDiagonal.transform(left, top));
   }
 
   public List<Sector> getSectors() {
