@@ -14,6 +14,8 @@ public interface RobotEntity {
   void step();
   ViewRobot getViewRobot();
 
+  RobotAPI getRobotAPI();
+
   double getDir();
 
   double getPosX();

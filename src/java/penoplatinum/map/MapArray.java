@@ -7,7 +7,11 @@ package penoplatinum.map;
  *
  *  @author: Team Platinum
  */
+ 
 import penoplatinum.simulator.tiles.Tile;
+import penoplatinum.util.Point;
+
+import java.util.List;
 import java.util.ArrayList;
 
 public class MapArray implements Map {
@@ -111,7 +115,16 @@ public class MapArray implements Map {
     return tiles.iterator().next();
   }
   
+  // TODO: this should be separated into a MapDescription class, from which
+  //       a map can be constructed.
+  // returns the positions where a ghost needs to be positioned
+  public List<Point> getGhostPositions() {
+    throw new RuntimeException("Not Implemented");
+  }
   
-  
-  
+  // returns the position where the pacman needs to be positioned
+  public Point getPacmanPosition() {
+    throw new RuntimeException("Not Implemented");
+  }
+
 }

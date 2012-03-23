@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import penoplatinum.Config;
-import penoplatinum.agent.MQ;
+import penoplatinum.gateway.MQ;
 import penoplatinum.util.CircularQueue;
 import penoplatinum.model.GhostModel;
 import penoplatinum.pacman.GhostProtocolCommandHandler;
@@ -13,6 +13,7 @@ import penoplatinum.pacman.GhostProtocolHandler;
 import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.ViewRobot;
+import penoplatinum.simulator.RobotAPI;
 
 public class RemoteEntity implements RobotEntity {
 
@@ -54,6 +55,10 @@ public class RemoteEntity implements RobotEntity {
       Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
     }
 
+  }
+
+  public RobotAPI getRobotAPI() {
+    return null;
   }
 
   public RemoteEntity setOrigin(int originX, int originY, int originDirection) {

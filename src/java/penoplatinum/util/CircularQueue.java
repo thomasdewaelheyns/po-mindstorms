@@ -35,6 +35,7 @@ public class CircularQueue<T> {
     return ((rear + 1) % queue.length) == front;
   }
 
+  @SuppressWarnings("unchecked")
   public T remove() {
     if (front == rear) {
       throw new RuntimeException("Queue is empty");

@@ -253,13 +253,17 @@ public class GhostRobot implements Robot {
   }
 
   @Override
-  public GhostRobot useCommunicationAgent(RobotAgent agent) {
+  public GhostRobot useGatewayClient(RobotAgent agent) {
     this.agent = agent;
 
     agent.setRobot(this);
 
     agent.run();
     return this;
+  }
+  
+  public RobotAgent getGatewayClient() {
+    return this.agent;
   }
 
   @Override

@@ -16,8 +16,7 @@ public class ProtocolMapFactory implements MapFactory{
     addCommando(new Pacman());
     addCommando(new Position());
   }
-  
-  
+
   public Map getMap(Scanner sc){
     sc.useDelimiter("[, \\r\\n]+");
     

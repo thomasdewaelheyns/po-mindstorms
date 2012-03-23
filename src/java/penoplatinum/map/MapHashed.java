@@ -1,16 +1,23 @@
 package penoplatinum.map;
 
-import penoplatinum.util.Point;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import penoplatinum.util.Point;
 import penoplatinum.simulator.tiles.Tile;
 
 public class MapHashed implements Map {
 
-  HashMap<Point, Tile> map = new HashMap();
-  int minX = Integer.MAX_VALUE;
-  int maxX = Integer.MIN_VALUE;
-  int minY = Integer.MAX_VALUE;
-  int maxY = Integer.MIN_VALUE;
+  @SuppressWarnings("unchecked")
+  private HashMap<Point, Tile> map = new HashMap();
+  private int minX = Integer.MAX_VALUE;
+  private int maxX = Integer.MIN_VALUE;
+  private int minY = Integer.MAX_VALUE;
+  private int maxY = Integer.MIN_VALUE;
+  
+  List<Point> ghosts = new ArrayList<Point>();
+  Point pacman;
 
   @Override
   public Map add(Tile t) {
@@ -67,5 +74,24 @@ public class MapHashed implements Map {
     }
     map.put(new Point(left, top), tile);
     return this;
+  }
+  
+  public MapHashed addGhostPosition(Point position) {
+    this.ghosts.add(position);
+    return this;
+  }
+  
+  public List<Point> getGhostPositions() {
+    return ghosts;
+  }
+
+  public MapHashed setPacmanPosition(Point position) {
+    this.pacman = position;
+    return this;
+  }
+  
+  // returns the position where the pacman needs to be positioned
+  public Point getPacmanPosition() {
+    return this.pacman;
   }
 }

@@ -1,6 +1,10 @@
 RM=rm -rf
 
-TARGETS=SimulationRunner.class
+TARGETS=SimulationRunner.class \
+			  ../../penoplatinum/pacman/GhostRobot.class \
+			  ../../penoplatinum/driver/GhostDriver.class \
+				../../penoplatinum/pacman/GhostNavigator.class \
+				../../penoplatinum/simulator/SimulationRobotAgent.class
 LIB_DIR=../../../../lib
 LIB_CLI=${LIB_DIR}/commons-cli-1.2.jar
 LIB_COLL=${LIB_DIR}/commons-collections-3.2.1.jar
@@ -16,15 +20,6 @@ JAVA=java -cp ${BUILD_DIR}:${LIBS}
 OPTIONS=
 
 all: ${TARGETS}
-
-behaviour: ../navigators/BehaviourNavigator.class
-	@${MAKE} run OPTIONS="-n penoplatinum.navigators.BehaviourNavigator -p 100,100,90 -m finale.track"
-
-linefollower: ../navigators/LineFollowerNavigator.class
-	@${MAKE} run OPTIONS="-n penoplatinum.navigators.LineFollowerNavigator -p 100,100,180"
-
-sonar: ../navigators/SonarNavigator.class ../bluetooth/CircularQueue.class
-	@${MAKE} run OPTIONS="-n penoplatinum.navigators.SonarNavigator -p 80,100,180"
 
 run: ${TARGETS} images
 	@${JAVA} penoplatinum.simulator.${<:.class=} ${OPTIONS}

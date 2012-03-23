@@ -10,6 +10,9 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
+ 
+import penoplatinum.driver.Driver;
+
 public interface Robot {
 
   /**
@@ -18,7 +21,13 @@ public interface Robot {
    */
   public Robot useRobotAPI(RobotAPI api);
 
-  public Robot useCommunicationAgent(RobotAgent agent);
+  public Robot useNavigator(Navigator api);
+
+  public Robot useGatewayClient(RobotAgent agent);
+  
+  public Robot useDriver(Driver driver);
+  
+  public RobotAgent getGatewayClient();
 
   /**
    * to allow external Communication to be processed by the Robot, a generic

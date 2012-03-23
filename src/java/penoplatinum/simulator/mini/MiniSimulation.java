@@ -73,7 +73,7 @@ public class MiniSimulation {
                     .useDriver(new MiniManhattanDriver())
                     .useRobotAPI(apis[r])
                     .useNavigator(new GhostNavigator())
-                    .useCommunicationAgent(robotAgents[r]);
+                    .useGatewayClient(robotAgents[r]);
     }
 
     System.out.println("*** ready, press return to start...");

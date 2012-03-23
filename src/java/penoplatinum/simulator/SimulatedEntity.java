@@ -23,31 +23,38 @@ public class SimulatedEntity implements RobotEntity{
   private double direction;       //   and a direction it's facing
   private double totalMovement = 0;
   private long lastStatisticsReport = 0;  // time of last stat report
+
   // the motorSpeeds and the sensorValues
   private int[] sensorValues = new int[Model.SENSORVALUES_NUM];
-  private Motor[] motors = new Motor[3];
-  private Sensor[] sensors = new Sensor[Model.SENSORVALUES_NUM];
+  private Motor[] motors     = new Motor[3];
+  private Sensor[] sensors   = new Sensor[Model.SENSORVALUES_NUM];
   
-  /* Moved to SensorValues
-  private int prevLeft = 0;
-  private int prevRight = 0;
-  private int prevSonar = 0;/**/
-  SimulationRobotAPI robotAPI;    // the API used to access hardware
-  RobotAgent robotAgent;  // the communication layer
-  private Robot robot;            // the actual robot
+  private SimulationRobotAPI robotAPI;    // the API used to access hardware
+  private RobotAgent         robotAgent;  // the communication layer
+  private Robot              robot;       // the actual robot
+  
+  private ViewRobot          viewRobot;   // 
   
   private Simulator simulator;
 
-  public SimulatedEntity(SimulationRobotAPI robotAPI, RobotAgent robotAgent, Robot robot) {
+  public SimulatedEntity(Robot robot) {
     this.setupMotors();
     this.setupSensors();
-    this.robotAPI = robotAPI;
-    this.robotAgent = robotAgent;
-    this.robot = robot;
-    robotAPI.setSimulatedEntity(this);
-    robot.useRobotAPI(robotAPI);
-    robot.useCommunicationAgent(robotAgent);
+
+    this.robot      = robot;
+
+    this.robotAPI   = new SimulationRobotAPI();
+    this.robotAPI.setSimulatedEntity(this);
+
+    this.robot.useRobotAPI(this.robotAPI);
+
+    this.robotAgent = this.robot.getGatewayClient();
     
+    this.viewRobot = new SimulatedViewRobot(this);
+  }
+  
+  public RobotAPI getRobotAPI() {
+    return this.robotAPI;
   }
   
   public void useSimulator(Simulator simulator){
@@ -109,18 +116,10 @@ public class SimulatedEntity implements RobotEntity{
    * The Simulator also instruments the robot with a RobotAPI and sets up
    * the RobotAgent to interact with the robot.
    */
-  public SimulatedEntity putRobotAt(Robot robot, int x, int y, int direction) {
-    this.robot = robot;
+  public SimulatedEntity putRobotAt(int x, int y, int direction) {
     this.positionX = x;
     this.positionY = y;
     this.direction = direction;
-
-    // we provide the robot with our SimulationAPI
-    this.getRobot().useRobotAPI(this.robotAPI);
-
-    // we connect our SimulationRobotAgent to the robot
-    this.robotAgent.setRobot(this.getRobot());
-
     return this;
   }
 
@@ -176,11 +175,11 @@ public class SimulatedEntity implements RobotEntity{
   
   @Override
   public ViewRobot getViewRobot(){
-    return new SimulatedViewRobot(this);
+    return this.viewRobot;
   }
-  
+
   public Robot getRobot() {
-    return robot;
+    return this.robot;
   }
 
   /**
@@ -198,17 +197,6 @@ public class SimulatedEntity implements RobotEntity{
   
   public boolean sonarMotorIsMoving() {
     return this.motors[Model.M3].getValue() != this.sensorValues[Model.M3];
-  }
-
-
-  private void trackMovementStatistics(double movement) {
-    this.totalMovement += movement;
-    // report the statistics every 2 seconds
-    long current = System.currentTimeMillis();
-    if (current - this.lastStatisticsReport > 2000) {
-      this.lastStatisticsReport = current;
-      //this.reportMovementStatistics();
-    }
   }
 
   // performs the next step in the movement currently executed by the robot
@@ -236,7 +224,6 @@ public class SimulatedEntity implements RobotEntity{
           this.positionY -= dy;
         }
       }
-      this.trackMovementStatistics(d);
     } else if (changeLeft == changeRight * -1) {
       // we're turning
       double d = WHEEL_SIZE / 360 * changeLeft;
@@ -251,18 +238,8 @@ public class SimulatedEntity implements RobotEntity{
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
 
-    // always refresh our SimulationView
-    //simulator.refreshView();
-    
-    getRobot().step();
+    this.getRobot().step();
   }
-
-  private void reportMovementStatistics() {
-    simulator.view.log("");
-    simulator.view.log("Total Distance = " + this.totalMovement + "cm");
-    //simulator.view.log("Visited Tiles  = " + this.visitedTiles.size());
-    //this.view.log("Fitness        = " + this.getFitness());
-  }/*/
 
   /**
    * based on the robot's position, determine the values for the different
@@ -290,8 +267,7 @@ public class SimulatedEntity implements RobotEntity{
   }
 
   public double getDirection() {
-    return direction;
+    return this.direction;
   }
-  
-  
+
 }

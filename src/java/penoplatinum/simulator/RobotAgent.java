@@ -1,21 +1,18 @@
 package penoplatinum.simulator;
 
 /**
- * RobotAgent interface
+ * GatewayClient interface
  * 
- * Defines the interface for RobotAgents. RobotAgents are threads that are 
- * running alongside the Robot to collect status-information from the Model
- * and Navigator and send this back to the PC. They also receive commands from
- * the PC and pass these to the robot they control.
+ * Defines a client-interface for communication with the Gateway on the PC.
  * 
  * @author: Team Platinum
  */
 
 public interface RobotAgent {
 
-  // sets the robot this agent controls
+  // sets the robot this client works for
   public void setRobot( Robot robot );
-  
+
   // starts the agent's event loop
   public void run();
 

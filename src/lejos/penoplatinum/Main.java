@@ -40,8 +40,8 @@ public class Main {
     Utils.EnableRemoteLogging(conn);
 
     final RobotBluetoothAgent robotBluetoothAgent = new RobotBluetoothAgent();
-    robot.useCommunicationAgent(robotBluetoothAgent.useConnection(conn));
-    //robotBluetoothAgent.run(); This is started in robot.useCommunicationAgent(agent)
+    robot.useGatewayClient(robotBluetoothAgent.useConnection(conn));
+    //robotBluetoothAgent.run(); This is started in robot.useGatewayClient(agent)
 
 
 //        initializeAgent(angie);
