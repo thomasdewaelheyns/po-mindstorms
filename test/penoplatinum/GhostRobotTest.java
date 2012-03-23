@@ -254,7 +254,7 @@ public class GhostRobotTest {
   private SimulatedEntity putGhostRobot(int x, int y, int angle, Navigator nav, String name) {
     GhostRobot robot = new GhostRobot(name, new SwingGridView());
     robot.useNavigator(nav);
-
+   
     SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
     ent.setPostition(x, y, angle);
     sim.addSimulatedEntity(ent);
