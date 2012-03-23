@@ -8,6 +8,7 @@ package penoplatinum.pacman;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.Config;
 import penoplatinum.model.GhostModel;
 import penoplatinum.util.Utils;
 import penoplatinum.grid.Agent;
@@ -17,7 +18,6 @@ import penoplatinum.simulator.mini.Queue;
 import penoplatinum.util.MyScanner;
 
 public class GhostProtocolHandler implements ProtocolHandler {
-  private final boolean HANDLE_END_LINE = true;
 
   private static String version = "1.0-partial";
   // counter for received join commands
@@ -43,7 +43,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
   @Override
   public void receive(String msg) {
     try {
-      if (HANDLE_END_LINE) {
+      if (Config.PROTOCOL_USE_RETARDEDNEWLINE) {
         msg = msg.substring(0, msg.length() - 2);
       }
 
@@ -75,7 +75,11 @@ public class GhostProtocolHandler implements ProtocolHandler {
       // formatting are handled here : NOT
       // COMMENT THE FOLLOWING LINE IN "PRODUCTION" environment ;-)
 //      e.printStackTrace();
-      Utils.Log("WEEQSDJFMldj");
+      if (Config.DEBUGMODE) {
+        Utils.Log("Protocol error!! (" + msg + ")");
+        e.printStackTrace();
+
+      }
     }
   }
 
@@ -110,18 +114,27 @@ public class GhostProtocolHandler implements ProtocolHandler {
     //TODO: this.agent.activate();
   }
 
+  private void send(String msg)
+  {
+    if(Config.PROTOCOL_USE_RETARDEDNEWLINE)
+    {
+      msg = msg + "\\n";
+    }
+    this.queue.send(msg);
+  }
+  
   private void sendJoin() {
-    this.queue.send("JOIN");
+    send("JOIN");
   }
 
   private void sendName() {
-    this.queue.send(this.agent.getName() + " NAME "
+    send(this.agent.getName() + " NAME "
             + GhostProtocolHandler.version);
   }
 
   @Override
   public void sendPosition() {
-    this.queue.send(this.agent.getName() + " POSITION "
+    send(this.agent.getName() + " POSITION "
             + this.agent.getSector().getLeft() + ","
             + this.agent.getSector().getTop());
   }
@@ -130,7 +143,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
   @Override
   public void sendDiscover(Sector sector) {
 
-    this.queue.send(this.agent.getName() + " DISCOVER "
+    send(this.agent.getName() + " DISCOVER "
             + sector.getLeft() + "," + sector.getTop() + " "
             + this.makeTrit(sector.hasWall(Bearing.N)) + " "
             + this.makeTrit(sector.hasWall(Bearing.E)) + " "
@@ -148,13 +161,13 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   @Override
   public void sendBarcode(int code, int bearing) {
-    this.queue.send(this.agent.getName() + " BARCODE "
+    send(this.agent.getName() + " BARCODE "
             + code + " " + bearing);
   }
 
   @Override
   public void sendPacman() {
-    this.queue.send(this.agent.getName() + " PACMAN "
+    send(this.agent.getName() + " PACMAN "
             + this.model.getGridPart().getPacmanAgent().getLeft() + ","
             + this.model.getGridPart().getPacmanAgent().getTop());
   }

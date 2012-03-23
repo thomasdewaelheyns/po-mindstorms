@@ -33,7 +33,7 @@ public class SimulatorTest {
 
   public static Map createSectorMap() throws FileNotFoundException {
     Map m;
-    File f = new File("..\\..\\src\\java\\penoplatinum\\simulator\\map2.track");
+    File f = new File("..\\..\\maps\\map2.track");
     Scanner sc = new Scanner(f);
     MapFactorySector fact = new MapFactorySector();
     m = fact.getMap(sc);
@@ -42,7 +42,7 @@ public class SimulatorTest {
 
   public static Map createSectorMap2() throws FileNotFoundException {
     Map m;
-    File f = new File("..\\..\\src\\java\\map3.track");
+    File f = new File("..\\..\\maps\\map3.track");
     Scanner sc = new Scanner(f);
     MapFactorySector fact = new MapFactorySector();
     m = fact.getMap(sc);
@@ -51,7 +51,7 @@ public class SimulatorTest {
 
   public static Map createSectorMazeProtocol() throws FileNotFoundException {
     Map m;
-    File f = new File("..\\..\\src\\wolfraam.txt");
+    File f = new File("..\\..\\maps\\wolfraam.txt");
     Scanner sc = new Scanner(f);
     MapFactory fact = new ProtocolMapFactory();
     m = fact.getMap(sc);
@@ -60,7 +60,7 @@ public class SimulatorTest {
 
   public static Map createSectorMazeProtocol2() throws FileNotFoundException {
     Map m;
-    File f = new File("..\\..\\src\\wolfraam3.txt");
+    File f = new File("..\\..\\maps\\wolfraam3.txt");
     Scanner sc = new Scanner(f);
     MapFactory fact = new ProtocolMapFactory();
     m = fact.getMap(sc);
