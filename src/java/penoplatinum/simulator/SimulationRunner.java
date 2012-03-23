@@ -38,11 +38,12 @@ import penoplatinum.util.Point;
 public class SimulationRunner {
 
   // TODO move this to a properties-file
-  private final static String DEFAULT_ROBOT = "penoplatinum.pacman.GhostRobot";
-  private final static String DEFAULT_NAVIGATOR = "penoplatinum.pacman.GhostNavigator";
-  private final static String DEFAULT_DRIVER = "penoplatinum.driver.GhostDriver";
+  private final static String DEFAULT_ROBOT          = "penoplatinum.pacman.GhostRobot";
+  private final static String DEFAULT_NAVIGATOR      = "penoplatinum.pacman.GhostNavigator";
+  private final static String DEFAULT_DRIVER         = "penoplatinum.driver.GhostDriver";
   private final static String DEFAULT_GATEWAY_CLIENT = "penoplatinum.simulator.SimulatedGatewayClient";
-  private final static String DEFAULT_MAP = "../../maps/wolfraam.txt";
+  private final static String DEFAULT_MAP            = "../../../../maps/wolfraam.txt";
+
   private Simulator simulator;
   private String robotClassName;
   private String navigatorClassName;
