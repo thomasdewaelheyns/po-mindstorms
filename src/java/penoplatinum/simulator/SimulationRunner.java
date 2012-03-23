@@ -30,6 +30,8 @@ import penoplatinum.map.MapFactory;
 import penoplatinum.map.MapFactorySector;
 import penoplatinum.map.mazeprotocolinterpreter.ProtocolMapFactory;
 
+import penoplatinum.grid.SwingGridView;
+
 import penoplatinum.driver.Driver;
 
 import penoplatinum.util.Point;
@@ -225,7 +227,8 @@ public class SimulationRunner {
     robot.useNavigator(navigator)
          .useGatewayClient(gatewayClient)
          .useRobotAPI(simulatedEntity.getRobotAPI())
-         .useDriver(driver);
+         .useDriver(driver)
+         .getModel().getGridPart().displayGridOn(new SwingGridView());
     
     this.simulator.addSimulatedEntity(simulatedEntity);
 
