@@ -22,6 +22,4 @@ public interface Navigator {
   public double    getAngle();
 
   public Navigator setModel(Model model);
-  
-  public Navigator setControler(GoalDecider controler);
 }

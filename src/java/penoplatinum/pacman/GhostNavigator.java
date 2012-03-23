@@ -16,7 +16,6 @@ import java.util.Random;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 import penoplatinum.simulator.Bearing;
-import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Model;
 
 import penoplatinum.simulator.Navigator;
@@ -179,10 +178,5 @@ public class GhostNavigator implements Navigator {
     
     // after turning, move forward
     this.plan.add(GhostAction.FORWARD);
-  }
-
-  @Override
-  public Navigator setControler(GoalDecider controler) {
-    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

@@ -6,7 +6,6 @@ package penoplatinum.pacman;
 
 import penoplatinum.model.GhostModel;
 import java.util.ArrayList;
-import penoplatinum.simulator.GoalDecider;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Navigator;
 
@@ -63,10 +62,5 @@ public class LeftFollowingGhostNavigator implements Navigator {
   @Override
   public Boolean reachedGoal() {
     return false;
-  }
-
-  @Override
-  public Navigator setControler(GoalDecider controler) {
-    throw new UnsupportedOperationException("Not supported yet.");
   }
 }
