@@ -67,11 +67,13 @@ public class AggregatedSubGrid implements Grid {
     return decoratedGrid.getSector(left, top);
   }
 
+  /**
+   * TODO: WARNING this does NOT transform the sectors!!!!!!!
+   * @return 
+   */
   @Override
   public List<Sector> getSectors() {
-    throw new UnsupportedOperationException();
-
-//    return decoratedGrid.getSectors();
+    return decoratedGrid.getSectors();
   }
 
   @Override
@@ -130,7 +132,7 @@ public class AggregatedSubGrid implements Grid {
   @Override
   public Grid addAgent(Agent agent) {
     //TODO: transform?
-    
+
     return decoratedGrid.addAgent(agent);
   }
 
@@ -186,7 +188,7 @@ public class AggregatedSubGrid implements Grid {
 
   @Override
   public Sector getOrCreateSector(int x, int y) {
-     // transform the x and y coord
+    // transform the x and y coord
     Point p = transformation.transform(x, y);
     x = p.getX();
     y = p.getY();
