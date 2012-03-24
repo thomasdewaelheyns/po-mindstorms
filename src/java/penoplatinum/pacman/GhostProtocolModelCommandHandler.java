@@ -146,7 +146,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
 
     final Grid grid = model.getGridPart().getGrid(agentName);
-    Agent agent = grid.getAgent(agentName);
+    if(model.getGridPart().findOtherGhost(agentName) != null){      return;    }    Agent agent = grid.getAgent(agentName);
     agent.getSector().setTagCode(code);
     agent.getSector().setTagBearing(bearing);
 

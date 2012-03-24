@@ -82,11 +82,11 @@ public class MergeGridModelProcessor extends ModelProcessor {
       return false;
     }
     final int relativeBearing = (bearing - ourSector.getTagBearing() + 4) % 4;
-
-    TransformationTRT transform = new TransformationTRT().setTransformation(ourSector.getLeft(), ourSector.getTop(), relativeBearing, otherSector.getLeft(), otherSector.getTop());
-
+    TransformationTRT transform = new TransformationTRT()
+            .setTransformation(ourSector.getLeft(), ourSector.getTop(), 
+                                relativeBearing, 
+                                otherSector.getLeft(), otherSector.getTop());
     model.getGridPart().setOtherGhostInitialOrientation(otherAgentName, transform);
-
     model.getGridPart().getGrid().importGrid(otherGrid, transform);
     //model.getGrid().refresh();
     return true;

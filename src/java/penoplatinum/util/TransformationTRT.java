@@ -63,4 +63,10 @@ public class TransformationTRT {
     p = new Point(p.getX() + localX, p.getY() + localY);
     return p;
   }
+  
+  public String toString(){
+    return "Transformation: "+translationAX+","+translationAY+":"+rotation+":"+translationBX+","+translationBY;
+  }
+  
+  
 }

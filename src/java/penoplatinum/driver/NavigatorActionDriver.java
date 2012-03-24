@@ -80,7 +80,6 @@ public class NavigatorActionDriver implements Driver {
           ProximityCorrectionEvent.singleton.checkEvent(model, queue);
         }
         NavigatorAction action = AllNavigatorActions.actions.get(a);
-        System.out.println(action);
         if (action == null) {
           throw new RuntimeException("Unknown GhostAction");
         }
