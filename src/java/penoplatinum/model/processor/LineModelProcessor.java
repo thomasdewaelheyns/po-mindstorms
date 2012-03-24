@@ -1,6 +1,7 @@
 package penoplatinum.model.processor;
 
 import penoplatinum.model.LightModelPart;
+import penoplatinum.model.SensorModelPart;
 import penoplatinum.simulator.Line;
 import penoplatinum.simulator.Model;
 import penoplatinum.util.LightColor;
@@ -10,7 +11,7 @@ public class LineModelProcessor extends ModelProcessor {
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
-  private static final int END_BARCODE = 3;
+  private static final int END_CORRUPTED = 3;
   private int brownCounter = 0;
   int state = WAITING;
   private int colorCounter = 0;
@@ -66,21 +67,19 @@ public class LineModelProcessor extends ModelProcessor {
    */
   @Override
   protected void work() {
-    if (!model.getSensorPart().hasNewSensorValues()) {
+    final SensorModelPart sensorPart = model.getSensorPart();
+    if (!sensorPart.hasNewSensorValues()) {
+      return;
+    }
+    LightModelPart lightPart = model.getLightPart();
+    lightPart.setLine(Line.NONE);
+    if (sensorPart.isTurning()) {
+      state = END_CORRUPTED;
       return;
     }
 
-    LightModelPart lightPart = model.getLightPart();
-    lightPart.setLine(Line.NONE);
-    if (model.getSensorPart().isTurning()) {
-      state = WAITING;
-    }
-//    if (model.isLightDataCorrupt()) {
-//      state = WAITING;
-//    }
-
     switch (state) {
-      case END_BARCODE:
+      case END_CORRUPTED:
         if (lightPart.getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
           if (brownCounter > 5) {
@@ -113,7 +112,7 @@ public class LineModelProcessor extends ModelProcessor {
           }
         } else {
           if (lightPart.getCurrentLightColor() != LightColor.White) {
-            state = END_BARCODE;
+            state = END_CORRUPTED;
             break;
           }
           colorCounter++;

@@ -5,15 +5,11 @@ import java.util.Random;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.pacman.LeftFollowingGhostNavigator;
 import penoplatinum.grid.SwingGridView;
 import penoplatinum.pacman.GhostNavigator;
-import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.SimulatedEntity;
-import penoplatinum.simulator.SimulationRobotAPI;
-import penoplatinum.simulator.SimulationRobotAgent;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
 import penoplatinum.simulator.Navigator;
@@ -40,19 +36,10 @@ public class GhostRobotTest {
     sim.displayOn(new SwingSimulationView());
     sim.run();
   }
-
-  @Test
-  public void testInvertBarcode()
-  {
-    int a = BarcodeTranslator.invertBarcode(12);
-    int magic = 4;
-  }
   
   @Test
   public void testGhostRobotLeftFollowing() throws FileNotFoundException {
-
     sim.useMap(SimulatorTest.createSectorMap());
-
     putGhostRobot(20, 20, 0, new LeftFollowingGhostNavigator(), "Michiel");
 
   }
@@ -60,9 +47,7 @@ public class GhostRobotTest {
   @Test
   public void testGhostRobotGhostNavigator() throws FileNotFoundException {
      sim.useMap(SimulatorTest.createSectorMap());
-
     putGhostRobot(20, 20, 0);
-
   }
 
   @Test
@@ -74,7 +59,7 @@ public class GhostRobotTest {
     robot.useNavigator(ghostNavigator);
 
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    SimulatedEntity ent = new SimulatedEntity(robot);
     ent.setPostition(20, 20, 0);
     sim.addSimulatedEntity(ent);
 
@@ -83,7 +68,7 @@ public class GhostRobotTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
 
-    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    ent = new SimulatedEntity(robot);
     ent.setPostition(60, 60, 0);
     sim.addSimulatedEntity(ent);
 
@@ -92,7 +77,7 @@ public class GhostRobotTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
 
-    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    ent = new SimulatedEntity(robot);
     ent.setPostition(100, 100, 0);
     sim.addSimulatedEntity(ent);
 
@@ -100,7 +85,7 @@ public class GhostRobotTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
 
-    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    ent = new SimulatedEntity(robot);
     ent.setPostition(100, 140, 0);
     sim.addSimulatedEntity(ent);
 
@@ -173,7 +158,7 @@ public class GhostRobotTest {
     robot.useNavigator(ghostNavigator);
 
 
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    SimulatedEntity ent = new SimulatedEntity(robot);
     ent.setPostition(20, 20, 0);
     sim.addSimulatedEntity(ent);
 
@@ -182,7 +167,7 @@ public class GhostRobotTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
 
-    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    ent = new SimulatedEntity(robot);
     ent.setPostition(60, 60, 0);
     sim.addSimulatedEntity(ent);
 
@@ -191,7 +176,7 @@ public class GhostRobotTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
 
-    ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    ent = new SimulatedEntity(robot);
     ent.setPostition(100, 100, 0);
     sim.addSimulatedEntity(ent);
 
@@ -255,7 +240,7 @@ public class GhostRobotTest {
     GhostRobot robot = new GhostRobot(name, new SwingGridView());
     robot.useNavigator(nav);
    
-    SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulationRobotAgent(), robot);
+    SimulatedEntity ent = new SimulatedEntity(robot);
     ent.setPostition(x, y, angle);
     sim.addSimulatedEntity(ent);
 

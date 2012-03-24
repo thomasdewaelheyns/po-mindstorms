@@ -2,13 +2,14 @@ package penoplatinum.map.mazeprotocolinterpreter;
 
 import java.util.Scanner;
 import penoplatinum.barcode.BarcodeBlackBlack;
+import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.map.MapHashed;
 import penoplatinum.simulator.tiles.Sector;
 
 public class BarcodeAt implements Commando {
   
   private final boolean INVERT_CODE = true;
-  private boolean ALLOW_MIRROR = true;
+  private final boolean ALLOW_MIRROR = true;
 
   @Override
   public void interpret(MapHashed m, Scanner sc) {
@@ -44,7 +45,7 @@ public class BarcodeAt implements Commando {
       if(BarcodeBlackBlack.expand[i] == code){
         return i;
       }
-      if(ALLOW_MIRROR && BarcodeBlackBlack.expand[i] == reverse(code)){
+      if(ALLOW_MIRROR && BarcodeBlackBlack.expand[i] == BarcodeTranslator.reverse(code, 6)){
         return -i-1;
       }
     }
@@ -53,16 +54,6 @@ public class BarcodeAt implements Commando {
     } else {
       throw new RuntimeException("Incorrect barcode, symmetrical or mirrored");
     }
-  }
-
-  private int reverse(int code) {
-    int out = 0;
-    while(code != 0){
-      out<<=1;
-      out |= code & 1;
-      code >>=1;
-    }
-    return out;
   }
   
 }

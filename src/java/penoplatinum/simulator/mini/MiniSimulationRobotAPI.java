@@ -141,7 +141,7 @@ public class MiniSimulationRobotAPI implements RobotAPI {
     }
     if (proxy.getSector().getTagBearing() != proxy.getBearing()) {
       // maybe safety check whether the tagbearing is opposite?
-      code = BarcodeTranslator.invertBarcode(code);
+      code = BarcodeTranslator.reverse(code, 6);
     }
     return code;
   }

@@ -10,9 +10,9 @@ import penoplatinum.simulator.tiles.Tile;
 
 public class LightSensor implements Sensor {
 
-  private static final int BLACK = 360;
-  private static final int WHITE = 500;
-  private static final int BROWN = 450;
+  private static final int BLACK = 440;
+  private static final int WHITE = 570;
+  private static final int BROWN = 500;
   private Simulator sim;
   private SimulatedEntity simEntity;
   public static final int LIGHTBUFFER_SIZE = 5;

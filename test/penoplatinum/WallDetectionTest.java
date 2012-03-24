@@ -3,15 +3,7 @@ package penoplatinum;
 
 import java.io.FileNotFoundException;
 import org.junit.Test;
-import penoplatinum.util.Utils;
 //import penoplatinum.navigators.BehaviourNavigator;
-import penoplatinum.model.GhostModel;
-import penoplatinum.simulator.SimulatedEntity;
-import penoplatinum.simulator.SimulationRobotAPI;
-import penoplatinum.simulator.SimulationRobotAgent;
-import penoplatinum.simulator.Simulator;
-import penoplatinum.simulator.SimulatorTest;
-import penoplatinum.simulator.view.SwingSimulationView;
 
 /*
  * To change this template, choose Tools | Templates

@@ -18,7 +18,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import penoplatinum.map.Map;
 import penoplatinum.simulator.PacmanViewRobot;
-import penoplatinum.simulator.RemoteViewRobot;
 import penoplatinum.simulator.SimulatedViewRobot;
 import penoplatinum.simulator.tiles.Tile;
 
@@ -94,8 +93,10 @@ public class Board extends JPanel {
 
     int w = this.map.getWidth() * drawSize;
     int h = this.map.getHeight() * drawSize;
-    
-    if (h == 0) h = w; // cheat
+
+    if (h == 0) {
+      h = w; // cheat
+    }
     return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
   }
 

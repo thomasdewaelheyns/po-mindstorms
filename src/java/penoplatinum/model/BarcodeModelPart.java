@@ -1,5 +1,6 @@
 package penoplatinum.model;
 
+import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.util.Buffer;
 import penoplatinum.util.Utils;
 
@@ -27,7 +28,7 @@ public class BarcodeModelPart implements IModelPart {
     if (barcode != -1) {
       lastBarcode = barcode;
 
-      Utils.Log(barcode + "");
+      Utils.Log(barcode + ","+BarcodeTranslator.reverse(barcode, 6));
 
       // Barcode update is sent on next position send!!
 

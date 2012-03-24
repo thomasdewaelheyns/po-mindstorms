@@ -10,7 +10,6 @@ import penoplatinum.simulator.Navigator;
  *
  * @author: Team Platinum
  */
-
 public class AlignPerpendicularLine extends BaseAction {
 
   public static final int TARGET_ANGLE = 20;
@@ -22,13 +21,7 @@ public class AlignPerpendicularLine extends BaseAction {
     super(model);
     this.model = model;
     directionModifier = CCW ? 1 : -1;
-
-
   }
-  private boolean lineStartFound = false;
-  private boolean sweeping = false;
-  private boolean sweepBack = false;
-  private boolean abort = false;
   private int state = -1;
   private Integer leftStart;
   private Integer leftEnd;
@@ -41,7 +34,7 @@ public class AlignPerpendicularLine extends BaseAction {
       // processing state
       switch (state) {
         case 0:
-          if ( getModel().getLightPart().getCurrentLightColor() == LightColor.White && leftStart == null) {
+          if (getModel().getLightPart().getCurrentLightColor() == LightColor.White && leftStart == null) {
             leftStart = getRelativeAngle();
           }
           if (getModel().getLightPart().getCurrentLightColor() == LightColor.Brown && leftStart != null) {

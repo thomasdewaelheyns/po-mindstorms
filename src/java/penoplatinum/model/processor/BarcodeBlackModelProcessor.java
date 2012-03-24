@@ -18,13 +18,14 @@ import penoplatinum.simulator.Model;
 public class BarcodeBlackModelProcessor extends ModelProcessor {
 
   public static final int END_OF_BARCODE_BROWN_COUNT = 10; // Was 10
+  public static final int END_OF_FALSE_POSITIVE = 5; // Was 10
   private static final int WAITING = 0;
   private static final int RECORDING = 1;
   private static final int INTERPRET = 2;
+  private static final int END_CORRUPTED = 3;
   private BarcodeCorrector interpreter;
   private int brownCounter = 0;
-  int state = WAITING;
-  public float WIELOMTREK = 0.175f;
+  private int state = WAITING;
 
   /**
    * The constructor in case the BarcodeModelProcessor is the last in a linked list of ModdelProcessors
@@ -74,11 +75,15 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
     }
 
     BarcodeModelPart barcode = model.getBarcodePart();
-
     Buffer tempBuffer = barcode.getLightValueBuffer();
+    if (model.getSensorPart().isTurning()) {
+      setState(END_CORRUPTED);
+      brownCounter = 0;
+      tempBuffer.unsetCheckPoint();
+    }
     barcode.setBarcode(Barcode.None);
     updateState(tempBuffer);
-    barcode.setReadingBarcode(state != WAITING);
+    barcode.setReadingBarcode(state == RECORDING);
   }
 
   /**
@@ -98,7 +103,6 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
     switch (state) {
       case WAITING:
         if (model.getLightPart().getCurrentLightColor() == LightColor.Black) {
-//          Utils.Log("Barcode Start");
           setState(RECORDING);
           tempBuffer.setCheckPoint();
           brownCounter = 0;
@@ -107,40 +111,34 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
       case RECORDING:
         if (model.getLightPart().getCurrentLightColor() == LightColor.Brown) {
           brownCounter++;
-          if (brownCounter > 5 && tempBuffer.getCheckpointSize() < 10) {
+          if (brownCounter > END_OF_FALSE_POSITIVE && tempBuffer.getCheckpointSize() < 10) {
             setState(WAITING);
             tempBuffer.unsetCheckPoint();
           } else if (brownCounter > END_OF_BARCODE_BROWN_COUNT) {
-            setState(INTERPRET);
+            interpretBuffer(tempBuffer);
           }
         } else {
           brownCounter = 0;
         }
         break;
-      case INTERPRET:
-        BufferSubset subset = tempBuffer.getBufferSubset(brownCounter);
-        int barcode = (interpreter.translate(subset));
-
-//        Utils.Log("Barcode 2: " + barcode);
-//        Utils.Log("Size : " + tempBuffer.getCheckpointSize());
-        setState(WAITING);
-        tempBuffer.unsetCheckPoint();
-
-
-//        Utils.Log(" BAAAAAAAARRRRRCOOOOOOODEEEEE: " + barcode + "");
-        int corrected = barcode;
-        if (barcode != Barcode.None) {
-          corrected = (corrected / 2) & ((1 << 7) - 1);
-//          corrected = interpreter.correct(corrected);
+      case END_CORRUPTED:
+        brownCounter++;
+        if (brownCounter > END_OF_FALSE_POSITIVE) {
+          setState(WAITING);
         }
-
-        if (corrected == 1) {
-          int magic = 3;
-        }
-
-        model.getBarcodePart().setBarcode(corrected);
-
     }
+  }
+
+  private void interpretBuffer(Buffer tempBuffer) {
+    BufferSubset subset = tempBuffer.getBufferSubset(brownCounter);
+    int barcode = (interpreter.translate(subset));
+    tempBuffer.unsetCheckPoint();
+    int corrected = barcode;
+    if (barcode != Barcode.None) {
+      corrected = (corrected / 2) & ((1 << 7) - 1);
+    }
+    model.getBarcodePart().setBarcode(corrected);
+    setState(WAITING);
   }
 
   private void setState(int s) {
