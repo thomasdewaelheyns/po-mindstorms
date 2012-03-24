@@ -7,11 +7,11 @@ import penoplatinum.simulator.view.Board;
 
 public class SectorDraw implements TileDraw{
   
-  public static final int DRAW_WALL_LINE_WIDTH = 2 * Board.SCALE;
-  public static final int DRAW_TILE_SIZE = Sector.SIZE * Board.SCALE;
-  public static final int DRAW_LINE_WIDTH = Sector.LINE_WIDTH * Board.SCALE;
-  public static final int DRAW_BARCODE_LINE_WIDTH = Sector.BARCODE_LINE_WIDTH * Board.SCALE;
-  public static final int DRAW_BARCODE_WIDTH = Sector.BARCODE_WIDTH * Board.SCALE;
+  public static int DRAW_WALL_LINE_WIDTH = 2 * Board.SCALE;
+  public static int DRAW_TILE_SIZE = Sector.SIZE * Board.SCALE;
+  public static int DRAW_LINE_WIDTH = Sector.LINE_WIDTH * Board.SCALE;
+  public static int DRAW_BARCODE_LINE_WIDTH = Sector.BARCODE_LINE_WIDTH * Board.SCALE;
+  public static int DRAW_BARCODE_WIDTH = Sector.BARCODE_WIDTH * Board.SCALE;
   
   private Sector s;
 

@@ -151,7 +151,8 @@ public class SimpleGrid implements Grid {
   // sets the view to display the Grid on
   public Grid displayOn(GridView view) {
     this.view = view;
-    this.view.display(this);
+    // CHANGED
+    this.view.display(this, true);
     return this;
   }
 

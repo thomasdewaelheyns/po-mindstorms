@@ -23,7 +23,7 @@ import penoplatinum.simulator.tiles.Tile;
 
 public class Board extends JPanel {
   // Tiles are defined in logical dimensions, comparable to cm in reality
-
+  public static double scaleRatio = 1.0;
   public static final int SCALE = 2;
   // colors on the board
   public static final Color BLACK = new Color(100, 100, 100);
@@ -121,6 +121,7 @@ public class Board extends JPanel {
   public void paint(Graphics g) {
     super.paint(g);
     Graphics2D g2d = (Graphics2D) g;
+    g2d.scale(Board.scaleRatio, Board.scaleRatio);
 
     if (this.background != null) {
       g2d.drawImage(this.background, null, 0, 0);

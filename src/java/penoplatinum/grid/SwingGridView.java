@@ -38,6 +38,17 @@ public class SwingGridView extends JFrame implements GridView {
 
     return this;
   }
+  
+  public GridView display(Grid grid, boolean noWindow) {
+    this.grid = grid;
+
+    this.setupBoard();  // yes keep this order ;-)
+    // the board needs to be ready before we construct
+    // the window
+    this.refresh();
+
+    return this;
+  }
 
   public GridView setSectorSize(int size) {
     this.size = size;
@@ -220,4 +231,13 @@ public class SwingGridView extends JFrame implements GridView {
     this.top = top;
     return this;
   }
+  
+  
+ public void disableWindow(){
+   this.setVisible(false);
+ }
+ 
+ public GridBoard getGrid(){
+   return this.board;
+ }
 }

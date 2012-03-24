@@ -23,4 +23,7 @@ public interface GridView {
   public GridView changeLocation(int left, int top);
 
   GridView barcodesNeedsRefresh();
+
+  //CHANGED
+  public GridView display(Grid aThis, boolean b);
 }

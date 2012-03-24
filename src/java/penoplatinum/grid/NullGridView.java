@@ -36,4 +36,9 @@ public class NullGridView implements GridView {
   public GridView changeTitle(String title)         { return this; }
   public GridView changeLocation(int left, int top) { return this; }
 
+  @Override
+  public GridView display(Grid aThis, boolean b) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
 }

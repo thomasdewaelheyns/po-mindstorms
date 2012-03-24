@@ -2,7 +2,6 @@ package penoplatinum;
 
 import java.util.ArrayList;
 import java.util.List;
-import penoplatinum.grid.Grid;
 
 public class SimpleHashMap<K, T>{
 

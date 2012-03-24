@@ -51,5 +51,10 @@ public class ConsoleGridView implements GridView {
   public GridView barcodesNeedsRefresh() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
+
+  @Override
+  public GridView display(Grid aThis, boolean b) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }
 
