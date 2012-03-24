@@ -17,7 +17,12 @@ public class WaitNavigatorAction implements NavigatorAction {
 
   @Override
   public void whenDone(Model m) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    //do nothing
+    //throw new UnsupportedOperationException("Not supported yet.");
   }
   
+  @Override
+  public String toString(){
+    return "Wait";
+  }
 }

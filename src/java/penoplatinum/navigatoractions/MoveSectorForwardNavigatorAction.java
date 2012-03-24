@@ -15,4 +15,9 @@ public class MoveSectorForwardNavigatorAction implements NavigatorAction {
   public void whenDone(Model m) {
     m.getGridPart().moveForward();
   }
+  
+  @Override
+  public String toString(){
+    return "Move Forward";
+  }
 }

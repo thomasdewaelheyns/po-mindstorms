@@ -19,4 +19,8 @@ public class TurnRightNavigatorAction implements NavigatorAction {
   public void whenDone(Model m) {
     m.getGridPart().turnRight();
   }
+  
+  public String toString(){
+    return "Turn Right";
+  }
 }

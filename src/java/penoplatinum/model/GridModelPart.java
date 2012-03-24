@@ -161,11 +161,6 @@ public class GridModelPart implements IModelPart {
 
     this.lastMovement = GhostAction.FORWARD;
     hasRobotMoved = true;
-
-
-
-
-
   }
 
   public boolean hasRobotMoved() {
@@ -199,8 +194,6 @@ public class GridModelPart implements IModelPart {
   }
 
   public void setPacManInNext(boolean b, int x, int y) {
-
-
 //    if (this.isNextToPacman) {
 //      Sector s = this.getGrid().getSector(pacmanX, pacmanY);
 //      getGrid().removeAgent(s.getAgent());
@@ -214,7 +207,7 @@ public class GridModelPart implements IModelPart {
         p = new PacmanAgent();
       }
 
-      Sector s = this.getGrid().getSector(x, y);
+      Sector s = this.getGrid().getOrCreateSector(x, y);
       s.put(p, 0);
       pacmanPositionChanged = true;
     }

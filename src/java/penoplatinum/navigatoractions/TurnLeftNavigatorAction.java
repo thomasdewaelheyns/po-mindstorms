@@ -19,4 +19,9 @@ public class TurnLeftNavigatorAction implements NavigatorAction {
   public void whenDone(Model m) {
     m.getGridPart().turnLeft();
   }
+  
+  @Override
+  public String toString(){
+    return "Turn Left";
+  }
 }

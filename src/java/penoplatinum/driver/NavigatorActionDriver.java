@@ -79,23 +79,19 @@ public class NavigatorActionDriver implements Driver {
         if (a == GhostAction.FORWARD) { //TODO change this
           ProximityCorrectionEvent.singleton.checkEvent(model, queue);
         }
-
         NavigatorAction action = AllNavigatorActions.actions.get(a);
+        System.out.println(action);
         if (action == null) {
           throw new RuntimeException("Unknown GhostAction");
-        } else {
-          queue.add(action.getBaseAction(model));
         }
-
+        queue.add(action.getBaseAction(model));
         break;
       case COMPLETE:
         NavigatorAction action2 = AllNavigatorActions.actions.get(navigatorAction);
         if (action2 == null) {
           throw new RuntimeException("Unknown GhostAction");
-        } else {
-          queue.add(action2.getBaseAction(model));
         }
-
+        action2.whenDone(model);
         navigatorAction = null;
         queue.add(new StopAction());
 
