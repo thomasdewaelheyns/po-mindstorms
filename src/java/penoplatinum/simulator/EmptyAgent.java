@@ -1,6 +1,6 @@
 package penoplatinum.simulator;
 
-public class EmptyAgent implements RobotAgent{
+public class EmptyAgent implements GatewayClient{
 
   @Override
   public void setRobot(Robot robot) {

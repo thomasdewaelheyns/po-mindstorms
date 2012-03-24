@@ -19,10 +19,9 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.cli.*;
 
+import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Panels;
 import penoplatinum.simulator.view.SwingSimulationView;
-
-import penoplatinum.simulator.tiles.Sector;
 
 import penoplatinum.map.MapArray;
 import penoplatinum.map.MapFactory;
@@ -32,6 +31,8 @@ import penoplatinum.map.mazeprotocolinterpreter.ProtocolMapFactory;
 import penoplatinum.grid.SwingGridView;
 
 import penoplatinum.driver.Driver;
+
+import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.util.Point;
 
@@ -52,7 +53,7 @@ public class SimulationRunner {
   private Map<String, Robot> robots = new HashMap<String, Robot>();
   private Map<String, Navigator> navigators = new HashMap<String, Navigator>();
   private Map<String, Driver> drivers = new HashMap<String, Driver>();
-  private Map<String, RobotAgent> gatewayClients = new HashMap<String, RobotAgent>();
+  private Map<String, GatewayClient> gatewayClients = new HashMap<String, GatewayClient>();
   private Map<String, RobotAPI> robotAPIs = new HashMap<String, RobotAPI>();
   private Map<String, RobotEntity> simulatedEntities = new HashMap<String, RobotEntity>();
 
@@ -90,7 +91,7 @@ public class SimulationRunner {
 
       return (Robot) ctor.newInstance(name);
     } catch (InvocationTargetException ex) {
-      System.err.println(ex + " could not create robot class.");
+      System.err.println(ex + " Robot could not create robot class.");      
     } catch (NoSuchMethodException ex) {
       System.err.println(ex + " Robot class have constructor with String.");
     } catch (ClassNotFoundException ex) {
@@ -163,17 +164,17 @@ public class SimulationRunner {
     return this;
   }
 
-  public RobotAgent getGatewayClient(String name) {
+  public GatewayClient getGatewayClient(String name) {
     if (!this.gatewayClients.containsKey(name)) {
       this.gatewayClients.put(name, this.createGatewayClientInstance(name));
     }
     return this.gatewayClients.get(name);
   }
 
-  public RobotAgent createGatewayClientInstance(String name) {
+  public GatewayClient createGatewayClientInstance(String name) {
     try {
       Class theClass = Class.forName(this.gatewayClientClassName);
-      return (RobotAgent) theClass.newInstance();
+      return (GatewayClient) theClass.newInstance();
     } catch (ClassNotFoundException ex) {
       System.err.println(ex + " GatewayClient class must be in class-path.");
     } catch (InstantiationException ex) {
@@ -212,10 +213,11 @@ public class SimulationRunner {
   }
 
   public SimulationRunner putGhostAt(String name, int x, int y, int direction) {
-    Robot robot = this.getRobot(name);
-    Navigator navigator = this.getNavigator(name);
-    Driver driver = this.getDriver(name);
-    RobotAgent gatewayClient = this.getGatewayClient(name);
+    Robot         robot         = this.getRobot(name);
+    Navigator     navigator     = this.getNavigator(name);
+    Driver        driver        = this.getDriver(name);
+    GatewayClient gatewayClient = this.getGatewayClient(name)
+                                      .setRobot(robot);
 
     // construct a simulatedEntity
     SimulatedEntity simulatedEntity = new SimulatedEntity(robot);

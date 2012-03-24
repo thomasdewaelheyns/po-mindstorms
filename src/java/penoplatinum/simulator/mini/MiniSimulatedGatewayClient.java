@@ -1,9 +1,9 @@
 package penoplatinum.simulator.mini;
 
 import penoplatinum.simulator.Robot;
-import penoplatinum.simulator.RobotAgent;
+import penoplatinum.simulator.GatewayClient;
 
-public class MiniSimulatedGatewayClient implements RobotAgent, MessageHandler {
+public class MiniSimulatedGatewayClient implements GatewayClient, MessageHandler {
   private Queue queue;
   private Robot robot;
   

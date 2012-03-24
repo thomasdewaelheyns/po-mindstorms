@@ -48,7 +48,7 @@ public class BluetoothConnection implements Connection {
     this.connection.RegisterTransporter(this.endPoint, Config.BT_VALUES);
     this.connection.RegisterTransporter(this.endPoint, Config.BT_AGENTS);
     this.connection.RegisterTransporter(this.endPoint, Config.BT_LOG);
-    this.connection.RegisterTransporter(this.endPoint, Config.BT_MQ_RELAY);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_GHOST_PROTOCOL);
   }
 
   public BluetoothConnection send(String msg, int channel) {

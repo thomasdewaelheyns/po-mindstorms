@@ -1,30 +1,24 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.pacman;
-
-import penoplatinum.grid.Sector;
-import penoplatinum.simulator.mini.MessageHandler;
-import penoplatinum.simulator.mini.Queue;
 
 /**
  * This interface represents the functionalties provided by the communication 
  * protocol
- * @author MHGameWork
+ * 
+ * @author Team Platinum
  */
-public interface ProtocolHandler extends MessageHandler {
 
+import penoplatinum.grid.Sector;
+
+import penoplatinum.gateway.GatewayClient;
+
+
+public interface ProtocolHandler {
+  ProtocolHandler useGatewayClient(GatewayClient client);
+  
   void receive(String msg);
 
   void sendBarcode(int code, int bearing);
-
   void sendDiscover(Sector sector);
-
   void sendPacman();
-
   void sendPosition();
-
-  void useQueue(Queue queue);
-  
 }

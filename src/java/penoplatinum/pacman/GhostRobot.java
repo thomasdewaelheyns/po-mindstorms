@@ -1,13 +1,19 @@
 package penoplatinum.pacman;
 
-import penoplatinum.model.GhostModel;
-import penoplatinum.driver.GhostDriver;
 import java.util.ArrayList;
-import penoplatinum.model.GridModelPart;
+
+import penoplatinum.Config;
+
 import penoplatinum.util.Utils;
+
 import penoplatinum.driver.Driver;
+import penoplatinum.driver.GhostDriver;
+
 import penoplatinum.grid.GridView;
 import penoplatinum.grid.Sector;
+
+import penoplatinum.model.GhostModel;
+import penoplatinum.model.GridModelPart;
 import penoplatinum.model.processor.AgentWallsUpdateProcessor;
 import penoplatinum.model.processor.BarcodeBlackModelProcessor;
 import penoplatinum.model.processor.GhostProtocolModelProcessor;
@@ -22,31 +28,34 @@ import penoplatinum.model.processor.MergeGridModelProcessor;
 import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.model.processor.WallDetectionModelProcessor;
 import penoplatinum.model.processor.WallDetectorProcessor;
+
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
-import penoplatinum.simulator.RobotAgent;
 import penoplatinum.simulator.Navigator;
-import penoplatinum.simulator.mini.MessageHandler;
-import penoplatinum.simulator.mini.Queue;
+
+import penoplatinum.gateway.GatewayClient;
 
 public class GhostRobot implements Robot {
 
   protected GhostModel model;
   protected RobotAPI api;   // provided from the outside
+
   private Driver driver;
   private Navigator navigator;
-//  private int[] sweepAngles = new int[]{-105, -90, -75, -30, 0, 30, 75, 90, 105};
-  private int[] sweepAngles = new int[]{-90, 0, 90};
+
+  private int[] sweepAngles = new int[]{ -90, 0, 90 };
   private ArrayList<Integer> sweepAnglesList = new ArrayList<Integer>();
   private boolean waitingForSweep = false;
-  private RobotAgent agent;
-  private ReferencePosition initialReference = new ReferencePosition();
+
+  private GatewayClient client;
   private DashboardAgent dashboardAgent;
 
-  public GhostRobot(String name) {
+  private ReferencePosition initialReference = new ReferencePosition();
 
+
+  public GhostRobot(String name) {
     this.setupModel(name);
 
     for (int i = 0; i < sweepAngles.length; i++) {
@@ -58,15 +67,11 @@ public class GhostRobot implements Robot {
 
   public GhostRobot(String name, GridView view) {
     this(name);
-    GridModelPart gridPart = this.model.getGridPart();
-    gridPart.displayGridOn(view);
+    this.model.getGridPart().displayGridOn(view);
   }
 
   protected void setupModel(String name) {
     this.model = new GhostModel(name);
-
-    
-
 
     ModelProcessor processors =
             new LightColorModelProcessor(
@@ -84,67 +89,50 @@ public class GhostRobot implements Robot {
             new MergeGridModelProcessor()))))))))))));
     this.model.setProcessor(processors);
 
-    // --- Set initial model state ---
-
-
-    // Set the implementation of the ghost protocol to use
-
-    model.getMessagePart().setProtocol(new GhostProtocolHandler(model, new GhostProtocolModelCommandHandler(model)));
-    final Queue queue = new Queue();
-    queue.subscribe(new MessageHandler() {
-
-      @Override
-      public void useQueue(Queue queue) {
-      }
-
-      @Override
-      public void receive(String msg) {
-        model.getMessagePart().queueOutgoingMessage(msg);
-      }
-    });
-    model.getMessagePart().getProtocol().useQueue(queue);
-
-
-
+    // make sure the messagePart can send messages through the GatewayClient,
+    // using the GhostProtocolHandler
+    // this is only the case for a selection of the messages, most messages
+    // are stored in the outbox and send by this robot implementation at the
+    // end of a step.
+    model.getMessagePart()
+         .setProtocol(new GhostProtocolHandler(model, 
+                        new GhostProtocolModelCommandHandler(model)));
   }
 
   @Override
   public GhostRobot useRobotAPI(RobotAPI api) {
     this.api = api;
 
-    api.setReferencePoint(initialReference);
-    this.api.setSpeed(Model.M3, 250); // set sonar speed
-    this.api.setSpeed(Model.M2, 500); // set right speed
-    this.api.setSpeed(Model.M1, 500); // set left speed
-    linkComponents();
+    this.api.setReferencePoint(initialReference);
+    this.api.setSpeed(Model.M3, Config.MOTOR_SPEED_SONAR);
+    this.api.setSpeed(Model.M2, Config.MOTOR_SPEED_MOVE);
+    this.api.setSpeed(Model.M1, Config.MOTOR_SPEED_MOVE);
+
+    this.linkComponents();
     return this;
   }
 
   public GhostRobot useNavigator(Navigator nav) {
     this.navigator = nav;
-    linkComponents();
+    this.linkComponents();
     return this;
   }
 
   public GhostRobot useDriver(Driver driver) {
     this.driver = driver;
-    linkComponents();
+    this.linkComponents();
     return this;
   }
 
-  /**
-   * This function links the driver, navigator and api correctly
-   */
+  // This function links the driver, navigator and api correctly
   protected void linkComponents() {
-    if (driver != null) {
+    if( driver != null ) {
       driver.useRobotAPI(api);
       driver.useModel(model);
-
     }
-    if (navigator != null) {
+    if( navigator != null ) {
       navigator.setModel(model);
     }
-
   }
 
   public GhostRobot useDashboardAgent(DashboardAgent agent) {
@@ -155,7 +143,7 @@ public class GhostRobot implements Robot {
   }
 
   /**
-   * incoming communication from other ghosts, used by RobotAgent to deliver
+   * incoming communication from other ghosts, used by GatewayClient to deliver
    * incoming messages from the other ghosts
    * This is thread safe
    * @param cmd 
@@ -175,7 +163,6 @@ public class GhostRobot implements Robot {
     if (dashboardAgent != null) {
       dashboardAgent.sendModelDeltas();
     }
-
 
     // let the driver do his thing
     if (this.driver.isBusy()) {
@@ -202,23 +189,16 @@ public class GhostRobot implements Robot {
       return; // to wait for results
     }
 
-
-
     // ask navigator what to do and ...
     // let de driver drive, manhattan style ;-)
 
     this.driver.perform(this.navigator.nextAction());
 
-
-    //    model.printGridStats();
     // send outgoing messages
     this.sendMessages();
-    if (dashboardAgent != null) {
 
-
+    if( dashboardAgent != null ) {
       dashboardAgent.sendGrid("myGrid", model.getGridPart().getGrid());
-
-
       // Send changed sectors
       // TODO: this will probably not work since the changes were cleared previously
       ArrayList<Sector> changed = model.getGridPart().getChangedSectors();
@@ -235,11 +215,9 @@ public class GhostRobot implements Robot {
   }
 
   private void sendMessages() {
-    if (this.agent == null) {
-      return;
-    }
-    for (String msg : this.model.getMessagePart().getOutgoingMessages()) {
-      this.agent.send(msg);
+    if( this.client == null ) { return; }
+    for(String msg : this.model.getMessagePart().getOutgoingMessages()) {
+      this.client.send(msg, Config.BT_GHOST_PROTOCOL);
     }
     this.model.getMessagePart().clearOutbox();
   }
@@ -253,27 +231,16 @@ public class GhostRobot implements Robot {
   }
 
   @Override
-  public GhostRobot useGatewayClient(RobotAgent agent) {
-    this.agent = agent;
-
-    agent.setRobot(this);
-
-    agent.run();
+  public GhostRobot useGatewayClient(GatewayClient client) {
+    this.client = client;
+    this.client.setRobot(this);
+    this.model.getMessagePart().getProtocol().useGatewayClient(this.client);
+    this.client.run();
     return this;
   }
   
-  public RobotAgent getGatewayClient() {
-    return this.agent;
-  }
-
-  @Override
-  public String getModelState() {
-    return "NOT IMPLEMENTED";
-  }
-
-  @Override
-  public String getNavigatorState() {
-    return "NOT IMPLEMENTED";
+  public GatewayClient getGatewayClient() {
+    return this.client;
   }
 
   @Override

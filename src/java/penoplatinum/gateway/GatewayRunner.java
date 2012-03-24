@@ -76,8 +76,8 @@ public class GatewayRunner {
   }
   
   private void setupGateway() {
-    this.gateway.connect(this.connection);
-    this.gateway.useQueue(this.queue);
+    this.gateway = new Gateway().useConnection(this.connection)
+                                .useQueue(this.queue);
   }
   
   public void start() {

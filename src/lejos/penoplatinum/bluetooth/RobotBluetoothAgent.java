@@ -5,18 +5,18 @@ import java.io.UnsupportedEncodingException;
 import penoplatinum.util.Utils;
 import penoplatinum..gateway.GatewayConfig;
 import penoplatinum.simulator.Robot;
-import penoplatinum.simulator.RobotAgent;
+import penoplatinum.simulator.GatewayClient;
 
 /**
  * RobotBluetoothAgent
  * 
- * Implements the RobotAgent interface for use in the SimulationEnvironment.
+ * Implements the GatewayClient interface for use in the SimulationEnvironment.
  * It provides additional methods for the Simulator to set up links between
  * them.
  * 
  * @author: Team Platinum
  */
-public class RobotBluetoothAgent implements RobotAgent {
+public class RobotBluetoothAgent implements GatewayClient {
 
   private Robot robot;
   private IConnection conn;

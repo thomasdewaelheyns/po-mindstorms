@@ -13,6 +13,8 @@ package penoplatinum.simulator;
  
 import penoplatinum.driver.Driver;
 
+import penoplatinum.gateway.GatewayClient;
+
 public interface Robot {
 
   /**
@@ -23,26 +25,18 @@ public interface Robot {
 
   public Robot useNavigator(Navigator api);
 
-  public Robot useGatewayClient(RobotAgent agent);
-  
+  public Robot useGatewayClient(GatewayClient agent);
+
+  public GatewayClient getGatewayClient();
+    
   public Robot useDriver(Driver driver);
   
-  public RobotAgent getGatewayClient();
-
   /**
    * to allow external Communication to be processed by the Robot, a generic
    * String-based command processing.
    * THIS METHOD SHOULD BE THREAD SAFE
    */
   public void processCommand(String cmd);
-
-  /**
-   * the reverse for the command processing consists of access to the internal
-   * status of the Model and Navigator.
-   */
-  public String getModelState();
-
-  public String getNavigatorState();
 
   public Model getModel();
 

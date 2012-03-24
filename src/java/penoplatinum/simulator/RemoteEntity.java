@@ -107,7 +107,7 @@ public class RemoteEntity implements RobotEntity {
    * A robot is put on the map - as in the real world - on a certain place
    * and in a given direction.
    * The Simulator also instruments the robot with a RobotAPI and sets up
-   * the RobotAgent to interact with the robot.
+   * the GatewayClient to interact with the robot.
    */
   public RemoteEntity putRobotAt(Robot robot, int x, int y, int direction) {
     this.positionX = x;

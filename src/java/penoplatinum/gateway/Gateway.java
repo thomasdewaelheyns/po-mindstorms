@@ -27,14 +27,14 @@ public class Gateway implements MessageReceiver {
   private Connection connection;
   private Queue  queue;
 
-  public Gateway connect(Connection connection) {
+  public Gateway useConnection(Connection connection) {
     this.connection = connection;
     return this;
   }
 
   public Gateway useQueue(Queue queue) {
     this.queue = queue;
-    this.queue.setMessageReceiver(this);
+    this.queue.subscribe(this);
     return this;
   }
   
@@ -43,9 +43,8 @@ public class Gateway implements MessageReceiver {
     return this;
   }
   
-  public Gateway receive(String message) {
-    this.sendToClient(message, Config.BT_MQ_RELAY);
-    return this;
+  public void receive(String message) {
+    this.sendToClient(message, Config.BT_GHOST_PROTOCOL);
   }
 
   // start a loop that continues to fetch and dispatch messages
@@ -58,7 +57,7 @@ public class Gateway implements MessageReceiver {
           case Config.BT_LOG     : logger.debug(msg); break;
           // TODO: use a appender to send messages to MQ after all
           //       then make a generic class to link a transporter to a logger
-          case Config.BT_MQ_RELAY: this.queue.sendMessage(msg); break;
+          case Config.BT_GHOST_PROTOCOL: this.queue.send(msg); break;
           case Config.BT_MODEL   : modelLogger.info(msg);  break;
           case Config.BT_WALLS   : wallsLogger.info(msg);  break;
           case Config.BT_VALUES  : valuesLogger.info(msg); break;

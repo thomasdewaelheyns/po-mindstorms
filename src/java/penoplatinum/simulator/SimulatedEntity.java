@@ -1,6 +1,7 @@
 package penoplatinum.simulator;
 
 import java.awt.Point;
+
 import penoplatinum.simulator.sensors.IRSensor;
 import penoplatinum.simulator.sensors.IRdistanceSensor;
 import penoplatinum.simulator.sensors.LightSensor;
@@ -8,7 +9,11 @@ import penoplatinum.simulator.sensors.MotorState;
 import penoplatinum.simulator.sensors.NoneSensor;
 import penoplatinum.simulator.sensors.Sonar;
 import penoplatinum.simulator.sensors.TouchSensor;
+
 import penoplatinum.simulator.view.ViewRobot;
+
+import penoplatinum.gateway.GatewayClient;
+
 
 public class SimulatedEntity implements RobotEntity{
 
@@ -30,7 +35,7 @@ public class SimulatedEntity implements RobotEntity{
   private Sensor[] sensors   = new Sensor[Model.SENSORVALUES_NUM];
   
   private SimulationRobotAPI robotAPI;    // the API used to access hardware
-  private RobotAgent         robotAgent;  // the communication layer
+  private GatewayClient         robotAgent;  // the communication layer
   private Robot              robot;       // the actual robot
   
   private ViewRobot          viewRobot;   // 
@@ -114,7 +119,7 @@ public class SimulatedEntity implements RobotEntity{
    * A robot is put on the map - as in the real world - on a certain place
    * and in a given direction.
    * The Simulator also instruments the robot with a RobotAPI and sets up
-   * the RobotAgent to interact with the robot.
+   * the GatewayClient to interact with the robot.
    */
   public SimulatedEntity putRobotAt(int x, int y, int direction) {
     this.positionX = x;

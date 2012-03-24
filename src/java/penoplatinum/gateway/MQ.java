@@ -65,7 +65,7 @@ public class MQ implements Queue {
 
   // public method to send a message. the implementation adds the internal
   // identification of the sender.
-  public MQ sendMessage(String message) {
+  public MQ send(String message) {
     try {
       this.channel.basicPublish(this.channelName, "", null, message.getBytes());
     } catch (Exception e) {
@@ -74,7 +74,7 @@ public class MQ implements Queue {
     return this;
   }
 
-  public MQ setMessageReceiver(MessageReceiver receiver) {
+  public MQ subscribe(MessageReceiver receiver) {
     this.receiver = receiver;
     return this;
   }

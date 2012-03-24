@@ -155,7 +155,7 @@ public class Simulator {
 
   /**
    * Allows the end-user to send commands through the communication layer
-   * to the Robot. In the real world this is done through the RobotAgent,
+   * to the Robot. In the real world this is done through the GatewayClient,
    * which here is being provided and controlled by the Simulator.
    */
   public Simulator send(String cmd) {
@@ -164,7 +164,7 @@ public class Simulator {
   }
 
   /**
-   * This processes status-feedback from the RobotAgent, extracted from the
+   * This processes status-feedback from the GatewayClient, extracted from the
    * Model and Navigator.
    */
   public Simulator receive(String status) {

@@ -53,7 +53,7 @@ public class MiniSimulation {
     GridView[] views  = new GridView[4];
     // a RobotAPI that uses a proxy to provid valid info about the world
     RobotAPI[] apis   = new MiniSimulationRobotAPI[4];
-    // and a RobotAgent
+    // and a GatewayClient
     MiniSimulatedGatewayClient[] robotAgents = new MiniSimulatedGatewayClient[4];
     // and one common Queue (for the Agents)
     Queue queue = new Queue();

@@ -1,5 +1,5 @@
 package penoplatinum.gateway;
 
 public interface MessageReceiver {
-  public MessageReceiver receive(String message);
+  public void receive(String message);
 }

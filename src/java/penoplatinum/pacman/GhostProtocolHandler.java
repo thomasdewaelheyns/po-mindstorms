@@ -4,29 +4,39 @@ package penoplatinum.pacman;
  * GhostProtocolHandler
  * 
  * Implementation of a MessageHandler, handling the Ghost Protocol.
- * TODO: integrate
  * 
  * @author: Team Platinum
  */
+
 import penoplatinum.Config;
+
 import penoplatinum.model.GhostModel;
-import penoplatinum.util.Utils;
+
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
+
 import penoplatinum.simulator.Bearing;
-import penoplatinum.simulator.mini.Queue;
+
+import penoplatinum.gateway.GatewayClient;
+
+import penoplatinum.util.Utils;
 import penoplatinum.util.MyScanner;
 
 public class GhostProtocolHandler implements ProtocolHandler {
 
-  private static String version = "1.0-partial";
+  public final static String version = "1.0-partial";
+
   // counter for received join commands
   private int joins = 0;
-  // the queue we're communicating through
-  private Queue queue;
+
+  // the client we're using to communicate with the gateway
+  private GatewayClient client;
+
   private boolean connected = false;
+
   // a reference to the Agent
   private Agent agent;
+  
   private final GhostModel model;
   private final GhostProtocolCommandHandler commandHandler;
 
@@ -36,14 +46,20 @@ public class GhostProtocolHandler implements ProtocolHandler {
     this.agent = model.getGridPart().getAgent();
     this.model = model;
     this.commandHandler = commandHandler;
-
+  }
+  
+  // keep a reference to the GatewayClient to send messages
+  public GhostProtocolHandler useGatewayClient(GatewayClient client) {
+    this.client = client;
+    this.sendJoin();
+    return this;
   }
 
   // accepts a string, parses it and dispatches it...
-  @Override
   public void receive(String msg) {
     try {
-      if (Config.PROTOCOL_USE_RETARDEDNEWLINE) {
+      // TODO: strip retarded newline IF it's there
+      if( Config.PROTOCOL_USE_RETARDEDNEWLINE ) {
         msg = msg.substring(0, msg.length() - 2);
       }
 
@@ -71,14 +87,9 @@ public class GhostProtocolHandler implements ProtocolHandler {
         }
       }
     } catch (Exception e) {
-      // badly formatted and other stupid issues with the protocol or 
-      // formatting are handled here : NOT
-      // COMMENT THE FOLLOWING LINE IN "PRODUCTION" environment ;-)
-//      e.printStackTrace();
-      if (Config.DEBUGMODE) {
+      if( Config.DEBUGMODE ) {
         Utils.Log("Protocol error!! (" + msg + ")");
         e.printStackTrace();
-
       }
     }
   }
@@ -94,14 +105,12 @@ public class GhostProtocolHandler implements ProtocolHandler {
   }
 
   private void handleName(String agentName, String version) {
-
     // if we're still waiting for joins, we now can begin...
-    if (!this.connected) {//&& this.joins < 4 ) 
+    if( ! this.connected ) {//&& this.joins < 4 ) 
       this.begin();
     }
 
     // TODO: handle name collisions
-
     // Add a new agent, or ignore when already added
     // TODO: a new agent, create a grid to store its information
   }
@@ -114,25 +123,19 @@ public class GhostProtocolHandler implements ProtocolHandler {
     //TODO: this.agent.activate();
   }
 
-  private void send(String msg)
-  {
-    if(Config.PROTOCOL_USE_RETARDEDNEWLINE)
-    {
+  private void send(String msg) {
+    if(Config.PROTOCOL_USE_RETARDEDNEWLINE) {
       msg = msg + "\\n";
     }
-    
-    System.out.println(msg);
-    
-    this.queue.send(msg);
+    this.client.send(msg, Config.BT_GHOST_PROTOCOL);
   }
   
   private void sendJoin() {
-    send("JOIN");
+    this.send("JOIN");
   }
 
   private void sendName() {
-    send(this.agent.getName() + " NAME "
-            + GhostProtocolHandler.version);
+    this.send(this.agent.getName() + " NAME " + GhostProtocolHandler.version);
   }
 
   int prevLeft = -1;
@@ -154,7 +157,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
   @Override
   public void sendDiscover(Sector sector) {
 
-    send(this.agent.getName() + " DISCOVER "
+    this.send(this.agent.getName() + " DISCOVER "
             + sector.getLeft() + "," + sector.getTop() + " "
             + this.makeTrit(sector.hasWall(Bearing.N)) + " "
             + this.makeTrit(sector.hasWall(Bearing.E)) + " "
@@ -181,12 +184,5 @@ public class GhostProtocolHandler implements ProtocolHandler {
     send(this.agent.getName() + " PACMAN "
             + this.model.getGridPart().getPacmanAgent().getLeft() + ","
             + this.model.getGridPart().getPacmanAgent().getTop());
-  }
-
-  // keep a reference to the outgoing queue and JOIN
-  @Override
-  public void useQueue(Queue queue) {
-    this.queue = queue;
-    this.sendJoin();
   }
 }
