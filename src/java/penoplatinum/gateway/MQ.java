@@ -17,17 +17,20 @@ package penoplatinum.gateway;
  */
 
 import java.io.IOException;
+
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP;
+
 import penoplatinum.util.Utils;
 
-public abstract class MQ implements Queue {
+public class MQ implements Queue {
   private String  channelName = "default";
   private Channel channel;
+  private MessageReceiver receiver;
 
   // connects to a server, setting up the technical communication channel
   public MQ connectToMQServer(String name) throws java.io.IOException {
@@ -66,13 +69,21 @@ public abstract class MQ implements Queue {
     try {
       this.channel.basicPublish(this.channelName, "", null, message.getBytes());
     } catch (Exception e) {
-      Utils.Log("MQ error!");
-      System.out.println(e.toString());
+      System.err.println("MQ Error: " + e.toString());
     }
     return this;
   }
 
-  // this class is abstract to allow users to provide a callback-style
-  // method to handle the incoming messages at their level
-  protected abstract void handleIncomingMessage(String message);
+  public MQ setMessageReceiver(MessageReceiver receiver) {
+    this.receiver = receiver;
+    return this;
+  }
+
+  protected void handleIncomingMessage(String message) {
+    if( this.receiver != null ) {
+      this.receiver.receive(message);
+    } else {
+      System.err.println("No MessageReceiver, can't handle incoming MQ msg.");
+    }
+  }
 }

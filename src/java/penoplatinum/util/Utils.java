@@ -3,17 +3,20 @@ package penoplatinum.util;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.ListIterator;
+
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
+
+
+import penoplatinum.Config;
 
 /**
  * @author: Team Platinum
  */
+
 public class Utils {
 
   private static final int REVERSE_THRESHOLD = 18;
-  public final static int PACKETID_LOG = 672631252;
-  public final static int PACKETID_STARTLOG = 356356545;
   private final static Object logLock = new Object();
   private static QueuedPacketTransporter logTransporter;
   private static PrintStream logPrintStream;
@@ -36,7 +39,7 @@ public class Utils {
     synchronized (logLock) {
       if (logTransporter != null) {
         logPrintStream.print(message);
-        logTransporter.SendPacket(PACKETID_LOG);
+        logTransporter.SendPacket(Config.BT_LOG);
       }
     }
   }
@@ -51,7 +54,7 @@ public class Utils {
     synchronized (logLock) {
       if (logTransporter != null) {
         logPrintStream.println(message);
-        logTransporter.SendPacket(PACKETID_LOG);
+        logTransporter.SendPacket(Config.BT_LOG);
       }
     }
   }
@@ -62,9 +65,8 @@ public class Utils {
     throw new RuntimeException(message);
   }
 
-  /**
-   * @param conn 
-   */
+
+  // TODO: should be handled all by a Gateway
   public static void EnableRemoteLogging(IConnection conn) {
     EnableRemoteLogging(conn, "RobotLog");
   }
@@ -76,14 +78,14 @@ public class Utils {
   public static void EnableRemoteLogging(IConnection conn, String logname) {
 
     QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
-    conn.RegisterTransporter(t, PACKETID_LOG);
-    conn.RegisterTransporter(t, PACKETID_STARTLOG);
+    conn.RegisterTransporter(t, Config.BT_LOG);
+    conn.RegisterTransporter(t, Config.BT_START_LOG);
 
     synchronized (logLock) {
       logTransporter = t;
       logPrintStream = new PrintStream(logTransporter.getSendStream());
       logPrintStream.println(logname);
-      t.SendPacket(PACKETID_STARTLOG);
+      t.SendPacket(Config.BT_START_LOG);
     }
 
 

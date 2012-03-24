@@ -17,6 +17,9 @@ import penoplatinum.util.Utils;
 
 import penoplatinum.bluetooth.IPacketTransporter;
 
+import penoplatinum.Config;
+
+
 public class BluetoothConnection implements Connection {
 
   private static Logger logger = Logger.getLogger("BluetoothConnection");
@@ -34,19 +37,18 @@ public class BluetoothConnection implements Connection {
   }
   
   public BluetoothConnection setName(String name) {
-    // TODO
+    // TODO: take name of robot in account when connecting
     return this;
   }
   
   public void initTransporter() {
     this.endPoint = new QueuedPacketTransporter(this.connection);
-    // TODO: put all these endpoints in a SINGLE configuration location
-    this.connection.RegisterTransporter(this.endPoint, 123);
-    this.connection.RegisterTransporter(this.endPoint, 124);
-    this.connection.RegisterTransporter(this.endPoint, 125);
-    this.connection.RegisterTransporter(this.endPoint, 126);
-    this.connection.RegisterTransporter(this.endPoint, Utils.PACKETID_LOG);
-    this.connection.RegisterTransporter(this.endPoint, GatewayConfig.MQRelayPacket);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_MODEL);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_WALLS);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_VALUES);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_AGENTS);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_LOG);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_MQ_RELAY);
   }
 
   public BluetoothConnection send(String msg, int channel) {

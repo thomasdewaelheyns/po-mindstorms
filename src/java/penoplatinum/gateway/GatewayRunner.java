@@ -14,54 +14,77 @@ import penoplatinum.Config;
 
 public class GatewayRunner {
   private static final String DEFAULT_ROBOT = "platinum";
+  private String robotName;
+  
+  // de default GatewayRunner has a Bluetooth and a real MQ connection.
+  private BluetoothConnection connection = new BluetoothConnection();
+  private MQ queue;
+  // the actual Gateway
+  private Gateway gateway;
+  // cli options
+  private Options options;
 
-  public static void main(String[] args) {
-    Boolean setupComplete = false;
-    final BluetoothConnection connection = new BluetoothConnection();
-    Gateway gateway = new Gateway();
-    
-    MQ mq = new MQ() {
-      protected void handleIncomingMessage(String message) {
-        connection.send(message, GatewayConfig.MQRelayPacket);
-      }
-    };
-    
-    gateway.useQueue(mq);
 
-    try {
-      mq.connectToMQServer(Config.MQ_SERVER)
-        .follow(Config.GHOST_CHANNEL);
-    } catch (Exception ex) {
-      System.err.println("Could not connect to MQ.");
-    }
-    
-    // process command line arguments
-    Options options = new Options();
-    options.addOption( "h", "help", false, "show this helpful information." );
-    options.addOption( "r", "robot", true, "connect to robot <name>. " +
-                                           "default=" + DEFAULT_ROBOT );
+  private GatewayRunner(String[] args) {
+    this.prepareCommandLineOptions();
+    this.processCommandLine(args);
+    this.setupBluetooth();
+    this.setupMQ();
+    this.setupGateway();
+  }
+  
+  private void prepareCommandLineOptions() {
+    this.options = new Options();
+    this.options.addOption( "h", "help", false, "show this information." );
+    this.options.addOption( "r", "robot", true, "connect to robot <name>. " +
+                                                "default=" + DEFAULT_ROBOT );
+  }
 
+  private void processCommandLine(String[] args) {
     CommandLineParser parser = new GnuParser();
     try {
       CommandLine line = parser.parse( options, args );
-
       if( line.hasOption("help") ) { 
-        GatewayRunner.showHelpFor(options);
+        this.showHelp();
       } else {
-        connection.setName(line.getOptionValue("robot", DEFAULT_ROBOT));
-        gateway.connect(connection);
-        setupComplete = true;
+        this.robotName = line.getOptionValue("robot", DEFAULT_ROBOT);
       }
-    } catch( ParseException exp ) {
-      System.err.println( "ERROR:" + exp.getMessage() );
-      GatewayRunner.showHelpFor(options);
+    } catch( ParseException e ) {
+      System.err.println( "ERROR:" + e.getMessage() );
+      this.showHelp();
+      System.exit(1);
     }
-
-    if( setupComplete ) { gateway.start(); }
   }
-
-  public static void showHelpFor(Options options) {
+  
+  private void showHelp() {
     HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp( "GatewayRunner", options );    
+    formatter.printHelp( "GatewayRunner", this.options );    
+  }
+  
+  private void setupBluetooth() {
+    this.connection.setName(this.robotName);
+  }
+  
+  private void setupMQ() {
+    try {
+      this.queue = new MQ().connectToMQServer(Config.MQ_SERVER)
+                        .follow(Config.GHOST_CHANNEL);
+    } catch(Exception e) {
+      System.err.println( "ERROR: " + e.getMessage() );
+      System.exit(1);
+    }
+  }
+  
+  private void setupGateway() {
+    this.gateway.connect(this.connection);
+    this.gateway.useQueue(this.queue);
+  }
+  
+  public void start() {
+    this.gateway.start();
+  }
+  
+  public static void main(String[] args) {
+    new GatewayRunner(args).start();
   }
 }

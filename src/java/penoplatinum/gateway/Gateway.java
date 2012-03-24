@@ -13,7 +13,9 @@ import org.apache.log4j.Logger;
 import penoplatinum.bluetooth.SimulatedConnection;
 import penoplatinum.util.Utils;
 
-public class Gateway {
+import penoplatinum.Config;
+
+public class Gateway implements MessageReceiver {
   static Logger logger = Logger.getLogger("Gateway");
 
   // setup some specific loggers
@@ -32,6 +34,17 @@ public class Gateway {
 
   public Gateway useQueue(Queue queue) {
     this.queue = queue;
+    this.queue.setMessageReceiver(this);
+    return this;
+  }
+  
+  private Gateway sendToClient(String message, int channel) {
+    this.connection.send(message, channel);
+    return this;
+  }
+  
+  public Gateway receive(String message) {
+    this.sendToClient(message, Config.BT_MQ_RELAY);
     return this;
   }
 
@@ -42,13 +55,14 @@ public class Gateway {
       String msg = this.connection.getMessage();
       try {
         switch(this.connection.getType()) {
-          case Utils.PACKETID_LOG: logger.debug(msg); break;
-          // TODO: now it makes sens to do this using a logger ;-)
-          case GatewayConfig.MQRelayPacket: this.queue.sendMessage(msg); break;
-          case 123: modelLogger.info(msg);  break;
-          case 124: wallsLogger.info(msg);  break;
-          case 125: valuesLogger.info(msg); break;
-          case 126: agentsLogger.info(msg); break;
+          case Config.BT_LOG     : logger.debug(msg); break;
+          // TODO: use a appender to send messages to MQ after all
+          //       then make a generic class to link a transporter to a logger
+          case Config.BT_MQ_RELAY: this.queue.sendMessage(msg); break;
+          case Config.BT_MODEL   : modelLogger.info(msg);  break;
+          case Config.BT_WALLS   : wallsLogger.info(msg);  break;
+          case Config.BT_VALUES  : valuesLogger.info(msg); break;
+          case Config.BT_AGENTS  : agentsLogger.info(msg); break;
         }
       } catch (Exception e) {
         logger.error( "Failed to log message: " + msg);
