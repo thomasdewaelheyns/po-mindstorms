@@ -31,13 +31,18 @@ public class MergeGridModelProcessor extends ModelProcessor {
     if (!model.getGridPart().hasRobotMoved() || model.getGridPart().getLastMovement() != GhostAction.FORWARD) {
       return;
     }
+    GridModelPart gridPart = model.getGridPart();
+
 
     // check if we detected a barcode
     if (model.getBarcodePart().getLastBarcode() == -1) {
+      // remove potential incorrect barcode
+
+      gridPart.getAgent().getSector().setTagCode(-1);
+      gridPart.getAgent().getSector().setTagBearing(0);
       return;
     }
 
-    GridModelPart gridPart = model.getGridPart();
 
     // We drove over a barcode on this tile
 
@@ -64,7 +69,5 @@ public class MergeGridModelProcessor extends ModelProcessor {
     this.model.getBarcodePart().clearLastBarcode(); // This might be better in a seperate modelprocessor, but anyways :D
 
   }
-
   // TODO: move this somewhere usefull
- 
 }

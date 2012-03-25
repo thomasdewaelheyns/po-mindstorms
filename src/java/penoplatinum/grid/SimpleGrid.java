@@ -276,7 +276,7 @@ public class SimpleGrid implements Grid {
       }
       // create a copy
       Agent copyAgent = s.getAgent().copyAgent();
-      copyAgent.assignSector(thisSector, (s.getAgent().getBearing() + rotation) % 4);
+      thisSector.put(copyAgent,  (s.getAgent().getBearing() + rotation) % 4);
       thisSector.getGrid().addAgent(copyAgent);
 
     }

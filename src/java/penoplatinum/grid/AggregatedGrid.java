@@ -89,7 +89,7 @@ public class AggregatedGrid extends SimpleGrid {
     int ourCode = ourSector.getTagCode();
     int code = otherSector.getTagCode();
     int bearing = otherSector.getTagBearing();
-    int invertedCode = BarcodeTranslator.invertBarcode(code);
+    int invertedCode = BarcodeTranslator.reverse(code,6);
 
     if (invertedCode == code) {
       return false; // THis barcode is symmetrical??

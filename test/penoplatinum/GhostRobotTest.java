@@ -44,7 +44,7 @@ public class GhostRobotTest {
   @Test
   public void testInvertBarcode()
   {
-    int a = BarcodeTranslator.invertBarcode(12);
+    int a = BarcodeTranslator.reverse(12,6);
     int magic = 4;
   }
   

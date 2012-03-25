@@ -32,7 +32,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     Grid grid = model.getGridPart().getGrid(agentName);
 
     //TODO: check x and y are valid for use in our grid system
-    
+
     Sector sector = grid.getOrCreateSector(x, y);
     Agent agent = grid.getAgent(agentName);
     if (agent == null) {
@@ -49,7 +49,8 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
 
     grid.agentsNeedRefresh();
-    agent.assignSector(sector, bearing);
+    sector.put(agent, bearing);
+
 
     //grid.refresh(); //TODO: this shouldn't run on the robot
 
@@ -62,8 +63,8 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
           int n, int e, int s, int w) {
 
     //TODO: check x and y are valid for use in our grid system
-    
-    
+
+
     // Check if there is a othergrid, or whether the file can be merged directly
 
 //    OtherGhost ghost = model.getGridPart().findOtherGhost(agentName);
@@ -94,7 +95,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
   }
 
   public void setSector(Grid grid, int x, int y, int n, int e, int s, int w) {
-    
+
     Sector sector = grid.getSector(x, y);
 
     if (sector == null) {
@@ -120,9 +121,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
 
     final Grid grid = model.getGridPart().getGrid(agentName);
-    if(model.getGridPart().findOtherGhost(agentName) != null){      return;    }    Agent agent = grid.getAgent(agentName);
-    if (agent.getSector() == null)
-    {
+//    if(model.getGridPart().findOtherGhost(agentName) != null){      return;    }   
+    Agent agent = grid.getAgent(agentName);
+    if (agent.getSector() == null) {
       int magicI = 8;
     }
     agent.getSector().setTagCode(code);
@@ -146,7 +147,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
     //TODO: check if input x and y coords are compatible with our grid    
 
-    
+
     Grid grid;
     grid = model.getGridPart().getGrid(agentName);
 
@@ -157,7 +158,8 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
     }
 
-    ag.assignSector(grid.getOrCreateSector(x, y), Bearing.N);
+
+    grid.getOrCreateSector(x, y).put(ag, Bearing.N);
 
 
   }
