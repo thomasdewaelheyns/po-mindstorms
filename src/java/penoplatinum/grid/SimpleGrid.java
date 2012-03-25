@@ -274,10 +274,15 @@ public class SimpleGrid implements Grid {
       if (thisSector.hasAgent()) {
         thisSector.getGrid().removeAgent(thisSector.getAgent());
       }
-      // create a copy
-      Agent copyAgent = s.getAgent().copyAgent();
-      thisSector.put(copyAgent,  (s.getAgent().getBearing() + rotation) % 4);
-      thisSector.getGrid().addAgent(copyAgent);
+      Agent copyAgent = thisSector.getGrid().getAgent(s.getAgent().getName());
+      if (copyAgent == null) {
+        // create a copy
+        copyAgent = s.getAgent().copyAgent();
+        thisSector.getGrid().addAgent(copyAgent);
+
+      }
+
+      thisSector.put(copyAgent, (s.getAgent().getBearing() + rotation) % 4);
 
     }
     if (s.getTagCode() != -1) {
@@ -351,7 +356,7 @@ public class SimpleGrid implements Grid {
         if (s.getTagBearing() == otherS.getTagBearing() && s.getTagCode() == otherS.getTagCode()) {
           barcodeMismatch = false;
         }
-        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.invertBarcode(otherS.getTagCode())) {
+        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.reverse(otherS.getTagCode(),6)) {
           barcodeMismatch = false;
         }
         if (barcodeMismatch) {
