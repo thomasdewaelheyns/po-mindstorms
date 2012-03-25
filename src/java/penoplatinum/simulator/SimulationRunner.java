@@ -48,7 +48,7 @@ public class SimulationRunner {
   private final static String DEFAULT_DRIVER         = "penoplatinum.driver.GhostDriver";
   private final static String DEFAULT_GATEWAY_CLIENT = "penoplatinum.simulator.SimulatedGatewayClient";
   private final static String DEFAULT_REPORTER       = "penoplatinum.pacman.DashboardReporter";
-  private final static String DEFAULT_MAP            = "../../../../maps/wolfraam.txt";
+  private final static String DEFAULT_MAP            = "../../maps/wolfraam.txt";
 
   private Simulator simulator;
 

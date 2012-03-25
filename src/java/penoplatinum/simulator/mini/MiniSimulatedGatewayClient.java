@@ -1,16 +1,11 @@
 package penoplatinum.simulator.mini;
 
+import penoplatinum.gateway.GatewayClient;
 import penoplatinum.simulator.Robot;
-import penoplatinum.simulator.GatewayClient;
 
 public class MiniSimulatedGatewayClient implements GatewayClient, MessageHandler {
   private Queue queue;
   private Robot robot;
-  
-  // sets the robot this agent controls
-  public void setRobot( Robot robot ) {
-    this.robot = robot;
-  }
   
   // starts the agent's event loop
   public void run() {
@@ -30,6 +25,15 @@ public class MiniSimulatedGatewayClient implements GatewayClient, MessageHandler
   // method to send information out
   public void send(String msg) {
     this.queue.send(msg);
+  }
+
+  @Override
+  public GatewayClient setRobot(Robot robot) {
+    return this;
+  }
+
+  @Override
+  public void send(String data, int channel) {
   }
 
 }

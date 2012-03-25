@@ -1,11 +1,9 @@
 package penoplatinum.simulator;
 
+import penoplatinum.gateway.GatewayClient;
+
 public class EmptyAgent implements GatewayClient{
 
-  @Override
-  public void setRobot(Robot robot) {
-    //does nothing
-  }
 
   @Override
   public void run() {
@@ -17,9 +15,14 @@ public class EmptyAgent implements GatewayClient{
     //does nothing
   }
 
+
   @Override
-  public void send(String status) {
-    //does nothing
+  public GatewayClient setRobot(Robot robot) {
+    return this;
+  }
+
+  @Override
+  public void send(String data, int channel) {
   }
 
 }

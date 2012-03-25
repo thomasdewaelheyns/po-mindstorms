@@ -4,6 +4,7 @@
  */
 package penoplatinum.simulator.mini;
 
+import penoplatinum.gateway.GatewayClient;
 import penoplatinum.grid.Sector;
 import penoplatinum.pacman.ProtocolHandler;
 
@@ -34,7 +35,8 @@ public class NullGhostProtocolHandler implements ProtocolHandler {
   }
 
   @Override
-  public void useQueue(Queue queue) {
+  public ProtocolHandler useGatewayClient(GatewayClient client) {
+    return this;
   }
   
 }

@@ -78,7 +78,14 @@ public class MiniGhostRobot extends GhostRobot {
         model.getMessagePart().queueOutgoingMessage(msg);
       }
     });
-    model.getMessagePart().getProtocol().useQueue(queue);
+    // make sure the messagePart can send messages through the GatewayClient,
+    // using the GhostProtocolHandler
+    // this is only the case for a selection of the messages, most messages
+    // are stored in the outbox and send by this robot implementation at the
+    // end of a step.
+    model.getMessagePart()
+         .setProtocol(new GhostProtocolHandler(model, 
+                        new GhostProtocolModelCommandHandler(model)));
 
   }
 

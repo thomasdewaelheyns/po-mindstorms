@@ -24,6 +24,7 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
   public GhostProtocolModelProcessor(ModelProcessor p) {
     super(p);
   }
+
   public GhostProtocolModelProcessor() {
     super();
   }
@@ -38,20 +39,17 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
 
     ProtocolHandler protocol = model.getMessagePart().getProtocol();
 
-      // Send changed sectors
+    // Send changed sectors
     ArrayList<Sector> changed = model.getGridPart().getChangedSectors();
     for (int i = 0; i < changed.size(); i++) {
       Sector current = changed.get(i);
 
       // for each changed sector
       protocol.sendDiscover(current);
-      if (dashboardCommunicator != null) {
-        dashboardCommunicator.sendSectorWalls(model.getGridPart().getAgent().getName(), "myGrid", current);
-      }
     }
-    
-    
-    
+
+
+
     if (!grid.hasRobotMoved()) {
       return;
     }
@@ -66,13 +64,5 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
       protocol.sendPacman();
     }
 
-  
-
-      // for each changed sector
-      protocol.sendDiscover(current);
-      // if (dashboardCommunicator != null) {
-      //   dashboardCommunicator.sendSectorWalls(model.getGridPart().getAgent().getName(), "myGrid", current);
-      // }
-    }
   }
 }
