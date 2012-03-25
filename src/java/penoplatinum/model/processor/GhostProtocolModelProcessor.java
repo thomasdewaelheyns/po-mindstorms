@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import penoplatinum.grid.Sector;
 import penoplatinum.model.GhostModel;
 import penoplatinum.model.GridModelPart;
-import penoplatinum.pacman.DashboardAgent;
+import penoplatinum.pacman.DashboardReporter;
 import penoplatinum.pacman.GhostAction;
 import penoplatinum.pacman.ProtocolHandler;
 
@@ -19,7 +19,7 @@ import penoplatinum.pacman.ProtocolHandler;
  */
 public class GhostProtocolModelProcessor extends ModelProcessor {
 
-  DashboardAgent dashboardCommunicator;
+  DashboardReporter dashboardCommunicator;
 
   public GhostProtocolModelProcessor(ModelProcessor p) {
     super(p);
@@ -28,7 +28,7 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
     super();
   }
 
-  public void useDashboardCommunicator(DashboardAgent communicator) {
+  public void useDashboardCommunicator(DashboardReporter communicator) {
     dashboardCommunicator = communicator;
   }
 
@@ -68,9 +68,11 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
 
   
 
-
-    
-
-
+      // for each changed sector
+      protocol.sendDiscover(current);
+      // if (dashboardCommunicator != null) {
+      //   dashboardCommunicator.sendSectorWalls(model.getGridPart().getAgent().getName(), "myGrid", current);
+      // }
+    }
   }
 }

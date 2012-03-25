@@ -13,6 +13,7 @@ import penoplatinum.grid.GridView;
 import penoplatinum.grid.Sector;
 
 import penoplatinum.model.GhostModel;
+import penoplatinum.model.Reporter;
 import penoplatinum.model.GridModelPart;
 import penoplatinum.model.processor.AgentWallsUpdateProcessor;
 import penoplatinum.model.processor.BarcodeBlackModelProcessor;
@@ -37,6 +38,7 @@ import penoplatinum.simulator.Navigator;
 
 import penoplatinum.gateway.GatewayClient;
 
+
 public class GhostRobot implements Robot {
 
   protected GhostModel model;
@@ -50,7 +52,7 @@ public class GhostRobot implements Robot {
   private boolean waitingForSweep = false;
 
   private GatewayClient client;
-  private DashboardAgent dashboardAgent;
+  private Reporter reporter;
 
   private ReferencePosition initialReference = new ReferencePosition();
 
@@ -135,10 +137,9 @@ public class GhostRobot implements Robot {
     }
   }
 
-  public GhostRobot useDashboardAgent(DashboardAgent agent) {
-    this.dashboardAgent = agent;
-    agent.setRobot(this);
-    agent.setModel(this.model);
+  public GhostRobot useReporter(Reporter reporter) {
+    this.reporter = reporter;
+    this.reporter.setRobot(this);
     return this;
   }
 
@@ -159,26 +160,20 @@ public class GhostRobot implements Robot {
 
     this.model.getSensorPart().setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
 
-    // Send dashboard info
-    if (dashboardAgent != null) {
-      dashboardAgent.sendModelDeltas();
-    }
-
     // let the driver do his thing
-    if (this.driver.isBusy()) {
+    if( this.driver.isBusy() ) {
       this.driver.step();
       return;
     }
 
     // we want obstacle-information based on Sonar-values
     // as long as this is in progress, we wait
-    if (this.api.sweepInProgress()) {
-      return;
-    }
+    if( this.api.sweepInProgress() ) { return; }
 
     // if the sweep is ready ...
     if (this.waitingForSweep) {
-      this.model.getSonarPart().updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
+      this.model.getSonarPart()
+                .updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
       this.model.process(); // TODO: double call
       this.api.setSweeping(false);
       this.waitingForSweep = false;
@@ -191,26 +186,14 @@ public class GhostRobot implements Robot {
 
     // ask navigator what to do and ...
     // let de driver drive, manhattan style ;-)
-
     this.driver.perform(this.navigator.nextAction());
 
     // send outgoing messages
     this.sendMessages();
 
-    if( dashboardAgent != null ) {
-      dashboardAgent.sendGrid("myGrid", model.getGridPart().getGrid());
-      // Send changed sectors
-      // TODO: this will probably not work since the changes were cleared previously
-      ArrayList<Sector> changed = model.getGridPart().getChangedSectors();
-      for (int i = 0; i < changed.size(); i++) {
-        Sector current = changed.get(i);
+    // report info about our internals
+    if( this.reporter != null ) { this.reporter.report(); }
 
-        // for each changed sector
-        if (dashboardAgent != null) {
-          dashboardAgent.sendSectorWalls(model.getGridPart().getAgent().getName(), "myGrid", current);
-        }
-      }
-    }
     System.gc();
   }
 

@@ -15,6 +15,9 @@ import penoplatinum.driver.Driver;
 
 import penoplatinum.gateway.GatewayClient;
 
+import penoplatinum.model.Reporter;
+
+
 public interface Robot {
 
   /**
@@ -26,6 +29,8 @@ public interface Robot {
   public Robot useNavigator(Navigator api);
 
   public Robot useGatewayClient(GatewayClient agent);
+  
+  public Robot useReporter(Reporter reporter);
 
   public GatewayClient getGatewayClient();
     

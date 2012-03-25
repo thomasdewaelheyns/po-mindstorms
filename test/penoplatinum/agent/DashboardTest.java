@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import org.junit.Test;
 import penoplatinum.bluetooth.SimulatedConnection;
 import penoplatinum.grid.SwingGridView;
-import penoplatinum.pacman.DashboardAgent;
+import penoplatinum.pacman.DashboardReporter;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.pacman.LeftFollowingGhostNavigator;
 import penoplatinum.simulator.SimulatedEntity;
@@ -36,7 +36,7 @@ public class DashboardTest {
     conn.setEndPoint(remoteConn);
 
     GhostRobot robot = new GhostRobot("Ikke!", new SwingGridView());
-    robot.useDashboardAgent(new DashboardAgent(conn));
+    robot.useDashboardReporter(new DashboardReporter(conn));
     robot.useNavigator(new LeftFollowingGhostNavigator());
 
     SimulatedEntity ent = new SimulatedEntity(new SimulationRobotAPI(), new SimulatedGatewayClient(), robot);

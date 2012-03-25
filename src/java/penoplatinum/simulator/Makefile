@@ -5,7 +5,8 @@ TARGETS=SimulationRunner.class \
 				ColorLink.class \
 			  ../driver/GhostDriver.class \
 			  ../pacman/GhostRobot.class \
-				../pacman/GhostNavigator.class
+				../pacman/GhostNavigator.class \
+				../pacman/DashboardReporter.class
 LIB_DIR=../../../../lib
 LIB_CLI=${LIB_DIR}/commons-cli-1.2.jar
 LIB_COLL=${LIB_DIR}/commons-collections-3.2.1.jar
