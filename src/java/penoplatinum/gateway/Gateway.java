@@ -19,10 +19,10 @@ public class Gateway implements MessageReceiver {
   static Logger logger = Logger.getLogger("Gateway");
 
   // setup some specific loggers
-  static Logger modelLogger  = Logger.getLogger("model");  // 123
-  static Logger wallsLogger  = Logger.getLogger("walls");  // 124
-  static Logger valuesLogger = Logger.getLogger("values"); // 125
-  static Logger agentsLogger = Logger.getLogger("agents"); // 126
+  static Logger modelLogger  = Logger.getLogger("model");
+  static Logger wallsLogger  = Logger.getLogger("walls");
+  static Logger valuesLogger = Logger.getLogger("values");
+  static Logger agentsLogger = Logger.getLogger("agents");
 
   private Connection connection;
   private Queue  queue;
@@ -49,7 +49,6 @@ public class Gateway implements MessageReceiver {
 
   // start a loop that continues to fetch and dispatch messages
   public void start() {
-    logger.info("Starting logging...");
     while(this.connection.hasNext()) {
       String msg = this.connection.getMessage();
       try {

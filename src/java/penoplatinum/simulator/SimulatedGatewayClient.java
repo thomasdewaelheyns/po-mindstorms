@@ -31,8 +31,8 @@ public class SimulatedGatewayClient implements GatewayClient, MessageReceiver {
   // the robot we're the GatewayClient for
   private Robot robot;
 
-  // we have a (simulated)connection and a (Simulated)MQ
-  private Connection connection;
+  // we have a SimulatedConnection and a (Simulated)MQ
+  private SimulatedConnection connection;
   private Queue queue;
 
   // we instantiate a local copy of the Gateway
@@ -67,6 +67,7 @@ public class SimulatedGatewayClient implements GatewayClient, MessageReceiver {
 
   private void setupLocalMQ() {
     this.queue = SimulatedMQ.getInstance().subscribe(this);
+    this.connected = true;    
   }
   
   private void setupRemoteMQ() {
@@ -94,8 +95,11 @@ public class SimulatedGatewayClient implements GatewayClient, MessageReceiver {
   }
 
   public void send(String msg, int channel) {
-    if( ! this.connected ) { return; } // TODO: log something
-    this.connection.send(msg, channel);
+    if( ! this.connected ) {
+      logger.error( "Not connected." );
+      return;
+    }
+    this.connection.sendToGateway(msg, channel);
     // this message is now stored on the connection, time to activate the
     // gateway and have it processed
     this.gateway.start(); // this will return because the SimulatedConnection
