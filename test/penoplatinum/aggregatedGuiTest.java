@@ -20,7 +20,7 @@ import penoplatinum.simulator.view.SwingSimulationView;
  *
  * @author Thomas
  */
-public class aggregatedGuiTest {
+public class AggregatedGuiTest {
 
   Simulator sim;
   Random r = new Random(456);

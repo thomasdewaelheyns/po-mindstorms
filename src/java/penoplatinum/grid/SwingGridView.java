@@ -40,6 +40,11 @@ public class SwingGridView extends JFrame implements GridView {
   }
   
   public GridView display(Grid grid, boolean noWindow) {
+    if (!noWindow)
+    {
+      display(grid);
+      return this;
+    }
     this.grid = grid;
 
     this.setupBoard();  // yes keep this order ;-)

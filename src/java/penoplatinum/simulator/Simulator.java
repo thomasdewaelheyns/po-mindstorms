@@ -261,4 +261,10 @@ public class Simulator {
   public void useStepRunnable(Runnable runnable) {
     stepRunnable = runnable;
   }
+
+  public SimulationView getView() {
+    return view;
+  }
+  
+  
 }

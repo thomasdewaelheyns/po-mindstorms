@@ -152,7 +152,7 @@ public class SimpleGrid implements Grid {
   public Grid displayOn(GridView view) {
     this.view = view;
     // CHANGED
-    this.view.display(this, true);
+    this.view.display(this, false);
     return this;
   }
 
@@ -377,4 +377,11 @@ public class SimpleGrid implements Grid {
   public int getSize() {
     return sectors.size();
   }
+
+  public GridView getView() {
+    return view;
+  }
+  
+  
+  
 }
