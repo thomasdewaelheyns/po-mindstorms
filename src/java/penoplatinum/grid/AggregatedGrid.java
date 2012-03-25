@@ -1,8 +1,6 @@
 package penoplatinum.grid;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 import penoplatinum.SimpleHashMap;
 import penoplatinum.barcode.BarcodeTranslator;
@@ -38,10 +36,10 @@ public class AggregatedGrid extends SimpleGrid {
       SimpleGrid.copyGridTo(this, otherGrid.getDecoratedGrid(), transform);
 
       // Release memory!!!!
-//      otherGrid.getDecoratedGrid().disengage();
+      otherGrid.getDecoratedGrid().disengage();
 
       // Relay to this grid from now on
-//      otherGrid.setDecoratedGrid(this);
+      otherGrid.setDecoratedGrid(this);
 
     } else {
       // Just set the new transformation. 
@@ -49,7 +47,7 @@ public class AggregatedGrid extends SimpleGrid {
     }
 
 
-//    otherGrid.setTransformation(transform);
+    otherGrid.setTransformation(transform);
   }
 
   public List<Grid> getUnmergedGrids() {

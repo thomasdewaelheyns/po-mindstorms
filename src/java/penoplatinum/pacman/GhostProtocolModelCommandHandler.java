@@ -7,11 +7,9 @@ package penoplatinum.pacman;
 import penoplatinum.model.GhostModel;
 import java.util.List;
 import penoplatinum.grid.Agent;
+import penoplatinum.grid.AggregatedSubGrid;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
-import penoplatinum.grid.SimpleGrid;
-import penoplatinum.model.processor.MergeGridModelProcessor;
-import penoplatinum.util.Point;
 import penoplatinum.simulator.Bearing;
 
 /**
@@ -79,7 +77,13 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     // transform the x and y coord
 
     Grid grid = model.getGridPart().getGrid(agentName);
+    if (((AggregatedSubGrid) grid).getDecoratedGrid() == model.getGridPart().getGrid()) {
+      int magic = 5;
+    }
     Sector sector = grid.getOrCreateSector(x, y);
+
+
+
 
     int[] values = new int[]{n, e, s, w};
 

@@ -196,7 +196,8 @@ public class SimulationRunner {
       int robotNr = 0;
       for( Point position : map.getGhostPositions() ) {
         robotNr++;
-        this.putGhostAt("Ghost" + robotNr, position.getX(), position.getY(), Bearing.N);
+        //this.putGhostAt("Ghost" + robotNr, position.getX(), position.getY(), Bearing.N);
+        this.putGhostAt("" + robotNr, position.getX(), position.getY(), Bearing.N);
       }
 
       // add a pacman
