@@ -14,7 +14,7 @@ import penoplatinum.pacman.GhostRobot;
 import penoplatinum.pacman.LeftFollowingGhostNavigator;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
-import penoplatinum.simulator.SimulationRobotAgent;
+import penoplatinum.simulator.SimulatedGatewayClient;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
 import penoplatinum.simulator.view.SwingSimulationView;
@@ -39,7 +39,7 @@ public class DashboardTest {
     GhostRobot robot = new GhostRobot("Ikke!", new SwingGridView());
     robot.useDashboardAgent(new DashboardAgent(conn));
     robot.useNavigator(new LeftFollowingGhostNavigator());
-    robot.useGatewayClient(new SimulationRobotAgent());
+    robot.useGatewayClient(new SimulatedGatewayClient());
     robot.useRobotAPI(new SimulationRobotAPI());
 
     SimulatedEntity ent = new SimulatedEntity(robot);

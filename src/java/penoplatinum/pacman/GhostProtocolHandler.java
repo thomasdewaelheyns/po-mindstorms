@@ -120,6 +120,9 @@ public class GhostProtocolHandler implements ProtocolHandler {
     {
       msg = msg + "\\n";
     }
+    
+    System.out.println(msg);
+    
     this.queue.send(msg);
   }
   

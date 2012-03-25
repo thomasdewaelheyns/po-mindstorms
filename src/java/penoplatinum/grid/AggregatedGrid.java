@@ -5,6 +5,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import penoplatinum.SimpleHashMap;
+import penoplatinum.barcode.BarcodeTranslator;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.util.TransformationTRT;
 
 /**
@@ -24,20 +26,30 @@ public class AggregatedGrid extends SimpleGrid {
   /**
    * Gives the relative transform between ghost with given name and the main grid
    * @param name
-   * @param transform 
+   * @param transform The transformation that transforms local ghost coordinates to remote ghost coordinates
    */
   public void setGhostRelativeTransformation(String name, TransformationTRT transform) {
     AggregatedSubGrid otherGrid = otherGrids.get(name);
 
-    // Import the grid
-    this.importGrid(otherGrid, transform);
+    if (otherGrid.getDecoratedGrid() != this) {
+      // Using a buffergrid!
 
-    // Release memory!!!!
-    otherGrid.getDecoratedGrid().disengage();
+      // Import the grid
+      SimpleGrid.copyGridTo(this, otherGrid.getDecoratedGrid(), transform);
 
-    // Relay to this grid from now on
-    otherGrid.setDecoratedGrid(this);
-    otherGrid.setTransformation(transform);
+      // Release memory!!!!
+//      otherGrid.getDecoratedGrid().disengage();
+
+      // Relay to this grid from now on
+//      otherGrid.setDecoratedGrid(this);
+
+    } else {
+      // Just set the new transformation. 
+      // TODO: if the transformation is not thesame, this means the grid data is corrupted!!!!!
+    }
+
+
+//    otherGrid.setTransformation(transform);
   }
 
   public List<Grid> getUnmergedGrids() {
@@ -69,5 +81,35 @@ public class AggregatedGrid extends SimpleGrid {
     }
 
     return grid;
+  }
+
+  public boolean attemptMapBarcode(Sector ourSector, Sector otherSector, String otherAgentName) {
+    AggregatedGrid thisGrid = this;
+    final Grid otherGrid = thisGrid.getGhostGrid(otherAgentName);
+    int ourCode = ourSector.getTagCode();
+    int code = otherSector.getTagCode();
+    int bearing = otherSector.getTagBearing();
+    int invertedCode = BarcodeTranslator.invertBarcode(code);
+
+    if (invertedCode == code) {
+      return false; // THis barcode is symmetrical??
+    }
+    if (ourCode == invertedCode) {
+      code = invertedCode;
+
+      // Switch bearing
+      bearing = Bearing.reverse(bearing);
+    }
+
+    if (ourCode != code) {
+      return false;
+    }
+    final int relativeBearing = (ourSector.getTagBearing() - bearing + 4) % 4;
+
+    TransformationTRT transform = new TransformationTRT().setTransformation(-otherSector.getLeft(), -otherSector.getTop(), relativeBearing, ourSector.getLeft(), ourSector.getTop());
+
+    thisGrid.setGhostRelativeTransformation(otherAgentName, transform);
+
+    return true;
   }
 }

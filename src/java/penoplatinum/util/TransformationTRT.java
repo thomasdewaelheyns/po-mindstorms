@@ -8,17 +8,17 @@ import penoplatinum.simulator.Bearing;
 
 /**
  * This class represents a translation + rotation + translation transformation
+ * Rotations are CLOCKWISE!!! (since bearings are clockwise!!!) and a multiple of 90 degrees
  * @author MHGameWork
  */
 public class TransformationTRT {
+
   public static TransformationTRT Identity;
-  
-  static
-  {
+
+  static {
     Identity = new TransformationTRT();
     Identity.setTransformation(0, 0, 0, 0, 0);
   }
-
   private int translationAX;
   private int translationAY;
   private int translationBX;
@@ -61,14 +61,26 @@ public class TransformationTRT {
   }
 
   public static Point transformCoordinate(int x, int y, int localX, int localY, int rotation, int otherX, int otherY) {
+
+    rotation = Utils.ClampLooped(rotation, 0, 4);
+
     // Relative current other sector to otherx and y
-    x = x - otherX;
-    y = y - otherY;
+    x = x + localX;
+    y = y + localY;
     // Now rotate this vector
-    Point p = Bearing.mapToNorth(rotation, x, y);
+    Point p = Bearing.mapToNorth((4 - rotation) % 4, x, y);
     // Now apply this vector to our coordinates
-    p = new Point(p.getX() + localX, p.getY() + localY);
+    p = new Point(p.getX() + otherX, p.getY() + otherY);
     return p;
+
+//    // Relative current other sector to otherx and y
+//    x = x - otherX;
+//    y = y - otherY;
+//    // Now rotate this vector
+//    Point p = Bearing.mapToNorth(rotation, x, y);
+//    // Now apply this vector to our coordinates
+//    p = new Point(p.getX() + localX, p.getY() + localY);
+//    return p;
   }
   
   public String toString(){

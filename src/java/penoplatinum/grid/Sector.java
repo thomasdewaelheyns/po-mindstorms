@@ -39,7 +39,8 @@ public class Sector {
   }
 
   public String toString() {
-    return " N : " + (this.isKnown(Bearing.N) ? (this.hasWall(Bearing.N) ? "Y" : " ") : "?") + "\n"
+    return "(" + getLeft() + "," + getTop() + ")"
+         + " N : " + (this.isKnown(Bearing.N) ? (this.hasWall(Bearing.N) ? "Y" : " ") : "?") + "\n"
          + " E : " + (this.isKnown(Bearing.E) ? (this.hasWall(Bearing.E) ? "Y" : " ") : "?") + "\n"
          + " S : " + (this.isKnown(Bearing.S) ? (this.hasWall(Bearing.S) ? "Y" : " ") : "?") + "\n"
          + " W : " + (this.isKnown(Bearing.W) ? (this.hasWall(Bearing.W) ? "Y" : " ") : "?") + "\n";
@@ -204,6 +205,7 @@ public class Sector {
 
   public void setTagBearing(int tagBearing) {
     this.tagBearing = tagBearing;
+    grid.barcodesNeedRefresh();
   }
 
   public int getTagCode() {

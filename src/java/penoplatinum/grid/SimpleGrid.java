@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import penoplatinum.SimpleHashMap;
+import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.simulator.Bearing;
@@ -30,6 +31,33 @@ public class SimpleGrid implements Grid {
   // visualization for the Grid, by default none, is used by Simulator
   private GridView view = NullGridView.getInstance();
   private GridProcessor processor;
+  private boolean terminated = false;
+
+  /**
+   * Copies the sourcegrid to the target grid, merging sectors using the mergeSector function
+   * 
+   * TODO: fix a bug with the mintop and probably the other boundaries after importing
+   * 
+   * @param target
+   * @param source
+   * @param transformation 
+   */
+  public static void copyGridTo(Grid target, Grid source, TransformationTRT transformation) {
+    // Import sectors
+    for (int i = 0; i < source.getSectors().size(); i++) {
+      Sector s = source.getSectors().get(i);
+
+      Point p = transformation.transform(s.getLeft(), s.getTop());
+
+      int x = p.getX();
+      int y = p.getY();
+
+      Sector thisSector = target.getOrCreateSector(x, y);
+
+      mergeSector(thisSector, transformation.getRotation(), s);
+
+    }
+  }
 
   public Grid setProcessor(GridProcessor processor) {
     this.processor = processor;
@@ -214,28 +242,12 @@ public class SimpleGrid implements Grid {
   }
 
   public void importGrid(Grid g, TransformationTRT transformation) {
-    for (int i = 0; i < g.getSectors().size(); i++) {
-      Sector s = g.getSectors().get(i);
-
-      Point p = transformation.transform(s.getLeft(), s.getTop());
-
-      int x = p.getX();
-      int y = p.getY();
-
-      Sector thisSector = getSector(x, y);
-      if (thisSector == null) {
-        thisSector = new Sector(this).setCoordinates(x, y);
-        addSector(thisSector);
-      }
-
-      mergeSector(thisSector, transformation.getRotation(), s);
-
-    }
+    copyGridTo(this, g, transformation);
   }
 
   public static void mergeSector(Sector thisSector, int rotation, Sector s) {
     for (int j = Bearing.N; j <= Bearing.W; j++) {
-      int otherBearing = (j + rotation) % 4; // TODO check direction
+      int otherBearing = (j - rotation + 4) % 4; // TODO check direction
 
       Boolean newVal = s.hasWall(otherBearing);
       Boolean oldVal = thisSector.hasWall(j);
@@ -254,6 +266,23 @@ public class SimpleGrid implements Grid {
       }
 
       thisSector.setWall(j, newVal);
+    }
+
+    // Merge the tags and the agents
+    if (s.getAgent() != null) {
+      // Remove old agent if exists
+      if (thisSector.hasAgent()) {
+        thisSector.getGrid().removeAgent(thisSector.getAgent());
+      }
+      // create a copy
+      Agent copyAgent = s.getAgent().copyAgent();
+      copyAgent.assignSector(thisSector, (s.getAgent().getBearing() + rotation) % 4);
+      thisSector.getGrid().addAgent(copyAgent);
+
+    }
+    if (s.getTagCode() != -1) {
+      thisSector.setTagCode(s.getTagCode());
+      thisSector.setTagBearing((s.getTagBearing() + rotation) % 4);
     }
 
   }
@@ -276,6 +305,9 @@ public class SimpleGrid implements Grid {
     for (Sector s : sectors.values()) {
       s.disengage();
     }
+    agents.clear();
+
+    terminated = true;
 
   }
 
@@ -297,10 +329,6 @@ public class SimpleGrid implements Grid {
 
   public boolean areSectorsEqual(Grid other) {
 
-    if (other == this) {
-      return true;
-    }
-
     if (getSectors().size() != other.getSectors().size()) {
       return false;
     }
@@ -316,10 +344,17 @@ public class SimpleGrid implements Grid {
         if (s.getWalls() != otherS.getWalls()) {
           return false;
         }
-        if (s.getTagBearing() != otherS.getTagBearing()) {
-          return false;
+
+        boolean barcodeMismatch = true;
+
+
+        if (s.getTagBearing() == otherS.getTagBearing() && s.getTagCode() == otherS.getTagCode()) {
+          barcodeMismatch = false;
         }
-        if (s.getTagCode() != otherS.getTagCode()) {
+        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.invertBarcode(otherS.getTagCode())) {
+          barcodeMismatch = false;
+        }
+        if (barcodeMismatch) {
           return false;
         }
       }

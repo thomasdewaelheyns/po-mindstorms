@@ -10,6 +10,7 @@ package penoplatinum.pacman;
 
 
 import penoplatinum.Color;
+import penoplatinum.grid.Agent;
 import penoplatinum.grid.MovingAgent;
 
 public class GhostAgent extends MovingAgent {
@@ -22,4 +23,13 @@ public class GhostAgent extends MovingAgent {
   }
   
   public Color getColor() { return this.color; }
+
+  @Override
+  public Agent copyAgent() {
+    GhostAgent ret = new GhostAgent(this.getName(), this.getColor());
+    return ret;
+  }
+
+  
+  
 }

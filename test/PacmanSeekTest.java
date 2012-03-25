@@ -7,6 +7,8 @@ import penoplatinum.pacman.GhostNavigator;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.simulator.PacmanEntity;
 import penoplatinum.simulator.SimulatedEntity;
+import penoplatinum.simulator.SimulationRobotAPI;
+import penoplatinum.simulator.SimulatedGatewayClient;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
 import penoplatinum.simulator.view.SwingSimulationView;
@@ -26,7 +28,7 @@ public class PacmanSeekTest {
     GhostNavigator ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
     robot.useRobotAPI(new SimulationRobotAPI());
-    robot.useGatewayClient(new SimulationRobotAgent());;
+    robot.useGatewayClient(new SimulatedGatewayClient());;
     ghostNavigator.setModel(robot.getGhostModel());
     SimulatedEntity ent = new SimulatedEntity(robot);
     ent.setPostition(20 + 3 * 40, 20 + 3 * 40, 180);
@@ -37,7 +39,7 @@ public class PacmanSeekTest {
     ghostNavigator = new GhostNavigator();
     robot.useNavigator(ghostNavigator);
     robot.useRobotAPI(new SimulationRobotAPI());
-    robot.useGatewayClient(new SimulationRobotAgent());;
+    robot.useGatewayClient(new SimulatedGatewayClient());;
     ghostNavigator.setModel(robot.getGhostModel());
     ent = new SimulatedEntity(robot);
     ent.setPostition(20 + 2 * 40, 20 + 3 * 40, 90);

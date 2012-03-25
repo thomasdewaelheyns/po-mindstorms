@@ -45,6 +45,7 @@ public class GridFactory {
       for (int left = 0; left < width; left++) {
         int v = scanner.nextInt(), value = 0;
         if( v > 15 ) { value = v; v = 0; }
+        if (v == -1) continue;
         Sector sector = new Sector(g)
                           .setCoordinates(left, top)
                           .addWalls((char) v)

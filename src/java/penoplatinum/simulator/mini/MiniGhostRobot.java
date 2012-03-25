@@ -51,11 +51,12 @@ public class MiniGhostRobot extends GhostRobot {
             new WallDetectionModelProcessor(
             new WallDetectorProcessor(
             new InboxProcessor(
+            new WallDetectorProcessor(
             new NewSectorsUpdateProcessor(
 //            new IRModelProcessor(
             new GridRecalcModelProcessor(
             new GhostProtocolModelProcessor(
-            new MergeGridModelProcessor()))))));
+            new MergeGridModelProcessor())))))));
     this.model.setProcessor(processors);
 
     // --- Set initial model state ---

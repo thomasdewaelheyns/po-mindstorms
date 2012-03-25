@@ -6,6 +6,7 @@ package penoplatinum.model.processor;
 
 import java.util.List;
 import penoplatinum.barcode.BarcodeTranslator;
+import penoplatinum.grid.AggregatedGrid;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.model.GridModelPart;
@@ -46,11 +47,11 @@ public class MergeGridModelProcessor extends ModelProcessor {
     //Find this barcode in the othergrids and map!!
 
     List<Grid> otherGrids = gridPart.getGrid().getUnmergedGrids();
-    
+
     for (Grid g : otherGrids) {
       String name = gridPart.getGrid().getGhostNameForGrid(g);
       for (Sector s : g.getTaggedSectors()) {
-        attemptMapBarcode(model, gridPart.getAgent().getSector(), s, g, name);
+        gridPart.getGrid().attemptMapBarcode(gridPart.getAgent().getSector(), s, name);
       }
     }
 
@@ -65,33 +66,5 @@ public class MergeGridModelProcessor extends ModelProcessor {
   }
 
   // TODO: move this somewhere usefull
-  public static boolean attemptMapBarcode(Model model, Sector ourSector, Sector otherSector, final Grid otherGrid, String otherAgentName) {
-    int ourCode = ourSector.getTagCode();
-    int code = otherSector.getTagCode();
-    int bearing = otherSector.getTagBearing();
-    int invertedCode = BarcodeTranslator.reverse(code, 6);
-
-    if (invertedCode == code) {
-      return false; // THis barcode is symmetrical??
-    }
-    if (ourCode == invertedCode) {
-      code = invertedCode;
-
-      // Switch bearing
-      bearing = Bearing.reverse(bearing);
-    }
-
-    if (ourCode != code) {
-      return false;
-    }
-    final int relativeBearing = (bearing - ourSector.getTagBearing() + 4) % 4;
-
-    TransformationTRT transform = new TransformationTRT().setTransformation(ourSector.getLeft(), ourSector.getTop(), relativeBearing, otherSector.getLeft(), otherSector.getTop());
-
-    model.getGridPart().getGrid().setGhostRelativeTransformation(otherAgentName, transform);
-
-    model.getGridPart().getGrid().importGrid(otherGrid, transform);
-    //model.getGrid().refresh();
-    return true;
-  }
+ 
 }

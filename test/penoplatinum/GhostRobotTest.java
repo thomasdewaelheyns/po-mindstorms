@@ -13,7 +13,7 @@ import penoplatinum.pacman.GhostNavigator;
 import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.SimulationRobotAPI;
-import penoplatinum.simulator.SimulationRobotAgent;
+import penoplatinum.simulator.SimulatedGatewayClient;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.SimulatorTest;
 import penoplatinum.simulator.Navigator;
@@ -185,8 +185,7 @@ public class GhostRobotTest {
     
     robot.useNavigator(nav);
     robot.useRobotAPI(new SimulationRobotAPI().setSimulatedEntity(ent));
-    robot.useGatewayClient(new SimulationRobotAgent());
-    ((SimulationRobotAgent)robot.getGatewayClient()).setSimulator(sim);
+    robot.useGatewayClient(new SimulatedGatewayClient());
     
     ent.setPostition(x, y, angle);
     sim.addSimulatedEntity(ent);

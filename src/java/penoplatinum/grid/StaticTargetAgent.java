@@ -48,4 +48,9 @@ public class StaticTargetAgent implements Agent {
 
   public boolean canMoveForward()    { return false; }
   public Agent   moveForward()       { return this;  }
+
+  @Override
+  public Agent copyAgent() {
+    return new StaticTargetAgent();
+  }
 }
