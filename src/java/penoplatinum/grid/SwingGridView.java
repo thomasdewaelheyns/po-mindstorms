@@ -237,7 +237,7 @@ public class SwingGridView extends JFrame implements GridView {
    this.setVisible(false);
  }
  
- public GridBoard getGrid(){
+ public GridBoard getBoard(){
    return this.board;
  }
 }

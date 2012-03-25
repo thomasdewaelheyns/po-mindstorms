@@ -129,12 +129,12 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     GroupLayout.SequentialGroup sGroup2 = layout.createSequentialGroup();
     for(int i =0; i<grids.size(); i++){
       if(i<2){
-        pGroup.addComponent(grids.get(i).getGrid(), 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-        sGroup.addComponent(grids.get(i).getGrid(), 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+        pGroup.addComponent(grids.get(i).getBoard(), 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+        sGroup.addComponent(grids.get(i).getBoard(), 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
       }
       else{
-        pGroup2.addComponent(grids.get(i).getGrid(), 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
-        sGroup2.addComponent(grids.get(i).getGrid(), 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+        pGroup2.addComponent(grids.get(i).getBoard(), 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
+        sGroup2.addComponent(grids.get(i).getBoard(), 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
       }
     }
     GroupLayout.SequentialGroup sGroup3 = layout.createSequentialGroup();
