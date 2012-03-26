@@ -1,4 +1,5 @@
 package penoplatinum.grid;
+
 import penoplatinum.BitwiseOperations;
 
 /**
@@ -10,18 +11,18 @@ import penoplatinum.BitwiseOperations;
  * 
  * @author: Team Platinum
  */
-
 import penoplatinum.simulator.Bearing;
 
 public class Sector {
   // back-link to the Grid we live in
+
   private Grid grid;
   // links to the adjacent Sectors
   private Sector[] neighbours = new Sector[4];
   // position within Grid
   private int left, top;
   // walls and the certainty about them
-  private char walls     = 0;
+  private char walls = 0;
   private char certainty = 0;
   // the agent currently on this Sector
   private Agent agent;
@@ -40,10 +41,10 @@ public class Sector {
 
   public String toString() {
     return "(" + getLeft() + "," + getTop() + ")"
-         + " N : " + (this.isKnown(Bearing.N) ? (this.hasWall(Bearing.N) ? "Y" : " ") : "?") + "\n"
-         + " E : " + (this.isKnown(Bearing.E) ? (this.hasWall(Bearing.E) ? "Y" : " ") : "?") + "\n"
-         + " S : " + (this.isKnown(Bearing.S) ? (this.hasWall(Bearing.S) ? "Y" : " ") : "?") + "\n"
-         + " W : " + (this.isKnown(Bearing.W) ? (this.hasWall(Bearing.W) ? "Y" : " ") : "?") + "\n";
+            + " N : " + (this.isKnown(Bearing.N) ? (this.hasWall(Bearing.N) ? "Y" : " ") : "?") + "\n"
+            + " E : " + (this.isKnown(Bearing.E) ? (this.hasWall(Bearing.E) ? "Y" : " ") : "?") + "\n"
+            + " S : " + (this.isKnown(Bearing.S) ? (this.hasWall(Bearing.S) ? "Y" : " ") : "?") + "\n"
+            + " W : " + (this.isKnown(Bearing.W) ? (this.hasWall(Bearing.W) ? "Y" : " ") : "?") + "\n";
   }
 
   // sets the absolute coordinates in the Grid this Sector is placed in
@@ -158,6 +159,9 @@ public class Sector {
 
   // keeps track of an agent occupying this sector
   public Sector put(Agent agent, int bearing) {
+    if (agent.getSector() != null) {
+      agent.getSector().removeAgent();
+    }
     // reset the value to zero, because an agent has its own value
     this.setValue(0);
     // now add the agent
@@ -310,7 +314,7 @@ public class Sector {
 
   // clears all knowledge about a wall
   public Sector clearWall(int atLocation) {
-    this.walls     = (char) BitwiseOperations.unsetBit(this.walls, atLocation);
+    this.walls = (char) BitwiseOperations.unsetBit(this.walls, atLocation);
     this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, atLocation);
     return this;
   }
@@ -335,23 +339,23 @@ public class Sector {
   public boolean isFullyKnown() {
     return this.getCertainty() == 15;
   }
-  
-  private void withWall(int location) { 
-    this.walls     = (char) BitwiseOperations.setBit(this.walls,     location);
+
+  private void withWall(int location) {
+    this.walls = (char) BitwiseOperations.setBit(this.walls, location);
     this.certainty = (char) BitwiseOperations.setBit(this.certainty, location);
   }
 
   public void withWalls(char walls) {
-    this.walls    = walls;
+    this.walls = walls;
     this.certainty = 15;
   }
 
-  public void withoutWall(int location)  { 
-    this.walls     = (char) BitwiseOperations.unsetBit(this.walls,     location);
+  public void withoutWall(int location) {
+    this.walls = (char) BitwiseOperations.unsetBit(this.walls, location);
     this.certainty = (char) BitwiseOperations.setBit(this.certainty, location);
   }
 
-  public void dontKnow(int location)  { 
+  public void dontKnow(int location) {
     this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, location);
   }
 
@@ -376,10 +380,9 @@ public class Sector {
   // }
 
   /* elementary bitwise operations */
-
   // sets one bit at position to 1
   void disengage() {
-    for(int i = 0; i < 4; i++){
+    for (int i = 0; i < 4; i++) {
       neighbours[i] = null;
     }
     grid = null;

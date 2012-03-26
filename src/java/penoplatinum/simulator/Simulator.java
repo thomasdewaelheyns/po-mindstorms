@@ -24,6 +24,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import penoplatinum.util.Utils;
 
 public class Simulator {
+  
+  /**
+   * 
+   */
+  public static Simulator Running_Instance;
+  
   // the Simulator can run until different goals are reached
 
   public static final double TIME_SLICE = 0.008;

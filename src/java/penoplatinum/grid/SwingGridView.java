@@ -38,10 +38,9 @@ public class SwingGridView extends JFrame implements GridView {
 
     return this;
   }
-  
+
   public GridView display(Grid grid, boolean noWindow) {
-    if (!noWindow)
-    {
+    if (!noWindow) {
       display(grid);
       return this;
     }
@@ -130,6 +129,8 @@ public class SwingGridView extends JFrame implements GridView {
     for (Sector sector : this.grid.getSectors()) {
       this.board.addSector(sector.getLeft() - minLeft, sector.getTop() - minTop);
     }
+
+    this.board.addOrigin(-minLeft, -minTop);
   }
 
   private void addWalls() {
@@ -163,9 +164,9 @@ public class SwingGridView extends JFrame implements GridView {
 
     for (Agent agent : this.grid.getAgents()) {
       final java.awt.Color c = ColorLink.getColorByName(agent.getName());
-      
-      this.board.addAgent(agent.getLeft()-minLeft, agent.getTop()-minTop, 
-                          agent.getBearing(), agent.getName(), c);
+
+      this.board.addAgent(agent.getLeft() - minLeft, agent.getTop() - minTop,
+              agent.getBearing(), agent.getName(), c);
     }
   }
 
@@ -212,7 +213,7 @@ public class SwingGridView extends JFrame implements GridView {
       valuesNeedRefresh();
       agentsNeedRefresh();
       barcodesNeedsRefresh();
-      
+
       final int width = Math.max(newWidth * this.board.getSectorSize() - 2, this.board.getSectorSize() * 5);
       // set our own size
       this.setSize(width,
@@ -236,13 +237,12 @@ public class SwingGridView extends JFrame implements GridView {
     this.top = top;
     return this;
   }
-  
-  
- public void disableWindow(){
-   this.setVisible(false);
- }
- 
- public GridBoard getBoard(){
-   return this.board;
- }
+
+  public void disableWindow() {
+    this.setVisible(false);
+  }
+
+  public GridBoard getBoard() {
+    return this.board;
+  }
 }

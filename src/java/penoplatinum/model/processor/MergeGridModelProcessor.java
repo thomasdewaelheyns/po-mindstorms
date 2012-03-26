@@ -7,6 +7,8 @@ package penoplatinum.model.processor;
 import java.util.List;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.grid.AggregatedGrid;
+import penoplatinum.grid.AggregatedSubGrid;
+import penoplatinum.grid.AggregatedSubGrid;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.model.GridModelPart;
@@ -51,11 +53,11 @@ public class MergeGridModelProcessor extends ModelProcessor {
 
     //Find this barcode in the othergrids and map!!
 
-    List<Grid> otherGrids = gridPart.getGrid().getUnmergedGrids();
+    List<AggregatedSubGrid> otherGrids = gridPart.getGrid().getUnmergedGrids();
 
-    for (Grid g : otherGrids) {
+    for (AggregatedSubGrid g : otherGrids) {
       String name = gridPart.getGrid().getGhostNameForGrid(g);
-      for (Sector s : g.getTaggedSectors()) {
+      for (Sector s : g.getStorageGrid().getTaggedSectors()) {
         gridPart.getGrid().attemptMapBarcode(gridPart.getAgent().getSector(), s, name);
       }
     }

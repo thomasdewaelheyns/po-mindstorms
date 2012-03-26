@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import penoplatinum.SimpleHashMap;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.AggregatedGrid;
+import penoplatinum.grid.AggregatedSubGrid;
 import penoplatinum.grid.DiffusionGridProcessor;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.GridView;
@@ -60,7 +61,7 @@ public class GridModelPart implements IModelPart {
   }
 
   
-  public Grid getGrid(String actorName) {
+  public AggregatedSubGrid getGrid(String actorName) {
     return getGrid().getGhostGrid(actorName);
   }
   

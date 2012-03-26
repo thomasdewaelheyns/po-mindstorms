@@ -29,17 +29,17 @@ public class AggregatedGrid extends SimpleGrid {
   public void setGhostRelativeTransformation(String name, TransformationTRT transform) {
     AggregatedSubGrid otherGrid = otherGrids.get(name);
 
-    if (otherGrid.getDecoratedGrid() != this) {
+    if (otherGrid.getStorageGrid() != null) {
       // Using a buffergrid!
 
       // Import the grid
-      SimpleGrid.copyGridTo(this, otherGrid.getDecoratedGrid(), transform);
+      SimpleGrid.copyGridTo(this, otherGrid.getStorageGrid(), transform);
 
       // Release memory!!!!
-      otherGrid.getDecoratedGrid().disengage();
+      otherGrid.getStorageGrid().disengage();
 
       // Relay to this grid from now on
-      otherGrid.setDecoratedGrid(this);
+      otherGrid.setStorageGrid(null);
 
     } else {
       // Just set the new transformation. 
@@ -50,11 +50,11 @@ public class AggregatedGrid extends SimpleGrid {
     otherGrid.setTransformation(transform);
   }
 
-  public List<Grid> getUnmergedGrids() {
-    ArrayList<Grid> ret = new ArrayList<Grid>();
+  public List<AggregatedSubGrid> getUnmergedGrids() {
+    ArrayList<AggregatedSubGrid> ret = new ArrayList<AggregatedSubGrid>();
     for (int i = 0; i < otherGrids.values().size(); i++) {
       AggregatedSubGrid otherGrid = otherGrids.values().get(i);
-      if (otherGrid.getDecoratedGrid() == this) {
+      if (otherGrid.getStorageGrid() == null) {
         continue;
       }
 
@@ -64,16 +64,16 @@ public class AggregatedGrid extends SimpleGrid {
 
   }
 
-  public String getGhostNameForGrid(Grid name) {
-    return otherGrids.findKey((AggregatedSubGrid) name);
+  public String getGhostNameForGrid(AggregatedSubGrid grid) {
+    return otherGrids.findKey(grid);
   }
 
-  public Grid getGhostGrid(String name) {
+  public AggregatedSubGrid getGhostGrid(String name) {
     AggregatedSubGrid grid = otherGrids.get(name);
 
     if (grid == null) {
-      grid = new AggregatedSubGrid();
-      grid.setDecoratedGrid(new SimpleGrid());
+      grid = new AggregatedSubGrid(this);
+      grid.setStorageGrid(new SimpleGrid());
       grid.setTransformation(TransformationTRT.Identity);
       otherGrids.put(name, grid);
     }
@@ -83,7 +83,7 @@ public class AggregatedGrid extends SimpleGrid {
 
   public boolean attemptMapBarcode(Sector ourSector, Sector otherSector, String otherAgentName) {
     AggregatedGrid thisGrid = this;
-    final Grid otherGrid = thisGrid.getGhostGrid(otherAgentName);
+    final Grid otherGrid = thisGrid.getGhostGrid(otherAgentName).getStorageGrid();
     int ourCode = ourSector.getTagCode();
     int code = otherSector.getTagCode();
     int bearing = otherSector.getTagBearing();

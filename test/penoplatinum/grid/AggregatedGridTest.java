@@ -34,11 +34,11 @@ public class AggregatedGridTest {
     AggregatedGrid grid1 = new AggregatedGrid();
 
     SimpleGrid.copyGridTo(grid1, local, TransformationTRT.Identity);
-    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost"), remote, TransformationTRT.Identity);
+    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost").getStorageGrid(), remote, TransformationTRT.Identity);
 
     
     
-    Assert.assertTrue(grid1.attemptMapBarcode(grid1.getSector(1, 0),grid1.getGhostGrid("ghost").getSector(0, 0),"ghost"));
+    Assert.assertTrue(grid1.attemptMapBarcode(grid1.getSector(1, 0),grid1.getGhostGrid("ghost").getStorageGrid().getSector(0, 0),"ghost"));
 
 
 //    local.displayOn(new SwingGridView());
@@ -65,7 +65,7 @@ public class AggregatedGridTest {
     AggregatedGrid grid1 = new AggregatedGrid();
 
     grid1.importGrid(original, TransformationTRT.Identity);
-    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost"), original, new TransformationTRT().setTransformation(tX1, tY1, 0, 0, 0));
+    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost").getStorageGrid(), original, new TransformationTRT().setTransformation(tX1, tY1, 0, 0, 0));
 
 
     grid1.setGhostRelativeTransformation("ghost", new TransformationTRT().setTransformation(-tX1, -tY1, 0, 0, 0));
@@ -95,7 +95,7 @@ public class AggregatedGridTest {
     AggregatedGrid grid1 = new AggregatedGrid();
 
     SimpleGrid.copyGridTo(grid1, original, TransformationTRT.Identity);
-    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost"), original, new TransformationTRT().setTransformation(0, 0, 3, 0, 0));
+    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost").getStorageGrid(), original, new TransformationTRT().setTransformation(0, 0, 3, 0, 0));
 
 
     grid1.setGhostRelativeTransformation("ghost", new TransformationTRT().setTransformation(0, 0, 1, 0, 0));
@@ -103,9 +103,9 @@ public class AggregatedGridTest {
 
     original.displayOn(new SwingGridView());
     grid1.displayOn(new SwingGridView());
-    ((AggregatedSubGrid) grid1.getGhostGrid("ghost")).getDecoratedGrid().displayOn(new SwingGridView());
+    ((AggregatedSubGrid) grid1.getGhostGrid("ghost")).getStorageGrid().displayOn(new SwingGridView());
 
-    Grid test = ((AggregatedSubGrid) grid1.getGhostGrid("ghost")).getDecoratedGrid();
+    Grid test = ((AggregatedSubGrid) grid1.getGhostGrid("ghost")).getStorageGrid();
 
     Assert.assertTrue(original.areSectorsEqual(grid1));
 
@@ -122,7 +122,7 @@ public class AggregatedGridTest {
     AggregatedGrid grid1 = new AggregatedGrid();
 
     SimpleGrid.copyGridTo(grid1, local, TransformationTRT.Identity);
-    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost"), remote, TransformationTRT.Identity);
+    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost").getStorageGrid(), remote, TransformationTRT.Identity);
 
 
     grid1.setGhostRelativeTransformation("ghost", new TransformationTRT().setTransformation(0, 0, 3, 1, 0));
@@ -149,11 +149,11 @@ public class AggregatedGridTest {
     AggregatedGrid grid1 = new AggregatedGrid();
 
     SimpleGrid.copyGridTo(grid1, local, TransformationTRT.Identity);
-    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost"), remote, TransformationTRT.Identity);
+    SimpleGrid.copyGridTo(grid1.getGhostGrid("ghost").getStorageGrid(), remote, TransformationTRT.Identity);
 
     
     
-    Assert.assertTrue(grid1.attemptMapBarcode(grid1.getSector(1, 0),grid1.getGhostGrid("ghost").getSector(0, 0),"ghost"));
+    Assert.assertTrue(grid1.attemptMapBarcode(grid1.getSector(1, 0),grid1.getGhostGrid("ghost").getStorageGrid().getSector(0, 0),"ghost"));
 
 
 //    local.displayOn(new SwingGridView());

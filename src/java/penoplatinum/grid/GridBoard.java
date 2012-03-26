@@ -213,6 +213,7 @@ public class GridBoard extends JPanel {
     g2d.drawImage(this.barcodes, null, 0, 0);
     g2d.drawImage(this.agents, null, 0, 0);
 
+
     Toolkit.getDefaultToolkit().sync();
     g.dispose();
   }
@@ -221,5 +222,11 @@ public class GridBoard extends JPanel {
     int w = this.width * this.sectorSize;
     int h = this.height * this.sectorSize;
     return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+  }
+
+  void addOrigin(int minLeft, int minTop) {
+    sectorsG.setColor(Color.WHITE);
+    sectorsG.setStroke(new java.awt.BasicStroke(2));
+    sectorsG.drawRect(minLeft*this.sectorSize +1, minTop*this.sectorSize+1, this.sectorSize-1, this.sectorSize-1);
   }
 }

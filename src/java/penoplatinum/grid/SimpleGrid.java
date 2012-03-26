@@ -272,9 +272,10 @@ public class SimpleGrid implements Grid {
     // Merge the tags and the agents
     if (s.getAgent() != null) {
       // Remove old agent if exists
-      if (thisSector.hasAgent()) {
-        thisSector.getGrid().removeAgent(thisSector.getAgent());
-      }
+      // EDIT: NONONONOOOO not good!
+//      if (thisSector.hasAgent()) {
+//        thisSector.getGrid().removeAgent(thisSector.getAgent());
+//      }
       Agent copyAgent = thisSector.getGrid().getAgent(s.getAgent().getName());
       if (copyAgent == null) {
         // create a copy

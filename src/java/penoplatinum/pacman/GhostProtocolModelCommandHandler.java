@@ -27,32 +27,10 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
   @Override
   public void handlePosition(String agentName, int x, int y) {
-    Grid grid = model.getGridPart().getGrid(agentName);
-
     //TODO: check x and y are valid for use in our grid system
 
-    Sector sector = grid.getOrCreateSector(x, y);
-    Agent agent = grid.getAgent(agentName);
-    if (agent == null) {
-      // Add the agent when it doesn't exist
-      agent = new GhostAgent(agentName);
-      grid.addAgent(agent);
-    }
-
-    if (agent.getSector() != null) {
-      agent.getSector().removeAgent();
-    }
-
-    int bearing = Bearing.N; //TODO: 
-
-
-    grid.agentsNeedRefresh();
-    sector.put(agent, bearing);
-
-
-    //grid.refresh(); //TODO: this shouldn't run on the robot
-
-
+    AggregatedSubGrid grid = model.getGridPart().getGrid(agentName);
+    grid.setActorPosition(agentName,x,y);
 
   }
 
@@ -76,25 +54,18 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
     // transform the x and y coord
 
-    Grid grid = model.getGridPart().getGrid(agentName);
-    if (((AggregatedSubGrid) grid).getDecoratedGrid() == model.getGridPart().getGrid()) {
-      int magic = 5;
-    }
-    Sector sector = grid.getOrCreateSector(x, y);
-
-
-
+    AggregatedSubGrid grid = model.getGridPart().getGrid(agentName);
 
     int[] values = new int[]{n, e, s, w};
+    Boolean[] walls = new Boolean[4];
 
     for (int i = 0; i <= 3; i++) {
-      Boolean newVal = GhostProtocolHandler.decodeTrit(values[i]);
-      //TODO: dont simply set the remote sector, but set to unknown when changed first
-      sector.setWall(i, newVal);
+      walls[i] = GhostProtocolHandler.decodeTrit(values[i]);
     }
+    
+    grid.setSector(x,y,walls);
+    
 
-//    SimpleGrid.mergeSector(sector, ghost.getTransformationTRT().getRotation(), otherSector);
-//    }
 
   }
 
@@ -116,33 +87,13 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
       sector.setWall(i, newVal);
 
     }
-    // grid.refresh(); //TODO: this shouldn't run on the robot
   }
 
   @Override
   public void handleBarcode(String agentName, int code, int bearing) {
-
-
-
-    final Grid grid = model.getGridPart().getGrid(agentName);
-//    if(model.getGridPart().findOtherGhost(agentName) != null){      return;    }   
-    Agent agent = grid.getAgent(agentName);
-    if (agent.getSector() == null) {
-      int magicI = 8;
-    }
-    agent.getSector().setTagCode(code);
-    agent.getSector().setTagBearing(bearing);
-
-    // tag the current sector of the agent with the given barcode
-    // check if we have it too
-    // if so, import the agents map in our grid,
-    //        create translators to continously import its information
-    //        in our own grid
-    List<Sector> bs = model.getGridPart().getGrid().getTaggedSectors();
-    for (int i = 0; i < bs.size(); i++) {
-      model.getGridPart().getGrid().attemptMapBarcode(bs.get(i), agent.getSector(), agentName);
-    }
-
+    final AggregatedSubGrid grid = model.getGridPart().getGrid(agentName);
+    
+    grid.setBarcodeAtAgentPosition(agentName, code,bearing);
 
   }
 
@@ -152,18 +103,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     //TODO: check if input x and y coords are compatible with our grid    
 
 
-    Grid grid;
-    grid = model.getGridPart().getGrid(agentName);
+    AggregatedSubGrid grid = model.getGridPart().getGrid(agentName);
+    grid.setPacmanPosition(x,y);
 
-
-    Agent ag = grid.getAgent("pacman");
-    if (ag == null) {
-      ag = new PacmanAgent();
-
-    }
-
-
-    grid.getOrCreateSector(x, y).put(ag, Bearing.N);
 
 
   }

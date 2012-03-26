@@ -5,8 +5,12 @@
 package penoplatinum.grid;
 
 import java.util.List;
+import penoplatinum.pacman.GhostAgent;
+import penoplatinum.pacman.PacmanAgent;
+import penoplatinum.simulator.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
+import penoplatinum.util.Utils;
 
 /**
  * Represents a subgrid of the AggregatedGrid. 
@@ -15,22 +19,25 @@ import penoplatinum.util.TransformationTRT;
  * In the second mode, it relays its commands to the parent AggregatedGrid
  * 
  * 
- * TODO: add transformations EVERYWHERE
- * TODO: define this as a relaygrid instead
- * 
  * @author MHGameWork
  */
-public class AggregatedSubGrid implements Grid {
+public class AggregatedSubGrid {
 
-  private Grid decoratedGrid;
+  private Grid storageGrid;
   private TransformationTRT transformation;
+  private final AggregatedGrid baseGrid;
 
-  public Grid getDecoratedGrid() {
-    return decoratedGrid;
+  public AggregatedSubGrid(AggregatedGrid baseGrid) {
+    this.baseGrid = baseGrid;
+
   }
 
-  public void setDecoratedGrid(Grid decoratedGrid) {
-    this.decoratedGrid = decoratedGrid;
+  public Grid getStorageGrid() {
+    return storageGrid;
+  }
+
+  public void setStorageGrid(Grid decoratedGrid) {
+    this.storageGrid = decoratedGrid;
   }
 
   public TransformationTRT getTransformation() {
@@ -41,178 +48,113 @@ public class AggregatedSubGrid implements Grid {
     this.transformation = transformation;
   }
 
-  @Override
-  public Grid setProcessor(GridProcessor processor) {
-    return decoratedGrid.setProcessor(processor);
+  public void setSector(int x, int y, Boolean[] walls) {
+    if (storageGrid != null) {
+      Sector s = storageGrid.getOrCreateSector(x, y);
+      for (int i = 0; i < walls.length; i++) {
+        s.setWall(i, walls[i]);
+      }
+    } else {
+      Point p = transformation.transform(x, y);
+      x = p.getX();
+      y = p.getY();
+
+      Sector baseSector = baseGrid.getOrCreateSector(x, y);
+      for (int i = 0; i < walls.length; i++) {
+        baseSector.setWall(i, walls[(i + transformation.getRotation()) % 4]);
+      }
+    }
+
   }
 
-  @Override
-  public Grid addSector(Sector sector) {
+  public void setBarcodeAtAgentPosition(String agentName, int code, int bearing) {
+    if (storageGrid != null) {
+      Agent agent = storageGrid.getAgent(agentName);
+      if (agent == null) {
+        Utils.Log("Someone is messing up the protocol!!");
+      }
+      agent.getSector().setTagCode(code);
+      agent.getSector().setTagBearing(bearing);
 
-    Point p = transformation.transform(sector.getLeft(), sector.getTop());
+      // tag the current sector of the agent with the given barcode
+      // check if we have it too
+      // if so, import the agents map in our grid,
+      //        create translators to continously import its information
+      //        in our own grid
+      List<Sector> bs = baseGrid.getTaggedSectors();
+      for (int i = 0; i < bs.size(); i++) {
+        baseGrid.attemptMapBarcode(bs.get(i), agent.getSector(), agentName);
+      }
+    } else {
+      Agent agent = baseGrid.getAgent(agentName);
+      if (agent == null) {
+        Utils.Log("Agent not found on grid for received barcode command!");
+        return;
+      }
+      agent.getSector().setTagCode(code);
+      agent.getSector().setTagBearing((bearing + transformation.getRotation()) % 4);
 
-    sector.setCoordinates(p.getX(), p.getY());
+      //TODO: decide what to do know
 
-    return decoratedGrid.addSector(sector);
+
+    }
+
   }
 
-  @Override
-  public Sector getSector(int left, int top) {
-    // transform the x and y coord
-    Point p = transformation.transform(left, top);
-    left = p.getX();
-    top = p.getY();
+  public void setActorPosition(String agentName, int x, int y) {
+    // Duplicate code is here for a reason! (reason is convert to state pattern)
+    if (storageGrid != null) {
+      Agent agent = storageGrid.getAgent(agentName);
+
+      if (agent == null) {
+        agent = new GhostAgent(agentName);
+        storageGrid.addAgent(agent);
+      }
+      storageGrid.getOrCreateSector(x, y).put(agent, Bearing.N);
+
+    } else {
+      Point p = transformation.transform(x, y);
+      x = p.getX();
+      y = p.getY();
+
+      Agent agent = baseGrid.getAgent(agentName);
+
+      if (agent == null) {
+        agent = new GhostAgent(agentName);
+        baseGrid.addAgent(agent);
+      }
+      baseGrid.getOrCreateSector(x, y).put(agent, Bearing.N);
 
 
-    return decoratedGrid.getSector(left, top);
+    }
   }
 
-  /**
-   * TODO: WARNING this does NOT transform the sectors!!!!!!!
-   * @return 
-   */
-  @Override
-  public List<Sector> getSectors() {
-    return decoratedGrid.getSectors();
-  }
+  public void setPacmanPosition(int x, int y) {
 
-  @Override
-  public Grid displayOn(GridView view) {
-    throw new UnsupportedOperationException();
-//    return decoratedGrid.displayOn(view);
-  }
+    if (storageGrid != null) {
+      Agent ag = storageGrid.getAgent("pacman");
+      if (ag == null) {
+        ag = new PacmanAgent();
+        storageGrid.addAgent(ag);
+      }
 
-  @Override
-  public Grid refresh() {
-    return decoratedGrid.refresh();
-  }
+      storageGrid.getOrCreateSector(x, y).put(ag, Bearing.N);
 
-  @Override
-  public Grid dump() {
-    throw new UnsupportedOperationException();
-//    return decoratedGrid.dump();
-  }
+    } else {
 
-  @Override
-  public int getMinLeft() {
-    throw new UnsupportedOperationException();
-//    return decoratedGrid.getMinLeft();
-  }
+      Point p = transformation.transform(x, y);
+      x = p.getX();
+      y = p.getY();
 
-  @Override
-  public int getMaxLeft() {
-    throw new UnsupportedOperationException();
-//    return decoratedGrid.getMaxLeft();
-  }
+      Agent ag = baseGrid.getAgent("pacman");
+      if (ag == null) {
+        ag = new PacmanAgent();
+        baseGrid.addAgent(ag);
+      }
 
-  @Override
-  public int getMinTop() {
-    throw new UnsupportedOperationException();
-//    return decoratedGrid.getMinTop();
-  }
+      baseGrid.getOrCreateSector(x, y).put(ag, Bearing.N);
 
-  @Override
-  public int getMaxTop() {
-    throw new UnsupportedOperationException();
-//    return decoratedGrid.getMaxTop();
-  }
+    }
 
-  @Override
-  public int getWidth() {
-    throw new UnsupportedOperationException();
-//    return decoratedGrid.getWidth();
-  }
-
-  @Override
-  public int getHeight() {
-    throw new UnsupportedOperationException();
-//    return decoratedGrid.getHeight();
-  }
-
-  @Override
-  public Grid addAgent(Agent agent) {
-    //TODO: transform?
-
-    return decoratedGrid.addAgent(agent);
-  }
-
-  @Override
-  public Agent getAgent(String name) {
-    return decoratedGrid.getAgent(name);
-  }
-
-  @Override
-  public void removeAgent(Agent agent) {
-    decoratedGrid.removeAgent(agent);
-  }
-
-  @Override
-  public List<Agent> getAgents() {
-    return decoratedGrid.getAgents();
-  }
-
-  @Override
-  public Grid clearAgents() {
-    return decoratedGrid.clearAgents();
-  }
-
-  @Override
-  public Grid sectorsNeedRefresh() {
-    return decoratedGrid.sectorsNeedRefresh();
-  }
-
-  @Override
-  public Grid wallsNeedRefresh() {
-    return decoratedGrid.wallsNeedRefresh();
-  }
-
-  @Override
-  public Grid valuesNeedRefresh() {
-    return decoratedGrid.valuesNeedRefresh();
-  }
-
-  @Override
-  public Grid agentsNeedRefresh() {
-    return decoratedGrid.agentsNeedRefresh();
-  }
-
-  @Override
-  public void addTaggedSector(Sector s) {
-    decoratedGrid.addTaggedSector(s);
-  }
-
-  @Override
-  public List<Sector> getTaggedSectors() {
-    return decoratedGrid.getTaggedSectors();
-  }
-
-  @Override
-  public Sector getOrCreateSector(int x, int y) {
-    // transform the x and y coord
-    Point p = transformation.transform(x, y);
-    x = p.getX();
-    y = p.getY();
-
-    return decoratedGrid.getOrCreateSector(x, y);
-  }
-
-  @Override
-  public void barcodesNeedRefresh() {
-    decoratedGrid.barcodesNeedRefresh();
-  }
-
-  @Override
-  public boolean areSectorsEqual(Grid other) {
-    return decoratedGrid.areSectorsEqual(other);
-  }
-
-  @Override
-  public int getSize() {
-    return decoratedGrid.getSize();
-  }
-
-  @Override
-  public void disengage() {
-    decoratedGrid.disengage();
   }
 }
