@@ -140,7 +140,7 @@ public abstract class MovingAgent implements Agent {
   }
   
   public Agent activate() {
-    System.out.println( this.getName() + " ACTIVATE" );
+    // System.out.println( this.getName() + " ACTIVATE" );
     this.active = true;
     return this;
   }

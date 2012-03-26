@@ -156,6 +156,8 @@ public class GhostRobot implements Robot {
   public void step() {
     if( ! this.model.getGridPart().getAgent().isActive() ) {
       // wait until we're active
+      // but we need to process incoming messages
+      this.model.process();
       return;
     }
     // poll other sensors and update model
