@@ -1,46 +1,58 @@
 wolfraam NAME maze-protocol-0.3
+wolfraam DISCOVER 0,5 1 0 0 1
+wolfraam DISCOVER 0,4 0 0 0 1
+wolfraam DISCOVER 0,3 0 1 1 1
+wolfraam DISCOVER 0,2 1 0 1 1
+wolfraam DISCOVER 0,1 1 1 0 1
 wolfraam DISCOVER 0,0 0 0 1 1
-wolfraam DISCOVER 0,5 1 1 1 1
-wolfraam DISCOVER 0,4 1 0 1 1
-wolfraam DISCOVER 0,3 1 0 0 1
-wolfraam DISCOVER 0,2 0 1 0 1
-wolfraam DISCOVER 0,1 0 0 0 1
-wolfraam DISCOVER 1,5 1 0 1 1
-wolfraam DISCOVER 1,4 1 0 1 0
-wolfraam DISCOVER 1,3 1 0 1 0
-wolfraam DISCOVER 1,2 1 0 0 1
-wolfraam DISCOVER 1,1 0 0 0 0
-wolfraam DISCOVER 1,0 0 1 1 0
-wolfraam DISCOVER 2,5 1 1 0 0
-wolfraam DISCOVER 2,4 0 1 0 0
-wolfraam DISCOVER 2,3 0 0 1 0
-wolfraam DISCOVER 2,2 1 1 1 0
-wolfraam DISCOVER 2,1 1 0 1 0
-wolfraam DISCOVER 2,0 1 0 1 1
-wolfraam DISCOVER 3,5 1 0 0 1
-wolfraam DISCOVER 3,4 0 0 0 1
-wolfraam DISCOVER 3,3 0 0 1 0
-wolfraam DISCOVER 3,2 1 0 0 1
-wolfraam DISCOVER 3,1 0 1 0 0
-wolfraam DISCOVER 3,0 0 0 1 0
-wolfraam DISCOVER 4,5 1 0 1 0
-wolfraam DISCOVER 4,4 1 0 1 0
-wolfraam DISCOVER 4,3 1 0 0 0
-wolfraam DISCOVER 4,2 0 1 0 0
-wolfraam DISCOVER 4,1 0 1 0 1
-wolfraam DISCOVER 4,0 0 0 1 0
-wolfraam DISCOVER 5,5 1 1 0 0
-wolfraam DISCOVER 5,4 0 1 1 0
-wolfraam DISCOVER 5,3 1 1 0 0
-wolfraam DISCOVER 5,2 0 1 0 1
-wolfraam DISCOVER 5,1 0 1 0 1
-wolfraam DISCOVER 5,0 0 1 1 0
-wolfraam BARCODEAT 1,3 25 2
-wolfraam BARCODEAT 2,1 9 4
-wolfraam BARCODEAT 4,4 14 4
-wolfraam BARCODEAT 4,1 7 1
-wolfraam PACMAN 2,2
-wolfraam POSITION 5,0
-wolfraam POSITION 5,5
-wolfraam POSITION 1,5
+wolfraam DISCOVER 1,5 1 0 1 0
+wolfraam DISCOVER 1,4 1 1 0 0
+wolfraam DISCOVER 1,3 0 1 0 1
+wolfraam DISCOVER 1,2 0 0 0 0
+wolfraam DISCOVER 1,1 0 1 0 1
+wolfraam DISCOVER 1,0 0 0 1 0
+wolfraam DISCOVER 2,5 1 0 1 0
+wolfraam DISCOVER 2,4 1 0 0 1
+wolfraam DISCOVER 2,3 0 0 0 1
+wolfraam DISCOVER 2,2 0 0 0 0
+wolfraam DISCOVER 2,1 0 0 1 1
+wolfraam DISCOVER 2,0 1 1 1 0
+wolfraam DISCOVER 3,5 1 1 0 0
+wolfraam DISCOVER 3,4 0 1 1 0
+wolfraam DISCOVER 3,3 1 0 1 0
+wolfraam DISCOVER 3,2 1 0 0 0
+wolfraam DISCOVER 3,1 0 0 0 0
+wolfraam DISCOVER 3,0 0 0 1 1
+wolfraam DISCOVER 4,5 1 0 0 1
+wolfraam DISCOVER 4,4 0 0 0 1
+wolfraam DISCOVER 4,3 0 0 1 0
+wolfraam DISCOVER 4,2 1 1 0 0
+wolfraam DISCOVER 4,1 0 0 1 0
+wolfraam DISCOVER 4,0 1 1 1 0
+wolfraam DISCOVER 5,5 1 0 1 0
+wolfraam DISCOVER 5,4 1 1 1 0
+wolfraam DISCOVER 5,3 1 0 1 0
+wolfraam DISCOVER 5,2 1 0 1 1
+wolfraam DISCOVER 5,1 1 0 1 0
+wolfraam DISCOVER 5,0 1 0 1 1
+wolfraam DISCOVER 6,5 1 0 0 0
+wolfraam DISCOVER 6,4 0 1 0 1
+wolfraam DISCOVER 6,3 0 0 0 0
+wolfraam DISCOVER 6,2 0 1 0 0
+wolfraam DISCOVER 6,1 0 0 1 0
+wolfraam DISCOVER 6,0 1 0 1 0
+wolfraam DISCOVER 7,5 1 1 1 0
+wolfraam DISCOVER 7,4 1 1 0 1
+wolfraam DISCOVER 7,3 0 1 0 0
+wolfraam DISCOVER 7,2 0 1 1 1
+wolfraam DISCOVER 7,1 1 1 0 0
+wolfraam DISCOVER 7,0 0 1 1 0
+wolfraam BARCODEAT 1,3 25 3
+wolfraam BARCODEAT 1,1 4 3
+wolfraam BARCODEAT 5,1 35 4
+wolfraam BARCODEAT 6,4 22 1
+wolfraam PACMAN 6,2
+wolfraam POSITION 0,5
 wolfraam POSITION 0,0
+wolfraam POSITION 7,0
+wolfraam POSITION 7,5

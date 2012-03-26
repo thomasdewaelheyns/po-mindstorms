@@ -43,24 +43,24 @@ public class Simulator {
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
   }
-
+  
   public void addSimulatedEntity(SimulatedEntity r) {
     robotEntities.add(r);
     view.addRobot(r.getViewRobot());
     r.useSimulator(this);
   }
-
+  
   public RemoteEntity addRemoteEntity(String entityName, int originX, int originY, int originBearing) {
-
+    
     RemoteEntity ent = new RemoteEntity(entityName);
     view.addRobot(ent.getViewRobot());
-
+    
     ent.useSimulator(this);
-
+    
     robotEntities.add(ent);
     remoteEntities.put(entityName, ent);
     ent.setOrigin(originX, originY, originBearing);
-
+    
     return ent;
   }
 
@@ -98,7 +98,7 @@ public class Simulator {
             (int) tile.getX(), (int) tile.getY(),
             (int) pos.getX(), (int) pos.getY());
   }
-
+  
   public Tile getCurrentTile(Point tile) {
     return this.map.get((int) tile.getX(), (int) tile.getY());
   }
@@ -121,7 +121,7 @@ public class Simulator {
     Point hit = null;
     do {
       tile = this.map.get(left, top);
-
+      
       if (tile == null) {
         System.out.println(left + " " + top + " " + hit.x + " " + hit.y + " " + angle);
         left++;
@@ -150,7 +150,7 @@ public class Simulator {
       //System.out.println(left + " " + top);
       x = hit.x == 0 ? tile.getSize() : (hit.x == tile.getSize() ? 0 : hit.x);
       y = hit.y == 0 ? tile.getSize() : (hit.y == tile.getSize() ? 0 : hit.y);
-
+      
     } while (!tile.hasWall(bearing));
     return (int) Math.round(dist);
   }
@@ -186,17 +186,18 @@ public class Simulator {
    */
   public Simulator run() {
     Simulator.Running_Instance = this;
-
+    
     for (int i = 0; i < this.robotEntities.size(); i++) {
       if (this.robotEntities.get(i) instanceof SimulatedEntity) {
         SimulatedEntity ent = (SimulatedEntity) this.robotEntities.get(i);
         ent.setInitialPosition(ent.getCurrentTileCoordinates());
+        ent.setInitialBearing((4 - (int) (ent.getDirection() / 90) + 1) % 4);
       }
     }
-
+    
     this.view.showMap(this.map);
-
-
+    
+    
     while (true) {
       this.step();
       if (false) {
@@ -207,7 +208,7 @@ public class Simulator {
     this.view.log("");
     return this;
   }
-
+  
   private void step() {
     for (RobotEntity robotEntity : robotEntities) {
       robotEntity.step();
@@ -220,18 +221,18 @@ public class Simulator {
 //    Utils.Sleep(20);
 
   }
-
+  
   boolean hasTile(double positionX, double positionY) {
     int x = (int) positionX / this.getTileSize() + 1;
     int y = (int) positionY / this.getTileSize() + 1;
     return map.exists(x, y);
   }
-
+  
   boolean goesThroughWallX(SimulatedEntity entity, double dx) {
     double positionX = entity.getPosX();
     double positionY = entity.getPosY();
     double LENGTH_ROBOT = entity.LENGTH_ROBOT;
-
+    
     double posXOnTile = positionX % this.getTileSize();
     int tileX = (int) positionX / this.getTileSize() + 1;
     int tileY = (int) positionY / this.getTileSize() + 1;
@@ -240,47 +241,47 @@ public class Simulator {
             || (this.map.get(tileX, tileY).hasWall(Bearing.E)
             && dx > 0 && (posXOnTile + dx > this.getTileSize() - LENGTH_ROBOT));
   }
-
+  
   boolean goesThroughWallY(SimulatedEntity entity, double dy) {
     double positionX = entity.getPosX();
     double positionY = entity.getPosY();
     double LENGTH_ROBOT = entity.LENGTH_ROBOT;
-
+    
     double posYOnTile = positionY % this.getTileSize();
     int tileX = (int) positionX / this.getTileSize() + 1;
     int tileY = (int) positionY / this.getTileSize() + 1;
-
+    
     return (this.map.get(tileX, tileY).hasWall(Bearing.N)
             && dy > 0 && (posYOnTile - dy < LENGTH_ROBOT))
             || (this.map.get(tileX, tileY).hasWall(Bearing.S)
             && dy < 0 && (posYOnTile - dy > this.getTileSize() - LENGTH_ROBOT));
   }
-
+  
   public RobotEntity getPacMan() {
     return this.pacmanEntity;
   }
-
+  
   public void setPacmanEntity(RobotEntity pacmanEntity) {
     this.pacmanEntity = pacmanEntity;
     view.addRobot(pacmanEntity.getViewRobot());
   }
-
+  
   public int getTileSize() {
     return map.getFirst().getSize();
   }
-
+  
   public void useStepRunnable(Runnable runnable) {
     stepRunnable = runnable;
   }
-
+  
   public SimulationView getView() {
     return view;
   }
-
+  
   public Map getMap() {
     return map;
   }
-
+  
   public SimulatedEntity getSimulatedEntityByName(String name) {
     for (int i = 0; i < this.robotEntities.size(); i++) {
       if (this.robotEntities.get(i) instanceof SimulatedEntity) {

@@ -74,7 +74,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
                   scanner.nextInt(), scanner.nextInt(),
                   scanner.nextInt(), scanner.nextInt());
         } else if ("BARCODEAT".equals(command)) {
-          commandHandler.handleBarcodeAt(agentName, scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+          commandHandler.handleBarcodeAt(agentName, scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt()-1);
         } else if ("PACMAN".equals(command)) {
           commandHandler.handlePacman(agentName, scanner.nextInt(), scanner.nextInt());
         }
@@ -169,6 +169,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   @Override
   public void sendBarcodeAt(int left, int top, int code, int bearing) {
+    bearing = bearing + 1;
     send(this.agent.getName() + " BARCODEAT "
             + left + "," + top + " " + code + " " + bearing);
   }

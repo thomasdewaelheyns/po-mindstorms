@@ -87,7 +87,7 @@ public class AggregatedSubGrid {
         baseGrid.attemptMapBarcode(bs.get(i), barcodeSector, baseGrid.getGhostNameForGrid(this));
       }
     } else {
-      Sector barcodeSector = storageGrid.getOrCreateSector(left, top);
+      Sector barcodeSector = baseGrid.getOrCreateSector(left, top);
       barcodeSector.setTagCode(code);
       barcodeSector.setTagBearing((bearing + transformation.getRotation()) % 4);
 

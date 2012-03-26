@@ -14,11 +14,9 @@ import penoplatinum.simulator.view.ViewRobot;
 
 import penoplatinum.gateway.GatewayClient;
 
-
-public class SimulatedEntity implements RobotEntity{
+public class SimulatedEntity implements RobotEntity {
 
   public final double LENGTH_ROBOT = 10.0;
-  
   public static final double LIGHTSENSOR_DISTANCE = 5.0; // 10cm from center
   public static final double BUMPER_LENGTH_ROBOT = 11.0;
   public static final double WHEEL_SIZE = 17.5; // circumf. in cm
@@ -29,43 +27,40 @@ public class SimulatedEntity implements RobotEntity{
   private double totalMovement = 0;
   private long lastStatisticsReport = 0;  // time of last stat report
   private Point initialPosition;
-
+  private int initialBearing;
   // the motorSpeeds and the sensorValues
   private int[] sensorValues = new int[Model.SENSORVALUES_NUM];
-  private Motor[] motors     = new Motor[3];
-  private Sensor[] sensors   = new Sensor[Model.SENSORVALUES_NUM];
-  
+  private Motor[] motors = new Motor[3];
+  private Sensor[] sensors = new Sensor[Model.SENSORVALUES_NUM];
   private SimulationRobotAPI robotAPI;    // the API used to access hardware
-  private GatewayClient         robotAgent;  // the communication layer
-  private Robot              robot;       // the actual robot
-  
-  private ViewRobot          viewRobot;   // 
-  
+  private GatewayClient robotAgent;  // the communication layer
+  private Robot robot;       // the actual robot
+  private ViewRobot viewRobot;   // 
   private Simulator simulator;
 
   public SimulatedEntity(Robot robot) {
     this.setupMotors();
     this.setupSensors();
 
-    this.robot      = robot;
+    this.robot = robot;
 
-    this.robotAPI   = new SimulationRobotAPI();
+    this.robotAPI = new SimulationRobotAPI();
     this.robotAPI.setSimulatedEntity(this);
 
     this.robot.useRobotAPI(this.robotAPI);
 
     this.robotAgent = this.robot.getGatewayClient();
-    
+
     this.viewRobot = new SimulatedViewRobot(this);
   }
-  
+
   public RobotAPI getRobotAPI() {
     return this.robotAPI;
   }
-  
-  public void useSimulator(Simulator simulator){
+
+  public void useSimulator(Simulator simulator) {
     this.simulator = simulator;
-    for(Sensor s : this.sensors){
+    for (Sensor s : this.sensors) {
       s.useSimulator(simulator);
     }
   }
@@ -83,14 +78,14 @@ public class SimulatedEntity implements RobotEntity{
     setupMotor("R", Model.M2, Model.MS2);
     setupMotor("S", Model.M3, Model.MS3);
   }
-  
-  private void setupMotor(String label, int tachoPort, int statePort){
+
+  private void setupMotor(String label, int tachoPort, int statePort) {
     this.motors[tachoPort] = new Motor().setLabel(label);  // these two need to be running
     setSensor(tachoPort, this.motors[tachoPort]);
     setSensor(statePort, new MotorState(this.motors[tachoPort]));
   }
-  
-  private void setupSensors(){
+
+  private void setupSensors() {
     //setSensor(Model.S1, new TouchSensor(45));
     //setSensor(Model.S2, new TouchSensor(315));
     setSensor(Model.S1, new IRSensor());
@@ -102,10 +97,10 @@ public class SimulatedEntity implements RobotEntity{
     setSensor(Model.IR2, new IRdistanceSensor(0));
     setSensor(Model.IR3, new IRdistanceSensor(-60));
     setSensor(Model.IR4, new IRdistanceSensor(-120));
-    
+
   }
-  
-  private void setSensor(int port, Sensor sensor){
+
+  private void setSensor(int port, Sensor sensor) {
     this.sensors[port] = sensor;
     sensor.useSimulatedEntity(this);
     sensor.useSimulator(simulator);
@@ -168,19 +163,19 @@ public class SimulatedEntity implements RobotEntity{
   public double getPosX() {
     return positionX;
   }
-  
+
   @Override
   public double getPosY() {
     return positionY;
   }
-  
+
   @Override
-  public double getDir(){
+  public double getDir() {
     return direction;
   }
-  
+
   @Override
-  public ViewRobot getViewRobot(){
+  public ViewRobot getViewRobot() {
     return this.viewRobot;
   }
 
@@ -200,7 +195,7 @@ public class SimulatedEntity implements RobotEntity{
   public int[] getSensorValues() {
     return this.sensorValues;
   }
-  
+
   public boolean sonarMotorIsMoving() {
     return this.motors[Model.M3].getValue() != this.sensorValues[Model.M3];
   }
@@ -254,13 +249,14 @@ public class SimulatedEntity implements RobotEntity{
    *       this is shared with the Model in a way (for now)
    */
   private void updateSensorValues() {
-    for(int i = 0; i<Model.SENSORVALUES_NUM; i++){
+    for (int i = 0; i < Model.SENSORVALUES_NUM; i++) {
       sensorValues[i] = sensors[i].getValue();
     }
   }
+
   public Point getCurrentTileCoordinates() {
     // determine tile coordinates we're on
-    int left = (int) (this.positionX / simulator.getTileSize())+ 1;
+    int left = (int) (this.positionX / simulator.getTileSize()) + 1;
     int top = (int) (this.positionY / simulator.getTileSize()) + 1;
     return new Point(left, top);
   }
@@ -283,9 +279,14 @@ public class SimulatedEntity implements RobotEntity{
   public void setInitialPosition(Point initialPosition) {
     this.initialPosition = initialPosition;
   }
-  
-  
-  
-  
 
+  public int getInitialBearing() {
+    return initialBearing;
+  }
+
+  public void setInitialBearing(int initialBearing) {
+    this.initialBearing = initialBearing;
+  }
+  
+  
 }
