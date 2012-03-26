@@ -1,13 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.model.processor;
 
 import java.util.ArrayList;
+
 import penoplatinum.grid.Sector;
+
 import penoplatinum.model.GhostModel;
 import penoplatinum.model.GridModelPart;
+import penoplatinum.model.Reporter;
+
 import penoplatinum.pacman.DashboardReporter;
 import penoplatinum.pacman.GhostAction;
 import penoplatinum.pacman.ProtocolHandler;
@@ -15,11 +15,10 @@ import penoplatinum.pacman.ProtocolHandler;
 /**
  * Responsible for sending robot information to the Ghost communication channel
  * 
- * @author MHGameWork
+ * @author Team Platinum
  */
-public class GhostProtocolModelProcessor extends ModelProcessor {
 
-  DashboardReporter dashboardCommunicator;
+public class GhostProtocolModelProcessor extends ModelProcessor {
 
   public GhostProtocolModelProcessor(ModelProcessor p) {
     super(p);
@@ -27,10 +26,6 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
 
   public GhostProtocolModelProcessor() {
     super();
-  }
-
-  public void useDashboardCommunicator(DashboardReporter communicator) {
-    dashboardCommunicator = communicator;
   }
 
   @Override
@@ -46,10 +41,10 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
 
       // for each changed sector
       protocol.sendDiscover(current);
+      // report
+      this.model.getReporter().reportWalls(current);
     }
-
-
-
+    
     if (!grid.hasRobotMoved()) {
       return;
     }

@@ -122,6 +122,12 @@ public class DashboardReporter implements Reporter {
     }
   }
 
+  public Reporter reportWalls(Sector sector) {
+    this.sendSectorWalls(this.robot.getName(), "myGrid", sector);
+    return this;
+  }
+
+
   private void sendSectorWalls(String name, String grid, Sector sector) {
     this.clear()
         .addSector(name, grid, sector)                                   .c()

@@ -23,6 +23,8 @@ import penoplatinum.util.Buffer;
 import penoplatinum.util.LightColor;
 import penoplatinum.model.processor.ModelProcessor;
 
+import penoplatinum.model.Reporter;
+
 public interface Model {
   // slightly common
   public Model  setProcessor(ModelProcessor processor);
@@ -65,4 +67,7 @@ public interface Model {
   SonarModelPart getSonarPart();
 
   WallsModelPart getWallsPart();
+
+  Model setReporter(Reporter reporter);
+  Reporter getReporter();
 }

@@ -30,6 +30,17 @@ public class GhostModel implements Model {
   private WallsModelPart wallsPart;
   private List<IModelPart> parts = new ArrayList<IModelPart>();
 
+  private Reporter reporter;
+  
+  public Model setReporter(Reporter reporter) {
+    this.reporter = reporter;
+    return this;
+  }
+  
+  public Reporter getReporter() {
+    return this.reporter;
+  }
+
   public GhostModel(String name) {
     barcodePart = new BarcodeModelPart();
     gapPart = new GapModelPart();

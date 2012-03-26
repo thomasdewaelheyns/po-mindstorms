@@ -472,7 +472,7 @@
   dashboard.file_update_walls = function file_update_walls(id, robot, grid, left, top, wallsConfig) {
     if( id < static_id ) { return; }
     var pos = left + "," + top
-    var walls = {}; values[pos] = wallsConfig;
+    var walls = {}; walls[pos] = wallsConfig;
     dashboard[grid].updateWalls(id, robot, walls);
     static_id = id;
   }
