@@ -17,7 +17,7 @@ public interface ProtocolHandler {
   
   void receive(String msg);
 
-  void sendBarcode(int code, int bearing);
+  void sendBarcodeAt(int left, int top, int code, int bearing);
   void sendDiscover(Sector sector);
   void sendPacman();
   void sendPosition();

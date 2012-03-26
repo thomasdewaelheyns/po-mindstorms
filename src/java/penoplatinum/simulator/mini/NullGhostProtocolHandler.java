@@ -19,7 +19,7 @@ public class NullGhostProtocolHandler implements ProtocolHandler {
   }
 
   @Override
-  public void sendBarcode(int code, int bearing) {
+  public void sendBarcodeAt(int left, int top, int code, int bearing) {
   }
 
   @Override

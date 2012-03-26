@@ -10,7 +10,7 @@ package penoplatinum.pacman;
  */
 public interface GhostProtocolCommandHandler {
 
-  void handleBarcode(String agentName, int code, int bearing);
+  void handleBarcodeAt(String agentName, int x, int y, int code, int bearing);
 
   void handleDiscover(String agentName, int x, int y, int n, int e, int s, int w);
 

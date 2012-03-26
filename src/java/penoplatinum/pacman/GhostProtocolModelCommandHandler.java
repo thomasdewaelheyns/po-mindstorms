@@ -82,7 +82,7 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
   }
 
   @Override
-  public void handleBarcode(String agentName, int code, int bearing) {
+  public void handleBarcodeAt(String agentName, int left, int top, int code, int bearing) {
     final AggregatedSubGrid grid = model.getGridPart().getGrid(agentName);
 
     if (agentName.equals("2") && model.getGridPart().getAgent().getName().equals("4")) {

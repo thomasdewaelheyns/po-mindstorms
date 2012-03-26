@@ -57,6 +57,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   // accepts a string, parses it and dispatches it...
   public void receive(String msg) {
+    // System.out.println( "RECEIVE: " + this.agent.getName() + " : " + msg );
     try {
       // TODO: strip retarded newline IF it's there
       if( Config.PROTOCOL_USE_RETARDEDNEWLINE ) {
@@ -80,8 +81,8 @@ public class GhostProtocolHandler implements ProtocolHandler {
           commandHandler.handleDiscover(agentName, scanner.nextInt(), scanner.nextInt(),
                   scanner.nextInt(), scanner.nextInt(),
                   scanner.nextInt(), scanner.nextInt());
-        } else if ("BARCODE".equals(command)) {
-          commandHandler.handleBarcode(agentName, scanner.nextInt(), scanner.nextInt());
+        } else if ("BARCODEAT".equals(command)) {
+          commandHandler.handleBarcodeAt(agentName, scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
         } else if ("PACMAN".equals(command)) {
           commandHandler.handlePacman(agentName, scanner.nextInt(), scanner.nextInt());
         }
@@ -95,6 +96,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
   }
 
   private void handleJoin() {
+    // System.out.println( "handleJoin " + this.agent.getName() );
     this.joins++;
     // TODO: if this.connected ... restart sequence
 
@@ -176,9 +178,9 @@ public class GhostProtocolHandler implements ProtocolHandler {
   }
 
   @Override
-  public void sendBarcode(int code, int bearing) {
+  public void sendBarcodeAt(int left, int top, int code, int bearing) {
     send(this.agent.getName() + " BARCODE "
-            + code + " " + bearing);
+            + left + "," + top + " " + code + " " + bearing);
   }
 
   @Override
