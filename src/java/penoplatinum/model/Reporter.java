@@ -12,6 +12,7 @@ package penoplatinum.model;
 import penoplatinum.gateway.GatewayClient;
 import penoplatinum.simulator.Robot;
 
+import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 
 
@@ -20,4 +21,5 @@ public interface Reporter {
   public Reporter setRobot(Robot robot);
   public Reporter report();
   public Reporter reportWalls(Sector sector);
+  public Reporter reportAgent(Agent agent);
 }

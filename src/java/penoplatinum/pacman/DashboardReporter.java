@@ -127,7 +127,6 @@ public class DashboardReporter implements Reporter {
     return this;
   }
 
-
   private void sendSectorWalls(String name, String grid, Sector sector) {
     this.clear()
         .addSector(name, grid, sector)                                   .c()
@@ -147,6 +146,11 @@ public class DashboardReporter implements Reporter {
         .add(grid)                                                       .c()
         .add(sector.getLeft())                                           .c()
         .add(sector.getTop());
+    return this;
+  }
+
+  public Reporter reportAgent(Agent agent) {
+    this.sendSectorAgent(this.robot.getName(), "myGrid", agent);
     return this;
   }
 

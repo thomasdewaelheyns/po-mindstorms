@@ -50,8 +50,9 @@ public class GhostProtocolModelProcessor extends ModelProcessor {
     }
 
     // Send position updates
-    if (grid.getLastMovement() == GhostAction.FORWARD) {
+    if( grid.getLastMovement() == GhostAction.FORWARD ) {
       protocol.sendPosition();
+      this.model.getReporter().reportAgent(this.model.getGridPart().getAgent());
     }
 
     // Send pacman position updates
