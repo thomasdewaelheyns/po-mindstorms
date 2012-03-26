@@ -64,6 +64,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     int gridSectorSize = (int) (((double)Sector.SIZE*(double)Board.SCALE*(double)Board.scaleRatio)/2.0);
     for(SwingGridView grid: grids){
       grid.setSectorSize(gridSectorSize);
+      grid.getGrid().calculateRatio(this.getWidth(), this.getHeight());
     }
   }
   

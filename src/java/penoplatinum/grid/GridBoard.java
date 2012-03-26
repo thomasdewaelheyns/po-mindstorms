@@ -26,6 +26,7 @@ public class GridBoard extends JPanel {
   public static final Color YELLOW = new Color(255, 255, 0);
   public static final Color BROWN = new Color(205, 165, 100);
   private int sectorSize = 40;
+  private double ratio = 1.0;
 
   public GridBoard resizeTo(int width, int height) {
     this.width = width;
@@ -200,7 +201,7 @@ public class GridBoard extends JPanel {
   public void paint(Graphics g) {
     super.paint(g);
     Graphics2D g2d = (Graphics2D) g;
-
+    g2d.scale(this.ratio,this.ratio);
 
 
     this.wallsG.setColor(BLACK);
@@ -228,5 +229,28 @@ public class GridBoard extends JPanel {
     sectorsG.setColor(Color.WHITE);
     sectorsG.setStroke(new java.awt.BasicStroke(2));
     sectorsG.drawRect(minLeft*this.sectorSize +1, minTop*this.sectorSize+1, this.sectorSize-1, this.sectorSize-1);
+  }
+  
+  public void setRatio(double d){
+    if(d>1.0){
+      d = 1.0;
+    }
+    this.ratio = d;
+  }
+  
+  public void calculateRatio(int windowWidth, int windowHeight){
+    this.setRatio(2.0);
+    double availableWidth = (((double)windowWidth-10.0)/2.0)/2.0;
+    double availableHeight = (((double)windowHeight-10.0)/2.0);
+    double availableSectorWidth = availableWidth/(double)this.width;
+    double availableSectorHeight = availableHeight/(double)this.height;
+    double widthRatio = availableSectorWidth/(double)this.sectorSize;
+    double heightRatio = availableSectorHeight/(double)this.sectorSize;
+    if(widthRatio>heightRatio){
+      this.setRatio(heightRatio);
+    }
+    else{
+      this.setRatio(widthRatio);
+    }
   }
 }
