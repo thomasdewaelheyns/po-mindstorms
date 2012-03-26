@@ -209,9 +209,6 @@ public class SimpleGrid implements Grid {
 
   // remove all agents from the agent list
   public Grid clearAgents() {
-    for (Agent agent : this.agents) {
-      agent.getSector().removeAgent();
-    }
     this.agents.clear();
     this.view.agentsNeedRefresh();
     return this;
@@ -358,7 +355,7 @@ public class SimpleGrid implements Grid {
         if (s.getTagBearing() == otherS.getTagBearing() && s.getTagCode() == otherS.getTagCode()) {
           barcodeMismatch = false;
         }
-        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.reverse(otherS.getTagCode(),6)) {
+        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.reverse(otherS.getTagCode(), 6)) {
           barcodeMismatch = false;
         }
         if (barcodeMismatch) {
@@ -382,7 +379,13 @@ public class SimpleGrid implements Grid {
   public GridView getView() {
     return view;
   }
-  
-  
-  
+
+  public Agent getAgentAt(Sector s) {
+    for (int i = 0; i < agents.size(); i++) {
+      if (agents.get(i).getSector() == s) {
+        return agents.get(i);
+      }
+    }
+    return null;
+  }
 }

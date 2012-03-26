@@ -129,7 +129,6 @@ public abstract class MovingAgent implements Agent {
     Sector current = this.getSector();
     if (this.canMoveForward()) {
       // actually move the agent
-      current.removeAgent();
       current.getNeighbour(bearing).put(this, bearing);
       this.sector.getGrid().agentsNeedRefresh();
     } else {

@@ -24,8 +24,6 @@ public class Sector {
   // walls and the certainty about them
   private char walls = 0;
   private char certainty = 0;
-  // the agent currently on this Sector
-  private Agent agent;
   // the value associated with this sector
   private int value = 0;
   private int tagCode = -1;
@@ -64,10 +62,10 @@ public class Sector {
 
   public Sector putOn(Grid grid) {
     this.grid = grid;
-    // if we have an agent, we notify this to our (new) grid
-    if (this.hasAgent()) {
-      this.grid.addAgent(this.getAgent());
-    }
+//    // if we have an agent, we notify this to our (new) grid
+//    if (this.hasAgent()) {
+//      this.grid.addAgent(this.getAgent());
+//    }
     return this;
   }
 
@@ -159,30 +157,20 @@ public class Sector {
 
   // keeps track of an agent occupying this sector
   public Sector put(Agent agent, int bearing) {
-    if (agent.getSector() != null) {
-      agent.getSector().removeAgent();
-    }
     // reset the value to zero, because an agent has its own value
     this.setValue(0);
     // now add the agent
-    this.agent = agent;
-    this.agent.assignSector(this, bearing);
-    this.grid.addAgent(this.agent);
+    agent.assignSector(this, bearing);
+    this.grid.addAgent(agent);
     return this;
   }
 
   public boolean hasAgent() {
-    return this.agent != null;
+    return getAgent() != null;
   }
 
   public Agent getAgent() {
-    return this.agent;
-  }
-
-  // removes an agent
-  public Sector removeAgent() {
-    this.agent = null;
-    return this;
+    return grid.getAgentAt(this);
   }
 
   // sets the value of the sector
@@ -200,7 +188,7 @@ public class Sector {
 
   // if an agent is occupying us, return the agent's value else our own
   public int getValue() {
-    return this.agent != null ? this.agent.getValue() : this.value;
+    return hasAgent() ? getAgent().getValue() : this.value;
   }
 
   public int getTagBearing() {
@@ -386,6 +374,5 @@ public class Sector {
       neighbours[i] = null;
     }
     grid = null;
-    agent = null;
   }
 }

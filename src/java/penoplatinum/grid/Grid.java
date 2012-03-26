@@ -70,4 +70,6 @@ public interface Grid {
 
   void disengage();
 
+  Agent getAgentAt(Sector s);
+
 }
