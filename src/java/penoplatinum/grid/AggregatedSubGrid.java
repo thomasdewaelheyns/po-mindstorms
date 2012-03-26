@@ -67,18 +67,15 @@ public class AggregatedSubGrid {
 
   }
 
-  public void setBarcodeAtAgentPosition(String agentName, int code, int bearing) {
+  public void setBarcodeAt(int left, int top, int code, int bearing) {
     if (storageGrid != null) {
+
+
+      Sector barcodeSector = storageGrid.getOrCreateSector(left, top);
       
       
-      
-      
-      Agent agent = storageGrid.getAgent(agentName);
-      if (agent == null) {
-        Utils.Log("Someone is messing up the protocol!!");
-      }
-      agent.getSector().setTagCode(code);
-      agent.getSector().setTagBearing(bearing);
+      barcodeSector.setTagCode(code);
+      barcodeSector.setTagBearing(bearing);
 
       // tag the current sector of the agent with the given barcode
       // check if we have it too
@@ -87,16 +84,12 @@ public class AggregatedSubGrid {
       //        in our own grid
       List<Sector> bs = baseGrid.getTaggedSectors();
       for (int i = 0; i < bs.size(); i++) {
-        baseGrid.attemptMapBarcode(bs.get(i), agent.getSector(), agentName);
+        baseGrid.attemptMapBarcode(bs.get(i), barcodeSector, baseGrid.getGhostNameForGrid(this));
       }
     } else {
-      Agent agent = baseGrid.getAgent(agentName);
-      if (agent == null) {
-        Utils.Log("Agent not found on grid for received barcode command!");
-        return;
-      }
-      agent.getSector().setTagCode(code);
-      agent.getSector().setTagBearing((bearing + transformation.getRotation()) % 4);
+      Sector barcodeSector = storageGrid.getOrCreateSector(left, top);
+      barcodeSector.setTagCode(code);
+      barcodeSector.setTagBearing((bearing + transformation.getRotation()) % 4);
 
       //TODO: decide what to do know
 

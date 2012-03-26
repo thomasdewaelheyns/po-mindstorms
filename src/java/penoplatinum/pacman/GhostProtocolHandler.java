@@ -179,7 +179,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   @Override
   public void sendBarcodeAt(int left, int top, int code, int bearing) {
-    send(this.agent.getName() + " BARCODE "
+    send(this.agent.getName() + " BARCODEAT "
             + left + "," + top + " " + code + " " + bearing);
   }
 

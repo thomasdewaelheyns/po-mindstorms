@@ -53,4 +53,14 @@ public class StaticTargetAgent implements Agent {
   public Agent copyAgent() {
     return new StaticTargetAgent();
   }
+
+  @Override
+  public Agent activate() {
+    return this;
+  }
+
+  @Override
+  public boolean isActive() {
+    return false;
+  }
 }
