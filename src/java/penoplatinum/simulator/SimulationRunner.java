@@ -45,8 +45,10 @@ public class SimulationRunner {
   private final static String DEFAULT_NAVIGATOR = "penoplatinum.pacman.GhostNavigator";
   private final static String DEFAULT_DRIVER = "penoplatinum.driver.GhostDriver";
   private final static String DEFAULT_GATEWAY_CLIENT = "penoplatinum.simulator.SimulatedGatewayClient";
-  private final static String DEFAULT_REPORTER = "penoplatinum.pacman.DashboardReporter";
-  private final static String DEFAULT_MAP = "../../maps/wolfraam.txt";
+  private final static String DEFAULT_REPORTER       = "penoplatinum.pacman.DashboardReporter";
+  private final static String DEFAULT_MAP            = "../../maps/wolfraam.txt";
+  private final static String DEFAULT_START          = "0";
+
   private Simulator simulator;
   private String robotClassName;
   private String navigatorClassName;
@@ -60,6 +62,8 @@ public class SimulationRunner {
   private Map<String, Reporter> reporters = new HashMap<String, Reporter>();
   private Map<String, RobotAPI> robotAPIs = new HashMap<String, RobotAPI>();
   private Map<String, RobotEntity> simulatedEntities = new HashMap<String, RobotEntity>();
+
+  private int start = 0;
 
   public SimulationRunner() {
     this.simulator = new Simulator();
@@ -219,7 +223,7 @@ public class SimulationRunner {
       this.simulator.useMap(map);
 
       // add the ghosts
-      int robotNr = 0;
+      int robotNr = this.start;
       for (Point position : map.getGhostPositions()) {
         robotNr++;
 //        this.putGhostAt("Ghost" + robotNr, position.getX(), position.getY(), Bearing.N);
@@ -280,6 +284,11 @@ public class SimulationRunner {
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("SimulationRunner", options);
   }
+  
+  public SimulationRunner setStart(int start) {
+    this.start = start;
+    return this;
+  }
 
   public static void main(String[] args) {
 
@@ -291,9 +300,11 @@ public class SimulationRunner {
     options.addOption("h", "help", false, "show this helpful information.");
     options.addOption("q", "quiet", false, "don't show a user interface.");
     options.addOption("r", "robot", true,
-            "use robot <classname>. default=" + DEFAULT_ROBOT);
-    options.addOption("n", "navigator", true,
-            "use navigator <classname>. default=" + DEFAULT_NAVIGATOR);
+                      "use robot <classname>. default=" + DEFAULT_ROBOT);
+    options.addOption("s", "start", true,
+                      "use start number <number>. default=" + DEFAULT_START);
+    options.addOption("n", "navigator", true, 
+                      "use navigator <classname>. default=" + DEFAULT_NAVIGATOR);
     options.addOption("d", "driver", true,
             "use driver <classname>. default=" + DEFAULT_DRIVER);
     options.addOption("g", "gatewayClient", true,
@@ -314,9 +325,11 @@ public class SimulationRunner {
           runner.useUI();
         }
 
-        runner.useRobot(line.getOptionValue("robot", DEFAULT_ROBOT));
-        runner.useNavigator(line.getOptionValue("navigator", DEFAULT_NAVIGATOR));
-        runner.useDriver(line.getOptionValue("driver", DEFAULT_DRIVER));
+        runner.setStart(Integer.parseInt(line.getOptionValue("start", DEFAULT_START)));
+
+        runner.useRobot        (line.getOptionValue("robot",         DEFAULT_ROBOT));
+        runner.useNavigator    (line.getOptionValue("navigator",     DEFAULT_NAVIGATOR));
+        runner.useDriver       (line.getOptionValue("driver",        DEFAULT_DRIVER));
         runner.useGatewayClient(line.getOptionValue("gatewayClient", DEFAULT_GATEWAY_CLIENT));
         runner.useReporter     (line.getOptionValue("reporter",      DEFAULT_REPORTER));
         runner.loadMap         (line.getOptionValue("map",           DEFAULT_MAP));
