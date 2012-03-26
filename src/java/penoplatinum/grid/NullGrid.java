@@ -162,4 +162,7 @@ public class NullGrid implements Grid {
   public void disengage() {
   }
   
+  public Agent getAgentAt(Sector sector) {
+    return null;
+  }
 }
