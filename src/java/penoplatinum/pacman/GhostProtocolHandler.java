@@ -54,6 +54,8 @@ public class GhostProtocolHandler implements ProtocolHandler {
     // System.out.println( "RECEIVE: " + this.agent.getName() + " : " + msg );
     try {
 
+      msg = msg.substring(0,msg.length()-1);
+      
       MyScanner scanner = new MyScanner(msg);//.useDelimiter("[ ,]");
       String agentName = scanner.next();
 
