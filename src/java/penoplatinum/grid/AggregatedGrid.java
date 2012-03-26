@@ -39,10 +39,10 @@ public class AggregatedGrid extends SimpleGrid {
       SimpleGrid.copyGridTo(this, otherGrid.getStorageGrid(), transform);
 
       // Release memory!!!!
-      otherGrid.getStorageGrid().disengage();
+//      otherGrid.getStorageGrid().disengage();
 
       // Relay to this grid from now on
-      otherGrid.setStorageGrid(null);
+//      otherGrid.setStorageGrid(null);
 
     } else {
       // Just set the new transformation. 
@@ -50,7 +50,7 @@ public class AggregatedGrid extends SimpleGrid {
     }
 
 
-    otherGrid.setTransformation(transform);
+//    otherGrid.setTransformation(transform);
   }
 
   public List<AggregatedSubGrid> getUnmergedGrids() {
