@@ -1,10 +1,13 @@
 package penoplatinum.grid;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import penoplatinum.Config;
 import penoplatinum.SimpleHashMap;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.simulator.Bearing;
+import penoplatinum.simulator.Simulator;
 import penoplatinum.util.TransformationTRT;
 
 /**
@@ -87,7 +90,7 @@ public class AggregatedGrid extends SimpleGrid {
     int ourCode = ourSector.getTagCode();
     int code = otherSector.getTagCode();
     int bearing = otherSector.getTagBearing();
-    int invertedCode = BarcodeTranslator.reverse(code,6);
+    int invertedCode = BarcodeTranslator.reverse(code, 6);
 
     if (invertedCode == code) {
       return false; // THis barcode is symmetrical??
@@ -109,5 +112,43 @@ public class AggregatedGrid extends SimpleGrid {
     thisGrid.setGhostRelativeTransformation(otherAgentName, transform);
 
     return true;
+  }
+
+  public void DEBUG_checkGridCorrectness(Agent agent) {
+    if (!Config.DEBUGMODE) {
+      return;
+    }
+    
+    boolean fail = false;
+
+    Point initial = Simulator.Running_Instance.getSimulatedEntityByName(agent.getName()).getInitialPosition();
+
+    for (Sector s : getSectors()) {
+      penoplatinum.simulator.tiles.Sector t = (penoplatinum.simulator.tiles.Sector) Simulator.Running_Instance.getMap().get(s.getLeft() + initial.x, s.getTop() + initial.y);
+      if (t == null)
+      {
+        fail = true;
+        break;
+        
+      }
+      for (int i = 0; i < 4; i++) {
+        if (!s.isKnown(i)) {
+          continue;
+        }
+        if (s.hasWall(i) != t.hasWall(i)) {
+          fail = true;
+          break;
+          
+        }
+      }
+
+
+    }
+
+    if (fail)
+    {
+      int magic = 5;//throw new RuntimeException("Grid incorrect!!!");
+    }
+
   }
 }

@@ -59,11 +59,13 @@ public class MergeGridModelProcessor extends ModelProcessor {
       String name = gridPart.getGrid().getGhostNameForGrid(g);
       for (Sector s : g.getStorageGrid().getTaggedSectors()) {
         gridPart.getGrid().attemptMapBarcode(gridPart.getAgent().getSector(), s, name);
+        gridPart.getGrid().DEBUG_checkGridCorrectness(gridPart.getAgent());
       }
     }
 
 
     //To fix protocol shitiness, send a position cmd for safety
+    model.getMessagePart().getProtocol().sendPosition();
     model.getMessagePart().getProtocol().sendBarcode(model.getBarcodePart().getLastBarcode(), gridPart.getAgent().getBearing());
     //TODO: is this needed?          lastBarcode = -1;
 

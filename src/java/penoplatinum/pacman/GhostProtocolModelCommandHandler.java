@@ -30,7 +30,10 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     //TODO: check x and y are valid for use in our grid system
 
     AggregatedSubGrid grid = model.getGridPart().getGrid(agentName);
-    grid.setActorPosition(agentName,x,y);
+    grid.setActorPosition(agentName, x, y);
+
+
+    model.getGridPart().getGrid().DEBUG_checkGridCorrectness(model.getGridPart().getAgent());
 
   }
 
@@ -62,38 +65,33 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
     for (int i = 0; i <= 3; i++) {
       walls[i] = GhostProtocolHandler.decodeTrit(values[i]);
     }
-    
-    grid.setSector(x,y,walls);
-    
 
+    Sector oldSector = model.getGridPart().getGrid().getSector(x, y);
 
-  }
+    grid.setSector(x, y, walls);
 
-  public void setSector(Grid grid, int x, int y, int n, int e, int s, int w) {
-
-    Sector sector = grid.getSector(x, y);
-
-    if (sector == null) {
-      sector = new Sector();
-      sector.setCoordinates(x, y);
-      grid.addSector(sector);
+    Sector newSector = model.getGridPart().getGrid().getSector(x, y);
+    if (oldSector == null || newSector.getWalls() != oldSector.getWalls()) {
+      if (newSector != null) {
+        model.getGridPart().markSectorChanged(newSector);
+      }
     }
 
-    int[] values = new int[]{n, e, s, w};
+    model.getGridPart().getGrid().DEBUG_checkGridCorrectness(model.getGridPart().getAgent());
 
-    for (int i = 0; i <= 3; i++) {
-
-      Boolean newVal = GhostProtocolHandler.decodeTrit(values[i]);
-      sector.setWall(i, newVal);
-
-    }
   }
 
   @Override
   public void handleBarcode(String agentName, int code, int bearing) {
     final AggregatedSubGrid grid = model.getGridPart().getGrid(agentName);
-    
-    grid.setBarcodeAtAgentPosition(agentName, code,bearing);
+
+    if (agentName.equals("2") && model.getGridPart().getAgent().getName().equals("4")) {
+      int magic = 4;
+    }
+
+    grid.setBarcodeAtAgentPosition(agentName, code, bearing);
+
+    model.getGridPart().getGrid().DEBUG_checkGridCorrectness(model.getGridPart().getAgent());
 
   }
 
@@ -104,9 +102,9 @@ public class GhostProtocolModelCommandHandler implements GhostProtocolCommandHan
 
 
     AggregatedSubGrid grid = model.getGridPart().getGrid(agentName);
-    grid.setPacmanPosition(x,y);
+    grid.setPacmanPosition(x, y);
 
 
-
+    model.getGridPart().getGrid().DEBUG_checkGridCorrectness(model.getGridPart().getAgent());
   }
 }

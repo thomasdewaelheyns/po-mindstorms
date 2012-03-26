@@ -114,7 +114,7 @@ public abstract class MovingAgent implements Agent {
     } else if (!current.hasNeighbour(bearing)) {
 //      System.err.println(this.name + "ERROR: No neighbour to move to.");
 //      try { System.in.read(); } catch(Exception e) {}      
-    } else if (current.getNeighbour(bearing).hasAgent()) {
+//    } else if (current.getNeighbour(bearing).hasAgent()) {
 //      System.err.println(this.name + "ERROR: Neighbour has Agent" );
       //try { System.in.read(); } catch(Exception e) {}      
     } else {

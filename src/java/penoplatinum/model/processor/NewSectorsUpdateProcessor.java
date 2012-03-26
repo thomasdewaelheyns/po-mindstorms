@@ -38,6 +38,8 @@ public class NewSectorsUpdateProcessor extends ModelProcessor {
   private void addNewSectors() {
     GridModelPart grid = ((GhostModel) this.model).getGridPart();
 
+    //TODO: do this for all new sectors
+    
     Sector current = grid.getCurrentSector();
     for (int location = Bearing.N; location <= Bearing.W; location++) {
       if (current.givesAccessTo(location)

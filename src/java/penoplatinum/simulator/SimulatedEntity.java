@@ -28,6 +28,7 @@ public class SimulatedEntity implements RobotEntity{
   private double direction;       //   and a direction it's facing
   private double totalMovement = 0;
   private long lastStatisticsReport = 0;  // time of last stat report
+  private Point initialPosition;
 
   // the motorSpeeds and the sensorValues
   private int[] sensorValues = new int[Model.SENSORVALUES_NUM];
@@ -274,5 +275,17 @@ public class SimulatedEntity implements RobotEntity{
   public double getDirection() {
     return this.direction;
   }
+
+  public Point getInitialPosition() {
+    return initialPosition;
+  }
+
+  public void setInitialPosition(Point initialPosition) {
+    this.initialPosition = initialPosition;
+  }
+  
+  
+  
+  
 
 }

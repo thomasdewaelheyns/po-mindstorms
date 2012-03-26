@@ -24,14 +24,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import penoplatinum.util.Utils;
 
 public class Simulator {
-  
+
   /**
    * 
    */
   public static Simulator Running_Instance;
-  
   // the Simulator can run until different goals are reached
-
   public static final double TIME_SLICE = 0.008;
   // a view to display the simulation, by default it does nothing
   SimulationView view = new SilentSimulationView();
@@ -42,8 +40,6 @@ public class Simulator {
   private ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<String>();
   private Runnable stepRunnable;
 
-  
-  
   // main constructor, no arguments, Simulator is selfcontained
   public Simulator() {
   }
@@ -77,7 +73,7 @@ public class Simulator {
     for (RobotEntity s : robotEntities) {
       view.addRobot(s.getViewRobot());
     }
-    if(pacmanEntity != null){
+    if (pacmanEntity != null) {
       view.addRobot(pacmanEntity.getViewRobot());
     }
     return this;
@@ -189,6 +185,15 @@ public class Simulator {
    * agent.
    */
   public Simulator run() {
+    Simulator.Running_Instance = this;
+
+    for (int i = 0; i < this.robotEntities.size(); i++) {
+      if (this.robotEntities.get(i) instanceof SimulatedEntity) {
+        SimulatedEntity ent = (SimulatedEntity) this.robotEntities.get(i);
+        ent.setInitialPosition(ent.getCurrentTileCoordinates());
+      }
+    }
+
     this.view.showMap(this.map);
 
 
@@ -271,6 +276,20 @@ public class Simulator {
   public SimulationView getView() {
     return view;
   }
-  
-  
+
+  public Map getMap() {
+    return map;
+  }
+
+  public SimulatedEntity getSimulatedEntityByName(String name) {
+    for (int i = 0; i < this.robotEntities.size(); i++) {
+      if (this.robotEntities.get(i) instanceof SimulatedEntity) {
+        SimulatedEntity ent = (SimulatedEntity) this.robotEntities.get(i);
+        if (ent.getRobot().getName().equals(name)) {
+          return ent;
+        }
+      }
+    }
+    return null;
+  }
 }

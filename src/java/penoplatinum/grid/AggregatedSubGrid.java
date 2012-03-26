@@ -69,6 +69,10 @@ public class AggregatedSubGrid {
 
   public void setBarcodeAtAgentPosition(String agentName, int code, int bearing) {
     if (storageGrid != null) {
+      
+      
+      
+      
       Agent agent = storageGrid.getAgent(agentName);
       if (agent == null) {
         Utils.Log("Someone is messing up the protocol!!");
