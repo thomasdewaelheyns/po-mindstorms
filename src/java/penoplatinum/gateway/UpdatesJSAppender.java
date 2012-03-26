@@ -19,38 +19,85 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 
-import penoplatinum.ui.server.JSWrapper;
-
 public class UpdatesJSAppender extends AppenderSkeleton {
 
-  private String method   = "model";
-  private String fileName = "updates.js";
+  private String  fileName1 = "updates-1.js",
+                  fileName2 = "updates-2.js";
+  private int     count     = 0;
+  private String  robotName = "none";
+
+  private static String fileName = "";
+  private static int eventId = 0;
 
   public boolean requiresLayout(){ return true; }
 
-  public void setMethod(String method) {
-    this.method = method;
+  public void setFile1(String fileName) {
+    this.fileName1 = fileName;
+    fileName = this.fileName1; // FIXME: this doesn't seem to work ?!
+                               //        -> patched below in next()  
   }
 
-  public void setFile(String fileName) {
-    this.fileName = fileName;
+  public void setFile2(String fileName) {
+    this.fileName2 = fileName;
+  }
+
+  public void setCount(int count) {
+    this.count = count;
+  }
+
+  public void setRobot(String robotName) {
+    this.robotName = robotName;
   }
 
   public synchronized void append( LoggingEvent event ) {
-    
+    String message = this.layout.format(event);
+
+    if( ! message.startsWith("\"" + this.robotName) ) { 
+      return;
+    }
+
+    this.next();
+    this.append(this.wrapJS(event.getLoggerName(), message));
+  }
+  
+  private String wrapJS(String scope, String message) {
+    // add event sequence number and wrap in js-call
+    return "Dashboard.file_update_" + scope + 
+            "(" + eventId + "," + message + ");\n"; 
+  }
+  
+  private void append(String js) {
     try {
-      // TODO: take into account method-name from property
-      String message = this.layout.format(event);
-
-      File file=new File(this.fileName);
-
-      DataOutputStream outs = new DataOutputStream(
-        new FileOutputStream(file, false));
-      outs.write(message.getBytes());
+      File file = new File(fileName);
+      DataOutputStream outs = 
+        new DataOutputStream(new FileOutputStream(file, true));
+      outs.write(js.getBytes());
+      outs.flush();
       outs.close();
     } catch(Exception e) {
-      System.err.println( "Failed to append to updates.js..." );
       throw new RuntimeException(e);
+    }
+  }
+  
+  private void next() {
+    eventId++;
+
+    // FIXME: why this extra init ?
+    if( fileName.equals("") ) { fileName = this.fileName1; }
+    
+    if( eventId % this.count == 0 ) {
+      // determine next fileName
+      String nextFileName = fileName.equals(this.fileName1) ? 
+        this.fileName2 : this.fileName1;
+
+      // inject swap() instruction
+      this.append( "swap(\"" + nextFileName + "\");\n" );
+
+      // do swap
+      fileName = nextFileName;
+
+      // delete it to trigger restart
+      new File(fileName).delete();
     }
   }
   

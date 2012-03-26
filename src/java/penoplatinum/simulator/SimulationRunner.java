@@ -318,8 +318,8 @@ public class SimulationRunner {
         runner.useNavigator(line.getOptionValue("navigator", DEFAULT_NAVIGATOR));
         runner.useDriver(line.getOptionValue("driver", DEFAULT_DRIVER));
         runner.useGatewayClient(line.getOptionValue("gatewayClient", DEFAULT_GATEWAY_CLIENT));
-        runner.useReporter(line.getOptionValue("reporter", DEFAULT_REPORTER));
-        runner.loadMap(line.getOptionValue("mapFile", DEFAULT_MAP));
+        runner.useReporter     (line.getOptionValue("reporter",      DEFAULT_REPORTER));
+        runner.loadMap         (line.getOptionValue("map",           DEFAULT_MAP));
 
         setupComplete = true;
       }

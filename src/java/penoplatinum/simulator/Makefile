@@ -6,7 +6,8 @@ TARGETS=SimulationRunner.class \
 			  ../driver/GhostDriver.class \
 			  ../pacman/GhostRobot.class \
 				../pacman/GhostNavigator.class \
-				../pacman/DashboardReporter.class
+				../pacman/DashboardReporter.class \
+				../gateway/UpdatesJSAppender.class
 LIB_DIR=../../../../lib
 LIB_CLI=${LIB_DIR}/commons-cli-1.2.jar
 LIB_COLL=${LIB_DIR}/commons-collections-3.2.1.jar
@@ -23,12 +24,12 @@ BUILD_DIR=build
 JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
 JAVA=java -cp ${BUILD_DIR}:${LIBS}
 
-OPTIONS=
+OPTIONS=-m ../../../../maps/wolfraam.txt
 
 all: ${TARGETS}
 
 run: ${TARGETS} files
-	@${JAVA} penoplatinum.simulator.${<:.class=} ${OPTIONS}
+	${JAVA} penoplatinum.simulator.${<:.class=} ${OPTIONS}
 
 benchmark: BenchmarkRunner.class
 	@${JAVA} penoplatinum.simulator.${<:.class=}
