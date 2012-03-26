@@ -7,7 +7,6 @@ package penoplatinum.pacman;
  * 
  * @author: Team Platinum
  */
-
 import penoplatinum.Config;
 
 import penoplatinum.model.GhostModel;
@@ -25,18 +24,13 @@ import penoplatinum.util.MyScanner;
 public class GhostProtocolHandler implements ProtocolHandler {
 
   public final static String version = "1.0-partial";
-
   // counter for received join commands
   private int joins = 0;
-
   // the client we're using to communicate with the gateway
   private GatewayClient client;
-
   private boolean connected = false;
-
   // a reference to the Agent
   private Agent agent;
-  
   private final GhostModel model;
   private final GhostProtocolCommandHandler commandHandler;
 
@@ -47,7 +41,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
     this.model = model;
     this.commandHandler = commandHandler;
   }
-  
+
   // keep a reference to the GatewayClient to send messages
   public GhostProtocolHandler useGatewayClient(GatewayClient client) {
     this.client = client;
@@ -59,10 +53,6 @@ public class GhostProtocolHandler implements ProtocolHandler {
   public void receive(String msg) {
     // System.out.println( "RECEIVE: " + this.agent.getName() + " : " + msg );
     try {
-      // TODO: strip retarded newline IF it's there
-      if( Config.PROTOCOL_USE_RETARDEDNEWLINE ) {
-        msg = msg.substring(0, msg.length() - 2);
-      }
 
       MyScanner scanner = new MyScanner(msg);//.useDelimiter("[ ,]");
       String agentName = scanner.next();
@@ -88,7 +78,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
         }
       }
     } catch (Exception e) {
-      if( Config.DEBUGMODE ) {
+      if (Config.DEBUGMODE) {
         Utils.Log("Protocol error!! (" + msg + ")");
         e.printStackTrace();
       }
@@ -101,8 +91,8 @@ public class GhostProtocolHandler implements ProtocolHandler {
     // TODO: if this.connected ... restart sequence
 
     // init conversation if we have seen 4 joins (we were first)
-    if( ! this.connected ) {
-      if( this.joins >= 4 ) {
+    if (!this.connected) {
+      if (this.joins >= 4) {
         this.begin();
       }
     }
@@ -110,7 +100,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   private void handleName(String agentName, String version) {
     // if we're still waiting for joins, we now can begin...
-    if( ! this.connected && this.joins < 4 ) {
+    if (!this.connected && this.joins < 4) {
       this.begin();
     }
 
@@ -128,12 +118,10 @@ public class GhostProtocolHandler implements ProtocolHandler {
   }
 
   private void send(String msg) {
-    if(Config.PROTOCOL_USE_RETARDEDNEWLINE) {
-      msg = msg + "\\n";
-    }
+    msg = msg + "\n";
     this.client.send(msg, Config.BT_GHOST_PROTOCOL);
   }
-  
+
   private void sendJoin() {
     this.send("JOIN");
   }
@@ -141,12 +129,12 @@ public class GhostProtocolHandler implements ProtocolHandler {
   private void sendName() {
     this.send(this.agent.getName() + " NAME " + GhostProtocolHandler.version);
   }
-
   int prevLeft = -1;
-  int prevTop  = -1;
+  int prevTop = -1;
+
   @Override
   public void sendPosition() {
-    if(this.agent.getSector().getLeft() == prevLeft && this.agent.getSector().getTop() == prevTop){
+    if (this.agent.getSector().getLeft() == prevLeft && this.agent.getSector().getTop() == prevTop) {
       return;
     }
     //TODO search origin of this bug
