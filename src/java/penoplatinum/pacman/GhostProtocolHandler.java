@@ -99,14 +99,16 @@ public class GhostProtocolHandler implements ProtocolHandler {
     // TODO: if this.connected ... restart sequence
 
     // init conversation if we have seen 4 joins (we were first)
-    if (!this.connected && this.joins >= 4) {
-      this.begin();
+    if( ! this.connected ) {
+      if( this.joins >= 4 ) {
+        this.begin();
+      }
     }
   }
 
   private void handleName(String agentName, String version) {
     // if we're still waiting for joins, we now can begin...
-    if( ! this.connected ) {//&& this.joins < 4 ) 
+    if( ! this.connected && this.joins < 4 ) {
       this.begin();
     }
 
@@ -120,7 +122,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
     this.joins = 4;
     this.sendName();
 
-    //TODO: this.agent.activate();
+    this.agent.activate();
   }
 
   private void send(String msg) {

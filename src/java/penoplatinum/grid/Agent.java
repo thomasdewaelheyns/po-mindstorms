@@ -34,5 +34,8 @@ public interface Agent {
   public boolean  canMoveForward();
   public Agent    moveForward();
   
-  public Agent copyAgent();
+  public Agent    copyAgent();
+  
+  public Agent    activate();
+  public boolean  isActive();
 }

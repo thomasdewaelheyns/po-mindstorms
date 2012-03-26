@@ -29,6 +29,7 @@ public class RemoteEntity implements RobotEntity {
   private int originY;
   private int originDirection;
 
+  // TODO: reuse GatewayClient in stead of own MQ implementation
   public RemoteEntity(final String entityName) {
     this.entityName = entityName;
     final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
@@ -37,8 +38,6 @@ public class RemoteEntity implements RobotEntity {
 
     try {
       MQ mq = new MQ() {
-
-
         @Override
         protected void handleIncomingMessage(String message) {
            synchronized (this) {

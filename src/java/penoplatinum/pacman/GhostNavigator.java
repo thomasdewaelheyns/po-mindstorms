@@ -40,6 +40,12 @@ public class GhostNavigator implements Navigator {
   }
 
   public int nextAction() {
+    // We wait until the agent is active == everybody is there to run
+    Agent  agent  = this.model.getGridPart().getAgent();
+    if( ! agent.isActive() ) {
+      return GhostAction.NONE;
+    }
+
     // TODO: add check if next planned action is still valid, else also
     //       create a new plan based on the new situation
     if( this.plan.size() == 0 ) {

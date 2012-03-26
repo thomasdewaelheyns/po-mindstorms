@@ -18,6 +18,7 @@ public abstract class MovingAgent implements Agent {
           originalBearing = Bearing.NONE,
           originalLeft = -999,
           originalTop = -999;
+  private boolean active = false;
 
   public MovingAgent(String name) {
     this.name = name;
@@ -136,5 +137,15 @@ public abstract class MovingAgent implements Agent {
 //      try { System.in.read(); } catch(Exception e) {}      
     }
     return this;
+  }
+  
+  public Agent activate() {
+    System.out.println( this.getName() + " ACTIVATE" );
+    this.active = true;
+    return this;
+  }
+  
+  public boolean isActive() {
+    return this.active;
   }
 }

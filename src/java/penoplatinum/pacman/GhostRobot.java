@@ -154,6 +154,10 @@ public class GhostRobot implements Robot {
   }
 
   public void step() {
+    if( ! this.model.getGridPart().getAgent().isActive() ) {
+      // wait until we're active
+      return;
+    }
     // poll other sensors and update model
     this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
     this.model.process();
@@ -216,7 +220,8 @@ public class GhostRobot implements Robot {
   @Override
   public GhostRobot useGatewayClient(GatewayClient client) {
     this.client = client;
-    this.client.setRobot(this);
+    // already set by Runner
+    // this.client.setRobot(this);
     this.model.getMessagePart().getProtocol().useGatewayClient(this.client);
     this.client.run();
     return this;
