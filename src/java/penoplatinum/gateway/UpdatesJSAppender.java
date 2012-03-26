@@ -91,7 +91,7 @@ public class UpdatesJSAppender extends AppenderSkeleton {
         this.fileName2 : this.fileName1;
 
       // inject swap() instruction
-      this.append( "swap(\"" + nextFileName + "\");\n" );
+      this.append( "Dashboard.swap(\"" + this.getFileName(nextFileName) + "\");\n" );
 
       // do swap
       fileName = nextFileName;
@@ -99,6 +99,10 @@ public class UpdatesJSAppender extends AppenderSkeleton {
       // delete it to trigger restart
       new File(fileName).delete();
     }
+  }
+  
+  private String getFileName(String path) {
+    return new File(path).getName();
   }
   
   public synchronized void close() {}

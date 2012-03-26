@@ -43,6 +43,9 @@
   lightHistogram = [],
   sonarHistogram = [],
   
+  static_id = 0,
+  static_file = "updates-1.js",   // init needs to be synced with Gateway cfg
+  
   clearDashboard = function clearDashboard() {
     lightHistogram = [];
     sonarHistogram = [];
@@ -298,11 +301,11 @@
       updatePlan    ( update.navigatorAction, update.navigatorActionQueue );
       updateAction  ( update.actionKind,      update.actionArgument       );
       // rate
-      //updateHTML( "rate", update.rate + "fps" );
+      // updateHTML( "rate", update.rate + "fps" );
     }
     updateHTML( "queueStatus", "(" + queue.length +")" );
     // schedule the next update in 30ms
-    if( streaming ) { setTimeout(processQueue, 30); }
+    if( streaming || continueProcessingFile ) { setTimeout(processQueue, 30); }
   },
   
   refreshRobots = function refreshRobots() {
@@ -321,17 +324,28 @@
   },
 
   processFile = function processFile() {
-    ajaxFetch( "./updates.js?"+(Math.floor(Math.random()*10000)),
-      function(data) {
-        try { 
-          eval(data);
-          if(continueProcessingFile) {
-            setTimeout( processFile, REFRESH_INTERVAL_LOCAL_FILE );
-          }
-        } catch(err) {
-          console.log(err);
-        }
-      } );
+    var file = "./"+ static_file +"?" + (Math.floor(Math.random()*10000));
+    var headID = document.getElementsByTagName("head")[0];         
+    var newScript = document.createElement('script');
+    newScript.type = 'text/javascript';
+    newScript.src = file;
+    headID.appendChild(newScript);
+    if(continueProcessingFile) {
+      setTimeout( processFile, REFRESH_INTERVAL_LOCAL_FILE );
+    }
+    
+    // DOESN'T WORK ON LOCAL FS   :-(
+    // ajaxFetch( "./updates.js?" + (Math.floor(Math.random()*10000)),
+    //   function(data) {
+    //     try { 
+    //       eval(data);
+    //       if(continueProcessingFile) {
+    //         setTimeout( processFile, REFRESH_INTERVAL_LOCAL_FILE );
+    //       }
+    //     } catch(err) {
+    //       console.log(err);
+    //     }
+    //   } );
   },
 
   // then we define a public global namespace/object
@@ -404,7 +418,9 @@
     continueProcessingFile = false;
     if(source == "file") {
       continueProcessingFile = true;
+      static_id = 0;
       processFile();
+      processQueue();
     } else if(source == "server" ) {
       document.getElementById("robotSelection").style.display = "inline";
       refreshRobots();
@@ -414,6 +430,71 @@
   dashboard.showRobot = function showRobot(robot) {
     clearDashboard();
     document.getElementById("iframe").src = "./replay?robot=" + robot;
+  }
+  
+  // support for updates through "static" files
+  // 534,"Ghost1",500,"BROWN",500,-1,90,18,0,0,0,0,0,-1,6,856,3750,0,3750,"","","","","","",0
+  dashboard.file_update_model = function file_update_model(id,  robot,
+                              lightValue, lightColor, avgLightValue,
+                              barcode,
+                              sonarAngle, sonarDistance,
+                              ir1, ir2, ir3, ir4, ir5, irDist,
+                              walls, valN, valE, valS, valW,
+                              navigatorEvent,  navigatorSource,
+                              navigatorAction, navigatorActionQueue,
+                              actionKind, actionArgument,
+                              rate)
+  {
+    if( id < static_id ) { return; }
+    // console.log(static_id, id,  robot,
+    //             lightValue, lightColor, avgLightValue,
+    //             barcode,
+    //             sonarAngle, sonarDistance,
+    //             ir1, ir2, ir3, ir4, ir5, irDist,
+    //             walls, valN, valE, valS, valW,
+    //             navigatorEvent,  navigatorSource,
+    //             navigatorAction, navigatorActionQueue,
+    //             actionKind, actionArgument,
+    //             rate);
+    dashboard.update(id,  robot,
+                          lightValue, lightColor, avgLightValue,
+                          barcode,
+                          sonarAngle, sonarDistance,
+                          ir1, ir2, ir3, ir4, ir5, irDist,
+                          walls, valN, valE, valS, valW,
+                          navigatorEvent,  navigatorSource,
+                          navigatorAction, navigatorActionQueue,
+                          actionKind, actionArgument,
+                          rate );
+    static_id = id;
+  }
+  
+  dashboard.file_update_walls = function file_update_walls(id, robot, grid, left, top, wallsConfig) {
+    if( id < static_id ) { return; }
+    var pos = left + "," + top
+    var walls = {}; values[pos] = wallsConfig;
+    dashboard[grid].updateWalls(id, robot, walls);
+    static_id = id;
+  }
+
+  dashboard.file_update_values = function file_update_values(id, robot, grid, left, top, value) {
+    if( id < static_id ) { return; }
+    var pos = left + "," + top
+    var values = {}; values[pos] = value;
+    dashboard[grid].updateValues(id, robot, values );
+    static_id = id; 
+  }
+
+  dashboard.file_update_agents = function file_update_agents(id, robot, grid, agent, l, t, bearing, color) {
+    if( id < static_id ) { return; }
+    dashboard[grid].updateAgents(id, robot, { name: agent, left: l, top: t });
+    static_id = id;
+  }
+  
+  // start following the other file
+  dashboard.swap = function swap(nextFileName) {
+    console.log("swap -> " + nextFileName);
+    static_file = nextFileName;
   }
   
   initAjax();

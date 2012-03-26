@@ -14,12 +14,12 @@
   <h1>Dashboard <span id="timeStamp" style="float:right"></span></h1>
   <h2>
     P&amp;O Computerwetenschappen - Robot:
-    <select id="sourceSelection" onchange="dashboard.useSource(this.value);">
+    <select id="sourceSelection" onchange="Dashboard.useSource(this.value);">
       <option>selecteer bron...</option>
       <option>file</option>
       <option>server</option>
     </select>
-    <select style="display:none" id="robotSelection" onchange="dashboard.showRobot(this.value);">
+    <select style="display:none" id="robotSelection" onchange="Dashboard.showRobot(this.value);">
     </select>
     <span id="controls" style="float:right">
       <input type="button" onclick="Dashboard.play();" value=">"/>

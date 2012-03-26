@@ -86,6 +86,7 @@
 
     // helper functions to update HTML parts
     updateHTML = function updateHTML(id, value) { 
+//      console.log(id, value);
       document.getElementById(id).innerHTML = value;
     },
 
@@ -215,7 +216,6 @@
     // public method add sectors
     grid.updateWalls = function updateWalls(ts, robot, walls) {
       updateHTML( "timeStamp", ts    );
-      updateHTML( "robotName", robot );
 
       // copy the new info into the private sectors hash
       for(var key in walls) {
@@ -242,8 +242,7 @@
     
     grid.updateValues = function updateValues(ts, robot, values) {
       updateHTML( "timeStamp", ts    );
-      updateHTML( "robotName", robot );
-
+      
       // copy the new info into the private sectors hash
       for(var key in values) {
         if(sectors[key]) { // we only track values for sectors we know
@@ -256,7 +255,6 @@
     
     grid.updateAgents = function updateAgents(ts, robot, info) {
       updateHTML( "timeStamp", ts    );
-      updateHTML( "robotName", robot );
 
       // copy the new info into the private agents hash
       for(var name in info) {
