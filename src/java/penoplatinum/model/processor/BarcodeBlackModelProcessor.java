@@ -137,7 +137,10 @@ public class BarcodeBlackModelProcessor extends ModelProcessor {
     if (barcode != Barcode.None) {
       corrected = (corrected / 2) & ((1 << 7) - 1);
     }
-    model.getBarcodePart().setBarcode(corrected);
+
+    if (corrected != 1 && corrected != 254) {
+      model.getBarcodePart().setBarcode(corrected);
+    }
     setState(WAITING);
   }
 
