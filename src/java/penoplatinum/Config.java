@@ -15,8 +15,8 @@ public class Config {
   public final static boolean DEBUGMODE = true;
 
   // settings for connecting to a real MQ Server
-  public final static String MQ_SERVER     = "localhost";
-  // public final static String MQ_SERVER     = "leuven.cs.kotnet.kuleuven.be";
+  // public final static String MQ_SERVER     = "localhost";
+  public final static String MQ_SERVER     = "leuven.cs.kotnet.kuleuven.be";
   public final static String GHOST_CHANNEL = "PLATINUM";
   // public final static String GHOST_CHANNEL = "Ghost";
   
@@ -25,7 +25,7 @@ public class Config {
   // a SimulatedGatewayClient can use a local MQ (when all ghosts run in the
   // same Simulator and use a Singleton SimulatedMQ object to exchange msgs.
   // when set to false, we connect to a real MQ_SERVER (see above)
-  public final static boolean USE_LOCAL_MQ = true;
+  public final static boolean USE_LOCAL_MQ = false;
 
   public final static int MOTOR_SPEED_MOVE  = 500;
   public final static int MOTOR_SPEED_SONAR = 250;
