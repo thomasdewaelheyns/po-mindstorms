@@ -68,15 +68,15 @@ public class GhostProtocolHandler implements ProtocolHandler {
         if ("NAME".equals(command)) {
           this.handleName(agentName, scanner.next());
         } else if ("POSITION".equals(command)) {
-          commandHandler.handlePosition(agentName, scanner.nextInt(), scanner.nextInt());
+          commandHandler.handlePosition(agentName, scanner.nextInt(), scanner.nextInt() * (-1) );
         } else if ("DISCOVER".equals(command)) {
-          commandHandler.handleDiscover(agentName, scanner.nextInt(), scanner.nextInt(),
+          commandHandler.handleDiscover(agentName, scanner.nextInt(), scanner.nextInt()* (-1),
                   scanner.nextInt(), scanner.nextInt(),
                   scanner.nextInt(), scanner.nextInt());
         } else if ("BARCODEAT".equals(command)) {
           commandHandler.handleBarcodeAt(agentName, scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt()-1);
         } else if ("PACMAN".equals(command)) {
-          commandHandler.handlePacman(agentName, scanner.nextInt(), scanner.nextInt());
+          commandHandler.handlePacman(agentName, scanner.nextInt(), scanner.nextInt() * (-1));
         }
       }
     } catch (Exception e) {
@@ -141,7 +141,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
     }
     //TODO search origin of this bug
     this.prevLeft = this.agent.getSector().getLeft();
-    this.prevTop = this.agent.getSector().getTop();
+    this.prevTop = this.agent.getSector().getTop()* (-1);
     send(this.agent.getName() + " POSITION "
             + this.agent.getSector().getLeft() + ","
             + this.agent.getSector().getTop());
@@ -152,7 +152,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
   public void sendDiscover(Sector sector) {
 
     this.send(this.agent.getName() + " DISCOVER "
-            + sector.getLeft() + "," + sector.getTop() + " "
+            + sector.getLeft() + "," + sector.getTop() * (-1)+ " "
             + this.makeTrit(sector.hasWall(Bearing.N)) + " "
             + this.makeTrit(sector.hasWall(Bearing.E)) + " "
             + this.makeTrit(sector.hasWall(Bearing.S)) + " "
@@ -178,6 +178,6 @@ public class GhostProtocolHandler implements ProtocolHandler {
   public void sendPacman() {
     send(this.agent.getName() + " PACMAN "
             + this.model.getGridPart().getPacmanAgent().getLeft() + ","
-            + this.model.getGridPart().getPacmanAgent().getTop());
+            + this.model.getGridPart().getPacmanAgent().getTop() * (-1));
   }
 }
