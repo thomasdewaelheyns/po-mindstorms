@@ -75,7 +75,7 @@ public class testGrid() {
   private ReferenceAgent mockReferenceAgent(int bearing) {
     ReferenceAgent mockedReferenceAgent = mock(ReferenceAgent.class);
     Point mockedPoint = mock(Point.class);
-    when(mockedPoint.getLeft()).thenReturn(0);
+    when(mockedPoint.getLeft()).thenReturn(1);
     when(mockedPoint.getTop()).thenReturn(0);
     when(mockedReferenceAgent.getPosition()).thenReturn(mockecPoint);
     when(mockedReferenceAgent.getBearing()).thenReturn(bearing);
