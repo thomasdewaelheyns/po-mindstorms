@@ -1,0 +1,561 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>tiles::Panels</title>
+<link href="../../../../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<span class="ObjectTitle">Panels  : public   class</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">27/03/2012 9:37:18</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">27/03/2012 9:37:18</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue">: Team Platinum</td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Easy</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../../../../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{6A5D9C6B-0491-41bb-A1EF-DD2D6772EF29}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA255.html">tiles</a></td>
+		</tr>
+	</table>
+	<div class="ObjectDetailsNotes">&lt;p&gt;Enumeration of commonly used Panels &lt;br/&gt;&lt;/p&gt;</div>
+
+	<div class="TableGroup" id="TableGroup">
+		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('Attributes');" id="AttributesTitle">Attributes</li>
+			<li onClick="parent.toggleItem('AssociationsTo');" id="AssociationsToTitle">Associations To</li>
+		</ul>
+<div class="ItemBody" id="AttributesTable">
+	<table border="0" cellspacing="0" cellpadding="0" class="Table">
+		<tr>
+			<td width="40%" class="TableHeading">Attribute</td>
+			<td width="60%" class="TableHeading">Details</td>
+		</tr>
+						<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;N_S</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Forward)       .putBarcodeAt(Bearing.N)
+    .withWall   (Bearing.E)              .withWall    (Bearing.W)
+    .withLine   (Bearing.E,  Panel.WHITE) .withLine    (Bearing.W, Panel.BLACK)<br></i><div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			up-down, down-up
+		</td>
+	</tr>
+</table></div>
+</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;S_N</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Forward)       .putBarcodeAt(Bearing.S)
+    .withWall   (Bearing.E)              .withWall    (Bearing.W)
+    .withLine   (Bearing.E,  Panel.BLACK) .withLine    (Bearing.W, Panel.WHITE)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;W_E</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Forward)       .putBarcodeAt(Bearing.W)
+    .withWall   (Bearing.S)              .withWall    (Bearing.N)
+    .withLine   (Bearing.N,  Panel.WHITE) .withLine    (Bearing.S, Panel.BLACK)<br></i><div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			left-right, right-left
+		</td>
+	</tr>
+</table></div>
+</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;E_W</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Forward)       .putBarcodeAt(Bearing.E)
+    .withWall   (Bearing.N)              .withWall    (Bearing.S)
+    .withLine   (Bearing.N,  Panel.BLACK) .withLine    (Bearing.S, Panel.WHITE)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;N_E</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Left)          .putBarcodeAt(Bearing.N)
+    .withWall   (Bearing.S)              .withWall    (Bearing.W)
+    .withLine   (Bearing.S,  Panel.BLACK) .withLine    (Bearing.W, Panel.BLACK)
+    .withCorner (Bearing.NE, Panel.WHITE)<br></i><div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			up-right, right-up
+		</td>
+	</tr>
+</table></div>
+</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;E_N</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Bearing.E)
+    .withWall   (Bearing.S)              .withWall    (Bearing.W)
+    .withLine   (Bearing.S,  Panel.WHITE) .withLine    (Bearing.W, Panel.WHITE)
+    .withCorner (Bearing.NE, Panel.BLACK)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;S_E</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Bearing.S)
+    .withWall   (Bearing.N)              .withWall    (Bearing.W)
+    .withLine   (Bearing.N,  Panel.WHITE) .withLine    (Bearing.W, Panel.WHITE)
+    .withCorner (Bearing.SE, Panel.BLACK)<br></i><div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			down-right, right-down
+		</td>
+	</tr>
+</table></div>
+</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;E_S</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Left)          .putBarcodeAt(Bearing.E)
+    .withWall   (Bearing.N)              .withWall    (Bearing.W)
+    .withLine   (Bearing.N,  Panel.WHITE) .withLine    (Bearing.W, Panel.WHITE)
+    .withCorner (Bearing.SE, Panel.BLACK)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;S_W</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Left)          .putBarcodeAt(Bearing.S)
+    .withWall   (Bearing.N)              .withWall    (Bearing.E)
+    .withLine   (Bearing.N,  Panel.BLACK) .withLine    (Bearing.E, Panel.BLACK)
+    .withCorner (Bearing.SW, Panel.WHITE)<br></i><div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			down-left, left-down
+		</td>
+	</tr>
+</table></div>
+</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;W_S</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Bearing.W)
+    .withWall   (Bearing.N)              .withWall    (Bearing.E)
+    .withLine   (Bearing.N,  Panel.WHITE) .withLine    (Bearing.E, Panel.WHITE)
+    .withCorner (Bearing.SW, Panel.BLACK)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;N_W</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+    .withBarcode(Barcode.Right)         .putBarcodeAt(Bearing.N)
+    .withWall   (Bearing.S)              .withWall    (Bearing.E)
+    .withLine   (Bearing.S,  Panel.WHITE) .withLine    (Bearing.E, Panel.WHITE)
+    .withCorner (Bearing.NW, Panel.BLACK)<br></i><div class="ObjectDetailsNotes"><table>
+	<tr>
+		<td valign="top">
+			<i>Notes: </i><span style="margin-left: .4cm;"> </span>
+		</td>
+		<td>
+			up-left, left-up
+		</td>
+	</tr>
+</table></div>
+</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;W_N</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()  
+    .withBarcode(Barcode.Left)          .putBarcodeAt(Bearing.W)
+    .withWall   (Bearing.S)              .withWall    (Bearing.E)
+    .withLine   (Bearing.S,  Panel.BLACK) .withLine    (Bearing.E, Panel.BLACK)
+    .withCorner (Bearing.NW, Panel.WHITE)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;NONE</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+          .withWall(Bearing.N)
+          .withWall(Bearing.E)
+          .withWall(Bearing.S)
+          .withWall(Bearing.W)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;N</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+          .withWall(Bearing.E)
+          .withWall(Bearing.S)
+          .withWall(Bearing.W)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;E</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+          .withWall(Bearing.N)
+          .withWall(Bearing.S)
+          .withWall(Bearing.W)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;S</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+          .withWall(Bearing.N)
+          .withWall(Bearing.E)
+          .withWall(Bearing.W)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;W</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+          .withWall(Bearing.N)
+          .withWall(Bearing.E)
+          .withWall(Bearing.S)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;E_S_W</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+          .withWall(Bearing.N)<br></i>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public static <a href="EA257.html">Panel</a></i><br /><strong>&nbsp;&nbsp;N_E_W</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> new Panel()
+          .withWall(Bearing.S)<br></i>&nbsp;</td>
+			</tr>
+		</table>
+</div>		<div class="ItemBody" id="AssociationsToTable">
+			<table border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="20%" class="TableHeading">Element</td>
+					<td width="25%" class="TableHeading">Source Role</td>
+					<td width="25%" class="TableHeading">Target Role</td>
+					<td width="30%" class="TableHeading">Details</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> N_S<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> S_N<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> W_E<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> E_W<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> N_E<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> E_N<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> S_E<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> E_S<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> S_W<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> W_S<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> N_W<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> W_N<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> NONE<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> N<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> E<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> S<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> W<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> E_S_W<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="20%" class="TableRow" valign="top">
+						<a href="EA257.html">Panel</a><br />
+						Class &nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> &nbsp;<br />
+						&nbsp;
+					</td>
+					<td width="20%" class="TableRow" valign="top">
+						<strong>Name:</strong> N_E_W<br />
+						&nbsp;	
+					</td>
+					<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+<div class="pageFooter"></div>
+ 
+</body>
+</html>

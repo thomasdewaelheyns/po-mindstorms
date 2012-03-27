@@ -1,0 +1,14 @@
+tocTab[tocTab.length] = new Array("2.12:1", "", "pacman", "EARoot/EA2/EA12/EA174.html", "3.png", "18", "0", "", "Logical diagram0","{3B9035E6-64BE-428a-88FD-DDBCB6E501E5}");
+tocTab[tocTab.length] = new Array("2.12:2", "", "DashboardReporter", "EARoot/EA2/EA12/EA176.html", "5.png", "176", "0", "", "Class0","{4722A123-3086-4649-BAE0-AA2452A54876}");
+tocTab[tocTab.length] = new Array("2.12:3", "", "GhostAction", "EARoot/EA2/EA12/EA177.html", "5.png", "177", "0", "", "Class0","{0338E775-3981-4b1e-954E-9AFB01F5560A}");
+tocTab[tocTab.length] = new Array("2.12:4", "", "GhostAgent", "EARoot/EA2/EA12/EA178.html", "5.png", "178", "0", "", "Class0","{2440B6C6-B7DB-4fac-AF02-EF8D9EB5BCC9}");
+tocTab[tocTab.length] = new Array("2.12:5", "", "GhostNavigator", "EARoot/EA2/EA12/EA179.html", "5.png", "179", "0", "", "Class0","{3E7DD744-07BD-4c87-873B-0AB286C6E84E}");
+tocTab[tocTab.length] = new Array("2.12:6", "", "«interface» GhostProtocolCommandHandler", "EARoot/EA2/EA12/EA180.html", "8.png", "180", "0", "", "Interface0","{B1C6C8A9-1C13-4acc-83DA-E7B0283327D0}");
+tocTab[tocTab.length] = new Array("2.12:7", "", "GhostProtocolHandler", "EARoot/EA2/EA12/EA181.html", "5.png", "181", "0", "", "Class0","{61D0C87A-D48F-4228-8443-3127D5D44914}");
+tocTab[tocTab.length] = new Array("2.12:8", "", "GhostProtocolModelCommandHandler", "EARoot/EA2/EA12/EA182.html", "5.png", "182", "0", "", "Class0","{E384B271-F4CA-41b8-A632-8C1BFACD4027}");
+tocTab[tocTab.length] = new Array("2.12:9", "", "GhostRobot", "EARoot/EA2/EA12/EA183.html", "5.png", "183", "0", "", "Class0","{0DB81F92-B1B6-4bd4-9937-D06F4C808798}");
+tocTab[tocTab.length] = new Array("2.12:10", "", "LeftFollowingGhostNavigator", "EARoot/EA2/EA12/EA184.html", "5.png", "184", "0", "", "Class0","{848814A7-636F-42e1-A827-2A30AA3BA43F}");
+tocTab[tocTab.length] = new Array("2.12:11", "", "OtherGhost", "EARoot/EA2/EA12/EA185.html", "5.png", "185", "0", "", "Class0","{1C9A53AE-4C89-49be-9137-30E7208DBC06}");
+tocTab[tocTab.length] = new Array("2.12:12", "", "PacmanAgent", "EARoot/EA2/EA12/EA186.html", "5.png", "186", "0", "", "Class0","{146F5652-82F7-496d-BC9D-83988E8E5E45}");
+tocTab[tocTab.length] = new Array("2.12:13", "", "PacmanRobot", "EARoot/EA2/EA12/EA187.html", "5.png", "187", "0", "", "Class0","{33992E9B-1F80-416c-BAEC-AB37C228C82D}");
+tocTab[tocTab.length] = new Array("2.12:14", "", "«interface» ProtocolHandler", "EARoot/EA2/EA12/EA188.html", "8.png", "188", "0", "", "Interface0","{3D56859A-2C91-4d08-BB4E-9F919E65E689}");

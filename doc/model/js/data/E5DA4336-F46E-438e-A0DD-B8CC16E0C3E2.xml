@@ -1,0 +1,7 @@
+tocTab[tocTab.length] = new Array("2.11:1", "", "navigatoractions", "EARoot/EA2/EA11/EA166.html", "3.png", "17", "0", "", "Logical diagram0","{CCF134B5-79C6-423a-B965-4CE1F9E9AA1A}");
+tocTab[tocTab.length] = new Array("2.11:2", "", "AllNavigatorActions", "EARoot/EA2/EA11/EA168.html", "5.png", "169", "0", "", "Class0","{BD5ED0EC-48F2-413f-A548-BBF1779EF8F1}");
+tocTab[tocTab.length] = new Array("2.11:3", "", "MoveSectorForwardNavigatorAction", "EARoot/EA2/EA11/EA169.html", "5.png", "170", "0", "", "Class0","{4D0330E0-6BC3-4460-8D0B-0D1BCF0537D4}");
+tocTab[tocTab.length] = new Array("2.11:4", "", "«interface» NavigatorAction", "EARoot/EA2/EA11/EA170.html", "8.png", "171", "0", "", "Interface0","{4ACDFE56-3D5C-4c9e-9D03-BBB2876FC071}");
+tocTab[tocTab.length] = new Array("2.11:5", "", "TurnLeftNavigatorAction", "EARoot/EA2/EA11/EA171.html", "5.png", "172", "0", "", "Class0","{FBB599A2-D93E-4096-A418-891AA4F60F73}");
+tocTab[tocTab.length] = new Array("2.11:6", "", "TurnRightNavigatorAction", "EARoot/EA2/EA11/EA172.html", "5.png", "173", "0", "", "Class0","{2B5DD4BD-1302-4e7f-8BF8-810EBAB1ACA1}");
+tocTab[tocTab.length] = new Array("2.11:7", "", "WaitNavigatorAction", "EARoot/EA2/EA11/EA173.html", "5.png", "174", "0", "", "Class0","{4E57DA6C-FCE6-43a6-B10C-451C7A385326}");

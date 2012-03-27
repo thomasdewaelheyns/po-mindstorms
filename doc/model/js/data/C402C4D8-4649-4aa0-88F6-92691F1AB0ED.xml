@@ -1,0 +1,7 @@
+tocTab[tocTab.length] = new Array("2.5:1", "", "driverevents", "EARoot/EA2/EA5/EA73.html", "3.png", "10", "0", "", "Logical diagram0","{90127E39-45C8-45a8-94F7-FE1AD33BFE42}");
+tocTab[tocTab.length] = new Array("2.5:2", "", "BarcodeEvent", "EARoot/EA2/EA5/EA75.html", "5.png", "89", "0", "", "Class0","{B41DC65D-F3AC-4ad2-A326-F76FCE792646}");
+tocTab[tocTab.length] = new Array("2.5:3", "", "BaseEvent", "EARoot/EA2/EA5/EA76.html", "5.png", "90", "0", "", "Class0","{D5D6CC6A-9AF2-467c-9F76-6C102BB58996}");
+tocTab[tocTab.length] = new Array("2.5:4", "", "«interface» DriverEvent", "EARoot/EA2/EA5/EA77.html", "8.png", "91", "0", "", "Interface0","{D6A997AE-80C4-448d-BDBE-A350FEF14A78}");
+tocTab[tocTab.length] = new Array("2.5:5", "", "LineEvent", "EARoot/EA2/EA5/EA78.html", "5.png", "92", "0", "", "Class0","{BCA7160B-0B8F-4e8c-AB1F-58A7C799E2A5}");
+tocTab[tocTab.length] = new Array("2.5:6", "", "ProximityCorrectionEvent", "EARoot/EA2/EA5/EA79.html", "5.png", "93", "0", "", "Class0","{0A25E024-A713-437c-99BB-BF6E33DD2A87}");
+tocTab[tocTab.length] = new Array("2.5:7", "", "ToCloseDriverEvent", "EARoot/EA2/EA5/EA80.html", "5.png", "94", "0", "", "Class0","{BBBA22C3-1259-4ecd-A27B-E615C98F3C65}");

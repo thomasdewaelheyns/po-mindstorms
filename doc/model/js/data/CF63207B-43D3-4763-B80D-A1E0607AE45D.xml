@@ -1,0 +1,4 @@
+tocTab[tocTab.length] = new Array("2.2:1", "", "barcode", "EARoot/EA2/EA2/EA45.html", "3.png", "7", "0", "", "Logical diagram0","{83EFB3D2-5936-4883-81F2-80DAD11FA62C}");
+tocTab[tocTab.length] = new Array("2.2:2", "", "BarcodeBlackBlack", "EARoot/EA2/EA2/EA47.html", "5.png", "67", "0", "", "Class0","{0E94253B-BC8E-414f-8D54-0C92690AAA73}");
+tocTab[tocTab.length] = new Array("2.2:3", "", "«interface» BarcodeCorrector", "EARoot/EA2/EA2/EA48.html", "8.png", "68", "0", "", "Interface0","{0276EAB3-4B97-471a-B136-AB7C92AAB56B}");
+tocTab[tocTab.length] = new Array("2.2:4", "", "BarcodeTranslator", "EARoot/EA2/EA2/EA49.html", "5.png", "69", "0", "", "Class0","{69489EE9-CFC1-4085-BE2C-D0767E3408C1}");
