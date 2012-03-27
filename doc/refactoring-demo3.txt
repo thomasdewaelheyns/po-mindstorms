@@ -1,0 +1,104 @@
+Algemeen
+--------
+
+- Argumenten aan constructoren moeten vermeden worden voor het leggen van
+  associaties naar andere objecten. Dit moet via setters gebeuren. (Uniforme
+  manier van het opbouwen van een object). Als dit toch te zwaar is, moet er
+  een Factory gemaakt worden, die de samenstelling van het object verpakt
+  achter een statische method met argumenten.
+
+- ALLE methoden op ALL klassen moeten overlopen worden en nagekeken worden of
+  ze voldoende gebruikt worden en of ze niet beter een combinatie van methoden
+  kunnen vervangen worden. (Doel is om minder en duidelijkere interfaces te
+  hebben).
+
+- Evidente methoden moeten toegevoegd worden, zodat lange paden onnodig zijn.
+  Bvb: robot.getModel().getGridPart().getAgent().getName() zou niet gebruikt
+  mogen worden, er moet een robot.getName() zijn die dat doet (dit is al, maar
+  het wordt 1) niet gebruikt, 2) er zijn veel voorbeelden zo.
+
+- Alle (zoveel mogelijk) klassen moeten een toString() methode krijgen die hun
+  volledige staat weergeeft. Dit helpt bij het schrijven van tests.
+
+Grid
+----
+
+- NullGrid heeft reference naar Grid voor zijn Singleton, dat moet niet en kan
+  gewoon naar zichzelf zijn.
+
+- AggregatedGrid zou geen subclass van SimpleGrid mogen zijn, maar een
+  subclass van een gemeenschappelijke base class GridSkeleton.
+
+- Waarschijnlijk kan ook NullGrid een subclass worden van deze GridSkeleton.
+
+- AggregatedSubGrid ?
+
+- Voor Grid en Sector zouden TransformedGrid/Sector moeten bestaan met een
+  referentie naar de eigenlijke Grid/Sector en transformaties in de
+  accessormethoden.
+
+  ---> Dit betekent dat er 5 Grids moeten opgeslagen kunnen worden:
+       1 voor de eigen robot, 3 voor de overige robots en 1 voor de Aggregated
+       Doel moet zijn dat we 5 x 50 = 250 Sectoren moeten kunnen opslaan.
+       
+- Onder Agent moet een AgentSkeleton komen met gemeenschappelijke code van de
+  bestaande implementaties (StaticTarget en MovingAgent). Vooral de associatie
+  naar de Sector moet hier naar verplaatst worden.
+
+- De referentie van Sector naar Agent is wel weg, maar eigenlijk zou zelfs de
+  getter Sector.getAgent() weg moeten, zodat een Sector totaal los staat van
+  een Agent. Het is de Grid die zowel iets weet over een Sector als een Agent.
+  Eigenlijk zou zelf de associatie van Agent naar Sector weg mogen en zou dit
+  volledig binnen Grid beheerd moeten worden op een generieke manier. Het is
+  Grid die het geheel van Sectoren en eventuele Agents op de Grid beheert. De
+  referentie naar Grid vanuit Sector zou eigenlijk ook weg moeten kunnen. De
+  Sectoren zouden louter weet mogen hebben van zichzelf en hun onderlinge
+  verbindingen. Sector.putOnGrid() moet dan ook weg en moet vervangen worden
+  door een operatie Grid.add(Sector). Het is verkeerd om aan een "leaf" te
+  vragen om zich aan een "tree" te hangen. Sector.put(Agent) moet dan naar
+  Grid.put(Agent, Sector).
+
+- GridView moet ook voorzien worden van een GridViewSkeleton, waar op zijn
+  minst de associatie naar Grid voorzien wordt voor alle subclasses.
+
+  ---> verder zou ik hier niet te veel tijd in steken, het werkt en vraagt nog  
+       weinig echte aanpassingen en moet ook niet echt geunit-test worden.
+       
+- Alle optimalisaties op GridView genre "needsrefresh", mogen weg. die mogen
+  gerust alles van het Grid terug ondervragen en opnieuw opbouwen telkens
+  weer, het wordt toch alleen maar op de PC gedaan en die lacht met de kleine
+  hoeveelheid. Op die manier moet Grid weer helemaal niets meer weten over
+  GridViews en er niets voor doen.
+
+- Associatie van Grid naar GridView moet omgekeerd worden. Grid moet niets
+  weten van het feit dat dit "geviewd" kan worden. Zaken als
+  barcodesNeedRefresh enz moeten ook weg of op zijn minst vervangen worden
+  door functionele namen als barcodesHaveChanged.
+
+- Grid.getAgents() en Grid.getSectors() zouden beter geimplementeerd worden
+  met een iterator-stijl, zodat er geen extra dynamische lijst moet gemaakt
+  worden. Deze kunnen hergebruikt worden om over deze lijsten te loopen en
+  kunnen mogelijk de lijsten met referenties vermijden.
+
+- Aangezien Tags (lees Barcodes) slechts beperkt zijn in hoeveelheid, kunnen
+  we overwegen om deze op te nemen als een nieuw soort Agent (BarcodeAgent).
+  Grid werkt dan alleen maar met sectoren en agents (van een bepaald type).
+
+- Agent moet een deactivate() methode bijkrijgen
+
+- Copy constructors toevoegen: new Sector(Sector) !!!
+
+- Sector zou eigenlijk zelfs geen coordinaten moeten hebben. dit is volledig
+  afhankelijk van de Grid. Grid zou zelfs lege/unknown Sectoren kunnen
+  aanmaken om een Sector toe te voegen wanneer deze niet "connected" is. Het
+  pad van de root sector (door Grid beschouwd als 0,0) naar de nieuwe sector
+  moet bestaan in Manhattan style. Op die manier zijn alle Sectoren steeds
+  verbonden en kan er door "gelopen" worden. De maximale loop om een Sector te
+  vinden is dan de som van de breedte en de hoogte.
+
+- Sector moet instaan voor zijn eigen rotatie: van muren en neighbours
+
+Testing
+-------
+
+zie vb: GridTest.java en SectorTest.java
