@@ -52,4 +52,8 @@ public enum Rotation {
     }
     return NONE;
   }
+  
+  public Rotation invert() {
+    return this.get(this.rotation * -1);
+  }
 }

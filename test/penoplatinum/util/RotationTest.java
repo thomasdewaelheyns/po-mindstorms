@@ -228,4 +228,18 @@ public class RotationTest extends TestCase {
     assertEquals("NONE is minimum of L360",  Rotation.NONE, Rotation.L360.min());
   }
 
+  public void testRotationInversion() {
+    assertEquals("NONE inverted = NONE", Rotation.NONE, Rotation.NONE.invert() );
+
+    assertEquals("L90 inverted = R90",   Rotation.R90,  Rotation.L90.invert() );
+    assertEquals("L180 inverted = R180", Rotation.R180, Rotation.L180.invert() );
+    assertEquals("L270 inverted = R270", Rotation.R270, Rotation.L270.invert() );
+    assertEquals("L360 inverted = NONE", Rotation.NONE, Rotation.L360.invert() );
+
+    assertEquals("R90 inverted = L90",   Rotation.L90,  Rotation.R90.invert() );
+    assertEquals("R180 inverted = L180", Rotation.L180, Rotation.R180.invert() );
+    assertEquals("R270 inverted = L270", Rotation.L270, Rotation.R270.invert() );
+    assertEquals("R360 inverted = NONE", Rotation.NONE, Rotation.R360.invert() );
+  }
+
 }
