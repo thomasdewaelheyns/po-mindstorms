@@ -12,27 +12,31 @@ package penoplatinum.grid;
 
 import penoplatinum.BitwiseOperations;
 
-import penoplatinum.simulator.Bearing;
-import penoplatinum.simulator.Rotation;
+import penoplatinum.util.Bearing;
+import penoplatinum.util.Rotation;
 
 
 public class Sector {
   // back-link to the Grid we live in
+  private Grid grid;
 
-  private Grid grid = NullGrid.getInstance();
   // links to the adjacent Sectors
   private Sector[] neighbours = new Sector[4];
+
   // position within Grid
   private int left, top;
+
   // walls and the certainty about them
   private char walls = 0;
   private char certainty = 0;
-  // the value associated with this sector
-  private int value = 0;
-  private int tagCode = -1;
-  private int tagBearing;
 
-  private int rotation = Rotation.NONE;
+  // the value associated with this sector
+  private int     value = 0;
+  private int     tagCode = -1;
+  private Bearing tagBearing;
+
+  // our own rotation
+  private Rotation rotation = Rotation.NONE;
 
   public Sector() {
     this.putOn(NullGrid.getInstance());
@@ -43,21 +47,23 @@ public class Sector {
   }
   
   // copy constructor
+  // TODO: copy ALL information
   public Sector(Sector original) {
+    this();
     this.addWalls(original.getWalls());
   }
   
-  public Sector rotate(int angle) {
-    this.rotation = ( this.rotation + angle ) % 4;
+  public Sector rotate(Rotation rotation) {
+    this.rotation = this.rotation.add(rotation);
     return this;
   }
 
   public String toString() {
     return "(" + getLeft() + "," + getTop() + ")"
-            + " N : " + (this.isKnown(Bearing.N) ? (this.hasWall(Bearing.N) ? "Y" : " ") : "?") + "\n"
-            + " E : " + (this.isKnown(Bearing.E) ? (this.hasWall(Bearing.E) ? "Y" : " ") : "?") + "\n"
-            + " S : " + (this.isKnown(Bearing.S) ? (this.hasWall(Bearing.S) ? "Y" : " ") : "?") + "\n"
-            + " W : " + (this.isKnown(Bearing.W) ? (this.hasWall(Bearing.W) ? "Y" : " ") : "?") + "\n";
+            + "N" + (this.isKnown(Bearing.N) ? (this.hasWall(Bearing.N) ? "Y" : " ") : "?")
+            + "E" + (this.isKnown(Bearing.E) ? (this.hasWall(Bearing.E) ? "Y" : " ") : "?")
+            + "S" + (this.isKnown(Bearing.S) ? (this.hasWall(Bearing.S) ? "Y" : " ") : "?")
+            + "W" + (this.isKnown(Bearing.W) ? (this.hasWall(Bearing.W) ? "Y" : " ") : "?");
   }
 
   // sets the absolute coordinates in the Grid this Sector is placed in
@@ -77,10 +83,6 @@ public class Sector {
 
   public Sector putOn(Grid grid) {
     this.grid = grid;
-//    // if we have an agent, we notify this to our (new) grid
-//    if (this.hasAgent()) {
-//      this.grid.addAgent(this.getAgent());
-//    }
     return this;
   }
 
@@ -89,33 +91,36 @@ public class Sector {
   }
 
   // adds a neighbour at a given location
-  public Sector addNeighbour(Sector neighbour, int atLocation) {
-    this.neighbours[atLocation] = neighbour;
-    this.exchangeWallInfo(atLocation);
+  public Sector addNeighbour(Sector neighbour, Bearing atBearing) {
+    this.neighbours[this.mapBearing(atBearing)] = neighbour;
+    this.exchangeWallInfo(atBearing);
     return this;
+  }
+  
+  private int mapBearing(Bearing bearing) {
+    // map bearing to our index (don't reuse internal Bearing representation)
+    int index = 0; // default N = 0
+    switch(bearing) {
+      case E: index = 1; break;
+      case S: index = 2; break;
+      case W: index = 3; break;
+    }
+    return index;
   }
 
   // WATCH OUT: this method returns the new neighbour, not itself
-  public Sector createNeighbour(int atLocation) {
+  public Sector createNeighbour(Bearing atBearing) {
     // if we already have a neighbour at this location, return it
-    if (this.hasNeighbour(atLocation)) {
-      return this.getNeighbour(atLocation);
+    if (this.hasNeighbour(atBearing)) {
+      return this.getNeighbour(atBearing);
     }
     // create empty sector and assign it coordinates relative to ours
     int left = this.getLeft(), top = this.getTop();
-    switch (atLocation) {
-      case Bearing.N:
-        top--;
-        break;
-      case Bearing.E:
-        left++;
-        break;
-      case Bearing.S:
-        top++;
-        break;
-      case Bearing.W:
-        left--;
-        break;
+    switch (atBearing) {
+      case N: top--;  break;
+      case E: left++; break;
+      case S: top++;  break;
+      case W: left--; break;
     }
     Sector neighbour = new Sector().setCoordinates(left, top);
     // add it to the grid, it will be connected to us and all other relevant
@@ -124,14 +129,14 @@ public class Sector {
     return neighbour;
   }
 
-  private Sector exchangeWallInfo(int atLocation) {
-    Sector neighbour = this.neighbours[atLocation];
-    if (neighbour == null) {
+  private Sector exchangeWallInfo(Bearing atBearing) {
+    Sector neighbour = this.getNeighbour(atBearing);
+    if(neighbour == null || neighbour == this) {
       return this;
     }
 
-    int locationAtNeighbour = Bearing.reverse(atLocation);
-    Boolean iHaveWall = this.hasWall(atLocation);
+    Bearing locationAtNeighbour = atBearing.reverse();
+    Boolean iHaveWall = this.hasWall(atBearing);
     Boolean neighbourHasWall = neighbour.hasWall(locationAtNeighbour);
 
     // if we have different information, we need to update it
@@ -144,40 +149,41 @@ public class Sector {
         }
       } else if (iHaveWall == null) {   // null != T/F
         if (neighbourHasWall) {
-          this.inheritWall(atLocation);
+          this.inheritWall(atBearing);
         } else {
-          this.inheritNoWall(atLocation);
+          this.inheritNoWall(atBearing);
         }
       } else {                           // T/F != F/T
         // conflicting information => clear both, go back to unknown state
-        System.err.println("Conflicting Wall information: " + this.getLeft() + "," + this.getTop() + " / " + atLocation);
-        this.clearWall(atLocation);
+        System.err.println("Conflicting Wall information: " + this.getLeft() + "," + this.getTop() + " / " + atBearing);
+        this.clearWall(atBearing);
         neighbour.clearWall(locationAtNeighbour);
       }
     }
     return this;
   }
 
-  public boolean hasNeighbour(int atLocation) {
-    return this.getNeighbour(atLocation) != null;
+  public boolean hasNeighbour(Bearing atBearing) {
+    return this.getNeighbour(atBearing) != null;
   }
 
   // returns the neighbour at a given location
-  public Sector getNeighbour(int atLocation) {
-    if (atLocation == Bearing.NONE) {
+  public Sector getNeighbour(Bearing atBearing) {
+    if(atBearing == Bearing.UNKNOWN) {
       return this;
     }
-    return this.neighbours[atLocation];
+    return this.neighbours[this.mapBearing(atBearing)];
   }
 
   // keeps track of an agent occupying this sector
-  public Sector put(Agent agent, int bearing) {
+  public Sector put(Agent agent, Bearing bearing) {
     // reset the value to zero, because an agent has its own value
     this.setValue(0);
     // now add the agent
-    agent.assignSector(this, bearing);
-    this.grid.addAgent(agent);
-    return this;
+    throw new RuntimeException( "Commented out code, needs to be fixed." );
+    // agent.assignSector(this, bearing);
+    // this.grid.addAgent(agent);
+    // return this;
   }
 
   public boolean hasAgent() {
@@ -206,11 +212,11 @@ public class Sector {
     return hasAgent() ? getAgent().getValue() : this.value;
   }
 
-  public int getTagBearing() {
-    return tagBearing;
+  public Bearing getTagBearing() {
+    return this.tagBearing;
   }
 
-  public void setTagBearing(int tagBearing) {
+  public void setTagBearing(Bearing tagBearing) {
     this.tagBearing = tagBearing;
     grid.barcodesNeedRefresh();
   }
@@ -226,34 +232,34 @@ public class Sector {
   }
 
   // adds a wall on this sector at given location
-  public Sector addWall(int atLocation) {
-    this.inheritWall(atLocation);
+  public Sector addWall(Bearing atBearing) {
+    this.inheritWall(atBearing);
     // also set the wall at our neighbour's
-    if (this.hasNeighbour(atLocation)) {
-      this.getNeighbour(atLocation).inheritWall(Bearing.reverse(atLocation));
+    if (this.hasNeighbour(atBearing)) {
+      this.getNeighbour(atBearing).inheritWall(atBearing.reverse());
     }
     this.grid.wallsNeedRefresh();
     return this;
   }
 
-  protected void inheritWall(int atLocation) {
-    this.withWall(atLocation);
+  protected void inheritWall(Bearing atBearing) {
+    this.withWall(atBearing);
     this.grid.wallsNeedRefresh();
   }
 
   // removes a wall from this sector at given location
-  public Sector removeWall(int atLocation) {
-    this.inheritNoWall(atLocation);
+  public Sector removeWall(Bearing atBearing) {
+    this.inheritNoWall(atBearing);
     // also remove the wall at our neighbour's
-    if (this.hasNeighbour(atLocation)) {
-      this.getNeighbour(atLocation).inheritNoWall(Bearing.reverse(atLocation));
+    if (this.hasNeighbour(atBearing)) {
+      this.getNeighbour(atBearing).inheritNoWall(atBearing.reverse());
     }
     this.grid.wallsNeedRefresh();
     return this;
   }
 
-  protected void inheritNoWall(int atLocation) {
-    this.withoutWall(atLocation);
+  protected void inheritNoWall(Bearing atBearing) {
+    this.withoutWall(atBearing);
     this.grid.wallsNeedRefresh();
   }
 
@@ -268,14 +274,14 @@ public class Sector {
   }
 
   protected void updateNeighboursWalls() {
-    for (int atLocation = Bearing.N; atLocation <= Bearing.W; atLocation++) {
-      Sector neighbour = this.getNeighbour(atLocation);
-      Boolean haveWall = this.hasWall(atLocation);
+    for( Bearing atBearing : Bearing.values() ) {
+      Sector neighbour = this.getNeighbour(atBearing);
+      Boolean haveWall = this.hasWall(atBearing);
       if (neighbour != null && haveWall != null) {
         if (haveWall) {
-          neighbour.inheritWall(Bearing.reverse(atLocation));
+          neighbour.inheritWall(atBearing.reverse());
         } else {
-          neighbour.inheritNoWall(Bearing.reverse(atLocation));
+          neighbour.inheritNoWall(atBearing.reverse());
         }
       }
     }
@@ -283,25 +289,24 @@ public class Sector {
 
   // we use the Boolean class here to be able to return "null" when we don't
   // know anything about the wall.
-  public Boolean hasWall(int wall) {
+  public Boolean hasWall(Bearing wall) {
     return this.knowsWall(wall) ? this.hasRawWall(wall) : null;
   }
   
-  public void setWall(int wall, Boolean value) {
+  public void setWall(Bearing wall, Boolean value) {
     if (value == null) {
-      clearWall(wall);
+      this.clearWall(wall);
     } else if (value) {
-      addWall(wall);
+      this.addWall(wall);
     } else {
-      removeWall(wall);
+      this.removeWall(wall);
     }
   }
 
   // returns true if there is NO wall and we absolutely can move forward
   // that way
-  public boolean givesAccessTo(int location) {
-    return this.knowsWall(location)
-            && !this.hasRawWall(location);
+  public boolean givesAccessTo(Bearing atBearing) {
+    return this.knowsWall(atBearing) && !this.hasRawWall(atBearing);
   }
 
   // returns all wall configuration
@@ -316,9 +321,10 @@ public class Sector {
   }
 
   // clears all knowledge about a wall
-  public Sector clearWall(int atLocation) {
-    this.walls = (char) BitwiseOperations.unsetBit(this.walls, atLocation);
-    this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, atLocation);
+  public Sector clearWall(Bearing atBearing) {
+    int bit = this.mapBearing(atBearing);
+    this.walls     = (char) BitwiseOperations.unsetBit(this.walls,     bit);
+    this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, bit);
     return this;
   }
 
@@ -335,65 +341,54 @@ public class Sector {
   }
 
   // determines if the wall at given location is known (to be there or not)
-  public boolean isKnown(int atLocation) {
-    return this.knowsWall(atLocation);
+  public boolean isKnown(Bearing atBearing) {
+    return this.knowsWall(atBearing);
   }
 
   public boolean isFullyKnown() {
     return this.getCertainty() == 15;
   }
 
-  private void withWall(int location) {
-    this.walls = (char) BitwiseOperations.setBit(this.walls, location);
-    this.certainty = (char) BitwiseOperations.setBit(this.certainty, location);
+  private void withWall(Bearing atBearing) {
+    int bit = this.mapBearing(atBearing);
+    this.walls     = (char) BitwiseOperations.setBit(this.walls,     bit);
+    this.certainty = (char) BitwiseOperations.setBit(this.certainty, bit);
   }
 
   public void withWalls(char walls) {
-    this.walls = walls;
+    this.walls     = walls;
     this.certainty = 15;
   }
 
-  public void withoutWall(int location) {
-    this.walls = (char) BitwiseOperations.unsetBit(this.walls, location);
-    this.certainty = (char) BitwiseOperations.setBit(this.certainty, location);
+  public void withoutWall(Bearing atBearing) {
+    int bit = this.mapBearing(atBearing);
+    this.walls     = (char) BitwiseOperations.unsetBit(this.walls,     bit);
+    this.certainty = (char) BitwiseOperations.setBit  (this.certainty, bit);
   }
 
-  public void dontKnow(int location) {
-    this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, location);
+  public void dontKnow(Bearing atBearing) {
+    int bit = this.mapBearing(atBearing);
+    this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, bit);
   }
 
-  public boolean hasRawWall(int location) {
-    location = this.applyRotation(location);
-    return BitwiseOperations.hasBit(this.walls, location);
+  public boolean hasRawWall(Bearing atBearing) {
+    int bit = this.mapBearing(this.applyRotation(atBearing));
+    return BitwiseOperations.hasBit(this.walls, bit);
   }
 
-  public boolean knowsWall(int location) {
-    location = this.applyRotation(location);
-    return BitwiseOperations.hasBit(this.certainty, location);
+  public boolean knowsWall(Bearing atBearing) {
+    int bit = this.mapBearing(this.applyRotation(atBearing));
+    return BitwiseOperations.hasBit(this.certainty, bit);
   }
-
-  // public String toString() {
-  //   String bits = "";
-  //   for( int i=0; i<8; i++ ) {
-  //     bits += this.hasBit(this.walls,i) ? "1" : "0";
-  //   }
-  //   bits += "/";
-  //   for( int i=0; i<8; i++ ) {
-  //     bits += this.hasBit(this.certainty,i) ? "1" : "0";
-  //   }
-  //   return bits;
-  // }
-
-  /* elementary bitwise operations */
-  // sets one bit at position to 1
-  void disengage() {
-    for (int i = 0; i < 4; i++) {
-      neighbours[i] = null;
+  
+  private void disengage() {
+    for(int i = 0; i < 4; i++) {
+      this.neighbours[i] = null;
     }
     grid = null;
   }
   
-  private int applyRotation(int wall) {
-    return ((wall - this.rotation) + 4 ) % 4;
+  private Bearing applyRotation(Bearing bearing) {
+    return  bearing.rotate(this.rotation.invert());
   }
 }

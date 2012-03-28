@@ -1,6 +1,6 @@
 TARGETS=penoplatinum/util/RotationTest.test \
-		penoplatinum/util/BearingTest.test
-#		penoplatinum/grid/SectorTest.test
+		penoplatinum/util/BearingTest.test \
+		penoplatinum/grid/SectorTest.test
 BUILD=build
 
 JUNIT_JAR=../lib/junit-4.10.jar

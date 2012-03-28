@@ -1,9 +1,17 @@
 package penoplatinum.grid;
 
+/**
+ * SectorTest
+ * 
+ * Tests Sector class.
+ * 
+ * @author: Team Platinum
+ */
+
 import junit.framework.*; 
 
-import penoplatinum.simulator.Bearing;
-import penoplatinum.simulator.Rotation;
+import penoplatinum.util.Bearing;
+import penoplatinum.util.Rotation;
 
 
 public class SectorTest extends TestCase {
@@ -74,25 +82,25 @@ public class SectorTest extends TestCase {
     Sector original = this.createSectorWithWallsNW();
 
     // start with one rotation by 90 degrees
-    Sector sector90 = new Sector(original).rotate(90);  
+    Sector sector90 = new Sector(original).rotate(Rotation.R90);  
 
-    Sector sector180 = new Sector(original).rotate(180);
+    Sector sector180 = new Sector(original).rotate(Rotation.R180);
     // rotate further to 180 degrees
-    sector90.rotate(90);
+    sector90.rotate(Rotation.R90);
 
     assertEquals( "two rotations of 90 degrees doesn't match 180 degrees",
                   sector90.toString(), sector180.toString() );
 
-    Sector sector270 = new Sector(original).rotate(270);
+    Sector sector270 = new Sector(original).rotate(Rotation.R270);
     // rotate further to 270 degrees
-    sector90.rotate(90);
+    sector90.rotate(Rotation.R90);
 
     assertEquals( "three rotations of 90 degrees doesn't match 270 degrees",
                   sector90.toString(), sector270.toString() );
 
-    Sector sector360 = new Sector(original).rotate(360);
+    Sector sector360 = new Sector(original).rotate(Rotation.R360);
     // rotate further to 360 degrees
-    sector90.rotate(90);
+    sector90.rotate(Rotation.R90);
 
     assertEquals( "four rotations of 90 degrees doesn't match 360 degrees",
                   sector90.toString(), sector360.toString() );
