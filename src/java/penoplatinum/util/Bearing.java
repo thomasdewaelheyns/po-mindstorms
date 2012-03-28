@@ -90,45 +90,12 @@ public enum Bearing {
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !! No longer in use in the current codebase (Yeah!)
 
-  // bearings are N-based, this method allows to transform such a bearing
-  // to a bearing, based on a different origin
-  public static int withOrigin(int bearing, int origin) {
-    int newBearing = bearing;
-    switch(origin) {
-      case(Bearing.E): newBearing += 1; break;
-      case(Bearing.S): newBearing += 2; break;
-      case(Bearing.W): newBearing -= 1; break;
-    }
-    return (newBearing + 4) % 4;
-  }
+  public static int withOrigin(int bearing, int origin);
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  !! Should be implemented on Point -> Should maybe be a Position class ?!!
+  !! Is now implemented on Point
 
-  public static Point mapToNorth(int rotation, int x, int y) {
-    int newX, newY;
-    switch (rotation) {
-      case Bearing.N:
-        newX = x;
-        newY = y;
-        break;
-      case Bearing.E:
-        newX = y;
-        newY = -x;
-        break;
-      case Bearing.S:
-        newX = -x;
-        newY = -y;
-        break;
-      case Bearing.W:
-        newX = -y;
-        newY = x;
-        break;
-      default:
-        throw new RuntimeException("NOO!");
-    }
-    return new Point(newX, newY);
-  }
+  public static Point mapToNorth(int rotation, int x, int y);
   
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !! Should be implemented on a Position class as Position.moveTo(Bearing)
