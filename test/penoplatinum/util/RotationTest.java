@@ -1,7 +1,7 @@
 package penoplatinum.util;
 
 /**
- * UtilTest
+ * RotationTest
  * 
  * Tests Rotation enumeration
  * 
