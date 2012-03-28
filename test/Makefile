@@ -1,4 +1,5 @@
-TARGETS=penoplatinum/grid/SectorTest.test
+#TARGETS=penoplatinum/grid/SectorTest.test
+TARGETS=penoplatinum/util/RotationTest.test
 BUILD=build
 
 JUNIT_JAR=../lib/junit-4.10.jar
