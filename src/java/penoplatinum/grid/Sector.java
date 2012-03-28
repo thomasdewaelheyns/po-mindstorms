@@ -1,7 +1,5 @@
 package penoplatinum.grid;
 
-import penoplatinum.BitwiseOperations;
-
 /**
  * Sector
  * 
@@ -11,12 +9,17 @@ import penoplatinum.BitwiseOperations;
  * 
  * @author: Team Platinum
  */
+
+import penoplatinum.BitwiseOperations;
+
 import penoplatinum.simulator.Bearing;
+import penoplatinum.simulator.Rotation;
+
 
 public class Sector {
   // back-link to the Grid we live in
 
-  private Grid grid;
+  private Grid grid = NullGrid.getInstance();
   // links to the adjacent Sectors
   private Sector[] neighbours = new Sector[4];
   // position within Grid
@@ -29,12 +32,24 @@ public class Sector {
   private int tagCode = -1;
   private int tagBearing;
 
+  private int rotation = Rotation.NONE;
+
   public Sector() {
     this.putOn(NullGrid.getInstance());
   }
 
   public Sector(Grid grid) {
     this.putOn(grid);
+  }
+  
+  // copy constructor
+  public Sector(Sector original) {
+    this.addWalls(original.getWalls());
+  }
+  
+  public Sector rotate(int angle) {
+    this.rotation = ( this.rotation + angle ) % 4;
+    return this;
   }
 
   public String toString() {
@@ -271,7 +286,7 @@ public class Sector {
   public Boolean hasWall(int wall) {
     return this.knowsWall(wall) ? this.hasRawWall(wall) : null;
   }
-
+  
   public void setWall(int wall, Boolean value) {
     if (value == null) {
       clearWall(wall);
@@ -348,10 +363,12 @@ public class Sector {
   }
 
   public boolean hasRawWall(int location) {
+    location = this.applyRotation(location);
     return BitwiseOperations.hasBit(this.walls, location);
   }
 
   public boolean knowsWall(int location) {
+    location = this.applyRotation(location);
     return BitwiseOperations.hasBit(this.certainty, location);
   }
 
@@ -374,5 +391,9 @@ public class Sector {
       neighbours[i] = null;
     }
     grid = null;
+  }
+  
+  private int applyRotation(int wall) {
+    return ((wall - this.rotation) + 4 ) % 4;
   }
 }

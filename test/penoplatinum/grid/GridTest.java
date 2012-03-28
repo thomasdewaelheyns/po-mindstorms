@@ -7,7 +7,11 @@ import penoplatinum.util.Point;
 import penoplatinum.grid.Grid;
 
 
-public class testGrid() {
+public class GridTest extends TestCase {
+
+  public GridTest(String name) { 
+    super(name);
+  }
 
   @Test
   public void testImportOfIdenticalRotatedGridDoesntChangeOriginalGrid() {
