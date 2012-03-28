@@ -73,6 +73,17 @@ public enum Bearing {
     return this == N || this == S ? E : S;
   }
 
+  // applies a rotation and returns the new Bearing
+  public Bearing rotate(Rotation rotation) {
+    switch(rotation.min()) {
+      case L90:  return this.leftFrom();
+      case R90:  return this.rightFrom();
+      case L180: 
+      case R180: return this.reverse();
+    }
+    return this; // matches NONE
+  }
+
 }
 
 /*

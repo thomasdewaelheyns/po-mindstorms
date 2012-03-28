@@ -64,4 +64,50 @@ public class BearingTest extends TestCase {
     assertEquals("Right neighbour of S should be E", Bearing.E, Bearing.S.getRightNeighbour());
     assertEquals("Right neighbour of W should be S", Bearing.S, Bearing.W.getRightNeighbour());
   }
+  
+  public void testRotation() {
+    assertEquals("N + NONE = N", Bearing.N, Bearing.N.rotate(Rotation.NONE) );
+    assertEquals("N + L90  = W", Bearing.W, Bearing.N.rotate(Rotation.L90 ) );
+    assertEquals("N + L180 = S", Bearing.S, Bearing.N.rotate(Rotation.L180) );
+    assertEquals("N + L270 = E", Bearing.E, Bearing.N.rotate(Rotation.L270) );
+    assertEquals("N + L360 = N", Bearing.N, Bearing.N.rotate(Rotation.L360) );
+
+    assertEquals("N + R90  = E", Bearing.E, Bearing.N.rotate(Rotation.R90 ) );
+    assertEquals("N + R180 = S", Bearing.S, Bearing.N.rotate(Rotation.R180) );
+    assertEquals("N + R270 = W", Bearing.W, Bearing.N.rotate(Rotation.R270) );
+    assertEquals("N + R360 = N", Bearing.N, Bearing.N.rotate(Rotation.R360) );
+
+    assertEquals("E + NONE = E", Bearing.E, Bearing.E.rotate(Rotation.NONE) );
+    assertEquals("E + L90  = N", Bearing.N, Bearing.E.rotate(Rotation.L90 ) );
+    assertEquals("E + L180 = W", Bearing.W, Bearing.E.rotate(Rotation.L180) );
+    assertEquals("E + L270 = S", Bearing.S, Bearing.E.rotate(Rotation.L270) );
+    assertEquals("E + L360 = E", Bearing.E, Bearing.E.rotate(Rotation.L360) );
+
+    assertEquals("E + R90  = S", Bearing.S, Bearing.E.rotate(Rotation.R90 ) );
+    assertEquals("E + R180 = W", Bearing.W, Bearing.E.rotate(Rotation.R180) );
+    assertEquals("E + R270 = N", Bearing.N, Bearing.E.rotate(Rotation.R270) );
+    assertEquals("E + R360 = E", Bearing.E, Bearing.E.rotate(Rotation.R360) );
+
+    assertEquals("S + NONE = S", Bearing.S, Bearing.S.rotate(Rotation.NONE) );
+    assertEquals("S + L90  = E", Bearing.E, Bearing.S.rotate(Rotation.L90 ) );
+    assertEquals("S + L180 = N", Bearing.N, Bearing.S.rotate(Rotation.L180) );
+    assertEquals("S + L270 = W", Bearing.W, Bearing.S.rotate(Rotation.L270) );
+    assertEquals("S + L360 = S", Bearing.S, Bearing.S.rotate(Rotation.L360) );
+
+    assertEquals("S + R90  = W", Bearing.W, Bearing.S.rotate(Rotation.R90 ) );
+    assertEquals("S + R180 = N", Bearing.N, Bearing.S.rotate(Rotation.R180) );
+    assertEquals("S + R270 = E", Bearing.E, Bearing.S.rotate(Rotation.R270) );
+    assertEquals("S + R360 = S", Bearing.S, Bearing.S.rotate(Rotation.R360) );
+
+    assertEquals("W + NONE = W", Bearing.W, Bearing.W.rotate(Rotation.NONE) );
+    assertEquals("W + L90  = S", Bearing.S, Bearing.W.rotate(Rotation.L90 ) );
+    assertEquals("W + L180 = E", Bearing.E, Bearing.W.rotate(Rotation.L180) );
+    assertEquals("W + L270 = N", Bearing.N, Bearing.W.rotate(Rotation.L270) );
+    assertEquals("W + L360 = W", Bearing.W, Bearing.W.rotate(Rotation.L360) );
+
+    assertEquals("W + R90  = N", Bearing.N, Bearing.W.rotate(Rotation.R90 ) );
+    assertEquals("W + R180 = E", Bearing.E, Bearing.W.rotate(Rotation.R180) );
+    assertEquals("W + R270 = S", Bearing.S, Bearing.W.rotate(Rotation.R270) );
+    assertEquals("W + R360 = W", Bearing.W, Bearing.W.rotate(Rotation.R360) );
+  }
 }
