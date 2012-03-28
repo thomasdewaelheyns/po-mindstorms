@@ -40,4 +40,16 @@ public enum Rotation {
   public Rotation add(Rotation rotation) {
     return this.get((this.rotation + rotation.getValue()) % 4);
   }
+
+  public Rotation min() {
+    switch(this.rotation) {
+      case -1: return L90;
+      case -2: return L180;
+      case -3: return R90;
+      case  1: return R90;
+      case  2: return R180;
+      case  3: return L90;
+    }
+    return NONE;
+  }
 }

@@ -217,4 +217,15 @@ public class RotationTest extends TestCase {
                  Rotation.NONE, rotation.add(Rotation.R360) );
   }
 
+  public void testRotationMinimum() {
+    assertEquals("L90 is minimum of L90",    Rotation.L90,  Rotation.L90.min());
+    assertEquals("R90 is minimum of R90",    Rotation.R90,  Rotation.R90.min());
+    assertEquals("L180 is minimum of L180",  Rotation.L180, Rotation.L180.min());
+    assertEquals("R180 is minimum of R180",  Rotation.R180, Rotation.R180.min());
+    assertEquals("L90 is minimum of R270",   Rotation.L90,  Rotation.R270.min());
+    assertEquals("R90 is minimum of L270",   Rotation.R90,  Rotation.L270.min());
+    assertEquals("NONE is minimum of R360",  Rotation.NONE, Rotation.R360.min());
+    assertEquals("NONE is minimum of L360",  Rotation.NONE, Rotation.L360.min());
+  }
+
 }
