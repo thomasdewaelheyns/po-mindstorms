@@ -1,20 +1,25 @@
 TARGETS=penoplatinum/util/RotationTest.test \
 		penoplatinum/util/BearingTest.test \
+		penoplatinum/util/PointTest.test \
+		penoplatinum/util/TransformationTRTTest.test \
 		penoplatinum/grid/SectorTest.test
-BUILD=build
 
 JUNIT_JAR=../lib/junit-4.10.jar
-CP=.:../src/java:${JUNIT_JAR}
+MOCKITO_JAR=../lib/mockito-all-1.9.0.jar
+LIBS=${JUNIT_JAR}:${MOCKITO_JAR}
 
-JAVAC=javac -cp ${CP}
-JAVA=java -cp ${CP}
+BUILD_DIR=build
+CP=.:../src/java:${LIBS}
+
+JAVAC=javac -cp ${CP} -d ${BUILD_DIR} -Xlint:unchecked
+JAVA=java -cp ${BUILD_DIR}:${LIBS}
 JUNIT=${JAVA} junit.textui.TestRunner
 
 RM=rm -rf
 
-all: clean ${BUILD}
+all: clean ${TARGETS}
 
-%.class: %.java
+%.class: %.java ${BUILD_DIR}
 	@echo "*** building ${<:.class=}"
 	@${JAVAC} $<
 
@@ -22,10 +27,8 @@ all: clean ${BUILD}
 	@echo "*** running $(subst /,.,$(<:.class=))"
 	@${JUNIT} $(subst /,.,$(<:.class=))
 
-test: ${TARGETS}
-
-${BUILD}: clean
-	mkdir build
+${BUILD_DIR}:
+	@mkdir -p build
 
 clean:
-	@${RM} ${BUILD}
+	@${RM} ${BUILD_DIR}

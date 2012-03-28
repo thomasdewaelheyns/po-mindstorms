@@ -1,91 +1,63 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.util;
-
-import penoplatinum.simulator.Bearing;
 
 /**
  * This class represents a translation + rotation + translation transformation
- * Rotations are CLOCKWISE!!! (since bearings are clockwise!!!) and a multiple of 90 degrees
- * @author MHGameWork
+ *
+ * @author Team Platinum
  */
+ 
+ 
 public class TransformationTRT {
 
   public static TransformationTRT Identity;
 
   static {
     Identity = new TransformationTRT();
-    Identity.setTransformation(0, 0, 0, 0, 0);
+    Identity.setTransformation(0, 0, Rotation.NONE, 0, 0);
   }
+
   private int translationAX;
   private int translationAY;
   private int translationBX;
   private int translationBY;
-  private int rotation;
 
-  public int getRotation() {
-    return rotation;
-  }
+  private Rotation rotation;
 
-  public int getTranslationAX() {
-    return translationAX;
-  }
+  public Rotation getRotation() { return this.rotation; }
 
-  public int getTranslationAY() {
-    return translationAY;
-  }
-
-  public int getTranslationBX() {
-    return translationBX;
-  }
-
-  public int getTranslationBY() {
-    return translationBY;
-  }
-
-  public TransformationTRT setTransformation(int tAX, int tAY, int rotation, int tBX, int tBY) {
-    translationAX = tAX;
-    translationAY = tAY;
-    this.rotation = rotation;
-    translationBX = tBX;
-    translationBY = tBY;
+  public TransformationTRT setTransformation(int tAX, int tAY, 
+                                             Rotation rotation,
+                                             int tBX, int tBY)
+  {
+    this.rotation      = rotation;
+    this.translationAX = tAX;    this.translationAY = tAY;
+    this.translationBX = tBX;    this.translationBY = tBY;
 
     return this;
-
   }
 
-  public Point transform(int x, int y) {
-    return transformCoordinate(x, y, translationAX, translationAY, rotation, translationBX, translationBY);
-  }
+  public TransformationTRT transform(Point point) {
+    // translate to A XY
+    point.translate(this.translationAX, this.translationAY);
+    // rotate
+    point.rotate(rotation);
+    // translate to B XY
+    point.translate(this.translationBX, this.translationBY);
 
-  public static Point transformCoordinate(int x, int y, int localX, int localY, int rotation, int otherX, int otherY) {
-
-    rotation = Utils.ClampLooped(rotation, 0, 4);
-
-    // Relative current other sector to otherx and y
-    x = x + localX;
-    y = y + localY;
-    // Now rotate this vector
-    Point p = Bearing.mapToNorth((4 - rotation) % 4, x, y);
-    // Now apply this vector to our coordinates
-    p = new Point(p.getX() + otherX, p.getY() + otherY);
-    return p;
-
-//    // Relative current other sector to otherx and y
-//    x = x - otherX;
-//    y = y - otherY;
-//    // Now rotate this vector
-//    Point p = Bearing.mapToNorth(rotation, x, y);
-//    // Now apply this vector to our coordinates
-//    p = new Point(p.getX() + localX, p.getY() + localY);
-//    return p;
+    return this;
   }
   
   public String toString(){
-    return "Transformation: "+translationAX+","+translationAY+":"+rotation+":"+translationBX+","+translationBY;
+    return "Transformation: " + this.translationAX + "," + this.translationAY
+                              + ":" + this.rotation + ":" + this.translationBX
+                              + "," + this.translationBY;
   }
-  
-  
+
+  @Deprecated
+  public Point transform(int x, int y) {
+    Point point = new Point(x,y);
+    this.transform(point);
+    return point;
+  }
+
 }
