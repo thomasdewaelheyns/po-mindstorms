@@ -29,7 +29,6 @@ public class PointTest extends TestCase {
   
   public void testToString() {
     assertEquals( X + "," + Y, this.createPoint().toString() );
-    
   }
   
   public void testTranslation() {
@@ -91,7 +90,7 @@ public class PointTest extends TestCase {
   }
   
   public void testHashCode() {
-    assertEquals( "hascode is wrond.", 56817, this.createPoint().hashCode() );
+    assertEquals( "hascode is wrong.", 56817, this.createPoint().hashCode() );
   }
 
   private Point createPoint() {
