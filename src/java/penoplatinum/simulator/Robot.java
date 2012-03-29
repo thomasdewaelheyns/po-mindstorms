@@ -13,54 +13,52 @@ package penoplatinum.simulator;
  
 import penoplatinum.driver.Driver;
 
+import penoplatinum.simulator.Navigator;
+
 import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.model.Reporter;
 
 
 public interface Robot {
-
-  /**
-   * we allow the RobotAPI to be set externally. this allows for reusing the
-   * same robot, both in the real world as in the Simulator
-   */
+  // a robot consists of:
+  // - a RobotAPI, offering access to the sensors and actuators
   public Robot useRobotAPI(RobotAPI api);
-
-  public Robot useNavigator(Navigator api);
-
-  public Robot useGatewayClient(GatewayClient agent);
+  public RobotAPI getRobotAPI();
   
-  public Robot useReporter(Reporter reporter);
-
-  public GatewayClient getGatewayClient();
-    
+  // - a Driver, that knows how to move from one point to the other,
   public Robot useDriver(Driver driver);
+  public Driver getDriver();
   
-  /**
-   * to allow external Communication to be processed by the Robot, a generic
-   * String-based command processing.
-   * THIS METHOD SHOULD BE THREAD SAFE
-   */
+  // - a Navigator, that decides what point to move next to
+  public Robot useNavigator(Navigator navigator);
+  public Navigator getNavigator();
+
+  // - a GatyewayClient, that provides access to the Gateway to send out msgs
+  public Robot useGatewayClient(GatewayClient agent);
+  public GatewayClient getGatewayClient();
+  
+  // - a Reporter, that interrogates the Robot and can send information out
+  public Robot useReporter(Reporter reporter);
+    
+  // incoming commands are processed
   public void processCommand(String cmd);
 
-  public Model getModel();
+  // accessor for the internal model of the Robot
+  // TODO: Commented out to allow partial compilation
+  // public Model getModel();
 
-  /**
-   * in this method, the robot performs one step of its event loop. in this
-   * step, it should poll its sensors, update its model and ask the 
-   * navigator what to do next, calling the RobotAPI
-   */
+  // in this method, the robot performs one step of its event loop. in this
+  // step, it should poll its sensors, update its model and ask the 
+  // navigator what to do next, calling the RobotAPI
   public void step();
 
-  /**
-   * indicates that the robot reached its goal and doesn't do anything anymore
-   */
+  // indicates that the robot reached its goal and doesn't do anything anymore
   public Boolean reachedGoal();
 
-  /**
-   * a method to stop the robot (immediately)
-   */
+  // a method to stop the robot (immediately)
   public void stop();
 
+  // gets the name of the robot
   public String getName();
 }

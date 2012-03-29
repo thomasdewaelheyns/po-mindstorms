@@ -1,9 +1,16 @@
-package penoplatinum;
+package penoplatinum.util;
+
+/**
+ * BitwiseOperation
+ * 
+ * Some utility functions to encode and decode bitfields.
+ * 
+ * @author: Team Platinum
+ */
+
 
 public class BitwiseOperations {
   
-    /* elementary bitwise operations */
-
   // sets one bit at position to 1
   public static int setBit(int data, int p) {
     return data | (1<<p);

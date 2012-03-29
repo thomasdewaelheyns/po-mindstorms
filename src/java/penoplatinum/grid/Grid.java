@@ -3,73 +3,44 @@ package penoplatinum.grid;
 /**
  * Grid Interface
  * 
- * Defines a 2D orthogonal Grid of Sectors
+ * Defines a 2D orthogonal Grid of Sectors with Agents
  *  
  * @author: Team Platinum
  */
+
 import java.util.List;
-import penoplatinum.util.TransformationTRT;
+
+import penoplatinum.util.Point;
+ 
 
 public interface Grid {
+  // set the root-processor for this Grid
+  public Grid         setProcessor(GridProcessor processor);
 
-  public Grid setProcessor(GridProcessor processor);
+  // a sector contains a root sector
+  public Grid         addRoot(Sector sector);
 
-  public Grid addSector(Sector sector);
-
-  public Sector getSector(int left, int top);
-
+  // using the navigation links on Sectors, the Grid can traverse through
+  // the sectors, returning the Sector with requested left and top coordinates
+  public Sector       getSector(Point position);
+  public Point        getPosition(Sector sector);
   public List<Sector> getSectors();
 
-  public Grid displayOn(GridView view);
+  // Grid contains Agents
+  public Grid         add(Agent agent, Point position);
+  public Grid         moveForward(Agent agent);
+  public Grid         remove(Agent agent);
+  public Agent        getAgent(String name);
+  public List<Agent>  getAgents();
+  public Grid         clearAgents();
+  public Point        getPosition(Agent agent);
 
-  public Grid refresh();
-
-  public Grid dump();
-
-  public int getMinLeft();
-
-  public int getMaxLeft();
-
-  public int getMinTop();
-
-  public int getMaxTop();
-
-  public int getWidth();
-
-  public int getHeight();
-
-  public Grid addAgent(Agent agent);
-
-  public Agent getAgent(String name);
-
-  public void removeAgent(Agent agent);
-
-  public List<Agent> getAgents();
-
-  public Grid clearAgents();
-
-  public Grid sectorsNeedRefresh();
-
-  public Grid wallsNeedRefresh();
-
-  public Grid valuesNeedRefresh();
-
-  public Grid agentsNeedRefresh();
-
-  void addTaggedSector(Sector s);
-
-  List<Sector> getTaggedSectors();
-
-  public Sector getOrCreateSector(int x, int y);
-
-  public void barcodesNeedRefresh();
-
-  boolean areSectorsEqual(Grid other);
-
-  public int getSize();
-
-  void disengage();
-
-  Agent getAgentAt(Sector s);
-
+  // returns the boundaries and dimensions of the Grid
+  public int          getMinLeft();
+  public int          getMaxLeft();
+  public int          getMinTop();
+  public int          getMaxTop();
+  public int          getWidth();
+  public int          getHeight();
+  public int          getSize(); // the amount of Sectors
 }

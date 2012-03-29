@@ -14,15 +14,15 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Rotation;
 
 
-public class SectorTest extends TestCase {
+public class LinkedSectorTest extends TestCase {
 
-  public SectorTest(String name) { 
+  public LinkedSectorTest(String name) { 
     super(name);
   }
 
   public void testSectorCopyRetainsWallInfo() {
     Sector original = this.createSectorWithWallsNW();
-    Sector copy = new Sector(original);
+    Sector copy = new LinkedSector(original);
 
     assertTrue ( "copied Sector doesn't have N wall.", copy.hasWall(Bearing.N));
     assertTrue ( "copied Sector doesn't have W wall.", copy.hasWall(Bearing.W));
@@ -82,23 +82,23 @@ public class SectorTest extends TestCase {
     Sector original = this.createSectorWithWallsNW();
 
     // start with one rotation by 90 degrees
-    Sector sector90 = new Sector(original).rotate(Rotation.R90);  
+    Sector sector90 = new LinkedSector(original).rotate(Rotation.R90);  
 
-    Sector sector180 = new Sector(original).rotate(Rotation.R180);
+    Sector sector180 = new LinkedSector(original).rotate(Rotation.R180);
     // rotate further to 180 degrees
     sector90.rotate(Rotation.R90);
 
     assertEquals( "two rotations of 90 degrees doesn't match 180 degrees",
                   sector90.toString(), sector180.toString() );
 
-    Sector sector270 = new Sector(original).rotate(Rotation.R270);
+    Sector sector270 = new LinkedSector(original).rotate(Rotation.R270);
     // rotate further to 270 degrees
     sector90.rotate(Rotation.R90);
 
     assertEquals( "three rotations of 90 degrees doesn't match 270 degrees",
                   sector90.toString(), sector270.toString() );
 
-    Sector sector360 = new Sector(original).rotate(Rotation.R360);
+    Sector sector360 = new LinkedSector(original).rotate(Rotation.R360);
     // rotate further to 360 degrees
     sector90.rotate(Rotation.R90);
 
@@ -114,9 +114,9 @@ public class SectorTest extends TestCase {
     *    |
     *    +
     */
-    return new Sector().addWall   (Bearing.N)
-                       .removeWall(Bearing.E)
-                       .removeWall(Bearing.S)
-                       .addWall   (Bearing.W);
+    return new LinkedSector().addWall   (Bearing.N)
+                             .removeWall(Bearing.E)
+                             .removeWall(Bearing.S)
+                             .addWall   (Bearing.W);
   }
 }

@@ -16,10 +16,10 @@ public interface Navigator {
   public static final int TURN = 2;
   public static final int STOP = 4;
 
+  public Navigator setRobot(Robot robot);
+
   public Boolean   reachedGoal();
   public int       nextAction();
   public double    getDistance();
   public double    getAngle();
-
-  public Navigator setModel(Model model);
 }

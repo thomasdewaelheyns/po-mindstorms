@@ -1,4 +1,4 @@
-package penoplatinum.pacman;
+package penoplatinum.grid;
 
 /**
  * PacmanAgent
@@ -8,9 +8,7 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 
-import penoplatinum.Color;
-import penoplatinum.grid.Agent;
-import penoplatinum.grid.MovingAgent;
+import penoplatinum.util.Color;
 
 
 public class PacmanAgent extends MovingAgent {
@@ -23,15 +21,8 @@ public class PacmanAgent extends MovingAgent {
   public int   getValue() { return PacmanAgent.VALUE; }
   public Color getColor() { return this.color;   }
 
-//  @Override
-//  public Agent createCopy() {
-//    return new PacmanAgent();
-//  }
-
-  @Override
+  // FIXME: this should be a copy constructor
   public Agent copyAgent() {
     return new PacmanAgent();
   }
-  
-  
 }

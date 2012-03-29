@@ -1,9 +1,5 @@
 package penoplatinum.simulator;
 
-import penoplatinum.util.ExtendedVector;
-import java.util.List;
-
-
 /**
  * Robot API interface
  * 
@@ -12,6 +8,12 @@ import java.util.List;
  * 
  * @author: Team Platinum
  */
+
+import java.util.List;
+
+import penoplatinum.util.ExtendedVector;
+
+
 public interface RobotAPI {
 
   // moves the robot in a straigth line for a distance expressed in meters

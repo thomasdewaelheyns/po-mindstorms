@@ -23,7 +23,7 @@ import penoplatinum.gateway.Gateway;
 import penoplatinum.gateway.MessageReceiver;
 
 
-public class SimulatedGatewayClient implements GatewayClient, MessageReceiver {
+public class SimulatedGatewayClient implements GatewayClient {
 
   // our own logger
   private Logger logger;

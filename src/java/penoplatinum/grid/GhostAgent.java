@@ -1,4 +1,4 @@
-package penoplatinum.pacman;
+package penoplatinum.grid;
 
 /**
  * GhostAgent
@@ -8,15 +8,15 @@ package penoplatinum.pacman;
  * @author: Team Platinum
  */
 
+import penoplatinum.util.Color;
 
-import penoplatinum.Color;
-import penoplatinum.grid.Agent;
-import penoplatinum.grid.MovingAgent;
 
 public class GhostAgent extends MovingAgent {
+
   private Color color = new Color(255,255,255);
 
   public GhostAgent(String name) { super(name); }
+
   public GhostAgent(String name, Color color) {
     super(name);
     this.color = color;
@@ -24,12 +24,8 @@ public class GhostAgent extends MovingAgent {
   
   public Color getColor() { return this.color; }
 
-  @Override
   public Agent copyAgent() {
     GhostAgent ret = new GhostAgent(this.getName(), this.getColor());
     return ret;
   }
-
-  
-  
 }

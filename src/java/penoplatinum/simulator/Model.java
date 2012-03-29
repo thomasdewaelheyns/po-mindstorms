@@ -1,10 +1,5 @@
 package penoplatinum.simulator;
 
-// TODO: this Model Interface now contains ALL methods of ALL implementations.
-//       we need a really generic model with only generic methods and
-//       in case we want specialized methods, we need to cast it to a specific
-//       Model class.
-
 import java.util.List;
 
 import penoplatinum.grid.Agent;
@@ -52,22 +47,22 @@ public interface Model {
   public static final int MOTORSTATE_BACKWARD = 2;
   public static final int MOTORSTATE_STOPPED = 3;
 
-  BarcodeModelPart getBarcodePart();
+  public BarcodeModelPart getBarcodePart();
 
-  GapModelPart getGapPart();
+  public GapModelPart getGapPart();
 
-  GridModelPart getGridPart();
+  public GridModelPart getGridPart();
 
-  LightModelPart getLightPart();
+  public LightModelPart getLightPart();
 
-  MessageModelPart getMessagePart();
+  public MessageModelPart getMessagePart();
 
-  SensorModelPart getSensorPart();
+  public SensorModelPart getSensorPart();
 
-  SonarModelPart getSonarPart();
+  public SonarModelPart getSonarPart();
 
-  WallsModelPart getWallsPart();
+  public WallsModelPart getWallsPart();
 
-  Model setReporter(Reporter reporter);
-  Reporter getReporter();
+  public Model setReporter(Reporter reporter);
+  public Reporter getReporter();
 }

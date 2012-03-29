@@ -8,48 +8,28 @@ package penoplatinum.grid;
  * 
  * @author: Team Platinum
  */
-import penoplatinum.simulator.Bearing;
+
+import penoplatinum.util.Bearing;
+
 
 public abstract class MovingAgent implements Agent {
 
-  private String name;
-  private Sector sector;
-  private int bearing = Bearing.N,
-          originalBearing = Bearing.NONE,
-          originalLeft = -999,
-          originalTop = -999;
-  private boolean active = false;
+  private String  name;
+  private Grid    grid;
+  private Bearing bearing = Bearing.N;
+  private boolean active  = false;
 
   public MovingAgent(String name) {
     this.name = name;
   }
 
-  public Agent assignSector(Sector sector, int bearing) {
-    if (sector == null) {
-      throw new RuntimeException();
-    }
-    this.sector = sector;
-    if (this.originalLeft == -999) {
-      this.originalLeft = sector.getLeft();
-      this.originalTop = sector.getTop();
-    }
-    this.bearing = bearing;
-    if (this.originalBearing == Bearing.NONE) {
-      this.originalBearing = bearing;
-    }
+  public Agent assignGrid(Grid grid) {
+    this.grid = grid;
     return this;
   }
-
-  public Sector getSector() {
-    return this.sector;
-  }
-
-  public boolean isTarget() {
-    return false;
-  }
-
-  public boolean isHunter() {
-    return false;
+  
+  public Grid getGrid() {
+    return this.grid;
   }
 
   public String getName() {
@@ -60,86 +40,26 @@ public abstract class MovingAgent implements Agent {
     return -1;
   }
 
-  public int getLeft() {
-    return this.sector.getLeft();
-  }
-
-  public int getOriginalLeft() {
-    return this.originalLeft;
-  }
-
-  public int getTop() {
-    return this.sector.getTop();
-  }
-
-  public int getOriginalTop() {
-    return this.originalTop;
-  }
-
-  public int getBearing() {
+  public Bearing getBearing() {
     return this.bearing;
   }
 
-  public int getOriginalBearing() {
-    return this.originalBearing;
-  }
-
   public Agent turnLeft() {
-    if (this.bearing == Bearing.N) {
-      this.bearing = Bearing.W;
-    } else {
-      this.bearing--;
-    }
-    this.sector.getGrid().agentsNeedRefresh();
+    this.bearing = this.bearing.leftFrom();
     return this;
   }
 
   public Agent turnRight() {
-    if (this.bearing == Bearing.W) {
-      this.bearing = Bearing.N;
-    } else {
-      this.bearing++;
-    }
-    this.sector.getGrid().agentsNeedRefresh();
+    this.bearing = this.bearing.rightFrom();
     return this;
   }
 
-  public boolean canMoveForward() {
-    int bearing = this.getBearing();
-    Sector current = this.getSector();
-    if( ! current.isKnown(bearing) ) {
-      System.err.println(this.name + " ERROR: Don't know that wall." );
-    } else if( current.hasWall(bearing) ) {
-      System.err.println(this.name + " ERROR: Can't move through wall.");
-//      try { System.in.read(); } catch(Exception e) {}
-    } else if (!current.hasNeighbour(bearing)) {
-//      System.err.println(this.name + "ERROR: No neighbour to move to.");
-//      try { System.in.read(); } catch(Exception e) {}      
-//    } else if (current.getNeighbour(bearing).hasAgent()) {
-//      System.err.println(this.name + "ERROR: Neighbour has Agent" );
-      //try { System.in.read(); } catch(Exception e) {}      
-    } else {
-      return true;
-    }
-    return false;
-  }
-
   public Agent moveForward() {
-    int bearing = this.getBearing();
-    Sector current = this.getSector();
-    if (this.canMoveForward()) {
-      // actually move the agent
-      current.getNeighbour(bearing).put(this, bearing);
-      this.sector.getGrid().agentsNeedRefresh();
-    } else {
-//      System.err.println(this.name + "ERROR: Didn't check canMoveForward?" );
-//      try { System.in.read(); } catch(Exception e) {}      
-    }
+    this.grid.moveForward(this);
     return this;
   }
   
   public Agent activate() {
-    // System.out.println( this.getName() + " ACTIVATE" );
     this.active = true;
     return this;
   }

@@ -10,7 +10,6 @@ package penoplatinum.model;
  */
 
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.simulator.Robot;
 
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
@@ -18,8 +17,14 @@ import penoplatinum.grid.Sector;
 
 public interface Reporter {
   public Reporter useGatewayClient(GatewayClient client);
-  public Reporter setRobot(Robot robot);
-  public Reporter report();
-  public Reporter reportWalls(Sector sector);
-  public Reporter reportAgent(Agent agent);
+
+  // the reporter can process updates to the information
+  public Reporter reportModelUpdate();
+  public Reporter reportSectorUpdate(Sector sector);
+  public Reporter reportAgentUpdate(Agent agent);
+
+  // the reporter can process events
+  public Reporter reportEnterSector(Agent me, Sector sector);
+  public Reporter reportFoundSector(Agent me, Sector sector);
+  public Reporter reportFoundAgent(Agent me, Sector sector, Agent agent);
 }

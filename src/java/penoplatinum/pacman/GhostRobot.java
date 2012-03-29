@@ -146,9 +146,7 @@ public class GhostRobot implements Robot {
 
   /**
    * incoming communication from other ghosts, used by GatewayClient to deliver
-   * incoming messages from the other ghosts
-   * This is thread safe
-   * @param cmd 
+   * incoming messages from the other ghosts. This is thread safe.
    */
   public void processCommand(String cmd) {
     this.model.getMessagePart().addIncomingMessage(cmd);

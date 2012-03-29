@@ -1,41 +1,32 @@
 package penoplatinum.grid;
 
-import penoplatinum.Color;
-
 /**
  * Agent Interface
  * 
- * Defines an agent on a Grid, travelling in a Manhattan-style
+ * Defines an agent on a Grid.
  * 
  * @author: Team Platinum
  */
 
+import penoplatinum.util.Color;
 
-// interface of an agent that is placed on the Grid
+
 public interface Agent {
-  public Agent    assignSector(Sector sector, int bearing);
-  public Sector   getSector();
-  
+  // an agent is located on a Grid
+  public Agent    assignGrid(Grid grid);
+  public Grid     getGrid();
+
+  // an agent has a name, a value and a color
   public String   getName();
   public int      getValue();
   public Color    getColor();
 
-  public int      getLeft();
-  public int      getOriginalLeft();
-  public int      getTop();
-  public int      getOriginalTop();
-
-  public int      getBearing();
-  public int      getOriginalBearing();
-  
+  // an agent can turn left, turn right and move forward
   public Agent    turnLeft();
   public Agent    turnRight();
-
-  public boolean  canMoveForward();
   public Agent    moveForward();
   
-  public Agent    copyAgent();
-  
+  // an agent can be active or not
   public Agent    activate();
   public boolean  isActive();
 }

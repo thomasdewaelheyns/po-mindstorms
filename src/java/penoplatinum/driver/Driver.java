@@ -8,11 +8,11 @@ package penoplatinum.driver;
  * @author: Team Platinum
  */
  
-import penoplatinum.simulator.Model;
+//import penoplatinum.simulator.Model;
 import penoplatinum.simulator.RobotAPI;
 
 public interface Driver {
-  public Driver useModel(Model model);
+  //public Driver useModel(Model model);
   public Driver useRobotAPI(RobotAPI api);
 
   public boolean isBusy();
