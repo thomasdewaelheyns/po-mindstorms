@@ -25,7 +25,8 @@ BUILD_DIR=build
 JAVAC=javac -cp ${CP} -d build -Xlint:unchecked
 JAVA=java -cp ${BUILD_DIR}:${LIBS}
 
-OPTIONS=-m ../../../../maps/wolfraam.txt -s 2
+# OPTIONS=-m ../../../../maps/wolfraam.txt -s 0
+OPTIONS=-m ../../../../maps/wolfraam.txt
 
 all: ${TARGETS}
 

@@ -55,7 +55,7 @@ CREATE TABLE sectorValues (
   value         INTEGER       -- value of the sector
 );
 
-CREATE TABLE sectorGateways (
+CREATE TABLE sectorAgents (
   id            INTEGER       PRIMARY KEY AUTO_INCREMENT,
   ts            TIMESTAMP     DEFAULT NOW(),
 

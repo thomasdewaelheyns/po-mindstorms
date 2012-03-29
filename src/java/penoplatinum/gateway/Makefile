@@ -24,6 +24,8 @@ MYSQLDUMP=/usr/local/mysql/bin/mysqldump -uplatinum -pplatinum
 
 OPTIONS=
 
+LOG4J_PROPERTIES=../../log4j.properties
+
 # argument that can be passed to the run target to setup different "ghost"
 # possible names are: red, pink, cyan and orange
 ME=pink
@@ -33,7 +35,7 @@ all: ${TARGETS}
 db:
 	${MYSQL} < schema.sql
 
-run: ${TARGETS} config
+run: ${TARGETS} files
 	@${JAVA} penoplatinum.gateway.${<:.class=} ${OPTIONS}
 
 run-mq: MQRunner.class
@@ -43,14 +45,14 @@ run-mq: MQRunner.class
 	@echo "*** building ${<:.class=}"
 	@${JAVAC} $<
 
-config: ${BUILD_DIR}
-	@cp log4j.properties ${BUILD_DIR}
-
 ${BUILD_DIR}:
 	@mkdir ${BUILD_DIR}
 
 dashboard: test.class ../Utils.class
 	${JAVA} penoplatinum.gateway.test
+
+files: ${BUILD_DIR}
+	@cp ${LOG4J_PROPERTIES} ${BUILD_DIR}
 
 backup:
 	  ${MYSQLDUMP} robots > demo1.sql
