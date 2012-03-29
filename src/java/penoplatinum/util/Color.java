@@ -1,15 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package penoplatinum;
+package penoplatinum.util;
 
 /**
- *
- * @author MHGameWork
+ * Color class to store RGB values, without pulling in the entire AWT stack.
+ * 
+ * @author Team Platinum
  */
-public class Color {
+ 
 
+public class Color {
   private final int rgb;
 
   public Color(byte r, byte g, byte b) {
@@ -29,6 +27,6 @@ public class Color {
   }
 
   public int getR() {
-    return (rgb >> 16) & 0XFF;
+    return (rgb >> 16) & 0xFF;
   }
 }
