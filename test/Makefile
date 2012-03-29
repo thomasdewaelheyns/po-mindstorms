@@ -2,6 +2,7 @@ TARGETS=penoplatinum/util/RotationTest.test \
 		penoplatinum/util/BearingTest.test \
 		penoplatinum/util/PointTest.test \
 		penoplatinum/util/TransformationTRTTest.test \
+		penoplatinum/util/ScannerTest.test \
 		penoplatinum/grid/SectorTest.test
 
 JUNIT_JAR=../lib/junit-4.10.jar
