@@ -14,32 +14,37 @@ import penoplatinum.model.GhostModel;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 
-import penoplatinum.simulator.Bearing;
-
 import penoplatinum.gateway.GatewayClient;
 
+import penoplatinum.util.Bearing;
 import penoplatinum.util.Utils;
 import penoplatinum.util.MyScanner;
 
+
 public class GhostProtocolHandler implements ProtocolHandler {
 
-  public final static String version = "1.0-partial";
+  // this is the version we're implementing
+  public final static String version = "2.0";
+
   // counter for received join commands
   private int joins = 0;
+
   // the client we're using to communicate with the gateway
   private GatewayClient client;
   private boolean connected = false;
-  // a reference to the Agent
-  private Agent agent;
+
   private final GhostModel model;
   private final GhostProtocolCommandHandler commandHandler;
 
   // we need a least a reference to the Agent we're handling for
   // TODO: this should become a Model
   public GhostProtocolHandler(GhostModel model, GhostProtocolCommandHandler commandHandler) {
-    this.agent = model.getGridPart().getAgent();
     this.model = model;
     this.commandHandler = commandHandler;
+  }
+  
+  private Agent getAgent() {
+    return this.model.getGridPart().getAgent();
   }
 
   // keep a reference to the GatewayClient to send messages

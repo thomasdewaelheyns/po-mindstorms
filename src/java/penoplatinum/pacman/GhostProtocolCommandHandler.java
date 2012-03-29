@@ -1,13 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.pacman;
 
 /**
  *
- * @author MHGameWork
+ * @author Team Platinum
  */
+
+
 public interface GhostProtocolCommandHandler {
 
   void handleBarcodeAt(String agentName, int x, int y, int code, int bearing);
