@@ -1,19 +1,18 @@
 package penoplatinum.grid;
 
-import junit.framework.*; 
+import junit.framework.*;
+import penoplatinum.simulator.tiles.Sectors;
 import static org.mockito.Mockito.*;
 
+import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.grid.Grid;
-
 
 public class GridTest extends TestCase {
 
-  public GridTest(String name) { 
+  public GridTest(String name) {
     super(name);
   }
 
-  @Test
   public void testImportOfIdenticalRotatedGridDoesntChangeOriginalGrid() {
     // create two identical grids, but with different sector objects
     Grid grid1 = this.createSquareGridWithFourSectors();
@@ -33,57 +32,112 @@ public class GridTest extends TestCase {
     String original = grid1.toString();
 
     // import grid2 into grid1 based on the reference point
-    grid1.import(grid2, reference);
+    grid1.
+    
+    
+    
+    
+    
+    
+    
+    import(grid2
+    , reference
+    );
 
     // validate that grid1 hasn't changed
-    assertEquals( grid1.toString(), original, 
-                 "grid1 has changed after import of identical grid." );
+    assertEquals(grid1.toString(), original,
+            "grid1 has changed after import of identical grid.");
+  }
+
+  public void testAddSectorPosition() {
+    LinkedGrid grid = new LinkedGrid();
+
+    LinkedSector s1 = new LinkedSector();
+    LinkedSector s2 = new LinkedSector();
+
+    // Add first sector
+    grid.add(s1, new Point(2, 2));
+
+    // Should just add the one sector
+    assertEquals(s1, grid.get(new Point(2, 2)));
+
+    // Add second sector, should create a path
+    grid.add(s2, new Point(3, 3));
+
+    assertEquals(s1, grid.get(new Point(2, 2)));
+    assertEquals(s2, grid.get(new Point(3, 3)));
+    assertNotNull("s1 has no neighbour!", getSingleNeighbour(s1));
+    assertEquals("There is no path from s1 to s2!!", s2, getSingleNeighbour(getSingleNeighbour(s1)));
+
+  }
+
+  public void testAgents() {
+    Grid g = new LinkedGrid();
+
+    Agent a1 = mock(Agent.class);
+    Agent a2 = mock(Agent.class);
+    Agent a3 = mock(Agent.class);
+
+    Agent[] agents = new Agent[]{a1, a2, a3};
+    Point[] points = new Point[]{new Point(1, 1), new Point(1, 1), new Point(1, 1)};
+
+    g.add(a1, points[0]);
+    g.add(a2, points[1]);
+    g.add(a3, points[2]);
+
+    assertNotNull(g.get(points[0]));
+    assertNotNull(g.get(points[1]));
+    assertNotNull(g.get(points[2]));
+
+
+    for (Agent a : g.getAgentsIterator()) {
+      boolean found = false;
+      for (int i = 0; i < agents.length; i++) {
+        if (a != agents[i]) {
+          continue;
+        }
+        found = true;
+        assertEquals(points[i], g.getAgentPosition(a));
+      }
+      assertTrue(found);
+
+    }
+
+    //TODO: maybe check if each actor only once in iterator
+
+
   }
 
   // utility methods to setup basic components
+  private LinkedGrid createSquareGridWitFourSectors() {
+    LinkedGrid grid = new LinkedGrid();
+    Sector sector1 = new LinkedSector();
+    Sector sector2 = new LinkedSector();
+    Sector sector3 = new LinkedSector();
+    Sector sector4 = new LinkedSector();
 
-  private Grid createSquareGridWitFourSectors() {
-    Grid grid = new Grid();
-    Sector sector1 = new Sector().setCoordinates(0,0);
-    Sector sector2 = new Sector();
-    Sector sector3 = new Sector();
-    Sector sector4 = new Sector();
+    // Add root sector to grid, rest will follow
+    grid.add(sector1, new Point(0, 0));
 
+    // Add using addNeighbour
     sector1.addNeighbour(sector2, Bearing.E);
     sector1.addNeighbour(sector3, Bearing.S);
     sector2.addNeighbour(sector4, Bearing.S);
 
-    /* result looks like this:
-    *    +--+--+
-    *    |     |
-    *    +  +--+
-    *    |     +
-    *    +--+--+
-    */
+    // Set the walls
+    sector1.withWall(Bearing.N).withWall(Bearing.W);
+    sector2.withWall(Bearing.N).withWall(Bearing.E).withWall(Bearing.S);
+    sector3.withWall(Bearing.S).withWall(Bearing.W);
+    sector4.withWall(Bearing.S).withWall(Bearing.E).withWall(Bearing.N);
 
-    grid.add(sector1.withWall(Bearing.N)
-                    .withWall(Bearing.W));
-    grid.add(sector2.withWall(Bearing.N)
-                    .withWall(Bearing.E)
-                    .withWall(Bearing.S));
-    grid.add(sector3.withWall(Bearing.S)
-                    .withWall(Bearing.W));
-    grid.add(sector4.withWall(Bearing.S)
-                    .withWall(Bearing.E)
-                    .withWall(Bearing.N)); // this one is already there ;-)
+    /* result looks like this:
+     *    +--+--+
+     *    |     |
+     *    +  +--+
+     *    |     +
+     *    +--+--+
+     */
+
     return grid;
   }
-
-  // create a mock that answers what a perfectly working ReferenceAgent
-  // should answer when used to import a Grid in a Grid
-  private ReferenceAgent mockReferenceAgent(int bearing) {
-    ReferenceAgent mockedReferenceAgent = mock(ReferenceAgent.class);
-    Point mockedPoint = mock(Point.class);
-    when(mockedPoint.getLeft()).thenReturn(1);
-    when(mockedPoint.getTop()).thenReturn(0);
-    when(mockedReferenceAgent.getPosition()).thenReturn(mockecPoint);
-    when(mockedReferenceAgent.getBearing()).thenReturn(bearing);
-    return mockedReferenceAgent;
-  }
-
 }

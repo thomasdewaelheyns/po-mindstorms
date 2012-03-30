@@ -93,6 +93,17 @@ public class LinkedSectorTest extends TestCase {
                  sector.hasWall(Bearing.S)  );
   }
 
+  public void testAddNeighbour()
+  {
+    fail();
+//    use case 1 : onze code heeft een sector en wil er een sector aanhangen (bvb bij sonarsweep en nowalls == nieuwe unknown sector buur)
+//procedure:
+//knownSector.createNeighbour(Bearing)
+//die maakt een nieuwe sector en hangt die aan de bearing
+//  
+  }
+  
+  
   // utility methods to setup basic components
 
   private Sector createSectorWithWallsNW() {

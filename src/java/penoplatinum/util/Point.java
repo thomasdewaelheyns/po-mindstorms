@@ -2,7 +2,8 @@ package penoplatinum.util;
 
 /**
  * This class represents a point in 2D space.
- *
+ * Note: NOT IMMUTABLE
+ * 
  * @author Team Platinum
  */
 

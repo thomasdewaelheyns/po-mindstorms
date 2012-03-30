@@ -44,6 +44,7 @@ public interface Sector {
   public char getWalls();
   public Sector clearWall(Bearing atBearing);
   public Sector clearWalls();
+  public Sector withWall(Bearing b);
   public void withWalls(char walls);
   public void withoutWall(Bearing atBearing);
   

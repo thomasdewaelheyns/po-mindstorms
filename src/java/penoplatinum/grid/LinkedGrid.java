@@ -12,12 +12,17 @@ import java.util.ArrayList;
 
 import penoplatinum.SimpleHashMap;
 import penoplatinum.barcode.BarcodeTranslator;
+import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.util.CantorDiagonal;
 
-// we're using commons collections HashedMap because HashMap isn't implemented
-// on Lejos.
+/**
+ * This class implements a grid using LinkedSectors. The grid can also contain
+ * any number of agents, which are placed on sectors.
+ * 
+ * @author MHGameWork
+ */
 public class LinkedGrid implements Grid {
   // we keep track of the boundaries of our Grid
 
@@ -67,11 +72,11 @@ public class LinkedGrid implements Grid {
   // a sector already contains its own coordinates, based on the coordinates
   // of the sector is was attached to. we store the sector using a <left,top>
   // string-key
-  public Grid addSector(Sector sector) {
+  public Grid add(Sector sector, Point position) {
     sector.putOn(this);
 
-    int left = sector.getLeft(),
-            top = sector.getTop();
+    int left = position.getX();
+    int top = position.getY();
     this.resize(left, top);
 
     // add the sector to the list of all sectors in this grid
@@ -86,6 +91,13 @@ public class LinkedGrid implements Grid {
 
     return this;
   }
+  
+  public Sector getSector(Sector s, Bearing b)
+  {
+    
+  }
+  
+  
 
   private void resize(int left, int top) {
     if (left < this.minLeft) {
