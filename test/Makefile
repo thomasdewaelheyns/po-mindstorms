@@ -1,11 +1,12 @@
 TARGETS=penoplatinum/util/RotationTest.test \
-		penoplatinum/util/BearingTest.test \
-		penoplatinum/util/PointTest.test \
-		penoplatinum/util/TransformationTRTTest.test \
-		penoplatinum/util/ScannerTest.test \
-		penoplatinum/util/ColorTest.test \
-		penoplatinum/grid/LinkedSectorTest.test \
-		penoplatinum/protocol/GhostProtocolHandlerTest.test
+				penoplatinum/util/BearingTest.test \
+				penoplatinum/util/PointTest.test \
+				penoplatinum/util/TransformationTRTTest.test \
+				penoplatinum/util/ScannerTest.test \
+				penoplatinum/util/ColorTest.test \
+				penoplatinum/util/BitwiseOperationsTest.test \
+				penoplatinum/grid/LinkedSectorTest.test \
+				penoplatinum/protocol/GhostProtocolHandlerTest.test
 
 JUNIT_JAR=../lib/junit-4.10.jar
 MOCKITO_JAR=../lib/mockito-all-1.9.0.jar
@@ -23,11 +24,10 @@ RM=rm -rf
 all: clean ${TARGETS}
 
 %.class: %.java ${BUILD_DIR}
-	@echo "*** building ${<:.class=}"
 	@${JAVAC} $<
 
 %.test: %.class
-	@echo "*** running $(subst /,.,$(<:.class=))"
+	@echo "*** $(subst /,.,$(<:.class=))"
 	@${JUNIT} $(subst /,.,$(<:.class=))
 
 ${BUILD_DIR}:
