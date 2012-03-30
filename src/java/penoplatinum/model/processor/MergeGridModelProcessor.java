@@ -1,11 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.model.processor;
 
+/**
+ *
+ * This class checks whether grids can be merged by using new barcode 
+ *  information obtained by this robot
+ * 
+ * @author Team Platinum
+ */
+
 import java.util.List;
-import penoplatinum.barcode.BarcodeTranslator;
+
 import penoplatinum.grid.AggregatedGrid;
 import penoplatinum.grid.AggregatedSubGrid;
 import penoplatinum.grid.AggregatedSubGrid;
@@ -17,13 +21,7 @@ import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.Model;
 import penoplatinum.util.TransformationTRT;
 
-/**
- *
- * This class checks whether grids can be merged by using new barcode 
- *  information obtained by this robot
- * 
- * @author MHGameWork
- */
+
 public class MergeGridModelProcessor extends ModelProcessor {
 
   @Override

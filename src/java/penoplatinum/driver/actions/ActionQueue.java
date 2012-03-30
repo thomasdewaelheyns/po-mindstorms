@@ -1,23 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.actions;
+
+/**
+ * This class implements a queue for actions
+ * 
+ * @author: Team Platinum
+ */
 
 import java.util.ArrayList;
 
-/**
- *  This class implements a queue for actions
- * @author: Team Platinum
- */
+
 public class ActionQueue {
 
   private int currentActionIndex;
   private ArrayList<BaseAction> actionQueue = new ArrayList<BaseAction>();
 
+
   public BaseAction getCurrentAction() {
     // -1 means that the first action has not yet started
-    if (currentActionIndex >= actionQueue.size()) {
+    if( currentActionIndex >= actionQueue.size() ) {
       return null;
     }
 

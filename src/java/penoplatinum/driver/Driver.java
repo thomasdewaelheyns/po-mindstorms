@@ -8,8 +8,8 @@ package penoplatinum.driver;
  * @author: Team Platinum
  */
  
-//import penoplatinum.simulator.Model;
-import penoplatinum.simulator.RobotAPI;
+//import penoplatinum.model.Model;
+import penoplatinum.robot.RobotAPI;
 
 public interface Driver {
   //public Driver useModel(Model model);

@@ -1,6 +1,10 @@
 package penoplatinum.simulator;
 
-import java.awt.Point;
+/**
+ * 
+ * 
+ * @authot Team Platinum
+ */
 
 import penoplatinum.simulator.sensors.IRSensor;
 import penoplatinum.simulator.sensors.IRdistanceSensor;
@@ -13,6 +17,9 @@ import penoplatinum.simulator.sensors.TouchSensor;
 import penoplatinum.simulator.view.ViewRobot;
 
 import penoplatinum.gateway.GatewayClient;
+
+import penoplatinum.util.Point;
+
 
 public class SimulatedEntity implements RobotEntity {
 

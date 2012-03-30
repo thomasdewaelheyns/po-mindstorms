@@ -1,9 +1,14 @@
-package penoplatinum;
+package penoplatinum.util;
+
+/**
+ * Because Lejos doesn't implement HashMap, we implement our own. 
+ */
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleHashMap<K, T>{
+
+public class HashMap<K, T>{
 
   public List<K> keys = new ArrayList<K>();
   public List<T> values = new ArrayList<T>();

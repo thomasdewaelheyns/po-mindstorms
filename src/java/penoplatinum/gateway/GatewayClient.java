@@ -8,7 +8,7 @@ package penoplatinum.gateway;
  * @author: Team Platinum
  */
 
-import penoplatinum.simulator.Robot;
+import penoplatinum.robot.Robot;
 
 
 // the GatewayClient is used to send out messages to the Gateway. it also 

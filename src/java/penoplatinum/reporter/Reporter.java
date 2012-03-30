@@ -1,4 +1,4 @@
-package penoplatinum.model;
+package penoplatinum.reporter;
 
 /**
  * Reporter

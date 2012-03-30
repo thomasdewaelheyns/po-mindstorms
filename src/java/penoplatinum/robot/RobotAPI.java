@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.robot;
 
 /**
  * Robot API interface
@@ -11,6 +11,7 @@ package penoplatinum.simulator;
 
 import java.util.List;
 
+import penoplatinum.util.ReferencePosition;
 import penoplatinum.util.ExtendedVector;
 
 

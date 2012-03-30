@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.navigator;
 
 /**
  * Navigator Interface
@@ -9,6 +9,8 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
+
+import penoplatinum.robot.Robot;
 
 public interface Navigator {
   public static final int NONE = 0;

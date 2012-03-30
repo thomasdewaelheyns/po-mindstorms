@@ -1,18 +1,20 @@
-/* To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.util;
 
 /**
  * Vector that combines a position and an angular offset
- * 
  * WARNING: This class is not immutable!!!!
+ * 
+ * @author Team Platinum
+ * 
+ * TODO: THIS CLASS SHOULD BE REMOVED
  */
+
 public class ExtendedVector {
 
   private float x;
   private float y;
   private float angle;
+
 
   public float getAngle() {
     return angle;
@@ -54,17 +56,5 @@ public class ExtendedVector {
     x += other.x;
     y += other.y;
     angle += other.angle;
-  }
-
-  public void subtract(ExtendedVector other) {
-    x -= other.x;
-    y -= other.y;
-    angle -= other.angle;
-  }
-  
-  public void zero() {
-    x = 0;
-    y = 0;
-    angle = 0;
   }
 }

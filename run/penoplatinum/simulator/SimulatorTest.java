@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 import penoplatinum.map.Map;
 import penoplatinum.map.MapFactory;
 import penoplatinum.map.MapFactorySector;
-import penoplatinum.map.mazeprotocolinterpreter.ProtocolMapFactory;
+import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
 /**
  *

@@ -1,4 +1,4 @@
-package penoplatinum.map.mazeprotocolinterpreter;
+package penoplatinum.map.mazeprotocol;
 
 import java.util.Scanner;
 import penoplatinum.map.MapHashed;

@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.robot;
 
 /**
  * Robot Interface
@@ -12,12 +12,9 @@ package penoplatinum.simulator;
  */
  
 import penoplatinum.driver.Driver;
-
-import penoplatinum.simulator.Navigator;
-
+import penoplatinum.navigator.Navigator;
 import penoplatinum.gateway.GatewayClient;
-
-import penoplatinum.model.Reporter;
+import penoplatinum.reporter.Reporter;
 
 
 public interface Robot {
