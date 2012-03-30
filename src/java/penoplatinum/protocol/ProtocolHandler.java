@@ -16,6 +16,9 @@ import penoplatinum.gateway.GatewayClient;
 
 
 public interface ProtocolHandler {
+  // what's the version of the protocol we're implementing
+  public String getVersion();
+  
   // interface to communicate with the outside world
   public ProtocolHandler useGatewayClient(GatewayClient client);
   public ProtocolHandler useExternalEventHandler(ExternalEventHandler handler);

@@ -26,9 +26,7 @@ import penoplatinum.util.Scanner;
 
 public abstract class GhostProtocolHandler implements ProtocolHandler {
 
-  // this is the version we're implementing
-  private final static String VERSION   = "2.0";
-  private final static int    MIN_JOINS = 4;
+  private final static int MIN_JOINS = 4;
 
   // counter for received join commands
   private int joins = 0;
@@ -39,6 +37,9 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   private GatewayClient client;
   private ExternalEventHandler eventHandler;
 
+  public String getVersion() {
+    return "2.0";
+  }
 
   // keep a reference to the GatewayClient to send messages
   public GhostProtocolHandler useGatewayClient(GatewayClient client) {
@@ -128,7 +129,7 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
 
   // example: platinum NAME 2.0
   private void sendName() {
-    this.send(this.getName() + " NAME " + VERSION );
+    this.send(this.getName() + " NAME " + this.getVersion() );
   }
   
   private void sendPosition(Point position) {
@@ -159,48 +160,6 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
               code + " " +
               this.translateBearingToDirection(bearing));
   }
-  
-  // we use a left/top oriented coordinate system, the outside world uses
-  // a system where the Y-axis points up
-  // invert the Y-axis
-  private Point translateToExternalFormat(Point point) {
-    return new Point(point.getX(), -1 * point.getY());
-  }
-
-  // we use a left/top oriented coordinate system, the outside world uses
-  // a system where the Y-axis points up
-  // invert the Y-axis
-  private Point translateToInternalFormat(Point point) {
-    return new Point(point.getX(), -1 * point.getY());
-  }
-
-  // 1=N>S 2=E>W 3=S>N 4=W>E  
-  private int translateBearingToDirection(Bearing bearing) {
-    switch(bearing) {
-      case N: return 1;
-      case E: return 2;
-      case S: return 3;
-      case W: return 4;
-    }
-    throw new RuntimeException( "Invalid Bearing: " + bearing );
-  }
-
-  private Bearing translateDirectionToBearing(int direction) {
-    switch(direction) {
-      case 1: return Bearing.N;
-      case 2: return Bearing.E;
-      case 3: return Bearing.S;
-      case 4: return Bearing.W;
-    }
-    return Bearing.UNKNOWN;
-    // let's not throw an Exception here, this is based on other team's input
-    // we can't trust them and don't want to provide them with a DOS tool ;-)
-    // throw new RuntimeException( "Invalid direction: " + direction );
-  }
-
-  private void send(String msg) {
-    this.client.send(msg + "\n", Config.BT_GHOST_PROTOCOL);
-  }
 
   // RECEIVING
 
@@ -212,6 +171,17 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     if( ! this.joined && this.joins >= MIN_JOINS ) {
       this.begin();
     }
+  }
+  
+  private void begin() {
+    this.joined = true;
+    this.joins  = MIN_JOINS;
+
+    // send out own name
+    this.sendName();
+    
+    // raise the Activtion event
+    this.eventHandler.handleActivation();
   }
 
   private void handleName(String agentName, String version) {
@@ -254,24 +224,59 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     this.eventHandler.handleTargetInfo(agentName, 
                                       this.translateToInternalFormat(position));
   }
+  
+  // conversion methods
 
-  private void begin() {
-    this.joined = true;
-    this.joins  = MIN_JOINS;
-
-    // send out own name
-    this.sendName();
-    
-    // raise the Activtion event
-    this.eventHandler.handleActivation();
+  // we use a left/top oriented coordinate system, the outside world uses
+  // a system where the Y-axis points up
+  // invert the Y-axis
+  private Point translateToExternalFormat(Point point) {
+    return new Point(point.getX(), -1 * point.getY());
   }
 
+  // we use a left/top oriented coordinate system, the outside world uses
+  // a system where the Y-axis points up
+  // invert the Y-axis
+  private Point translateToInternalFormat(Point point) {
+    return new Point(point.getX(), -1 * point.getY());
+  }
+
+  // 1=N>S 2=E>W 3=S>N 4=W>E  
+  private int translateBearingToDirection(Bearing bearing) {
+    switch(bearing) {
+      case N: return 1;
+      case E: return 2;
+      case S: return 3;
+      case W: return 4;
+    }
+    throw new RuntimeException( "Invalid Bearing: " + bearing );
+  }
+
+  private Bearing translateDirectionToBearing(int direction) {
+    switch(direction) {
+      case 1: return Bearing.N;
+      case 2: return Bearing.E;
+      case 3: return Bearing.S;
+      case 4: return Bearing.W;
+    }
+    return Bearing.UNKNOWN;
+    // let's not throw an Exception here, this is based on other team's input
+    // we can't trust them and don't want to provide them with a DOS tool ;-)
+    // throw new RuntimeException( "Invalid direction: " + direction );
+  }
+  
   private int encodeTrit(Boolean wall) {
     return wall == null ? 2 : (wall ? 1 : 0);
   }
 
   protected static Boolean decodeTrit(int wall) {
     return wall == 2 ? null : (wall == 1);
+  }
+
+  // general purpose send command
+
+  private void send(String msg) {
+    this.client.send(msg + "\n", Config.BT_GHOST_PROTOCOL);
   }
 
   // abstract callback to retrieve own name
