@@ -23,9 +23,6 @@ public interface Sector {
   public Sector putOn(Grid grid);
   public Grid getGrid();
 
-  public Point getPosition();
-
-  public Sector rotate(Rotation rotation);
   public String toString();
 
   public Sector addNeighbour(Sector neighbour, Bearing atBearing);

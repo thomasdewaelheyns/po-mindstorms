@@ -14,18 +14,16 @@ import penoplatinum.SimpleHashMap;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
-import penoplatinum.simulator.Bearing;
 import penoplatinum.util.CantorDiagonal;
 
 // we're using commons collections HashedMap because HashMap isn't implemented
 // on Lejos.
-public class SimpleGrid implements Grid {
+public class LinkedGrid implements Grid {
   // we keep track of the boundaries of our Grid
 
   int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
   // mapping from coordinates to allocating Sector
   private SimpleHashMap<Integer, Sector> sectors = new SimpleHashMap<Integer, Sector>();
-  private List<Sector> taggedSectors = new ArrayList<Sector>();
   // all agents in a row
   private List<Agent> agents = new ArrayList<Agent>();
   // visualization for the Grid, by default none, is used by Simulator
@@ -134,8 +132,7 @@ public class SimpleGrid implements Grid {
   }
 
   public List<Sector> getSectors() {
-    @SuppressWarnings("unchecked")
-    List<Sector> sectors = new ArrayList(this.sectors.values());
+    List<Sector> sectors = new ArrayList<Sector>(this.sectors.values());
     return sectors;
   }
 
@@ -214,31 +211,6 @@ public class SimpleGrid implements Grid {
     return this;
   }
 
-  public Grid sectorsNeedRefresh() {
-    this.view.sectorsNeedRefresh();
-    return this;
-  }
-
-  public Grid wallsNeedRefresh() {
-    // TODO: also separate walls update
-    this.view.sectorsNeedRefresh();
-    return this;
-  }
-
-  public Grid valuesNeedRefresh() {
-    this.view.valuesNeedRefresh();
-    return this;
-  }
-
-  public Grid agentsNeedRefresh() {
-    this.view.agentsNeedRefresh();
-    return this;
-  }
-
-  public void barcodesNeedRefresh() {
-    this.view.barcodesNeedsRefresh();
-  }
-
   public void importGrid(Grid g, TransformationTRT transformation) {
     copyGridTo(this, g, transformation);
   }
@@ -289,20 +261,6 @@ public class SimpleGrid implements Grid {
       thisSector.setTagBearing((s.getTagBearing() + rotation) % 4);
     }
 
-  }
-
-  public void addTaggedSector(Sector s) {
-    for (int i = 0; i < taggedSectors.size(); i++) {
-      if (taggedSectors.get(i) == s) {
-        return;
-      }
-    }
-    taggedSectors.add(s);
-
-  }
-
-  public List<Sector> getTaggedSectors() {
-    return taggedSectors;
   }
 
   public void disengage() {

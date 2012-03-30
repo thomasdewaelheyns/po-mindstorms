@@ -11,6 +11,7 @@ package penoplatinum.grid;
 import java.util.List;
 
 import penoplatinum.util.Point;
+import penoplatinum.util.Rotation;
 import penoplatinum.util.Bearing;
  
 
@@ -46,4 +47,6 @@ public interface Grid {
   public int          getWidth();
   public int          getHeight();
   public int          getSize(); // the amount of Sectors
+
+  public Rotation getRotation();
 }
