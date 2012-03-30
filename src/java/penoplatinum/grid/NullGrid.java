@@ -188,4 +188,29 @@ public class NullGrid implements Grid {
   public Rotation getRotation() {
     return Rotation.NONE;
   }
+
+  @Override
+  public Grid setTransformation(TransformationTRT transform) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid add(Sector s, Point position) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Sector get(Point position) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Iterable<Agent> getAgentsIterator() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Point getAgentPosition(Agent agent) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

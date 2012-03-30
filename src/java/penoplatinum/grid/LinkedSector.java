@@ -288,10 +288,11 @@ public class LinkedSector implements Sector {
     return this.getCertainty() == 15;
   }
 
-  private void withWall(Bearing atBearing) {
+  public Sector withWall(Bearing atBearing) {
     int bit = this.mapBearing(atBearing);
     this.walls = (char) BitwiseOperations.setBit(this.walls, bit);
     this.certainty = (char) BitwiseOperations.setBit(this.certainty, bit);
+    return this;
   }
 
   public void withWalls(char walls) {
