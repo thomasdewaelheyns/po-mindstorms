@@ -22,8 +22,8 @@ public class GridTest extends TestCase {
     Agent reference = this.mockReferenceAgent(Bearing.E);
 
     // add the ReferenceAgent on both grids
-    grid1.put(reference, grid1.getSector(1, 0));
-    grid2.put(reference, grid2.getSector(1, 0));
+    grid1.add(reference, new Point(1, 0));
+    grid2.add(reference, new Point(1, 0));
 
     // rotate grid2
     grid2.rotate(90);
@@ -32,17 +32,7 @@ public class GridTest extends TestCase {
     String original = grid1.toString();
 
     // import grid2 into grid1 based on the reference point
-    grid1.
-    
-    
-    
-    
-    
-    
-    
-    import(grid2
-    , reference
-    );
+    grid1.importGrid(grid2    , reference    );
 
     // validate that grid1 hasn't changed
     assertEquals(grid1.toString(), original,
@@ -50,7 +40,7 @@ public class GridTest extends TestCase {
   }
 
   public void testAddSectorPosition() {
-    LinkedGrid grid = new LinkedGrid();
+    Grid grid = new LinkedGrid();
 
     LinkedSector s1 = new LinkedSector();
     LinkedSector s2 = new LinkedSector();
@@ -108,8 +98,17 @@ public class GridTest extends TestCase {
 
   }
 
+  private Sector getSingleNeighbour(Sector s) {
+    for (Bearing b : Bearing.values()) {
+      if (s.hasNeighbour(b)) {
+        return s.getNeighbour(b);
+      }
+    }
+    return null;
+  }
+
   // utility methods to setup basic components
-  private LinkedGrid createSquareGridWitFourSectors() {
+  private LinkedGrid createSquareGridWithFourSectors() {
     LinkedGrid grid = new LinkedGrid();
     Sector sector1 = new LinkedSector();
     Sector sector2 = new LinkedSector();
@@ -139,5 +138,18 @@ public class GridTest extends TestCase {
      */
 
     return grid;
+  }
+  
+  
+  // create a mock that answers what a perfectly working ReferenceAgent
+  // should answer when used to import a Grid in a Grid
+  private Agent mockReferenceAgent(Bearing bearing) {
+    Agent mockedReferenceAgent = mock(Agent.class);
+    Point mockedPoint = mock(Point.class);
+    when(mockedPoint.getX()).thenReturn(1);
+    when(mockedPoint.getY()).thenReturn(0);
+    when(mockedReferenceAgent.getPosition()).thenReturn(mockedPoint);
+    when(mockedReferenceAgent.getBearing()).thenReturn(bearing);
+    return mockedReferenceAgent;
   }
 }
