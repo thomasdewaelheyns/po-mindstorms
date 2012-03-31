@@ -88,7 +88,7 @@ public class GridTest extends TestCase {
   public void testTransformGrid() {
     // create two identical grids, but with different sector objects
     Grid grid1 = this.createSquareGridWithFourSectors();
-    Grid grid2 = new LinkedGrid();
+    Grid grid2 = this.createTransformedSquareGridWithFourSectors();
 
     // create a common ReferenceAgent
     Agent reference = this.mockReferenceAgent(Bearing.E);
@@ -97,12 +97,12 @@ public class GridTest extends TestCase {
     grid1.add(reference, new Point(1, 0));
     grid2.add(reference, new Point(1, 0));
 
-    // transform grid2
-    grid2.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
+    // transform grid1
+    grid1.setTransformation(this.createGridTransformation());
 
     // Check if the transformation was successfull
     assertEquals(grid1.toString(), grid2.toString(),
-            "Transformed grid2 is not identical to grid1");
+            "Transformed grid1 is not identical to grid2");
   }
 
   public void testAddSectorPosition() {
@@ -214,7 +214,7 @@ public class GridTest extends TestCase {
     Sector sector4 = new LinkedSector();
 
     // Add root sector to grid, rest will follow
-    grid.add(sector1, new Point(0, 0));
+    grid.add(sector1, new Point(0, 2));
 
     // Add using addNeighbour
     sector1.addNeighbour(sector2, Bearing.E);
@@ -222,10 +222,10 @@ public class GridTest extends TestCase {
     sector2.addNeighbour(sector4, Bearing.S);
 
     // Set the walls
-    sector1.withWall(Bearing.N).withWall(Bearing.W);
-    sector2.withWall(Bearing.N).withWall(Bearing.E).withWall(Bearing.S);
+    sector1.withWall(Bearing.N).withWall(Bearing.W).withWall(Bearing.E);
+    sector2.withWall(Bearing.N).withWall(Bearing.W).withWall(Bearing.E);
     sector3.withWall(Bearing.S).withWall(Bearing.W);
-    sector4.withWall(Bearing.S).withWall(Bearing.E).withWall(Bearing.N);
+    sector4.withWall(Bearing.S).withWall(Bearing.E);
 
     /* Original looks like this:
      *    +--+--+
@@ -237,13 +237,23 @@ public class GridTest extends TestCase {
      * with topleft (0,0)
      * 
      * Transformation: (-1,-1,Rotation.L90,1,2)
+     * 
+     * Should look like:
+     * 
+     *    +--++++
+     *    |  |  |
+     *    +  +  +
+     *    |     |
+     *    +--+--+
+     * 
+     * with topleft (0,2)
      */
 
     return grid;
   }
 
   private TransformationTRT createGridTransformation() {
-    return new TransformationTRT().setTransformation(-1,-1,Rotation.L90,1,2);
+    return new TransformationTRT().setTransformation(-1, -1, Rotation.L90, 1, 2);
   }
 
   // create a mock that answers what a perfectly working ReferenceAgent
