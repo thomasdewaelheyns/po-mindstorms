@@ -8,6 +8,7 @@
                 <root id="src.java.dir"/>
             </source-roots>
             <test-roots>
+                <root id="test.run.dir"/>
                 <root id="test.test.dir"/>
             </test-roots>
         </data>
