@@ -6,6 +6,8 @@ import static org.mockito.Mockito.*;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
+import penoplatinum.util.Rotation;
+import penoplatinum.util.TransformationTRT;
 
 public class GridTest extends TestCase {
 
@@ -26,17 +28,81 @@ public class GridTest extends TestCase {
     grid2.add(reference, new Point(1, 0));
 
     // rotate grid2
-    grid2.rotate(90);
+    grid2.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
 
     // create a snapshot of grid1
     String original = grid1.toString();
 
     // import grid2 into grid1 based on the reference point
-    grid1.importGrid(grid2    , reference    );
+    grid2.copyTo(grid1);
 
     // validate that grid1 hasn't changed
     assertEquals(grid1.toString(), original,
             "grid1 has changed after import of identical grid.");
+  }
+
+  public void testSetTransformationReversible() {
+    // create two identical grids, but with different sector objects
+    Grid grid1 = this.createSquareGridWithFourSectors();
+
+    // create a snapshot of grid1
+    String original = grid1.toString();
+
+    // create a common ReferenceAgent
+    Agent reference = this.mockReferenceAgent(Bearing.E);
+
+    // add the ReferenceAgent on both grids
+    grid1.add(reference, new Point(1, 0));
+
+    // rotate grid2
+    grid1.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
+    grid1.setTransformation(TransformationTRT.fromRotation(Rotation.NONE));
+
+
+    // validate that grid1 hasn't changed
+    assertEquals(grid1.toString(), original,
+            "grid1 has changed after setting transformations.");
+  }
+
+  public void testRotatedGridsEqual() {
+    // create two identical grids, but with different sector objects
+    Grid grid1 = this.createSquareGridWithFourSectors();
+    Grid grid2 = this.createSquareGridWithFourSectors();
+
+    // create a common ReferenceAgent
+    Agent reference = this.mockReferenceAgent(Bearing.E);
+
+    // add the ReferenceAgent on both grids
+    grid1.add(reference, new Point(1, 0));
+    grid2.add(reference, new Point(1, 0));
+
+    // rotate grid2
+    grid1.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
+    grid2.setTransformation(TransformationTRT.fromRotation(Rotation.R270));
+
+    // validate that grid1 hasn't changed
+    assertEquals(grid1.toString(), grid2.toString(),
+            "grid1 is not equal to grid2 when rotated using opposite windings.");
+  }
+
+  public void testTransformGrid() {
+    // create two identical grids, but with different sector objects
+    Grid grid1 = this.createSquareGridWithFourSectors();
+    Grid grid2 = new LinkedGrid();
+
+    // create a common ReferenceAgent
+    Agent reference = this.mockReferenceAgent(Bearing.E);
+
+    // add the ReferenceAgent on both grids
+    grid1.add(reference, new Point(1, 0));
+    grid2.add(reference, new Point(1, 0));
+
+    // transform grid2
+    grid2.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
+
+    // Check if the transformation was successfull
+    assertEquals(grid1.toString(), grid2.toString(),
+            "Transformed grid2 is not identical to grid1");
   }
 
   public void testAddSectorPosition() {
@@ -139,8 +205,47 @@ public class GridTest extends TestCase {
 
     return grid;
   }
-  
-  
+
+  private LinkedGrid createTransformedSquareGridWithFourSectors() {
+    LinkedGrid grid = new LinkedGrid();
+    Sector sector1 = new LinkedSector();
+    Sector sector2 = new LinkedSector();
+    Sector sector3 = new LinkedSector();
+    Sector sector4 = new LinkedSector();
+
+    // Add root sector to grid, rest will follow
+    grid.add(sector1, new Point(0, 0));
+
+    // Add using addNeighbour
+    sector1.addNeighbour(sector2, Bearing.E);
+    sector1.addNeighbour(sector3, Bearing.S);
+    sector2.addNeighbour(sector4, Bearing.S);
+
+    // Set the walls
+    sector1.withWall(Bearing.N).withWall(Bearing.W);
+    sector2.withWall(Bearing.N).withWall(Bearing.E).withWall(Bearing.S);
+    sector3.withWall(Bearing.S).withWall(Bearing.W);
+    sector4.withWall(Bearing.S).withWall(Bearing.E).withWall(Bearing.N);
+
+    /* Original looks like this:
+     *    +--+--+
+     *    |     |
+     *    +  +--+
+     *    |     +
+     *    +--+--+
+     * 
+     * with topleft (0,0)
+     * 
+     * Transformation: (-1,-1,Rotation.L90,1,2)
+     */
+
+    return grid;
+  }
+
+  private TransformationTRT createGridTransformation() {
+    return new TransformationTRT().setTransformation(-1,-1,Rotation.L90,1,2);
+  }
+
   // create a mock that answers what a perfectly working ReferenceAgent
   // should answer when used to import a Grid in a Grid
   private Agent mockReferenceAgent(Bearing bearing) {
@@ -148,8 +253,8 @@ public class GridTest extends TestCase {
     Point mockedPoint = mock(Point.class);
     when(mockedPoint.getX()).thenReturn(1);
     when(mockedPoint.getY()).thenReturn(0);
-    when(mockedReferenceAgent.getPosition()).thenReturn(mockedPoint);
-    when(mockedReferenceAgent.getBearing()).thenReturn(bearing);
+//    when(mockedReferenceAgent.getPosition()).thenReturn(mockedPoint);
+//    when(mockedReferenceAgent.getBearing()).thenReturn(bearing);
     return mockedReferenceAgent;
   }
 }

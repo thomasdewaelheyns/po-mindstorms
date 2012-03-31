@@ -13,6 +13,7 @@ import static org.mockito.Mockito.*;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Rotation;
+import penoplatinum.util.TransformationTRT;
 
 
 public class LinkedSectorTest extends TestCase {
@@ -48,7 +49,7 @@ public class LinkedSectorTest extends TestCase {
 
     sector.putOn(mockedGrid);
     
-    when(mockedGrid.getRotation()).thenReturn(Rotation.R90);
+    when(mockedGrid.getTransformation()).thenReturn(TransformationTRT.fromRotation( Rotation.R90));
 
     assertTrue ( "90 degree rotated sector doesn't have N wall.",
                  sector.hasWall(Bearing.N) );
@@ -59,7 +60,7 @@ public class LinkedSectorTest extends TestCase {
     assertFalse( "90 degree rotated sector has S wall.",
                  sector.hasWall(Bearing.S) );
 
-    when(mockedGrid.getRotation()).thenReturn(Rotation.R180);
+    when(mockedGrid.getTransformation()).thenReturn(TransformationTRT.fromRotation(Rotation.R180));
 
     assertTrue ( "180 degree rotated sector doesn't have E wall.",
                  sector.hasWall(Bearing.E) );
@@ -70,7 +71,7 @@ public class LinkedSectorTest extends TestCase {
     assertFalse( "180 degree rotated sector has N wall.",
                  sector.hasWall(Bearing.N) );
 
-    when(mockedGrid.getRotation()).thenReturn(Rotation.R270);
+    when(mockedGrid.getTransformation()).thenReturn(TransformationTRT.fromRotation(Rotation.R270));
 
     assertTrue ( "270 degree rotated sector doesn't have S wall.",
                  sector.hasWall(Bearing.S) );
@@ -81,7 +82,7 @@ public class LinkedSectorTest extends TestCase {
     assertFalse( "270 degree rotated sector has N wall.",
                  sector.hasWall(Bearing.N) );
 
-    when(mockedGrid.getRotation()).thenReturn(Rotation.R360);
+    when(mockedGrid.getTransformation()).thenReturn(TransformationTRT.fromRotation(Rotation.R360));
 
     assertTrue ( "360 degree rotated sector doesn't have N wall.",
                  sector.hasWall(Bearing.N) );
@@ -95,12 +96,55 @@ public class LinkedSectorTest extends TestCase {
 
   public void testAddNeighbour()
   {
-    fail();
-//    use case 1 : onze code heeft een sector en wil er een sector aanhangen (bvb bij sonarsweep en nowalls == nieuwe unknown sector buur)
-//procedure:
-//knownSector.createNeighbour(Bearing)
-//die maakt een nieuwe sector en hangt die aan de bearing
-//  
+    // Layout:
+    // s2 | s3
+    //    ----
+    // s1 | s4
+    
+    
+    Sector s1 = new LinkedSector();
+    Sector s2 = new LinkedSector();
+    Sector s3 = new LinkedSector();
+    Sector s4 = new LinkedSector();
+    
+    s1.addWall(Bearing.E).clearWall(Bearing.E);
+    s2.addWall(Bearing.E);
+    s3.addWall(Bearing.S);
+    
+    
+    s1.addNeighbour(s2, Bearing.N);
+    assertEquals(s2, s1.getNeighbour(Bearing.N));
+    assertEquals(s1, s2.getNeighbour(Bearing.S));
+    assertFalse(s1.hasWall(Bearing.N));
+    assertFalse(s2.hasWall(Bearing.S));
+    assertTrue(s1.isKnown(Bearing.N));
+    assertTrue(s2.isKnown(Bearing.S));
+    
+    s2.addNeighbour(s3, Bearing.E);
+    assertEquals(s2, s3.getNeighbour(Bearing.W));
+    assertEquals(s3, s2.getNeighbour(Bearing.E));
+    assertTrue(s2.hasWall(Bearing.E));
+    assertTrue(s3.hasWall(Bearing.W));
+    assertTrue(s2.isKnown(Bearing.E));
+    assertTrue(s3.isKnown(Bearing.W));
+    
+    
+    
+    s1.addNeighbour(s4, Bearing.E);
+    assertEquals(s4, s1.getNeighbour(Bearing.E));
+    assertEquals(s1, s4.getNeighbour(Bearing.W));
+    assertEquals(s3, s4.getNeighbour(Bearing.N));
+    assertEquals(s4, s3.getNeighbour(Bearing.S));
+    assertTrue(s1.hasWall(Bearing.E));
+    assertTrue(s4.hasWall(Bearing.W));
+    assertTrue(s1.isKnown(Bearing.E));
+    assertTrue(s4.isKnown(Bearing.W));
+    
+    assertTrue(s3.hasWall(Bearing.S));
+    assertTrue(s4.hasWall(Bearing.N));
+    assertTrue(s3.isKnown(Bearing.S));
+    assertTrue(s4.isKnown(Bearing.N));
+    
   }
   
   

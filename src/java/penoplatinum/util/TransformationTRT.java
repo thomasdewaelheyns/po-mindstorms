@@ -59,5 +59,10 @@ public class TransformationTRT {
     this.transform(point);
     return point;
   }
+  
+  public static TransformationTRT fromRotation(Rotation r)
+  {
+    return new TransformationTRT().setTransformation(0, 0, r, 0, 0);
+  }
 
 }

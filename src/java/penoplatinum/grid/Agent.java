@@ -29,4 +29,10 @@ public interface Agent {
   // an agent can be active or not
   public Agent    activate();
   public boolean  isActive();
+  
+  /**
+   * Creates a copy if this agent, for use on another grid
+   * @return 
+   */
+  public Agent createCopy();
 }

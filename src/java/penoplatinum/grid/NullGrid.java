@@ -201,16 +201,26 @@ public class NullGrid implements Grid {
 
   @Override
   public Sector get(Point position) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
   }
 
   @Override
   public Iterable<Agent> getAgentsIterator() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
   }
 
   @Override
   public Point getAgentPosition(Agent agent) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
+  }
+
+  @Override
+  public TransformationTRT getTransformation() {
+    return TransformationTRT.Identity;
+  }
+
+  @Override
+  public Grid copyTo(Grid target) {
+    return this;
   }
 }

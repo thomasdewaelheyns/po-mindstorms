@@ -91,13 +91,9 @@ public class LinkedGrid implements Grid {
 
     return this;
   }
-  
-  public Sector getSector(Sector s, Bearing b)
-  {
-    
+
+  public Sector getSector(Sector s, Bearing b) {
   }
-  
-  
 
   private void resize(int left, int top) {
     if (left < this.minLeft) {
@@ -175,23 +171,21 @@ public class LinkedGrid implements Grid {
     return this;
   }
 
-  // dumps the Grid using its values
-  public Grid dump() {
+  @Override
+  public String toString() {
+    String ret = "";
+    
     for (int top = this.getMinTop(); top <= this.getMaxTop(); top++) {
       for (int left = this.getMinLeft(); left <= this.getMaxLeft(); left++) {
         Sector sector = this.getSector(left, top);
-        int walls, value;
         if (sector != null) {
-          walls =
-                  value = sector.getValue();
-//          System.out.printf("%5d ", (int) sector.getValue());
+          ret += "("+left+","+top+"): " + sector.toString();
+          ret += "\n";
         } else {
-//          System.out.print("../.....");
         }
       }
-      System.out.println("");
     }
-    return this;
+    return ret;
   }
 
   public Grid addAgent(Agent agent) {

@@ -25,8 +25,14 @@ public interface Sector {
 
   public String toString();
 
+  /**
+   * 
+   * @param neighbour
+   * @param atBearing
+   * @return 
+   */
   public Sector addNeighbour(Sector neighbour, Bearing atBearing);
-  public Sector createNeighbour(Bearing atBearing);
+//  public Sector createNeighbour(Bearing atBearing);
   public boolean hasNeighbour(Bearing atBearing);
   public Sector getNeighbour(Bearing atBearing);
 

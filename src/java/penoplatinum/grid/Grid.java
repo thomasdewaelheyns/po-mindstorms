@@ -48,10 +48,10 @@ public interface Grid {
 //
 
   /**
-   * Gets the grid's currently set rotation
+   * Gets the grid's current transformation
    * @return 
    */
-  public Rotation getRotation();
+  public TransformationTRT getTransformation();
 
   /**
    * Transform the grid. All grid functions will work as if the grid is 
@@ -108,5 +108,19 @@ public interface Grid {
    */
   public Iterable<Agent> getAgentsIterator();
 
+  /**
+   * Returns the position given agent is located at. 
+   * 
+   * @param agent
+   * @return 
+   */
   public Point getAgentPosition(Agent agent);
+  
+  /**
+   * Copies the sectors + wall information to the target grid.
+   * Agents are cloned using the Agent.createCopy() method
+   * @param target
+   * @return 
+   */
+  public Grid copyTo(Grid target);
 }

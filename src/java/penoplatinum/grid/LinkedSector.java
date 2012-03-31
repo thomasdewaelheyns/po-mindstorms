@@ -329,6 +329,6 @@ public class LinkedSector implements Sector {
   }
 
   private Bearing applyRotation(Bearing bearing) {
-    return bearing.rotate(this.grid.getRotation().invert());
+    return bearing.rotate(this.grid.getTransformation().getRotation().invert());
   }
 }
