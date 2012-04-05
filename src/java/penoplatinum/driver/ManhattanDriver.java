@@ -1,109 +1,146 @@
 package penoplatinum.driver;
 
+/**
+ * ManhattanDriver
+ * 
+ * Drives in a Manhattan/Taxi-cab way on fixed size sectors and only in 
+ * straight corners. Moves are expressed in number of sectors and turns are
+ * expressed in a number of 90 degree corners.
+ *
+ * It can be extended through a Behaviour system. A Behaviour consists of a
+ * check for a certain condition and a method to retrieve next actions to 
+ * perform when the condition is met.
+ *
+ * @author: Team Platinum
+ */
+
 import java.util.List;
 import java.util.ArrayList;
 
-import penoplatinum.pacman.GhostAction;
-import penoplatinum.model.GhostModel;
+import penoplatinum.robot.Robot;
 
-import penoplatinum.simulator.Model;
-import penoplatinum.simulator.RobotAPI;
+import penoplatinum.driver.behaviour.DriverBehaviour;
+
+import penoplatinum.driver.action.DriverAction;
+import penoplatinum.driver.action.IdleDriverAction;
+import penoplatinum.driver.action.MoveDriverAction;
+import penoplatinum.driver.action.TurnDriverAction;
+
 
 public class ManhattanDriver implements Driver {
-  private GhostModel model;   // TODO: change GhostModel to minimal interface
-  private RobotAPI   api;     //       needed by a ManhattanDriver
+  // a reference to the robot we're driving
+  private Robot robot;
 
-  private int todo   = GhostAction.NONE;
-  private int action = GhostAction.NONE;
+  // the behaviours that extend our basic movement actions
+  private List<DriverBehaviour> behaviours = new ArrayList<DriverBehaviour>();
+
+  // internal basic movement actions
+  private IdleDriverAction IDLE;
+  private MoveDriverAction MOVE;
+  private TurnDriverAction TURN;
+
+  // although they're called actions, they in fact implement a strategy 
+  // pattern; this is the current action/strategy
+  private DriverAction currentAction;
+
+  // internal flag to keep track if a given instruction is interrupted
+  private boolean instructionIsInterrupted;
+
   
-  public Driver useModel(Model model) {
-    this.model = (GhostModel)model;
+  public ManhattanDriver() {
+    this.setupActions();
+    this.perform(IDLE);
+  }
+  
+  private void setupActions() {
+    this.IDLE = new IdleDriverAction();
+  }
+  
+  protected ManhattanDriver addBehaviour(DriverBehaviour behaviour) {
+    this.behaviours.add(behaviour);
     return this;
   }
 
-  public Driver useRobotAPI(RobotAPI api) {
-    this.api = api;
+  public ManhattanDriver drive(Robot robot) {
+    this.robot = robot;
+    this.setupMovementActions();
     return this;
   }
   
-  // simple implementation, performing one action per step
+  private void setupMovementActions() {
+    this.MOVE = new MoveDriverAction(this.robot.getModel());
+    this.TURN = new TurnDriverAction(this.robot.getModel());
+  }
+
+  // movement methods are honoured directly and change the current strategy
+  public ManhattanDriver move(double distance) {
+    this.perform(MOVE.set(distance));
+    return this;
+  }
+  
+  public ManhattanDriver turn(int angle) {
+    this.perform(TURN.set(angle));
+    return this;
+  }
+  
+  // changing state/action is done through this method
+  // it makes sure that the internal state of the Driver is consistent
+  private void perform(DriverAction nextAction) {
+    this.instructionIsInterrupted = false;
+    this.currentAction = nextAction;
+  }
+
+  // changing state/action is done through this method
+  // it makes sure that the internal state of the Driver is consistent
+  private void interrupt(DriverAction nextAction) {
+    this.instructionIsInterrupted = nextAction.interrupts();
+    this.currentAction = nextAction;
+  }
+  
+  // changing state/action is done through this method
+  // it makes sure that the internal state of the Driver is consistent
+  private void goIdle() {
+    this.currentAction = IDLE;
+  }
+
+  // return the busy state of our current action
   public boolean isBusy() {
-    // a dangling feedback-update
-    if( this.action != GhostAction.NONE ) {
-      this.postProcessPreviousStep();
-    }
-    return this.todo != GhostAction.NONE;
-  }
-  
-  private void log(String msg) {
-    System.out.printf( "[%10s] %2d,%2d / Driver : %s\n", 
-                       this.model.getGridPart(). getAgent().getName(),
-                       this.model.getGridPart().getAgent().getLeft(),
-                       this.model.getGridPart().getAgent().getTop(),
-                       msg );
+    return this.currentAction.isBusy();
   }
 
-  // simple implementation, performing one action per step
-  public void step() {
-    this.postProcessPreviousStep();
-    // at this point, the real-world and the Model are in sync
-    this.model.getGridPart().getGrid().refresh();
-    this.performNextStep();
+  // when we can proceed with our actions, we first check if none of the 
+  // behaviours force us to change our currentAction, but only if the current
+  // action allows to be interrupted
+  public ManhattanDriver proceed() {
+    if( this.currentAction.canBeInterrupted() ) {
+      this.applyBehaviours();
+    }
+    this.currentAction.work(this.robot.getRobotAPI());
+
+    // when we're done we go idle...
+    if( ! this.currentAction.isBusy() ) {
+      this.goIdle();
+    }
+    return this;
   }
 
-  // update the Model after successfully completing a requested action
-  private void postProcessPreviousStep() {
-    switch(this.action) {
-      case GhostAction.FORWARD:
-        this.log( "moving model forward..." );
-        this.model.getGridPart().moveForward();
-        break;
-      case GhostAction.TURN_LEFT:
-        this.log( "turning model left..." );
-        this.model.getGridPart().turnLeft();
-        break;
-      case GhostAction.TURN_RIGHT:
-        this.log( "turning model right..." );
-        this.model.getGridPart().turnRight();
-        break;
-      default:
+  // loops over the different behaviours, checking if they require action and
+  // performing the action they provide.
+  private void applyBehaviours() {
+    for( DriverBehaviour behaviour : this.behaviours ) {
+      if( behaviour.requiresAction(this.robot.getModel(), 
+                                   this.currentAction) )
+      {
+        this.interrupt(behaviour.getNextAction());
+        break; // we don't allow behaviours to override each other
+               // the first behaviour that is triggered is honoured
+      }
     }
-    this.action = GhostAction.NONE;
   }
   
-  private void performNextStep() {
-    if( this.todo == GhostAction.NONE ) { return; }
-
-    // get the next action from the list and execute it through the RobotAPI
-    this.action = this.todo;
-    this.log("performing next step : " + this.action );
-    switch(this.action) {
-      case GhostAction.FORWARD:
-        this.log( "going forward..." );
-        if( ! this.api.move( 0.2 ) ) {
-          // THIS SHOULDN'T HAPPEN, it happens when we want to move forward 
-          // and an agent has moved into our targetted spot while we were
-          // turning --> solution: don't do combined actions, but navigate
-          // only one step at a time, including turning
-          // if we can't perform this action, so don't let it be processed
-          // on the Model and therefore reset it here
-          this.action = GhostAction.RESET;
-        }
-        break;
-      case GhostAction.TURN_LEFT:
-        this.log( "turning left..." );
-        this.api.turn(-90);
-        break;
-      case GhostAction.TURN_RIGHT:
-        this.log( "turn right..." );
-        this.api.turn(90);
-        break;
-    }
-    this.todo = GhostAction.NONE;
-  }
-  
-  public void perform(int action) {
-    this.todo = action;
-    this.step();
+  // so, did we finish what we were instructed ?
+  // only if we are doing nothing and we weren't interrupted
+  public boolean completedLastInstruction() {
+    return (! this.isBusy()) && (! this.instructionIsInterrupted);
   }
 }

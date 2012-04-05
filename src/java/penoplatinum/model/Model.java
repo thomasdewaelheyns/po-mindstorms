@@ -1,68 +1,38 @@
-package penoplatinum.simulator;
+package penoplatinum.model;
 
-import java.util.List;
+/**
+ * Model
+ *
+ * Central information store for everything concerning the robot and its
+ * environment. It is divided into logical parts, to keep the implementation
+ * packaged in small classes.
+ *
+ * @author Team Platinum
+ */
 
-import penoplatinum.grid.Agent;
-import penoplatinum.grid.Sector;
-import penoplatinum.grid.Grid;
-import penoplatinum.grid.GridView;
-import penoplatinum.model.BarcodeModelPart;
-import penoplatinum.model.GapModelPart;
-import penoplatinum.model.GridModelPart;
-import penoplatinum.model.LightModelPart;
-import penoplatinum.model.MessageModelPart;
-import penoplatinum.model.SensorModelPart;
-import penoplatinum.model.SonarModelPart;
-import penoplatinum.model.WallsModelPart;
-import penoplatinum.util.Buffer;
-import penoplatinum.util.LightColor;
+import penoplatinum.model.part.ModelPart;
+
 import penoplatinum.model.processor.ModelProcessor;
 
-import penoplatinum.model.Reporter;
+import penoplatinum.reporter.Reporter;
+
 
 public interface Model {
-  // slightly common
-  public Model  setProcessor(ModelProcessor processor);
-  
-  // from OriginalModel
-  // shorthands mapping the sensors/numbers to their technical ports
-  public static final int M1 = 0; // right motor
-  public static final int M2 = 1; // left motor
-  public static final int M3 = 2; // sonar motor
-  public static final int S1 = 3; // irSensor WAS touch right
-  public static final int S2 = 4; // empty WAS touch left
-  public static final int S3 = 5; // sonarsensor
-  public static final int S4 = 6; // lightsensor
-  public static final int MS1 = 7; // Motor state 1
-  public static final int MS2 = 8; // Motor state 1
-  public static final int MS3 = 9; // Motor state 1
-  public static final int IR0 = 10;
-  public static final int IR1 = 11;
-  public static final int IR2 = 12;
-  public static final int IR3 = 13;
-  public static final int IR4 = 14;
-  
-  public static final int SENSORVALUES_NUM = 15; // number of sensorvalues 
-  public static final int MOTORSTATE_FORWARD = 1;
-  public static final int MOTORSTATE_BACKWARD = 2;
-  public static final int MOTORSTATE_STOPPED = 3;
+  // adds a part to the Model
+  public Model register(ModelPart part);
+  // retrieves a registered ModelPart based on its assigned ID
+  public ModelPart getPart(int id);
 
-  public BarcodeModelPart getBarcodePart();
+  // a Model can be processed by ModelProcessors
+  public Model setProcessor(ModelProcessor processor);
 
-  public GapModelPart getGapPart();
-
-  public GridModelPart getGridPart();
-
-  public LightModelPart getLightPart();
-
-  public MessageModelPart getMessagePart();
-
-  public SensorModelPart getSensorPart();
-
-  public SonarModelPart getSonarPart();
-
-  public WallsModelPart getWallsPart();
-
+  // sets a reporter that reports on the state of the robot
   public Model setReporter(Reporter reporter);
+  // provides the reporter to other parts of the robot
   public Reporter getReporter();
+
+  // after modifications have been made to the Model, this method kicks of
+  // the internal workings of the Model to bring it up-to-date and triggers
+  // a reporter to report on any interesting changes
+  public Model refresh();
 }

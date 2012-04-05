@@ -10,7 +10,8 @@ package penoplatinum.robot;
  * 
  * @author: Team Platinum
  */
- 
+
+import penoplatinum.model.Model;
 import penoplatinum.driver.Driver;
 import penoplatinum.navigator.Navigator;
 import penoplatinum.gateway.GatewayClient;
@@ -37,13 +38,12 @@ public interface Robot {
   
   // - a Reporter, that interrogates the Robot and can send information out
   public Robot useReporter(Reporter reporter);
-    
+
+  // - an internal Model
+  public Model getModel();
+  
   // incoming commands are processed
   public void processCommand(String cmd);
-
-  // accessor for the internal model of the Robot
-  // TODO: Commented out to allow partial compilation
-  // public Model getModel();
 
   // in this method, the robot performs one step of its event loop. in this
   // step, it should poll its sensors, update its model and ask the 

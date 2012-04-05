@@ -1,6 +1,6 @@
 package penoplatinum.model.processor;
 
-import penoplatinum.simulator.Model;
+import penoplatinum.model.Model;
 
 /**
  * ModelProcessor abstract base class
