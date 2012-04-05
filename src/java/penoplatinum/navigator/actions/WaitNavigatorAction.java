@@ -1,6 +1,6 @@
 package penoplatinum.navigatoractions;
 
-import penoplatinum.actions.BaseAction;
+import penoplatinum.actions.ActionSkeleton;
 import penoplatinum.actions.StopAction;
 import penoplatinum.simulator.Model;
 
@@ -11,7 +11,7 @@ import penoplatinum.simulator.Model;
 public class WaitNavigatorAction implements NavigatorAction {
 
   @Override
-  public BaseAction getBaseAction(Model m) {
+  public ActionSkeleton getActionSkeleton(Model m) {
     return new StopAction(500);
   }
 

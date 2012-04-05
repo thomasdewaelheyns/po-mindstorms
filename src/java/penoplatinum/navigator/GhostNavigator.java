@@ -29,50 +29,18 @@ public class GhostNavigator implements Navigator {
     this.model = (GhostModel)model;
     return this;
   }
-  
-  private void log(String msg) {
-//    Utils.Log(msg);
-//    System.out.printf( "[%10s] %2d,%2d / Navigator  : %s\n", 
-//                       this.model.getAgent().getName(),
-//                       this.model.getAgent().getLeft(),
-//                       this.model.getAgent().getTop(),
-//                       msg );
-  }
 
   public int nextAction() {
-    // We wait until the agent is active == everybody is there to run
-    Agent  agent  = this.model.getGridPart().getAgent();
-    if( ! agent.isActive() ) {
-      return GhostAction.NONE;
-    }
-
-    // TODO: add check if next planned action is still valid, else also
-    //       create a new plan based on the new situation
     if( this.plan.size() == 0 ) {
       this.createNewPlan();
-//      this.log("Got a new Plan : " + this.plan );
     }
-    if( this.plan.size() == 0 ) {
-      throw new RuntimeException( "Out of plans ..." );
-    }
-//    this.log("Executing plan: " + this.plan);
+
     return this.plan.remove(0);
   }
 
   public Boolean reachedGoal() {
-    // TODO: implement some termination, we need it to announce
-    //       the CAPTURE
+    // TODO: implement some termination, we need it to announce the CAPTURE
     return false;
-  }
-
-  public double getDistance() {
-    // not used, but if it were, it would always be half a Sector = 20cm
-    return 20;
-  }
-  
-  public double getAngle() {
-    // not used, but if it were, it would always be a quarter of a Sector
-    return 90;
   }
 
   // get the values of the 4 adjacent sectors and decide were to go
@@ -114,6 +82,10 @@ public class GhostNavigator implements Navigator {
     }
     
     this.createActions(forMove);
+    
+    if( this.plan.size() < 1 ) {
+      throw new RuntimeException("couldn't create a plan...");
+    }
   }
 
   // get the values of all 4 adjacent Sectors (N,E,S,W)
@@ -133,25 +105,6 @@ public class GhostNavigator implements Navigator {
       hasWall      = hasWall != null && hasWall;
       info[atLocation] = ! hasNeighbour || hasWall ?
                          -1 : sector.getNeighbour(atLocation).getValue();
-      // if we know there is an agent on the next sector, lower the value
-      // drastically
-      /*if( hasNeighbour &&   //Dit werkt niet indien er een pacman op staat, dan rijdt hij weg!
-          sector.getNeighbour(atLocation).hasAgent() )
-      {
-        info[atLocation] = -1;
-      } else {/**/
-        // TEMPORARY CHEATING TO SOLVE DETECT-OTHER-AGENT-AS-WALL PROBLEM
-        // we don't want to allow multiple agents on the same sector
-//        Agent proxy = MiniSimulation.goalGrid.getAgent(agent.getName());
-//        int proxyOrigin = proxy.getOriginalBearing();
-//        int bearingOfProxy = Bearing.withOrigin(atLocation, proxyOrigin);
-//        Sector neighbour = proxy.getSector().getNeighbour(bearingOfProxy);
-//        if( neighbour != null && neighbour.hasAgent() ) {
-//          // System.out.println( agent.getName() + " : other agent @ " + atLocation + " == " + bearingOfProxy );
-//          // try { System.in.read(); } catch(Exception e) {}
-//          info[atLocation] = -1;
-//        }
-      /*}/**/
     }
 
     return info;

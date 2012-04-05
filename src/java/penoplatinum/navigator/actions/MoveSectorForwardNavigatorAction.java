@@ -1,13 +1,13 @@
 package penoplatinum.navigatoractions;
 
-import penoplatinum.actions.BaseAction;
+import penoplatinum.actions.ActionSkeleton;
 import penoplatinum.actions.MoveAction;
 import penoplatinum.simulator.Model;
 
 public class MoveSectorForwardNavigatorAction implements NavigatorAction {
 
   @Override
-  public BaseAction getBaseAction(Model m) {
+  public ActionSkeleton getActionSkeleton(Model m) {
     return new MoveAction(m, 0.4f);
   }
 

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.actions;
 
 import penoplatinum.simulator.Model;
@@ -11,7 +7,8 @@ import penoplatinum.simulator.Navigator;
  *
  * @author MHGameWork
  */
-public class SideWallCorrectAction extends BaseAction {
+
+public class SideWallCorrectAction extends ActionSkeleton {
 
   private Model model;
   private final float correction;
@@ -30,9 +27,6 @@ public class SideWallCorrectAction extends BaseAction {
     Model m = model;
     if (first) {
       first = false;
-
-
-
       setAngle(90);
       setDistance(correction);
       return Navigator.STOP;

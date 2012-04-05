@@ -13,7 +13,7 @@ import penoplatinum.simulator.RobotAPI;
  *
  * @author: Team Platinum
  */
-public class GapDetectionRestoreAction extends BaseAction {
+public class GapDetectionRestoreAction extends ActionSkeleton {
 
   private final RobotAPI api;
   private Model model;

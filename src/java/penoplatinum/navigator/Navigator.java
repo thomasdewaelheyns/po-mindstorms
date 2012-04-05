@@ -12,6 +12,7 @@ package penoplatinum.navigator;
 
 import penoplatinum.robot.Robot;
 
+
 public interface Navigator {
   public static final int NONE = 0;
   public static final int MOVE = 1;

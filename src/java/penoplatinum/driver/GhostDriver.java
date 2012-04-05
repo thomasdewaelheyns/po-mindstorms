@@ -1,93 +1,95 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.driver;
 
-import penoplatinum.util.Utils;
-import penoplatinum.actions.ActionQueue;
-import penoplatinum.actions.AlignPerpendicularLine;
-import penoplatinum.actions.MoveAction;
-import penoplatinum.actions.StopAction;
-import penoplatinum.actions.TurnAction;
-import penoplatinum.pacman.GhostAction;
-import penoplatinum.model.GhostModel;
-import penoplatinum.simulator.Line;
-import penoplatinum.simulator.Model;
-import penoplatinum.simulator.Navigator;
-import penoplatinum.simulator.RobotAPI;
-
 /**
+ * An implementation for a Ghost-style Robot. It uses a state-like pattern to 
+ * implement its logic.
  * 
- * @author PenoPlatinum
+ * @author Team Platinum
  */
+
+import penoplatinum.robot.Robot;
+
+import penoplatinum.navigator.Navigator;
+
+import penoplatinum.driver.events.*;
+import penoplatinum.driver.actions.*;
+
+import penoplatinum.model.Model;
+import penoplatinum.model.GhostModel;
+
+
 public class GhostDriver implements Driver {
 
-  private RobotAPI api;
+  // a reference to the robot we're driving
+  private Robot robot;
+  
+  // we implement a state pattern using the actions the driver can perform
+  private DriverAction idleAction;
+  private DriverAction turnAction;
+  private DriverAction moveAction;
+  // a reference to one of the actions above...
+  private DriverAction currentAction = new NullDriverAction();
 
-  public GhostDriver() {
-    queue.add(new StopAction());
+
+  public Driver drive(Robot robot) {
+    this.robot = robot;
+    this.setupActions();
+    return this;
+  }
+  
+  private void setupActions() {
+    this.idleAction = new IdleDriverAction().
+  }
+  
+  // based on the robot we now can access different resources we need:
+  private GhostModel getModel() {
+    return (GhostModel)this.robot.getModel();
+  }
+  
+  private RobotAPI getRobotAPI() {
+    return this.robot.getRobotAPI();
+  }
+  
+  public GhostDriver move(double distance) {
+    this.currentAction = moveAction.move(distance);
+    return this;
+  }
+  
+  public GhostDriver turn(int angle) {
+    this.currentAction = turnAction.turn(angle);
+    return this;
   }
 
   public boolean isBusy() {
-    return navigatorAction != null;
-  }
-  private Integer navigatorAction;
-  private int driverState;
-  private final int INIT = -1;
-  private final int STARTING = 0;
-  private final int COMPLETE = 1;
-
-  private void abortDriving() {
-    navigatorAction = null;
+    return this.currentAction.isBusy();
   }
 
   public void step() {
-    
-//    if (model.isReadingBarcode())
-//    {
-//      api.setSpeed(Model.M1, 250);
-//      api.setSpeed(Model.M2, 250);
-//    }
-//    else
-//    {
-//      api.setSpeed(Model.M1, 500);
-//      api.setSpeed(Model.M2, 500);
-//    }
-    // ask the navigator what to do next
-    switch (nextAction()) {
-      case Navigator.MOVE:
-        this.api.move(this.getDistance());
-        break;
-      case Navigator.TURN:
-        this.api.turn((int) this.getAngle());
-        break;
-      case Navigator.STOP:
-        this.api.stop();
-        break;
-      case Navigator.NONE:
-      default:
-      // do nothing
-    }
+    this.updateCurrentAction();
+    this.currentAction().execute(this.getRobotAPI());
   }
-  private ActionQueue queue = new ActionQueue();
-  private Model model;
-
-  public int nextAction() {
-    processWorldEvents();
-
-    if (queue.getCurrentAction().isComplete()) {
-      queue.dequeue();
-
+    
+  private void updateCurrentAction() {
+    if( this.currentAction.isInterruptable() ) {
+      this.processEvents();
     }
-    if (queue.getCurrentAction() == null) {
-      onQueueEmpty();
-      if (queue.getCurrentAction() == null) {
+
+    if( this.currentAction.isComplete() ) {
+      this.queue.dequeue();
+    }
+
+    if(this.currentAction() == null) {
+      this.onQueueEmpty();
+      if( queue.getCurrentAction() == null ) {
         throw new RuntimeException("Algoritm error");
       }
     }
 
-    return queue.getCurrentAction().getNextAction();
+    return this.currentAction().getNextAction();
+  }
+  
+  private void processEvents() {
+    
   }
 
   private void onQueueEmpty() {
@@ -105,7 +107,6 @@ public class GhostDriver implements Driver {
         Integer a = navigatorAction;
 
         if (model.getWallsPart().getWallFrontDistance() < 10) {
-          Utils.Log("TOOO CLOOOSE");
           queue.clearActionQueue();
           queue.add(new MoveAction(model, -0.1f));
           //queue.add(new PerformSweepAction(api, model));
@@ -148,10 +149,6 @@ public class GhostDriver implements Driver {
       default:
         throw new RuntimeException("Invalid state!!");
     }
-
-
-
-
   }
 
   private void queueProximityCorrectionAction() {
@@ -167,71 +164,53 @@ public class GhostDriver implements Driver {
   }
 
   private void processWorldEvents() {
-    if (queue.getCurrentAction().isNonInterruptable()) {
-      return;
-    }
-
-    //if (!proximityBlocked) {
-    //  checkProximityEvent();
-    //}
-    //checkBarcodeEvent();
-    checkBarcodeEvent();
-    checkLineEvent();
-    //checkSonarCollisionEvent();
-    //checkCollisionEvent();
-  }
-
-  private void newEvent(String eventName, String source, String action) {
-    event = eventName;
-    eventSource = source;
-    eventAction = action;
-//    Utils.Log("Event: " + eventName);
-    queue.clearActionQueue();
+    this.checkBarcodeEvent();
+    this.checkLineEvent();
   }
 
   private void checkBarcodeEvent(){
-    if(!model.getBarcodePart().isReadingBarcode()){
-      return;
-    }
+    if( ! model.getBarcodePart().isReadingBarcode()){ return; }
+    // we're reading a barcode, 
     queue.clearActionQueue();
     queue.add(new MoveAction(model, 0.05f).setIsNonInterruptable(false));
-    
   }
   
-  private void checkLineEvent() {  //Dit werkt goed
-    if (model.getLightPart().getLine() == Line.NONE) {
-      return;
-    }
-    if (model.getBarcodePart().isReadingBarcode()) return;
-    // Line detected
-    //newEvent("Line " + (model.getLine() == Line.BLACK ? "Black" : "White"), "Lightsensor", "Align and evade"); //TODO: maybe
+  private void checkLineEvent() {
+    if( model.getLightPart().getLine() == Line.NONE ) { return; }
+    if( model.getBarcodePart().isReadingBarcode())    { return; }
+
+    // we're crossing a line -> start avoiding it
     queue.clearActionQueue();
     queue.add(new MoveAction(model, 0.02f));
     queue.add(new AlignPerpendicularLine(model, true).setIsNonInterruptable(true));
     queue.add(new MoveAction(model, 0.18f + 0.03f));
-//    Utils.Log("LINE!!");
   }
 
-  public GhostDriver useModel(Model model) {
-    this.model = model;
-    return this;
+  private void newEvent(String eventName, String source, String action) {
+    this.event       = eventName;
+    this.eventSource = source;
+    this.eventAction = action;
+    queue.clearActionQueue();
   }
+
 
   public double getDistance() {
-    return queue.getCurrentAction() == null ? 1 : queue.getCurrentAction().getDistance();
+    return queue.getCurrentAction() == null ? 1 : 
+           queue.getCurrentAction().getDistance();
   }
 
   public double getAngle() {
-    return queue.getCurrentAction() == null ? 0 : queue.getCurrentAction().getAngle();
+    return queue.getCurrentAction() == null ? 0 :
+           queue.getCurrentAction().getAngle();
   }
+  
   String event;
   String eventSource;
   String eventAction;
-  StringBuilder builder = new StringBuilder();
 
   @Override
   public String toString() {
-
+    StringBuilder builder = new StringBuilder();
     String actionQueue = queue.toString();
 
     String currentAction = "";
@@ -247,19 +226,6 @@ public class GhostDriver implements Driver {
     builder.delete(0, builder.length());
     builder.append('\"').append(event).append("\",\"").append(eventSource).append("\",\"").append(eventAction).append("\",\"").append(actionQueue).append("\",\"").append(currentAction).append("\",\"").append(currentActionArgument).append('\"');
     return builder.toString();
-
-//    return "\"" + event + "\",\"" + eventSource + "\", \"" + eventAction + "\", \"" + actionQueue + "\", \"" + currentAction + "\", \"" + currentActionArgument + "\"";
   }
 
-  @Override
-  public Driver useRobotAPI(RobotAPI api) {
-    this.api = api;
-    return this;
-  }
-
-  @Override
-  public void perform(int action) {
-    navigatorAction = action;
-    driverState = INIT;
-  }
 }

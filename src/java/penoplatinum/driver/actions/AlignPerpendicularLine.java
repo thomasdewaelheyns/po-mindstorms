@@ -10,7 +10,7 @@ import penoplatinum.simulator.Navigator;
  *
  * @author: Team Platinum
  */
-public class AlignPerpendicularLine extends BaseAction {
+public class AlignPerpendicularLine extends ActionSkeleton {
 
   public static final int TARGET_ANGLE = 20;
   public static final int SWEEP_ANGLE = 250;

@@ -1,5 +1,11 @@
 package penoplatinum.util;
 
+/**
+ * Utils, a bag of various goodies.
+ * 
+ * @author: Team Platinum
+ */
+
 import java.io.PrintStream;
 import java.util.List;
 import java.util.ListIterator;
@@ -7,12 +13,8 @@ import java.util.ListIterator;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 
-
 import penoplatinum.Config;
 
-/**
- * @author: Team Platinum
- */
 
 public class Utils {
 

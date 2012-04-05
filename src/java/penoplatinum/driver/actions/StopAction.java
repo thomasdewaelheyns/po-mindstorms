@@ -2,12 +2,13 @@ package penoplatinum.actions;
 
 import penoplatinum.simulator.Navigator;
 
-public class StopAction extends BaseAction {
+public class StopAction extends ActionSkeleton {
 
   public StopAction() {
     setDistance(0);
     setAngle(0);
   }
+
   public StopAction(long lengthTime){
     this();
     this.lengthTime = lengthTime;
@@ -26,17 +27,17 @@ public class StopAction extends BaseAction {
     return Navigator.NONE;
   }
 
-  @Override
+
   public boolean isComplete() {
     boolean temp = (startTime+lengthTime<System.currentTimeMillis()); // Never complete!
     return temp;
   }
-   @Override
+
   public String getKind() {
      return "Stop";
   }
 
-  @Override
+
   public String getArgument() {
     return lengthTime + "ms";
   }

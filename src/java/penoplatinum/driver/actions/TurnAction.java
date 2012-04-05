@@ -1,23 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.actions;
-
-import penoplatinum.simulator.Model;
-import penoplatinum.simulator.Navigator;
 
 /**
  *
  * @author: Team Platinum
  */
-public class TurnAction extends BaseAction {
+
+import penoplatinum.model.Model;
+import penoplatinum.navigator.Navigator;
+
+
+public class TurnAction extends ActionSkeleton {
 
   public TurnAction(Model m, int angle) {
     super(m);
     setDistance(0);
     setAngle(angle);
   }
+  
   private boolean first = true;
 
   @Override

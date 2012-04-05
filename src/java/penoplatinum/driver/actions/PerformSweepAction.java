@@ -1,19 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.actions;
-
-import java.util.ArrayList;
-import penoplatinum.simulator.Model;
-import penoplatinum.simulator.Navigator;
-import penoplatinum.simulator.RobotAPI;
 
 /**
  *
  * @author: Team Platinum
  */
-public class PerformSweepAction extends BaseAction {
+
+import java.util.ArrayList;
+
+import penoplatinum.model.Model;
+import penoplatinum.navigator.Navigator;
+import penoplatinum.robot.RobotAPI;
+
+
+public class PerformSweepAction extends ActionSkeleton {
 
   private Model model;
   private final RobotAPI api;

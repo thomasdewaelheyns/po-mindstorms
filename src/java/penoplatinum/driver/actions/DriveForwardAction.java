@@ -6,7 +6,7 @@ import penoplatinum.simulator.Navigator;
  * This method drives forward until stopped by the driver itself.
  * @author: Team Platinum
  */
-public class DriveForwardAction extends BaseAction {
+public class DriveForwardAction extends ActionSkeleton {
 
   public static final DriveForwardAction singleton = new DriveForwardAction();
 
