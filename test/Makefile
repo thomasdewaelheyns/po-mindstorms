@@ -6,7 +6,9 @@ TARGETS=penoplatinum/util/RotationTest.test \
 				penoplatinum/util/ColorTest.test \
 				penoplatinum/util/BitwiseOperationsTest.test \
 				penoplatinum/grid/LinkedSectorTest.test \
-				penoplatinum/protocol/GhostProtocolHandlerTest.test
+				penoplatinum/protocol/GhostProtocolHandlerTest.test \
+				penoplatinum/driver/action/CombinedDriverActionTest.test \
+				penoplatinum/driver/ManhattanDriverTest.test
 
 JUNIT_JAR=../lib/junit-4.10.jar
 MOCKITO_JAR=../lib/mockito-all-1.9.0.jar
