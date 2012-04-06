@@ -8,9 +8,9 @@ package penoplatinum.driver;
  * and determine what to do in each step.
  *
  * The Driver can be instructed to perform some movement actions, typically
- * by the Navigator. These can be expreseed in (forward) movement and turn
- * actions through the interface. Different Drivers can implement these 
- * methods in different ways.
+ * by the Navigator. These basic actions are dependent of the actual
+ * implementation, e.g. a Driver might move in straight lines and corners or
+ * move to a given coordinate, etc.
  *
  * When the robot is no longer busy, it can be asked if the instructions have
  * been performed successfully. A Navigator can then updates its information.
@@ -27,10 +27,6 @@ import penoplatinum.robot.Robot;
 public interface Driver {
   // we're driving Miss Robot
   public Driver drive(Robot robot);
-
-  // we can control the Driver using basic movement methods:
-  public Driver move(double distance);
-  public Driver turn(int angle);
 
   // I can indicate that I'm still busy performing an Action, this might be an
   // instruction, but can also be some internal action, like re-alignment or

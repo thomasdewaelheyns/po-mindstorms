@@ -4,8 +4,8 @@ package penoplatinum.driver;
  * ManhattanDriver
  * 
  * Drives in a Manhattan/Taxi-cab way on fixed size sectors and only in 
- * straight corners. Moves are expressed in number of sectors and turns are
- * expressed in a number of 90 degree corners.
+ * straight corners. A forward Move, moves 1 sector and turns are
+ * expressed in straight corner Rotations.
  *
  * It can be extended through a Behaviour system. A Behaviour consists of a
  * check for a certain condition and a method to retrieve next actions to 
@@ -16,6 +16,8 @@ package penoplatinum.driver;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import penoplatinum.util.Rotation;
 
 import penoplatinum.robot.Robot;
 
@@ -30,6 +32,9 @@ import penoplatinum.driver.action.TurnDriverAction;
 public class ManhattanDriver implements Driver {
   // a reference to the robot we're driving
   private Robot robot;
+
+  // the size of one sector, the atomic unit of movement of this Driver
+  private double sectorSize;
 
   // the behaviours that extend our basic movement actions
   private List<DriverBehaviour> behaviours = new ArrayList<DriverBehaviour>();
@@ -47,12 +52,13 @@ public class ManhattanDriver implements Driver {
   private boolean instructionIsInterrupted;
 
   
-  public ManhattanDriver() {
-    this.setupActions();
-    this.perform(IDLE);
+  public ManhattanDriver(double sectorSize) {
+    this.sectorSize = sectorSize;
+    this.setupIdleAction();
+    this.goIdle();
   }
   
-  private void setupActions() {
+  private void setupIdleAction() {
     this.IDLE = new IdleDriverAction();
   }
   
@@ -68,18 +74,23 @@ public class ManhattanDriver implements Driver {
   }
   
   private void setupMovementActions() {
-    this.MOVE = new MoveDriverAction(this.robot.getModel());
+    this.MOVE = new MoveDriverAction(this.robot.getModel()).set(this.sectorSize);
     this.TURN = new TurnDriverAction(this.robot.getModel());
   }
 
   // movement methods are honoured directly and change the current strategy
-  public ManhattanDriver move(double distance) {
-    this.perform(MOVE.set(distance));
+  public ManhattanDriver move() {
+    this.perform(MOVE);
     return this;
   }
   
-  public ManhattanDriver turn(int angle) {
-    this.perform(TURN.set(angle));
+  public ManhattanDriver turnLeft() {
+    this.perform(TURN.set(-90));
+    return this;
+  }
+
+  public ManhattanDriver turnRight() {
+    this.perform(TURN.set(90));
     return this;
   }
   
