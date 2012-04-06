@@ -17,8 +17,6 @@ package penoplatinum.driver;
 import java.util.List;
 import java.util.ArrayList;
 
-import penoplatinum.util.Rotation;
-
 import penoplatinum.robot.Robot;
 
 import penoplatinum.driver.behaviour.DriverBehaviour;

@@ -47,8 +47,10 @@ public class TurnDriverAction implements DriverAction {
   }
 
   public TurnDriverAction work(RobotAPI api) {
-    api.turn(this.angle);
-    this.actionStarted = true;
+    if( ! this.actionStarted ) {
+      api.turn(this.angle);
+      this.actionStarted = true;
+    }
     return this;
   }
 }
