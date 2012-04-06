@@ -1,6 +1,8 @@
 package penoplatinum.driver.action;
 
 /**
+ * MoveDriverAction
+ *
  * Moves a given distance, expressed in meters, forward
  * 
  * @author: Team Platinum

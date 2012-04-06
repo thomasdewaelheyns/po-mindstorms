@@ -178,6 +178,8 @@ public class ManhattanDriverTest extends TestCase {
     assertFalse("driver should be ready after 4 steps", this.driver.isBusy());
     assertTrue(this.driver.completedLastInstruction());
   }
+  
+  // PROXIMITY BEHAVIOUR
 
   // private construction helpers
   

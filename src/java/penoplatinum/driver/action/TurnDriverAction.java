@@ -1,7 +1,9 @@
 package penoplatinum.driver.action;
 
 /**
- * Moves a given distance, expressed in meters, forward.
+ * TurnDriverAction
+ * 
+ * Turns a given angle, expressed in degrees.
  * 
  * @author: Team Platinum
  */
@@ -18,7 +20,7 @@ public class TurnDriverAction implements DriverAction {
   // determine if we're still moving == executing the instructed move()
   private SensorModelPart sensors;
 
-  // the distance we cover in one move
+  // the angle we're turning
   private int angle = 0;
   
   // flag to keep track if we have already started this action
