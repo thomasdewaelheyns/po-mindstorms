@@ -19,6 +19,9 @@ import penoplatinum.model.Model;
 import penoplatinum.model.part.ModelPartRegistry;
 import penoplatinum.model.part.SensorModelPart;
 
+import penoplatinum.driver.action.DriverAction;
+import penoplatinum.driver.behaviour.DriverBehaviour;
+
 
 public class ManhattanDriverTest extends TestCase {
 
@@ -29,6 +32,8 @@ public class ManhattanDriverTest extends TestCase {
   private RobotAPI        mockedRobotAPI;
   private Model           mockedModel;
   private SensorModelPart mockedSensorModelPart;
+  private DriverBehaviour mockedBehaviour;
+  private DriverAction    mockedAction;
 
 
   public ManhattanDriverTest(String name) { 
@@ -179,7 +184,75 @@ public class ManhattanDriverTest extends TestCase {
     assertTrue(this.driver.completedLastInstruction());
   }
   
-  // PROXIMITY BEHAVIOUR
+  // BEHAVIOUR
+  
+  public void testInterruptingBehaviour() {
+    this.setup();
+    when(this.mockedSensorModelPart.isMoving()).thenReturn(true);
+    this.addBehaviour();
+    when(this.mockedBehaviour.requiresAction(eq(this.mockedModel),
+                                             (DriverAction)anyObject()))
+      .thenReturn(false, true);
+    when(this.mockedAction.interrupts()).thenReturn(true);
+    when(this.mockedAction.isBusy()).thenReturn(true, true, true, false);
+
+    this.driver.move();
+    this.driver.proceed();
+    verify(this.mockedBehaviour).requiresAction(eq(this.mockedModel),
+                                                (DriverAction)anyObject());
+    // the driver is busy driving, the 
+    assertTrue(this.driver.isBusy());
+    assertFalse(this.driver.completedLastInstruction());
+    // the second proceed iteration, the behaviour kicks in
+    this.driver.proceed();
+    verify(this.mockedBehaviour, times(2)).requiresAction(eq(this.mockedModel),
+                                                          (DriverAction)anyObject());
+    verify(this.mockedAction).isBusy();
+    assertTrue(this.driver.isBusy());
+    verify(this.mockedAction, times(2)).isBusy();
+    assertFalse(this.driver.completedLastInstruction());
+    verify(this.mockedAction, times(3)).isBusy();
+    // proceed one more time to finish interrupted action
+    this.driver.proceed();
+    assertFalse(this.driver.isBusy());
+    verify(this.mockedAction, times(4)).isBusy();
+    assertFalse(this.driver.completedLastInstruction());
+    // verify(this.mockedAction, times(5)).isBusy(); -> currentAction is IDLE
+  }
+
+  public void testNonInterruptingBehaviour() {
+    this.setup();
+    when(this.mockedSensorModelPart.isMoving()).thenReturn(true);
+    this.addBehaviour();
+    when(this.mockedBehaviour.requiresAction(eq(this.mockedModel),
+                                             (DriverAction)anyObject()))
+      .thenReturn(false, true);
+    when(this.mockedAction.interrupts()).thenReturn(false);
+    when(this.mockedAction.isBusy()).thenReturn(true, true, true, false);
+
+    this.driver.move();
+    this.driver.proceed();
+    verify(this.mockedBehaviour).requiresAction(eq(this.mockedModel),
+                                                (DriverAction)anyObject());
+    // the driver is busy driving, the 
+    assertTrue(this.driver.isBusy());
+    assertFalse(this.driver.completedLastInstruction());
+    // the second proceed iteration, the behaviour kicks in
+    this.driver.proceed();
+    verify(this.mockedBehaviour, times(2)).requiresAction(eq(this.mockedModel),
+                                                          (DriverAction)anyObject());
+    verify(this.mockedAction).isBusy();
+    assertTrue(this.driver.isBusy());
+    verify(this.mockedAction, times(2)).isBusy();
+    assertFalse(this.driver.completedLastInstruction());
+    // proceed one more time to finish interrupted action
+    this.driver.proceed();
+    assertFalse(this.driver.isBusy());
+    assertTrue(this.driver.completedLastInstruction());
+  }
+
+  // TODO: probably some more complex situations, but these will have to be 
+  //       added as they emerge and need to be fixed.
 
   // private construction helpers
   
@@ -191,6 +264,13 @@ public class ManhattanDriverTest extends TestCase {
   
   private void createDriver() {
     this.driver = new ManhattanDriver(SECTOR_SIZE);
+  }
+  
+  private void addBehaviour() {
+    this.mockedBehaviour = this.mockBehaviour();
+    this.driver.addBehaviour(this.mockedBehaviour);
+    this.mockedAction = this.mockAction();
+    when(this.mockedBehaviour.getNextAction()).thenReturn(this.mockedAction);
   }
 
   private void mockRobot() {
@@ -206,4 +286,13 @@ public class ManhattanDriverTest extends TestCase {
     when(this.mockedModel.getPart(ModelPartRegistry.SENSOR_MODEL_PART))
       .thenReturn(this.mockedSensorModelPart);
   }
+  
+  private DriverBehaviour mockBehaviour() {
+    return mock(DriverBehaviour.class);
+  }
+
+  private DriverAction mockAction() {
+    return mock(DriverAction.class);
+  }
+  
 }
