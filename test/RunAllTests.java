@@ -13,12 +13,18 @@ import penoplatinum.util.TransformationTRTTest;
 import penoplatinum.util.ScannerTest;
 import penoplatinum.util.ColorTest;
 import penoplatinum.util.BitwiseOperationsTest;
+
 import penoplatinum.grid.LinkedSectorTest;
+
 import penoplatinum.protocol.GhostProtocolHandlerTest;
+
 import penoplatinum.driver.action.IdleDriverActionTest;
 import penoplatinum.driver.action.MoveDriverActionTest;
 import penoplatinum.driver.action.TurnDriverActionTest;
 import penoplatinum.driver.action.CombinedDriverActionTest;
+
+import penoplatinum.driver.behaviour.ProximityDriverBehaviourTest;
+
 import penoplatinum.driver.ManhattanDriverTest;
 
 import junit.framework.*;
@@ -40,6 +46,7 @@ public class RunAllTests {
       penoplatinum.driver.action.MoveDriverActionTest.class,
       penoplatinum.driver.action.TurnDriverActionTest.class,
       penoplatinum.driver.action.CombinedDriverActionTest.class,
+			penoplatinum.driver.behaviour.ProximityDriverBehaviourTest.class,
       penoplatinum.driver.ManhattanDriverTest.class
     };
     TestSuite suite = new TestSuite(testClasses);

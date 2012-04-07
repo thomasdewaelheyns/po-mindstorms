@@ -1,97 +1,33 @@
 package penoplatinum.driver;
 
 /**
- * An implementation for a Ghost-style Robot. It uses a state-like pattern to 
- * implement its logic.
+ * GhostDriver
+ *
+ * An implementation for a Ghost-style Robot. It extends the ManhattanDriver
+ * and adds some behaviours to react on changes in the environment.
  * 
  * @author Team Platinum
  */
 
-import penoplatinum.robot.Robot;
-
-import penoplatinum.navigator.Navigator;
-
-import penoplatinum.driver.events.*;
-import penoplatinum.driver.actions.*;
-
-import penoplatinum.model.Model;
-import penoplatinum.model.GhostModel;
+import penoplatinum.driver.behaviour.*;
 
 
-public class GhostDriver implements Driver {
+public class GhostDriver extends ManhattanDriver {
 
-  // a reference to the robot we're driving
-  private Robot robot;
-  
-  // we implement a state pattern using the actions the driver can perform
-  private DriverAction idleAction;
-  private DriverAction turnAction;
-  private DriverAction moveAction;
-  // a reference to one of the actions above...
-  private DriverAction currentAction = new NullDriverAction();
+	private final static double SECTOR_SIZE = 0.04;
 
+	public GhostDriver() {
+		super(SECTOR_SIZE);
+		this.setupBehaviours();
+	}
+	
+	private void setupBehaviours() {
+		this.addBehaviour(new ProximityDriverBehaviour());
+	}
 
-  public Driver drive(Robot robot) {
-    this.robot = robot;
-    this.setupActions();
-    return this;
-  }
-  
-  private void setupActions() {
-    this.idleAction = new IdleDriverAction().
-  }
-  
-  // based on the robot we now can access different resources we need:
-  private GhostModel getModel() {
-    return (GhostModel)this.robot.getModel();
-  }
-  
-  private RobotAPI getRobotAPI() {
-    return this.robot.getRobotAPI();
-  }
-  
-  public GhostDriver move(double distance) {
-    this.currentAction = moveAction.move(distance);
-    return this;
-  }
-  
-  public GhostDriver turn(int angle) {
-    this.currentAction = turnAction.turn(angle);
-    return this;
-  }
+}
 
-  public boolean isBusy() {
-    return this.currentAction.isBusy();
-  }
-
-  public void step() {
-    this.updateCurrentAction();
-    this.currentAction().execute(this.getRobotAPI());
-  }
-    
-  private void updateCurrentAction() {
-    if( this.currentAction.isInterruptable() ) {
-      this.processEvents();
-    }
-
-    if( this.currentAction.isComplete() ) {
-      this.queue.dequeue();
-    }
-
-    if(this.currentAction() == null) {
-      this.onQueueEmpty();
-      if( queue.getCurrentAction() == null ) {
-        throw new RuntimeException("Algoritm error");
-      }
-    }
-
-    return this.currentAction().getNextAction();
-  }
-  
-  private void processEvents() {
-    
-  }
-
+/*
   private void onQueueEmpty() {
 
     if (navigatorAction == null) {
@@ -163,11 +99,6 @@ public class GhostDriver implements Driver {
     }
   }
 
-  private void processWorldEvents() {
-    this.checkBarcodeEvent();
-    this.checkLineEvent();
-  }
-
   private void checkBarcodeEvent(){
     if( ! model.getBarcodePart().isReadingBarcode()){ return; }
     // we're reading a barcode, 
@@ -186,46 +117,4 @@ public class GhostDriver implements Driver {
     queue.add(new MoveAction(model, 0.18f + 0.03f));
   }
 
-  private void newEvent(String eventName, String source, String action) {
-    this.event       = eventName;
-    this.eventSource = source;
-    this.eventAction = action;
-    queue.clearActionQueue();
-  }
-
-
-  public double getDistance() {
-    return queue.getCurrentAction() == null ? 1 : 
-           queue.getCurrentAction().getDistance();
-  }
-
-  public double getAngle() {
-    return queue.getCurrentAction() == null ? 0 :
-           queue.getCurrentAction().getAngle();
-  }
-  
-  String event;
-  String eventSource;
-  String eventAction;
-
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    String actionQueue = queue.toString();
-
-    String currentAction = "";
-    String currentActionArgument = "";
-
-    if (queue.getCurrentAction() != null) {
-      currentAction = queue.getCurrentAction().getKind();
-      currentActionArgument = queue.getCurrentAction().getArgument();
-      if (currentActionArgument == null) {
-        currentActionArgument = "";
-      }
-    }
-    builder.delete(0, builder.length());
-    builder.append('\"').append(event).append("\",\"").append(eventSource).append("\",\"").append(eventAction).append("\",\"").append(actionQueue).append("\",\"").append(currentAction).append("\",\"").append(currentActionArgument).append('\"');
-    return builder.toString();
-  }
-
-}
+*/

@@ -1,40 +1,50 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package penoplatinum.model;
-
-import penoplatinum.grid.Sector;
+package penoplatinum.model.part;
 
 /**
  * This class holds model data for walls detected by the robot and the layout
  * of the sector the robot is currently on
  * 
- * @author MHGameWork
+ * @author Team Platinum
  */
-public class WallsModelPart implements IModelPart {
+
+import penoplatinum.grid.Sector;
+
+import penoplatinum.model.Model;
+
+
+public class WallsModelPart implements ModelPart {
+  // boilerplate implementation required to register and retrieve a ModelPart
+  // from the model
+  public static WallsModelPart from(Model model) {
+    return (WallsModelPart)model.getPart(ModelPartRegistry.WALLS_MODEL_PART);
+  }
 
   private int wallLeftDistance;
   private int wallFrontDistance;
   private int wallRightDistance;
+
   private static final int WALL_DISTANCE = 35;
-  private Sector currentSector = new Sector();
-  private Sector prevSector = new Sector();
+
+  private boolean hasUpdatedSector;
+
+  private Sector currentSector = null;
+  private Sector prevSector    = null;
+
 
   public boolean isWallFront() {
-    return getWallFrontDistance() < WALL_DISTANCE;
+    return this.getWallFrontDistance() < WALL_DISTANCE;
   }
 
   public boolean isWallLeft() {
-    return getWallLeftDistance() < WALL_DISTANCE;
+    return this.getWallLeftDistance() < WALL_DISTANCE;
   }
 
   public boolean isWallRight() {
-    return getWallRightDistance() < WALL_DISTANCE;
+    return this.getWallRightDistance() < WALL_DISTANCE;
   }
 
   public int getWallFrontDistance() {
-    return wallFrontDistance;
+    return this.wallFrontDistance;
   }
 
   public void setWallFrontDistance(int wallFrontDistance) {
@@ -42,7 +52,7 @@ public class WallsModelPart implements IModelPart {
   }
 
   public int getWallLeftDistance() {
-    return wallLeftDistance;
+    return this.wallLeftDistance;
   }
 
   public void setWallLeftDistance(int wallLeftDistance) {
@@ -50,7 +60,7 @@ public class WallsModelPart implements IModelPart {
   }
 
   public int getWallRightDistance() {
-    return wallRightDistance;
+    return this.wallRightDistance;
   }
 
   public void setWallRightDistance(int wallRightDistance) {
@@ -65,9 +75,7 @@ public class WallsModelPart implements IModelPart {
     this.prevSector = this.currentSector;
     this.currentSector = newSector;
     hasUpdatedSector = true;
-
   }
-  private boolean hasUpdatedSector;
 
   public boolean hasUpdatedSector() {
     return this.hasUpdatedSector;
@@ -81,8 +89,7 @@ public class WallsModelPart implements IModelPart {
     return this.prevSector.getWalls() != this.currentSector.getWalls();
   }
 
-  @Override
   public void clearDirty() {
-    hasUpdatedSector = false;
+    this.hasUpdatedSector = false;
   }
 }

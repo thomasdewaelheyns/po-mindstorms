@@ -10,4 +10,5 @@ package penoplatinum.model.part;
 
 public class ModelPartRegistry {
   public static final int SENSOR_MODEL_PART = 0;
+  public static final int WALLS_MODEL_PART  = 1;
 }
