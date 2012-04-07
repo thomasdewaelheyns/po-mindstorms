@@ -6,6 +6,8 @@
  * @author Team Platonum
  */
 
+import penoplatinum.ConfigTest;
+
 import penoplatinum.util.RotationTest;
 import penoplatinum.util.BearingTest;
 import penoplatinum.util.PointTest;
@@ -33,6 +35,7 @@ import junit.framework.*;
 public class RunAllTests {
   public static Test suite() {
     Class[] testClasses = { 
+      penoplatinum.ConfigTest.class,
       penoplatinum.util.RotationTest.class,
       penoplatinum.util.BearingTest.class,
       penoplatinum.util.PointTest.class,

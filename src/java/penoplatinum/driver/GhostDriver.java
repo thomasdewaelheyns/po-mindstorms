@@ -22,58 +22,11 @@ public class GhostDriver extends ManhattanDriver {
 	}
 	
 	private void setupBehaviours() {
-		this.addBehaviour(new SideProximityDriverBehaviour());
-		// .addBehaviour(new DriverBehaviour());
-		// .addBehaviour(new DriverBehaviour());
-		// .addBehaviour(new DriverBehaviour());
+		this.addBehaviour(new FrontProximityDriverBehaviour())
+				.addBehaviour(new SideProximityDriverBehaviour())
+		//  .addBehaviour(new BarcodeDriverBehaviour())
+		//  .addBehaviour(new LineDriverBehaviour());
+		//  .addBehaviour(new RestoreDriverBehaviour()) // TODO
 	}
 
 }
-
-/*
-  private void onQueueEmpty() {
-
-    if (navigatorAction == null) {
-      queue.add(new StopAction());
-      return;
-    }
-
-    GhostModel model = (GhostModel) this.model;
-    driverState++;
-
-    switch (driverState) {
-      case STARTING:
-        Integer a = navigatorAction;
-
-        if (model.getWallsPart().getWallFrontDistance() < 10) {
-          queue.clearActionQueue();
-          queue.add(new MoveAction(model, -0.1f));
-          return;
-        }
-
-        break;
-
-      default:
-        throw new RuntimeException("Invalid state!!");
-    }
-  }
-
-  private void checkBarcodeEvent(){
-    if( ! model.getBarcodePart().isReadingBarcode()){ return; }
-    // we're reading a barcode, 
-    queue.clearActionQueue();
-    queue.add(new MoveAction(model, 0.05f).setIsNonInterruptable(false));
-  }
-  
-  private void checkLineEvent() {
-    if( model.getLightPart().getLine() == Line.NONE ) { return; }
-    if( model.getBarcodePart().isReadingBarcode())    { return; }
-
-    // we're crossing a line -> start avoiding it
-    queue.clearActionQueue();
-    queue.add(new MoveAction(model, 0.02f));
-    queue.add(new AlignPerpendicularLine(model, true).setIsNonInterruptable(true));
-    queue.add(new MoveAction(model, 0.18f + 0.03f));
-  }
-
-*/
