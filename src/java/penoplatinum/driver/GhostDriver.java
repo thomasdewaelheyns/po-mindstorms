@@ -22,7 +22,10 @@ public class GhostDriver extends ManhattanDriver {
 	}
 	
 	private void setupBehaviours() {
-		this.addBehaviour(new ProximityDriverBehaviour());
+		this.addBehaviour(new SideProximityDriverBehaviour());
+		// .addBehaviour(new DriverBehaviour());
+		// .addBehaviour(new DriverBehaviour());
+		// .addBehaviour(new DriverBehaviour());
 	}
 
 }
@@ -45,57 +48,13 @@ public class GhostDriver extends ManhattanDriver {
         if (model.getWallsPart().getWallFrontDistance() < 10) {
           queue.clearActionQueue();
           queue.add(new MoveAction(model, -0.1f));
-          //queue.add(new PerformSweepAction(api, model));
-          //queue.add(new GapDetectionRestoreAction(api, model));
           return;
         }
 
-        if (a == GhostAction.NONE) {
-          queue.add(new StopAction(100));
-        } else if (a == GhostAction.TURN_LEFT) {
-          queue.add(new TurnAction(model, 90).setIsNonInterruptable(true));
-        } else if (a == GhostAction.TURN_RIGHT) {
-          queue.add(new TurnAction(model, -90).setIsNonInterruptable(true));
-        } else if (a == GhostAction.FORWARD) {
-          queueProximityCorrectionAction();
-          queue.add(new MoveAction(model, 0.4f));
-        } else {
-          throw new RuntimeException("Unknown GhostAction");
-        }
-        break;
-      case COMPLETE:
-        Integer prevAction = navigatorAction;
-
-        if (prevAction == GhostAction.NONE) {
-        } else if (prevAction == GhostAction.TURN_LEFT) {
-          model.getGridPart().turnLeft();
-        } else if (prevAction == GhostAction.TURN_RIGHT) {
-          model.getGridPart().turnRight();
-        } else if (prevAction == GhostAction.FORWARD) {
-          model.getGridPart().moveForward();
-        } else {
-          throw new RuntimeException("Unknown GhostAction");
-        }
-
-        navigatorAction = null;
-
-        queue.add(new StopAction());
         break;
 
       default:
         throw new RuntimeException("Invalid state!!");
-    }
-  }
-
-  private void queueProximityCorrectionAction() {
-    GhostModel m = (GhostModel) model;
-
-    if (m.getWallsPart().getWallLeftDistance() < 18 && !m.getWallsPart().isWallFront()) {
-      queue.add(new TurnAction(m, -15).setIsNonInterruptable(true));
-
-    } else if (m.getWallsPart().getWallRightDistance() < 18 && !m.getWallsPart().isWallFront()) {
-      queue.add(new TurnAction(m, 15).setIsNonInterruptable(true));
-
     }
   }
 

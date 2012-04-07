@@ -1,9 +1,9 @@
 package penoplatinum.driver.behaviour;
 
 /**
- * ProximityDriverBehaviourTest
+ * SideProximityDriverBehaviourTest
  * 
- * Tests ProximityDriverBehaviour
+ * Tests SideProximityDriverBehaviour
  * 
  * @author: Team Platinum
  */
@@ -22,13 +22,13 @@ import penoplatinum.driver.action.CombinedDriverAction;
 import penoplatinum.driver.action.MoveDriverAction;
 
 
-public class ProximityDriverBehaviourTest extends TestCase {
+public class SideProximityDriverBehaviourTest extends TestCase {
 
-	private ProximityDriverBehaviour behaviour;
+	private SideProximityDriverBehaviour behaviour;
 	private Model mockedModel;
 	private WallsModelPart mockedWallsModelPart;
 
-  public ProximityDriverBehaviourTest(String name) { 
+  public SideProximityDriverBehaviourTest(String name) { 
     super(name);
   }
  
@@ -136,8 +136,8 @@ public class ProximityDriverBehaviourTest extends TestCase {
       .thenReturn(this.mockedWallsModelPart);
 	}
 	
-	private ProximityDriverBehaviour createBehaviour() {
-		return new ProximityDriverBehaviour();
+	private SideProximityDriverBehaviour createBehaviour() {
+		return new SideProximityDriverBehaviour();
 	}
 	
 	private Model mockModel() {

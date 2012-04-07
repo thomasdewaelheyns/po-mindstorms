@@ -23,7 +23,7 @@ import penoplatinum.driver.action.MoveDriverActionTest;
 import penoplatinum.driver.action.TurnDriverActionTest;
 import penoplatinum.driver.action.CombinedDriverActionTest;
 
-import penoplatinum.driver.behaviour.ProximityDriverBehaviourTest;
+import penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest;
 
 import penoplatinum.driver.ManhattanDriverTest;
 
@@ -46,7 +46,7 @@ public class RunAllTests {
       penoplatinum.driver.action.MoveDriverActionTest.class,
       penoplatinum.driver.action.TurnDriverActionTest.class,
       penoplatinum.driver.action.CombinedDriverActionTest.class,
-			penoplatinum.driver.behaviour.ProximityDriverBehaviourTest.class,
+			penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest.class,
       penoplatinum.driver.ManhattanDriverTest.class
     };
     TestSuite suite = new TestSuite(testClasses);

@@ -1,7 +1,7 @@
 package penoplatinum.driver.behaviour;
 
 /**
- * ProximityDriverBehaviour
+ * SideProximityDriverBehaviour
  * 
  * This behaviour checks the distance to both left and right walls and applies
  * a corrective turn to move away from them.
@@ -21,7 +21,7 @@ import penoplatinum.driver.action.TurnDriverAction;
 import penoplatinum.driver.action.CombinedDriverAction;
 
 
-public class ProximityDriverBehaviour implements DriverBehaviour {
+public class SideProximityDriverBehaviour implements DriverBehaviour {
 
   // configuration of minimal distance and corrections
   private final static int MIN_DISTANCE     =  18;
