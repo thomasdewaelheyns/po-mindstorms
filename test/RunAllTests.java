@@ -20,11 +20,15 @@ import penoplatinum.grid.LinkedSectorTest;
 
 import penoplatinum.protocol.GhostProtocolHandlerTest;
 
+import penoplatinum.driver.DriverTest;
+
+import penoplatinum.driver.action.DriverActionTest;
 import penoplatinum.driver.action.IdleDriverActionTest;
 import penoplatinum.driver.action.MoveDriverActionTest;
 import penoplatinum.driver.action.TurnDriverActionTest;
 import penoplatinum.driver.action.CombinedDriverActionTest;
 
+import penoplatinum.driver.behaviour.DriverBehaviourTest;
 import penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest;
 
 import penoplatinum.driver.ManhattanDriverTest;
@@ -45,10 +49,13 @@ public class RunAllTests {
       penoplatinum.util.BitwiseOperationsTest.class,
       penoplatinum.grid.LinkedSectorTest.class,
       penoplatinum.protocol.GhostProtocolHandlerTest.class,
+      penoplatinum.driver.DriverTest.class,
+      penoplatinum.driver.action.DriverActionTest.class,
       penoplatinum.driver.action.IdleDriverActionTest.class,
       penoplatinum.driver.action.MoveDriverActionTest.class,
       penoplatinum.driver.action.TurnDriverActionTest.class,
       penoplatinum.driver.action.CombinedDriverActionTest.class,
+			penoplatinum.driver.behaviour.DriverBehaviourTest.class,
 			penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest.class,
       penoplatinum.driver.ManhattanDriverTest.class
     };
