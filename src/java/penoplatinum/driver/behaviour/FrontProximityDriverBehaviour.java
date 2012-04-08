@@ -41,8 +41,8 @@ public class FrontProximityDriverBehaviour implements DriverBehaviour {
     
     WallsModelPart walls = WallsModelPart.from(model);
 
-    // when there is a wall in front of us, don't correct anything, we're 
-    // going to crash anyway ;-)
+    // when there is a wall in from of us, and it's too close, back-up and
+    // wait for further instructions
     if( walls.getWallFrontDistance() < MIN_DISTANCE ) {
 			this.correctingAction = new MoveDriverAction(model).set(CORRECTION);
 			return true;
