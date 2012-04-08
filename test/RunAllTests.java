@@ -6,6 +6,8 @@
  * @author Team Platonum
  */
 
+import junit.framework.*;
+
 import penoplatinum.ConfigTest;
 
 import penoplatinum.util.RotationTest;
@@ -18,9 +20,11 @@ import penoplatinum.util.BitwiseOperationsTest;
 
 import penoplatinum.grid.LinkedSectorTest;
 
+import penoplatinum.protocol.ProtocolHandlerTest;
 import penoplatinum.protocol.GhostProtocolHandlerTest;
 
 import penoplatinum.driver.DriverTest;
+import penoplatinum.driver.ManhattanDriverTest;
 
 import penoplatinum.driver.action.DriverActionTest;
 import penoplatinum.driver.action.IdleDriverActionTest;
@@ -32,9 +36,11 @@ import penoplatinum.driver.behaviour.DriverBehaviourTest;
 import penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest;
 import penoplatinum.driver.behaviour.FrontProximityDriverBehaviourTest;
 
-import penoplatinum.driver.ManhattanDriverTest;
+import penoplatinum.reporter.ReporterTest;
 
-import junit.framework.*;
+import penoplatinum.navigator.NavigatorTest;
+
+import penoplatinum.model.ModelTest;
 
 
 public class RunAllTests {
@@ -49,8 +55,10 @@ public class RunAllTests {
       penoplatinum.util.ColorTest.class,
       penoplatinum.util.BitwiseOperationsTest.class,
       penoplatinum.grid.LinkedSectorTest.class,
+      penoplatinum.protocol.ProtocolHandlerTest.class,
       penoplatinum.protocol.GhostProtocolHandlerTest.class,
       penoplatinum.driver.DriverTest.class,
+      penoplatinum.driver.ManhattanDriverTest.class,
       penoplatinum.driver.action.DriverActionTest.class,
       penoplatinum.driver.action.IdleDriverActionTest.class,
       penoplatinum.driver.action.MoveDriverActionTest.class,
@@ -59,7 +67,9 @@ public class RunAllTests {
       penoplatinum.driver.behaviour.DriverBehaviourTest.class,
       penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest.class,
       penoplatinum.driver.behaviour.FrontProximityDriverBehaviourTest.class,
-      penoplatinum.driver.ManhattanDriverTest.class
+      penoplatinum.reporter.ReporterTest.class,
+      penoplatinum.navigator.NavigatorTest.class,
+      penoplatinum.model.ModelTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;
