@@ -35,6 +35,7 @@ import penoplatinum.driver.action.CombinedDriverActionTest;
 import penoplatinum.driver.behaviour.DriverBehaviourTest;
 import penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest;
 import penoplatinum.driver.behaviour.FrontProximityDriverBehaviourTest;
+import penoplatinum.driver.behaviour.BarcodeDriverBehaviourTest;
 
 import penoplatinum.reporter.ReporterTest;
 
@@ -67,6 +68,7 @@ public class RunAllTests {
       penoplatinum.driver.behaviour.DriverBehaviourTest.class,
       penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest.class,
       penoplatinum.driver.behaviour.FrontProximityDriverBehaviourTest.class,
+      penoplatinum.driver.behaviour.BarcodeDriverBehaviourTest.class,
       penoplatinum.reporter.ReporterTest.class,
       penoplatinum.navigator.NavigatorTest.class,
       penoplatinum.model.ModelTest.class

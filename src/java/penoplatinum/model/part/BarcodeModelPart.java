@@ -1,8 +1,4 @@
-package penoplatinum.model;
-
-import penoplatinum.barcode.BarcodeTranslator;
-import penoplatinum.util.Buffer;
-import penoplatinum.util.Utils;
+package penoplatinum.model.part;
 
 /**
  * Contains information about the last barcode scanned, and current barcode
@@ -10,16 +6,39 @@ import penoplatinum.util.Utils;
  * 
  * @author MHGameWork
  */
-public class BarcodeModelPart implements IModelPart {
 
+import penoplatinum.model.Model;
+
+
+public class BarcodeModelPart implements ModelPart {
+  // boilerplate implementation required to register and retrieve a ModelPart
+  // from the model
+  public static BarcodeModelPart from(Model model) {
+    return (BarcodeModelPart)model.getPart(ModelPartRegistry.BARCODE_MODEL_PART);
+  }
+
+  boolean isReadingBarcode = false;
+  
+  public boolean isReadingBarcode() {
+    return this.isReadingBarcode;
+  }
+
+}
+
+  /*
+  
+  TODO:
+  
   private int bufferSize = 1000;
   private int barcode = -1;
   private Buffer lightValueBuffer = new Buffer(bufferSize);
-
+  private int lastBarcode = -1;
+    
+  
   public int getBarcode() {
     return this.barcode;
   }
-  private int lastBarcode = -1;
+
 
   public void setBarcode(int barcode) {
     if (barcode == 0) {
@@ -37,10 +56,6 @@ public class BarcodeModelPart implements IModelPart {
 
   }
 
-  /**
-   * Todo: maybe move this to the LightModelPart?
-   * @return 
-   */
   public Buffer getLightValueBuffer() {
     return this.lightValueBuffer;
   }
@@ -49,19 +64,12 @@ public class BarcodeModelPart implements IModelPart {
     this.isReadingBarcode = b;
   }
 
-  public boolean isReadingBarcode() {
-    return this.isReadingBarcode;
-  }
-  boolean isReadingBarcode = false;
 
   public int getLastBarcode() {
     return lastBarcode;
   }
   
-  /**
-   * This should be called after the robot has moved to the next tile.
-   * 
-   */
+  // This should be called after the robot has moved to the next tile.
   public void clearLastBarcode()
   {
     lastBarcode = -1;
@@ -76,4 +84,4 @@ public class BarcodeModelPart implements IModelPart {
   public void clearDirty() {
     barcode = -1;
   }
-}
+*/

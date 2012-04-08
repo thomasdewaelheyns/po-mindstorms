@@ -52,9 +52,8 @@ public class FrontProximityDriverBehaviour implements DriverBehaviour {
     return false;
   }
 
-  // we return an aggregateAction, that first implements a turn with the 
-  // correction angle and then the original action
-	// NOTE: if the correction is zero, we throw an Exception because this is 
+  // we return an aggregateAction, that implements a simple back-up move
+	// NOTE: if the correction is null, we throw an Exception because this is 
 	//       only possible if the caller hasn't honoured a "false" reply on
 	//       requiresAction.
   public DriverAction getNextAction() {
