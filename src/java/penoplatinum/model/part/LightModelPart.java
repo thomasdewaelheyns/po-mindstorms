@@ -1,16 +1,32 @@
-package penoplatinum.model;
-
-import penoplatinum.simulator.Line;
-import penoplatinum.util.LightColor;
+package penoplatinum.model.part;
 
 /**
  * Stores the current light color interpreted by the robot, current robot
  * light calibration and information about the Lines being detected
  * 
- * @author MHGameWork
+ * @author Team Platinum
  */
-public class LightModelPart implements IModelPart {
 
+import penoplatinum.simulator.Line;
+import penoplatinum.util.LightColor;
+
+
+public class LightModelPart implements ModelPart {
+  // boilerplate implementation required to register and retrieve a ModelPart
+  // from the model
+  public static LightModelPart from(Model model) {
+    return (LightModelPart)model.getPart(ModelPartRegistry.LIGHT_MODEL_PART);
+  }
+
+  // TODO: I don't think it is worth having an Enum for this, this can all
+  //       be kept internal and exposed using functional methods.
+  private Line line = Line.NONE;
+
+  public boolean isReadingLine() {
+    return this.line != Line.NONE;
+  }
+
+  /*
   private LightColor currentLightColor = LightColor.Brown;
   private float averageLightValue;
 
@@ -29,7 +45,6 @@ public class LightModelPart implements IModelPart {
   public void setCurrentLightColor(LightColor value) {
     currentLightColor = value;
   }
-  private Line line = Line.NONE;
 
   public Line getLine() {
     return line;
@@ -42,4 +57,5 @@ public class LightModelPart implements IModelPart {
   @Override
   public void clearDirty() {
   }
+  */
 }

@@ -2,17 +2,19 @@ package penoplatinum.util;
 
 /**
  * An enumeration of the Colors with values BLACK, WHITE and BROWN
- */
-/**
  *
- * @author MHGameWork
+ * @author Team Platinum
  */
+
 public enum LightColor {
 
-  Black(-1), White(1), Brown(0);
+  Black(-1),
+  White (1),
+  Brown (0);
+  
   private final int val;
 
-  LightColor(int val) {
+  private LightColor(int val) {
     this.val = val;
   }
 
@@ -20,9 +22,8 @@ public enum LightColor {
     return val;
   }
 
-  @Override
   public String toString() {
-    switch (val) {
+    switch(val) {
       case -1:
         return "BLACK";
       case 0:
