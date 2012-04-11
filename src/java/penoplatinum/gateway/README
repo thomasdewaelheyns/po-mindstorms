@@ -21,6 +21,6 @@ The different components are:
 	to provide access to the recorded packets, we set up a standard application
 	server that connects to the database and answers REST style queries.
 
-- Console (see src/java/penoplatinum/ui)
-	different implementations of our console can connect to the application
-  server and receive information.
+- Dashboard (see src/java/penoplatinum/ui)
+  our main user interface is a web-based client that can stream and replay
+  recorded sessions through the REST interface or even a local generated file.
