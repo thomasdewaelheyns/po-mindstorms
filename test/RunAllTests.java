@@ -20,6 +20,7 @@ import penoplatinum.util.BitwiseOperationsTest;
 
 import penoplatinum.grid.LinkedSectorTest;
 
+import penoplatinum.protocol.ExternalEventHandlerTest;
 import penoplatinum.protocol.ProtocolHandlerTest;
 import penoplatinum.protocol.GhostProtocolHandlerTest;
 
@@ -42,6 +43,11 @@ import penoplatinum.reporter.ReporterTest;
 import penoplatinum.navigator.NavigatorTest;
 
 import penoplatinum.model.ModelTest;
+import penoplatinum.model.part.ModelPartTest;
+import penoplatinum.model.part.ModelPartRegistryTest;
+
+import penoplatinum.robot.RobotTest;
+import penoplatinum.robot.RobotAPITest;
 
 
 public class RunAllTests {
@@ -56,6 +62,7 @@ public class RunAllTests {
       penoplatinum.util.ColorTest.class,
       penoplatinum.util.BitwiseOperationsTest.class,
       penoplatinum.grid.LinkedSectorTest.class,
+      penoplatinum.protocol.ExternalEventHandlerTest.class,
       penoplatinum.protocol.ProtocolHandlerTest.class,
       penoplatinum.protocol.GhostProtocolHandlerTest.class,
       penoplatinum.driver.DriverTest.class,
@@ -71,7 +78,11 @@ public class RunAllTests {
       penoplatinum.driver.behaviour.BarcodeDriverBehaviourTest.class,
       penoplatinum.reporter.ReporterTest.class,
       penoplatinum.navigator.NavigatorTest.class,
-      penoplatinum.model.ModelTest.class
+      penoplatinum.model.ModelTest.class,
+      penoplatinum.model.part.ModelPartTest.class,
+      penoplatinum.model.part.ModelPartRegistryTest.class,
+      penoplatinum.robot.RobotTest.class,
+      penoplatinum.robot.RobotAPITest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;
