@@ -49,6 +49,10 @@ import penoplatinum.model.part.ModelPartRegistryTest;
 import penoplatinum.robot.RobotTest;
 import penoplatinum.robot.RobotAPITest;
 
+import penoplatinum.gateway.ConnectionTest;
+import penoplatinum.gateway.QueueTest;
+import penoplatinum.gateway.GatewayClientTest;
+import penoplatinum.gateway.MessageReceiverTest;
 
 public class RunAllTests {
   public static Test suite() {
@@ -82,7 +86,11 @@ public class RunAllTests {
       penoplatinum.model.part.ModelPartTest.class,
       penoplatinum.model.part.ModelPartRegistryTest.class,
       penoplatinum.robot.RobotTest.class,
-      penoplatinum.robot.RobotAPITest.class
+      penoplatinum.robot.RobotAPITest.class,
+      penoplatinum.gateway.ConnectionTest.class,
+      penoplatinum.gateway.QueueTest.class,
+      penoplatinum.gateway.GatewayClientTest.class,
+      penoplatinum.gateway.MessageReceiverTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;
