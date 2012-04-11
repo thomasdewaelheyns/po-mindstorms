@@ -17,14 +17,18 @@ public class ConfigTest extends TestCase {
     super(name);
   }
 
-  public void testSettings() {
-	  boolean debugMode       = Config.DEBUGMODE;
- 		String mq_server        = Config.MQ_SERVER;
- 		String ghost_channel    = Config.GHOST_CHANNEL;
- 		boolean retardedNewLine = Config.PROTOCOL_USE_RETARDEDNEWLINE;
- 		boolean use_local_mq    = Config.USE_LOCAL_MQ;
- 		int speed_mode          = Config.MOTOR_SPEED_MOVE;
- 		int speed_sonar         = Config.MOTOR_SPEED_SONAR;
+  public void testProperties() {
+    Config.load("test.properties");
+    
+	  assertTrue(Config.DEBUGMODE);
+ 		assertTrue(Config.USE_LOCAL_MQ);
+ 		assertEquals("localhost-test", Config.MQ_SERVER);
+ 		assertEquals("ghost-test",     Config.GHOST_CHANNEL);
+ 	}
+ 	
+ 	public void testMotorSpeeds() {
+ 		int speed_mode  = Config.MOTOR_SPEED_MOVE;
+ 		int speed_sonar = Config.MOTOR_SPEED_SONAR;
 	}
 	
 	public void testMagicNumbers() {
