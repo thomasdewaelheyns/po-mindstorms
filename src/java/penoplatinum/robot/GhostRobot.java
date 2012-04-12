@@ -73,9 +73,8 @@ public class GhostRobot implements Robot {
             new AgentWallsUpdateProcessor(
             new NewSectorsUpdateProcessor(
             new IRModelProcessor(
-            new GridRecalcModelProcessor(
             new GhostProtocolModelProcessor(
-            new MergeGridModelProcessor()))))))))))));
+            new MergeGridModelProcessor())))))))))));
     this.model.setProcessor(processors);
 
     // make sure the messagePart can send messages through the GatewayClient,
