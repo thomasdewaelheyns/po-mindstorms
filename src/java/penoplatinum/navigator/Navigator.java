@@ -4,25 +4,26 @@ package penoplatinum.navigator;
  * Navigator Interface
  * 
  * A Navigator implements how the robot tries to reach its goal. As with a 
- * true Navigator, the robot will constantly ask it what to do, until the
- * navigator indicates it has reached its goal.
+ * true Navigator it is asked to instruct a Driver. To
  * 
  * @author: Team Platinum
  */
 
-import penoplatinum.robot.Robot;
+import penoplatinum.driver.Driver;
+
+import penoplatinum.model.Model;
 
 
 public interface Navigator {
-  public static final int NONE = 0;
-  public static final int MOVE = 1;
-  public static final int TURN = 2;
-  public static final int STOP = 4;
 
-  public Navigator setRobot(Robot robot);
+  // based on the information in the Model, the Navigator decides where to go
+  public Navigator useModel(Model model);
 
-  public Boolean   reachedGoal();
-  public int       nextAction();
-  public double    getDistance();
-  public double    getAngle();
+  // the navigator can be asked to instruct a driver what to do
+  public Navigator instruct(Driver driver);
+
+  // when the Navigator has reached its goal, it will no longer instruct any
+  // movement to the Driver, but will also provide this information as feedback
+  public boolean reachedGoal();
+
 }

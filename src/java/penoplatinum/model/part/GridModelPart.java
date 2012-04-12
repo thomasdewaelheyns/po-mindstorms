@@ -1,49 +1,66 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package penoplatinum.model;
-
-import java.util.ArrayList;
-import penoplatinum.SimpleHashMap;
-import penoplatinum.grid.Agent;
-import penoplatinum.grid.AggregatedGrid;
-import penoplatinum.grid.AggregatedSubGrid;
-import penoplatinum.grid.DiffusionGridProcessor;
-import penoplatinum.grid.Grid;
-import penoplatinum.grid.GridView;
-import penoplatinum.grid.Sector;
-import penoplatinum.grid.SimpleGrid;
-import penoplatinum.pacman.GhostAction;
-import penoplatinum.pacman.GhostAgent;
-import penoplatinum.pacman.OtherGhost;
-import penoplatinum.pacman.PacmanAgent;
-import penoplatinum.simulator.Bearing;
-import penoplatinum.util.TransformationTRT;
-import penoplatinum.util.Utils;
+package penoplatinum.model.part;
 
 /**
  * Holds this robots grid information, and the grid information of the other 
  * robots
  * 
- * TODO: maybe rename MazeModelPart (all maze information)
- * 
- * @author MHGameWork
+ * @author Team Platinum
  */
-public class GridModelPart implements IModelPart {
 
+import java.util.List;
+import java.util.ArrayList;
+
+import penoplatinum.model.Model;
+
+import penoplatinum.grid.Grid;
+import penoplatinum.grid.Agent;
+import penoplatinum.grid.Sector;
+
+
+public class GridModelPart implements ModelPart {
+  // boilerplate implementation required to register and retrieve a ModelPart
+  // from the model
+  public static GridModelPart from(Model model) {
+    return (GridModelPart)model.getPart(ModelPartRegistry.GRID_MODEL_PART);
+  }
+
+  // private AggregatedGrid myGrid;
+  private Grid myGrid;
+  private Agent myAgent;
+  private ArrayList<Sector> changedSectors = new ArrayList<Sector>();
+
+
+  public GridModelPart(String name) {
+    // this.myAgent = new GhostAgent(name);
+    // this.setupGrid();
+  }
+
+  public Grid getMyGrid() {
+    return this.myGrid;
+  }
+
+  public Agent getMyAgent() {
+    return this.myAgent;
+  }
+  
+  public void refreshMyGrid() {
+    if( ! this.hasChangedSectors()) { return; }
+    for(int i=0; i<10; i++) {
+      // TODO
+      // this.myGrid.refresh();
+    }
+  }
+  
+  public boolean hasChangedSectors() {
+    return changedSectors.size() != 0;
+  }
+
+  /*
   // This is our grid
-  private AggregatedGrid myGrid;
   
   // Data specific to the GhostNavigator
   // the agent on the grid
   private Agent agent;
-  private ArrayList<Sector> changedSectors = new ArrayList<Sector>();
-
-  public GridModelPart(String name) {
-    this.agent = new GhostAgent(name);
-    this.setupGrid();
-  }
 
   // we create a new Grid, add the first sector, the starting point
   private void setupGrid() {
@@ -56,9 +73,6 @@ public class GridModelPart implements IModelPart {
     this.myGrid.displayOn(view);
   }
 
-  public AggregatedGrid getGrid() {
-    return this.myGrid;
-  }
 
   
   public AggregatedSubGrid getGrid(String actorName) {
@@ -82,9 +96,6 @@ public class GridModelPart implements IModelPart {
     return changedSectors;
   }
 
-  public boolean hasChangedSectors() {
-    return changedSectors.size() != 0;
-  }
 
 //  public void printGridStats() {
 //
@@ -196,4 +207,5 @@ public class GridModelPart implements IModelPart {
     this.lastMovement = GhostAction.NONE;
     hasRobotMoved = false;
   }
+  */
 }

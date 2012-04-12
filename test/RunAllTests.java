@@ -10,49 +10,27 @@ import junit.framework.*;
 
 import penoplatinum.ConfigTest;
 
-import penoplatinum.util.RotationTest;
-import penoplatinum.util.BearingTest;
-import penoplatinum.util.PointTest;
-import penoplatinum.util.TransformationTRTTest;
-import penoplatinum.util.ScannerTest;
-import penoplatinum.util.ColorTest;
-import penoplatinum.util.BitwiseOperationsTest;
+import penoplatinum.util.*;
 
-import penoplatinum.grid.LinkedSectorTest;
+import penoplatinum.protocol.*;
 
-import penoplatinum.protocol.ExternalEventHandlerTest;
-import penoplatinum.protocol.ProtocolHandlerTest;
-import penoplatinum.protocol.GhostProtocolHandlerTest;
+import penoplatinum.driver.*;
+import penoplatinum.driver.action.*;
+import penoplatinum.driver.behaviour.*;
 
-import penoplatinum.driver.DriverTest;
-import penoplatinum.driver.ManhattanDriverTest;
+import penoplatinum.reporter.*;
 
-import penoplatinum.driver.action.DriverActionTest;
-import penoplatinum.driver.action.IdleDriverActionTest;
-import penoplatinum.driver.action.MoveDriverActionTest;
-import penoplatinum.driver.action.TurnDriverActionTest;
-import penoplatinum.driver.action.CombinedDriverActionTest;
+import penoplatinum.navigator.*;
+import penoplatinum.navigator.action.*;
+import penoplatinum.navigator.mode.*;
 
-import penoplatinum.driver.behaviour.DriverBehaviourTest;
-import penoplatinum.driver.behaviour.SideProximityDriverBehaviourTest;
-import penoplatinum.driver.behaviour.FrontProximityDriverBehaviourTest;
-import penoplatinum.driver.behaviour.BarcodeDriverBehaviourTest;
+import penoplatinum.model.*;
+import penoplatinum.model.part.*;
 
-import penoplatinum.reporter.ReporterTest;
+import penoplatinum.robot.*;
 
-import penoplatinum.navigator.NavigatorTest;
+import penoplatinum.gateway.*;
 
-import penoplatinum.model.ModelTest;
-import penoplatinum.model.part.ModelPartTest;
-import penoplatinum.model.part.ModelPartRegistryTest;
-
-import penoplatinum.robot.RobotTest;
-import penoplatinum.robot.RobotAPITest;
-
-import penoplatinum.gateway.ConnectionTest;
-import penoplatinum.gateway.QueueTest;
-import penoplatinum.gateway.GatewayClientTest;
-import penoplatinum.gateway.MessageReceiverTest;
 
 public class RunAllTests {
   public static Test suite() {
@@ -82,6 +60,11 @@ public class RunAllTests {
       penoplatinum.driver.behaviour.BarcodeDriverBehaviourTest.class,
       penoplatinum.reporter.ReporterTest.class,
       penoplatinum.navigator.NavigatorTest.class,
+      penoplatinum.navigator.action.NavigatorActionTest.class,
+      penoplatinum.navigator.action.ForwardNavigatorActionTest.class,
+      penoplatinum.navigator.action.TurnLeftNavigatorActionTest.class,
+      penoplatinum.navigator.action.TurnRightNavigatorActionTest.class,
+      penoplatinum.navigator.mode.NavigatorModeTest.class,
       penoplatinum.model.ModelTest.class,
       penoplatinum.model.part.ModelPartTest.class,
       penoplatinum.model.part.ModelPartRegistryTest.class,

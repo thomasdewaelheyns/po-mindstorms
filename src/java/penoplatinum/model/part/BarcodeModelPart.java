@@ -4,7 +4,7 @@ package penoplatinum.model.part;
  * Contains information about the last barcode scanned, and current barcode
  * scanner status
  * 
- * @author MHGameWork
+ * @author Team Platinum
  */
 
 import penoplatinum.model.Model;

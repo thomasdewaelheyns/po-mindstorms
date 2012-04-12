@@ -50,8 +50,7 @@ public class LineDriverBehaviour implements DriverBehaviour {
     this.correctingAction = new CombinedDriverAction()
           .firstPerform(new MoveDriverAction(model).set(MOVE_BEFORE_ALIGN))
           .thenPerform (new AlignDriverAction(model)
-          .thenPerform (new MoveDriverAction(model).set(MOVE_AFTER_ALIGN))
-          .makeInterrupting();
+          .thenPerform (new MoveDriverAction(model).set(MOVE_AFTER_ALIGN));
 
     return true;
   }

@@ -23,5 +23,6 @@ public class ModelPartRegistryTest extends TestCase {
     assertEquals(1, ModelPartRegistry.WALLS_MODEL_PART  );
     assertEquals(2, ModelPartRegistry.BARCODE_MODEL_PART);
     assertEquals(3, ModelPartRegistry.LIGHT_MODEL_PART  );
+    assertEquals(4, ModelPartRegistry.GRID_MODEL_PART   );
 	}
 }

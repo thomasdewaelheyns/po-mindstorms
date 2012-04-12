@@ -5,7 +5,7 @@ package penoplatinum.actions;
  *
  * Aligns a robot straight on a line it crossed.
  * The following sub-actions are performed in sequence:
- * - turn left and record the beginning and end of a white line
+ * - turn left and find a white line
  * - turn right and record the beginning and end of the white line on the 
  *   other side
  * - calculate the angle straight on the recorded white line and turn
@@ -84,7 +84,7 @@ public class AlignDriverAction implements DriverAction {
     
     public SubAction getNextSubAction() {
       // turn back half the turn we made to get back to a white line
-      return new TurnToAlign(-(this.getCurrentAngle()/2));
+      return new TurnToAlign(this.context, -(this.getCurrentAngle()/2));
     }
     
     private int getCurrentAngle() {
@@ -95,7 +95,8 @@ public class AlignDriverAction implements DriverAction {
   // Step 3: turns a given angle to align again to the crossed white line
   private class FindRightWhiteLine implements SubAction {
     private AlignDriverAction context;
-    private correction
+    private int correction;
+    private boolean started = false;
 
     public FindRightWhiteLine(AlignDriverAction context, int correction) {
       this.context    = context;
@@ -108,8 +109,9 @@ public class AlignDriverAction implements DriverAction {
 
     public void work(RobotAPI api) {
       // if we're not turning ... start turning
-      if( ! this.isBusy() ) {
+      if( ! this.started ) {
         api.turn(this.correction);
+        this.started = true;
       }
     }
     
@@ -121,7 +123,7 @@ public class AlignDriverAction implements DriverAction {
   
   private SubAction currentSubAction;
 
-  // a referece to the ModelParts we need to perform the alignment action
+  // a reference to the ModelParts we need to perform the alignment action
   private SensorModelPart sensors;
   private LightModelPart light;
 
@@ -130,7 +132,7 @@ public class AlignDriverAction implements DriverAction {
     this.sensors = SensorModelPart.from(model);
     this.light   = LightModelPart.from(model);
     // set up the first sub-action/state/strategy
-    this.currentSubAction = new FindLeftWhiteLine();
+    this.currentSubAction = new FindLeftWhiteLine(this);
   }
   
   public SensorModelPart getSensors() {
