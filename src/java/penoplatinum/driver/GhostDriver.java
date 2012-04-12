@@ -24,8 +24,8 @@ public class GhostDriver extends ManhattanDriver {
 	private void setupBehaviours() {
 		this.addBehaviour(new FrontProximityDriverBehaviour())
 				.addBehaviour(new SideProximityDriverBehaviour())
-		    .addBehaviour(new BarcodeDriverBehaviour());
-		//  .addBehaviour(new LineDriverBehaviour());
+		    .addBehaviour(new BarcodeDriverBehaviour())
+		    .addBehaviour(new LineDriverBehaviour());
 		//  .addBehaviour(new RestoreDriverBehaviour()) // TODO
 	}
 
