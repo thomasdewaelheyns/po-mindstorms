@@ -8,6 +8,8 @@ package penoplatinum.util;
  * @author: Team Platinum
  */
 
+import java.util.List;
+
 import junit.framework.*; 
 
 
@@ -109,5 +111,13 @@ public class BearingTest extends TestCase {
     assertEquals("W + R180 = E", Bearing.E, Bearing.W.rotate(Rotation.R180) );
     assertEquals("W + R270 = S", Bearing.S, Bearing.W.rotate(Rotation.R270) );
     assertEquals("W + R360 = W", Bearing.W, Bearing.W.rotate(Rotation.R360) );
+  }
+  
+  public void testNESWList() {
+    List<Bearing> list = Bearing.NESW;
+    assertEquals(Bearing.N, list.get(0));
+    assertEquals(Bearing.E, list.get(1));
+    assertEquals(Bearing.S, list.get(2));
+    assertEquals(Bearing.W, list.get(3));
   }
 }

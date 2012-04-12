@@ -8,6 +8,10 @@ package penoplatinum.util;
  * @author: Team Platinum
  */
 
+import java.util.List;
+import java.util.Arrays;
+
+
 public enum Bearing {
   UNKNOWN (-1),
   N       ( 0),
@@ -18,6 +22,9 @@ public enum Bearing {
   SW      ( 5),
   W       ( 6),
   NW      ( 7);
+
+  public static final List<Bearing> NESW =
+    Arrays.asList(new Bearing[] {Bearing.N, Bearing.E, Bearing.S, Bearing.W});
 
   private int bearing;
 
