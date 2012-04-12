@@ -7,17 +7,16 @@ package penoplatinum.model;
  * 
  * @author: Team Platinum
  */
-// we're using commons collections HashedMap because HashMap isn't implemented
-// on Lejos.
+
 import java.util.ArrayList;
 import java.util.List;
+
+import penoplatinum.model.Model;
+
 import penoplatinum.model.processor.ModelProcessor;
 
-import penoplatinum.simulator.Model;
 
 public class GhostModel implements Model {
-  // little bit of configuration
-
   // ModelProcessors are a chain of Decorators
   private ModelProcessor processor;
   private BarcodeModelPart barcodePart;
@@ -28,6 +27,7 @@ public class GhostModel implements Model {
   private SensorModelPart sensorPart;
   private SonarModelPart sonarPart;
   private WallsModelPart wallsPart;
+
   private List<IModelPart> parts = new ArrayList<IModelPart>();
 
   private Reporter reporter;
@@ -43,15 +43,13 @@ public class GhostModel implements Model {
 
   public GhostModel(String name) {
     barcodePart = new BarcodeModelPart();
-    gapPart = new GapModelPart();
-    gridPart = new GridModelPart(name);
-    lightPart = new LightModelPart();
+    gapPart     = new GapModelPart();
+    gridPart    = new GridModelPart(name);
+    lightPart   = new LightModelPart();
     messagePart = new MessageModelPart();
-    sensorPart = new SensorModelPart();
-    sonarPart = new SonarModelPart();
-    wallsPart = new WallsModelPart();
-
-
+    sensorPart  = new SensorModelPart();
+    sonarPart   = new SonarModelPart();
+    wallsPart   = new WallsModelPart();
 
     parts.add(barcodePart);
     parts.add(gapPart);
@@ -61,8 +59,6 @@ public class GhostModel implements Model {
     parts.add(sensorPart);
     parts.add(sonarPart);
     parts.add(wallsPart);
-
-
   }
 
   public Model setProcessor(ModelProcessor processor) {
@@ -80,10 +76,6 @@ public class GhostModel implements Model {
     for (int i = 0; i < parts.size(); i++) {
       parts.get(i).clearDirty();
     }
-  }
-
-  public String toString() {
-    return "This iz ze model!";
   }
 
   public BarcodeModelPart getBarcodePart() {
