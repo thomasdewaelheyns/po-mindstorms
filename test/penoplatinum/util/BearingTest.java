@@ -12,6 +12,8 @@ import java.util.List;
 
 import junit.framework.*; 
 
+import penoplatinum.util.Rotation;
+
 
 public class BearingTest extends TestCase {
 
@@ -119,5 +121,27 @@ public class BearingTest extends TestCase {
     assertEquals(Bearing.E, list.get(1));
     assertEquals(Bearing.S, list.get(2));
     assertEquals(Bearing.W, list.get(3));
+  }
+  
+  public void testTo() {
+    assertEquals(Rotation.NONE, Bearing.N.to(Bearing.N));
+    assertEquals(Rotation.NONE, Bearing.E.to(Bearing.E));
+    assertEquals(Rotation.NONE, Bearing.S.to(Bearing.S));
+    assertEquals(Rotation.NONE, Bearing.W.to(Bearing.W));
+
+    assertEquals(Rotation.R90,  Bearing.N.to(Bearing.E));
+    assertEquals(Rotation.R90,  Bearing.E.to(Bearing.S));
+    assertEquals(Rotation.R90,  Bearing.S.to(Bearing.W));
+    assertEquals(Rotation.R90,  Bearing.W.to(Bearing.N));
+
+    assertEquals(Rotation.R180, Bearing.N.to(Bearing.S));
+    assertEquals(Rotation.R180, Bearing.E.to(Bearing.W));
+    assertEquals(Rotation.R180, Bearing.S.to(Bearing.N));
+    assertEquals(Rotation.R180, Bearing.W.to(Bearing.E));
+
+    assertEquals(Rotation.L90,  Bearing.N.to(Bearing.W));
+    assertEquals(Rotation.L90,  Bearing.E.to(Bearing.N));
+    assertEquals(Rotation.L90,  Bearing.S.to(Bearing.E));
+    assertEquals(Rotation.L90,  Bearing.W.to(Bearing.S));
   }
 }

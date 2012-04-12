@@ -91,6 +91,18 @@ public enum Bearing {
     return this; // matches NONE
   }
 
+  // returns the rotation needed to turn to the targetted bearing
+  public Rotation to(Bearing target) {
+    int diff = ((target.getValue() - this.getValue() + 8) % 8);
+    switch(diff) {
+      case 0: return Rotation.NONE;
+      case 2: return Rotation.R90;
+      case 4: return Rotation.R180;
+      case 6: return Rotation.L90;
+      default:
+        throw new RuntimeException("Not implemented...");
+    }
+  }
 }
 
 /*
