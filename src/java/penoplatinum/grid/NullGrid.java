@@ -8,6 +8,7 @@ package penoplatinum.grid;
 
 import java.util.List;
 
+import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
 
@@ -146,7 +147,7 @@ public class NullGrid implements Grid {
     return null;
   }
   
-  public Point getPosition(Sector sector) {
+  public Point getPositionOf(Sector sector) {
     return null;
   }
 
@@ -162,7 +163,15 @@ public class NullGrid implements Grid {
     return this;
   }
   
-  public Sector getSector(Point position) {
+  public Sector getSectorAt(Point position) {
+    return null;
+  }
+  
+  public Bearing getBearingOf(Agent agent) {
+    return Bearing.UNKNOWN;
+  }
+
+  public Sector getSectorOf(Agent agent) {
     return null;
   }
   

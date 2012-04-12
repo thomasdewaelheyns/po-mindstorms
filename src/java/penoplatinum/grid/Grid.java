@@ -11,6 +11,7 @@ package penoplatinum.grid;
 import java.util.List;
 
 import penoplatinum.util.Point;
+import penoplatinum.util.Bearing;
  
 
 public interface Grid {
@@ -22,8 +23,8 @@ public interface Grid {
 
   // using the navigation links on Sectors, the Grid can traverse through
   // the sectors, returning the Sector with requested left and top coordinates
-  public Sector       getSector(Point position);
-  public Point        getPosition(Sector sector);
+  public Sector       getSectorAt(Point position);
+  public Point        getPositionOf(Sector sector);
   public List<Sector> getSectors();
 
   // Grid contains Agents
@@ -34,6 +35,8 @@ public interface Grid {
   public List<Agent>  getAgents();
   public Grid         clearAgents();
   public Point        getPosition(Agent agent);
+  public Sector       getSectorOf(Agent agent);
+  public Bearing      getBearingOf(Agent agent);
 
   // returns the boundaries and dimensions of the Grid
   public int          getMinLeft();
