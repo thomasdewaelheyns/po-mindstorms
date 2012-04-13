@@ -1,7 +1,7 @@
 package penoplatinum.navigator.mode;
 
 /**
- * ChaseNavigatorMode
+ * ChaseHillClimbingNavigatorMode
  *
  * Implements a NavigatorMode that uses Hill Climbing to discover all Sectors
  * on a Grid.
@@ -12,15 +12,21 @@ package penoplatinum.navigator.mode;
 import java.util.List;
 import java.util.Arrays;
 
+import penoplatinum.util.Bearing;
+
+import penoplatinum.grid.Grid;
+import penoplatinum.grid.Sector;
+import penoplatinum.grid.Agent;
+
 import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
 
 import penoplatinum.navigator.action.NavigatorAction;
 
 
-public class ChaseNavigatorMode implements NavigatorMode {
+public class ChaseHillClimbingNavigatorMode extends HillClimbingNavigatorMode {
 
-  public ChaseNavigatorMode(Model model) {
+  public ChaseHillClimbingNavigatorMode(Model model) {
     super(model);
     // TODO : this.grids.onlyApplyCollaborateDiffusionOnPacman();
   }

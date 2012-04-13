@@ -11,16 +11,16 @@ package penoplatinum.navigator;
  * @author: Team Platinum
  */
 
-import penoplatinum.navigator.mode.DiscoverNavigatorMode;
-import penoplatinum.navigator.mode.ChaseNavigatorMode;
+import penoplatinum.navigator.mode.DiscoverHillClimbingNavigatorMode;
+import penoplatinum.navigator.mode.ChaseHillClimbingNavigatorMode;
 
 
 public class GhostNavigator extends MultiModeNavigator {
 
   // as soon as we get a Model, we can setup our Modes
   public useModel(Model model) {
-    this.firstUse(new DiscoverNavigatorMode(model));
-    this.thenUse (new ChaseNavigatorMode   (model));
+    this.firstUse(new DiscoverHillClimbingNavigatorMode(model));
+    this.thenUse (new ChaseHillClimbingNavigatorMode   (model));
   }
 
 }

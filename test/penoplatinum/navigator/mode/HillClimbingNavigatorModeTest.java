@@ -245,7 +245,7 @@ public class HillClimbingNavigatorModeTest extends TestCase {
     this.mockedNorthSector = mock(Sector.class);
     this.mockedEastSector  = mock(Sector.class);
     this.mockedSouthSector = mock(Sector.class);
-    this.mockedWestSector = mock(Sector.class);
+    this.mockedWestSector  = mock(Sector.class);
 
     when(this.mockedMySector.getNeighbour(Bearing.N))
       .thenReturn(this.mockedNorthSector);
