@@ -26,6 +26,7 @@ import penoplatinum.navigator.mode.*;
 
 import penoplatinum.model.*;
 import penoplatinum.model.part.*;
+import penoplatinum.model.processor.*;
 
 import penoplatinum.robot.*;
 
@@ -74,6 +75,7 @@ public class RunAllTests {
       penoplatinum.model.ModelTest.class,
       penoplatinum.model.part.ModelPartTest.class,
       penoplatinum.model.part.ModelPartRegistryTest.class,
+      penoplatinum.model.processor.ModelProcessorTest.class,
       penoplatinum.robot.RobotTest.class,
       penoplatinum.robot.RobotAPITest.class,
       penoplatinum.gateway.ConnectionTest.class,

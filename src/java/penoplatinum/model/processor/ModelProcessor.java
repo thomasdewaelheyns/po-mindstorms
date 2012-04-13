@@ -17,12 +17,15 @@ abstract public class ModelProcessor {
   protected ModelProcessor nextProcessor;
   protected Model model;
 
+  // default constructor, no next ModelProcessor
   public ModelProcessor() {}
 
+  // decorating constructor
   public ModelProcessor( ModelProcessor nextProcessor ) {
     this.nextProcessor = nextProcessor;
   }
 
+  // sets the Model for this Processor and those following
   public void setModel( Model model ) {
     this.model = model;
     if( this.nextProcessor != null ) {
@@ -30,6 +33,7 @@ abstract public class ModelProcessor {
     }
   }
 
+  // triggers the processing chain downwards
   public void process() {
     this.work();
     if( this.nextProcessor != null ) {
@@ -37,6 +41,6 @@ abstract public class ModelProcessor {
     }
   }
 
+  // the actual functionality is proper to the concrete implementation
   protected abstract void work();
-
 }
