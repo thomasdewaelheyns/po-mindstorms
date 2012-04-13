@@ -60,6 +60,7 @@ public class RunAllTests {
       penoplatinum.driver.behaviour.BarcodeDriverBehaviourTest.class,
       penoplatinum.reporter.ReporterTest.class,
       penoplatinum.navigator.NavigatorTest.class,
+      penoplatinum.navigator.GhostNavigatorTest.class,
       penoplatinum.navigator.MultiModeNavigatorTest.class,
       penoplatinum.navigator.action.NavigatorActionTest.class,
       penoplatinum.navigator.action.ForwardNavigatorActionTest.class,

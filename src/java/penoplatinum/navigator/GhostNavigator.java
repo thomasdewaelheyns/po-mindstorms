@@ -11,6 +11,8 @@ package penoplatinum.navigator;
  * @author: Team Platinum
  */
 
+import penoplatinum.model.Model;
+
 import penoplatinum.navigator.mode.DiscoverHillClimbingNavigatorMode;
 import penoplatinum.navigator.mode.ChaseHillClimbingNavigatorMode;
 
