@@ -18,9 +18,10 @@ import penoplatinum.navigator.mode.ChaseHillClimbingNavigatorMode;
 public class GhostNavigator extends MultiModeNavigator {
 
   // as soon as we get a Model, we can setup our Modes
-  public useModel(Model model) {
+  public GhostNavigator useModel(Model model) {
     this.firstUse(new DiscoverHillClimbingNavigatorMode(model));
     this.thenUse (new ChaseHillClimbingNavigatorMode   (model));
+    return this;
   }
 
 }

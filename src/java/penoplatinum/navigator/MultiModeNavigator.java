@@ -16,9 +16,12 @@ package penoplatinum.navigator;
 import java.util.List;
 import java.util.ArrayList;
 
+import penoplatinum.driver.Driver;
+
 import penoplatinum.model.Model;
 
 import penoplatinum.navigator.action.NavigatorAction;
+import penoplatinum.navigator.mode.NavigatorMode;
 
 
 public class MultiModeNavigator implements Navigator {
@@ -50,9 +53,10 @@ public class MultiModeNavigator implements Navigator {
 
   // first we check if our previous/current action was successfully performed
   // next we give the next instruction in our plan
-  public final Navigator instruct(Driver driver) {
+  public final MultiModeNavigator instruct(Driver driver) {
     this.processFeedback(driver);
     this.provideNextInstruction(driver);
+    return this;
   }
 
   public final boolean reachedGoal() {
@@ -63,10 +67,13 @@ public class MultiModeNavigator implements Navigator {
     // if the driver completed our last instruction successfully, we update
     // our information to reflect our new position.
     if( driver.completedLastInstruction() ) {
+      // because this cannot happen without us providing this instruction
+      // there must be a plan with a current action when this happens
       this.getCurrentAction().complete();
     } else {
       // if the previous instruction wasn't completed successfully, we also
       // discard our current plan, because at least this step failed.
+      // this is also the initialization point on the first instruct() call
       this.discardCurrentPlan();
     }
   }
@@ -76,43 +83,49 @@ public class MultiModeNavigator implements Navigator {
   }
   
   private void provideNextInstruction(Driver driver) {
-    if( this.reachedGoal() ) { return; } // we're done
-    NavigatorAction action = this.getNextAction();
-    if( action == null ) { this.createNewPlan(); }
-    action = this.getNextAction();
-    if( action == null ) {
-      throw new RuntimeException( "Cloudn't create a plan ?!" );
-    }
-    action.instruct(driver);
+    if( this.reachedGoal() && this.noNextAction() ) { return; } // we're done
+    this.getNextAction().instruct(driver);
+  }
+
+  // when we're at the last action of the last mode, there is no next action
+  private boolean noNextAction() {
+    return this.plan.size() < 2 && this.modes.size() < 2;
   }
   
   private NavigatorAction getNextAction() {
     this.discardCurrentAction();
     return this.getCurrentAction();
-  }
-  
+  }  
+
   private void discardCurrentAction() {
-    if( this.plan.size < 1 ) { return; }
-    this.plan.remove(0);
+    if( this.noNextAction() ) { return; } // don't discard the last action
+    if( this.plan.size() > 0 ) { this.plan.remove(0); }
   }
   
   private NavigatorAction getCurrentAction() {
-    if( this.plan.size < 1 ) { return null; }
+    // initialize
+    if( this.plan.size() == 0 ) {
+      this.createNewPlan();
+    }
     return this.plan.get(0);
   }
 
   private void createNewPlan() {
-    if( this.getCurrentMode().reachedGoal() ) {
+    // switch to next mode once the current one has reached its goal
+    if( this.reachedGoal() ) {
       this.discardCurrentMode();
     }
     this.plan = this.getCurrentMode().createNewPlan();
+    if( this.plan.size() == 0 ) {
+      throw new RuntimeException( "Cloudn't create a plan ?!" );
+    }
   }
   
   private NavigatorMode getCurrentMode() {
     if( this.modes.size() < 1 ) {
-      throw new RuntimeException( "No current NavigatorMode!" );
+      throw new RuntimeException( "No current NavigatorMode !" );
     }
-    return this.modes.getAt(0);
+    return this.modes.get(0);
   }
 
   private void discardCurrentMode() {
