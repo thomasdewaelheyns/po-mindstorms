@@ -65,6 +65,7 @@ public class RunAllTests {
       penoplatinum.navigator.action.TurnLeftNavigatorActionTest.class,
       penoplatinum.navigator.action.TurnRightNavigatorActionTest.class,
       penoplatinum.navigator.mode.NavigatorModeTest.class,
+      penoplatinum.navigator.mode.HillClimbingNavigatorModeTest.class,
       penoplatinum.model.ModelTest.class,
       penoplatinum.model.part.ModelPartTest.class,
       penoplatinum.model.part.ModelPartRegistryTest.class,

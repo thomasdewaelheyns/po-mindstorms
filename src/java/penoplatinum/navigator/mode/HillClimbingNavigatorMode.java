@@ -10,11 +10,17 @@ package penoplatinum.navigator.mode;
  */
 
 import java.util.List;
+import java.util.ArrayList;
+
+import penoplatinum.util.Bearing;
+import penoplatinum.util.Rotation;
+
+import penoplatinum.grid.Sector;
 
 import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
 
-import penoplatinum.navigator.action.NavigatorAction;
+import penoplatinum.navigator.action.*;
 
 
 public class HillClimbingNavigatorMode implements NavigatorMode {
@@ -41,7 +47,7 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
   
   private Bearing chooseBestBearing() {
     int highestValue = -1, value;
-    Bearing bestBearing = Bearing.NONE;
+    Bearing bestBearing = Bearing.UNKNOWN;
 
     // find highest value and associated bearing
     for(Bearing bearing : Bearing.NESW) {
@@ -59,12 +65,8 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
   // return the Sector's value IF it is accessible (there must be a Sector,
   // and there shouldn't be a wall in between).
   private int getValueAt(Bearing atLocation) {
-    Sector sector = this.getCurrentSector();
-    boolean hasNeighbour = sector.hasNeighbour(atLocation);
-    Boolean hasWall      = sector.hasWall(atLocation);
-    hasWall = hasWall != null && hasWall;
-    if( hasNeighbour && ! hasWall ) {
-      return sector.getNeighbour(atLocation).getValue();
+    if( this.getCurrentSector().givesAccessTo(atLocation) ) {
+      return this.getCurrentSector().getNeighbour(atLocation).getValue();
     }
     return -1; // TODO: remove magic number ?
   }
@@ -73,22 +75,22 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
     return this.grids.getMyGrid().getSectorOf(this.grids.getMyAgent());
   }
   
-  private List<NavigatoAction> constructPlan(Bearing bearing) {
+  private List<NavigatorAction> constructPlan(Bearing bestBearing) {
     List<NavigatorAction> plan = new ArrayList<NavigatorAction>();
 
     // not one neighbour has a value above -1 ???? okay ... but this is weird
     if( bestBearing == Bearing.UNKNOWN ) { return plan; }
 
     // turn towards the bestBearing
-    switch(this.grids.getMyAgent().getBearing().to(bestBearing)) {
-      case Rotation.L90:
+    switch(this.getMyBearing().to(bestBearing)) {
+      case L90:
         plan.add( new TurnLeftNavigatorAction(this.grids) );
         break;
-      case Rotation.R90:
+      case R90:
         plan.add( new TurnRightNavigatorAction(this.grids) );
         break;
-      case Rotation.R180: 
-      case Rotation.L180:
+      case R180: 
+      case L180:
         plan.add( new TurnRightNavigatorAction(this.grids) );
         plan.add( new TurnRightNavigatorAction(this.grids) );
         break;
@@ -97,5 +99,9 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
     plan.add( new ForwardNavigatorAction(this.grids) );
 
     return plan;
+  }
+  
+  private Bearing getMyBearing() {
+    return this.grids.getMyGrid().getBearingOf(this.grids.getMyAgent());    
   }
 }
