@@ -42,6 +42,7 @@ public class RunAllTests {
       penoplatinum.util.TransformationTRTTest.class,
       penoplatinum.util.ScannerTest.class,
       penoplatinum.util.ColorTest.class,
+      penoplatinum.util.LightColorTest.class,
       penoplatinum.util.BitwiseOperationsTest.class,
       penoplatinum.grid.LinkedSectorTest.class,
       penoplatinum.protocol.ExternalEventHandlerTest.class,

@@ -8,29 +8,22 @@ package penoplatinum.util;
 
 public enum LightColor {
 
-  Black(-1),
-  White (1),
-  Brown (0);
+  BLACK(-1),
+  WHITE (1),
+  BROWN (0);
   
-  private final int val;
+  private final int value;
 
-  private LightColor(int val) {
-    this.val = val;
-  }
-
-  public int getVal() {
-    return val;
+  private LightColor(int value) {
+    this.value = value;
   }
 
   public String toString() {
-    switch(val) {
-      case -1:
-        return "BLACK";
-      case 0:
-        return "BROWN";
-      case 1:
-        return "WHITE";
+    switch(this.value) {
+      case -1: return "BLACK";
+      case  1: return "WHITE";
+      case  0: return "BROWN";
     }
-    return "WHUT??";
+    throw new RuntimeException( "Impossible Unknown Enum value." );
   }
 }
