@@ -12,7 +12,7 @@ import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
-import penoplatinum.util.PCUtils;
+import penoplatinum.Config;
 import penoplatinum.util.Utils;
 
 /**

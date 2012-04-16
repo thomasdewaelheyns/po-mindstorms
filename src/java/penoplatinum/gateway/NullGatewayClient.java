@@ -1,5 +1,7 @@
 package penoplatinum.gateway;
 
+import penoplatinum.robot.Robot;
+
 /**
  * A GatewacyClient that doesn't do anything, used for initialization.
  * 
