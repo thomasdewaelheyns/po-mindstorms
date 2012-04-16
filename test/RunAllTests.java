@@ -83,7 +83,12 @@ public class RunAllTests {
       penoplatinum.gateway.ConnectionTest.class,
       penoplatinum.gateway.QueueTest.class,
       penoplatinum.gateway.GatewayClientTest.class,
-      penoplatinum.gateway.MessageReceiverTest.class
+      penoplatinum.gateway.MessageReceiverTest.class,
+      penoplatinum.map.MapHashedTest.class,
+      penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
+      penoplatinum.map.mazeprotocol.DiscoverTest.class,
+      penoplatinum.map.mazeprotocol.PacmanTest.class,
+      penoplatinum.map.mazeprotocol.PositionTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;

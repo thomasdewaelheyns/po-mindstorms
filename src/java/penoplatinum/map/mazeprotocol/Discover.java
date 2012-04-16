@@ -10,7 +10,6 @@ public class Discover implements Commando {
   public void interpret(MapHashed m, Scanner sc) {
     int x = sc.nextInt();
     int y = sc.nextInt();
-    int data = 0;
     Sector s = new Sector();
     for (int i = 0; i < 4; i++) {
       if (sc.nextInt() == 1) {

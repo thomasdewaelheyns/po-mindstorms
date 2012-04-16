@@ -1,24 +1,25 @@
 package penoplatinum.map;
 
-import java.util.List;
+import junit.framework.TestCase;
 import org.junit.Test;
 import penoplatinum.simulator.tiles.Sector;
 import static org.junit.Assert.*;
-import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.util.Point;
 
-public class MapHashedTest {
-
-  public MapHashedTest() {
-  }
+public class MapHashedTest extends TestCase {
 
   /**
    * Test of add method, of class MapHashed.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void testAdd() {
     MapHashed instance = new MapHashed();
-    Map result = instance.add(null);
+    try{
+      Map result = instance.add(null);
+      fail("Should throw exception");
+    } catch(RuntimeException e){
+      
+    }
   }
 
   /**
@@ -174,8 +175,12 @@ public class MapHashedTest {
   public void testSetPacmanPosition() {
     System.out.println("setPacmanPosition");
     MapHashed instance = new MapHashed();
-    instance.put(new Sector(), 0, 0);
-    instance.setPacmanPosition(new Point(0, 0));
-    assertEquals(new Point(0, 0), instance.getPacmanPosition());
+    instance.put(new Sector(0), -1, -2);
+
+    instance.setPacmanPosition(new Point(3, -1));
+    assertEquals(new Point(5, 2), instance.getPacmanPosition());
+
+    instance.setPacmanPosition(new Point(-1, -2));
+    assertEquals(new Point(1, 1), instance.getPacmanPosition());
   }
 }

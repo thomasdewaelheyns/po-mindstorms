@@ -11,7 +11,7 @@ public class Pacman implements Commando {
   public void interpret(MapHashed map, Scanner scanner) {
     int x = scanner.nextInt(),
         y = scanner.nextInt();
-    map.setPacmanPosition(new Point(x,y));
+    map.setPacmanPosition(new Point(x, -y));
   }
 
   @Override

@@ -11,7 +11,7 @@ public class Position implements Commando {
   public void interpret(MapHashed map, Scanner scanner) {
     int x = scanner.nextInt(),
         y = scanner.nextInt();
-    map.addGhostPosition(new Point(x,y));
+    map.addGhostPosition(new Point(x, -y));
   }
 
   @Override
