@@ -1,10 +1,10 @@
 package penoplatinum.simulator.tiles;
 
 import java.awt.Graphics2D;
-import penoplatinum.BitwiseOperations;
 import penoplatinum.barcode.BarcodeBlackBlack;
 import penoplatinum.barcode.BarcodeCorrector;
-import penoplatinum.simulator.Bearing;
+import penoplatinum.util.Bearing;
+import penoplatinum.util.BitwiseOperations;
 
 public class Sector implements Tile, Cloneable {
 
@@ -122,37 +122,34 @@ public class Sector implements Tile, Cloneable {
       return false;
     }
 
-    if (hasWall(1) && start < x && x < end) {
+    if (hasWall(Bearing.E) && start < x && x < end) {
       return false;
     }
-    if (hasWall(2) && start < y && y < end) {
+    if (hasWall(Bearing.S) && start < y && y < end) {
       return false;
     }
-    if (hasWall(3) && x < Sector.LINE_WIDTH) {
+    if (hasWall(Bearing.W) && x < Sector.LINE_WIDTH) {
       return false;
     }
-    if (hasWall(0) && y < Sector.LINE_WIDTH) {
+    if (hasWall(Bearing.N) && y < Sector.LINE_WIDTH) {
       return false;
     }
-
-
     return true;
   }
 
-  @Override
-  public Boolean hasWall(int location) {
+  public Boolean hasWall(Bearing location) {
     switch (location) {
-      case Bearing.NE:
+      case NE:
         return this.hasWall(Bearing.N) || this.hasWall(Bearing.E);
-      case Bearing.SE:
+      case SE:
         return this.hasWall(Bearing.S) || this.hasWall(Bearing.E);
-      case Bearing.SW:
+      case SW:
         return this.hasWall(Bearing.S) || this.hasWall(Bearing.W);
-      case Bearing.NW:
+      case NW:
         return this.hasWall(Bearing.N) || this.hasWall(Bearing.W);
       default:
         // "simple" location, just check the bit
-        return BitwiseOperations.hasBit(data, Sector.startWalls + location);
+        return BitwiseOperations.hasBit(data, Sector.startWalls + location.getValue()/2);
     }
   }
 

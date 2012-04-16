@@ -2,8 +2,8 @@ package penoplatinum.simulator.tiles;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.view.Board;
+import penoplatinum.util.Bearing;
 
 public class SectorDraw implements TileDraw{
   
