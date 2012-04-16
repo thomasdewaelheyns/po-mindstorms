@@ -9,11 +9,9 @@ package penoplatinum.util;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.ListIterator;
-
+import penoplatinum.Config;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
-
-import penoplatinum.Config;
 
 
 public class Utils {
@@ -89,8 +87,6 @@ public class Utils {
       logPrintStream.println(logname);
       t.SendPacket(Config.BT_START_LOG);
     }
-
-
   }
 
   public static int ClampLooped(int val, int start, int end) {

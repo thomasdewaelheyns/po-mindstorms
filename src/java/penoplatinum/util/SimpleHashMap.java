@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HashMap<K, T>{
+public class SimpleHashMap<K, T>{
 
   public List<K> keys = new ArrayList<K>();
   public List<T> values = new ArrayList<T>();
