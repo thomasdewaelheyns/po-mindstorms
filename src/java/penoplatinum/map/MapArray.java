@@ -15,15 +15,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class MapArray implements Map {
-
-  public static MapArray lastMap;
   
   private int width;
   private ArrayList<Tile> tiles;
 
   protected MapArray() {
     this.tiles = new ArrayList<Tile>();
-    lastMap = this;
   }
 
   public MapArray(int width) {

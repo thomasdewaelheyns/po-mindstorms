@@ -7,8 +7,8 @@ package penoplatinum.model.part;
  * @author Team Platinum
  */
 
+import penoplatinum.model.Model;
 import penoplatinum.simulator.Line;
-import penoplatinum.util.LightColor;
 
 
 public class LightModelPart implements ModelPart {
