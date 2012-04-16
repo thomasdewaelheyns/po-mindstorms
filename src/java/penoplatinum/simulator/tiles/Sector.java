@@ -221,10 +221,6 @@ public class Sector implements Tile, Cloneable {
     return draw;
   }
 
-  public void drawTile(Graphics2D g, int i, int i0) {
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
   public int getData() {
     return data;
   }

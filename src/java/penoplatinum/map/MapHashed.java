@@ -45,11 +45,17 @@ public class MapHashed implements Map {
 
   @Override
   public int getHeight() {
+    if(maxY == Integer.MIN_VALUE){
+      return 0;
+    }
     return maxY - minY+1;
   }
 
   @Override
   public int getWidth() {
+    if(maxX == Integer.MIN_VALUE){
+      return 0;
+    }
     return maxX - minX+1;
   }
 
@@ -60,6 +66,9 @@ public class MapHashed implements Map {
 
   @Override
   public Map put(Tile tile, int left, int top) {
+    if(tile == null){
+      return this;
+    }
     if (top > maxY) {
       maxY = top;
     }
