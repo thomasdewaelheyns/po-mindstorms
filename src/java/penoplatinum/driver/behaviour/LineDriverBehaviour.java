@@ -9,6 +9,7 @@ package penoplatinum.driver.behaviour;
  * @author Team Platinum
  */
 
+import penoplatinum.actions.AlignDriverAction;
 import penoplatinum.model.Model;
 
 import penoplatinum.model.part.LightModelPart;
@@ -16,7 +17,7 @@ import penoplatinum.model.part.LightModelPart;
 import penoplatinum.driver.action.DriverAction;
 import penoplatinum.driver.action.CombinedDriverAction;
 import penoplatinum.driver.action.MoveDriverAction;
-import penoplatinum.driver.action.AlignDriverAction;
+import penoplatinum.model.part.BarcodeModelPart;
 
 
 public class LineDriverBehaviour implements DriverBehaviour {
@@ -25,7 +26,7 @@ public class LineDriverBehaviour implements DriverBehaviour {
   private final static double MOVE_BEFORE_ALIGN = 0.02;
   private final static double MOVE_AFTER_ALIGN  = 0.21;
 
-  private DriverAction
+  private DriverAction correctingAction;
 
   public boolean requiresAction(Model model, DriverAction currentAction) {
 		// if we have already issued a correcting action and it is busy, no
@@ -49,7 +50,7 @@ public class LineDriverBehaviour implements DriverBehaviour {
 
     this.correctingAction = new CombinedDriverAction()
           .firstPerform(new MoveDriverAction(model).set(MOVE_BEFORE_ALIGN))
-          .thenPerform (new AlignDriverAction(model)
+          .thenPerform (new AlignDriverAction(model))
           .thenPerform (new MoveDriverAction(model).set(MOVE_AFTER_ALIGN));
 
     return true;
