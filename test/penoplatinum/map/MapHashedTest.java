@@ -15,7 +15,7 @@ public class MapHashedTest extends TestCase {
   public void testAdd() {
     MapHashed instance = new MapHashed();
     try{
-      Map result = instance.add(null);
+      instance.add(null);
       fail("Should throw exception");
     } catch(RuntimeException e){
       

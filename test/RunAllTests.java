@@ -88,7 +88,8 @@ public class RunAllTests {
       penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
       penoplatinum.map.mazeprotocol.DiscoverTest.class,
       penoplatinum.map.mazeprotocol.PacmanTest.class,
-      penoplatinum.map.mazeprotocol.PositionTest.class
+      penoplatinum.map.mazeprotocol.PositionTest.class,
+      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;
