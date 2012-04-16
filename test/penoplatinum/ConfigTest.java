@@ -17,7 +17,12 @@ public class ConfigTest extends TestCase {
   }
 
   public void testProperties() {
-    Config.load("test.properties");
+    //Verschillend met netbeans
+    try {
+      Config.load("test.properties");
+    } catch (RuntimeException e) {
+      Config.load("../../test/test.properties");
+    }
 
     assertTrue(Config.DEBUGMODE);
     assertTrue(Config.USE_LOCAL_MQ);
