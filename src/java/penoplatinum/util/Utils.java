@@ -2,17 +2,15 @@ package penoplatinum.util;
 
 /**
  * Utils, a bag of various goodies.
- * 
+ *
  * @author: Team Platinum
  */
-
 import java.io.PrintStream;
 import java.util.List;
 import java.util.ListIterator;
 import penoplatinum.Config;
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
-
 
 public class Utils {
 
@@ -65,7 +63,6 @@ public class Utils {
     throw new RuntimeException(message);
   }
 
-
   // TODO: should be handled all by a Gateway
   public static void EnableRemoteLogging(IConnection conn) {
     EnableRemoteLogging(conn, "RobotLog");
@@ -73,7 +70,8 @@ public class Utils {
 
   /**
    * TODO: add a filename that can be logged to!
-   * @param conn 
+   *
+   * @param conn
    */
   public static void EnableRemoteLogging(IConnection conn, String logname) {
 
@@ -94,7 +92,7 @@ public class Utils {
     end -= start;
 
     if (val < 0) {
-      val += (-val / end + 1) * end;
+      val = (val % end) + end;
     }
     val = val % end;
     val += start;
@@ -107,7 +105,7 @@ public class Utils {
     end -= start;
 
     if (val < 0) {
-      val += (-val / end + 1) * end;
+      val = (val % end) + end;
     }
     val = val % end;
     val += start;

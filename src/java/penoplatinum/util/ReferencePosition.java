@@ -7,8 +7,6 @@ package penoplatinum.util;
  * TODO: THIS CLASS SHOULD BE REMOVED
  */
 
-import penoplatinum.util.ExtendedVector;
-
 public class ReferencePosition {
     public ExtendedVector internalValue = new ExtendedVector();
 }

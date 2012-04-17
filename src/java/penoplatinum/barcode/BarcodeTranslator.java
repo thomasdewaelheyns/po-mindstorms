@@ -19,10 +19,10 @@ public class BarcodeTranslator {
     for (int i = 0; i < barcodeLength; i++) {
       int sum = 0;
       //Utils.print((((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength)) + " ");
-      for (int j = i * list.size() / barcodeLength + 2; j < (i + 1) * list.size() / barcodeLength - 2; j++) {
+      for (int j = i * list.size() / barcodeLength; j < (i + 1) * list.size() / barcodeLength; j++) {
         sum += list.get(j);
       }
-      int averageValue = sum / (((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength));
+      //int averageValue = sum / (((i + 1) * list.size() / barcodeLength) - ((i * list.size()) / barcodeLength));
       if (sum < MINIMUM_BETTER && sum > -MINIMUM_BETTER) {
         return -1;
       }
@@ -46,5 +46,29 @@ public class BarcodeTranslator {
       code >>= 1;
     }
     return out;
+  }
+  
+  public int correct(int in) {
+    return in;
+  }
+  
+  public static byte[] expand = 
+    new byte[]{1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 13, 14, 15, 
+               17, 19, 21, 22, 23, 25, 27, 29, 31, 35, 37, 
+               39, 43, 47, 55};
+
+  public byte[] getExpand() {
+    return expand;
+  }
+  
+  
+  public byte expandBarcode(int compressed)
+  {
+    if (compressed >= expand.length)
+    {
+//      System.out.println("Warning: unknown compressed barcode " + compressed);
+      return 0;
+    }
+    return expand[compressed];
   }
 }

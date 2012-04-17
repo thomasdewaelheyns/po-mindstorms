@@ -4,6 +4,7 @@
  */
 package penoplatinum.util;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
@@ -37,5 +38,13 @@ public class UtilsTest extends TestCase{
     assertEquals((Integer)2, numberList.get(1));
     assertEquals((Integer)3, numberList.get(2));
     assertEquals((Integer)4, numberList.get(3));
+  }
+  
+  public void testClampLooped() {
+    assertEquals(30, Utils.ClampLooped(130, 10, 110));
+    assertEquals(80,Utils.ClampLooped(-20, 10, 110));
+    
+    assertEquals(30.0, Utils.ClampLooped(130.0, 10, 110));
+    assertEquals(80.0,Utils.ClampLooped(-20.0, 10, 110));
   }
 }
