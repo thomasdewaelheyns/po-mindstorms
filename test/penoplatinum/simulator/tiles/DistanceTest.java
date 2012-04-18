@@ -1,11 +1,11 @@
-package penoplatinum.simulator.t;
+package penoplatinum.simulator.tiles;
 
-import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*; 
 
 import java.awt.Point;
 import penoplatinum.simulator.tiles.TileGeometry;
+import penoplatinum.util.Bearing;
 
 public class DistanceTest extends TestCase { 
   private Panel tile;
@@ -49,20 +49,20 @@ public class DistanceTest extends TestCase {
   }
 
   public void testFacingWall() {
-    assertEquals( Bearing.E, this.findFacingWall(50, 50,   0 ) );
-    assertEquals( Bearing.E, this.findFacingWall(50, 50,  20 ) );
-    assertEquals( Bearing.N, this.findFacingWall(50, 50,  70 ) );
-    assertEquals( Bearing.N, this.findFacingWall(50, 50,  90 ) );
-    assertEquals( Bearing.N, this.findFacingWall(50, 50, 110 ) );
-    assertEquals( Bearing.W, this.findFacingWall(50, 50, 160 ) );
-    assertEquals( Bearing.W, this.findFacingWall(50, 50, 180 ) );
-    assertEquals( Bearing.W, this.findFacingWall(50, 50, 200 ) );
-    assertEquals( Bearing.S, this.findFacingWall(50, 50, 250 ) );
-    assertEquals( Bearing.S, this.findFacingWall(50, 50, 270 ) );
-    assertEquals( Bearing.S, this.findFacingWall(50, 50, 290 ) );
-    assertEquals( Bearing.E, this.findFacingWall(50, 50, 340 ) );
-    assertEquals( Bearing.E, this.findFacingWall(50, 50, 360 ) );
-    assertEquals( Bearing.E, this.findFacingWall(50, 50, 380 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.E), this.findFacingWall(50, 50,   0 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.E), this.findFacingWall(50, 50,  20 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.N), this.findFacingWall(50, 50,  70 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.N), this.findFacingWall(50, 50,  90 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.N), this.findFacingWall(50, 50, 110 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.W), this.findFacingWall(50, 50, 160 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.W), this.findFacingWall(50, 50, 180 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.W), this.findFacingWall(50, 50, 200 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.S), this.findFacingWall(50, 50, 250 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.S), this.findFacingWall(50, 50, 270 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.S), this.findFacingWall(50, 50, 290 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.E), this.findFacingWall(50, 50, 340 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.E), this.findFacingWall(50, 50, 360 ) );
+    assertEquals( Panel.mapBearingToInt(Bearing.E), this.findFacingWall(50, 50, 380 ) );
   }
   
   private int findFacingWall( int x, int y, int angle ) {

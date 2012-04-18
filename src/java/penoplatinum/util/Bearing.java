@@ -33,7 +33,7 @@ public enum Bearing {
     return this.bearing;
   }
 
-  private Bearing get(int value) {
+  private static Bearing get(int value) {
     switch (value) {
       case -1:
         return UNKNOWN;
@@ -59,7 +59,7 @@ public enum Bearing {
 
   // returns the reverse Bearing
   public Bearing reverse() {
-    return this.get((this.bearing + 4) % 8);
+    return Bearing.get( (this.bearing + 4) % 8);
   }
 
   // returns a Bearing in a 90 degree corner to the left
@@ -76,7 +76,7 @@ public enum Bearing {
   //       a different class. Kept here to not break the code that uses them
   //       in a functional way
   // returns the neighbour line that influences a position in two ways
-  public Bearing getLeftNeighbour() {
+  public Bearing  getLeftNeighbour() {
     return this == N || this == S ? W : N;
   }
 

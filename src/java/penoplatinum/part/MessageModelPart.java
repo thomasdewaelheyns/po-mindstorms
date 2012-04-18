@@ -1,4 +1,4 @@
-package penoplatinum.model;
+package penoplatinum.part;
 
 /**
  * Holds the inbox and outbox for the ghost communication channel,
@@ -10,7 +10,7 @@ package penoplatinum.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import penoplatinum.pacman.ProtocolHandler;
+import penoplatinum.protocol.ProtocolHandler;
 
 public class MessageModelPart implements IModelPart {
   // two queue-like lists for in- and out-goinging messages
@@ -40,6 +40,9 @@ public class MessageModelPart implements IModelPart {
   public List<String> getOutgoingMessages() {
     return this.outbox;
   }
+    public List<String> getIncomingMessages() {
+    return this.inbox;
+  }
 
   public ProtocolHandler getProtocol() {
     return protocol;
@@ -57,7 +60,6 @@ public class MessageModelPart implements IModelPart {
     outbox.add(msg);
   }
 
-  @Override
   public void clearDirty() {
     
   }
