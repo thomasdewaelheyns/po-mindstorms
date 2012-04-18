@@ -95,7 +95,7 @@ public class TileTest extends TestCase {
     assertFalse(tile.hasLine(tile.mapBearingToInt(Bearing.N), Panel.BLACK));
     assertFalse(tile.hasLine(tile.mapBearingToInt(Bearing.S)));
   }
-  
+  //TODO: check if everything works after thomas adds BARCODE Class
   public void testBarcode() {
     Panel tile = this.createEmptyTile();
     tile.withBarcode(15);
@@ -141,41 +141,7 @@ public class TileTest extends TestCase {
     assertEquals("00000000000000000000000000000000", tile.toString() ); 
   }
   
-  public void testNarrowingOrientationNorth() {
-    Panel tile = this.createEmptyTile();
-    tile.setNarrowingOrientation(tile.mapBearingToInt(Bearing.N));
-    assertEquals("00000000000000000000000000010000", tile.toString() ); 
-    assertEquals(tile.mapBearingToInt(Bearing.N), tile.getNarrowingOrientation());
-    tile.unsetNarrowingOrientation();
-    assertEquals("00000000000000000000000000000000", tile.toString() ); 
-  }
-
-  public void testNarrowingOrientationEast() {
-    Panel tile = this.createEmptyTile();
-    tile.setNarrowingOrientation(tile.mapBearingToInt(Bearing.E));
-    assertEquals("00000000000000000000000000001000", tile.toString() ); 
-    assertEquals(tile.mapBearingToInt(Bearing.E), tile.getNarrowingOrientation());
-    tile.unsetNarrowingOrientation();
-    assertEquals("00000000000000000000000000000000", tile.toString() ); 
-  }
-
-  public void testNarrowingOrientationSouth() {
-    Panel tile = this.createEmptyTile();
-    tile.setNarrowingOrientation(tile.mapBearingToInt(Bearing.S));
-    assertEquals("00000000000000000000000000011000", tile.toString() ); 
-    assertEquals(tile.mapBearingToInt(Bearing.S), tile.getNarrowingOrientation());
-    tile.unsetNarrowingOrientation();
-    assertEquals("00000000000000000000000000000000", tile.toString() ); 
-  }
-
-  public void testNarrowingOrientationWest() {
-    Panel tile = this.createEmptyTile();
-    tile.setNarrowingOrientation(tile.mapBearingToInt(Bearing.W));
-    assertEquals("00000000000000000000000000000100", tile.toString() ); 
-    assertEquals(tile.mapBearingToInt(Bearing.W), tile.getNarrowingOrientation());
-    tile.unsetNarrowingOrientation();
-    assertEquals("00000000000000000000000000000000", tile.toString() ); 
-  }
+ 
 
   private Panel createEmptyTile() {
     return new Panel();
