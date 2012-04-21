@@ -224,6 +224,8 @@ De volledige simulator zou ook voorzien moeten worden van unit tests. Deze is te
 INFO: Ruben,xtof
 TODO: Ruben
 
+Status: Started
+
 src/lejos/java/util/Arrays.java
 src/lejos/penoplatinum/AngieEventLoop.java
 src/lejos/penoplatinum/AngieRobotAPI.java

@@ -1,7 +1,7 @@
 package penoplatinum.simulator.tiles;
 
 import java.awt.Point;
-import penoplatinum.simulator.Bearing;
+import penoplatinum.util.Bearing;
 
 public class TileGeometry {
 
@@ -77,7 +77,7 @@ public class TileGeometry {
   /**
    * based on a hit determine the wall that has been hit
    */
-  public static int getHitWall(Point hit, int size, double angle) {
+  public static Bearing getHitWall(Point hit, int size, double angle) {
     if (hit.y == 0) {                          // North
       if (hit.x == 0) {
         if (90 < angle && angle < 180) {

@@ -32,28 +32,28 @@ public class BarcodeAtTest extends TestCase {
     assertTrue(s.hasWall(Bearing.E));
     assertFalse(s.hasWall(Bearing.S));
     assertTrue(s.hasWall(Bearing.W));
-    assertEquals(4, s.getBarcode());
+    assertEquals(4, s.getBarcode8Bit());
     
     s = m.get(2, 1);
     assertTrue(s.hasWall(Bearing.N));
     assertFalse(s.hasWall(Bearing.E));
     assertTrue(s.hasWall(Bearing.S));
     assertFalse(s.hasWall(Bearing.W));
-    assertEquals(6, s.getBarcode());
+    assertEquals(6, s.getBarcode8Bit());
     
     s = m.get(1, 2);
     assertFalse(s.hasWall(Bearing.N));
     assertTrue(s.hasWall(Bearing.E));
     assertFalse(s.hasWall(Bearing.S));
     assertTrue(s.hasWall(Bearing.W));
-    assertEquals(10, s.getBarcode());
+    assertEquals(10, s.getBarcode8Bit());
     
     s = m.get(2, 2);
     assertTrue(s.hasWall(Bearing.N));
     assertFalse(s.hasWall(Bearing.E));
     assertTrue(s.hasWall(Bearing.S));
     assertFalse(s.hasWall(Bearing.W));
-    assertEquals(14, s.getBarcode());
+    assertEquals(14, s.getBarcode8Bit());
     
     sc = new Scanner("1 -1 7 4");
     instance.interpret(m, sc);

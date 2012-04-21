@@ -20,7 +20,7 @@ public class SectorTest {
     
     s.addBarcode(14, 0);
     
-    Assert.assertEquals(14,s.getBarcode());
+    Assert.assertEquals(14,s.getBarcode8Bit());
     
   }
 }

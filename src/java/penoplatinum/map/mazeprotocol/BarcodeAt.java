@@ -23,13 +23,15 @@ public class BarcodeAt implements Commando {
     s.addWall((dir+3)%4);
     s.removeWall((dir+2)%4);
     s.removeWall(dir);
-    if(INVERT_CODE){
+    /*
+     *Dont compress barcodes anymore.
+     *if(INVERT_CODE){
       code = inverse(code);
       if(code<0){
         code = -code-1;
         dir = (dir+2)%4;
       }
-    }
+    }/**/
     s.addBarcode(code, dir);
     
     m.put(s, x, -y);

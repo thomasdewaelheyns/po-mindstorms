@@ -18,8 +18,8 @@ public class ProtocolMapFactoryTest extends TestCase {
     Scanner sc = new Scanner("ABC BARCODEAT 0 0 3 1 ABC BARCODEAT 1 0 4 1 ");
     ProtocolMapFactory instance = new ProtocolMapFactory();
     Map result = instance.getMap(sc);
-    assertEquals(6, result.get(1, 1).getBarcode());
-    assertEquals(8, result.get(2, 1).getBarcode());
+    assertEquals(6, result.get(1, 1).getBarcode8Bit());
+    assertEquals(8, result.get(2, 1).getBarcode8Bit());
   }
   
   @Test
