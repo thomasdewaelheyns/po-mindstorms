@@ -18,8 +18,31 @@ public class UtilsTest extends TestCase{
   public UtilsTest(String name) {
     super(name);
   }
+ /**
+   * Test of ClampLooped method, of class Utils.
+   */
+  public void testClampLooped_3args_1() {
+    assertEquals(30, Utils.ClampLooped(130, 10, 110), 0.05);
+    assertEquals(80, Utils.ClampLooped(-20, 10, 110), 0.05);
+    assertEquals(100, Utils.ClampLooped(100, 10, 110), 0.05);
+    Utils.ClampLooped(-1, 10, 110);
+    assertEquals(-1, Utils.ClampLooped(-1, -10, 110), 0.05);
+    assertEquals(-80, Utils.ClampLooped(130, -100, 110), 0.05);
+    assertEquals(100, Utils.ClampLooped(120, 100, 110), 0.05);
+    assertEquals(100, Utils.ClampLooped(500, 10, 110), 0.05);
+    assertEquals(110 - 11.5, Utils.ClampLooped(-1.5, 10, 110), 0.05);
+    assertEquals(110 - 9.2, Utils.ClampLooped(0.8, 10, 110), 0.05);
+    assertEquals(96, Utils.ClampLooped(96, 10, 110), 0.05);
+    assertEquals(100, Utils.ClampLooped(-1000, 10, 110), 0.05);
+    assertEquals(90.5, Utils.ClampLooped(95.5, 90, 91), 0.05);
+    exception.expect(IllegalArgumentException.class);
+    assertEquals(30, Utils.ClampLooped(130, 10, 9), 0.05);
+    exception.expect(IllegalArgumentException.class);
+    assertEquals(30, Utils.ClampLooped(130, 110, 110), 0.05);
 
-  public void testReverse() {
+  }
+
+   public void testReverse() {
     List<Integer> numberList = Arrays.asList(1,2,3,4,5);
     Utils.reverse(numberList);
     assertEquals((Integer)5, numberList.get(0));
@@ -47,4 +70,5 @@ public class UtilsTest extends TestCase{
     assertEquals(30.0, Utils.ClampLooped(130.0, 10, 110));
     assertEquals(80.0,Utils.ClampLooped(-20.0, 10, 110));
   }
+ 
 }
