@@ -9,10 +9,9 @@ import lejos.nxt.SensorPort;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.movement.RotationMovement;
+import penoplatinum.robot.RobotAPI;
 import penoplatinum.sensor.RotatingSonarSensor;
-import penoplatinum.util.ExtendedVector;
 import penoplatinum.simulator.Model;
-import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.RobotAPI;
 
 /**
@@ -168,22 +167,15 @@ public class AngieRobotAPI implements RobotAPI {
   public void beep() {
     lejos.nxt.Sound.beep();
   }
-  private ExtendedVector outVector = new ExtendedVector();
+  private float outAngle;
 
-  public void setReferencePoint(ReferencePosition reference) {
-    reference.internalValue.set(movement.getInternalOrientation());
+  public void setReferenceAngle(float reference) {
+    reference = movement.getInternalOrientation();
   }
 
-  public ExtendedVector getRelativePosition(ReferencePosition reference) {
-    if (reference.internalValue == null) {
-      throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
-    }
-    outVector.set(reference.internalValue);
-    outVector.negate();
-    outVector.add(movement.getInternalOrientation());
-
-
-    return outVector;
+  public float getRelativeAngle(float reference) {
+    outAngle = -reference + movement.getInternalOrientation();
+    return outAngle;
   }
 
   public boolean sweepInProgress() {

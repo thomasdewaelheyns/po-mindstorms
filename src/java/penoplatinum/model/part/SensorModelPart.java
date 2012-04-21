@@ -86,6 +86,15 @@ public class SensorModelPart implements ModelPart {
   private int getSensorValue(int num) {
     return this.sensors[num];
   }
+    private double totalTurnedAngle;
+
+  public double getTotalTurnedAngle() {
+    return totalTurnedAngle;
+  }
+
+  public void setTotalTurnedAngle(double totalTurnedAngle) {
+    this.totalTurnedAngle = totalTurnedAngle;
+  }
 
   /*
   Below this point is older code. When clean up other code that requires it,
@@ -99,15 +108,7 @@ public class SensorModelPart implements ModelPart {
   public float getAverageTacho() {
     return (getSensorValue(Model.M1) + getSensorValue(Model.M2)) / 2f;
   }
-  private double totalTurnedAngle;
 
-  public double getTotalTurnedAngle() {
-    return totalTurnedAngle;
-  }
-
-  public void setTotalTurnedAngle(double totalTurnedAngle) {
-    this.totalTurnedAngle = totalTurnedAngle;
-  }
 
   // receive an update of the sensor values
   public void updateSensorValues(int[] values) {

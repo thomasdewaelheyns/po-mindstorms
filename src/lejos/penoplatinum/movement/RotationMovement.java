@@ -2,7 +2,6 @@ package penoplatinum.movement;
 
 import lejos.nxt.*;
 import penoplatinum.util.Utils;
-import penoplatinum.util.ExtendedVector;
 
 public class RotationMovement {
 
@@ -18,8 +17,8 @@ public class RotationMovement {
   private boolean movementDisabled;
   private int tachoLeftStart;
   private int tachoRightStart;
-  private ExtendedVector internalOrientation = new ExtendedVector();
-  private ExtendedVector buffer = new ExtendedVector();
+  private float internalOrientation;
+  private float buffer;
 
   public RotationMovement(Motor motorLeft, Motor motorRight) {
     this.motorLeft = motorLeft;
@@ -27,21 +26,17 @@ public class RotationMovement {
   }
 
   private void abortMovement() {
-    internalOrientation.set(getInternalOrientation());
+    internalOrientation =getInternalOrientation();
     startMovement();
   }
 
-  public ExtendedVector getInternalOrientation() {
+  public float getInternalOrientation() {
     int tachoLeftDiff = motorLeft.getTachoCount() - tachoLeftStart;
     int tachoRightDiff = motorRight.getTachoCount() - tachoRightStart;
-    float averageForward = (tachoLeftDiff + tachoRightDiff) / 2.0f;
-    float inverse = averageForward * WIELOMTREK / 360 / 1000;
-    buffer.setX((float) (inverse * Math.sin(Math.toRadians(internalOrientation.getAngle()))));
-    buffer.setY((float) (inverse * Math.cos(Math.toRadians(internalOrientation.getAngle()))));
-    averageForward = (tachoRightDiff - tachoLeftDiff) / 2.0f;
-    inverse = (float) (averageForward * WIELOMTREK / WIELAFSTAND / Math.PI);
-    buffer.setAngle(-inverse);
-    buffer.add(internalOrientation);
+    float averageForward = (tachoRightDiff - tachoLeftDiff) / 2.0f;
+    float inverse = (float) (averageForward * WIELOMTREK / WIELAFSTAND / Math.PI);
+    buffer = (-inverse);
+    buffer +=internalOrientation;
     return buffer;
   }
 

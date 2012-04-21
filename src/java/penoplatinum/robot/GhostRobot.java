@@ -18,12 +18,15 @@ import penoplatinum.model.GridModelPart;
 import penoplatinum.model.processor.*;
 
 import penoplatinum.simulator.Model;
-import penoplatinum.simulator.ReferencePosition;
 import penoplatinum.simulator.Robot;
 import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.Navigator;
 
 import penoplatinum.gateway.GatewayClient;
+import penoplatinum.navigator.Navigator;
+import penoplatinum.reporter.Reporter;
+import penoplatinum.robot.Robot;
+import penoplatinum.robot.RobotAPI;
 
 
 public class GhostRobot implements Robot {
@@ -41,7 +44,7 @@ public class GhostRobot implements Robot {
   private GatewayClient client;
   private Reporter reporter;
 
-  private ReferencePosition initialReference = new ReferencePosition();
+  private float initialReference;
 
 
   public GhostRobot(String name) {
@@ -91,7 +94,7 @@ public class GhostRobot implements Robot {
   public GhostRobot useRobotAPI(RobotAPI api) {
     this.api = api;
 
-    this.api.setReferencePoint(initialReference);
+    this.api.setReferenceAngle(initialReference);
     this.api.setSpeed(Model.M3, Config.MOTOR_SPEED_SONAR);
     this.api.setSpeed(Model.M2, Config.MOTOR_SPEED_MOVE);
     this.api.setSpeed(Model.M1, Config.MOTOR_SPEED_MOVE);
@@ -149,7 +152,7 @@ public class GhostRobot implements Robot {
     this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
     this.model.process();
 
-    this.model.getSensorPart().setTotalTurnedAngle(api.getRelativePosition(initialReference).getAngle());
+    this.model.getSensorPart().setTotalTurnedAngle(api.getRelativeAngle(initialReference));
 
     // let the driver do his thing
     if( this.driver.isBusy() ) {

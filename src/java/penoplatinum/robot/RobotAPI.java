@@ -11,8 +11,6 @@ package penoplatinum.robot;
 
 import java.util.List;
 
-import penoplatinum.util.ReferencePosition;
-import penoplatinum.util.ExtendedVector;
 
 
 public interface RobotAPI {
@@ -39,13 +37,13 @@ public interface RobotAPI {
    * Places given reference point at the robot's current position
    * @param reference 
    */
-  public void setReferencePoint(ReferencePosition reference);
+  public void setReferenceAngle(float reference);
 
   /**
    * Returns the position of the robot relative to given reference
    * @param reference 
    */
-  public ExtendedVector getRelativePosition(ReferencePosition reference);
+  public float getRelativeAngle(float reference);
 
   public void sweep(int[] angles);
   public boolean sweepInProgress();

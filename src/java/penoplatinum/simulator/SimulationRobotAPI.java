@@ -1,9 +1,9 @@
 package penoplatinum.simulator;
 
-import penoplatinum.util.ExtendedVector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import penoplatinum.robot.RobotAPI;
 
 /**
  * SimulationRobotAPI
@@ -94,31 +94,24 @@ public class SimulationRobotAPI implements RobotAPI {
   public void beep() {
     System.out.println("BEEP");
   }
-  private ExtendedVector currentPosition = new ExtendedVector();
-  private ExtendedVector outVector = new ExtendedVector();
+  private float currentAngle ;
+  private float outAngle;
 
   @Override
-  public void setReferencePoint(ReferencePosition reference) {
-    updateCurrentPosition();
-    reference.internalValue.set(currentPosition);
+  public void setReferenceAngle(float reference) {
+    updateCurrentAngle();
+    reference = currentAngle;
   }
 
   @Override
-  public ExtendedVector getRelativePosition(ReferencePosition reference) {
-    if (reference.internalValue == null) {
-      throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
-    }
-    updateCurrentPosition();
-    outVector.set(reference.internalValue);
-    outVector.negate();
-    outVector.add(currentPosition);
-    return outVector;
+  public float getRelativeAngle(float reference) {
+    updateCurrentAngle();
+    outAngle = -reference + currentAngle;
+    return outAngle;
   }
 
-  private void updateCurrentPosition() {
-    currentPosition.setX((float) simulatedEntity.getPosX());
-    currentPosition.setY((float) simulatedEntity.getPosY());
-    currentPosition.setAngle((float)simulatedEntity.getDirection() + 90);
+  private void updateCurrentAngle() {
+    currentAngle = ((float)simulatedEntity.getDirection() + 90);
   }
   int[] currentSweepAngles;
   int currentSweepAngleIndex;

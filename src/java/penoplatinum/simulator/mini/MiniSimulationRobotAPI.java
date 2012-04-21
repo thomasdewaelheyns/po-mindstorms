@@ -9,8 +9,6 @@ import penoplatinum.grid.Agent;
 
 import penoplatinum.grid.Sector;
 import penoplatinum.simulator.RobotAPI;
-import penoplatinum.simulator.ReferencePosition;
-import penoplatinum.util.ExtendedVector;
 import penoplatinum.simulator.Bearing;
 
 
@@ -114,11 +112,11 @@ public class MiniSimulationRobotAPI implements RobotAPI {
     return new ArrayList<Integer>(Arrays.asList(left, front, right));
   }
 
-  public void setReferencePoint(ReferencePosition reference) {
+  public void setReferenceAngle(float reference) {
   }
 
-  public ExtendedVector getRelativePosition(ReferencePosition reference) {
-    return new ExtendedVector();
+  public float getAngle(float reference) {
+    return 0.f;
   }
   boolean isSweeping = false;
 

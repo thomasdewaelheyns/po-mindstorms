@@ -25,20 +25,20 @@ public class Buffer {
     }
 
     public void insert(int value) {
-        if(startCheckpoint == (start+1)%maxElements){
-            System.out.println("DataOverflow");
+        if(startCheckpoint == (start+1)%(maxElements+1)){
+            throw new RuntimeException("Queue is full!");
         }
         queue[(start)% maxElements] = value;
-        start = (start +1) % maxElements;
+        start = (start+1) % (maxElements+1);
     }
 
 
     public int get(int position) {
-            return queue[(start+position) % maxElements];
+            return queue[(start+position-1) % maxElements];
     }
     
     public int getRaw(int position){
-        return queue[position%maxElements];
+        return queue[(position-1)%maxElements];
     }
     
     public int getSize(){
@@ -65,7 +65,7 @@ public class Buffer {
     public int getCheckpointSize(){
         return (start-startCheckpoint+maxElements)%maxElements;
     }
-    
+    //REMOVE?
     BufferSubset getBufferSubset(){
         return new BufferSubset(this, startCheckpoint, start, maxElements);
     }
@@ -76,5 +76,8 @@ public class Buffer {
     
     public void removeLast(){
       start = (start+maxElements-1)%maxElements;
+      if(start==0){
+       start = maxElements; 
+      }
     }
 }

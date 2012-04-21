@@ -1,7 +1,7 @@
 package penoplatinum.util;
 
 public class CantorDiagonal {
-
+  
   public static int transform(int x, int y) {
     int rand = Math.max(Math.abs(y), Math.abs(x));
     int start = (rand - 1) * rand * 4 + 1;
@@ -21,4 +21,5 @@ public class CantorDiagonal {
     }
     return start + pos;
   }
+
 }
