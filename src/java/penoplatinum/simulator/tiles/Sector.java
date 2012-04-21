@@ -1,6 +1,5 @@
 package penoplatinum.simulator.tiles;
 
-import java.awt.Graphics2D;
 import penoplatinum.barcode.BarcodeBlackBlack;
 import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.util.Bearing;
@@ -137,7 +136,8 @@ public class Sector implements Tile, Cloneable {
     return true;
   }
 
-  public Boolean hasWall(Bearing location) {
+  @Override
+  public boolean hasWall(Bearing location) {
     switch (location) {
       case NE:
         return this.hasWall(Bearing.N) || this.hasWall(Bearing.E);
@@ -147,10 +147,16 @@ public class Sector implements Tile, Cloneable {
         return this.hasWall(Bearing.S) || this.hasWall(Bearing.W);
       case NW:
         return this.hasWall(Bearing.N) || this.hasWall(Bearing.W);
-      default:
-        // "simple" location, just check the bit
-        return BitwiseOperations.hasBit(data, Sector.startWalls + location.getValue()/2);
+      case N:
+        return BitwiseOperations.hasBit(data, Sector.startWalls + 0);
+      case E:
+        return BitwiseOperations.hasBit(data, Sector.startWalls + 1);
+      case S:
+        return BitwiseOperations.hasBit(data, Sector.startWalls + 2);
+      case W:
+        return BitwiseOperations.hasBit(data, Sector.startWalls + 3);
     }
+    throw new RuntimeException("Unknown bearing");
   }
 
   @Override

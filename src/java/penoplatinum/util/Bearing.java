@@ -32,7 +32,7 @@ public enum Bearing {
       this.bearing = bearing;
   }
 
-  public int getValue() {
+  private int getValue() {
     return this.bearing;
   }
   
