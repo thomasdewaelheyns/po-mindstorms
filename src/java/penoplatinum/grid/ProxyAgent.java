@@ -1,6 +1,7 @@
 package penoplatinum.grid;
 
-import penoplatinum.Color;
+import penoplatinum.util.Color;
+import penoplatinum.util.Colors;
 
 /**
  * ProxyAgent
@@ -14,7 +15,7 @@ import penoplatinum.Color;
 //       copy color, name, etc.
 public class ProxyAgent extends MovingAgent {
 
-  private Color color = new Color(200, 200, 200);
+  private Color color = Colors.GREY;
 
   public ProxyAgent(String name) {
     super(name);
@@ -25,7 +26,7 @@ public class ProxyAgent extends MovingAgent {
   }
 
   @Override
-  public Agent copyAgent() {
+  public Agent createCopy() {
     return new ProxyAgent(this.getName());
   }
 }

@@ -60,7 +60,5 @@ public class HashMapTest {
     assertEquals(valuesList.get(2), valueObject3);
     assertFalse(testMap.isEmpty());
     assertEquals(3, testMap.size());
-    keyObject=null;
-    keyObject2=null;
   }
 }

@@ -9,8 +9,8 @@ package penoplatinum.grid;
  */
 
 
-import penoplatinum.Color;
-import penoplatinum.simulator.Bearing;
+import penoplatinum.util.Color;
+import penoplatinum.util.Colors;
 
 public class StaticTargetAgent implements Agent {
   // our position
@@ -18,7 +18,7 @@ public class StaticTargetAgent implements Agent {
   private int    bearing;
   
   // our color
-  private Color color = new Color(255,255,0);
+  private Color color = Colors.YELLOW;
 
   public Agent assignSector(Sector sector, int bearing) {
     this.sector  = sector;
@@ -50,7 +50,7 @@ public class StaticTargetAgent implements Agent {
   public Agent   moveForward()       { return this;  }
 
   @Override
-  public Agent copyAgent() {
+  public Agent createCopy() {
     return new StaticTargetAgent();
   }
 

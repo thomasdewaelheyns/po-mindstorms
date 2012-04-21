@@ -9,11 +9,12 @@ package penoplatinum.grid;
  */
 
 import penoplatinum.util.Color;
+import penoplatinum.util.Colors;
 
 
 public class GhostAgent extends MovingAgent {
 
-  private Color color = new Color(255,255,255);
+  private Color color = Colors.WHITE;
 
   public GhostAgent(String name) { super(name); }
 
@@ -24,7 +25,7 @@ public class GhostAgent extends MovingAgent {
   
   public Color getColor() { return this.color; }
 
-  public Agent copyAgent() {
+  public Agent createCopy() {
     GhostAgent ret = new GhostAgent(this.getName(), this.getColor());
     return ret;
   }
