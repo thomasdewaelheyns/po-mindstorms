@@ -51,8 +51,8 @@ public class IRdistanceSensor implements Sensor {
     }
 
     actualAngle = Utils.ClampLooped(actualAngle, -180, 180);
-    int minAngle = Utils.ClampLooped(centerAngle-VIEW_ANGLE/2, -180, 180);
-    int maxAngle = Utils.ClampLooped(centerAngle+VIEW_ANGLE/2, -180, 180);
+    int minAngle = (int) Utils.ClampLooped(centerAngle-VIEW_ANGLE/2, -180, 180);
+    int maxAngle = (int) Utils.ClampLooped(centerAngle+VIEW_ANGLE/2, -180, 180);
     if(actualAngle<minAngle){
       return 0;
     }

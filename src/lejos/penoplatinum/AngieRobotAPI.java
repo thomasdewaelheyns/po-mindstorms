@@ -8,11 +8,11 @@ import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
+import penoplatinum.model.Model;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.robot.RobotAPI;
 import penoplatinum.sensor.RotatingSonarSensor;
-import penoplatinum.simulator.Model;
-import penoplatinum.simulator.RobotAPI;
+
 
 /**
  * Responsible for providing access to the hardware of the robot

@@ -2,15 +2,19 @@ package penoplatinum.util;
 
 /**
  * Utils, a bag of various goodies.
- *
+ * 
  * @author: Team Platinum
  */
+
 import java.io.PrintStream;
 import java.util.List;
 import java.util.ListIterator;
-import penoplatinum.Config;
+
 import penoplatinum.bluetooth.IConnection;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
+
+import penoplatinum.Config;
+
 
 public class Utils {
 
@@ -27,20 +31,6 @@ public class Utils {
     }
   }
 
-  public static void print(String message) {
-    if (message == null) {
-      Utils.Log("NULL!!");
-      return;
-    }
-    System.out.print(message);
-
-    synchronized (logLock) {
-      if (logTransporter != null) {
-        logPrintStream.print(message);
-        logTransporter.SendPacket(Config.BT_LOG);
-      }
-    }
-  }
 
   public static void Log(String message) {
     if (message == null) {
@@ -63,6 +53,7 @@ public class Utils {
     throw new RuntimeException(message);
   }
 
+
   // TODO: should be handled all by a Gateway
   public static void EnableRemoteLogging(IConnection conn) {
     EnableRemoteLogging(conn, "RobotLog");
@@ -70,47 +61,54 @@ public class Utils {
 
   /**
    * TODO: add a filename that can be logged to!
-   *
-   * @param conn
+   * @param conn 
    */
   public static void EnableRemoteLogging(IConnection conn, String logname) {
 
     QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
     conn.RegisterTransporter(t, Config.BT_LOG);
     conn.RegisterTransporter(t, Config.BT_START_LOG);
-
     synchronized (logLock) {
       logTransporter = t;
       logPrintStream = new PrintStream(logTransporter.getSendStream());
       logPrintStream.println(logname);
       t.SendPacket(Config.BT_START_LOG);
     }
+
+
   }
 
-  public static int ClampLooped(int val, int start, int end) {
-    val -= start;
-    end -= start;
 
-    if (val < 0) {
-      val = (val % end) + end;
-    }
-    val = val % end;
-    val += start;
-
-    return val;
-  }
 
   public static double ClampLooped(double val, int start, int end) {
-    val -= start;
-    end -= start;
-
-    if (val < 0) {
-      val = (val % end) + end;
+    if(end<=start){
+      throw new IllegalArgumentException("end must be bigger than start");
     }
-    val = val % end;
-    val += start;
-
+    int interval = Math.abs(end - start);
+    double distance = 0;
+    if(val <start){
+      distance = (start - val)%interval;
+      return end-distance;
+    }
+    if(val>end){
+      distance = (val-end)%interval;
+      return start +distance;
+    }
     return val;
+    
+    
+//    
+//    val -= start;
+//    end -= start;
+//
+//    if (val < 0) {
+//      double changeinterval = (((val / end) + 1) * end);
+//      val = changeinterval;
+//    }
+//    val = val % end;
+//    val += start;
+//
+//    return val;
   }
 
   @SuppressWarnings("unchecked")
@@ -133,7 +131,6 @@ public class Utils {
 
   @SuppressWarnings("unchecked")
   public static void swap(List<?> list, int i, int j) {
-    
     final List l = list;
     l.set(i, l.set(j, l.get(i)));
   }
