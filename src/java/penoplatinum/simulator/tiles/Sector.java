@@ -1,5 +1,6 @@
 package penoplatinum.simulator.tiles;
 
+import java.awt.Graphics2D;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.BitwiseOperations;
 
@@ -104,11 +105,9 @@ public class Sector implements Tile, Cloneable {
 
     int start = Sector.SIZE - Sector.LINE_WIDTH;
     int end = Sector.SIZE;
-
     if (x >= Sector.LINE_WIDTH && x < start && y >= Sector.LINE_WIDTH && y < start) {
       return false;
     }
-
     if (hasWall(Bearing.E) && start <= x && x < end) {
       return false;
     }
@@ -136,13 +135,15 @@ public class Sector implements Tile, Cloneable {
       case NW:
         return this.hasWall(Bearing.N) || this.hasWall(Bearing.W);
       case N:
-        return BitwiseOperations.hasBit(data, Sector.startWalls + 0);
+        return BitwiseOperations.hasBit(data, startWalls+0);
       case E:
-        return BitwiseOperations.hasBit(data, Sector.startWalls + 1);
+        return BitwiseOperations.hasBit(data, startWalls+1);
       case S:
-        return BitwiseOperations.hasBit(data, Sector.startWalls + 2);
+        return BitwiseOperations.hasBit(data, startWalls+2);
       case W:
-        return BitwiseOperations.hasBit(data, Sector.startWalls + 3);
+        return BitwiseOperations.hasBit(data, startWalls+3);
+      default:
+        throw new RuntimeException("Unknown bearing");
     }
     throw new RuntimeException("Unknown bearing");
   }

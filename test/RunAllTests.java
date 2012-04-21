@@ -8,31 +8,6 @@
 
 import junit.framework.*;
 
-import penoplatinum.ConfigTest;
-
-import penoplatinum.util.*;
-
-import penoplatinum.protocol.*;
-
-import penoplatinum.driver.*;
-import penoplatinum.driver.action.*;
-import penoplatinum.driver.behaviour.*;
-
-import penoplatinum.reporter.*;
-
-import penoplatinum.navigator.*;
-import penoplatinum.navigator.action.*;
-import penoplatinum.navigator.mode.*;
-
-import penoplatinum.model.*;
-import penoplatinum.model.part.*;
-import penoplatinum.model.processor.*;
-
-import penoplatinum.robot.*;
-
-import penoplatinum.gateway.*;
-
-
 public class RunAllTests {
   public static Test suite() {
     Class[] testClasses = { 
@@ -84,6 +59,7 @@ public class RunAllTests {
       penoplatinum.gateway.QueueTest.class,
       penoplatinum.gateway.GatewayClientTest.class,
       penoplatinum.gateway.MessageReceiverTest.class,
+      penoplatinum.simulator.tiles.SectorTest.class
       penoplatinum.map.MapHashedTest.class,
       penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
       penoplatinum.map.mazeprotocol.DiscoverTest.class,

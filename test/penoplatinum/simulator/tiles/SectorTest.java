@@ -1,33 +1,11 @@
 package penoplatinum.simulator.tiles;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import junit.framework.TestCase;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import penoplatinum.util.Bearing;
 
-public class SectorTest {
-
-  public SectorTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() throws Exception {
-  }
-
-  @AfterClass
-  public static void tearDownClass() throws Exception {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
+public class SectorTest extends TestCase {
 
   /**
    * Test of getBarcode method, of class Sector.
