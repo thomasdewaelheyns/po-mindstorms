@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

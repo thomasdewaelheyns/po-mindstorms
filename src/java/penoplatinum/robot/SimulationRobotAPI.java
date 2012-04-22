@@ -1,9 +1,13 @@
-package penoplatinum.simulator;
+package penoplatinum.robot;
 
+import penoplatinum.simulator.entities.SimulatedEntity;
+import penoplatinum.util.ExtendedVector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import penoplatinum.robot.RobotAPI;
+import penoplatinum.simulator.entities.SensorMapping;
+import penoplatinum.util.ReferencePosition;
 
 /**
  * SimulationRobotAPI
@@ -73,7 +77,7 @@ public class SimulationRobotAPI implements RobotAPI {
   }
 
   private void restartSonarMotorContinuous() {
-    int currentTacho = (int) this.simulatedEntity.getSensorValues()[Model.M3];
+    int currentTacho = (int) this.simulatedEntity.getSensorValues()[SensorMapping.M3];
     // if the motor has finished its previous movement, sweep back ...
     if (currentTacho == this.prevSonarTacho && motorDelay == 0) {
       motorDelay = 20;
@@ -83,7 +87,7 @@ public class SimulationRobotAPI implements RobotAPI {
       motorDelay--;
       if (motorDelay == 1) { // Warning: this 1 here is deliberate
         this.sonarAngle *= -1;
-        simulatedEntity.rotateMotorTo(Model.M3, this.sonarAngle);
+        simulatedEntity.rotateMotorTo(SensorMapping.M3, this.sonarAngle);
       }
     }
 
@@ -140,23 +144,22 @@ public class SimulationRobotAPI implements RobotAPI {
       return;
     }
 
-    int currentTacho = (int) this.simulatedEntity.getSensorValues()[Model.M3];
+    int currentTacho = (int) this.simulatedEntity.getSensorValues()[SensorMapping.M3];
 
     int currentAngle = currentSweepAngles[currentSweepAngleIndex];
 
     if (currentTacho != currentAngle) {
-      simulatedEntity.rotateMotorTo(Model.M3, currentAngle);
+      simulatedEntity.rotateMotorTo(SensorMapping.M3, currentAngle);
       return;
     }
-    resultBuffer.add((int) this.simulatedEntity.getSensorValues()[Model.S3]);
+    resultBuffer.add((int) this.simulatedEntity.getSensorValues()[SensorMapping.S3]);
     currentSweepAngleIndex++;
 
     if (currentSweepAngleIndex >= currentSweepAngles.length) {
       currentSweepAngles = null;
     }
-
-
   }
+  
   boolean isSweeping = false;
   public void setSweeping(boolean b){
     isSweeping = b;

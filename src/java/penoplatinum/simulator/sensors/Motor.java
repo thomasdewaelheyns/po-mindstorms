@@ -1,6 +1,10 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.sensors;
 
+import penoplatinum.simulator.entities.SimulatedEntity;
 import java.util.Scanner;
+import penoplatinum.simulator.Sensor;
+import penoplatinum.simulator.Simulator;
+import penoplatinum.simulator.Tickable;
 
 /**
  * Motor

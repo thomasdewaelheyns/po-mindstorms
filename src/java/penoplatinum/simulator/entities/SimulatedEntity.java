@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.entities;
 
 /**
  * 
@@ -12,12 +12,18 @@ import penoplatinum.simulator.sensors.LightSensor;
 import penoplatinum.simulator.sensors.MotorState;
 import penoplatinum.simulator.sensors.NoneSensor;
 import penoplatinum.simulator.sensors.Sonar;
-import penoplatinum.simulator.sensors.TouchSensor;
 
 import penoplatinum.simulator.view.ViewRobot;
 
 import penoplatinum.gateway.GatewayClient;
 
+import penoplatinum.robot.Robot;
+import penoplatinum.robot.RobotAPI;
+import penoplatinum.simulator.sensors.Motor;
+import penoplatinum.simulator.RobotEntity;
+import penoplatinum.simulator.Sensor;
+import penoplatinum.robot.SimulationRobotAPI;
+import penoplatinum.simulator.Simulator;
 import penoplatinum.util.Point;
 
 
@@ -36,9 +42,9 @@ public class SimulatedEntity implements RobotEntity {
   private Point initialPosition;
   private int initialBearing;
   // the motorSpeeds and the sensorValues
-  private int[] sensorValues = new int[Model.SENSORVALUES_NUM];
+  private int[] sensorValues = new int[SensorMapping.SENSORVALUES_NUM];
   private Motor[] motors = new Motor[3];
-  private Sensor[] sensors = new Sensor[Model.SENSORVALUES_NUM];
+  private Sensor[] sensors = new Sensor[SensorMapping.SENSORVALUES_NUM];
   private SimulationRobotAPI robotAPI;    // the API used to access hardware
   private GatewayClient robotAgent;  // the communication layer
   private Robot robot;       // the actual robot
@@ -48,19 +54,15 @@ public class SimulatedEntity implements RobotEntity {
   public SimulatedEntity(Robot robot) {
     this.setupMotors();
     this.setupSensors();
-
     this.robot = robot;
-
     this.robotAPI = new SimulationRobotAPI();
     this.robotAPI.setSimulatedEntity(this);
-
     this.robot.useRobotAPI(this.robotAPI);
-
     this.robotAgent = this.robot.getGatewayClient();
-
     this.viewRobot = new SimulatedViewRobot(this);
   }
 
+  @Override
   public RobotAPI getRobotAPI() {
     return this.robotAPI;
   }
@@ -81,9 +83,9 @@ public class SimulatedEntity implements RobotEntity {
   // this needs to be in sync with the "reality" ;-)
   // TODO: externalize the speed configuration of the different motors
   private void setupMotors() {
-    setupMotor("L", Model.M1, Model.MS1);
-    setupMotor("R", Model.M2, Model.MS2);
-    setupMotor("S", Model.M3, Model.MS3);
+    setupMotor("L", SensorMapping.M1, SensorMapping.MS1);
+    setupMotor("R", SensorMapping.M2, SensorMapping.MS2);
+    setupMotor("S", SensorMapping.M3, SensorMapping.MS3);
   }
 
   private void setupMotor(String label, int tachoPort, int statePort) {
@@ -93,17 +95,17 @@ public class SimulatedEntity implements RobotEntity {
   }
 
   private void setupSensors() {
-    //setSensor(Model.S1, new TouchSensor(45));
-    //setSensor(Model.S2, new TouchSensor(315));
-    setSensor(Model.S1, new IRSensor());
-    setSensor(Model.S2, new NoneSensor());
-    setSensor(Model.S3, new Sonar());
-    setSensor(Model.S4, new LightSensor());
-    setSensor(Model.IR0, new IRdistanceSensor(120));
-    setSensor(Model.IR1, new IRdistanceSensor(60));
-    setSensor(Model.IR2, new IRdistanceSensor(0));
-    setSensor(Model.IR3, new IRdistanceSensor(-60));
-    setSensor(Model.IR4, new IRdistanceSensor(-120));
+    //setSensor(SensorMapping.S1, new TouchSensor(45));
+    //setSensor(SensorMapping.S2, new TouchSensor(315));
+    setSensor(SensorMapping.S1, new IRSensor());
+    setSensor(SensorMapping.S2, new NoneSensor());
+    setSensor(SensorMapping.S3, new Sonar());
+    setSensor(SensorMapping.S4, new LightSensor());
+    setSensor(SensorMapping.IR0, new IRdistanceSensor(120));
+    setSensor(SensorMapping.IR1, new IRdistanceSensor(60));
+    setSensor(SensorMapping.IR2, new IRdistanceSensor(0));
+    setSensor(SensorMapping.IR3, new IRdistanceSensor(-60));
+    setSensor(SensorMapping.IR4, new IRdistanceSensor(-120));
 
   }
 
@@ -136,8 +138,8 @@ public class SimulatedEntity implements RobotEntity {
     movement *= 100;
     // calculate the tacho count we need to do to reach this movement
     int tacho = (int) (movement / WHEEL_SIZE * 360);
-    this.motors[Model.M1].rotateBy(tacho);
-    this.motors[Model.M2].rotateBy(tacho);
+    this.motors[SensorMapping.M1].rotateBy(tacho);
+    this.motors[SensorMapping.M2].rotateBy(tacho);
     return this;
   }
 
@@ -148,15 +150,15 @@ public class SimulatedEntity implements RobotEntity {
     int tacho = (int) (dist / WHEEL_SIZE * 360);
 
     // let both motor's rotate the same tacho but in opposite direction
-    this.motors[Model.M1].rotateBy(tacho);
-    this.motors[Model.M2].rotateBy(tacho * -1);
+    this.motors[SensorMapping.M1].rotateBy(tacho);
+    this.motors[SensorMapping.M2].rotateBy(tacho * -1);
     return this;
   }
 
   // called by the implementation of the RobotAPI
   public SimulatedEntity stopRobot() {
-    this.motors[Model.M1].stop();
-    this.motors[Model.M2].stop();
+    this.motors[SensorMapping.M1].stop();
+    this.motors[SensorMapping.M2].stop();
     return this;
   }
 
@@ -204,20 +206,20 @@ public class SimulatedEntity implements RobotEntity {
   }
 
   public boolean sonarMotorIsMoving() {
-    return this.motors[Model.M3].getValue() != this.sensorValues[Model.M3];
+    return this.motors[SensorMapping.M3].getValue() != this.sensorValues[SensorMapping.M3];
   }
 
   // performs the next step in the movement currently executed by the robot
   public void step() {
     // let all motors know that another timeslice has passed
 
-    this.motors[Model.M1].tick(simulator.TIME_SLICE);
-    this.motors[Model.M2].tick(simulator.TIME_SLICE);
-    this.motors[Model.M3].tick(simulator.TIME_SLICE);
+    this.motors[SensorMapping.M1].tick(simulator.TIME_SLICE);
+    this.motors[SensorMapping.M2].tick(simulator.TIME_SLICE);
+    this.motors[SensorMapping.M3].tick(simulator.TIME_SLICE);
 
     // based on the motor's (new) angle's determine the displacement
-    int changeLeft = this.motors[Model.M1].getValue() - sensorValues[Model.M1];
-    int changeRight = this.motors[Model.M2].getValue() - sensorValues[Model.M2];
+    int changeLeft = this.motors[SensorMapping.M1].getValue() - sensorValues[SensorMapping.M1];
+    int changeRight = this.motors[SensorMapping.M2].getValue() - sensorValues[SensorMapping.M2];
 
     if (changeLeft == changeRight) {
       // we're moving in one direction 
@@ -253,10 +255,10 @@ public class SimulatedEntity implements RobotEntity {
    * based on the robot's position, determine the values for the different
    * sensors.
    * TODO: extract the robot's physical configuration into separate object
-   *       this is shared with the Model in a way (for now)
+   *       this is shared with the SensorMapping in a way (for now)
    */
   private void updateSensorValues() {
-    for (int i = 0; i < Model.SENSORVALUES_NUM; i++) {
+    for (int i = 0; i < SensorMapping.SENSORVALUES_NUM; i++) {
       sensorValues[i] = sensors[i].getValue();
     }
   }

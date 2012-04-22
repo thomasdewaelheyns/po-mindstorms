@@ -1,7 +1,8 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.entities;
 
+import penoplatinum.robot.RobotAPI;
 import penoplatinum.simulator.view.ViewRobot;
-import penoplatinum.simulator.RobotAPI;
+import penoplatinum.simulator.RobotEntity;
 
 
 public class PacmanEntity implements RobotEntity {
@@ -15,6 +16,7 @@ public class PacmanEntity implements RobotEntity {
     this.dir = dir;
   }
 
+  @Override
   public RobotAPI getRobotAPI() {
     return null;
   }

@@ -1,4 +1,4 @@
-package penoplatinum.simulator;
+package penoplatinum.simulator.entities;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -9,11 +9,14 @@ import penoplatinum.gateway.MQ;
 import penoplatinum.util.CircularQueue;
 import penoplatinum.model.GhostModel;
 import penoplatinum.pacman.GhostProtocolCommandHandler;
-import penoplatinum.pacman.GhostProtocolHandler;
-import penoplatinum.simulator.Bearing;
+import penoplatinum.protocol.GhostProtocolHandler;
+import penoplatinum.robot.Robot;
+import penoplatinum.robot.RobotAPI;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.ViewRobot;
-import penoplatinum.simulator.RobotAPI;
+import penoplatinum.simulator.RobotEntity;
+import penoplatinum.simulator.Simulator;
+import penoplatinum.util.Bearing;
 
 public class RemoteEntity implements RobotEntity {
 
@@ -35,7 +38,6 @@ public class RemoteEntity implements RobotEntity {
     final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
 
     createGhostProtocolHandler(ghostModel);
-
     try {
       MQ mq = new MQ() {
         @Override
