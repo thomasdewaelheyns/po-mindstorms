@@ -22,10 +22,36 @@ public class LinkedSectorTest extends TestCase {
     super(name);
   }
 
+  
+  
   @Override
   protected void setUp() throws Exception {
     super.setUp();
     mockedGrid = createMockedGrid();
+  }
+
+  public void testWallManipulation() {
+    LinkedSector s1 = new LinkedSector();
+    s1.setWall(Bearing.E);
+    s1.setNoWall(Bearing.W);
+    assertTrue(s1.hasWall(Bearing.E));
+    assertTrue(s1.hasNoWall(Bearing.W));
+    assertTrue(s1.knowsWall(Bearing.E));
+    assertTrue(s1.knowsWall(Bearing.W));
+
+    s1.clearWall(Bearing.E);
+    assertTrue(s1.hasNoWall(Bearing.W));
+    assertFalse(s1.knowsWall(Bearing.E));
+    assertTrue(s1.knowsWall(Bearing.W));
+
+    boolean thrown = false;
+    try {
+      s1.hasWall(Bearing.E);
+    } catch (IllegalArgumentException e) {
+      thrown = true;
+    }
+    assertTrue(thrown);
+    
   }
 
   public void testAddNeighbourSimple() {
@@ -46,13 +72,12 @@ public class LinkedSectorTest extends TestCase {
     //    ----
     // s1 | s4
 
-
     Sector s1 = new LinkedSector();
     Sector s2 = new LinkedSector();
     Sector s3 = new LinkedSector();
     Sector s4 = new LinkedSector();
 
-    s1.setWall(Bearing.E).clearWall(Bearing.E);
+    s1.setWall(Bearing.E).setNoWall(Bearing.N);
     s2.setWall(Bearing.E);
     s3.setWall(Bearing.S);
 
@@ -91,8 +116,7 @@ public class LinkedSectorTest extends TestCase {
     assertTrue(s4.knowsWall(Bearing.N));
 
   }
-  
-  
+
   public void testSectorCopyRetainsWallInfo() {
     Sector original = this.createSectorWithWallsNW();
     LinkedSector copy = new LinkedSector(original);
@@ -153,8 +177,6 @@ public class LinkedSectorTest extends TestCase {
             sector.hasWall(Bearing.S));
   }
 
-  
-
   // utility methods to setup basic components
   private Sector createSectorWithWallsNW() {
     /* result looks like this:
@@ -162,7 +184,7 @@ public class LinkedSectorTest extends TestCase {
      *    |
      *    +
      */
-    return new LinkedSector().addWall(Bearing.N).removeWall(Bearing.E).removeWall(Bearing.S).addWall(Bearing.W);
+    return new LinkedSector().setWall(Bearing.N).setNoWall(Bearing.E).setNoWall(Bearing.S).setWall(Bearing.W);
   }
 
   private Grid createMockedGrid() {

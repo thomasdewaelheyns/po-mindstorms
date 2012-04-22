@@ -40,6 +40,7 @@ public class LinkedSector implements Sector {
   }
 
   public LinkedSector(Sector original) {
+    this();
     addWalls(((LinkedSector) original).walls);
   }
 
@@ -57,23 +58,26 @@ public class LinkedSector implements Sector {
   @Override
   public Sector addNeighbour(Sector neighbour, Bearing atBearing) {
 
+    if (getNeighbour(atBearing) == neighbour)
+      return this;
+
     Sector left = null;
     Sector right = null;
 
-
-    if (neighbour.getNeighbour(atBearing.leftFrom()) != null) {
-      left = neighbour.getNeighbour(atBearing.leftFrom()).getNeighbour(atBearing.reverse());
-    }
-    if (neighbour.getNeighbour(atBearing.rightFrom()) != null) {
-      right = neighbour.getNeighbour(atBearing.rightFrom()).getNeighbour(atBearing.reverse());
-    }
-
     linkNeighbour(neighbour, atBearing);
-    linkNeighbour(left, atBearing.leftFrom());
-    linkNeighbour(right, atBearing.rightFrom());
 
 
+    if (getNeighbour(atBearing.leftFrom()) != null)
+      left = getNeighbour(atBearing.leftFrom()).getNeighbour(atBearing);
 
+    if (getNeighbour(atBearing.rightFrom()) != null)
+      right = getNeighbour(atBearing.rightFrom()).getNeighbour(atBearing);
+
+
+    if (right != null)
+      right.addNeighbour(neighbour, atBearing.leftFrom());
+    if (left != null)
+      left.addNeighbour(neighbour, atBearing.rightFrom());
 
 
 
@@ -82,6 +86,9 @@ public class LinkedSector implements Sector {
 
   private void linkNeighbour(Sector neighbour, Bearing atBearing) {
     neighbours[mapBearing(atBearing)] = (LinkedSector) neighbour;
+    if (neighbour == null)
+      return;
+    ((LinkedSector) neighbour).neighbours[mapBearing(atBearing.reverse())] = this;
     exchangeWallInfo(atBearing);
 
   }
@@ -93,8 +100,8 @@ public class LinkedSector implements Sector {
     }
 
     Bearing locationAtNeighbour = atBearing.reverse();
-    Boolean iHaveWall = this.hasWall(atBearing);
-    Boolean neighbourHasWall = neighbour.hasWall(locationAtNeighbour);
+    Boolean iHaveWall = !this.knowsWall(atBearing) ? null : this.hasWall(atBearing);
+    Boolean neighbourHasWall = !neighbour.knowsWall(atBearing) ? null : neighbour.hasWall(locationAtNeighbour);
 
     // if we have different information, we need to update it
     if (neighbourHasWall != iHaveWall) {
@@ -267,9 +274,10 @@ public class LinkedSector implements Sector {
 
   // adds all walls at once
   private LinkedSector addWalls(char walls) {
-    walls = walls;
+    this.walls = walls;
     certainty = 15;
-    // also update neighbours
+    // also update neighbours (this is used in clone, 
+    //      how are neighbours relevant?)
     this.updateNeighboursWalls();
 
     // this.grid.wallsNeedRefresh();
@@ -277,9 +285,9 @@ public class LinkedSector implements Sector {
   }
 
   protected void updateNeighboursWalls() {
-    for (Bearing atBearing : Bearing.values()) {
+    for (Bearing atBearing : Bearing.NESW) {
       LinkedSector neighbour = (LinkedSector) this.getNeighbour(atBearing);
-      Boolean haveWall = this.hasWall(atBearing);
+      Boolean haveWall = !knowsWall(atBearing) ? null : this.hasWall(atBearing);
       if (neighbour != null && haveWall != null) {
         if (haveWall) {
           neighbour.setWallInternal(atBearing.reverse());
