@@ -189,7 +189,8 @@ public class GhostProtocolHandlerTest extends TestCase {
                             Boolean n, Boolean e, Boolean s, Boolean w)
   {
     Sector mockedSector = mock(Sector.class);
-    when(mockedSector.getPosition()).thenReturn(new Point(left, top));
+    //TODO:
+    //when(mockedSector.getPosition()).thenReturn(new Point(left, top));
     when(mockedSector.hasWall(Bearing.N)).thenReturn(n);
     when(mockedSector.hasWall(Bearing.E)).thenReturn(e);
     when(mockedSector.hasWall(Bearing.S)).thenReturn(s);

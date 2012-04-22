@@ -37,6 +37,7 @@ public class RunAllTests {
   public static Test suite() {
     Class[] testClasses = { 
       penoplatinum.ConfigTest.class,
+      penoplatinum.util.UtilsTest.class,
       penoplatinum.util.RotationTest.class,
       penoplatinum.util.BearingTest.class,
       penoplatinum.util.PointTest.class,
@@ -45,10 +46,11 @@ public class RunAllTests {
       penoplatinum.util.ColorTest.class,
       penoplatinum.util.LightColorTest.class,
       penoplatinum.util.BitwiseOperationsTest.class,
-      penoplatinum.grid.LinkedSectorTest.class,
+      penoplatinum.barcode.BarcodeTest.class,
+//      penoplatinum.grid.LinkedSectorTest.class,
       penoplatinum.protocol.ExternalEventHandlerTest.class,
       penoplatinum.protocol.ProtocolHandlerTest.class,
-      penoplatinum.protocol.GhostProtocolHandlerTest.class,
+//      penoplatinum.protocol.GhostProtocolHandlerTest.class,
       penoplatinum.driver.DriverTest.class,
       penoplatinum.driver.ManhattanDriverTest.class,
       penoplatinum.driver.action.DriverActionTest.class,
@@ -70,7 +72,7 @@ public class RunAllTests {
       penoplatinum.navigator.action.TurnRightNavigatorActionTest.class,
       penoplatinum.navigator.mode.NavigatorModeTest.class,
       penoplatinum.navigator.mode.HillClimbingNavigatorModeTest.class,
-      penoplatinum.navigator.mode.DiscoverHillClimbingNavigatorModeTest.class,
+//      penoplatinum.navigator.mode.DiscoverHillClimbingNavigatorModeTest.class,.
       penoplatinum.navigator.mode.ChaseHillClimbingNavigatorModeTest.class,
       penoplatinum.model.ModelTest.class,
       penoplatinum.model.part.ModelPartTest.class,
