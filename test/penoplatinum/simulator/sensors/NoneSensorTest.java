@@ -2,7 +2,6 @@ package penoplatinum.simulator.sensors;
 
 import junit.framework.TestCase;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 

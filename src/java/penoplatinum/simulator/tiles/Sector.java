@@ -108,10 +108,10 @@ public class Sector implements Tile, Cloneable {
       return false;
     }
 
-    if (hasWall(Bearing.E) && start < x && x < end) {
+    if (hasWall(Bearing.E) && start <= x && x < end) {
       return false;
     }
-    if (hasWall(Bearing.S) && start < y && y < end) {
+    if (hasWall(Bearing.S) && start <= y && y < end) {
       return false;
     }
     if (hasWall(Bearing.W) && x < Sector.LINE_WIDTH) {
