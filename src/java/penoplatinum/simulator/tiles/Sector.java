@@ -1,8 +1,5 @@
 package penoplatinum.simulator.tiles;
 
-import java.awt.Graphics2D;
-import penoplatinum.barcode.BarcodeBlackBlack;
-import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.BitwiseOperations;
 
@@ -148,7 +145,6 @@ public class Sector implements Tile, Cloneable {
       default:
         throw new RuntimeException("Unknown bearing");
     }
-    throw new RuntimeException("Unknown bearing");
   }
 
   /*
