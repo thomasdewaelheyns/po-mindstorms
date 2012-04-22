@@ -1,6 +1,5 @@
 package penoplatinum.simulator.entities;
 
-import java.awt.Point;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +16,8 @@ import penoplatinum.simulator.view.ViewRobot;
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
+import penoplatinum.util.Rotation;
 
 public class RemoteEntity implements RobotEntity {
 
@@ -40,9 +41,10 @@ public class RemoteEntity implements RobotEntity {
     createGhostProtocolHandler(ghostModel);
     try {
       MQ mq = new MQ() {
+
         @Override
         protected void handleIncomingMessage(String message) {
-           synchronized (this) {
+          synchronized (this) {
             if (message == null) {
               throw new RuntimeException("Impossible??");
             }
@@ -70,7 +72,7 @@ public class RemoteEntity implements RobotEntity {
   }
 
   private void createGhostProtocolHandler(final GhostModel ghostModel) {
-    this.protocol = new GhostProtocolHandler( ghostModel, new GhostProtocolCommandHandler() {
+    this.protocol = new GhostProtocolHandler(ghostModel, new GhostProtocolCommandHandler() {
 
       @Override
       public void handleBarcodeAt(String agentName, int x, int y, int code, int bearing) {
@@ -82,14 +84,17 @@ public class RemoteEntity implements RobotEntity {
 
       @Override
       public void handlePosition(String agentName, int x, int y) {
-        penoplatinum.util.Point p = Bearing.mapToNorth(originDirection, x, y);
+        Rotation r = Rotation.NONE;
+        for (int i = 0; i < originDirection; i++) {
+          r = r.add(Rotation.L90); //TODO Check this orientation
+        }
+        Point p = new Point(x, y).rotate(r);
         positionX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
         positionY = (p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
       }
 
       @Override
       public void handlePacman(String agentName, int x, int y) {
-        
       }
     });
   }
@@ -169,8 +174,8 @@ public class RemoteEntity implements RobotEntity {
     int top = (int) (this.positionY % simulator.getTileSize());
     return new Point(left, top);
   }
-  
-  public String getEntityName(){
+
+  public String getEntityName() {
     return this.entityName;
   }
 }

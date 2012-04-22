@@ -5,7 +5,6 @@ import penoplatinum.util.ExtendedVector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import penoplatinum.robot.RobotAPI;
 import penoplatinum.simulator.entities.SensorMapping;
 import penoplatinum.util.ReferencePosition;
 

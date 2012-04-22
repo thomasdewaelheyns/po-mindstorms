@@ -1,7 +1,6 @@
 package penoplatinum.simulator.sensors;
 
 import penoplatinum.simulator.entities.SimulatedEntity;
-import java.util.Scanner;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.Tickable;
@@ -100,6 +99,7 @@ public class Motor implements Tickable, Sensor {
   }
   
   // Sensor
+  @Override
   public int getValue() {
     return (int)this.tacho;
   }

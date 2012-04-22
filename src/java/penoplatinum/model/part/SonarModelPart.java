@@ -1,8 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package penoplatinum.model;
+package penoplatinum.model.part;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +8,7 @@ import java.util.List;
  * 
  * @author MHGameWork
  */
-public class SonarModelPart implements IModelPart {
+public class SonarModelPart implements ModelPart {
 
   private List<Integer> distances = new ArrayList<Integer>();
   private List<Integer> angles = new ArrayList<Integer>();
