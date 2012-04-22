@@ -4,7 +4,7 @@ import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 
-public class NoneSensor implements Sensor{
+public class NoneSensor implements Sensor {
 
   @Override
   public int getValue() {
@@ -13,12 +13,9 @@ public class NoneSensor implements Sensor{
 
   @Override
   public void useSimulator(Simulator sim) {
-    
   }
 
   @Override
   public void useSimulatedEntity(SimulatedEntity simEntity) {
-    
   }
-  
 }

@@ -1,9 +1,9 @@
 package penoplatinum.simulator.sensors;
 
-import java.awt.Point;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
+import penoplatinum.util.Point;
 
 public class TouchSensor implements Sensor {
   private Simulator sim;

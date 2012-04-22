@@ -1,7 +1,7 @@
 package penoplatinum.simulator.tiles;
 
-import java.awt.Point;
 import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
 
 public class TileGeometry {
 
@@ -50,7 +50,7 @@ public class TileGeometry {
       x = X + dx;
       y = Y + dy;
     }
-    return new Point((int) x, (int) y);
+    return new Point((int) Math.round(x), (int) Math.round(y));
   }
 
   private static double T(double x, double d) {
@@ -71,15 +71,15 @@ public class TileGeometry {
 
   // simple application of a^2 + b^2 = c^2
   public static double getDistance(double x, double y, Point hit) {
-    return Math.sqrt(Math.pow(hit.x - x, 2) + Math.pow(hit.y - y, 2));
+    return Math.sqrt(Math.pow(hit.getX() - x, 2) + Math.pow(hit.getY() - y, 2));
   }
 
   /**
    * based on a hit determine the wall that has been hit
    */
   public static Bearing getHitWall(Point hit, int size, double angle) {
-    if (hit.y == 0) {                          // North
-      if (hit.x == 0) {
+    if (hit.getY() == 0) {                          // North
+      if (hit.getX() == 0) {
         if (90 < angle && angle < 180) {
           return Bearing.NW;
         } else if (angle <= 90) {
@@ -87,7 +87,7 @@ public class TileGeometry {
         } else {
           return Bearing.W;
         }
-      } else if (hit.x == size) {
+      } else if (hit.getX() == size) {
         if (0 < angle && angle < 90) {
           return Bearing.NE;
         } else if (angle >= 90) {
@@ -98,22 +98,28 @@ public class TileGeometry {
       } else {
         return Bearing.N;
       }
-    } else if (hit.y == size) {                  // South
-      if (hit.x == 0) {
-        if (270 < angle) {
+    } else if (hit.getY() == size) {                  // South
+      if (hit.getX() == 0) {
+        if (180 < angle && angle < 270) {
           return Bearing.SW;
-        } else if (angle < 90) {
+        } else if (angle <= 180) {
           return Bearing.W;
         } else {
           return Bearing.S;
         }
-      } else if (hit.x == size) {
-        return Bearing.SE;
+      } else if (hit.getX() == size) {
+        if (270 < angle) {
+          return Bearing.SE;
+        } else if (angle <= 180) {
+          return Bearing.E;
+        } else {
+          return Bearing.S;
+        }
       } else {
         return Bearing.S;
       }
     } else {                                    // East or West
-      if (hit.x == 0) {
+      if (hit.getX() == 0) {
         return Bearing.W;
       } else {
         return Bearing.E;
