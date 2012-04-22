@@ -4,6 +4,7 @@ import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.tiles.TileGeometry;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
+import penoplatinum.util.Position;
 
 public class MapUtil {
 
@@ -19,7 +20,7 @@ public class MapUtil {
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this bearing
     double dist = 0;
-    Bearing bearing = 0;
+    Bearing bearing = null;
     Tile tile = null;
     Point hit = null;
     do {
@@ -39,16 +40,8 @@ public class MapUtil {
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
       bearing = TileGeometry.getHitWall(hit, tile.getSize(), angle);
-      /*if(x == hit.x && y == hit.y){
-      System.out.println(left+" "+top+" "+angle+" "+angle/45+" "+hit.x+" "+hit.y+" "+x+" "+y);
-      int pos = angle/45;
-      int[] dLeft = new int[]{0, -1, 1, 0, 0, 1, -1, 0};
-      int[] dTop = new int[]{-1, 0, 0, 1, 1, 0, 0, -1};
-      left += dLeft[pos];
-      top += dTop[pos];
-      } else {/**/
-      left = left + Bearing.moveLeft(bearing);
-      top = top + Bearing.moveTop(bearing);
+      left = left + Position.moveLeft(bearing, left);
+      top = top + Position.moveTop(bearing, top);
       //}
       //System.out.println(left + " " + top);
       x = hit.getX() == 0 ? tile.getSize() : (hit.getX() == tile.getSize() ? 0 : hit.getX());
