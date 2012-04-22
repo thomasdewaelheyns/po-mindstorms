@@ -17,6 +17,7 @@ import penoplatinum.simulator.view.ViewRobot;
 
 import penoplatinum.gateway.GatewayClient;
 
+import penoplatinum.map.MapUtil;
 import penoplatinum.robot.Robot;
 import penoplatinum.robot.RobotAPI;
 import penoplatinum.simulator.sensors.Motor;
@@ -226,11 +227,11 @@ public class SimulatedEntity implements RobotEntity {
       double d = WHEEL_SIZE / 360 * changeRight;
       double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
       double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
-      if (simulator.hasTile(this.positionX + dx, this.positionY + dy)) {
-        if (!simulator.goesThroughWallX(this, dx)) {
+      if (MapUtil.hasTile(simulator.getMap(), this.positionX + dx, this.positionY + dy)) {
+        if (!MapUtil.goesThroughWallX(simulator.getMap(), this, dx)) {
           this.positionX += dx;
         }
-        if (!simulator.goesThroughWallY(this, dy)) {
+        if (!MapUtil.goesThroughWallY(simulator.getMap(), this, dy)) {
           this.positionY -= dy;
         }
       }

@@ -1,5 +1,6 @@
 package penoplatinum.map;
 
+import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.tiles.TileGeometry;
 import penoplatinum.util.Bearing;
@@ -49,5 +50,42 @@ public class MapUtil {
 
     } while (!tile.hasWall(bearing));
     return (int) Math.round(dist);
+  }
+
+  public static boolean hasTile(Map map, double positionX, double positionY) {
+    int x = (int) positionX / map.getFirst().getSize() + 1;
+    int y = (int) positionY / map.getFirst().getSize() + 1;
+    return map.exists(x, y);
+  }
+
+  public static boolean goesThroughWallX(Map map, SimulatedEntity entity, double dx) {
+    double positionX = entity.getPosX();
+    double positionY = entity.getPosY();
+    double LENGTH_ROBOT = entity.LENGTH_ROBOT;
+    final int size = map.getFirst().getSize();
+
+    double posXOnTile = positionX % size;
+    int tileX = (int) positionX / size + 1;
+    int tileY = (int) positionY / size + 1;
+    return (map.get(tileX, tileY).hasWall(Bearing.W)
+            && dx < 0 && (posXOnTile + dx < LENGTH_ROBOT))
+            || (map.get(tileX, tileY).hasWall(Bearing.E)
+            && dx > 0 && (posXOnTile + dx > size - LENGTH_ROBOT));
+  }
+
+  public static boolean goesThroughWallY(Map map, SimulatedEntity entity, double dy) {
+    double positionX = entity.getPosX();
+    double positionY = entity.getPosY();
+    double LENGTH_ROBOT = entity.LENGTH_ROBOT;
+    final int size = map.getFirst().getSize();
+
+    double posYOnTile = positionY % size;
+    int tileX = (int) positionX / size + 1;
+    int tileY = (int) positionY / size + 1;
+
+    return (map.get(tileX, tileY).hasWall(Bearing.N)
+            && dy > 0 && (posYOnTile - dy < LENGTH_ROBOT))
+            || (map.get(tileX, tileY).hasWall(Bearing.S)
+            && dy < 0 && (posYOnTile - dy > size - LENGTH_ROBOT));
   }
 }

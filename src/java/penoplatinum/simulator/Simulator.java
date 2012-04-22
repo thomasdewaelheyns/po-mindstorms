@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import penoplatinum.map.MapUtil;
-import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
 public class Simulator {
@@ -53,12 +52,9 @@ public class Simulator {
   }
 
   public RemoteEntity addRemoteEntity(String entityName, int originX, int originY, int originBearing) {
-
     RemoteEntity ent = new RemoteEntity(entityName);
     view.addRobot(ent.getViewRobot());
-
     ent.useSimulator(this);
-
     robotEntities.add(ent);
     remoteEntities.put(entityName, ent);
     ent.setOrigin(originX, originY, originBearing);
@@ -134,7 +130,6 @@ public class Simulator {
    */
   public Simulator run() {
     Simulator.Running_Instance = this;
-
     for (int i = 0; i < this.robotEntities.size(); i++) {
       if (this.robotEntities.get(i) instanceof SimulatedEntity) {
         SimulatedEntity ent = (SimulatedEntity) this.robotEntities.get(i);
@@ -142,10 +137,7 @@ public class Simulator {
         ent.setInitialBearing((4 - (int) (ent.getDirection() / 90) + 1) % 4);
       }
     }
-
     this.view.showMap(this.map);
-
-
     while (true) {
       this.step();
       if (false) {
@@ -165,41 +157,6 @@ public class Simulator {
       stepRunnable.run();
     }
     refreshView();
-  }
-
-  public boolean hasTile(double positionX, double positionY) {
-    int x = (int) positionX / this.getTileSize() + 1;
-    int y = (int) positionY / this.getTileSize() + 1;
-    return map.exists(x, y);
-  }
-
-  public boolean goesThroughWallX(SimulatedEntity entity, double dx) {
-    double positionX = entity.getPosX();
-    double positionY = entity.getPosY();
-    double LENGTH_ROBOT = entity.LENGTH_ROBOT;
-
-    double posXOnTile = positionX % this.getTileSize();
-    int tileX = (int) positionX / this.getTileSize() + 1;
-    int tileY = (int) positionY / this.getTileSize() + 1;
-    return (this.map.get(tileX, tileY).hasWall(Bearing.W)
-            && dx < 0 && (posXOnTile + dx < LENGTH_ROBOT))
-            || (this.map.get(tileX, tileY).hasWall(Bearing.E)
-            && dx > 0 && (posXOnTile + dx > this.getTileSize() - LENGTH_ROBOT));
-  }
-
-  public boolean goesThroughWallY(SimulatedEntity entity, double dy) {
-    double positionX = entity.getPosX();
-    double positionY = entity.getPosY();
-    double LENGTH_ROBOT = entity.LENGTH_ROBOT;
-
-    double posYOnTile = positionY % this.getTileSize();
-    int tileX = (int) positionX / this.getTileSize() + 1;
-    int tileY = (int) positionY / this.getTileSize() + 1;
-
-    return (this.map.get(tileX, tileY).hasWall(Bearing.N)
-            && dy > 0 && (posYOnTile - dy < LENGTH_ROBOT))
-            || (this.map.get(tileX, tileY).hasWall(Bearing.S)
-            && dy < 0 && (posYOnTile - dy > this.getTileSize() - LENGTH_ROBOT));
   }
 
   public RobotEntity getPacMan() {

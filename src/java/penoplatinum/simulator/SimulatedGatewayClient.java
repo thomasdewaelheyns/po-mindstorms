@@ -17,10 +17,9 @@ import penoplatinum.Config;
 
 import penoplatinum.gateway.MQ;
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.gateway.Connection;
 import penoplatinum.gateway.Queue;
 import penoplatinum.gateway.Gateway;
-import penoplatinum.gateway.MessageReceiver;
+import penoplatinum.robot.Robot;
 
 
 public class SimulatedGatewayClient implements GatewayClient {
