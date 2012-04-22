@@ -4,6 +4,7 @@
  */
 package penoplatinum.util;
 
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,13 +16,13 @@ import static org.junit.Assert.*;
  *
  * @author Florian
  */
-public class CantorDiagonalTest {
+public class CantorDiagonalTest extends TestCase {
   
   public CantorDiagonalTest() {
   }
 
   @Test 
-  public void transformTest() {
+  public void testTransform() {
    
     boolean win = true;
     win &= 0 == CantorDiagonal.transform(0, 0);

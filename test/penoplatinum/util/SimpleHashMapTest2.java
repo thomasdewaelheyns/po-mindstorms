@@ -5,6 +5,7 @@
 package penoplatinum.util;
 
 import java.util.List;
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,9 +17,9 @@ import static org.junit.Assert.*;
  *
  * @author Florian
  */
-public class HashMapTest {
+public class SimpleHashMapTest2 extends TestCase {
 
-  HashMap<Object, Object> testMap;
+  SimpleHashMap<Object, Object> testMap;
   Object keyObject;
   Object keyObject2;
   Object keyObject3;
@@ -26,7 +27,7 @@ public class HashMapTest {
   Object valueObject2;
   Object valueObject3;
 
-  public HashMapTest() {
+  public SimpleHashMapTest2() {
   }
 
   @Before
@@ -37,7 +38,7 @@ public class HashMapTest {
     valueObject = new Object();
     valueObject2 = new Object();
     valueObject3 = new Object();
-    testMap = new HashMap<Object, Object>();
+    testMap = new SimpleHashMap<Object, Object>();
   }
 
   /**

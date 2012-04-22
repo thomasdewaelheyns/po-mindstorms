@@ -4,6 +4,7 @@
  */
 package penoplatinum.util;
 
+import junit.framework.TestCase;
 import org.junit.rules.ExpectedException;
 import org.junit.Rule;
 import org.junit.runners.JUnit4;
@@ -20,7 +21,7 @@ import static org.junit.Assert.*;
  * @author Florian
  */
 @RunWith(JUnit4.class)
-public class BufferTest {
+public class BufferTest extends TestCase {
 
   private int value;
   private int value2;

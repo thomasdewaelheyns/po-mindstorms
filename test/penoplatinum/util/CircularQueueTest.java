@@ -4,6 +4,7 @@
  */
 package penoplatinum.util;
 
+import junit.framework.TestCase;
 import org.junit.Rule;
 import org.junit.runners.JUnit4;
 import org.junit.runner.RunWith;
@@ -19,8 +20,7 @@ import static org.junit.Assert.*;
  *
  * @author Florian
  */
-@RunWith(JUnit4.class)
-public class CircularQueueTest {
+public class CircularQueueTest  extends TestCase{
 
   private Object value;
   private Object value2;
@@ -32,6 +32,8 @@ public class CircularQueueTest {
 
   public CircularQueueTest() {
   }
+  
+
 
   @Before
   public void setUp() {

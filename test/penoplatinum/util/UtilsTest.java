@@ -8,19 +8,29 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 /**
  * TODO: maybe split
  * @author Thomas
  */
-public class UtilsTest extends TestCase{
-  
+@RunWith(JUnit4.class)
+public class UtilsTest extends TestCase {
+
   public UtilsTest(String name) {
     super(name);
   }
- /**
+  @Rule
+  public ExpectedException exception = ExpectedException.none();
+
+  /**
    * Test of ClampLooped method, of class Utils.
    */
+  @Test
   public void testClampLooped_3args_1() {
     assertEquals(30, Utils.ClampLooped(130, 10, 110), 0.05);
     assertEquals(80, Utils.ClampLooped(-20, 10, 110), 0.05);
@@ -42,33 +52,28 @@ public class UtilsTest extends TestCase{
 
   }
 
-   public void testReverse() {
-    List<Integer> numberList = Arrays.asList(1,2,3,4,5);
+  public void testReverse() {
+    List<Integer> numberList = Arrays.asList(1, 2, 3, 4, 5);
     Utils.reverse(numberList);
-    assertEquals((Integer)5, numberList.get(0));
-    assertEquals((Integer)4, numberList.get(1));
-    assertEquals((Integer)3, numberList.get(2));
-    assertEquals((Integer)2, numberList.get(3));
-    assertEquals((Integer)1, numberList.get(4));
+    assertEquals((Integer) 5, numberList.get(0));
+    assertEquals((Integer) 4, numberList.get(1));
+    assertEquals((Integer) 3, numberList.get(2));
+    assertEquals((Integer) 2, numberList.get(3));
+    assertEquals((Integer) 1, numberList.get(4));
   }
-
 
   public void testSwap() {
-    List<Integer> numberList = Arrays.asList(1,2,3,4,5);
+    List<Integer> numberList = Arrays.asList(1, 2, 3, 4, 5);
     Utils.swap(numberList, 0, 4);
-    assertEquals((Integer)5, numberList.get(0));
-    assertEquals((Integer)1, numberList.get(4));
-    assertEquals((Integer)2, numberList.get(1));
-    assertEquals((Integer)3, numberList.get(2));
-    assertEquals((Integer)4, numberList.get(3));
+    assertEquals((Integer) 5, numberList.get(0));
+    assertEquals((Integer) 1, numberList.get(4));
+    assertEquals((Integer) 2, numberList.get(1));
+    assertEquals((Integer) 3, numberList.get(2));
+    assertEquals((Integer) 4, numberList.get(3));
   }
-  
+
   public void testClampLooped() {
-    assertEquals(30, Utils.ClampLooped(130, 10, 110));
-    assertEquals(80,Utils.ClampLooped(-20, 10, 110));
-    
     assertEquals(30.0, Utils.ClampLooped(130.0, 10, 110));
-    assertEquals(80.0,Utils.ClampLooped(-20.0, 10, 110));
+    assertEquals(80.0, Utils.ClampLooped(-20.0, 10, 110));
   }
- 
 }

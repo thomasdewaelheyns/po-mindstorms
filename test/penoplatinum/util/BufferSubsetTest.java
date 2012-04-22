@@ -2,7 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.util;import static org.mockito.Mockito.*;
+package penoplatinum.util;
+
+import junit.framework.TestCase;
+import static org.mockito.Mockito.*;
 
 
 
@@ -17,12 +20,13 @@ import static org.junit.Assert.*;
  *
  * @author Florian
  */
-public class BufferSubsetTest {
+public class BufferSubsetTest extends TestCase {
+
   private Buffer buffer;
   private BufferSubset instance2;
   private Buffer mockedBuffer;
   private BufferSubset instance;
-  
+
   public BufferSubsetTest() {
   }
 
@@ -33,10 +37,10 @@ public class BufferSubsetTest {
   @AfterClass
   public static void tearDownClass() throws Exception {
   }
-  
+
   @Before
   public void setUp() {
-     buffer = new Buffer(10);
+    buffer = new Buffer(10);
     instance2 = new BufferSubset(buffer, 1, 10, 20);
     buffer.insert(8);
     buffer.insert(9);
@@ -44,7 +48,7 @@ public class BufferSubsetTest {
     when(mockedBuffer.getRaw(5)).thenReturn(6);
     instance = new BufferSubset(mockedBuffer, 5, 10, 20);
   }
-  
+
   @After
   public void tearDown() {
   }
