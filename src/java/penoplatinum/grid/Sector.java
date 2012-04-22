@@ -3,20 +3,14 @@ package penoplatinum.grid;
 /**
  * Sector
  * 
- * A Sector is a single location in a Grid. It has links and movement methods
- * to its neighbours. It can hold an Agent and be assigned a Tag. It stores
- * information abouts its walls and how certain it is about that information.
+ * A Sector is a single location in a Grid. It provides methods to access its
+ * neighbours and holds sector wall information
  * 
  * @author: Team Platinum
  * 
- * THIS IS WIP ...
- * 
  */
 
-import penoplatinum.util.Point;
 import penoplatinum.util.Bearing;
-import penoplatinum.util.Rotation;
-import penoplatinum.util.BitwiseOperations;
 
 
 public interface Sector {
@@ -28,9 +22,6 @@ public interface Sector {
   /**
    * Sets given sector as a neighbour of this sector. The 'neighbour' sector is
    * removed from his old neighbours
-   * @param neighbour
-   * @param atBearing
-   * @return 
    */
   public Sector addNeighbour(Sector neighbour, Bearing atBearing);
   public boolean hasNeighbour(Bearing atBearing);
@@ -50,9 +41,17 @@ public interface Sector {
   public char getWalls();
 
   
-  
+  /**
+   * True when each wall is known
+   */
   public boolean isFullyKnown();
   public Sector clearWalls();
+  /**
+   * Returns true when we can say for sure that it is possible for the robot
+   * to access the neighbour at given bearing
+   * @param atBearing
+   * @return 
+   */
   public boolean givesAccessTo(Bearing atBearing);
 
   
