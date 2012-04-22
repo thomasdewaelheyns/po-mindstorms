@@ -6,6 +6,7 @@ public interface Tile {
   int getBarcode8Bit();
   int getColorAt(int x, int y);
   boolean hasWall(Bearing location);
+  int toInteger();
   @Override
   String toString();
   int getSize();

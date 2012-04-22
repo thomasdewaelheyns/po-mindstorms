@@ -59,8 +59,9 @@ public class RunAllTests {
       penoplatinum.gateway.QueueTest.class,
       penoplatinum.gateway.GatewayClientTest.class,
       penoplatinum.gateway.MessageReceiverTest.class,
-      penoplatinum.simulator.tiles.SectorTest.class,
-      penoplatinum.simulator.sensors.NoneSensorTest.class
+      //penoplatinum.simulator.tiles.SectorTest.class, 
+      penoplatinum.simulator.sensors.NoneSensorTest.class,
+      penoplatinum.simulator.tiles.TileGeometryTest.class
       penoplatinum.map.MapHashedTest.class,
       penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
       penoplatinum.map.mazeprotocol.DiscoverTest.class,

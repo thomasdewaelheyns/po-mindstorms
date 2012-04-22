@@ -1,6 +1,8 @@
 package penoplatinum.simulator.tiles;
 
 import java.awt.Graphics2D;
+import penoplatinum.barcode.BarcodeBlackBlack;
+import penoplatinum.barcode.BarcodeCorrector;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.BitwiseOperations;
 
@@ -108,10 +110,11 @@ public class Sector implements Tile, Cloneable {
     if (x >= Sector.LINE_WIDTH && x < start && y >= Sector.LINE_WIDTH && y < start) {
       return false;
     }
-    if (hasWall(Bearing.E) && start <= x && x < end) {
+
+    if (hasWall(Bearing.E) && start < x && x < end) {
       return false;
     }
-    if (hasWall(Bearing.S) && start <= y && y < end) {
+    if (hasWall(Bearing.S) && start < y && y < end) {
       return false;
     }
     if (hasWall(Bearing.W) && x < Sector.LINE_WIDTH) {
