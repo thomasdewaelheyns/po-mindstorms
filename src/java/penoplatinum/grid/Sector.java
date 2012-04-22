@@ -26,40 +26,48 @@ public interface Sector {
   public String toString();
 
   /**
-   * 
+   * Sets given sector as a neighbour of this sector. The 'neighbour' sector is
+   * removed from his old neighbours
    * @param neighbour
    * @param atBearing
    * @return 
    */
   public Sector addNeighbour(Sector neighbour, Bearing atBearing);
-//  public Sector createNeighbour(Bearing atBearing);
   public boolean hasNeighbour(Bearing atBearing);
   public Sector getNeighbour(Bearing atBearing);
 
   public Sector setValue(int value);
   public int getValue();
-
-  public Sector addWall(Bearing atBearing);
-  public void inheritWall(Bearing atBearing);
-  public Sector removeWall(Bearing atBearing);
-  public void inheritNoWall(Bearing atBearing);
-  public Sector addWalls(char walls);
-
-  public Boolean hasWall(Bearing wall);
-  public boolean givesAccessTo(Bearing atBearing);
-  public char getWalls();
+  
+  public Sector setWall(Bearing atBearing);
+  public Sector setNoWall(Bearing atBearing);
   public Sector clearWall(Bearing atBearing);
-  public Sector clearWalls();
-  public Sector withWall(Bearing b);
-  public void withWalls(char walls);
-  public void withoutWall(Bearing atBearing);
-  
-  public Sector clearCertainty();
-  public int getCertainty();
-  
-  public void dontKnow(Bearing atBearing);
-  public boolean hasRawWall(Bearing atBearing);
+
+  public boolean hasWall(Bearing wall);
+  public boolean hasNoWall(Bearing wall);
   public boolean knowsWall(Bearing atBearing);
-  public boolean isKnown(Bearing atBearing);
+  
+  public char getWalls();
+
+  
+  
   public boolean isFullyKnown();
+  public Sector clearWalls();
+  public boolean givesAccessTo(Bearing atBearing);
+
+  
+  // OLD
+  
+  //  public int getCertainty();
+  //  
+  //  public Sector clearCertainty();
+  //    
+  //  public Sector addWalls(char walls);
+  //  
+  //  public Sector withWall(Bearing b);
+  //  public void withWalls(char walls);
+  //  public void withoutWall(Bearing atBearing);
+  //  public void dontKnow(Bearing atBearing);
+  //  public boolean isKnown(Bearing atBearing);
+  
 }

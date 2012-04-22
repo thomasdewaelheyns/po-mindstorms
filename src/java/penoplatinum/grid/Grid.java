@@ -13,7 +13,6 @@ import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.util.Bearing;
- 
 
 public interface Grid {
 //  // set the root-processor for this Grid
@@ -62,8 +61,16 @@ public interface Grid {
   public Grid setTransformation(TransformationTRT transform);
   // using the navigation links on Sectors, the Grid can traverse through
   // the sectors, returning the Sector with requested left and top coordinates
-  public Sector       getSectorAt(Point position);
-  public Point        getPositionOf(Sector sector);
+
+  /**
+   * Returns the sector at given position, if there is none, returns null
+   * @param position
+   * @return 
+   */
+  public Sector getSectorAt(Point position);
+
+  public Point getPositionOf(Sector sector);
+
   public List<Sector> getSectors();
 
   /**
@@ -75,15 +82,10 @@ public interface Grid {
    * @return 
    */
   public Grid add(Sector s, Point position);
-  public Sector       getSectorOf(Agent agent);
-  public Bearing      getBearingOf(Agent agent);
 
-  /**
-   * Returns the sector at given position, if there is none, returns null
-   * @param position
-   * @return 
-   */
-  public Sector get(Point position);
+  public Sector getSectorOf(Agent agent);
+
+  public Bearing getBearingOf(Agent agent);
 
   /**
    * Places given agent on the grid at position. If the agent is already on the
@@ -115,7 +117,7 @@ public interface Grid {
    * @return 
    */
   public Point getAgentPosition(Agent agent);
-  
+
   /**
    * Copies the sectors + wall information to the target grid.
    * Agents are cloned using the Agent.createCopy() method
