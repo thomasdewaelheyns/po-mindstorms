@@ -39,6 +39,10 @@ public class LinkedSector implements Sector {
     this.putOn(NullGrid.getInstance());
   }
 
+  public LinkedSector(Sector original) {
+    addWalls(((LinkedSector) original).walls);
+  }
+
   @Override
   public LinkedSector putOn(Grid grid) {
     this.grid = grid;
@@ -259,12 +263,6 @@ public class LinkedSector implements Sector {
   private void clearWallInternal(Bearing atBearing) {
     int bit = this.mapBearing(atBearing);
     this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, bit);
-  }
-
-  public LinkedSector CreateCopy() {
-    LinkedSector ret = new LinkedSector();
-    ret.addWalls(this.walls);
-    return ret;
   }
 
   // adds all walls at once

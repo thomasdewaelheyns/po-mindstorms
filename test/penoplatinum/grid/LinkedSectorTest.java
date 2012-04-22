@@ -95,7 +95,7 @@ public class LinkedSectorTest extends TestCase {
   
   public void testSectorCopyRetainsWallInfo() {
     Sector original = this.createSectorWithWallsNW();
-    Sector copy = new LinkedSector(original);
+    LinkedSector copy = new LinkedSector(original);
 
     assertTrue("copied Sector doesn't have N wall.", copy.hasWall(Bearing.N));
     assertTrue("copied Sector doesn't have W wall.", copy.hasWall(Bearing.W));
