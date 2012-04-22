@@ -3,7 +3,7 @@ package penoplatinum.simulator.sensors;
 import penoplatinum.util.Utils;
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Sensor;
-import penoplatinum.simulator.SimulatedEntity;
+import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 
 public class IRdistanceSensor implements Sensor {

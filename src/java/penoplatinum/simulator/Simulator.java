@@ -11,8 +11,9 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.simulator.entities.RemoteEntity;
+import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.map.Map;
-import penoplatinum.simulator.tiles.TileGeometry;
 import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
 import penoplatinum.simulator.view.SimulationView;
@@ -20,9 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import penoplatinum.map.MapUtil;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.util.Position;
 
 public class Simulator {
 
@@ -92,55 +93,14 @@ public class Simulator {
   // determine the distance to the first obstacle in direct line of sight 
   // under a given angle
   public int getFreeDistance(Point tile, Point pos, int angle) {
-    int distance = 0;
-
     // find distance to first wall in line of sight
-    return this.findHitDistance(angle,
-            (int) tile.getX(), (int) tile.getY(),
-            (int) pos.getX(), (int) pos.getY());
+    return MapUtil.findHitDistance(this.map, angle,
+            tile.getX(), tile.getY(),
+            pos.getX(), pos.getY());
   }
 
   public Tile getCurrentTile(Point tile) {
-    return this.map.get((int) tile.getX(), (int) tile.getY());
-  }
-
-  /**
-   * determines the distance to the first hit wall at the current bearing.
-   * if the hit is not on a wall on the current tile, we follow the bearing
-   * to the next tile and recursively try to find the hit-distance
-   */
-  int findHitDistance(int angle, int left, int top, double x, double y) {
-    // Force angles between 0 and 360 !!!
-    angle = (int) penoplatinum.util.Utils.ClampLooped(angle, 0, 360);
-    //if (angle < 0 || angle > 360) throw new IllegalArgumentException();
-
-    // determine the point on the (virtual) wall on the current tile, where
-    // the robot would hit at this bearing
-    double dist = 0;
-    Bearing bearing = null;
-    Tile tile = null;
-    Point hit = null;
-    do {
-      tile = this.map.get(left, top);
-
-      hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
-
-      // distance from the starting point to the hit-point on this tile
-      dist += TileGeometry.getDistance(x, y, hit);
-
-      // if we don't have a wall on this tile at this bearing, move to the next
-      // at the same bearing, starting at the hit point on the tile
-      // FIXME: throws OutOfBoundException, because we appear to be moving
-      //        through walls.
-      bearing = TileGeometry.getHitWall(hit, tile.getSize(), angle);
-      left = Position.moveLeft(bearing, left);
-      top = Position.moveTop(bearing, top);
-
-      x = hit.getX() == 0 ? tile.getSize() : (hit.getX() == tile.getSize() ? 0 : hit.getX());
-      y = hit.getY() == 0 ? tile.getSize() : (hit.getY() == tile.getSize() ? 0 : hit.getY());
-
-    } while (!tile.hasWall(bearing));
-    return (int) Math.round(dist);
+    return this.map.get(tile.getX(), tile.getY());
   }
 
   /**
@@ -207,13 +167,13 @@ public class Simulator {
     refreshView();
   }
 
-  boolean hasTile(double positionX, double positionY) {
+  public boolean hasTile(double positionX, double positionY) {
     int x = (int) positionX / this.getTileSize() + 1;
     int y = (int) positionY / this.getTileSize() + 1;
     return map.exists(x, y);
   }
 
-  boolean goesThroughWallX(SimulatedEntity entity, double dx) {
+  public boolean goesThroughWallX(SimulatedEntity entity, double dx) {
     double positionX = entity.getPosX();
     double positionY = entity.getPosY();
     double LENGTH_ROBOT = entity.LENGTH_ROBOT;
@@ -227,7 +187,7 @@ public class Simulator {
             && dx > 0 && (posXOnTile + dx > this.getTileSize() - LENGTH_ROBOT));
   }
 
-  boolean goesThroughWallY(SimulatedEntity entity, double dy) {
+  public boolean goesThroughWallY(SimulatedEntity entity, double dy) {
     double positionX = entity.getPosX();
     double positionY = entity.getPosY();
     double LENGTH_ROBOT = entity.LENGTH_ROBOT;

@@ -1,7 +1,7 @@
 package penoplatinum.simulator.sensors;
 
 import penoplatinum.simulator.Sensor;
-import penoplatinum.simulator.SimulatedEntity;
+import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 
 public class NoneSensor implements Sensor {

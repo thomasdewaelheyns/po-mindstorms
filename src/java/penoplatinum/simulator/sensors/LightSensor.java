@@ -3,7 +3,7 @@ package penoplatinum.simulator.sensors;
 import java.awt.Point;
 import penoplatinum.util.CircularQueue;
 import penoplatinum.simulator.Sensor;
-import penoplatinum.simulator.SimulatedEntity;
+import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Tile;

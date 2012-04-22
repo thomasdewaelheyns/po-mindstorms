@@ -2,7 +2,7 @@ package penoplatinum.simulator.sensors;
 
 import junit.framework.TestCase;
 import org.junit.Test;
-import penoplatinum.simulator.SimulatedEntity;
+import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 
 public class NoneSensorTest extends TestCase {

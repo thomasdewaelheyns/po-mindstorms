@@ -4,6 +4,7 @@
  */
 package penoplatinum.simulator;
 
+import penoplatinum.robot.RobotAPI;
 import penoplatinum.simulator.view.ViewRobot;
 
 /**

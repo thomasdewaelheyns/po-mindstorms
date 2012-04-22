@@ -17,8 +17,8 @@ import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import penoplatinum.map.Map;
-import penoplatinum.simulator.PacmanViewRobot;
-import penoplatinum.simulator.SimulatedViewRobot;
+import penoplatinum.simulator.entities.PacmanViewRobot;
+import penoplatinum.simulator.entities.SimulatedViewRobot;
 import penoplatinum.simulator.tiles.Tile;
 
 public class Board extends JPanel {

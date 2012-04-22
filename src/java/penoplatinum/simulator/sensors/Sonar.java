@@ -3,7 +3,7 @@ package penoplatinum.simulator.sensors;
 import java.awt.Point;
 import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Sensor;
-import penoplatinum.simulator.SimulatedEntity;
+import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 
 public class Sonar implements Sensor{

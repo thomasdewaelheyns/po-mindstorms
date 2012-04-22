@@ -7,6 +7,8 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.simulator.entities.PacmanEntity;
+import penoplatinum.simulator.entities.SimulatedEntity;
 import java.io.File;
 import java.io.FileNotFoundException;
 
