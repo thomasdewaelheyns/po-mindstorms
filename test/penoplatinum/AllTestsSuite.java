@@ -27,7 +27,7 @@ import penoplatinum.util.UtilsTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   SimpleHashMapTest.class,
-  LinkedSectorTest.class,
+//  LinkedSectorTest.class,
   BearingTest.class,
   ColorTest.class,
   PointTest.class,
