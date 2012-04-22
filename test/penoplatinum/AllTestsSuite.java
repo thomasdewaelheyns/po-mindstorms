@@ -16,14 +16,26 @@ import penoplatinum.util.ColorTest;
 import penoplatinum.util.PointTest;
 import penoplatinum.util.RotationTest;
 import penoplatinum.util.ScannerTest;
+import penoplatinum.util.SimpleHashMapTest;
 import penoplatinum.util.TransformationTRTTest;
+import penoplatinum.util.UtilsTest;
 
 /**
  *
  * @author MHGameWork
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({LinkedSectorTest.class, BearingTest.class, ColorTest.class, PointTest.class, RotationTest.class, ScannerTest.class, TransformationTRTTest.class})
+@Suite.SuiteClasses({
+  SimpleHashMapTest.class,
+  LinkedSectorTest.class,
+  BearingTest.class,
+  ColorTest.class,
+  PointTest.class,
+  RotationTest.class,
+  ScannerTest.class,
+  TransformationTRTTest.class,
+  UtilsTest.class
+})
 public class AllTestsSuite {
 
   @BeforeClass
