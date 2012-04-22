@@ -10,6 +10,7 @@ package penoplatinum.model.part;
  */
 import penoplatinum.model.Model;
 import penoplatinum.simulator.entities.SensorMapping;
+import penoplatinum.simulator.sensors.MotorState;
 
 public class SensorModelPart implements ModelPart {
   // boilerplate implementation required to register and retrieve a ModelPart
@@ -18,11 +19,6 @@ public class SensorModelPart implements ModelPart {
   public static SensorModelPart from(Model model) {
     return (SensorModelPart) model.getPart(ModelPartRegistry.SENSOR_MODEL_PART);
   }
-  // configuration
-  // TODO: move this somewhere else
-  private static final int MOTORSTATE_FORWARD = 1;
-  private static final int MOTORSTATE_BACKWARD = 2;
-  private static final int MOTORSTATE_STOPPED = 3;
   private int[] sensors = new int[SensorMapping.SENSORVALUES_NUM];
 
   // public interface
@@ -50,11 +46,11 @@ public class SensorModelPart implements ModelPart {
   // TODO: if any of these need to become public, think twice ;-) then
   // move it up and add enough unit tests
   private boolean rightMotorIsMoving() {
-    return this.getRightMotorState() != MOTORSTATE_STOPPED;
+    return this.getRightMotorState() != MotorState.MOTORSTATE_STOPPED;
   }
 
   private boolean leftMotorIsMoving() {
-    return this.getLeftMotorState() != MOTORSTATE_STOPPED;
+    return this.getLeftMotorState() != MotorState.MOTORSTATE_STOPPED;
   }
 
   private int getRightMotorState() {

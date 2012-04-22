@@ -1,11 +1,14 @@
 package penoplatinum.simulator.sensors;
 
-import penoplatinum.simulator.Model;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 
-public class MotorState implements Sensor{
+public class MotorState implements Sensor {
+
+  public static final int MOTORSTATE_FORWARD = 1;
+  public static final int MOTORSTATE_BACKWARD = 2;
+  public static final int MOTORSTATE_STOPPED = 3;
   private Motor m;
 
   public MotorState(Motor m) {
@@ -15,13 +18,13 @@ public class MotorState implements Sensor{
   @Override
   public int getValue() {
     if (!m.isMoving()) {
-      return Model.MOTORSTATE_STOPPED;
+      return MOTORSTATE_STOPPED;
     }
     if (m.getDirection() == Motor.FORWARD) {
-      return Model.MOTORSTATE_FORWARD;
+      return MOTORSTATE_FORWARD;
     }
     if (m.getDirection() == Motor.BACKWARD) {
-      return Model.MOTORSTATE_BACKWARD;
+      return MOTORSTATE_BACKWARD;
     }
     throw new RuntimeException("I M P O S S I B L E !");
   }
@@ -35,5 +38,4 @@ public class MotorState implements Sensor{
   public void useSimulatedEntity(SimulatedEntity simEntity) {
     // the MotorState Sensor only needs information from the motor.
   }
-  
 }

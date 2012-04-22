@@ -1,21 +1,22 @@
 package penoplatinum.simulator.sensors;
 
-import java.awt.Point;
 import penoplatinum.util.CircularQueue;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Tile;
+import penoplatinum.util.Point;
 
 public class LightSensor implements Sensor {
 
   private static final int BLACK = 440;
   private static final int WHITE = 570;
   private static final int BROWN = 500;
+  private static final int LIGHTBUFFER_SIZE = 5;
+  
   private Simulator sim;
   private SimulatedEntity simEntity;
-  public static final int LIGHTBUFFER_SIZE = 5;
   private CircularQueue<Integer> lightValues = new CircularQueue<Integer>(LIGHTBUFFER_SIZE);
 
   public LightSensor() {
@@ -43,23 +44,11 @@ public class LightSensor implements Sensor {
 
     // if we go beyond the boundaries of this tile, move to the next and
     // adapt the x,y coordinates on the new tile
-    int dx = 0, dy = 0;
-    if (x < 0) {
-      dx = -1;
-      x += Sector.SIZE;
-    }
-    if (x >= Sector.SIZE) {
-      dx = +1;
-      x -= Sector.SIZE;
-    }
-    if (y < 0) {
-      dy = -1;
-      y += Sector.SIZE;
-    }
-    if (y >= Sector.SIZE) {
-      dy = +1;
-      y -= Sector.SIZE;
-    }
+    int dx = x / sim.getTileSize();
+    int dy = y / sim.getTileSize();
+    x -= dx*sim.getTileSize();
+    y -= dy*sim.getTileSize();
+    
     // get correct tile
     Point tilePos = simEntity.getCurrentTileCoordinates();
     tilePos.translate(dx, dy);
