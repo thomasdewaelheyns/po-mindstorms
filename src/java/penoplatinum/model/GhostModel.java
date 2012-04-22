@@ -11,11 +11,16 @@ package penoplatinum.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import penoplatinum.model.Model;
 
+import penoplatinum.model.part.BarcodeModelPart;
 import penoplatinum.reporter.Reporter;
 
+import penoplatinum.model.part.GridModelPart;
+import penoplatinum.model.part.LightModelPart;
+import penoplatinum.model.part.SensorModelPart;
+import penoplatinum.model.part.WallsModelPart;
 import penoplatinum.model.processor.ModelProcessor;
+import penoplatinum.reporter.Reporter;
 
 import penoplatinum.model.part.ModelPart;
 import penoplatinum.model.part.ModelPartRegistry;
