@@ -30,7 +30,7 @@ public class GridModelPart implements ModelPart {
   private ArrayList<Sector> changedSectors = new ArrayList<Sector>();
 
 
-  public GridModelPart(String name) {
+  public GridModelPart() {
     // this.myAgent = new GhostAgent(name);
     // this.setupGrid();
   }

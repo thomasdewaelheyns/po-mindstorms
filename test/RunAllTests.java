@@ -56,6 +56,7 @@ public class RunAllTests {
       penoplatinum.navigator.mode.DiscoverHillClimbingNavigatorModeTest.class,
       penoplatinum.navigator.mode.ChaseHillClimbingNavigatorModeTest.class,
       penoplatinum.model.ModelTest.class,
+      penoplatinum.model.GhostModelTest.class,
       penoplatinum.model.part.ModelPartTest.class,
       penoplatinum.model.part.ModelPartRegistryTest.class,
       penoplatinum.model.processor.ModelProcessorTest.class,
