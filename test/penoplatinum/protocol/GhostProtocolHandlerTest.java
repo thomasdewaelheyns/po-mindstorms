@@ -18,6 +18,7 @@ import penoplatinum.gateway.GatewayClient;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.BarcodeAgent;
+import penoplatinum.grid.Grid;
 
 import penoplatinum.util.Bearing;
 
@@ -39,7 +40,7 @@ public class GhostProtocolHandlerTest extends TestCase {
   
   public void testVersion() {
     this.setup();
-    assertEquals("2.0", this.protocolHandler.getVersion());
+    assertEquals("2.1", this.protocolHandler.getVersion());
   }
 
   public void testHandleStart() {
@@ -160,6 +161,29 @@ public class GhostProtocolHandlerTest extends TestCase {
   // TODO: complete entire protocol
 
   // constructors
+  
+  public void testJoinAfterActive(){
+    this.setup();
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("testRobot1 NAME 2.1\n");
+    this.protocolHandler.receive("testRobot2 NAME 2.1\n");
+    this.protocolHandler.receive("testRobot3 NAME 2.1\n");
+    
+    this.protocolHandler.receive("JOIN\n");
+    
+    this.protocolHandler.receive("testRobot2 RENAME 2.1\n");
+    this.protocolHandler.receive("testRobot3 RENAME 2.1\n");
+    verifyNoMoreInteractions(this.mockedEventHandler);
+    this.protocolHandler.receive("testRobot4 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot4");
+    
+    this.protocolHandler.receive("testRobot1 DISCOVER 1,1 1 1 0 0\n");
+    verifyNoMoreInteractions(this.mockedEventHandler);
+    
+  }
 
   private void setup() {
     this.protocolHandler     = this.createGhostProtocolHandler();
@@ -188,8 +212,9 @@ public class GhostProtocolHandlerTest extends TestCase {
                             Boolean n, Boolean e, Boolean s, Boolean w)
   {
     Sector mockedSector = mock(Sector.class);
-    //TODO:
-    //when(mockedSector.getPosition()).thenReturn(new Point(left, top));
+    Grid mockedGrid = mock(Grid.class);
+    when(mockedGrid.getPositionOf(mockedSector)).thenReturn(new Point(left, top));
+    when(mockedSector.getGrid()).thenReturn(mockedGrid);
     when(mockedSector.hasWall(Bearing.N)).thenReturn(n);
     when(mockedSector.hasWall(Bearing.E)).thenReturn(e);
     when(mockedSector.hasWall(Bearing.S)).thenReturn(s);

@@ -20,6 +20,9 @@ public class BarcodeAgent extends MovingAgent {
     this.code = code;
   }
 
+  @Override
   public int   getValue() { return this.code; }
+  @Override
   public Color getColor() { return null;      }
+
 }

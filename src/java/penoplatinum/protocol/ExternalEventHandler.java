@@ -7,8 +7,6 @@ package penoplatinum.protocol;
  * 
  * @author Team Platinum
  */
- 
-import penoplatinum.grid.Sector;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
@@ -22,4 +20,7 @@ public interface ExternalEventHandler {
   public void handleAgentInfo(String agentName, Point position, 
                               int value, Bearing bearing);
   public void handleTargetInfo(String agentName, Point position);
+  public void handleSendGridInformation();
+  public void handleCaptured(String agentName);
+  public void handleRemoveAgent(String agentName);
 }
