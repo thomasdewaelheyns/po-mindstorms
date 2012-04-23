@@ -1,6 +1,5 @@
 package penoplatinum.simulator.tiles;
 
-import penoplatinum.simulator.tiles.Panel;
 import junit.framework.*; 
 
 import java.awt.Point;
@@ -8,7 +7,6 @@ import penoplatinum.simulator.tiles.TileGeometry;
 import penoplatinum.util.Bearing;
 
 public class DistanceTest extends TestCase { 
-  private Panel tile;
   private int positionX;
   private int positionY;
   private int direction;

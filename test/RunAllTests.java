@@ -1,3 +1,4 @@
+
 /**
  * RunAllTests
  *
@@ -5,23 +6,27 @@
  *
  * @author Team Platonum
  */
-
 import junit.framework.*;
 
 public class RunAllTests {
+
   public static Test suite() {
-    Class[] testClasses = { 
+    Class[] testClasses = {
       penoplatinum.ConfigTest.class,
-      penoplatinum.util.UtilsTest.class,
-      penoplatinum.util.RotationTest.class,
       penoplatinum.util.BearingTest.class,
-      penoplatinum.util.PointTest.class,
-      penoplatinum.util.TransformationTRTTest.class,
-      penoplatinum.util.ScannerTest.class,
+      penoplatinum.util.BitwiseOperationsTest.class,
+      penoplatinum.util.CantorDiagonalTest.class,
+      penoplatinum.util.CircularQueueTest.class,
       penoplatinum.util.ColorTest.class,
       penoplatinum.util.LightColorTest.class,
-      penoplatinum.util.BitwiseOperationsTest.class,
-//      penoplatinum.barcode.BarcodeTest.class,
+      penoplatinum.util.PointTest.class,
+      penoplatinum.util.RotationTest.class,
+      penoplatinum.util.ScannerTest.class,
+      penoplatinum.util.SimpleHashMapTest.class,
+      penoplatinum.util.SimpleHashMapTest2.class,
+      penoplatinum.util.TransformationTRTTest.class,
+      penoplatinum.util.UtilsTest.class,
+      //      penoplatinum.barcode.BarcodeTest.class,
       penoplatinum.grid.LinkedSectorTest.class,
       //penoplatinum.grid.GridTest.class,
       penoplatinum.protocol.ExternalEventHandlerTest.class,
@@ -59,16 +64,15 @@ public class RunAllTests {
       penoplatinum.gateway.ConnectionTest.class,
       penoplatinum.gateway.QueueTest.class,
       penoplatinum.gateway.GatewayClientTest.class,
-      penoplatinum.gateway.MessageReceiverTest.class,
-//      penoplatinum.simulator.tiles.SectorTest.class, 
-//      penoplatinum.simulator.sensors.NoneSensorTest.class,
-//      penoplatinum.simulator.tiles.TileGeometryTest.class,
-//      penoplatinum.map.MapHashedTest.class,
-//      penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
-//      penoplatinum.map.mazeprotocol.DiscoverTest.class,
-//      penoplatinum.map.mazeprotocol.PacmanTest.class,
-//      penoplatinum.map.mazeprotocol.PositionTest.class,
-//      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class
+      penoplatinum.gateway.MessageReceiverTest.class, //      penoplatinum.simulator.tiles.SectorTest.class, 
+    //      penoplatinum.simulator.sensors.NoneSensorTest.class,
+    //      penoplatinum.simulator.tiles.TileGeometryTest.class,
+    //      penoplatinum.map.MapHashedTest.class,
+    //      penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
+    //      penoplatinum.map.mazeprotocol.DiscoverTest.class,
+    //      penoplatinum.map.mazeprotocol.PacmanTest.class,
+    //      penoplatinum.map.mazeprotocol.PositionTest.class,
+    //      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;
