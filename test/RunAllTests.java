@@ -66,7 +66,7 @@ public class RunAllTests {
       penoplatinum.gateway.GatewayClientTest.class,
       penoplatinum.gateway.MessageReceiverTest.class,
       penoplatinum.simulator.tiles.DistanceTest.class,
-      penoplatinum.map.MapTest.class,
+//      penoplatinum.map.MapTest.class,
       
       //      penoplatinum.simulator.tiles.SectorTest.class, 
     //      penoplatinum.simulator.sensors.NoneSensorTest.class,
