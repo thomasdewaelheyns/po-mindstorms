@@ -11,14 +11,11 @@ package penoplatinum.simulator;
  * 
  * @author: Team Platinum
  */
-import penoplatinum.simulator.entities.RemoteEntity;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.map.Map;
-import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
 import penoplatinum.simulator.view.SimulationView;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import penoplatinum.map.MapUtil;
@@ -31,22 +28,17 @@ public class Simulator {
    */
   public static Simulator Running_Instance;
   // the Simulator can run until different goals are reached
-
   public static final double TIME_SLICE = 0.008;
   // a view to display the simulation, by default it does nothing
-
   SimulationView view = new SilentSimulationView();
-
   private Map map;                // the map that the robot will run on
-
   private List<RobotEntity> robotEntities = new ArrayList<RobotEntity>();
-
-  private HashMap<String, RemoteEntity> remoteEntities = new HashMap<String, RemoteEntity>();
+  
+  //UNUSED!!!
+  //private HashMap<String, RemoteEntity> remoteEntities = new HashMap<String, RemoteEntity>();
 
   private RobotEntity pacmanEntity;
-
   private ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<String>();
-
   private Runnable stepRunnable;
 
   // main constructor, no arguments, Simulator is selfcontained
@@ -58,16 +50,10 @@ public class Simulator {
     view.addRobot(r.getViewRobot());
     r.useSimulator(this);
   }
-
-  public RemoteEntity addRemoteEntity(String entityName, int originX, int originY, int originBearing) {
-    RemoteEntity ent = new RemoteEntity(entityName);
-    view.addRobot(ent.getViewRobot());
-    ent.useSimulator(this);
-    robotEntities.add(ent);
-    remoteEntities.put(entityName, ent);
-    ent.setOrigin(originX, originY, originBearing);
-
-    return ent;
+  
+  public void addRobotEntity(RobotEntity r) {
+    robotEntities.add(r);
+    view.addRobot(r.getViewRobot());
   }
 
   /**

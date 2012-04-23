@@ -35,24 +35,6 @@ public class SimulatorTest extends TestCase {
   }
 
   /**
-   * Test of addRemoteEntity method, of class Simulator.
-   */
-  @Test
-  public void testAddRemoteEntity() {
-    System.out.println("addRemoteEntity");
-    String entityName = "qsdf";
-    int originX = 125;
-    int originY = 654;
-    int originBearing = 124;
-    Simulator instance = new Simulator();
-    RemoteEntity result = instance.addRemoteEntity(entityName, originX, originY, originBearing);
-    assertEquals(entityName, result.getEntityName());
-    assertEquals(originX, result.getPosX(), 0);
-    assertEquals(originY, result.getPosY(), 0);
-    assertEquals(originBearing, result.getAngle(), 0);
-  }
-
-  /**
    * Test of displayOn method, of class Simulator.
    */
   @Test
