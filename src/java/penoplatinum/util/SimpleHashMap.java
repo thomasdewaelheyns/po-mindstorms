@@ -5,10 +5,11 @@ package penoplatinum.util;
  */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
-public class SimpleHashMap<K, T>{
+public class SimpleHashMap<K, T>  {
 
   public List<K> keys = new ArrayList<K>();
   public List<T> values = new ArrayList<T>();
@@ -42,6 +43,12 @@ public class SimpleHashMap<K, T>{
     values.set(index, value);
     
   }
+  
+  public void remove(K key)
+  {
+    values.remove(get(key));
+    keys.remove(key);
+  }
 
   public int size() {
     return keys.size();
@@ -62,4 +69,5 @@ public class SimpleHashMap<K, T>{
     }
     return null;
   }
+
 }
