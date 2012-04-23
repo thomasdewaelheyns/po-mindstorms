@@ -309,10 +309,18 @@ public class LinkedSector implements Sector {
 
   @Override
   public boolean hasSameWallsAs(Sector s) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (s instanceof LinkedSector)
+      return ((LinkedSector) s).walls == walls;
+
+    for (Bearing b : Bearing.NESW) {
+
+      if (s.knowsWall(b) != knowsWall(b))
+        return false;
+      if (s.knowsWall(b) && (s.hasWall(b) != hasWall(b)))
+        return false;
+    }
+    
+    return true;
+
   }
-  
-  
-  
-  
 }

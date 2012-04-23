@@ -295,15 +295,15 @@ public class LinkedGrid implements Grid {
 
   private SimpleHashMap<Agent, Bearing> agentBearings = new SimpleHashMap<Agent, Bearing>();
 
-  private Transformation transformation;
+  private TransformationTRT transformation;
 
   @Override
-  public Transformation getTransformation() {
+  public TransformationTRT getTransformation() {
     return transformation;
   }
 
   @Override
-  public Grid setTransformation(Transformation transform) {
+  public Grid setTransformation(TransformationTRT transform) {
     transformation = transform;
     return this;
   }

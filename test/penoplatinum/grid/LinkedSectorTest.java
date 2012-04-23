@@ -222,6 +222,10 @@ public class LinkedSectorTest extends TestCase {
             sector.hasWall(Bearing.S));
   }
 
+  public void testHasSameWallsAs() {
+    fail();
+  }
+
   // utility methods to setup basic components
   private Sector createSectorWithWallsNW() {
     /* result looks like this:

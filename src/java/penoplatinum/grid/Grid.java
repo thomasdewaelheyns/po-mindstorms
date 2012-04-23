@@ -10,7 +10,7 @@ package penoplatinum.grid;
 
 import penoplatinum.util.Point;
 import penoplatinum.util.Bearing;
-import penoplatinum.util.Transformation;
+import penoplatinum.util.TransformationTRT;
 
 public interface Grid {
 //  // set the root-processor for this Grid
@@ -41,7 +41,7 @@ public interface Grid {
    * Gets the grid's current transformation
    * @return 
    */
-  public Transformation getTransformation();
+  public TransformationTRT getTransformation();
 
   /**
    * Transform the grid. All grid functions will work as if the grid is 
@@ -49,7 +49,7 @@ public interface Grid {
    * @param transform
    * @return 
    */
-  public Grid setTransformation(Transformation transform);
+  public Grid setTransformation(TransformationTRT transform);
   // using the navigation links on Sectors, the Grid can traverse through
   // the sectors, returning the Sector with requested left and top coordinates
 
