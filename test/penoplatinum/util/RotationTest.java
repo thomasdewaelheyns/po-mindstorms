@@ -241,5 +241,10 @@ public class RotationTest extends TestCase {
     assertEquals("R270 inverted = L270", Rotation.L270, Rotation.R270.invert() );
     assertEquals("R360 inverted = NONE", Rotation.NONE, Rotation.R360.invert() );
   }
+  
+  public void testTransform()
+  {
+    fail();
+  }
 
 }

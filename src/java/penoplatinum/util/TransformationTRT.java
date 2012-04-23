@@ -7,7 +7,7 @@ package penoplatinum.util;
  */
  
  
-public class TransformationTRT {
+public class TransformationTRT implements Transformation {
 
   public static TransformationTRT Identity;
 
@@ -36,15 +36,13 @@ public class TransformationTRT {
     return this;
   }
 
-  public TransformationTRT transform(Point point) {
+  public void transform(Point point) {
     // translate to A XY
     point.translate(this.translationAX, this.translationAY);
     // rotate
     point.rotate(rotation);
     // translate to B XY
     point.translate(this.translationBX, this.translationBY);
-
-    return this;
   }
   
   public String toString(){

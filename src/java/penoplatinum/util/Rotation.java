@@ -8,7 +8,7 @@ package penoplatinum.util;
  * @author: Team Platinum
  */
 
-public enum Rotation {
+public enum Rotation implements  Transformation {
   NONE  ( 0),
   L90   (-1),  L180  (-2),  L270  (-3),  L360  (0),
   R90   ( 1),  R180  ( 2),  R270  ( 3),  R360  (0);
@@ -55,5 +55,10 @@ public enum Rotation {
   
   public Rotation invert() {
     return this.get(this.rotation * -1);
+  }
+
+  @Override
+  public void transform(Point point) {
+    point.rotate(this);
   }
 }
