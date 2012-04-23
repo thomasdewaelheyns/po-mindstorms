@@ -45,8 +45,6 @@ public class UtilsTest extends TestCase {
     assertEquals(96, Utils.ClampLooped(96, 10, 110), 0.05);
     assertEquals(100, Utils.ClampLooped(-1000, 10, 110), 0.05);
     assertEquals(90.5, Utils.ClampLooped(95.5, 90, 91), 0.05);
-    assertEquals(30, Utils.ClampLooped(130, 10, 9), 0.05);
-    assertEquals(30, Utils.ClampLooped(130, 110, 110), 0.05);
 
   }
 
