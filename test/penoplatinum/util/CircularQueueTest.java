@@ -51,7 +51,7 @@ public class CircularQueueTest  extends TestCase{
     assertEquals(instance.remove(), value);
     instance.insert(value);
     instance.insert(value2);
-    assertEquals(instance.remove(), value);
+    assertEquals(instance.remove(), value2);
     instance.insert(value2);
     instance.insert(value3);
     assertEquals(instance.remove(), value3);
