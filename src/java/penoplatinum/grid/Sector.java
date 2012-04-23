@@ -38,7 +38,7 @@ public interface Sector {
   public boolean hasNoWall(Bearing wall);
   public boolean knowsWall(Bearing atBearing);
   
-  public char getWalls();
+  //TODO: do we need this? public char getWalls();
 
   
   /**

@@ -22,8 +22,6 @@ public class LinkedSectorTest extends TestCase {
     super(name);
   }
 
-  
-  
   @Override
   protected void setUp() throws Exception {
     super.setUp();
@@ -51,7 +49,45 @@ public class LinkedSectorTest extends TestCase {
       thrown = true;
     }
     assertTrue(thrown);
-    
+
+  }
+
+  public void testIsFullyKnown() {
+    LinkedSector s1 = new LinkedSector();
+    s1.setWall(Bearing.E);
+    assertFalse(s1.isFullyKnown());
+    s1.setWall(Bearing.N);
+    assertFalse(s1.isFullyKnown());
+    s1.setWall(Bearing.S);
+    assertFalse(s1.isFullyKnown());
+    s1.setNoWall(Bearing.S);
+    assertFalse(s1.isFullyKnown());
+
+    s1.setNoWall(Bearing.W);
+    assertTrue(s1.isFullyKnown());
+
+    s1.clearWall(Bearing.S);
+    assertFalse(s1.isFullyKnown());
+
+  }
+
+  public void testClearWalls() {
+    LinkedSector s1 = new LinkedSector();
+    s1.setWall(Bearing.E).setWall(Bearing.N).setNoWall(Bearing.S);
+    s1.clearWalls();
+
+    for (Bearing b : Bearing.NESW)
+      assertFalse(s1.knowsWall(b));
+  }
+
+  public void testGivesAccessTo() {
+    LinkedSector s1 = new LinkedSector();
+    s1.setWall(Bearing.N);
+    assertFalse(s1.givesAccessTo(Bearing.N));
+    s1.setNoWall(Bearing.N);
+    assertTrue(s1.givesAccessTo(Bearing.N));
+    s1.clearWall(Bearing.N);
+    assertFalse(s1.givesAccessTo(Bearing.N));
   }
 
   public void testAddNeighbourSimple() {
