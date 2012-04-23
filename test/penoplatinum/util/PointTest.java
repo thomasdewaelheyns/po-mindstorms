@@ -92,6 +92,10 @@ public class PointTest extends TestCase {
   public void testHashCode() {
     assertEquals( "hascode is wrong.", 56817, this.createPoint().hashCode() );
   }
+  
+  public void testCopyConstructor() {
+	fail();
+  }
 
   private Point createPoint() {
     return new Point(X,Y);

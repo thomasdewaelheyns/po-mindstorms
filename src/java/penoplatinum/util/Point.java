@@ -16,6 +16,12 @@ public class Point {
     this.x = x;
     this.y = y;
   }
+  
+  public Point(Point p)
+  {
+    this.x = p.getX();
+    this.y = p.getY();
+  }
 
   public int getX() { return this.x; }
   public int getY() { return this.y; }
@@ -46,6 +52,7 @@ public class Point {
     }
     return this;
   }
+  
   
   public String toString() {
     return this.x + "," + this.y;
