@@ -40,6 +40,7 @@ public interface Sector {
   
   //TODO: do we need this? public char getWalls();
 
+  public boolean hasSameWallsAs(Sector s);
   
   /**
    * True when each wall is known

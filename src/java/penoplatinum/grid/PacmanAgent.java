@@ -25,4 +25,9 @@ public class PacmanAgent extends MovingAgent {
   public Agent copyAgent() {
     return new PacmanAgent();
   }
+
+  @Override
+  public Agent createCopy() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

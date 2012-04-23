@@ -55,8 +55,8 @@ public abstract class MovingAgent implements Agent {
   }
 
   public Agent moveForward() {
-    this.grid.moveForward(this);
-    return this;
+//    this.grid.moveForward(this);
+    throw new UnsupportedOperationException();
   }
   
   public Agent activate() {
@@ -66,5 +66,10 @@ public abstract class MovingAgent implements Agent {
   
   public boolean isActive() {
     return this.active;
+  }
+  
+  public Agent createCopy()
+  {
+    throw new UnsupportedOperationException();
   }
 }

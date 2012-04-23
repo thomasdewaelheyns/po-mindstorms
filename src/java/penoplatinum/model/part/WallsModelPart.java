@@ -86,7 +86,7 @@ public class WallsModelPart implements ModelPart {
     // TODO: make this more intelligent, going from unknown to known is not a
     //       negative change, but going from known/wall to known/nowall is a 
     //       bad sign
-    return this.prevSector.getWalls() != this.currentSector.getWalls();
+    return !prevSector.hasSameWallsAs(currentSector);
   }
 
   public void clearDirty() {

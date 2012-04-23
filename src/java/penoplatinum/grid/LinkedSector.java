@@ -308,4 +308,13 @@ public class LinkedSector implements Sector {
   private Bearing applyRotation(Bearing bearing) {
     return bearing.rotate(this.grid.getTransformation().getRotation().invert());
   }
+
+  @Override
+  public boolean hasSameWallsAs(Sector s) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+  
+  
+  
+  
 }
