@@ -16,6 +16,7 @@ import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
+import penoplatinum.simulator.RobotAPI;
 
 public class RemoteEntity implements RobotEntity {
 
@@ -34,7 +35,7 @@ public class RemoteEntity implements RobotEntity {
   // TODO: reuse GatewayClient in stead of own MQ implementation
   public RemoteEntity(final String entityName) {
     this.entityName = entityName;
-    final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
+    /*final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
 
     createGhostProtocolHandler(ghostModel);
     try {
