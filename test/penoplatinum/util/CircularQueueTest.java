@@ -36,7 +36,7 @@ public class CircularQueueTest  extends TestCase{
     value2 = new Object();
     value3 = new Object();
     value4 = new Object();
-    instance = new CircularQueue<Object>(3);
+    instance = new CircularQueue<Object>(4);
   }
 
   @After
@@ -49,14 +49,13 @@ public class CircularQueueTest  extends TestCase{
   public void testAllMethods() {
     instance.insert(value);
     assertEquals(instance.remove(), value);
+    instance.insert(value2);
     instance.insert(value);
-    instance.insert(value2);
     assertEquals(instance.remove(), value2);
+    instance.insert(value3);
     instance.insert(value2);
-    instance.insert(value3);
-    assertEquals(instance.remove(), value3);
-    instance.insert(value3);
-    instance.insert(value4);
+    assertEquals(instance.remove(), value);
+    instance.insert(value);
     assertTrue(instance.isFull());
     assertFalse(instance.isEmpty());
     instance.remove();
