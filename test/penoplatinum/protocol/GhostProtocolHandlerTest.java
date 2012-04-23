@@ -19,9 +19,7 @@ import penoplatinum.grid.Sector;
 import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.BarcodeAgent;
 
-import penoplatinum.util.Point;
 import penoplatinum.util.Bearing;
-import penoplatinum.util.BitwiseOperations;
 
 
 public class GhostProtocolHandlerTest extends TestCase {

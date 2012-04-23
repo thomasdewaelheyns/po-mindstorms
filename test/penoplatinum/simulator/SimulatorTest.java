@@ -1,20 +1,15 @@
 package penoplatinum.simulator;
 
 import junit.framework.TestCase;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import penoplatinum.map.Map;
-import penoplatinum.map.MapHashed;
+import penoplatinum.map.MapTestUtil;
 import penoplatinum.robot.Robot;
 import penoplatinum.simulator.entities.PacmanEntity;
 import penoplatinum.simulator.entities.RemoteEntity;
 import penoplatinum.simulator.entities.SimulatedEntity;
-import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
 import penoplatinum.simulator.view.SimulationView;
@@ -84,7 +79,7 @@ public class SimulatorTest extends TestCase {
   @Test
   public void testUseMap() {
     System.out.println("useMap");
-    Map map = getMap();
+    Map map = MapTestUtil.getMap();
     Simulator instance = new Simulator();
     Simulator result = instance.useMap(map);
     assertEquals(instance, result);
@@ -100,7 +95,7 @@ public class SimulatorTest extends TestCase {
     Point tile = new Point(1, 1);
     Point pos = new Point(20, 20);
     int angle = 0;
-    Simulator instance = new Simulator().useMap(getMap());
+    Simulator instance = new Simulator().useMap(MapTestUtil.getMap());
     assertEquals(60, instance.getFreeDistance(tile, pos, angle));
     angle = 90;
     assertEquals(20, instance.getFreeDistance(tile, pos, angle));
@@ -157,7 +152,7 @@ public class SimulatorTest extends TestCase {
   @Test
   public void testGetTileSize() {
     System.out.println("getTileSize");
-    Simulator instance = new Simulator().useMap(getMap());
+    Simulator instance = new Simulator().useMap(MapTestUtil.getMap());
     assertEquals(40, instance.getTileSize());
     Map m = mock(Map.class);
     Tile t = mock(Tile.class);
@@ -212,23 +207,5 @@ public class SimulatorTest extends TestCase {
     ViewRobot vr = mock(ViewRobot.class);
     when(out.getViewRobot()).thenReturn(vr);
     return out;
-  }
-
-  private Map getMap() {
-    Map m = new MapHashed();
-    Sector s = new Sector();
-    s.addWall(0); // N
-    m.put(s, 1, 1);
-    s = new Sector();
-    s.addWall(1); // E
-    m.put(s, 2, 1);
-    s = new Sector();
-    s.addWall(2); // S
-    m.put(s, 2, 2);
-    s = new Sector();
-    s.addWall(2); // S
-    m.put(s, 2, 3);
-    m.put(s, 1, 2);
-    return m;
   }
 }

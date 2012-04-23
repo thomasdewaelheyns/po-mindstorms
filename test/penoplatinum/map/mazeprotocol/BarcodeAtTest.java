@@ -4,8 +4,8 @@ import java.util.Scanner;
 import junit.framework.TestCase;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import penoplatinum.grid.Sector;
 import penoplatinum.map.MapHashed;
+import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.util.Bearing;
 
@@ -33,6 +33,7 @@ public class BarcodeAtTest extends TestCase {
     assertFalse(s.hasWall(Bearing.S));
     assertTrue(s.hasWall(Bearing.W));
     assertEquals(4, s.getBarcode8Bit());
+    assertEquals(Sector.class, s.getClass());
     
     s = m.get(2, 1);
     assertTrue(s.hasWall(Bearing.N));
@@ -40,6 +41,7 @@ public class BarcodeAtTest extends TestCase {
     assertTrue(s.hasWall(Bearing.S));
     assertFalse(s.hasWall(Bearing.W));
     assertEquals(6, s.getBarcode8Bit());
+    assertEquals(Sector.class, s.getClass());
     
     s = m.get(1, 2);
     assertFalse(s.hasWall(Bearing.N));
@@ -47,6 +49,7 @@ public class BarcodeAtTest extends TestCase {
     assertFalse(s.hasWall(Bearing.S));
     assertTrue(s.hasWall(Bearing.W));
     assertEquals(10, s.getBarcode8Bit());
+    assertEquals(Sector.class, s.getClass());
     
     s = m.get(2, 2);
     assertTrue(s.hasWall(Bearing.N));
@@ -54,6 +57,7 @@ public class BarcodeAtTest extends TestCase {
     assertTrue(s.hasWall(Bearing.S));
     assertFalse(s.hasWall(Bearing.W));
     assertEquals(14, s.getBarcode8Bit());
+    assertEquals(Sector.class, s.getClass());
     
     sc = new Scanner("1 -1 7 4");
     instance.interpret(m, sc);

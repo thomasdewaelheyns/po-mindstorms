@@ -4,8 +4,9 @@ import java.util.Scanner;
 import junit.framework.TestCase;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 import penoplatinum.map.MapHashed;
-import penoplatinum.simulator.tiles.Sector;
+import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.util.Point;
 
 public class PacmanTest extends TestCase {
@@ -17,7 +18,7 @@ public class PacmanTest extends TestCase {
   public void testInterpret() {
     System.out.println("interpret");
     MapHashed map = new MapHashed();
-    map.put(new Sector(), 0, 0);
+    map.put(mock(Tile.class), 0, 0);
     Scanner scanner = new Scanner("0 0");
     Pacman instance = new Pacman();
     instance.interpret(map, scanner);
