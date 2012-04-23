@@ -181,6 +181,7 @@ public class GhostProtocolHandlerTest extends TestCase {
 
   private GatewayClient mockGatewayClient() {
     return mock(GatewayClient.class);
+    
   }
   
   private Sector mockSector(int left, int top,

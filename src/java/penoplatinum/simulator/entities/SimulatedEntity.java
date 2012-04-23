@@ -5,7 +5,6 @@ package penoplatinum.simulator.entities;
  * 
  * @authot Team Platinum
  */
-
 import penoplatinum.simulator.sensors.IRSensor;
 import penoplatinum.simulator.sensors.IRdistanceSensor;
 import penoplatinum.simulator.sensors.LightSensor;
@@ -27,39 +26,65 @@ import penoplatinum.robot.SimulationRobotAPI;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.util.Point;
 
-
 public class SimulatedEntity implements RobotEntity {
 
   public final double LENGTH_ROBOT = 10.0;
+
   public static final double LIGHTSENSOR_DISTANCE = 5.0; // 10cm from center
+
   public static final double BUMPER_LENGTH_ROBOT = 11.0;
+
   public static final double WHEEL_SIZE = 17.5; // circumf. in cm
+
   public static final double WHEEL_BASE = 16.0; // wheeldist. in cm
+
   private double positionX;       // the position of the robot in the world
+
   private double positionY;       //   expressed in X,Y coordinates
+
   private double direction;       //   and a direction it's facing
+
   private double totalMovement = 0;
+
   private long lastStatisticsReport = 0;  // time of last stat report
+
   private Point initialPosition;
+
   private int initialBearing;
   // the motorSpeeds and the sensorValues
+
   private int[] sensorValues = new int[SensorMapping.SENSORVALUES_NUM];
+
   private Motor[] motors = new Motor[3];
+
   private Sensor[] sensors = new Sensor[SensorMapping.SENSORVALUES_NUM];
+
   private SimulationRobotAPI robotAPI;    // the API used to access hardware
-  private GatewayClient robotAgent;  // the communication layer
+
   private Robot robot;       // the actual robot
+
   private ViewRobot viewRobot;   // 
+
   private Simulator simulator;
+
+  private final GatewayClient robotAgent;
 
   public SimulatedEntity(Robot robot) {
     this.setupSensors();
     this.robot = robot;
-    this.robotAPI = new SimulationRobotAPI();
+    setRobotApi(new SimulationRobotAPI());
+    this.robotAgent = this.robot.getGatewayClient();
+    useViewRobot(new SimulatedViewRobot(this));
+  }
+
+  public void useViewRobot(ViewRobot viewRobot) {
+    this.viewRobot = viewRobot;
+  }
+
+  public void setRobotApi(SimulationRobotAPI simApi) {
+    this.robotAPI = simApi;
     this.robotAPI.setSimulatedEntity(this);
     this.robot.useRobotAPI(this.robotAPI);
-    this.robotAgent = this.robot.getGatewayClient();
-    this.viewRobot = new SimulatedViewRobot(this);
   }
 
   @Override
@@ -80,10 +105,16 @@ public class SimulatedEntity implements RobotEntity {
     this.direction = direction;
   }
 
-  private void setupMotor(String label, int tachoPort, int statePort) {
-    this.motors[tachoPort] = new Motor().setLabel(label);  // these two need to be running
+  private Motor setupMotor(String label, int tachoPort, int statePort) {
+    Motor motor = new Motor().setLabel(label);  // these two need to be running
+    return setupMotor(label, tachoPort, statePort, motor);
+  }
+
+  public Motor setupMotor(String label, int tachoPort, int statePort, Motor motor) {
+    this.motors[tachoPort] = motor.setLabel(label);  // these two need to be running
     setSensor(tachoPort, this.motors[tachoPort]);
     setSensor(statePort, new MotorState(this.motors[tachoPort]));
+    return this.motors[tachoPort];
   }
 
   // TODO: externalize the speed configuration of the different motors
@@ -95,7 +126,7 @@ public class SimulatedEntity implements RobotEntity {
     //setSensor(SensorMapping.S2, new TouchSensor(315));
     setSensor(SensorMapping.S1, new IRSensor());
     setSensor(SensorMapping.S2, new NoneSensor());
-    setSensor(SensorMapping.S3, new Sonar(this.motors[SensorMapping.MS3]));
+    setSensor(SensorMapping.S3, new Sonar(this.motors[SensorMapping.M3]));
     setSensor(SensorMapping.S4, new LightSensor());
     setSensor(SensorMapping.IR0, new IRdistanceSensor(120));
     setSensor(SensorMapping.IR1, new IRdistanceSensor(60));
@@ -297,6 +328,4 @@ public class SimulatedEntity implements RobotEntity {
   public void setInitialBearing(int initialBearing) {
     this.initialBearing = initialBearing;
   }
-  
-  
 }
