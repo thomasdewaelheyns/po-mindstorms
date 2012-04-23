@@ -174,6 +174,11 @@ public class SimulatedEntity implements RobotEntity {
     return positionY;
   }
 
+  /**
+   * The direction of the current robot.
+   * 0° is north. Counterclockwise
+   * @return the direction
+   */
   @Override
   public double getDir() {
     return direction;
@@ -194,7 +199,7 @@ public class SimulatedEntity implements RobotEntity {
    * We also only want an angle from 0 to 359.
    */
   public int getAngle() {
-    return (int) ((this.direction + 90) % 360);
+    return (int) ((this.direction + 270) % 360);
   }
 
   public int[] getSensorValues() {

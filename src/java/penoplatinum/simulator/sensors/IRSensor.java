@@ -7,8 +7,8 @@ import penoplatinum.simulator.Simulator;
 
 public class IRSensor implements Sensor {
 
-  Simulator sim;
-  SimulatedEntity simEntity;
+  private Simulator sim;
+  private SimulatedEntity simEntity;
 
   @Override
   public int getValue() {
