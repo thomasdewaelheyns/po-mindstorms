@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.simulator;
+package java.penoplatinum.simulator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +18,7 @@ import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
  *
  * @author MHGameWork
  */
-public class SimulatorTest {
+public class SimulatorTest_OLD {
 
   @Test
   public void testFindHitDistance() throws FileNotFoundException {
