@@ -27,7 +27,7 @@ public class RunAllTests {
       penoplatinum.util.TransformationTRTTest.class,
       penoplatinum.util.UtilsTest.class,
       //      penoplatinum.barcode.BarcodeTest.class,
-      penoplatinum.grid.LinkedSectorTest.class,
+      //penoplatinum.grid.LinkedSectorTest.class,
       penoplatinum.grid.LinkedGridTest.class,
       penoplatinum.protocol.ExternalEventHandlerTest.class,
       penoplatinum.protocol.ProtocolHandlerTest.class,
@@ -53,7 +53,7 @@ public class RunAllTests {
       penoplatinum.navigator.action.TurnRightNavigatorActionTest.class,
       penoplatinum.navigator.mode.NavigatorModeTest.class,
       penoplatinum.navigator.mode.HillClimbingNavigatorModeTest.class,
-      penoplatinum.navigator.mode.DiscoverHillClimbingNavigatorModeTest.class,
+      //penoplatinum.navigator.mode.DiscoverHillClimbingNavigatorModeTest.class,
       penoplatinum.navigator.mode.ChaseHillClimbingNavigatorModeTest.class,
       penoplatinum.model.ModelTest.class,
       penoplatinum.model.GhostModelTest.class,
@@ -66,9 +66,13 @@ public class RunAllTests {
       penoplatinum.gateway.QueueTest.class,
       penoplatinum.gateway.GatewayClientTest.class,
       penoplatinum.gateway.MessageReceiverTest.class,
+      penoplatinum.simulator.SimulatorTest.class,
       penoplatinum.simulator.sensors.NoneSensorTest.class,
       penoplatinum.simulator.sensors.IRSensorTest.class, 
       penoplatinum.simulator.sensors.SonarTest.class,
+      penoplatinum.simulator.sensors.LightSensorTest.class,
+      penoplatinum.simulator.sensors.MotorTest.class,
+      penoplatinum.simulator.sensors.MotorStateTest.class,
       penoplatinum.simulator.tiles.SectorTest.class,
       penoplatinum.simulator.tiles.DistanceTest.class,
       penoplatinum.simulator.tiles.TileGeometryTest.class,
@@ -77,9 +81,7 @@ public class RunAllTests {
       penoplatinum.map.mazeprotocol.DiscoverTest.class,
       penoplatinum.map.mazeprotocol.PacmanTest.class,
       penoplatinum.map.mazeprotocol.PositionTest.class,
-      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class,
-      penoplatinum.simulator.sensors.MotorTest.class,
-      penoplatinum.simulator.sensors.MotorStateTest.class
+      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;

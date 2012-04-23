@@ -8,7 +8,6 @@ import penoplatinum.map.Map;
 import penoplatinum.map.MapTestUtil;
 import penoplatinum.robot.Robot;
 import penoplatinum.simulator.entities.PacmanEntity;
-import penoplatinum.simulator.entities.RemoteEntity;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
@@ -76,8 +75,8 @@ public class SimulatorTest extends TestCase {
     System.out.println("getFreeDistance");
     Point tile = new Point(1, 1);
     Point pos = new Point(20, 20);
-    int angle = 0;
     Simulator instance = new Simulator().useMap(MapTestUtil.getMap());
+    int angle = 0;
     assertEquals(60, instance.getFreeDistance(tile, pos, angle));
     angle = 90;
     assertEquals(20, instance.getFreeDistance(tile, pos, angle));
@@ -103,12 +102,7 @@ public class SimulatorTest extends TestCase {
   @Test
   public void testRun() {
     System.out.println("run");
-    Simulator instance = new Simulator();
-    Simulator expResult = null;
-    //Simulator result = instance.run();
-    //assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    fail("Cannot be tested? Infinite loop :S");
   }
 
   /**
@@ -141,19 +135,6 @@ public class SimulatorTest extends TestCase {
     when(m.getFirst()).thenReturn(t);
     when(t.getSize()).thenReturn(1524);
     assertEquals(1524, instance.useMap(m).getTileSize());
-  }
-
-  /**
-   * Test of useStepRunnable method, of class Simulator.
-   */
-  @Test
-  public void testUseStepRunnable() {
-    System.out.println("useStepRunnable");
-    Runnable runnable = null;
-    Simulator instance = new Simulator();
-    instance.useStepRunnable(runnable);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
   }
 
   /**

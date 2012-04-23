@@ -1,17 +1,18 @@
 package penoplatinum.simulator.sensors;
 
 import junit.framework.TestCase;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import penoplatinum.map.MapTestUtil;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import penoplatinum.map.Map;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
+import penoplatinum.simulator.tiles.Sector;
+import penoplatinum.util.Point;
 
 public class LightSensorTest extends TestCase {
+
   /**
    * Test of getValue method, of class LightSensor.
    */
@@ -20,11 +21,11 @@ public class LightSensorTest extends TestCase {
     System.out.println("getValue");
     LightSensor instance = new LightSensor();
     LightSensor spy = spy(instance);
-    for(int i = 0; i < LightSensor.LIGHTBUFFER_SIZE; i++){
+    for (int i = 0; i < LightSensor.LIGHTBUFFER_SIZE; i++) {
       doReturn(i).when(spy).getActualValue();
       assertEquals(LightSensor.BROWN, spy.getValue());
     }
-    for(int i = 0; i < LightSensor.LIGHTBUFFER_SIZE; i++){
+    for (int i = 0; i < LightSensor.LIGHTBUFFER_SIZE; i++) {
       doReturn(i).when(spy).getActualValue();
       assertEquals(i, spy.getValue());
     }
@@ -37,17 +38,75 @@ public class LightSensorTest extends TestCase {
   public void testGetActualValue() {
     System.out.println("getActualValue");
     LightSensor instance = new LightSensor();
+
     Simulator sim = mock(Simulator.class);
     when(sim.getTileSize()).thenReturn(40);
-    
+    Map map = MapTestUtil.getMap();
+    when(sim.getMap()).thenReturn(map);
+
     SimulatedEntity entity = mock(SimulatedEntity.class);
+    when(entity.getDir()).thenReturn(90.0);
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
+    when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(20, 20));
+
+    instance.useSimulatedEntity(entity);
+    instance.useSimulator(sim);
+
+    when(map.get(1, 1).getColorAt(anyInt(), anyInt())).thenReturn(Sector.WHITE);
+    assertEquals(LightSensor.WHITE, instance.getActualValue());
+
+    when(map.get(1, 1).getColorAt(anyInt(), anyInt())).thenReturn(Sector.NO_COLOR);
+    assertEquals(LightSensor.BROWN, instance.getActualValue());
+
+    when(map.get(1, 1).getColorAt(anyInt(), anyInt())).thenReturn(Sector.BLACK);
+    assertEquals(LightSensor.BLACK, instance.getActualValue());
+
+    when(map.get(1, 1).getColorAt(15, 20)).thenReturn(Sector.WHITE);
+    assertEquals(LightSensor.WHITE, instance.getActualValue());
     when(entity.getDir()).thenReturn(0.0);
-    when(entity.getPosX()).thenReturn(20.0);
-    when(entity.getPosY()).thenReturn(20.0);
+    assertEquals(LightSensor.BLACK, instance.getActualValue());
+  }
+
+  @Test
+  public void testGetActualValueOverFlow() {
+    LightSensor instance = new LightSensor();
+    Simulator sim = mock(Simulator.class);
+    when(sim.getTileSize()).thenReturn(40);
+    Map map = MapTestUtil.getMap();
+    when(sim.getMap()).thenReturn(map);
+    SimulatedEntity entity = mock(SimulatedEntity.class);
+    when(entity.getDir()).thenReturn(90.0);
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
+    when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(3, 3));
+    instance.useSimulatedEntity(entity);
+    instance.useSimulator(sim);
+
+    when(map.get(2, 2).getColorAt(anyInt(), anyInt())).thenReturn(Sector.WHITE);
+    when(map.get(1, 2).getColorAt(38, 3)).thenReturn(Sector.NO_COLOR);
+    when(map.get(2, 1).getColorAt(3, 38)).thenReturn(Sector.BLACK);
+    when(entity.getDir()).thenReturn(0.0);
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
+    assertEquals(LightSensor.BLACK, instance.getActualValue());
+    when(entity.getDir()).thenReturn(90.0);
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
+    assertEquals(LightSensor.BROWN, instance.getActualValue());
+    when(entity.getDir()).thenReturn(180.0);
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
+    assertEquals(LightSensor.WHITE, instance.getActualValue());
     
-    assertEquals(0, instance.getActualValue());
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(38, 38));
+    when(map.get(1, 1).getColorAt(anyInt(), anyInt())).thenReturn(Sector.WHITE);
+    when(map.get(1, 2).getColorAt(2, 3)).thenReturn(Sector.NO_COLOR);
+    when(map.get(2, 1).getColorAt(3, 2)).thenReturn(Sector.BLACK);
+    when(entity.getDir()).thenReturn(0.0);
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
+    assertEquals(LightSensor.WHITE, instance.getActualValue());
+    when(entity.getDir()).thenReturn(-90.0);
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
+    assertEquals(LightSensor.BLACK, instance.getActualValue());
+    when(entity.getDir()).thenReturn(-180.0);
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
+    assertEquals(LightSensor.BROWN, instance.getActualValue());
   }
 
   /**
@@ -56,11 +115,21 @@ public class LightSensorTest extends TestCase {
   @Test
   public void testUseSimulator() {
     System.out.println("useSimulator");
-    Simulator sim = null;
     LightSensor instance = new LightSensor();
+    
+    Simulator sim = mock(Simulator.class);
+    SimulatedEntity entity = mock(SimulatedEntity.class);
     instance.useSimulator(sim);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    instance.useSimulatedEntity(entity);
+    when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(20, 20));
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
+    Map map = MapTestUtil.getMap();
+    when(sim.getMap()).thenReturn(map);
+    when(sim.getTileSize()).thenReturn((Integer) 40);
+    
+    instance.getValue();
+    verify(sim, times(4)).getTileSize();
+    verify(map.get(2, 2), times(1)).getColorAt(anyInt(), anyInt());
   }
 
   /**
@@ -69,11 +138,21 @@ public class LightSensorTest extends TestCase {
   @Test
   public void testUseSimulatedEntity() {
     System.out.println("useSimulatedEntity");
-    SimulatedEntity simEntity = null;
     LightSensor instance = new LightSensor();
-    instance.useSimulatedEntity(simEntity);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    
+    Simulator sim = mock(Simulator.class);
+    SimulatedEntity entity = mock(SimulatedEntity.class);
+    instance.useSimulator(sim);
+    instance.useSimulatedEntity(entity);
+    when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(20, 20));
+    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
+    Map map = MapTestUtil.getMap();
+    when(sim.getMap()).thenReturn(map);
+    when(sim.getTileSize()).thenReturn((Integer) 40);
+    
+    instance.getValue();
+    verify(entity, times(1)).getDir();
+    verify(entity, times(1)).getCurrentOnTileCoordinates();
+    verify(entity, times(1)).getCurrentTileCoordinates();
   }
 }
-

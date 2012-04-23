@@ -11,12 +11,17 @@ import penoplatinum.util.Point;
 public class LightSensor implements Sensor {
 
   public static final int BLACK = 440;
+
   public static final int WHITE = 570;
+
   public static final int BROWN = 500;
+
   public static final int LIGHTBUFFER_SIZE = 5;
-  
+
   private Simulator sim;
+
   private SimulatedEntity simEntity;
+
   private CircularQueue<Integer> lightValues = new CircularQueue<Integer>(LIGHTBUFFER_SIZE);
 
   public LightSensor() {
@@ -38,22 +43,22 @@ public class LightSensor implements Sensor {
     // determine position of light-sensor
     Point pos = simEntity.getCurrentOnTileCoordinates();
     double rads = Math.toRadians(simEntity.getDir());
-    int x = (int) (pos.getX() - SimulatedEntity.LIGHTSENSOR_DISTANCE * Math.sin(rads));
-    int y = (int) (pos.getY() - SimulatedEntity.LIGHTSENSOR_DISTANCE * Math.cos(rads));
+    int x = (int) Math.round((pos.getX() - SimulatedEntity.LIGHTSENSOR_DISTANCE * Math.sin(rads)));
+    int y = (int) Math.round((pos.getY() - SimulatedEntity.LIGHTSENSOR_DISTANCE * Math.cos(rads)));
 
     // if we go beyond the boundaries of this tile, move to the next and
     // adapt the x,y coordinates on the new tile
-    int dx = x / sim.getTileSize();
-    int dy = y / sim.getTileSize();
-    x -= dx*sim.getTileSize();
-    y -= dy*sim.getTileSize();
-    
+    int dx = x / sim.getTileSize() + (x < 0 ? -1 : 0);
+    int dy = y / sim.getTileSize() + (y < 0 ? -1 : 0);
+    x -= dx * sim.getTileSize();
+    y -= dy * sim.getTileSize();
+
     // get correct tile
     Point tilePos = simEntity.getCurrentTileCoordinates();
     tilePos.translate(dx, dy);
     Tile tile = sim.getMap().get(tilePos.getX(), tilePos.getY());
     if (tile == null) {
-      return Sector.BLACK;
+      return LightSensor.BLACK;
     }
 
     int color = tile.getColorAt(x, y);
@@ -61,7 +66,7 @@ public class LightSensor implements Sensor {
     // TODO: add random abberations
     //this.sensorValues[Model.S4] =
     //        color == Sector.WHITE ? 100 : (color == Sector.BLACK ? 0 : 70);
-    return color == Sector.WHITE ? WHITE : (color == Sector.BLACK ? BLACK : BROWN);
+    return color == Sector.WHITE ? LightSensor.WHITE : (color == Sector.BLACK ? LightSensor.BLACK : LightSensor.BROWN);
   }
 
   @Override
