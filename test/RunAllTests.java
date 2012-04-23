@@ -66,18 +66,17 @@ public class RunAllTests {
       penoplatinum.gateway.QueueTest.class,
       penoplatinum.gateway.GatewayClientTest.class,
       penoplatinum.gateway.MessageReceiverTest.class,
+      penoplatinum.simulator.tiles.SectorTest.class, 
       penoplatinum.simulator.tiles.DistanceTest.class,
-//      penoplatinum.map.MapTest.class,
-      
-      //      penoplatinum.simulator.tiles.SectorTest.class, 
-    //      penoplatinum.simulator.sensors.NoneSensorTest.class,
-    //      penoplatinum.simulator.tiles.TileGeometryTest.class,
-    //      penoplatinum.map.MapHashedTest.class,
-    //      penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
-    //      penoplatinum.map.mazeprotocol.DiscoverTest.class,
-    //      penoplatinum.map.mazeprotocol.PacmanTest.class,
-    //      penoplatinum.map.mazeprotocol.PositionTest.class,
-    //      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class
+      penoplatinum.simulator.sensors.NoneSensorTest.class,
+      penoplatinum.simulator.tiles.TileGeometryTest.class,
+      penoplatinum.map.MapHashedTest.class,
+      penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
+      penoplatinum.map.mazeprotocol.DiscoverTest.class,
+      penoplatinum.map.mazeprotocol.PacmanTest.class,
+      penoplatinum.map.mazeprotocol.PositionTest.class,
+      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class, 
+      penoplatinum.simulator.sensors.MotorTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;

@@ -13,37 +13,38 @@ import penoplatinum.simulator.Tickable;
  * 
  * @author: Team Platinum
  */
-
 public class Motor implements Tickable, Sensor {
-  public static final int FORWARD  =  1;
+
+  public static final int FORWARD = 1;
   public static final int BACKWARD = -1;
-
-  private String  label        = "unknown";
-  private int     speed        =  250;
-  private int     tacho        =    0;
-  private Integer targetTacho  = null;
-
-  private int direction    =   Motor.FORWARD;
+  private String label = "unknown";
+  private int speed = 250;
+  private int tacho = 0;
+  private Integer targetTacho = null;
+  private int direction = Motor.FORWARD;
 
   public int getDirection() {
     return direction;
   }
-  
-  public boolean isMoving()
-  {
+
+  public boolean isMoving() {
     return targetTacho != null;
   }
 
   public Motor setLabel(String label) {
     this.label = label;
     return this;
-  } 
+  }
+
+  public String getLabel() {
+    return this.label;
+  }
 
   public Motor setSpeed(int speed) {
     this.speed = speed;
     return this;
   }
-  
+
   public Motor start() {
     this.rotateTo(Integer.MAX_VALUE * this.direction);
     return this;
@@ -53,7 +54,7 @@ public class Motor implements Tickable, Sensor {
     this.targetTacho = null;
     return this;
   }
-  
+
   public Motor rotateTo(int tacho) {
     this.direction = tacho >= this.tacho ? Motor.FORWARD : Motor.BACKWARD;
     this.targetTacho = tacho;
@@ -64,44 +65,45 @@ public class Motor implements Tickable, Sensor {
     this.rotateTo(this.tacho + angle);
     return this;
   }
-  
+
   public Motor goForward() {
-    this.direction = 1;
+    this.direction = Motor.FORWARD;
     return this;
   }
 
   public Motor goBackward() {
-    this.direction = -1;
+    this.direction = Motor.BACKWARD;
     return this;
   }
-  
+
   public Motor toggleDirection() {
     this.direction *= -1;
     return this;
   }
-  
+
   // Tickable
   public void tick(double elapsed) {
-    if( this.targetTacho == null ) { return; }
+    if (this.targetTacho == null) {
+      return;
+    }
 
     // apply the currentSpeed
-    double change = ( this.speed * elapsed ) * this.direction;
-    
+    double change = (this.speed * elapsed) * this.direction;
+
     this.tacho += change;
 
     // stop at targetTacho
-    if( (this.direction == Motor.FORWARD  && this.tacho >= this.targetTacho) ||
-        (this.direction == Motor.BACKWARD && this.tacho <= this.targetTacho) ) 
-    {
+    if ((this.direction == Motor.FORWARD && this.tacho >= this.targetTacho)
+            || (this.direction == Motor.BACKWARD && this.tacho <= this.targetTacho)) {
       this.tacho = this.targetTacho;
       this.targetTacho = null;
     }
   }
-  
+
   // Sensor
   @Override
   public int getValue() {
-    return (int)this.tacho;
+    return (int) this.tacho;
   }
 
   @Override
@@ -112,5 +114,5 @@ public class Motor implements Tickable, Sensor {
   @Override
   public void useSimulatedEntity(SimulatedEntity simEntity) {
     // a motor does not need information from the entity
-  }  
+  }
 }
