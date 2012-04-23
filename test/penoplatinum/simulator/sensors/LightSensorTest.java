@@ -45,7 +45,7 @@ public class LightSensorTest extends TestCase {
     when(entity.getPosX()).thenReturn(20.0);
     when(entity.getPosY()).thenReturn(20.0);
     
-    assertEquals(expResult, instance.getActualValue());
+    assertEquals(0, instance.getActualValue());
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }

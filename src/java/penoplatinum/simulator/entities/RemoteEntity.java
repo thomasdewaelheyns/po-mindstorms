@@ -15,7 +15,6 @@ import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.ViewRobot;
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Simulator;
-import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
 
@@ -36,7 +35,7 @@ public class RemoteEntity implements RobotEntity {
   // TODO: reuse GatewayClient in stead of own MQ implementation
   public RemoteEntity(final String entityName) {
     this.entityName = entityName;
-    final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
+    /*final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
 
     createGhostProtocolHandler(ghostModel);
     try {
@@ -57,7 +56,7 @@ public class RemoteEntity implements RobotEntity {
     } catch (InterruptedException ex) {
       Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
     }
-
+    /**/
   }
 
   public RobotAPI getRobotAPI() {
@@ -72,7 +71,7 @@ public class RemoteEntity implements RobotEntity {
   }
 
   private void createGhostProtocolHandler(final GhostModel ghostModel) {
-    this.protocol = new GhostProtocolHandler(ghostModel, new GhostProtocolCommandHandler() {
+    /*this.protocol = new GhostProtocolHandler(ghostModel, new GhostProtocolCommandHandler() {
 
       @Override
       public void handleBarcodeAt(String agentName, int x, int y, int code, int bearing) {
@@ -96,7 +95,7 @@ public class RemoteEntity implements RobotEntity {
       @Override
       public void handlePacman(String agentName, int x, int y) {
       }
-    });
+    });/**/
   }
 
   public void useSimulator(Simulator simulator) {
