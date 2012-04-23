@@ -52,7 +52,7 @@ public class LightSensor implements Sensor {
     // get correct tile
     Point tilePos = simEntity.getCurrentTileCoordinates();
     tilePos.translate(dx, dy);
-    Tile tile = sim.getCurrentTile(tilePos);
+    Tile tile = sim.getMap().get(tilePos.getX(), tilePos.getY());
     if (tile == null) {
       return Sector.BLACK;
     }

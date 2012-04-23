@@ -21,11 +21,11 @@ public class Position {
       case NE:
       case N:
       case NW:
-        return top + 1;
+        return top - 1;
       case SE:
       case S:
       case SW:
-        return top - 1;
+        return top + 1;
     }
     return top;
   }

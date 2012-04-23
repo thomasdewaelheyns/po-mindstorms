@@ -95,10 +95,6 @@ public class Simulator {
             pos.getX(), pos.getY());
   }
 
-  public Tile getCurrentTile(Point tile) {
-    return this.map.get(tile.getX(), tile.getY());
-  }
-
   /**
    * Allows the end-user to send commands through the communication layer
    * to the Robot. In the real world this is done through the GatewayClient,

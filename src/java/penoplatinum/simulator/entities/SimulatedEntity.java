@@ -53,7 +53,6 @@ public class SimulatedEntity implements RobotEntity {
   private Simulator simulator;
 
   public SimulatedEntity(Robot robot) {
-    this.setupMotors();
     this.setupSensors();
     this.robot = robot;
     this.robotAPI = new SimulationRobotAPI();
@@ -81,26 +80,22 @@ public class SimulatedEntity implements RobotEntity {
     this.direction = direction;
   }
 
-  // this needs to be in sync with the "reality" ;-)
-  // TODO: externalize the speed configuration of the different motors
-  private void setupMotors() {
-    setupMotor("L", SensorMapping.M1, SensorMapping.MS1);
-    setupMotor("R", SensorMapping.M2, SensorMapping.MS2);
-    setupMotor("S", SensorMapping.M3, SensorMapping.MS3);
-  }
-
   private void setupMotor(String label, int tachoPort, int statePort) {
     this.motors[tachoPort] = new Motor().setLabel(label);  // these two need to be running
     setSensor(tachoPort, this.motors[tachoPort]);
     setSensor(statePort, new MotorState(this.motors[tachoPort]));
   }
 
+  // TODO: externalize the speed configuration of the different motors
   private void setupSensors() {
+    setupMotor("L", SensorMapping.M1, SensorMapping.MS1);
+    setupMotor("R", SensorMapping.M2, SensorMapping.MS2);
+    setupMotor("S", SensorMapping.M3, SensorMapping.MS3);
     //setSensor(SensorMapping.S1, new TouchSensor(45));
     //setSensor(SensorMapping.S2, new TouchSensor(315));
     setSensor(SensorMapping.S1, new IRSensor());
     setSensor(SensorMapping.S2, new NoneSensor());
-    setSensor(SensorMapping.S3, new Sonar());
+    setSensor(SensorMapping.S3, new Sonar(this.motors[SensorMapping.MS3]));
     setSensor(SensorMapping.S4, new LightSensor());
     setSensor(SensorMapping.IR0, new IRdistanceSensor(120));
     setSensor(SensorMapping.IR1, new IRdistanceSensor(60));

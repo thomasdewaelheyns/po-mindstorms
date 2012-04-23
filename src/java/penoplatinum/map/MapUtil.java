@@ -26,10 +26,8 @@ public class MapUtil {
     Point hit = null;
     do {
       tile = map.get(left, top);
-
       if (tile == null) {
-        System.out.println(left + " " + top + " " + hit.getX() + " " + hit.getY() + " " + angle);
-        left++;
+        return Integer.MAX_VALUE;
       }
       hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
 
@@ -41,10 +39,8 @@ public class MapUtil {
       // FIXME: throws OutOfBoundException, because we appear to be moving
       //        through walls.
       bearing = TileGeometry.getHitWall(hit, tile.getSize(), angle);
-      left = left + Position.moveLeft(bearing, left);
-      top = top + Position.moveTop(bearing, top);
-      //}
-      //System.out.println(left + " " + top);
+      left = Position.moveLeft(bearing, left);
+      top = Position.moveTop(bearing, top);
       x = hit.getX() == 0 ? tile.getSize() : (hit.getX() == tile.getSize() ? 0 : hit.getX());
       y = hit.getY() == 0 ? tile.getSize() : (hit.getY() == tile.getSize() ? 0 : hit.getY());
 
