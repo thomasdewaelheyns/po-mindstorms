@@ -17,7 +17,7 @@ public class MapUtil {
   public static int findHitDistance(Map map, int angle, int left, int top, double x, double y) {
     // Force angles between 0 and 360 !!!
     angle = penoplatinum.util.Utils.ClampLooped(angle, 0, 360);
-
+    System.out.println(angle);
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this bearing
     double dist = 0;
@@ -30,9 +30,12 @@ public class MapUtil {
         return Integer.MAX_VALUE;
       }
       hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
+      System.out.println(x+" "+y);
+      System.out.println(hit);
 
       // distance from the starting point to the hit-point on this tile
       dist += TileGeometry.getDistance(x, y, hit);
+      System.out.println(dist);
 
       // if we don't have a wall on this tile at this bearing, move to the next
       // at the same bearing, starting at the hit point on the tile
