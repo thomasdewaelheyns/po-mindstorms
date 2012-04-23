@@ -10,12 +10,14 @@ package penoplatinum.grid;
 import java.util.List;
 import java.util.ArrayList;
 
+import javax.swing.text.Position;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.util.CantorDiagonal;
 import penoplatinum.util.SimpleHashMap;
+import penoplatinum.util.Transformation;
 
 /**
  * This class implements a grid using LinkedSectors. The grid can also contain
@@ -51,26 +53,32 @@ public class LinkedGrid implements Grid {
     }
   }
 
+  @Override
   public int getMinLeft() {
     return this.minLeft;
   }
 
+  @Override
   public int getMaxLeft() {
     return this.maxLeft;
   }
 
+  @Override
   public int getMinTop() {
     return this.minTop;
   }
 
+  @Override
   public int getMaxTop() {
     return this.maxTop;
   }
 
+  @Override
   public int getWidth() {
     return this.maxLeft - this.minLeft + 1;
   }
 
+  @Override
   public int getHeight() {
     return this.maxTop - this.minTop + 1;
   }
@@ -80,6 +88,7 @@ public class LinkedGrid implements Grid {
     return (Sector) this.sectors.get(CantorDiagonal.transform(left, top));
   }
 
+  @Override
   public List<Sector> getSectors() {
     List<Sector> sectors = new ArrayList<Sector>(this.sectors.values());
     return sectors;
@@ -132,19 +141,8 @@ public class LinkedGrid implements Grid {
   // return a list of all agents
   @Override
   public Iterable<Agent> getAgents() {
-    return this.agents;
+    return this.agents.values();
   }
-
-  @Override
-  public Agent getAgent(String name) {
-    for (Agent agent : this.agents) {
-      if (agent.getName().equals(name)) {
-        return agent;
-      }
-    }
-    return null;
-  }
-
 
 //  public static void mergeSector(Sector thisSector, int rotation, Sector s) {
 //    for (int j = Bearing.N; j <= Bearing.W; j++) {
@@ -193,7 +191,6 @@ public class LinkedGrid implements Grid {
 //    }
 //
 //  }
-
 //  public void disengage() {
 //    for (Sector s : sectors.values()) {
 //      s.disengage();
@@ -203,11 +200,6 @@ public class LinkedGrid implements Grid {
 //    terminated = true;
 //
 //  }
-  @Override
-  public Grid remove(Agent agent) {
-    agents.remove(agent);
-    return this;
-  }
 //
 //  public boolean areSectorsEqual(Grid other) {
 //
@@ -251,7 +243,6 @@ public class LinkedGrid implements Grid {
 //    return true;
 //
 //  }
-
   @Override
   public int getSize() {
     return sectors.size();
@@ -262,13 +253,10 @@ public class LinkedGrid implements Grid {
   }
 
   public Agent getAgentAt(Sector s) {
-    Integer i = s
-    for (int i = 0; i < agents.size(); i++) {
-      if (agents.get(i).getSector() == s) {
-        return agents.get(i);
-      }
-    }
-    return null;
+    Integer i = sectors.findKey(s);
+    if (i == null)
+      return null;
+    return agents.get(i);
   }
 
   //
@@ -307,14 +295,17 @@ public class LinkedGrid implements Grid {
 
   private SimpleHashMap<Agent, Bearing> agentBearings = new SimpleHashMap<Agent, Bearing>();
 
+  private Transformation transformation;
+
   @Override
-  public TransformationTRT getTransformation() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Transformation getTransformation() {
+    return transformation;
   }
 
   @Override
-  public Grid setTransformation(TransformationTRT transform) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Grid setTransformation(Transformation transform) {
+    transformation = transform;
+    return this;
   }
 
   /**
@@ -325,7 +316,7 @@ public class LinkedGrid implements Grid {
    */
   @Override
   public Grid add(Sector sector, Point position) {
-    placeNewSectorPathTo(position);
+    placeNewSectorPathTo(new Point(position));
     sector.putOn(this);
 
     int left = position.getX();
@@ -346,20 +337,31 @@ public class LinkedGrid implements Grid {
   }
 
   /**
-   * Adds a x first path to given position, adding new sectors when needed
+   * Adds a x first path to given position, adding new sectors when needed. 
+   * a sector is NOT added at position (x,y)
    */
-  private void placeNewSectorPathTo(Point position) {
-    final int x = position.getX();
-    final int y = position.getY();
-
+  private void placeNewSectorPathTo(Point pos) {
+    int x = 0;
+    int y = 0;
     if (x != 0) {
-      placeNewSectorPathTo(new Point(x - (int) Math.signum(x), y));
-      return;
+      x -= (int) Math.signum(x);
     } else if (y != 0) {
-      placeNewSectorPathTo(new Point(x, y - (int) Math.signum(y)));
+      y -= (int) Math.signum(y);
+    } else {
+      // we are at origin, so a path exists!
       return;
     }
-    // we are at origin, so a path exists!
+
+    pos.translate(x, y);
+    if (getSectorAt(pos) == null) {
+      Sector s = new LinkedSector();
+      add(s, pos);
+    }
+
+    placeNewSectorPathTo(pos);
+
+    pos.translate(-x, -y); // restore point
+
   }
 
   @Override
@@ -376,11 +378,22 @@ public class LinkedGrid implements Grid {
   }
 
   @Override
-  public Grid add(Agent agent, Point position) {
+  public Grid add(Agent agent, Point position, Bearing bearing) {
     int index = CantorDiagonal.transform(position);
     agents.put(index, agent);
+    agentBearings.put(agent, bearing);
     //this.view.agentsNeedRefresh();
     return this;
+  }
+
+  @Override
+  public Agent getAgent(String name) {
+    for (Agent agent : getAgents()) {
+      if (agent.getName().equals(name)) {
+        return agent;
+      }
+    }
+    return null;
   }
 
   @Override
@@ -397,7 +410,17 @@ public class LinkedGrid implements Grid {
   }
 
   @Override
-  public Grid remove(Sector s) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Grid moveTo(Agent agent, Point position, Bearing bearing) {
+    Integer key = agents.findKey(agent);
+    if (key == null)
+      throw new IllegalArgumentException();
+
+    agents.remove(key);
+    agentBearings.remove(agent);
+
+    add(agent, position, bearing);
+    
+    return this;
+
   }
 }

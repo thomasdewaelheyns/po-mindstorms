@@ -9,8 +9,8 @@ package penoplatinum.grid;
  */
 
 import penoplatinum.util.Point;
-import penoplatinum.util.TransformationTRT;
 import penoplatinum.util.Bearing;
+import penoplatinum.util.Transformation;
 
 public interface Grid {
 //  // set the root-processor for this Grid
@@ -41,7 +41,7 @@ public interface Grid {
    * Gets the grid's current transformation
    * @return 
    */
-  public TransformationTRT getTransformation();
+  public Transformation getTransformation();
 
   /**
    * Transform the grid. All grid functions will work as if the grid is 
@@ -49,7 +49,7 @@ public interface Grid {
    * @param transform
    * @return 
    */
-  public Grid setTransformation(TransformationTRT transform);
+  public Grid setTransformation(Transformation transform);
   // using the navigation links on Sectors, the Grid can traverse through
   // the sectors, returning the Sector with requested left and top coordinates
 
@@ -57,7 +57,6 @@ public interface Grid {
    * Adds given sector to the grid at given position
    */
   public Grid add(Sector s, Point position);
-  public Grid remove(Sector s);
 
   /**
    * Returns the sector at given position, if there is none, returns null
@@ -73,9 +72,13 @@ public interface Grid {
    * grid, it will fail
    * If there is no sector at given position, the grid will create one
    */
-  public Grid add(Agent agent, Point position);
-  public Grid remove(Agent agent);
-
+  public Grid add(Agent agent, Point position, Bearing bearing);
+  
+  /**
+   * Moves given agent to specific location, if the agent is not on the grid
+   * it will fail
+   */
+  public Grid moveTo(Agent agent, Point position, Bearing bearing);
   
   public Sector getSectorOf(Agent agent);
 
