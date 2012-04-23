@@ -14,7 +14,7 @@ public class CircularQueue<T> {
   private Object[] queue;
 
   public CircularQueue(int maxElements) {
-    queue = new Object[maxElements];
+    queue = new Object[maxElements+1];
   }
 
   public void insert(T o) {

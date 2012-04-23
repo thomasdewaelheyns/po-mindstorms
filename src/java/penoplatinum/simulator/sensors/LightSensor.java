@@ -10,18 +10,17 @@ import penoplatinum.util.Point;
 
 public class LightSensor implements Sensor {
 
-  private static final int BLACK = 440;
-  private static final int WHITE = 570;
-  private static final int BROWN = 500;
-  private static final int LIGHTBUFFER_SIZE = 5;
+  public static final int BLACK = 440;
+  public static final int WHITE = 570;
+  public static final int BROWN = 500;
+  public static final int LIGHTBUFFER_SIZE = 5;
   
   private Simulator sim;
   private SimulatedEntity simEntity;
   private CircularQueue<Integer> lightValues = new CircularQueue<Integer>(LIGHTBUFFER_SIZE);
 
   public LightSensor() {
-    // TODO: WARNING: magic numbers
-    for (int i = 0; i < LIGHTBUFFER_SIZE - 1; i++) {
+    for (int i = 0; i < LIGHTBUFFER_SIZE; i++) {
       lightValues.insert(BROWN);
     }
   }
