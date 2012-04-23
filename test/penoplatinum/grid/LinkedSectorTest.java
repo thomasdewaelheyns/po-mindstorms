@@ -151,6 +151,15 @@ public class LinkedSectorTest extends TestCase {
     assertTrue(s3.knowsWall(Bearing.S));
     assertTrue(s4.knowsWall(Bearing.N));
 
+
+
+    // Test neighbour removal, linked
+    s1.addNeighbour(null, Bearing.E);
+    assertEquals(null, s1.getNeighbour(Bearing.E));
+    assertEquals(null, s3.getNeighbour(Bearing.S));
+    //TODO: this is logical but not supported
+    //assertEquals(null, s4.getNeighbour(Bearing.W)); 
+    //assertEquals(null, s4.getNeighbour(Bearing.N));
   }
 
   public void testSectorCopyRetainsWallInfo() {

@@ -16,6 +16,7 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.util.CantorDiagonal;
+import penoplatinum.util.SimpleHashMap;
 
 /**
  * This class implements a grid using LinkedSectors. The grid can also contain
@@ -24,16 +25,21 @@ import penoplatinum.util.CantorDiagonal;
  * @author MHGameWork
  */
 public class LinkedGrid implements Grid {
-  // we keep track of the boundaries of our Grid
 
+  // we keep track of the boundaries of our Grid
   int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
   // mapping from coordinates to allocating Sector
+
   private SimpleHashMap<Integer, Sector> sectors = new SimpleHashMap<Integer, Sector>();
   // all agents in a row
+
   private List<Agent> agents = new ArrayList<Agent>();
   // visualization for the Grid, by default none, is used by Simulator
+
   private GridView view = NullGridView.getInstance();
+
   private GridProcessor processor;
+
   private boolean terminated = false;
 
   /**
@@ -65,30 +71,6 @@ public class LinkedGrid implements Grid {
   public Grid setProcessor(GridProcessor processor) {
     this.processor = processor;
     this.processor.useGrid(this);
-    return this;
-  }
-
-  // adds a sector to the grid.
-  // a sector already contains its own coordinates, based on the coordinates
-  // of the sector is was attached to. we store the sector using a <left,top>
-  // string-key
-  public Grid add(Sector sector, Point position) {
-    sector.putOn(this);
-
-    int left = position.getX();
-    int top = position.getY();
-    this.resize(left, top);
-
-    // add the sector to the list of all sectors in this grid
-    this.sectors.put(CantorDiagonal.transform(left, top), sector);
-    // connect neighbours
-    this.connect(sector, this.getSector(left, top - 1), Bearing.N);
-    this.connect(sector, this.getSector(left + 1, top), Bearing.E);
-    this.connect(sector, this.getSector(left, top + 1), Bearing.S);
-    this.connect(sector, this.getSector(left - 1, top), Bearing.W);
-
-    this.view.sectorsNeedRefresh();
-
     return this;
   }
 
@@ -144,7 +126,7 @@ public class LinkedGrid implements Grid {
     return sectors;
   }
 
-  private void connect(Sector sector, Sector other, int location) {
+  private void connect(Sector sector, Sector other, Bearing location) {
     if (sector != null) {
       sector.addNeighbour(other, location);
     }
@@ -174,12 +156,12 @@ public class LinkedGrid implements Grid {
   @Override
   public String toString() {
     String ret = "";
-    
+
     for (int top = this.getMinTop(); top <= this.getMaxTop(); top++) {
       for (int left = this.getMinLeft(); left <= this.getMaxLeft(); left++) {
         Sector sector = this.getSector(left, top);
         if (sector != null) {
-          ret += "("+left+","+top+"): " + sector.toString();
+          ret += "(" + left + "," + top + "): " + sector.toString();
           ret += "\n";
         } else {
         }
@@ -351,5 +333,116 @@ public class LinkedGrid implements Grid {
       }
     }
     return null;
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  @Override
+  public TransformationTRT getTransformation() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid setTransformation(TransformationTRT transform) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  /**
+   * Adds a sector to the grid. If there is no path through sectors to the 
+   * given position, extra sectors are added by adding sectors first 
+   * on the x-axis, next on the y axis
+   * 
+   */
+  @Override
+  public Grid add(Sector sector, Point position) {
+    placeNewSectorPathTo(position);
+    sector.putOn(this);
+
+    int left = position.getX();
+    int top = position.getY();
+    this.resize(left, top);
+
+    // add the sector to the list of all sectors in this grid
+    this.sectors.put(CantorDiagonal.transform(left, top), sector);
+    // connect neighbours
+    this.connect(sector, this.getSector(left, top - 1), Bearing.N);
+    this.connect(sector, this.getSector(left + 1, top), Bearing.E);
+    this.connect(sector, this.getSector(left, top + 1), Bearing.S);
+    this.connect(sector, this.getSector(left - 1, top), Bearing.W);
+
+    this.view.sectorsNeedRefresh();
+
+    return this;
+  }
+
+  /**
+   * Adds a x first path to given position, adding new sectors when needed
+   */
+  private void placeNewSectorPathTo(Point position) {
+    final int x = position.getX();
+    final int y = position.getY();
+
+    if (x != 0) {
+      placeNewSectorPathTo(new Point(x - (int) Math.signum(x), y));
+      return;
+    } else if (y != 0) {
+      placeNewSectorPathTo(new Point(x, y - (int) Math.signum(y)));
+      return;
+    }
+    // we are at origin, so a path exists!
+  }
+
+  @Override
+  public Sector getSectorAt(Point position) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Point getPositionOf(Sector sector) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid add(Agent agent, Point position) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Sector getSectorOf(Agent agent) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Bearing getBearingOf(Agent agent) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid copyTo(Grid target) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }
