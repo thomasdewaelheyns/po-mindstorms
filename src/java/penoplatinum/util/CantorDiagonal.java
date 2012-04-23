@@ -21,5 +21,11 @@ public class CantorDiagonal {
     }
     return start + pos;
   }
+  public static int transform(Point point){
+    int x = point.getX();
+    int y = point.getY();
+    return transform(x,y);
+    
+  }
 
 }

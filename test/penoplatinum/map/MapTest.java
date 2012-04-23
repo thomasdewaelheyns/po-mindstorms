@@ -1,12 +1,12 @@
 package penoplatinum.map;
 
 import penoplatinum.map.Map;
-import penoplatinum.simulator.tiles.Panel;
+import penoplatinum.simulator.tiles.Sector;
 import junit.framework.*; 
 import penoplatinum.map.MapArray;
 
 public class MapTest extends TestCase { 
-  private Panel tile;
+  private Sector tile;
 
   public MapTest(String name) { 
     super(name);
@@ -14,9 +14,9 @@ public class MapTest extends TestCase {
   
   public void testAddingTileSequence() {
     Map  map   = this.createEmptyMapOfWidth(2);
-    Panel tile1 = this.createEmptyTile();
-    Panel tile2 = this.createEmptyTile();
-    Panel tile3 = this.createEmptyTile();
+    Sector tile1 = this.createEmptyTile();
+    Sector tile2 = this.createEmptyTile();
+    Sector tile3 = this.createEmptyTile();
     map.add(tile1).add(tile2).add(tile3);
     assertEquals( tile1, map.get(1,1) );
     assertEquals( tile2, map.get(2,1) );
@@ -41,7 +41,7 @@ public class MapTest extends TestCase {
     return new MapArray( width );
   }
 
-  private Panel createEmptyTile() {
-    return new Panel();
+  private Sector createEmptyTile() {
+    return new Sector();
   }
 }
