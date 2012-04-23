@@ -17,7 +17,9 @@ import penoplatinum.reporter.Reporter;
 
 import penoplatinum.model.part.GridModelPart;
 import penoplatinum.model.part.LightModelPart;
+import penoplatinum.model.part.ModelPart;
 import penoplatinum.model.part.SensorModelPart;
+import penoplatinum.model.part.SonarModelPart;
 import penoplatinum.model.part.WallsModelPart;
 import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.reporter.Reporter;
@@ -40,9 +42,7 @@ public class GhostModel implements Model {
   private LightModelPart   lightPart;
   private GridModelPart    gridPart;
 
-  // private GapModelPart     gapPart;
-  // private MessageModelPart messagePart;
-  // private SonarModelPart   sonarPart;
+  private List<ModelPart> parts = new ArrayList<ModelPart>();
 
   // processors are a chain of decorators.
   private ModelProcessor   processor;
@@ -108,5 +108,20 @@ public class GhostModel implements Model {
     this.processor.process();
     this.reporter.reportModelUpdate();
     return this;
+  }
+
+  @Override
+  public Model register(ModelPart part) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public ModelPart getPart(int id) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Model refresh() {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

@@ -230,7 +230,7 @@ public class SimulatedEntity implements RobotEntity {
    * We also only want an angle from 0 to 359.
    */
   public int getAngle() {
-    return (int) ((this.direction + 270) % 360);
+    return (int) ((this.direction + 90) % 360);
   }
 
   public int[] getSensorValues() {
