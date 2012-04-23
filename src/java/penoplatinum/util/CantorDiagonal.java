@@ -21,6 +21,15 @@ public class CantorDiagonal {
     }
     return start + pos;
   }
+
+  public static Point transform(int transformed) {
+      throw new UnsupportedOperationException("Not yet implemented");
+
+  }
+  
+  public static int transform(Point position) {
+    throw new UnsupportedOperationException("Not yet implemented");
+  }
   public static int transform(Point point){
     int x = point.getX();
     int y = point.getY();

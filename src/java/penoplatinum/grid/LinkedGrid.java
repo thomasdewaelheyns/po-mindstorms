@@ -10,7 +10,6 @@ package penoplatinum.grid;
 import java.util.List;
 import java.util.ArrayList;
 
-import penoplatinum.SimpleHashMap;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
@@ -26,55 +25,15 @@ import penoplatinum.util.SimpleHashMap;
  */
 public class LinkedGrid implements Grid {
 
-  // we keep track of the boundaries of our Grid
-  int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
-  // mapping from coordinates to allocating Sector
-
-  private SimpleHashMap<Integer, Sector> sectors = new SimpleHashMap<Integer, Sector>();
-  // all agents in a row
-
-  private List<Agent> agents = new ArrayList<Agent>();
   // visualization for the Grid, by default none, is used by Simulator
-
   private GridView view = NullGridView.getInstance();
 
   private GridProcessor processor;
-
-  private boolean terminated = false;
-
-  /**
-   * Copies the sourcegrid to the target grid, merging sectors using the mergeSector function
-   * 
-   * TODO: fix a bug with the mintop and probably the other boundaries after importing
-   * 
-   * @param target
-   * @param source
-   * @param transformation 
-   */
-  public static void copyGridTo(Grid target, Grid source, TransformationTRT transformation) {
-    // Import sectors
-    for (int i = 0; i < source.getSectors().size(); i++) {
-      Sector s = source.getSectors().get(i);
-
-      Point p = transformation.transform(s.getLeft(), s.getTop());
-
-      int x = p.getX();
-      int y = p.getY();
-
-      Sector thisSector = target.getOrCreateSector(x, y);
-
-      mergeSector(thisSector, transformation.getRotation(), s);
-
-    }
-  }
 
   public Grid setProcessor(GridProcessor processor) {
     this.processor = processor;
     this.processor.useGrid(this);
     return this;
-  }
-
-  public Sector getSector(Sector s, Bearing b) {
   }
 
   private void resize(int left, int top) {
@@ -131,7 +90,7 @@ public class LinkedGrid implements Grid {
       sector.addNeighbour(other, location);
     }
     if (other != null) {
-      other.addNeighbour(sector, Bearing.reverse(location));
+      other.addNeighbour(sector, location.reverse());
     }
   }
 
@@ -170,19 +129,13 @@ public class LinkedGrid implements Grid {
     return ret;
   }
 
-  public Grid addAgent(Agent agent) {
-    if (!this.agents.contains(agent)) {
-      this.agents.add(agent);
-      this.view.agentsNeedRefresh();
-    }
-    return this;
-  }
-
   // return a list of all agents
-  public List<Agent> getAgents() {
+  @Override
+  public Iterable<Agent> getAgents() {
     return this.agents;
   }
 
+  @Override
   public Agent getAgent(String name) {
     for (Agent agent : this.agents) {
       if (agent.getName().equals(name)) {
@@ -192,130 +145,112 @@ public class LinkedGrid implements Grid {
     return null;
   }
 
-  // remove all agents from the agent list
-  public Grid clearAgents() {
-    this.agents.clear();
-    this.view.agentsNeedRefresh();
+
+//  public static void mergeSector(Sector thisSector, int rotation, Sector s) {
+//    for (int j = Bearing.N; j <= Bearing.W; j++) {
+//      int otherBearing = (j - rotation + 4) % 4; // TODO check direction
+//
+//      Boolean newVal = s.hasWall(otherBearing);
+//      Boolean oldVal = thisSector.hasWall(j);
+//      if (newVal == oldVal) {
+//        continue; // No changes
+//      }
+//      if (newVal == null) {
+//        continue; // Remote has no information
+//      }
+//
+//      if (oldVal == null) {
+//        // Use remote information (do nothing) (keep newval)
+//      } else {
+//        // Conflicting information, set to unknown
+//        newVal = null;
+//      }
+//
+//      thisSector.setWall(j, newVal);
+//    }
+//
+//    // Merge the tags and the agents
+//    if (s.getAgent() != null) {
+//      // Remove old agent if exists
+//      // EDIT: NONONONOOOO not good!
+////      if (thisSector.hasAgent()) {
+////        thisSector.getGrid().removeAgent(thisSector.getAgent());
+////      }
+//      Agent copyAgent = thisSector.getGrid().getAgent(s.getAgent().getName());
+//      if (copyAgent == null) {
+//        // create a copy
+//        copyAgent = s.getAgent().copyAgent();
+//        thisSector.getGrid().addAgent(copyAgent);
+//
+//      }
+//
+//      thisSector.put(copyAgent, (s.getAgent().getBearing() + rotation) % 4);
+//
+//    }
+//    if (s.getTagCode() != -1) {
+//      thisSector.setTagCode(s.getTagCode());
+//      thisSector.setTagBearing((s.getTagBearing() + rotation) % 4);
+//    }
+//
+//  }
+
+//  public void disengage() {
+//    for (Sector s : sectors.values()) {
+//      s.disengage();
+//    }
+//    agents.clear();
+//
+//    terminated = true;
+//
+//  }
+  @Override
+  public Grid remove(Agent agent) {
+    agents.remove(agent);
     return this;
   }
-
-  public void importGrid(Grid g, TransformationTRT transformation) {
-    copyGridTo(this, g, transformation);
-  }
-
-  public static void mergeSector(Sector thisSector, int rotation, Sector s) {
-    for (int j = Bearing.N; j <= Bearing.W; j++) {
-      int otherBearing = (j - rotation + 4) % 4; // TODO check direction
-
-      Boolean newVal = s.hasWall(otherBearing);
-      Boolean oldVal = thisSector.hasWall(j);
-      if (newVal == oldVal) {
-        continue; // No changes
-      }
-      if (newVal == null) {
-        continue; // Remote has no information
-      }
-
-      if (oldVal == null) {
-        // Use remote information (do nothing) (keep newval)
-      } else {
-        // Conflicting information, set to unknown
-        newVal = null;
-      }
-
-      thisSector.setWall(j, newVal);
-    }
-
-    // Merge the tags and the agents
-    if (s.getAgent() != null) {
-      // Remove old agent if exists
-      // EDIT: NONONONOOOO not good!
-//      if (thisSector.hasAgent()) {
-//        thisSector.getGrid().removeAgent(thisSector.getAgent());
+//
+//  public boolean areSectorsEqual(Grid other) {
+//
+//    if (getSectors().size() != other.getSize()) {
+//      return false;
+//    }
+//
+//    for (Sector s : getSectors()) {
+//      boolean match = false;
+//      for (Sector otherS : other.getSectors()) {
+//
+//
+//
+//        if (s.getLeft() != otherS.getLeft() || s.getTop() != otherS.getTop()) {
+//          continue;
+//        }
+//        match = true;
+//
+//        if (s.getWalls() != otherS.getWalls()) {
+//          return false;
+//        }
+//
+//        boolean barcodeMismatch = true;
+//
+//
+//        if (s.getTagBearing() == otherS.getTagBearing() && s.getTagCode() == otherS.getTagCode()) {
+//          barcodeMismatch = false;
+//        }
+//        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.reverse(otherS.getTagCode(), 6)) {
+//          barcodeMismatch = false;
+//        }
+//        if (barcodeMismatch) {
+//          return false;
+//        }
 //      }
-      Agent copyAgent = thisSector.getGrid().getAgent(s.getAgent().getName());
-      if (copyAgent == null) {
-        // create a copy
-        copyAgent = s.getAgent().copyAgent();
-        thisSector.getGrid().addAgent(copyAgent);
-
-      }
-
-      thisSector.put(copyAgent, (s.getAgent().getBearing() + rotation) % 4);
-
-    }
-    if (s.getTagCode() != -1) {
-      thisSector.setTagCode(s.getTagCode());
-      thisSector.setTagBearing((s.getTagBearing() + rotation) % 4);
-    }
-
-  }
-
-  public void disengage() {
-    for (Sector s : sectors.values()) {
-      s.disengage();
-    }
-    agents.clear();
-
-    terminated = true;
-
-  }
-
-  @Override
-  public Sector getOrCreateSector(int x, int y) {
-    Sector sector = getSector(x, y);
-    if (sector == null) {
-      sector = new Sector().setCoordinates(x, y);
-      addSector(sector);
-    }
-
-    return sector;
-  }
-
-  @Override
-  public void removeAgent(Agent agent) {
-    agents.remove(agent);
-  }
-
-  public boolean areSectorsEqual(Grid other) {
-
-    if (getSectors().size() != other.getSectors().size()) {
-      return false;
-    }
-
-    for (Sector s : getSectors()) {
-      boolean match = false;
-      for (Sector otherS : other.getSectors()) {
-        if (s.getLeft() != otherS.getLeft() || s.getTop() != otherS.getTop()) {
-          continue;
-        }
-        match = true;
-
-        if (s.getWalls() != otherS.getWalls()) {
-          return false;
-        }
-
-        boolean barcodeMismatch = true;
-
-
-        if (s.getTagBearing() == otherS.getTagBearing() && s.getTagCode() == otherS.getTagCode()) {
-          barcodeMismatch = false;
-        }
-        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.reverse(otherS.getTagCode(), 6)) {
-          barcodeMismatch = false;
-        }
-        if (barcodeMismatch) {
-          return false;
-        }
-      }
-      if (!match) {
-        return false;
-      }
-    }
-
-    return true;
-
-  }
+//      if (!match) {
+//        return false;
+//      }
+//    }
+//
+//    return true;
+//
+//  }
 
   @Override
   public int getSize() {
@@ -327,6 +262,7 @@ public class LinkedGrid implements Grid {
   }
 
   public Agent getAgentAt(Sector s) {
+    Integer i = s
     for (int i = 0; i < agents.size(); i++) {
       if (agents.get(i).getSector() == s) {
         return agents.get(i);
@@ -361,6 +297,16 @@ public class LinkedGrid implements Grid {
   //
   //
   //
+  // we keep track of the boundaries of our Grid
+  int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
+  // mapping from coordinates to allocating Sector
+
+  private SimpleHashMap<Integer, Sector> sectors = new SimpleHashMap<Integer, Sector>();
+
+  private SimpleHashMap<Integer, Agent> agents = new SimpleHashMap<Integer, Agent>();
+
+  private SimpleHashMap<Agent, Bearing> agentBearings = new SimpleHashMap<Agent, Bearing>();
+
   @Override
   public TransformationTRT getTransformation() {
     throw new UnsupportedOperationException("Not supported yet.");
@@ -418,31 +364,40 @@ public class LinkedGrid implements Grid {
 
   @Override
   public Sector getSectorAt(Point position) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return sectors.get(CantorDiagonal.transform(position));
   }
 
   @Override
   public Point getPositionOf(Sector sector) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    Integer i = sectors.findKey(sector);
+    if (i == null)
+      return null;
+    return CantorDiagonal.transform(i);
   }
 
   @Override
   public Grid add(Agent agent, Point position) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int index = CantorDiagonal.transform(position);
+    agents.put(index, agent);
+    //this.view.agentsNeedRefresh();
+    return this;
   }
 
   @Override
   public Sector getSectorOf(Agent agent) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    Integer index = agents.findKey(agent);
+    if (index == null)
+      return null;
+    return sectors.get(index);
   }
 
   @Override
   public Bearing getBearingOf(Agent agent) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return agentBearings.get(agent);
   }
 
   @Override
-  public Grid copyTo(Grid target) {
+  public Grid remove(Sector s) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 }

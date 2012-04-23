@@ -57,6 +57,7 @@ public interface Grid {
    * Adds given sector to the grid at given position
    */
   public Grid add(Sector s, Point position);
+  public Grid remove(Sector s);
 
   /**
    * Returns the sector at given position, if there is none, returns null
@@ -73,7 +74,9 @@ public interface Grid {
    * If there is no sector at given position, the grid will create one
    */
   public Grid add(Agent agent, Point position);
+  public Grid remove(Agent agent);
 
+  
   public Sector getSectorOf(Agent agent);
 
   public Bearing getBearingOf(Agent agent);
@@ -93,10 +96,8 @@ public interface Grid {
   /**
    * Copies the sectors + wall information to the target grid.
    * Agents are cloned using the Agent.createCopy() method
-   * @param target
-   * @return 
    */
-  public Grid copyTo(Grid target);
+//  public Grid copyTo(Grid target);
   
   // returns the boundaries and dimensions of the Grid
   public int getMinLeft();

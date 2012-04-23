@@ -204,4 +204,9 @@ public class NullGrid implements Grid {
   public Grid copyTo(Grid target) {
     return this;
   }
+
+  @Override
+  public Grid remove(Sector s) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }
