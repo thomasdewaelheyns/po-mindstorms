@@ -122,8 +122,6 @@ public class SimulatedEntity implements RobotEntity {
     setupMotor("L", SensorMapping.M1, SensorMapping.MS1);
     setupMotor("R", SensorMapping.M2, SensorMapping.MS2);
     setupMotor("S", SensorMapping.M3, SensorMapping.MS3);
-    //setSensor(SensorMapping.S1, new TouchSensor(45));
-    //setSensor(SensorMapping.S2, new TouchSensor(315));
     setSensor(SensorMapping.S1, new IRSensor());
     setSensor(SensorMapping.S2, new NoneSensor());
     setSensor(SensorMapping.S3, new Sonar(this.motors[SensorMapping.M3]));
