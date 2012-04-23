@@ -7,10 +7,8 @@ package penoplatinum.grid;
  *  
  * @author: Team Platinum
  */
-import penoplatinum.util.Bearing;
 
 import penoplatinum.util.Point;
-import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.util.Bearing;
 
@@ -36,14 +34,7 @@ public interface Grid {
 //  public Grid         clearAgents();
 //  public Point        getPosition(Agent agent);
 //
-//  // returns the boundaries and dimensions of the Grid
-//  public int          getMinLeft();
-//  public int          getMaxLeft();
-//  public int          getMinTop();
-//  public int          getMaxTop();
-//  public int          getWidth();
-//  public int          getHeight();
-//  public int          getSize(); // the amount of Sectors
+
 //
 
   /**
@@ -63,60 +54,41 @@ public interface Grid {
   // the sectors, returning the Sector with requested left and top coordinates
 
   /**
+   * Adds given sector to the grid at given position
+   */
+  public Grid add(Sector s, Point position);
+
+  /**
    * Returns the sector at given position, if there is none, returns null
-   * @param position
-   * @return 
    */
   public Sector getSectorAt(Point position);
 
   public Point getPositionOf(Sector sector);
 
-  public List<Sector> getSectors();
+  public Iterable<Sector> getSectors();
 
   /**
-   * Adds given sector to the grid at given position
-   * Note: this is a utility function, the 
-   * 
-   * @param s
-   * @param position
-   * @return 
+   * Places given agent on the grid at position. If the agent is already on the
+   * grid, it will fail
+   * If there is no sector at given position, the grid will create one
    */
-  public Grid add(Sector s, Point position);
+  public Grid add(Agent agent, Point position);
 
   public Sector getSectorOf(Agent agent);
 
   public Bearing getBearingOf(Agent agent);
 
-  /**
-   * Places given agent on the grid at position. If the agent is already on the
-   * grid, it will fail
-   * If there is not sector at given position, the grid will create one
-   * @param agent
-   * @param position
-   * @return 
-   */
-  public Grid add(Agent agent, Point position);
-
+  //TODO: getagentat and getpositionof(agent)
+  
   /**
    * Returns the agent on this grid with given name, null when not found
-   * @param name
-   * @return 
    */
   public Agent getAgent(String name);
 
   /**
    * Returns an Iterable for the agents in this grid
-   * @return 
    */
-  public Iterable<Agent> getAgentsIterator();
-
-  /**
-   * Returns the position given agent is located at. 
-   * 
-   * @param agent
-   * @return 
-   */
-  public Point getAgentPosition(Agent agent);
+  public Iterable<Agent> getAgents();
 
   /**
    * Copies the sectors + wall information to the target grid.
@@ -125,4 +97,19 @@ public interface Grid {
    * @return 
    */
   public Grid copyTo(Grid target);
+  
+  // returns the boundaries and dimensions of the Grid
+  public int getMinLeft();
+
+  public int getMaxLeft();
+
+  public int getMinTop();
+
+  public int getMaxTop();
+
+  public int getWidth();
+
+  public int getHeight();
+
+  public int getSize(); // the amount of Sectors
 }
