@@ -35,7 +35,7 @@ public class RemoteEntity implements RobotEntity {
   // TODO: reuse GatewayClient in stead of own MQ implementation
   public RemoteEntity(final String entityName) {
     this.entityName = entityName;
-    /*final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
+    final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
 
     createGhostProtocolHandler(ghostModel);
     try {
@@ -71,7 +71,7 @@ public class RemoteEntity implements RobotEntity {
   }
 
   private void createGhostProtocolHandler(final GhostModel ghostModel) {
-    /*this.protocol = new GhostProtocolHandler(ghostModel, new GhostProtocolCommandHandler() {
+    this.protocol = new GhostProtocolHandler(ghostModel, new GhostProtocolCommandHandler() {
 
       @Override
       public void handleBarcodeAt(String agentName, int x, int y, int code, int bearing) {
