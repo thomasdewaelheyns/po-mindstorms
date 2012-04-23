@@ -1,7 +1,7 @@
 package penoplatinum.util;
 
 public class CantorDiagonal {
-  
+
   public static int transform(int x, int y) {
     int rand = Math.max(Math.abs(y), Math.abs(x));
     int start = (rand - 1) * rand * 4;
@@ -22,43 +22,35 @@ public class CantorDiagonal {
     return start + pos;
   }
 
-  public static Point transform(int transformed) {
-      throw new UnsupportedOperationException("Not yet implemented");
-
-  }
-  
-  public static int transform(Point position) {
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-  
-  public static Point inverse(int in){
-    if(in<0){
+  public static Point transform(int in) {
+    if (in < 0) {
       throw new RuntimeException("Only positive numbers");
     }
-    if(in == 0){
+    if (in == 0) {
       return new Point(0, 0);
     }
-    int rand = (int) ((1+Math.sqrt(in))/2);
-    int over = in - rand*(rand-1)*4;
-    int zijde = (over-1)/2/rand;
-    int zijdeOver = over - zijde*2*rand;
-    switch(zijde){
+    int rand = (int) ((1 + Math.sqrt(in)) / 2);
+    int over = in - rand * (rand - 1) * 4;
+    int zijde = (over - 1) / 2 / rand;
+    int zijdeOver = over - zijde * 2 * rand;
+    switch (zijde) {
       case 0:
-        return new Point(rand, zijdeOver-rand);
+        return new Point(rand, zijdeOver - rand);
       case 1:
-        return new Point(rand-zijdeOver, rand);
+        return new Point(rand - zijdeOver, rand);
       case 2:
-        return new Point(-rand, rand-zijdeOver);
+        return new Point(-rand, rand - zijdeOver);
       case 3:
-        return new Point(zijdeOver-rand, -rand);
+        return new Point(zijdeOver - rand, -rand);
     }
     throw new RuntimeException("Cannot happen");
-  }
-  public static int transform(Point point){
-    int x = point.getX();
-    int y = point.getY();
-    return transform(x,y);
-    
+
   }
 
+  public static int transform(Point point) {
+    int x = point.getX();
+    int y = point.getY();
+    return transform(x, y);
+
+  }
 }
