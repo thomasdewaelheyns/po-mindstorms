@@ -252,8 +252,8 @@ public class LinkedGrid implements Grid {
     return view;
   }
 
-  public Agent getAgentAt(Sector s) {
-    Integer i = sectors.findKey(s);
+  public Agent getAgentAt(Point pos) {
+    Integer i = CantorDiagonal.transform(pos);
     if (i == null)
       return null;
     return agents.get(i);

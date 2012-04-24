@@ -90,6 +90,7 @@ public interface Grid {
    * Returns the agent on this grid with given name, null when not found
    */
   public Agent getAgent(String name);
+  public Agent getAgentAt(Point positionPoint);
 
   /**
    * Returns an Iterable for the agents in this grid
