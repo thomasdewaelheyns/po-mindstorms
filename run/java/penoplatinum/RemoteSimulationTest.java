@@ -13,7 +13,7 @@ import org.junit.Test;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.robot.SimulationRobotAPI;
 import penoplatinum.simulator.SimulatedGatewayClient;
-import penoplatinum.simulator.SimulationRunner;
+import penoplatinum.util.debugging.SimulationRunner;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.view.SwingSimulationView;
 

@@ -3,7 +3,6 @@ package penoplatinum.simulator.sensors;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.Simulator;
-import penoplatinum.simulator.Tickable;
 
 /**
  * Motor

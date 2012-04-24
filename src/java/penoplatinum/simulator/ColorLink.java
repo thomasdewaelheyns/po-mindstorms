@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
 
-/**
- *
- * @author Penoplatinum
- */
 public class ColorLink {
 
   static ArrayList<Color> colors;
