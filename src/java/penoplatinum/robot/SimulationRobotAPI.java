@@ -86,7 +86,7 @@ public class SimulationRobotAPI implements RobotAPI {
       motorDelay--;
       if (motorDelay == 1) { // Warning: this 1 here is deliberate
         this.sonarAngle *= -1;
-        simulatedEntity.rotateMotorTo(SensorMapping.M3, this.sonarAngle);
+        simulatedEntity.rotateSonarTo(SensorMapping.M3, this.sonarAngle);
       }
     }
 
@@ -148,7 +148,7 @@ public class SimulationRobotAPI implements RobotAPI {
     int currentAngle = currentSweepAngles[currentSweepAngleIndex];
 
     if (currentTacho != currentAngle) {
-      simulatedEntity.rotateMotorTo(SensorMapping.M3, currentAngle);
+      simulatedEntity.rotateSonarTo(SensorMapping.M3, currentAngle);
       return;
     }
     resultBuffer.add((int) this.simulatedEntity.getSensorValues()[SensorMapping.S3]);

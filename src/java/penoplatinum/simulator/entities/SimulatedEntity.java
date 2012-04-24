@@ -189,9 +189,9 @@ public class SimulatedEntity implements RobotEntity {
     return this;
   }
 
-  // low-level access method to a motor
-  public SimulatedEntity rotateMotorTo(int motor, int tacho) {
-    this.motors[motor].rotateTo(tacho);
+  // low-level access method to a motor(CHANGED SO THAT ONLY SONAR MOTOR IS ACCESSIBLE)
+  public SimulatedEntity rotateSonarTo(int tacho) {
+    this.motors[SensorMapping.M3].rotateTo(tacho);
     return this;
   }
 
