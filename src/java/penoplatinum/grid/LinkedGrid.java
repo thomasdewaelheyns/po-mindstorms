@@ -27,264 +27,6 @@ import penoplatinum.util.Transformation;
  */
 public class LinkedGrid implements Grid {
 
-  // visualization for the Grid, by default none, is used by Simulator
-  private GridView view = NullGridView.getInstance();
-
-  private GridProcessor processor;
-
-  public Grid setProcessor(GridProcessor processor) {
-    this.processor = processor;
-    this.processor.useGrid(this);
-    return this;
-  }
-
-  private void resize(int left, int top) {
-    if (left < this.minLeft) {
-      this.minLeft = left;
-    }
-    if (left > this.maxLeft) {
-      this.maxLeft = left;
-    }
-    if (top < this.minTop) {
-      this.minTop = top;
-    }
-    if (top > this.maxTop) {
-      this.maxTop = top;
-    }
-  }
-
-  @Override
-  public int getMinLeft() {
-    return this.minLeft;
-  }
-
-  @Override
-  public int getMaxLeft() {
-    return this.maxLeft;
-  }
-
-  @Override
-  public int getMinTop() {
-    return this.minTop;
-  }
-
-  @Override
-  public int getMaxTop() {
-    return this.maxTop;
-  }
-
-  @Override
-  public int getWidth() {
-    return this.maxLeft - this.minLeft + 1;
-  }
-
-  @Override
-  public int getHeight() {
-    return this.maxTop - this.minTop + 1;
-  }
-
-  // returns the sector at given absolute/relative coordinates or null
-  public Sector getSector(int left, int top) {
-    return (Sector) this.sectors.get(CantorDiagonal.transform(left, top));
-  }
-
-  @Override
-  public List<Sector> getSectors() {
-    List<Sector> sectors = new ArrayList<Sector>(this.sectors.values());
-    return sectors;
-  }
-
-  private void connect(Sector sector, Sector other, Bearing location) {
-    if (sector != null) {
-      sector.addNeighbour(other, location);
-    }
-    if (other != null) {
-      other.addNeighbour(sector, location.reverse());
-    }
-  }
-
-  // sets the view to display the Grid on
-  public Grid displayOn(GridView view) {
-    this.view = view;
-    // CHANGED
-    this.view.display(this, false);
-    return this;
-  }
-
-  // refreshes the Grid
-  // this triggers the GridProcessors and refreshes any attached view
-  public Grid refresh() {
-    if (this.processor != null) {
-      this.processor.process();
-    }
-    this.view.refresh();
-    return this;
-  }
-
-  @Override
-  public String toString() {
-    String ret = "";
-
-    for (int top = this.getMinTop(); top <= this.getMaxTop(); top++) {
-      for (int left = this.getMinLeft(); left <= this.getMaxLeft(); left++) {
-        Sector sector = this.getSector(left, top);
-        if (sector != null) {
-          ret += "(" + left + "," + top + "): " + sector.toString();
-          ret += "\n";
-        } else {
-        }
-      }
-    }
-    return ret;
-  }
-
-  // return a list of all agents
-  @Override
-  public Iterable<Agent> getAgents() {
-    return this.agents.values();
-  }
-
-//  public static void mergeSector(Sector thisSector, int rotation, Sector s) {
-//    for (int j = Bearing.N; j <= Bearing.W; j++) {
-//      int otherBearing = (j - rotation + 4) % 4; // TODO check direction
-//
-//      Boolean newVal = s.hasWall(otherBearing);
-//      Boolean oldVal = thisSector.hasWall(j);
-//      if (newVal == oldVal) {
-//        continue; // No changes
-//      }
-//      if (newVal == null) {
-//        continue; // Remote has no information
-//      }
-//
-//      if (oldVal == null) {
-//        // Use remote information (do nothing) (keep newval)
-//      } else {
-//        // Conflicting information, set to unknown
-//        newVal = null;
-//      }
-//
-//      thisSector.setWall(j, newVal);
-//    }
-//
-//    // Merge the tags and the agents
-//    if (s.getAgent() != null) {
-//      // Remove old agent if exists
-//      // EDIT: NONONONOOOO not good!
-////      if (thisSector.hasAgent()) {
-////        thisSector.getGrid().removeAgent(thisSector.getAgent());
-////      }
-//      Agent copyAgent = thisSector.getGrid().getAgent(s.getAgent().getName());
-//      if (copyAgent == null) {
-//        // create a copy
-//        copyAgent = s.getAgent().copyAgent();
-//        thisSector.getGrid().addAgent(copyAgent);
-//
-//      }
-//
-//      thisSector.put(copyAgent, (s.getAgent().getBearing() + rotation) % 4);
-//
-//    }
-//    if (s.getTagCode() != -1) {
-//      thisSector.setTagCode(s.getTagCode());
-//      thisSector.setTagBearing((s.getTagBearing() + rotation) % 4);
-//    }
-//
-//  }
-//  public void disengage() {
-//    for (Sector s : sectors.values()) {
-//      s.disengage();
-//    }
-//    agents.clear();
-//
-//    terminated = true;
-//
-//  }
-//
-//  public boolean areSectorsEqual(Grid other) {
-//
-//    if (getSectors().size() != other.getSize()) {
-//      return false;
-//    }
-//
-//    for (Sector s : getSectors()) {
-//      boolean match = false;
-//      for (Sector otherS : other.getSectors()) {
-//
-//
-//
-//        if (s.getLeft() != otherS.getLeft() || s.getTop() != otherS.getTop()) {
-//          continue;
-//        }
-//        match = true;
-//
-//        if (s.getWalls() != otherS.getWalls()) {
-//          return false;
-//        }
-//
-//        boolean barcodeMismatch = true;
-//
-//
-//        if (s.getTagBearing() == otherS.getTagBearing() && s.getTagCode() == otherS.getTagCode()) {
-//          barcodeMismatch = false;
-//        }
-//        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.reverse(otherS.getTagCode(), 6)) {
-//          barcodeMismatch = false;
-//        }
-//        if (barcodeMismatch) {
-//          return false;
-//        }
-//      }
-//      if (!match) {
-//        return false;
-//      }
-//    }
-//
-//    return true;
-//
-//  }
-  @Override
-  public int getSize() {
-    return sectors.size();
-  }
-
-  public GridView getView() {
-    return view;
-  }
-
-  public Agent getAgentAt(Point pos) {
-    Integer i = CantorDiagonal.transform(pos);
-    if (i == null)
-      return null;
-    return agents.get(i);
-  }
-
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
   // we keep track of the boundaries of our Grid
   int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
   // mapping from coordinates to allocating Sector
@@ -397,6 +139,14 @@ public class LinkedGrid implements Grid {
   }
 
   @Override
+  public Agent getAgentAt(Point pos) {
+    Integer i = CantorDiagonal.transform(pos);
+    if (i == null)
+      return null;
+    return agents.get(i);
+  }
+
+  @Override
   public Sector getSectorOf(Agent agent) {
     Integer index = agents.findKey(agent);
     if (index == null)
@@ -419,8 +169,259 @@ public class LinkedGrid implements Grid {
     agentBearings.remove(agent);
 
     add(agent, position, bearing);
-    
+
     return this;
 
+  }
+
+  @Override
+  public int getMinLeft() {
+    return this.minLeft;
+  }
+
+  @Override
+  public int getMaxLeft() {
+    return this.maxLeft;
+  }
+
+  @Override
+  public int getMinTop() {
+    return this.minTop;
+  }
+
+  @Override
+  public int getMaxTop() {
+    return this.maxTop;
+  }
+
+  @Override
+  public int getWidth() {
+    return this.maxLeft - this.minLeft + 1;
+  }
+
+  @Override
+  public int getHeight() {
+    return this.maxTop - this.minTop + 1;
+  }
+
+  @Override
+  public String toString() {
+    String ret = "";
+
+    for (int top = this.getMinTop(); top <= this.getMaxTop(); top++) {
+      for (int left = this.getMinLeft(); left <= this.getMaxLeft(); left++) {
+        Sector sector = this.getSector(left, top);
+        if (sector != null) {
+          ret += "(" + left + "," + top + "): " + sector.toString();
+          ret += "\n";
+        } else {
+        }
+      }
+    }
+    return ret;
+  }
+
+  // return a list of all agents
+  @Override
+  public Iterable<Agent> getAgents() {
+    return this.agents.values();
+  }
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  // visualization for the Grid, by default none, is used by Simulator
+
+  private GridView view = NullGridView.getInstance();
+
+  private GridProcessor processor;
+
+  public Grid setProcessor(GridProcessor processor) {
+    this.processor = processor;
+    this.processor.useGrid(this);
+    return this;
+  }
+
+  private void resize(int left, int top) {
+    if (left < this.minLeft) {
+      this.minLeft = left;
+    }
+    if (left > this.maxLeft) {
+      this.maxLeft = left;
+    }
+    if (top < this.minTop) {
+      this.minTop = top;
+    }
+    if (top > this.maxTop) {
+      this.maxTop = top;
+    }
+  }
+
+  // returns the sector at given absolute/relative coordinates or null
+  public Sector getSector(int left, int top) {
+    return (Sector) this.sectors.get(CantorDiagonal.transform(left, top));
+  }
+
+  @Override
+  public List<Sector> getSectors() {
+    List<Sector> sectors = new ArrayList<Sector>(this.sectors.values());
+    return sectors;
+  }
+
+  private void connect(Sector sector, Sector other, Bearing location) {
+    if (sector != null) {
+      sector.addNeighbour(other, location);
+    }
+    if (other != null) {
+      other.addNeighbour(sector, location.reverse());
+    }
+  }
+
+  // sets the view to display the Grid on
+  public Grid displayOn(GridView view) {
+    this.view = view;
+    // CHANGED
+    this.view.display(this, false);
+    return this;
+  }
+
+  // refreshes the Grid
+  // this triggers the GridProcessors and refreshes any attached view
+  public Grid refresh() {
+    if (this.processor != null) {
+      this.processor.process();
+    }
+    this.view.refresh();
+    return this;
+  }
+
+//  public static void mergeSector(Sector thisSector, int rotation, Sector s) {
+//    for (int j = Bearing.N; j <= Bearing.W; j++) {
+//      int otherBearing = (j - rotation + 4) % 4; // TODO check direction
+//
+//      Boolean newVal = s.hasWall(otherBearing);
+//      Boolean oldVal = thisSector.hasWall(j);
+//      if (newVal == oldVal) {
+//        continue; // No changes
+//      }
+//      if (newVal == null) {
+//        continue; // Remote has no information
+//      }
+//
+//      if (oldVal == null) {
+//        // Use remote information (do nothing) (keep newval)
+//      } else {
+//        // Conflicting information, set to unknown
+//        newVal = null;
+//      }
+//
+//      thisSector.setWall(j, newVal);
+//    }
+//
+//    // Merge the tags and the agents
+//    if (s.getAgent() != null) {
+//      // Remove old agent if exists
+//      // EDIT: NONONONOOOO not good!
+////      if (thisSector.hasAgent()) {
+////        thisSector.getGrid().removeAgent(thisSector.getAgent());
+////      }
+//      Agent copyAgent = thisSector.getGrid().getAgent(s.getAgent().getName());
+//      if (copyAgent == null) {
+//        // create a copy
+//        copyAgent = s.getAgent().copyAgent();
+//        thisSector.getGrid().addAgent(copyAgent);
+//
+//      }
+//
+//      thisSector.put(copyAgent, (s.getAgent().getBearing() + rotation) % 4);
+//
+//    }
+//    if (s.getTagCode() != -1) {
+//      thisSector.setTagCode(s.getTagCode());
+//      thisSector.setTagBearing((s.getTagBearing() + rotation) % 4);
+//    }
+//
+//  }
+//  public void disengage() {
+//    for (Sector s : sectors.values()) {
+//      s.disengage();
+//    }
+//    agents.clear();
+//
+//    terminated = true;
+//
+//  }
+//
+//  public boolean areSectorsEqual(Grid other) {
+//
+//    if (getSectors().size() != other.getSize()) {
+//      return false;
+//    }
+//
+//    for (Sector s : getSectors()) {
+//      boolean match = false;
+//      for (Sector otherS : other.getSectors()) {
+//
+//
+//
+//        if (s.getLeft() != otherS.getLeft() || s.getTop() != otherS.getTop()) {
+//          continue;
+//        }
+//        match = true;
+//
+//        if (s.getWalls() != otherS.getWalls()) {
+//          return false;
+//        }
+//
+//        boolean barcodeMismatch = true;
+//
+//
+//        if (s.getTagBearing() == otherS.getTagBearing() && s.getTagCode() == otherS.getTagCode()) {
+//          barcodeMismatch = false;
+//        }
+//        if (s.getTagBearing() == Bearing.reverse(otherS.getTagBearing()) && s.getTagCode() == BarcodeTranslator.reverse(otherS.getTagCode(), 6)) {
+//          barcodeMismatch = false;
+//        }
+//        if (barcodeMismatch) {
+//          return false;
+//        }
+//      }
+//      if (!match) {
+//        return false;
+//      }
+//    }
+//
+//    return true;
+//
+//  }
+  @Override
+  public int getSize() {
+    return sectors.size();
+  }
+
+  public GridView getView() {
+    return view;
   }
 }
