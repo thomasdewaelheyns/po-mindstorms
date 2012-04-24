@@ -177,15 +177,16 @@ Deze tests moeten weg of verplaatst worden naar de tests/ tree.
 
 TODO: anybody
 
-simulator/tiles/Panel.java
-simulator/tiles/PanelDraw.java
-simulator/tiles/Panels.java
 simulator/tiles/Sector.java
 simulator/tiles/SectorDraw.java
 simulator/tiles/Sectors.java
 simulator/tiles/Tile.java
 simulator/tiles/TileDraw.java
 simulator/tiles/TileGeometry.java
+
+INFO: Ruben
+TODO: check tests
+
 simulator/view/Board.java
 simulator/view/ConsoleSimulationView.java
 simulator/view/SilentSimulationView.java
@@ -197,8 +198,7 @@ De volledige simulator zou ook voorzien moeten worden van unit tests. Deze is te
 
 INFO: Ruben,xtof
 TODO: Ruben
-
-Status: Started
+Status: nothing
 
 src/lejos/java/util/Arrays.java
 src/lejos/penoplatinum/AngieEventLoop.java
@@ -213,7 +213,7 @@ src/lejos/penoplatinum/sensor/RotatingSonarSensor.java
 Heel de lejos/ tree moet nagekeken worden, code opgekuist worden en hopelijk zoveel mogelijk code naar de java/ tree gebracht worden. Alleen de echt technische afhankelijke classes van de NXT libraries mogen hier overblijven. Bij voorkeur als dunne laagjes (het zou eigenlijk alleen maar een EventLoop mogen zijn samen met een RobotAPI) en al de rest in de java/ tree.
 
 INFO: Ruben
-TODO: anybody
+TODO: started
 
 ui/server/DataProvider.java
 ui/server/JSWrapper.java

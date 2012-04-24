@@ -7,18 +7,16 @@ package penoplatinum.robot;
  * 
  * @author: Team Platinum
  */
-
-import junit.framework.*; 
+import junit.framework.*;
 import static org.mockito.Mockito.*;
-
 
 public class RobotTest extends TestCase {
 
-  public RobotTest(String name) { 
+  public RobotTest(String name) {
     super(name);
   }
 
   public void testAvailablity() {
-		mock(Robot.class);
-	}
+    mock(Robot.class);
+  }
 }
