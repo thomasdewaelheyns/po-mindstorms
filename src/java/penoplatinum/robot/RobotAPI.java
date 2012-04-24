@@ -46,10 +46,6 @@ public interface RobotAPI {
   public float getRelativeAngle(float reference);
 
   public void sweep(int[] angles);
-  public boolean sweepInProgress();
+  public boolean isSweeping();
   public List<Integer> getSweepResult();
-
-  boolean isSweeping();
-
-  void setSweeping(boolean b);
 }

@@ -56,7 +56,6 @@ public class SonarModelPart implements ModelPart {
   private boolean sweepChanged = true;
 
 
-  @Override
   public void clearDirty() {
     this.newSonarValues = false;
     isSweepDataChanged = false;

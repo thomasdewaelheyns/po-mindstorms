@@ -1,11 +1,9 @@
 package penoplatinum.bluetooth;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import penoplatinum.util.Utils;
-import penoplatinum..gateway.GatewayConfig;
-import penoplatinum.simulator.Robot;
-import penoplatinum.simulator.GatewayClient;
+import penoplatinum.gateway.GatewayClient;
+import penoplatinum.robot.Robot;
 
 /**
  * RobotBluetoothAgent
@@ -49,9 +47,6 @@ public class RobotBluetoothAgent implements GatewayClient {
     });
 
     conn.RegisterTransporter(t, AgentConfig.MQRelayPacket);
-
-
-
   }
 
   @Override
@@ -70,8 +65,6 @@ public class RobotBluetoothAgent implements GatewayClient {
     } catch (IOException ex) {
       Utils.Log("Send error!");
     }
-
-
   }
 
   public byte[] getBytes(String s) {

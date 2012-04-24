@@ -4,7 +4,6 @@
  */
 package penoplatinum.simulator;
 
-import penoplatinum.robot.RobotAPI;
 import penoplatinum.simulator.view.ViewRobot;
 
 /**
@@ -12,10 +11,10 @@ import penoplatinum.simulator.view.ViewRobot;
  * @author MHGameWork
  */
 public interface RobotEntity {
-  void step();
-  ViewRobot getViewRobot();
 
-  RobotAPI getRobotAPI();
+  void step();
+
+  ViewRobot getViewRobot();
 
   double getDir();
 

@@ -9,7 +9,7 @@ package penoplatinum.model.part;
  *  @author Team Platinum
  */
 import penoplatinum.model.Model;
-import penoplatinum.simulator.entities.SensorMapping;
+import penoplatinum.simulator.entities.SensorConfig;
 import penoplatinum.simulator.sensors.MotorState;
 
 public class SensorModelPart implements ModelPart {
@@ -19,7 +19,7 @@ public class SensorModelPart implements ModelPart {
   public static SensorModelPart from(Model model) {
     return (SensorModelPart) model.getPart(ModelPartRegistry.SENSOR_MODEL_PART);
   }
-  private int[] sensors = new int[SensorMapping.SENSORVALUES_NUM];
+  private int[] sensors = new int[SensorConfig.SENSORVALUES_NUM];
 
   // public interface
   public boolean isMoving() {
@@ -33,11 +33,11 @@ public class SensorModelPart implements ModelPart {
 
   // receive an update of the sensor values
   public void updateSensorValues(int[] values) {
-    if (values.length != SensorMapping.SENSORVALUES_NUM) {
+    if (values.length != SensorConfig.SENSORVALUES_NUM) {
       throw new RuntimeException("Invalid number of sensorvalues given!");
     }
 
-    for (int i = 0; i < SensorMapping.SENSORVALUES_NUM; i++) {
+    for (int i = 0; i < SensorConfig.SENSORVALUES_NUM; i++) {
       this.sensors[i] = values[i];
     }
   }
@@ -46,19 +46,19 @@ public class SensorModelPart implements ModelPart {
   // TODO: if any of these need to become public, think twice ;-) then
   // move it up and add enough unit tests
   private boolean rightMotorIsMoving() {
-    return this.getRightMotorState() != MotorState.MOTORSTATE_STOPPED;
+    return this.getRightMotorState() != SensorConfig.MOTORSTATE_STOPPED;
   }
 
   private boolean leftMotorIsMoving() {
-    return this.getLeftMotorState() != MotorState.MOTORSTATE_STOPPED;
+    return this.getLeftMotorState() != SensorConfig.MOTORSTATE_STOPPED;
   }
 
   private int getRightMotorState() {
-    return this.getSensorValue(SensorMapping.MS1);
+    return this.getSensorValue(SensorConfig.MS1);
   }
 
   private int getLeftMotorState() {
-    return this.getSensorValue(SensorMapping.MS2);
+    return this.getSensorValue(SensorConfig.MS2);
   }
 
   private int getSensorValue(int num) {

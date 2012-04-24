@@ -86,24 +86,6 @@ Michiel is bezig met de Grid package volledig te reviseren. Hij zal dit ook best
 INFO: Michiel/xtof
 TODO: Michiel
 
-map/Map.java
-map/MapArray.java
-map/MapFactory.java
-map/MapFactorySector.java
-map/MapHashed.java
-map/mazeprotocol/BarcodeAt.java
-map/mazeprotocol/Commando.java
-map/mazeprotocol/Discover.java
-map/mazeprotocol/Name.java
-map/mazeprotocol/Pacman.java
-map/mazeprotocol/Position.java
-map/mazeprotocol/ProtocolMapFactory.java
-
-Ruben heeft de map package al onder handen genomen en voorzien van unit tests. Ik heb dit nog niet gereviewd. Later te bekijken.
-
-INFO: Ruben
-TODO: final review
-
 model/GhostModel.java
 model/part/BarcodeModelPart.java
 model/part/GapModelPart.java
@@ -166,7 +148,6 @@ simulator/PacmanViewRobot.java
 simulator/RemoteEntity.java
 simulator/RemoteViewRobot.java
 simulator/RobotEntity.java
-simulator/Sensor.java
 simulator/SimulatedConnection.java
 simulator/SimulatedEntity.java
 simulator/SimulatedGatewayClient.java
@@ -186,13 +167,6 @@ simulator/mini/MiniSimulationRobotAPI.java
 simulator/mini/NullGhostProtocolHandler.java
 simulator/mini/Queue.java
 simulator/mini/ShowMap.java
-simulator/sensors/IRSensor.java
-simulator/sensors/IRdistanceSensor.java
-simulator/sensors/LightSensor.java
-simulator/sensors/MotorState.java
-simulator/sensors/NoneSensor.java
-simulator/sensors/Sonar.java
-simulator/sensors/TouchSensor.java
 ...
 
 simulator/t/DistanceTest.java

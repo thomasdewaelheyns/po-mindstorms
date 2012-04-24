@@ -1,29 +1,13 @@
 package penoplatinum.simulator.entities;
 
-/**
- * 
- * 
- * @authot Team Platinum
- */
-import penoplatinum.simulator.sensors.IRSensor;
-import penoplatinum.simulator.sensors.IRdistanceSensor;
-import penoplatinum.simulator.sensors.LightSensor;
-import penoplatinum.simulator.sensors.MotorState;
-import penoplatinum.simulator.sensors.NoneSensor;
-import penoplatinum.simulator.sensors.Sonar;
-
-import penoplatinum.simulator.view.ViewRobot;
-
-import penoplatinum.gateway.GatewayClient;
-
 import penoplatinum.map.MapUtil;
 import penoplatinum.robot.Robot;
-import penoplatinum.robot.RobotAPI;
-import penoplatinum.simulator.sensors.Motor;
+import penoplatinum.robot.SimulationRobotAPI;
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Sensor;
-import penoplatinum.robot.SimulationRobotAPI;
 import penoplatinum.simulator.Simulator;
+import penoplatinum.simulator.sensors.Motor;
+import penoplatinum.simulator.view.ViewRobot;
 import penoplatinum.util.Point;
 
 public class SimulatedEntity implements RobotEntity {
@@ -44,37 +28,27 @@ public class SimulatedEntity implements RobotEntity {
 
   private double direction;       //   and a direction it's facing
 
-  private double totalMovement = 0;
-
-  private long lastStatisticsReport = 0;  // time of last stat report
-
   private Point initialPosition;
 
   private int initialBearing;
   // the motorSpeeds and the sensorValues
-
-  private int[] sensorValues = new int[SensorMapping.SENSORVALUES_NUM];
+  private int[] sensorValues;
 
   private Motor[] motors = new Motor[3];
-
-  private Sensor[] sensors = new Sensor[SensorMapping.SENSORVALUES_NUM];
-
-  private SimulationRobotAPI robotAPI;    // the API used to access hardware
-
+  private Sensor[] sensors;
   private Robot robot;       // the actual robot
 
   private ViewRobot viewRobot;   // 
 
   private Simulator simulator;
 
-  private final GatewayClient robotAgent;
-
-  public SimulatedEntity(Robot robot) {
-    this.setupSensors();
+  protected SimulatedEntity(Robot robot, int numberOfSensors) {
     this.robot = robot;
-    setRobotApi(new SimulationRobotAPI());
-    this.robotAgent = this.robot.getGatewayClient();
+    this.robot.useRobotAPI(new SimulationRobotAPI().setSimulatedEntity(this));
+
     useViewRobot(new SimulatedViewRobot(this));
+    sensorValues = new int[numberOfSensors];
+    sensors = new Sensor[numberOfSensors];
   }
 
   public void useViewRobot(ViewRobot viewRobot) {
@@ -87,11 +61,6 @@ public class SimulatedEntity implements RobotEntity {
     this.robot.useRobotAPI(this.robotAPI);
   }
 
-  @Override
-  public RobotAPI getRobotAPI() {
-    return this.robotAPI;
-  }
-
   public void useSimulator(Simulator simulator) {
     this.simulator = simulator;
     for (Sensor s : this.sensors) {
@@ -99,42 +68,12 @@ public class SimulatedEntity implements RobotEntity {
     }
   }
 
-  public void setPostition(double positionX, double positionY, double direction) {
-    this.positionX = positionX;
-    this.positionY = positionY;
-    this.direction = direction;
+  public void setupMotor(Motor motor, int tachoPort) {
+    this.motors[tachoPort] = motor;  // these two need to be running
+    setSensor(tachoPort, motor);
   }
 
-  private Motor setupMotor(String label, int tachoPort, int statePort) {
-    Motor motor = new Motor().setLabel(label);  // these two need to be running
-    return setupMotor(label, tachoPort, statePort, motor);
-  }
-
-  public Motor setupMotor(String label, int tachoPort, int statePort, Motor motor) {
-    this.motors[tachoPort] = motor.setLabel(label);  // these two need to be running
-    setSensor(tachoPort, this.motors[tachoPort]);
-    setSensor(statePort, new MotorState(this.motors[tachoPort]));
-    return this.motors[tachoPort];
-  }
-
-  // TODO: externalize the speed configuration of the different motors
-  private void setupSensors() {
-    setupMotor("L", SensorMapping.M1, SensorMapping.MS1);
-    setupMotor("R", SensorMapping.M2, SensorMapping.MS2);
-    setupMotor("S", SensorMapping.M3, SensorMapping.MS3);
-    setSensor(SensorMapping.S1, new IRSensor());
-    setSensor(SensorMapping.S2, new NoneSensor());
-    setSensor(SensorMapping.S3, new Sonar(this.motors[SensorMapping.M3]));
-    setSensor(SensorMapping.S4, new LightSensor());
-    setSensor(SensorMapping.IR0, new IRdistanceSensor(120));
-    setSensor(SensorMapping.IR1, new IRdistanceSensor(60));
-    setSensor(SensorMapping.IR2, new IRdistanceSensor(0));
-    setSensor(SensorMapping.IR3, new IRdistanceSensor(-60));
-    setSensor(SensorMapping.IR4, new IRdistanceSensor(-120));
-
-  }
-
-  private void setSensor(int port, Sensor sensor) {
+  public void setSensor(int port, Sensor sensor) {
     this.sensors[port] = sensor;
     sensor.useSimulatedEntity(this);
     sensor.useSimulator(simulator);
@@ -163,8 +102,8 @@ public class SimulatedEntity implements RobotEntity {
     movement *= 100;
     // calculate the tacho count we need to do to reach this movement
     int tacho = (int) (movement / WHEEL_SIZE * 360);
-    this.motors[SensorMapping.M1].rotateBy(tacho);
-    this.motors[SensorMapping.M2].rotateBy(tacho);
+    this.motors[SensorConfig.M1].rotateBy(tacho);
+    this.motors[SensorConfig.M2].rotateBy(tacho);
     return this;
   }
 
@@ -175,15 +114,15 @@ public class SimulatedEntity implements RobotEntity {
     int tacho = (int) (dist / WHEEL_SIZE * 360);
 
     // let both motor's rotate the same tacho but in opposite direction
-    this.motors[SensorMapping.M1].rotateBy(tacho);
-    this.motors[SensorMapping.M2].rotateBy(tacho * -1);
+    this.motors[SensorConfig.M1].rotateBy(tacho);
+    this.motors[SensorConfig.M2].rotateBy(tacho * -1);
     return this;
   }
 
   // called by the implementation of the RobotAPI
   public SimulatedEntity stopRobot() {
-    this.motors[SensorMapping.M1].stop();
-    this.motors[SensorMapping.M2].stop();
+    this.motors[SensorConfig.M1].stop();
+    this.motors[SensorConfig.M2].stop();
     return this;
   }
 
@@ -236,27 +175,28 @@ public class SimulatedEntity implements RobotEntity {
   }
 
   public boolean sonarMotorIsMoving() {
-    return this.motors[SensorMapping.M3].getValue() != this.sensorValues[SensorMapping.M3];
+    return this.motors[SensorConfig.M3].getValue() != this.sensorValues[SensorConfig.M3];
   }
 
   // performs the next step in the movement currently executed by the robot
+  @Override
   public void step() {
     // let all motors know that another timeslice has passed
 
-    this.motors[SensorMapping.M1].tick(simulator.TIME_SLICE);
-    this.motors[SensorMapping.M2].tick(simulator.TIME_SLICE);
-    this.motors[SensorMapping.M3].tick(simulator.TIME_SLICE);
+    this.motors[SensorConfig.M1].tick(simulator.TIME_SLICE);
+    this.motors[SensorConfig.M2].tick(simulator.TIME_SLICE);
+    this.motors[SensorConfig.M3].tick(simulator.TIME_SLICE);
 
     // based on the motor's (new) angle's determine the displacement
-    int changeLeft = this.motors[SensorMapping.M1].getValue() - sensorValues[SensorMapping.M1];
-    int changeRight = this.motors[SensorMapping.M2].getValue() - sensorValues[SensorMapping.M2];
+    int changeLeft = this.motors[SensorConfig.M1].getValue() - sensorValues[SensorConfig.M1];
+    int changeRight = this.motors[SensorConfig.M2].getValue() - sensorValues[SensorConfig.M2];
 
     if (changeLeft == changeRight) {
       // we're moving in one direction 
       double d = WHEEL_SIZE / 360 * changeRight;
       double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
       double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
-      if (MapUtil.hasTile(simulator.getMap(), this.positionX + dx, this.positionY + dy)) {
+      if (MapUtil.hasTile(simulator.getMap(), this.positionX + dx, this.positionY - dy)) {
         if (!MapUtil.goesThroughWallX(simulator.getMap(), this, dx)) {
           this.positionX += dx;
         }
@@ -285,10 +225,10 @@ public class SimulatedEntity implements RobotEntity {
    * based on the robot's position, determine the values for the different
    * sensors.
    * TODO: extract the robot's physical configuration into separate object
-   *       this is shared with the SensorMapping in a way (for now)
+   *       this is shared with the SensorConfig in a way (for now)
    */
   private void updateSensorValues() {
-    for (int i = 0; i < SensorMapping.SENSORVALUES_NUM; i++) {
+    for (int i = 0; i < SensorConfig.SENSORVALUES_NUM; i++) {
       sensorValues[i] = sensors[i].getValue();
     }
   }

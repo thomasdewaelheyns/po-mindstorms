@@ -1,20 +1,17 @@
-package penoplatinum.pacman;
+package penoplatinum.robot;
 
 import java.util.ArrayList;
 
+import org.mockito.exceptions.Reporter;
 import penoplatinum.Config;
 
-import penoplatinum.util.Utils;
 
 import penoplatinum.driver.Driver;
 import penoplatinum.driver.GhostDriver;
 
 import penoplatinum.grid.GridView;
-import penoplatinum.grid.Sector;
 
 import penoplatinum.model.GhostModel;
-import penoplatinum.model.Reporter;
-import penoplatinum.model.GridModelPart;
 import penoplatinum.model.processor.*;
 
 import penoplatinum.simulator.Model;
@@ -23,6 +20,12 @@ import penoplatinum.simulator.RobotAPI;
 import penoplatinum.simulator.Navigator;
 
 import penoplatinum.gateway.GatewayClient;
+import penoplatinum.model.Model;
+import penoplatinum.navigator.Navigator;
+import penoplatinum.pacman.GhostProtocolModelCommandHandler;
+import penoplatinum.protocol.GhostProtocolHandler;
+import penoplatinum.simulator.entities.SimulatedEntityFactory;
+import penoplatinum.util.ReferencePosition;
 import penoplatinum.navigator.Navigator;
 import penoplatinum.reporter.Reporter;
 import penoplatinum.robot.Robot;
@@ -95,9 +98,9 @@ public class GhostRobot implements Robot {
     this.api = api;
 
     this.api.setReferenceAngle(initialReference);
-    this.api.setSpeed(Model.M3, Config.MOTOR_SPEED_SONAR);
-    this.api.setSpeed(Model.M2, Config.MOTOR_SPEED_MOVE);
-    this.api.setSpeed(Model.M1, Config.MOTOR_SPEED_MOVE);
+    this.api.setSpeed(SimulatedEntityFactory.M3, Config.MOTOR_SPEED_SONAR);
+    this.api.setSpeed(SimulatedEntityFactory.M2, Config.MOTOR_SPEED_MOVE);
+    this.api.setSpeed(SimulatedEntityFactory.M1, Config.MOTOR_SPEED_MOVE);
 
     this.linkComponents();
     return this;
@@ -162,17 +165,15 @@ public class GhostRobot implements Robot {
 
     // we want obstacle-information based on Sonar-values
     // as long as this is in progress, we wait
-    if( this.api.sweepInProgress() ) { return; }
+    if( this.api.isSweeping() ) { return; }
 
     // if the sweep is ready ...
     if (this.waitingForSweep) {
       this.model.getSonarPart()
                 .updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
       this.model.process(); // TODO: double call
-      this.api.setSweeping(false);
       this.waitingForSweep = false;
     } else {
-      this.api.setSweeping(true);
       this.api.sweep(sweepAngles);
       this.waitingForSweep = true;
       return; // to wait for results
@@ -234,4 +235,5 @@ public class GhostRobot implements Robot {
   public String getName() {
     return model.getGridPart().getAgent().getName();
   }
+
 }

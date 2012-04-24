@@ -1,11 +1,10 @@
 package penoplatinum.simulator.entities;
 
-import penoplatinum.robot.RobotAPI;
 import penoplatinum.simulator.view.ViewRobot;
 import penoplatinum.simulator.RobotEntity;
 
-
 public class PacmanEntity implements RobotEntity {
+
   private double posX;
   private double posY;
   private double dir;
@@ -14,11 +13,6 @@ public class PacmanEntity implements RobotEntity {
     this.posX = posX;
     this.posY = posY;
     this.dir = dir;
-  }
-
-  @Override
-  public RobotAPI getRobotAPI() {
-    return null;
   }
 
   @Override
@@ -45,5 +39,4 @@ public class PacmanEntity implements RobotEntity {
   public double getPosY() {
     return posY;
   }
-  
 }

@@ -10,7 +10,6 @@ import penoplatinum.model.GhostModel;
 import penoplatinum.pacman.GhostProtocolCommandHandler;
 import penoplatinum.protocol.GhostProtocolHandler;
 import penoplatinum.robot.Robot;
-import penoplatinum.robot.RobotAPI;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.ViewRobot;
 import penoplatinum.simulator.RobotEntity;
@@ -57,10 +56,6 @@ public class RemoteEntity implements RobotEntity {
       Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
     }
     /**/
-  }
-
-  public RobotAPI getRobotAPI() {
-    return null;
   }
 
   public RemoteEntity setOrigin(int originX, int originY, int originDirection) {

@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.ImageObserver;
+import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.simulator.ColorLink;
 import penoplatinum.simulator.view.Board;
@@ -62,10 +63,13 @@ public class SimulatedViewRobot implements ViewRobot{
     return (int) original.getDir();
   }
   public List<Integer> getDistances() {
-    return original.getRobot().getModel().getSonarPart().getDistances();
+    return new ArrayList();
+    //return original.getRobot().getModel().getSonarPart().getDistances();
   }
+  
   public List<Integer> getAngles() {
-    return original.getRobot().getModel().getSonarPart().getAngles();
+    return new ArrayList();
+    //return original.getRobot().getModel().getSonarPart().getAngles();
   }
   
 }

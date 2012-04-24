@@ -22,12 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.cli.*;
 
 import penoplatinum.simulator.tiles.Sector;
-import penoplatinum.simulator.tiles.Panels;
 import penoplatinum.simulator.view.SwingSimulationView;
 
-import penoplatinum.map.MapArray;
-import penoplatinum.map.MapFactory;
-import penoplatinum.map.MapFactorySector;
 import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
 import penoplatinum.model.Reporter;
@@ -38,6 +34,11 @@ import penoplatinum.driver.Driver;
 
 import penoplatinum.gateway.GatewayClient;
 
+import penoplatinum.navigator.Navigator;
+import penoplatinum.reporter.Reporter;
+import penoplatinum.robot.Robot;
+import penoplatinum.robot.RobotAPI;
+import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
 public class SimulationRunner {
@@ -249,16 +250,14 @@ public class SimulationRunner {
     Navigator navigator = this.getNavigator(name);
     Driver driver = this.getDriver(name);
     GatewayClient gatewayClient = this.getGatewayClient(name).setRobot(robot);
-    Reporter reporter = this.getReporter(name).useGatewayClient(gatewayClient).setRobot(robot);
+    Reporter reporter = this.getReporter(name).useGatewayClient(gatewayClient);
 
     // construct a simulatedEntity
     SimulatedEntity simulatedEntity = new SimulatedEntity(robot);
-    simulatedEntity.setPostition(x * Sector.SIZE + Sector.SIZE / 2, y * Sector.SIZE + Sector.SIZE / 2, direction);
+    simulatedEntity.putRobotAt(x * Sector.SIZE + Sector.SIZE / 2, y * Sector.SIZE + Sector.SIZE / 2, direction);
     this.simulatedEntities.put(name, simulatedEntity);
 
-    driver.useRobotAPI(simulatedEntity.getRobotAPI());
-
-    robot.useNavigator(navigator).useGatewayClient(gatewayClient).useRobotAPI(simulatedEntity.getRobotAPI()).useDriver(driver).useReporter(reporter).getModel().getGridPart().displayGridOn(new SwingGridView());
+    robot.useNavigator(navigator).useGatewayClient(gatewayClient).useDriver(driver).useReporter(reporter).getModel().getGridPart().displayGridOn(new SwingGridView());
 
     this.simulator.addSimulatedEntity(simulatedEntity);
 

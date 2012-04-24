@@ -1,4 +1,4 @@
-package penoplatinum.pacman;
+package penoplatinum.reporter;
 
 /**
  * DashboardReporter
@@ -8,29 +8,20 @@ package penoplatinum.pacman;
  * @author Team Platinum
  */
 
-import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
 
 import penoplatinum.Config;
-
-import penoplatinum.util.Utils;
-
 import penoplatinum.model.GhostModel;
-import penoplatinum.model.Reporter;
-
-import penoplatinum.bluetooth.IConnection;
-import penoplatinum.bluetooth.QueuedPacketTransporter;
 
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Agent;
 
-import penoplatinum.simulator.Model;
-import penoplatinum.simulator.Robot;
-import penoplatinum.simulator.Bearing;
-
 import penoplatinum.gateway.GatewayClient;
+import penoplatinum.model.Model;
+import penoplatinum.robot.GhostRobot;
+import penoplatinum.robot.Robot;
+import penoplatinum.util.Bearing;
 
 public class DashboardReporter implements Reporter {
 

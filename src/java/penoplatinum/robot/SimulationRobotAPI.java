@@ -5,7 +5,7 @@ import penoplatinum.util.ExtendedVector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import penoplatinum.simulator.entities.SensorMapping;
+import penoplatinum.simulator.entities.SimulatedEntityFactory;
 import penoplatinum.util.ReferencePosition;
 
 /**
@@ -76,7 +76,7 @@ public class SimulationRobotAPI implements RobotAPI {
   }
 
   private void restartSonarMotorContinuous() {
-    int currentTacho = (int) this.simulatedEntity.getSensorValues()[SensorMapping.M3];
+    int currentTacho = (int) this.simulatedEntity.getSensorValues()[SimulatedEntityFactory.M3];
     // if the motor has finished its previous movement, sweep back ...
     if (currentTacho == this.prevSonarTacho && motorDelay == 0) {
       motorDelay = 20;
@@ -113,6 +113,11 @@ public class SimulationRobotAPI implements RobotAPI {
     return outAngle;
   }
 
+  private void updateCurrentPosition() {
+    currentPosition.setX((float) simulatedEntity.getPosX());
+    currentPosition.setY((float) simulatedEntity.getPosY());
+    currentPosition.setAngle((float) simulatedEntity.getDirection() + 90);
+  }
   private void updateCurrentAngle() {
     currentAngle = ((float)simulatedEntity.getDirection() + 90);
   }
@@ -121,7 +126,7 @@ public class SimulationRobotAPI implements RobotAPI {
   List<Integer> resultBuffer = new ArrayList<Integer>();
 
   @Override
-  public boolean sweepInProgress() {
+  public boolean isSweeping() {
     return currentSweepAngles != null;
   }
 
@@ -139,11 +144,11 @@ public class SimulationRobotAPI implements RobotAPI {
   }
 
   private void restartSonarMotorOnDemand() {
-    if (!sweepInProgress()) {
+    if (!isSweeping()) {
       return;
     }
 
-    int currentTacho = (int) this.simulatedEntity.getSensorValues()[SensorMapping.M3];
+    int currentTacho = (int) this.simulatedEntity.getSensorValues()[SimulatedEntityFactory.M3];
 
     int currentAngle = currentSweepAngles[currentSweepAngleIndex];
 
@@ -151,19 +156,11 @@ public class SimulationRobotAPI implements RobotAPI {
       simulatedEntity.rotateSonarTo(SensorMapping.M3, currentAngle);
       return;
     }
-    resultBuffer.add((int) this.simulatedEntity.getSensorValues()[SensorMapping.S3]);
+    resultBuffer.add((int) this.simulatedEntity.getSensorValues()[SimulatedEntityFactory.S3]);
     currentSweepAngleIndex++;
 
     if (currentSweepAngleIndex >= currentSweepAngles.length) {
       currentSweepAngles = null;
     }
-  }
-  
-  boolean isSweeping = false;
-  public void setSweeping(boolean b){
-    isSweeping = b;
-  }
-  public boolean isSweeping() {
-    return isSweeping;
   }
 }

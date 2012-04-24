@@ -12,6 +12,9 @@ import penoplatinum.model.Model;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.robot.RobotAPI;
 import penoplatinum.sensor.RotatingSonarSensor;
+import penoplatinum.simulator.entities.SensorConfig;
+import penoplatinum.util.ExtendedVector;
+import penoplatinum.util.ReferencePosition;
 
 
 /**
@@ -20,25 +23,26 @@ import penoplatinum.sensor.RotatingSonarSensor;
  * @author: Team Platinum
  */
 public class AngieRobotAPI implements RobotAPI {
+
   private final SensorPort LIGHT_SENSORPORT = SensorPort.S4;
   private final SensorPort SONAR_SENSORPORT = SensorPort.S3;
   private final SensorPort IR_SENSORPORT = SensorPort.S1;
   private final Motor motorLeft = Motor.B;
   private final Motor motorRight = Motor.C;
   private final Motor motorSonar = Motor.A;
-  
   private LightSensor light;
   private RotatingSonarSensor sonar;
   private IRSeekerV2 irSeeker;
   private RotationMovement movement;
-
-  private static final int sensorNumberInfraRed = Model.S1;
-  private static final int sensorNumberLight = Model.S4;
-  private static final int sensorNumberSonar = Model.S3;
-  private static final int sensorNumberMotorLeft = Model.M1;
-  private static final int sensorNumberMotorRight = Model.M2;
-  private static final int sensorNumberMotorSonar = Model.M3;
-  int[] values = new int[Model.SENSORVALUES_NUM];
+  
+  private static final int sensorNumberInfraRed = SensorConfig.S1;
+  private static final int sensorNumberLight = SensorConfig.S4;
+  private static final int sensorNumberSonar = SensorConfig.S3;
+  private static final int sensorNumberMotorLeft = SensorConfig.M1;
+  private static final int sensorNumberMotorRight = SensorConfig.M2;
+  private static final int sensorNumberMotorSonar = SensorConfig.M3;
+  
+  int[] values = new int[SensorConfig.SENSORVALUES_NUM];
 
   public AngieRobotAPI() {
     //Reset tacho's
@@ -59,7 +63,6 @@ public class AngieRobotAPI implements RobotAPI {
   public RotationMovement getMovement() {
     return movement;
   }
-
 
   public LightSensor getLight() {
     return light;
@@ -108,19 +111,19 @@ public class AngieRobotAPI implements RobotAPI {
     values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
     values[sensorNumberMotorRight] = motorRight.getTachoCount();
     values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
-    values[Model.MS1] = getMotorState(motorLeft);
-    values[Model.MS2] = getMotorState(motorRight);
-    values[Model.MS3] = getMotorState(motorSonar);
+    values[SensorConfig.MS1] = getMotorState(motorLeft);
+    values[SensorConfig.MS2] = getMotorState(motorRight);
+    values[SensorConfig.MS3] = getMotorState(motorSonar);
 
     values[sensorNumberLight] = light.getNormalizedLightValue();
-    if(this.isSweeping()){
+    if (this.isSweeping()) {
       values[sensorNumberSonar] = (int) sonar.getDistance();
       values[sensorNumberInfraRed] = irSeeker.getDirection();
-      values[Model.IR0] = irSeeker.getSensorValue(1);
-      values[Model.IR1] = irSeeker.getSensorValue(2);
-      values[Model.IR2] = irSeeker.getSensorValue(3);
-      values[Model.IR3] = irSeeker.getSensorValue(4);
-      values[Model.IR4] = irSeeker.getSensorValue(5);
+      values[SensorConfig.IR0] = irSeeker.getSensorValue(1);
+      values[SensorConfig.IR1] = irSeeker.getSensorValue(2);
+      values[SensorConfig.IR2] = irSeeker.getSensorValue(3);
+      values[SensorConfig.IR3] = irSeeker.getSensorValue(4);
+      values[SensorConfig.IR4] = irSeeker.getSensorValue(5);
     }
 
     return values;
@@ -129,13 +132,13 @@ public class AngieRobotAPI implements RobotAPI {
   private int getMotorState(Motor m) {
     for (int i = 0; i < 3; i++) {
       if (!m.isMoving() || m.isStopped() || m.isFloating()) {
-        return Model.MOTORSTATE_STOPPED;
+        return SensorConfig.MOTORSTATE_STOPPED;
       }
       if (m.isForward()) {
-        return Model.MOTORSTATE_FORWARD;
+        return SensorConfig.MOTORSTATE_FORWARD;
       }
       if (m.isBackward()) {
-        return Model.MOTORSTATE_BACKWARD;
+        return SensorConfig.MOTORSTATE_BACKWARD;
       }
     }
     Utils.Error("Syncronized??? " + (m.isMoving() ? 1 : 0) + "," + (m.isForward() ? 1 : 0) + "," + (m.isBackward() ? 1 : 0) + "," + (m.isStopped() ? 1 : 0) + "," + (m.isFloating() ? 1 : 0));
@@ -149,19 +152,17 @@ public class AngieRobotAPI implements RobotAPI {
   }
 
   public void setSpeed(int motor, int speed) {
-
     switch (motor) {
-      case Model.M3:
+      case SensorConfig.M3:
         motorSonar.setSpeed(speed);
         break;
-      case Model.M1:
+      case SensorConfig.M1:
         movement.SPEEDFORWARD = speed > 400 ? 400 : speed;
         break;
-      case Model.M2:
+      case SensorConfig.M2:
         movement.SPEEDFORWARD = speed > 400 ? 400 : speed;
         break;
     }
-
   }
 
   public void beep() {
@@ -173,12 +174,22 @@ public class AngieRobotAPI implements RobotAPI {
     reference = movement.getInternalOrientation();
   }
 
+  public ExtendedVector getRelativePosition(ReferencePosition reference) {
+    if (reference.internalValue == null) {
+      throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
+    }
+    outVector.set(reference.internalValue);
+    outVector.negate();
+    outVector.add(movement.getInternalOrientation());
+
+    return outVector;
+  }
   public float getRelativeAngle(float reference) {
     outAngle = -reference + movement.getInternalOrientation();
     return outAngle;
   }
 
-  public boolean sweepInProgress() {
+  public boolean isSweeping() {
     return sonar.sweepInProgress();
   }
 
@@ -188,13 +199,5 @@ public class AngieRobotAPI implements RobotAPI {
 
   public List<Integer> getSweepResult() {
     return sonar.getSweepResult();
-  }
-
-  boolean isSweeping = false;
-  public void setSweeping(boolean b){
-    isSweeping = b;
-  }
-  public boolean isSweeping() {
-    return isSweeping;
   }
 }
