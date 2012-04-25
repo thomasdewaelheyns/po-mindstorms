@@ -8,15 +8,6 @@ Als je iets opneemt, zet er dan je naam bij. Als je info kan verschaffen, zet je
 
 ---
 
-barcode/BarcodeBlackBlack.java
-barcode/BarcodeCorrector.java
-barcode/BarcodeTranslator.java
-
-Dit zou moeten vervangen zijn door 1 Barcode.java class. Als ik me niet vergis heeft Thomas dit in orde gebracht. Als ik me zijn email nog goed herinner, heeft hij nog wel wat zaken laten staan die eigenlijk weg moeten. Dit zou beter ineens opgekuist worden. Alleen de echt nodige dingen moeten overblijven. De test die hij geschreven heeft moet wel nog uitgebreid worden met meer testen die special cases behandelen, als ook negatieve testen om zeker te zijn dat fouten niet positief geidentificeerd worden.
-
-INFO: Ruben
-TODO: Thomas
-
 bluetooth/CallbackPacketTransporter.java
 bluetooth/IConnection.java
 bluetooth/IPacketHandler.java
@@ -96,8 +87,6 @@ model/part/SensorModelPart.java
 model/part/SonarModelPart.java
 model/part/WallsModelPart.java
 model/processor/AgentWallsUpdateProcessor.java
-model/processor/BarcodeBlackModelProcessor.java
-model/processor/BarcodeWallDetectorModelProcessor.java
 model/processor/GapModelProcessor.java
 model/processor/GhostProtocolModelProcessor.java
 model/processor/HistogramModelProcessor.java
@@ -227,8 +216,6 @@ Dit zal ik proberen op te nemen, tenzij iemand het graag wil doen ;-)
 INFO: xtof
 TODO: xtof
 
-util/Buffer.java
-util/BufferSubset.java
 util/CantorDiagonal.java
 util/CircularQueue.java
 util/ExtendedVector.java
