@@ -41,6 +41,10 @@ public class LinkedSector implements Sector {
     this();
     addWalls(((LinkedSector) original).walls);
   }
+  
+  public boolean equals(Object other) {
+    return this.walls == ((LinkedSector)other).walls;
+  }
 
   @Override
   public LinkedSector putOn(Grid grid) {
