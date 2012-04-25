@@ -9,6 +9,8 @@ package penoplatinum.model.part;
 
 import penoplatinum.model.Model;
 
+import penoplatinum.util.LightColor;
+
 
 public class BarcodeModelPart implements ModelPart {
   // boilerplate implementation required to register and retrieve a ModelPart
@@ -17,71 +19,32 @@ public class BarcodeModelPart implements ModelPart {
     return (BarcodeModelPart)model.getPart(ModelPartRegistry.BARCODE_MODEL_PART);
   }
 
-  boolean isReadingBarcode = false;
+  private Barcode barcode     = null,
+                  prevBarcode = new Barcode();
+
+
+  public void startNewReading() {
+    this.barcode = new Barcode();
+  }
+  
+  public void addReading(LightColor color) {
+    this.barcode.addColor(color);
+  }
+
+  public void stopReading() {
+    this.prevBarcode = new Barcode(this.barcode);
+    this.barcode = null;
+  }
   
   public boolean isReadingBarcode() {
-    return this.isReadingBarcode;
+    return this.barcode != null;
   }
 
+  public int getCurrentBarcodeValue() {
+    return this.barcode.translate();
+  }
+  
+  public int getPreviousBarcodeValue() {
+    return this.prevBarcode.translate();
+  }
 }
-
-  /*
-  
-  TODO:
-  
-  private int bufferSize = 1000;
-  private int barcode = -1;
-  private Buffer lightValueBuffer = new Buffer(bufferSize);
-  private int lastBarcode = -1;
-    
-  
-  public int getBarcode() {
-    return this.barcode;
-  }
-
-
-  public void setBarcode(int barcode) {
-    if (barcode == 0) {
-      barcode = -1;
-    }
-    if (barcode != -1) {
-      lastBarcode = barcode;
-
-      Utils.Log(barcode + ","+BarcodeTranslator.reverse(barcode, 6));
-
-      // Barcode update is sent on next position send!!
-
-    }
-    this.barcode = barcode;
-
-  }
-
-  public Buffer getLightValueBuffer() {
-    return this.lightValueBuffer;
-  }
-
-  public void setReadingBarcode(boolean b) {
-    this.isReadingBarcode = b;
-  }
-
-
-  public int getLastBarcode() {
-    return lastBarcode;
-  }
-  
-  // This should be called after the robot has moved to the next tile.
-  public void clearLastBarcode()
-  {
-    lastBarcode = -1;
-  }
-  
-
-//  public void clearLastBarcode() {
-//    lastBarcode = -1;
-//  }
-
-  @Override
-  public void clearDirty() {
-    barcode = -1;
-  }
-*/
