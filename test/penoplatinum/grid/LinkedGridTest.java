@@ -3,13 +3,10 @@ package penoplatinum.grid;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.*;
-import penoplatinum.simulator.tiles.Sectors;
 import static org.mockito.Mockito.*;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.util.Rotation;
-import penoplatinum.util.TransformationTRT;
 
 public class LinkedGridTest extends TestCase {
 
