@@ -26,6 +26,7 @@ public class Barcode {
   private static final int MINIMUM_BETTER = 1;
 
   private List<Integer> colorBuffer = new ArrayList<Integer>();
+  private int brownCount = 0;
   
   // private static byte[] expand = 
   //   new byte[]{  1,  2,  3,  4,  5,  6,  7,  9, 10, 11, 13, 14, 15, 
@@ -40,14 +41,12 @@ public class Barcode {
   }
   
   public void addColor(LightColor color){
-    int colorValue = this.toColor(color);
-    if( colorValue != BROWN ) {
-      this.colorBuffer.add(colorValue);
-    }
+    this.colorBuffer.add(this.toColor(color));
   }
   
   // TODO: explain algorithm or rename variables to clarify working
   public int translate() {
+    this.trimBrown();
     // we need at least enough colors equal to the length of a barcode
     if( this.colorBuffer.size() < BARCODE_LENGTH ) { return -1; }
 
@@ -66,6 +65,17 @@ public class Barcode {
       val = val * 2 + (sum > 0 ? 1 : 0);
     }
     return val;
+  }
+  
+  private void trimBrown() {
+    while(this.colorBuffer.size() > 0 && this.colorBuffer.get(0) == BROWN) {
+      this.colorBuffer.remove(0);
+    }
+    while(this.colorBuffer.size() > 0 && 
+          this.colorBuffer.get(this.colorBuffer.size()-1) == BROWN)
+    {
+      this.colorBuffer.remove(this.colorBuffer.size()-1);
+    }
   }
 
   // shouldn't this be an instance method ?
