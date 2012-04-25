@@ -59,6 +59,7 @@ public class RunAllTests {
       penoplatinum.model.GhostModelTest.class,
       penoplatinum.model.part.ModelPartTest.class,
       penoplatinum.model.part.ModelPartRegistryTest.class,
+      penoplatinum.model.part.BarcodeTest.class,
       penoplatinum.model.processor.ModelProcessorTest.class,
       penoplatinum.robot.RobotTest.class,
       penoplatinum.robot.RobotAPITest.class,
