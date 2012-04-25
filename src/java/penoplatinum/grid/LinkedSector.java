@@ -99,7 +99,7 @@ public class LinkedSector implements Sector {
 
     Bearing locationAtNeighbour = atBearing.reverse();
     Boolean iHaveWall = !this.knowsWall(atBearing) ? null : this.hasWall(atBearing);
-    Boolean neighbourHasWall = !neighbour.knowsWall(atBearing) ? null : neighbour.hasWall(locationAtNeighbour);
+    Boolean neighbourHasWall = !neighbour.knowsWall(locationAtNeighbour) ? null : neighbour.hasWall(locationAtNeighbour);
 
     // if we have different information, we need to update it
     if (neighbourHasWall != iHaveWall) {

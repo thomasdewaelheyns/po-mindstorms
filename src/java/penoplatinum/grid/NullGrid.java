@@ -5,7 +5,6 @@ package penoplatinum.grid;
  * 
  * @author Team Platinum
  */
-
 import java.util.List;
 
 import penoplatinum.util.Bearing;
@@ -13,15 +12,16 @@ import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 
-
 public class NullGrid implements Grid {
+
   private static Grid instance = null;
 
-  private NullGrid() {}
-  
+  private NullGrid() {
+  }
+
   public static Grid getInstance() {
-    if(instance == null) {
-      synchronized(NullGrid.class) { 
+    if (instance == null) {
+      synchronized (NullGrid.class) {
         instance = new NullGrid();
       }
     }
@@ -143,11 +143,11 @@ public class NullGrid implements Grid {
 
   public void disengage() {
   }
-  
+
   public Agent getAgentAt(Sector sector) {
     return null;
   }
-  
+
   public Point getPositionOf(Sector sector) {
     return null;
   }
@@ -155,7 +155,7 @@ public class NullGrid implements Grid {
   public Point getPosition(Agent sector) {
     return null;
   }
-  
+
   public Grid remove(Agent agent) {
     return this;
   }
@@ -163,11 +163,11 @@ public class NullGrid implements Grid {
   public Grid add(Agent agent) {
     return this;
   }
-  
+
   public Sector getSectorAt(Point position) {
     return null;
   }
-  
+
   public Bearing getBearingOf(Agent agent) {
     return Bearing.UNKNOWN;
   }
@@ -175,25 +175,24 @@ public class NullGrid implements Grid {
   public Sector getSectorOf(Agent agent) {
     return null;
   }
-  
+
   public Grid addRoot(Sector sector) {
     return this;
   }
-  
+
   public Grid moveForward(Agent agent) {
     return this;
   }
 
   @Override
   public Grid setTransformation(TransformationTRT transform) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return this;
   }
 
   @Override
   public Grid add(Sector s, Point position) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
   }
-
 
   @Override
   public TransformationTRT getTransformation() {
@@ -201,12 +200,17 @@ public class NullGrid implements Grid {
   }
 
   @Override
-  public Grid copyTo(Grid target) {
+  public Grid add(Agent agent, Point position, Bearing bearing) {
     return this;
   }
 
   @Override
-  public Grid remove(Sector s) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Grid moveTo(Agent agent, Point position, Bearing bearing) {
+    return this;
+  }
+
+  @Override
+  public Agent getAgentAt(Point positionPoint) {
+    return null;
   }
 }

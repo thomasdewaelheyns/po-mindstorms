@@ -10,14 +10,11 @@ package penoplatinum.grid;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.swing.text.Position;
-import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.util.CantorDiagonal;
 import penoplatinum.util.SimpleHashMap;
-import penoplatinum.util.Transformation;
 
 /**
  * This class implements a grid using LinkedSectors. The grid can also contain
@@ -30,24 +27,18 @@ public class LinkedGrid implements Grid {
   // we keep track of the boundaries of our Grid
   int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
   // mapping from coordinates to allocating Sector
-
   private SimpleHashMap<Integer, Sector> sectors = new SimpleHashMap<Integer, Sector>();
-
   private SimpleHashMap<Integer, Agent> agents = new SimpleHashMap<Integer, Agent>();
-
   private SimpleHashMap<Agent, Bearing> agentBearings = new SimpleHashMap<Agent, Bearing>();
-
-  private TransformationTRT transformation;
 
   @Override
   public TransformationTRT getTransformation() {
-    return transformation;
+    return TransformationTRT.Identity;
   }
 
   @Override
   public Grid setTransformation(TransformationTRT transform) {
-    transformation = transform;
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -85,10 +76,10 @@ public class LinkedGrid implements Grid {
   private void placeNewSectorPathTo(Point pos) {
     int x = 0;
     int y = 0;
-    if (x != 0) {
-      x -= (int) Math.signum(x);
-    } else if (y != 0) {
-      y -= (int) Math.signum(y);
+    if (pos.getX() != 0) {
+      x = -(int) Math.signum(pos.getX());
+    } else if (pos.getY() != 0) {
+      y = -(int) Math.signum(pos.getY());
     } else {
       // we are at origin, so a path exists!
       return;
@@ -98,9 +89,10 @@ public class LinkedGrid implements Grid {
     if (getSectorAt(pos) == null) {
       Sector s = new LinkedSector();
       add(s, pos);
+      placeNewSectorPathTo(pos);
+
     }
 
-    placeNewSectorPathTo(pos);
 
     pos.translate(-x, -y); // restore point
 
@@ -121,6 +113,9 @@ public class LinkedGrid implements Grid {
 
   @Override
   public Grid add(Agent agent, Point position, Bearing bearing) {
+    if (getSectorAt(position) == null)
+      add(new LinkedSector(), position);
+    
     int index = CantorDiagonal.transform(position);
     agents.put(index, agent);
     agentBearings.put(agent, bearing);
@@ -253,9 +248,7 @@ public class LinkedGrid implements Grid {
   //
   //
   // visualization for the Grid, by default none, is used by Simulator
-
   private GridView view = NullGridView.getInstance();
-
   private GridProcessor processor;
 
   public Grid setProcessor(GridProcessor processor) {

@@ -223,7 +223,63 @@ public class LinkedSectorTest extends TestCase {
   }
 
   public void testHasSameWallsAs() {
-    fail();
+    Sector s1 = new LinkedSector().setWall(Bearing.N).clearWall(Bearing.E).setNoWall(Bearing.N).setWall(Bearing.S);
+    Sector s2 = new LinkedSector().clearWall(Bearing.E).setNoWall(Bearing.N).setWall(Bearing.S);
+    assertTrue(s1.hasSameWallsAs(s2));
+    
+  }
+  
+  public void testMergeWalls()
+  {
+    Sector s1,s2;
+    
+    s1 = new LinkedSector().setWall(Bearing.E);
+    s2 = new LinkedSector().setWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertTrue(s1.hasWall(Bearing.E));
+    
+    s1 = new LinkedSector().setWall(Bearing.E);
+    s2 = new LinkedSector().clearWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertTrue(s1.hasWall(Bearing.E));
+    
+    s1 = new LinkedSector().setWall(Bearing.E);
+    s2 = new LinkedSector().setNoWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertFalse(s1.knowsWall(Bearing.E));
+    
+    
+    s1 = new LinkedSector().clearWall(Bearing.E);
+    s2 = new LinkedSector().setWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertTrue(s1.hasWall(Bearing.E));
+    
+    s1 = new LinkedSector().clearWall(Bearing.E);
+    s2 = new LinkedSector().clearWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertFalse(s1.knowsWall(Bearing.E));
+    
+    s1 = new LinkedSector().clearWall(Bearing.E);
+    s2 = new LinkedSector().setNoWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertFalse(s1.hasWall(Bearing.E));
+    
+    
+    s1 = new LinkedSector().setNoWall(Bearing.E);
+    s2 = new LinkedSector().setWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertFalse(s1.knowsWall(Bearing.E));
+    
+    s1 = new LinkedSector().setNoWall(Bearing.E);
+    s2 = new LinkedSector().clearWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertFalse(s1.hasWall(Bearing.E));
+    
+    s1 = new LinkedSector().setNoWall(Bearing.E);
+    s2 = new LinkedSector().setNoWall(Bearing.W);
+    s1.addNeighbour(s2, Bearing.E);
+    assertFalse(s1.hasWall(Bearing.E));
+    
   }
 
   // utility methods to setup basic components

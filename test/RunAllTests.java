@@ -28,7 +28,7 @@ public class RunAllTests {
       penoplatinum.util.UtilsTest.class,
       //      penoplatinum.barcode.BarcodeTest.class,
       penoplatinum.grid.LinkedSectorTest.class,
-      penoplatinum.grid.GridTest.class,
+      penoplatinum.grid.LinkedGridTest.class,
       penoplatinum.protocol.ExternalEventHandlerTest.class,
       penoplatinum.protocol.ProtocolHandlerTest.class,
       //penoplatinum.protocol.GhostProtocolHandlerTest.class,
