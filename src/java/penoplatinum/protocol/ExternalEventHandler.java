@@ -14,8 +14,8 @@ import penoplatinum.util.Point;
 
 public interface ExternalEventHandler {
   public void handleActivation();
-  public void handleSectorInfo(String agentName, Point position, 
-                               Boolean n, Boolean e, Boolean s, Boolean w);
+  public void handleSectorInfo(String agentName, Point position, boolean knowsN,
+                               boolean n, boolean knowsE, boolean e, boolean knowsS, boolean s, boolean knwosW, boolean w);
   public void handleNewAgent(String agentName);
   public void handleAgentInfo(String agentName, Point position, 
                               int value, Bearing bearing);

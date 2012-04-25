@@ -53,7 +53,7 @@ public class GhostProtocolHandlerTest extends TestCase {
   
   public void testHandleEnterSector() {
     this.setup();
-    Sector sector = this.mockSector(12, 34, false, true, null, true);
+    Sector sector = this.mockSector(12, 34, true, false, true, true, false, false, true, true);
     this.protocolHandler.handleEnterSector(sector);
     verify(this.mockedGatewayClient).send(NAME + " POSITION 12,-34\n", 
                                           Config.BT_GHOST_PROTOCOL);
@@ -62,7 +62,7 @@ public class GhostProtocolHandlerTest extends TestCase {
 
   public void testHandleFoundSector() {
     this.setup();
-    Sector sector = this.mockSector(12, 34, false, true, null, true);    
+    Sector sector = this.mockSector(12, 34, true, false, true, true, false, true, true, true);    
     this.protocolHandler.handleFoundSector(sector);
     verify(this.mockedGatewayClient).send(NAME + " DISCOVER 12,-34 0 1 2 1\n", 
                                           Config.BT_GHOST_PROTOCOL);
@@ -71,7 +71,7 @@ public class GhostProtocolHandlerTest extends TestCase {
   
   public void testHandleFoundAgent() {
     this.setup();
-    Sector       sector = this.mockSector(12, 34, false, true, null, true);    
+    Sector       sector = this.mockSector(12, 34, true, false, true, true, false, false, true, true);    
     BarcodeAgent agent  = this.mockBarcodeAgent(24, Bearing.E);
     this.protocolHandler.handleFoundAgent(sector, agent);
     verify(this.mockedGatewayClient).send(NAME + " BARCODEAT 12,-34 24 2\n",
@@ -81,7 +81,7 @@ public class GhostProtocolHandlerTest extends TestCase {
 
   public void handleFoundAgent() {
     this.setup();
-    Sector      sector = this.mockSector(12, 34, false, true, null, true);    
+    Sector      sector = this.mockSector(12, 34, true, false, true, true, false, false, true, true);    
     PacmanAgent agent  = this.mockPacmanAgent();
     this.protocolHandler.handleFoundAgent(sector, agent);
     verify(this.mockedGatewayClient).send(NAME + " PACMAN 12,-34\n",
@@ -152,13 +152,102 @@ public class GhostProtocolHandlerTest extends TestCase {
     verifyNoMoreInteractions(this.mockedGatewayClient);
   }
   
-  // TODO: receive other than NAME command before 4 joins or name
-  // TODO: receive 4 names before any activity
-  // TODO: receive position
-  // TODO: receive discover
-  // TODO: receive barcodeat
-  // TODO: receive pacman
-  // TODO: complete entire protocol
+  // receive other than NAME command before 4 joins
+  public void testCommandBeforeActive(){
+    this.setup();
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("testRobot1 DISCOVER 1,1 1 1 0 0\n");
+    verifyNoMoreInteractions(this.mockedEventHandler);
+  }
+  
+  // receive other than NAME command a NAME
+  public void testCommandBeforeActive2(){
+    this.setup();
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    verify(this.mockedEventHandler).handleActivation();
+    this.protocolHandler.receive("testRobot1 DISCOVER 1,1 1 1 0 0\n");
+    verifyNoMoreInteractions(this.mockedEventHandler);
+  }
+  
+  // receive position
+  public void testReceivePosition(){
+    this.setup();
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    verify(this.mockedEventHandler).handleActivation();
+    this.protocolHandler.receive("testRobot1 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot1");
+    this.protocolHandler.receive("testRobot2 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot2");
+    this.protocolHandler.receive("testRobot3 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot3");
+    
+    this.protocolHandler.receive("testRobot3 POSITION 2,3\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(2,-3), 0, Bearing.UNKNOWN);
+  }
+  
+  // receive discover
+  public void testReceiveDiscover(){
+    this.setup();
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    verify(this.mockedEventHandler).handleActivation();
+    this.protocolHandler.receive("testRobot1 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot1");
+    this.protocolHandler.receive("testRobot2 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot2");
+    this.protocolHandler.receive("testRobot3 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot3");
+    
+    this.protocolHandler.receive("testRobot1 DISCOVER 2,2 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot1", new Point(2,-2), true, false, true, false, true, true, false, false);
+  }
+  
+  // receive barcodeat
+  public void testReceiveBarcodeAt(){
+    this.setup();
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    verify(this.mockedEventHandler).handleActivation();
+    this.protocolHandler.receive("testRobot1 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot1");
+    this.protocolHandler.receive("testRobot2 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot2");
+    this.protocolHandler.receive("testRobot3 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot3");
+    
+    this.protocolHandler.receive("testRobot2 BARCODEAT 2,2 50 1\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(2, -2), 50, Bearing.N);
+  }
+  
+  // receive pacman
+  public void testReceivePacman(){
+    this.setup();
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    verify(this.mockedEventHandler).handleActivation();
+    this.protocolHandler.receive("testRobot1 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot1");
+    this.protocolHandler.receive("testRobot2 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot2");
+    this.protocolHandler.receive("testRobot3 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot3");
+    
+    this.protocolHandler.receive("testRobot2 PACMAN 2,2\n");
+    verify(this.mockedEventHandler, times(1)).handleTargetInfo("testRobot2", new Point(2, -2));
+  }
 
   // constructors
   
@@ -168,9 +257,13 @@ public class GhostProtocolHandlerTest extends TestCase {
     this.protocolHandler.receive("JOIN\n");
     this.protocolHandler.receive("JOIN\n");
     this.protocolHandler.receive("JOIN\n");
+    verify(this.mockedEventHandler).handleActivation();
     this.protocolHandler.receive("testRobot1 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot1");
     this.protocolHandler.receive("testRobot2 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot2");
     this.protocolHandler.receive("testRobot3 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot3");
     
     this.protocolHandler.receive("JOIN\n");
     
@@ -179,11 +272,112 @@ public class GhostProtocolHandlerTest extends TestCase {
     verifyNoMoreInteractions(this.mockedEventHandler);
     this.protocolHandler.receive("testRobot4 NAME 2.1\n");
     verify(this.mockedEventHandler).handleNewAgent("testRobot4");
-    
+    verify(this.mockedEventHandler).handleRemoveAgent("testRobot1");
     this.protocolHandler.receive("testRobot1 DISCOVER 1,1 1 1 0 0\n");
     verifyNoMoreInteractions(this.mockedEventHandler);
-    
   }
+  
+  public void testScenario(){
+    this.setup();
+    //We start bij joining
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    verify(this.mockedEventHandler).handleActivation();
+    verify(this.mockedGatewayClient).send(NAME + " NAME 2.1\n", Config.BT_GHOST_PROTOCOL);
+    this.protocolHandler.receive("testRobot1 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot1");
+    this.protocolHandler.receive("testRobot2 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot2");
+    this.protocolHandler.receive("testRobot3 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot3");
+    //We send and receive some communication
+    
+    this.protocolHandler.receive("testRobot2 POSITION 1,0\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(1,0), 0, Bearing.UNKNOWN);
+    this.protocolHandler.receive("testRobot3 POSITION 1,0\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(1,0), 0, Bearing.UNKNOWN);
+    this.protocolHandler.receive("testRobot1 POSITION 0,1\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot1", new Point(0,-1), 0, Bearing.UNKNOWN);
+    
+    this.protocolHandler.handleEnterSector(mockSector(1, 0, true, true, true, false, true, false, true, false));
+    verify(this.mockedGatewayClient).send(NAME + " POSITION 1,0\n", Config.BT_GHOST_PROTOCOL);
+    verifyNoMoreInteractions(this.mockedGatewayClient);
+    
+    this.protocolHandler.receive("testRobot1 DISCOVER 0,1 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot1", new Point(0,-1), true, false, true, false, true, true, false, false);
+    this.protocolHandler.receive("testRobot2 DISCOVER 1,0 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot2", new Point(1,0), true, false, true, false, true, true, false, false);
+    this.protocolHandler.receive("testRobot3 DISCOVER 1,0 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot3", new Point(1,0), true, false, true, false, true, true, false, false);
+    
+    this.protocolHandler.handleFoundSector(mockSector(1, 0, true, true, true, false, true, false, true, false));
+    verify(this.mockedGatewayClient).send(NAME +" DISCOVER 1,0 1 0 0 0\n", Config.BT_GHOST_PROTOCOL);
+    
+    this.protocolHandler.receive("testRobot2 POSITION 2,0\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(2,0), 0, Bearing.UNKNOWN);
+    this.protocolHandler.receive("testRobot3 POSITION 2,0\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(2,0), 0, Bearing.UNKNOWN);
+    this.protocolHandler.receive("testRobot1 POSITION 0,2\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot1", new Point(0,-2), 0, Bearing.UNKNOWN);
+    
+    this.protocolHandler.handleEnterSector(mockSector(1, 1, true, true, true, false, true, false, true, false));
+    verify(this.mockedGatewayClient).send(NAME + " POSITION 1,-1\n", Config.BT_GHOST_PROTOCOL);
+    verifyNoMoreInteractions(this.mockedGatewayClient);
+    
+    // someone sends join when we are already active
+    this.protocolHandler.receive("JOIN\n");
+    verify(this.mockedGatewayClient).send(NAME+" RENAME 2.1\n", Config.BT_GHOST_PROTOCOL);
+    this.protocolHandler.receive("testRobot2 RENAME 2.1\n");
+    this.protocolHandler.receive("testRobot3 RENAME 2.1\n");
+    verifyNoMoreInteractions(this.mockedEventHandler);
+    this.protocolHandler.receive("testRobot4 NAME 2.1\n");
+    verify(this.mockedEventHandler).handleNewAgent("testRobot4");
+    verify(this.mockedEventHandler).handleRemoveAgent("testRobot1");
+    
+    this.protocolHandler.receive("testRobot2 DISCOVER 2,0 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot2", new Point(2,0), true, false, true, false, true, true, false, false);
+    this.protocolHandler.receive("testRobot3 DISCOVER 2,0 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot3", new Point(2,0), true, false, true, false, true, true, false, false);
+    
+    this.protocolHandler.handleFoundSector(mockSector(1, 1, true, true, true, false, true, false, true, false));
+    verify(this.mockedGatewayClient).send(NAME +" DISCOVER 1,-1 1 0 0 0\n", Config.BT_GHOST_PROTOCOL);
+    
+    this.protocolHandler.receive("testRobot2 POSITION 3,0\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(3,0), 0, Bearing.UNKNOWN);
+    this.protocolHandler.receive("testRobot3 POSITION 3,0\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(3,0), 0, Bearing.UNKNOWN);
+    this.protocolHandler.receive("testRobot4 POSITION 0,1\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot4", new Point(0,-1), 0, Bearing.UNKNOWN);
+    
+    this.protocolHandler.handleEnterSector(mockSector(1, 2, true, true, true, false, true, false, true, false));
+    verify(this.mockedGatewayClient).send(NAME + " POSITION 1,-2\n", Config.BT_GHOST_PROTOCOL);
+    verifyNoMoreInteractions(this.mockedGatewayClient);
+    
+    this.protocolHandler.receive("testRobot4 DISCOVER 0,1 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot4", new Point(0,-1), true, false, true, false, true, true, false, false);
+    this.protocolHandler.receive("testRobot2 DISCOVER 3,0 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot2", new Point(3,0), true, false, true, false, true, true, false, false);
+    this.protocolHandler.receive("testRobot3 DISCOVER 3,0 0 0 1 2\n");
+    verify(this.mockedEventHandler, times(1)).handleSectorInfo("testRobot3", new Point(3,0), true, false, true, false, true, true, false, false);
+    
+    this.protocolHandler.handleFoundSector(mockSector(1, 2, true, true, true, false, true, false, true, false));
+    verify(this.mockedGatewayClient).send(NAME +" DISCOVER 1,-2 1 0 0 0\n", Config.BT_GHOST_PROTOCOL);
+    
+    this.protocolHandler.receive("testRobot2 BARCODEAT 3,0 50 2\n");
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(3, 0), 50, Bearing.E);
+    
+    this.protocolHandler.receive("testRobot3 PACMAN 4,0\n");
+    verify(this.mockedEventHandler, times(1)).handleTargetInfo("testRobot3", new Point(4,0));
+    
+    this.protocolHandler.receive("testRobot3 CAPTURED\n");
+    verify(this.mockedEventHandler).handleCaptured("testRobot3");
+    
+    //TODO: maybe SHOWMAP when done.
+  }
+  
+  
 
   private void setup() {
     this.protocolHandler     = this.createGhostProtocolHandler();
@@ -192,7 +386,7 @@ public class GhostProtocolHandlerTest extends TestCase {
     protocolHandler.useGatewayClient(mockedGatewayClient);
     protocolHandler.useExternalEventHandler(mockedEventHandler);
   }
-  
+    
   private GhostProtocolHandler createGhostProtocolHandler() {
     return new GhostProtocolHandler() {
       public String getName() { return NAME; }
@@ -208,8 +402,8 @@ public class GhostProtocolHandlerTest extends TestCase {
     
   }
   
-  private Sector mockSector(int left, int top,
-                            Boolean n, Boolean e, Boolean s, Boolean w)
+  private Sector mockSector(int left, int top, boolean knowsN, boolean n,
+                            boolean knowsE, boolean e, boolean knowsS, boolean s, boolean knowsW, boolean w)
   {
     Sector mockedSector = mock(Sector.class);
     Grid mockedGrid = mock(Grid.class);
@@ -219,6 +413,12 @@ public class GhostProtocolHandlerTest extends TestCase {
     when(mockedSector.hasWall(Bearing.E)).thenReturn(e);
     when(mockedSector.hasWall(Bearing.S)).thenReturn(s);
     when(mockedSector.hasWall(Bearing.W)).thenReturn(w);
+    
+    when(mockedSector.knowsWall(Bearing.N)).thenReturn(knowsN);
+    when(mockedSector.knowsWall(Bearing.E)).thenReturn(knowsE);
+    when(mockedSector.knowsWall(Bearing.S)).thenReturn(knowsS);
+    when(mockedSector.knowsWall(Bearing.W)).thenReturn(knowsW);
+    
     return mockedSector;
   }
 

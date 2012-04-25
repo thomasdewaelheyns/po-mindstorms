@@ -13,10 +13,7 @@ import penoplatinum.gateway.GatewayClient;
 import penoplatinum.grid.BarcodeAgent;
 import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.Sector;
-import penoplatinum.util.Bearing;
-import penoplatinum.util.Point;
-import penoplatinum.util.Scanner;
-import penoplatinum.util.SimpleHashMap;
+import penoplatinum.util.*;
 
 
 public abstract class GhostProtocolHandler implements ProtocolHandler {
@@ -57,63 +54,36 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     String agentName = scanner.next();
     if( "JOIN".equals(agentName) && ! scanner.hasNext() ) {
       this.handleJoin();
-    }
-    else {
+    } else if(agentName.equals(this.name)){
+      return;
+      //TODO kijk na of de naamcheck nog ergens anders gebeurd
+    } else {
       try{handleCommand(agentName, scanner);}
-      catch(Exception e){System.out.println("An error in a command!");}
+      catch(Exception e){Utils.Log("Command error: "+msg);}
     }
   }
   
   private void handleCommand(String agentName, Scanner scanner){
     String command = scanner.next();
-    
-    switch(command){
-      case "NAME":
+    if(command.equals("NAME")){
         handleName(agentName, scanner);
-        break;
-      case "RENAME":
+      } else if (command.equals("RENAME")){
         handleRename(agentName, scanner);
-        break;
-      case "POSITION":
+      } else if (command.equals("POSITION")){
         handlePosition(agentName, scanner);
-        break;
-      case "DISCOVER":
+      } else if (command.equals("DISCOVER")){
         handleDiscover(agentName, scanner);
-        break;
-      case "BARCODEAT":
+      } else if (command.equals("BARCODEAT")){
         handleBarcodeAt(agentName, scanner);
-        break;
-      case "PACMAN":
+      } else if (command.equals("PACMAN")){
         handlePacman(agentName, scanner);
-        break;
-      case "CAPTURED":
+      } else if (command.equals("CAPTURED")){
         handleCaptured(agentName, scanner);
-        break;
-      case "PING":
+      } else if (command.equals("PING")){
         handlePing(agentName, scanner);
-        break;
-//      case "PONG":
-//        handlePong(agentName, scanner);
-//        break;
-      case "SHOWMAP":
+      } else if (command.equals("SHOWMAP")){
         handleShowMap(agentName, scanner);
-        break;
-//      case "REPOSITION":
-//        handleReposition(agentName, scanner);
-//        break;
-//      case "REDISCOVER":
-//        handleRediscover(agentName, scanner);
-//        break;
-//      case "REBARCODEAT":
-//        handleRebarcodeAt(agentName, scanner);
-//        break;
-//      case "REPACMAN":
-//        handleRepacman(agentName, scanner);
-//        break;
-      default:
-        //We don't recognize the command so we ignore it
-        break;
-    }
+      }
   }
   
   
@@ -140,7 +110,9 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   // when we find a new sector, we need to send out discover information
   @Override
   public ProtocolHandler handleFoundSector(Sector sector) {
-    this.sendDiscover(sector.getGrid().getPositionOf(sector),
+    this.sendDiscover(sector.getGrid().getPositionOf(sector),sector.knowsWall(Bearing.N),
+                      sector.knowsWall(Bearing.E), sector.knowsWall(Bearing.S),
+                      sector.knowsWall(Bearing.W),
                       sector.hasWall(Bearing.N), sector.hasWall(Bearing.E),
                       sector.hasWall(Bearing.S), sector.hasWall(Bearing.W));
     return this;
@@ -166,7 +138,9 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     this.sendRePosition(position);
     this.sendRePacman(position);
     for(Sector sec: sectors){
-      this.sendReDiscover(sec.getGrid().getPositionOf(sec),
+      this.sendReDiscover(sec.getGrid().getPositionOf(sec), sec.knowsWall(Bearing.N),
+                      sec.knowsWall(Bearing.E), sec.knowsWall(Bearing.S),
+                      sec.knowsWall(Bearing.W),
                       sec.hasWall(Bearing.N), sec.hasWall(Bearing.E),
                       sec.hasWall(Bearing.S), sec.hasWall(Bearing.W));
       //TODO check voor barcode
@@ -200,13 +174,14 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   }
 
   // example: platinum DISCOVER 10,13
-  private void sendDiscover(Point position, 
-                            Boolean n, Boolean e, Boolean s, Boolean w)
+  private void sendDiscover(Point position, boolean knowsN, boolean knowsE, boolean knowsS, boolean knowsW,
+                            boolean n, boolean e, boolean s, boolean w)
+          
   {
     this.send(this.getName() + " DISCOVER " +
               this.translateToExternalFormat(position) + " " + 
-              this.encodeTrit(n) + " " + this.encodeTrit(e) + " " +
-              this.encodeTrit(s) + " " + this.encodeTrit(w) );
+              this.encodeTrit(knowsN, n) + " " + this.encodeTrit(knowsE, e) + " " +
+              this.encodeTrit(knowsS, s) + " " + this.encodeTrit(knowsW, w) );
   }
 
   // example: platinum PACMAN 10,13
@@ -235,13 +210,13 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     this.send(this.getName() + " REPOSITION " + 
               this.translateToExternalFormat(position));
   }
-  private void sendReDiscover(Point position, 
-                            Boolean n, Boolean e, Boolean s, Boolean w)
+  private void sendReDiscover(Point position, boolean knowsN, boolean knowsE, boolean knowsS, boolean knowsW,
+                            boolean n, boolean e, boolean s, boolean w)
   {
     this.send(this.getName() + " REDISCOVER " +
               this.translateToExternalFormat(position) + " " + 
-              this.encodeTrit(n) + " " + this.encodeTrit(e) + " " +
-              this.encodeTrit(s) + " " + this.encodeTrit(w) );
+              this.encodeTrit(knowsN, n) + " " + this.encodeTrit(knowsE, e) + " " +
+              this.encodeTrit(knowsS, s) + " " + this.encodeTrit(knowsE, w) );
   }
   
   private void sendReBarcodeAt(Point position, int code, Bearing bearing) {
@@ -290,9 +265,9 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   private void handleName(String agentName, Scanner scanner) {
     String version = scanner.next();
     if(renaming){
-        if(renamed.get(agentName) != null){
-        renamed.put(agentName, version);
-        this.eventHandler.handleNewAgent(agentName);
+        if(renamed.get(agentName) == null){
+          renamed.put(agentName, version);
+          this.eventHandler.handleNewAgent(agentName);
       }
         checkRenamingFinished();
     }
@@ -312,7 +287,7 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   private void handleRename(String agentName, Scanner scanner){
     String version = scanner.next();
     if(renaming){
-        if(renamed.get(agentName) != null){
+        if(renamed.get(agentName) == null){
         renamed.put(agentName, version);
       }
     }
@@ -338,8 +313,10 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     // raise SectorInfo event
     this.eventHandler.handleSectorInfo(agentName, 
                                        this.translateToInternalFormat(position), 
-                                       this.decodeTrit(n), this.decodeTrit(e),
-                                       this.decodeTrit(s), this.decodeTrit(w));
+                                       GhostProtocolHandler.decodeTritToKnowsWall(n),GhostProtocolHandler.decodeTritToWall(n),
+                                       GhostProtocolHandler.decodeTritToKnowsWall(e),GhostProtocolHandler.decodeTritToWall(e),
+                                       GhostProtocolHandler.decodeTritToKnowsWall(s),GhostProtocolHandler.decodeTritToWall(s),
+                                       GhostProtocolHandler.decodeTritToKnowsWall(w), GhostProtocolHandler.decodeTritToWall(w));
   }
   
   private void handleBarcodeAt(String agentName, Scanner scanner)
@@ -453,12 +430,22 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     // throw new RuntimeException( "Invalid direction: " + direction );
    }
   
-   private int encodeTrit(Boolean wall) {
-    return wall == null ? 2 : (wall ? 1 : 0);
+   private int encodeTrit(boolean knowsWall, boolean wall) {
+     if(knowsWall == false)
+       return 2;
+    return wall == true ? 1 : 0;
    }
 
-   protected static Boolean decodeTrit(int wall) {
-    return wall == 2 ? null : (wall == 1);
+   protected static boolean decodeTritToKnowsWall(int wall){
+     if(wall == 1 || wall == 0)
+       return true;
+     return false;
+     
+   }
+   protected static boolean decodeTritToWall(int wall) {
+    if(wall == 2 || wall == 0)
+      return false;
+    return true;
    }
   
    
@@ -504,8 +491,10 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   }
   
   private void checkRenamingFinished(){
-    if (!this.renaming)
+    if (!this.renaming){
       return;
+    }
+    try{
     if(this.renamed.size() >= GhostProtocolHandler.MIN_JOINS-1){
       for(String s: names){
         if(renamed.get(s) == null)
@@ -516,6 +505,10 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
         names.put(s, this.renamed.get(s));
       }
       renaming = false;
+    }
+    }
+    catch(Exception e){
+      System.out.println("iterator error"+e.toString());
     }
   }
 }
