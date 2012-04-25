@@ -15,17 +15,21 @@ import penoplatinum.util.LightColor;
 
 
 public class Barcode {
-  
+
+  // internal color coding
+  private static final int BROWN =  0;
+  private static final int WHITE =  1;
+  private static final int BLACK = -1;
+
   private static final int BARCODE_LENGTH = 8;
   // how much can a line differ from 0
   private static final int MINIMUM_BETTER = 1;
 
   private List<Integer> colorBuffer = new ArrayList<Integer>();
   
-  private static byte[] expand = 
-    new byte[]{  1,  2,  3,  4,  5,  6,  7,  9, 10, 11, 13, 14, 15, 
-                17, 19, 21, 22, 23, 25, 27, 29, 31, 35, 37, 39, 43, 47, 55 };
-
+  // private static byte[] expand = 
+  //   new byte[]{  1,  2,  3,  4,  5,  6,  7,  9, 10, 11, 13, 14, 15, 
+  //               17, 19, 21, 22, 23, 25, 27, 29, 31, 35, 37, 39, 43, 47, 55 };
 
   public Barcode() {}
 
@@ -36,10 +40,13 @@ public class Barcode {
   }
   
   public void addColor(LightColor color){
-    this.colorBuffer.add(this.toColor(color));
+    int colorValue = this.toColor(color);
+    if( colorValue != BROWN ) {
+      this.colorBuffer.add(colorValue);
+    }
   }
   
-  // TODO: explain algorithm
+  // TODO: explain algorithm or rename variables to clarify working
   public int translate() {
     // we need at least enough colors equal to the length of a barcode
     if( this.colorBuffer.size() < BARCODE_LENGTH ) { return -1; }
@@ -50,13 +57,13 @@ public class Barcode {
       int sum = 0,
           start = i * this.colorBuffer.size() / BARCODE_LENGTH,
           stop  = (i + 1) * this.colorBuffer.size() / BARCODE_LENGTH;
+
       for(int j = start; j<stop; j++) {
         sum += this.colorBuffer.get(j);
       }
-      // 
+
       if(sum < MINIMUM_BETTER && sum > -MINIMUM_BETTER) { return -1; }
-      sum = (sum > 0 ? 1 : 0);
-      val = val * 2 + sum;
+      val = val * 2 + (sum > 0 ? 1 : 0);
     }
     return val;
   }
@@ -81,9 +88,9 @@ public class Barcode {
   // translate LightColor to internal int representation
   private int toColor(LightColor color){
     switch(color){
-      case BLACK: return -1;
-      case WHITE: return 1;
-      default: return 0;
+      case BLACK: return BLACK;
+      case WHITE: return WHITE;
+      default:    return BROWN;
     }
   }
 }

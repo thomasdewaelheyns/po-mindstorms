@@ -93,6 +93,21 @@ public class BarcodeTest extends TestCase {
 
     assertEquals(109, this.barcode.translate());
   }
+  
+  public void testBarcodeSurroundedByBrown() {
+    this.createBarcode();
+    this.addReadings(LightColor.BROWN, 20);
+    this.addLine(LightColor.BLACK);
+    this.addLine(LightColor.BLACK);
+    this.addLine(LightColor.BLACK);
+    this.addLine(LightColor.BLACK);
+    this.addLine(LightColor.BLACK);
+    this.addLine(LightColor.BLACK);
+    this.addLine(LightColor.BLACK);
+    this.addLine(LightColor.WHITE);
+    this.addReadings(LightColor.BROWN, 5);
+    assertEquals(1, this.barcode.translate());
+  }
 
   // construction helpers
 
