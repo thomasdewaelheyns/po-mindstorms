@@ -18,7 +18,7 @@ import penoplatinum.util.TransformationTRT;
  * 
  * @author: Team Platinum
  */
-public class AggregatedGrid extends SimpleGrid {
+public class AggregatedGrid implements Grid {
 
   // This is a map of the other robots. It consists of a key representing the
   // name of the other robot/ghost and a value that contains a Grid.
