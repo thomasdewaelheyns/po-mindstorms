@@ -14,8 +14,8 @@ import penoplatinum.model.Model;
 
 abstract public class ModelProcessor {
 
-  protected ModelProcessor nextProcessor;
-  protected Model model;
+  private ModelProcessor nextProcessor;
+  private Model model;
 
   // default constructor, no next ModelProcessor
   public ModelProcessor() {}
@@ -31,6 +31,10 @@ abstract public class ModelProcessor {
     if( this.nextProcessor != null ) {
       this.nextProcessor.setModel( model );
     }
+  }
+  
+  protected Model getModel() {
+    return this.model;
   }
 
   // triggers the processing chain downwards

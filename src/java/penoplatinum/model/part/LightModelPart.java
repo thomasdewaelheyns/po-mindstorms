@@ -10,6 +10,8 @@ package penoplatinum.model.part;
 import penoplatinum.model.Model;
 import penoplatinum.simulator.Line;
 
+import penoplatinum.util.LightColor;
+
 
 public class LightModelPart implements ModelPart {
   // boilerplate implementation required to register and retrieve a ModelPart
@@ -26,8 +28,13 @@ public class LightModelPart implements ModelPart {
     return this.line != Line.NONE;
   }
 
+  private LightColor currentLightColor = LightColor.BROWN;
+
+  public LightColor getCurrentLightColor() {
+    return currentLightColor;
+  }
+
   /*
-  private LightColor currentLightColor = LightColor.Brown;
   private float averageLightValue;
 
   public void setAverageLightValue(float averageLightValue) {
@@ -38,9 +45,6 @@ public class LightModelPart implements ModelPart {
     return averageLightValue;
   }
 
-  public LightColor getCurrentLightColor() {
-    return currentLightColor;
-  }
 
   public void setCurrentLightColor(LightColor value) {
     currentLightColor = value;

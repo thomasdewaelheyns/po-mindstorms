@@ -16,6 +16,8 @@ import penoplatinum.grid.Grid;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 
+import penoplatinum.util.Bearing;
+
 
 public class GridModelPart implements ModelPart {
   // boilerplate implementation required to register and retrieve a ModelPart
@@ -33,6 +35,11 @@ public class GridModelPart implements ModelPart {
   public GridModelPart() {
     // this.myAgent = new GhostAgent(name);
     // this.setupGrid();
+  }
+  
+  public Bearing getCurrentBearing() {
+    // todo
+    return Bearing.N;
   }
 
   public Grid getMyGrid() {

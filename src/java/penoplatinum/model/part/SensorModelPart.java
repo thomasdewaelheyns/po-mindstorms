@@ -74,6 +74,13 @@ public class SensorModelPart implements ModelPart {
     this.totalTurnedAngle = totalTurnedAngle;
   }
 
+  private boolean hasNewSensorValues;
+
+  public boolean hasNewSensorValues() {
+    return hasNewSensorValues;
+  }
+
+
   /*
   Below this point is older code. When clean up other code that requires it,
   move it up and add unit tests to consolidate it.
@@ -114,12 +121,7 @@ public class SensorModelPart implements ModelPart {
   
   
   }
-  private boolean hasNewSensorValues;
-  
-  public boolean hasNewSensorValues() {
-  return hasNewSensorValues;
-  }
-  
+
   @Override
   public void clearDirty() {
   this.hasNewSensorValues = false;
