@@ -19,8 +19,8 @@ public class Motor implements Tickable, Sensor {
   public static final int BACKWARD = -1;
   private String label = "unknown";
   private int speed = 250;
-  private int tacho = 0;
-  private Integer targetTacho = null;
+  private double tacho = 0;
+  private Double targetTacho = null;
   private int direction = Motor.FORWARD;
 
   public int getDirection() {
@@ -56,13 +56,16 @@ public class Motor implements Tickable, Sensor {
   }
 
   public Motor rotateTo(int tacho) {
-    this.direction = tacho >= this.tacho ? Motor.FORWARD : Motor.BACKWARD;
-    this.targetTacho = tacho;
-    return this;
+    return rotateToLowLevel(tacho);
   }
 
   public Motor rotateBy(int angle) {
-    this.rotateTo(this.tacho + angle);
+    return this.rotateToLowLevel(this.tacho + angle);
+  }
+
+  private Motor rotateToLowLevel(double tacho) {
+    this.direction = tacho >= this.tacho ? Motor.FORWARD : Motor.BACKWARD;
+    this.targetTacho = tacho;
     return this;
   }
 
@@ -88,16 +91,20 @@ public class Motor implements Tickable, Sensor {
     }
 
     // apply the currentSpeed
-    double change = (this.speed * elapsed) * this.direction;
-
+    double change = this.speed * elapsed * this.direction;
+    System.out.println(this.speed);
     this.tacho += change;
 
     // stop at targetTacho
     if ((this.direction == Motor.FORWARD && this.tacho >= this.targetTacho)
-            || (this.direction == Motor.BACKWARD && this.tacho <= this.targetTacho)) {
+     || (this.direction == Motor.BACKWARD && this.tacho <= this.targetTacho)) {
       this.tacho = this.targetTacho;
       this.targetTacho = null;
     }
+  }
+  
+  public double getFullAngleTurned(){
+    return this.tacho;
   }
 
   // Sensor

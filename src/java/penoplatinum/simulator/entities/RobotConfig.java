@@ -1,13 +1,17 @@
 package penoplatinum.simulator.entities;
 
-public class SensorConfig {
+public class RobotConfig {
+  
+  
+  public static final double WHEEL_SIZE = EntityConfig.WHEEL_SIZE; // circumf. in cm
+  public static final double WHEEL_BASE = EntityConfig.WHEEL_BASE; // wheeldist. in cm
   
   public static final int MOTORSTATE_FORWARD = 1;
   public static final int MOTORSTATE_BACKWARD = 2;
   public static final int MOTORSTATE_STOPPED = 3;
-  public static final int M1 = 0; // right motor
-  public static final int M2 = 1; // left motor
-  public static final int M3 = 2; // sonar motor
+  public static final int M1 = EntityConfig.MOTOR_RIGHT; 
+  public static final int M2 = EntityConfig.MOTOR_LEFT; 
+  public static final int M3 = EntityConfig.MOTOR_SONAR; 
   public static final int S1 = 3; // irSensor
   public static final int S2 = 4; //
   public static final int S3 = 5; // sonarsensor

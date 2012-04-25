@@ -1,5 +1,6 @@
 package penoplatinum.simulator.entities;
 
+import java.util.Random;
 import penoplatinum.map.MapUtil;
 import penoplatinum.robot.Robot;
 import penoplatinum.robot.SimulationRobotAPI;
@@ -13,52 +14,33 @@ import penoplatinum.util.Point;
 public class SimulatedEntity implements RobotEntity {
 
   public final double LENGTH_ROBOT = 10.0;
-
-  public static final double LIGHTSENSOR_DISTANCE = 5.0; // 10cm from center
-
-  public static final double BUMPER_LENGTH_ROBOT = 11.0;
-
-  public static final double WHEEL_SIZE = 17.5; // circumf. in cm
-
-  public static final double WHEEL_BASE = 16.0; // wheeldist. in cm
-
+  public static final double LIGHTSENSOR_DISTANCE = 5.0; // 10cm from centers
+  private static final int NUMBER_OF_MOTORS = 3;
+  
   private double positionX;       // the position of the robot in the world
-
   private double positionY;       //   expressed in X,Y coordinates
-
   private double direction;       //   and a direction it's facing
-
   private Point initialPosition;
-
   private int initialBearing;
   // the motorSpeeds and the sensorValues
   private int[] sensorValues;
-
-  private Motor[] motors = new Motor[3];
   private Sensor[] sensors;
   private Robot robot;       // the actual robot
-
   private ViewRobot viewRobot;   // 
-
   private Simulator simulator;
+  
+  
+  private Motor[] motors = new Motor[NUMBER_OF_MOTORS];
+  private double[] previousTacho = new double[NUMBER_OF_MOTORS];  
+  private Random random = new Random(987453231);
 
   protected SimulatedEntity(Robot robot, int numberOfSensors) {
     this.robot = robot;
     this.robot.useRobotAPI(new SimulationRobotAPI().setSimulatedEntity(this));
+    this.viewRobot = (new SimulatedViewRobot(this));
 
-    useViewRobot(new SimulatedViewRobot(this));
     sensorValues = new int[numberOfSensors];
     sensors = new Sensor[numberOfSensors];
-  }
-
-  public void useViewRobot(ViewRobot viewRobot) {
-    this.viewRobot = viewRobot;
-  }
-
-  public void setRobotApi(SimulationRobotAPI simApi) {
-    this.robotAPI = simApi;
-    this.robotAPI.setSimulatedEntity(this);
-    this.robot.useRobotAPI(this.robotAPI);
   }
 
   public void useSimulator(Simulator simulator) {
@@ -68,20 +50,18 @@ public class SimulatedEntity implements RobotEntity {
     }
   }
 
-  public void setupMotor(Motor motor, int tachoPort) {
-    this.motors[tachoPort] = motor;  // these two need to be running
-    setSensor(tachoPort, motor);
+  public void setupMotor(Motor motor, int motorPort) {
+    this.motors[motorPort] = motor;  // these two need to be running
   }
 
-  public void setSensor(int port, Sensor sensor) {
-    this.sensors[port] = sensor;
+  public Motor getMotor(int motorIndex) {
+    return this.motors[motorIndex];
+  }
+
+  public void setSensor(int sensorPort, Sensor sensor) {
+    this.sensors[sensorPort] = sensor;
     sensor.useSimulatedEntity(this);
     sensor.useSimulator(simulator);
-  }
-
-  public SimulatedEntity setSpeed(int motor, int speed) {
-    this.motors[motor].setSpeed(speed);
-    return this;
   }
 
   /**
@@ -94,41 +74,6 @@ public class SimulatedEntity implements RobotEntity {
     this.positionX = x;
     this.positionY = y;
     this.direction = direction;
-    return this;
-  }
-
-  // called by the implementation of the RobotAPI
-  public SimulatedEntity moveRobot(double movement) {
-    movement *= 100;
-    // calculate the tacho count we need to do to reach this movement
-    int tacho = (int) (movement / WHEEL_SIZE * 360);
-    this.motors[SensorConfig.M1].rotateBy(tacho);
-    this.motors[SensorConfig.M2].rotateBy(tacho);
-    return this;
-  }
-
-  // called by the implementation of the RobotAPI
-  public SimulatedEntity turnRobot(int angle) {
-    // calculate anmount of tacho needed to perform a turn by angle
-    double dist = Math.PI * WHEEL_BASE / 360 * angle;
-    int tacho = (int) (dist / WHEEL_SIZE * 360);
-
-    // let both motor's rotate the same tacho but in opposite direction
-    this.motors[SensorConfig.M1].rotateBy(tacho);
-    this.motors[SensorConfig.M2].rotateBy(tacho * -1);
-    return this;
-  }
-
-  // called by the implementation of the RobotAPI
-  public SimulatedEntity stopRobot() {
-    this.motors[SensorConfig.M1].stop();
-    this.motors[SensorConfig.M2].stop();
-    return this;
-  }
-
-  // low-level access method to a motor(CHANGED SO THAT ONLY SONAR MOTOR IS ACCESSIBLE)
-  public SimulatedEntity rotateSonarTo(int tacho) {
-    this.motors[SensorMapping.M3].rotateTo(tacho);
     return this;
   }
 
@@ -152,15 +97,6 @@ public class SimulatedEntity implements RobotEntity {
     return direction;
   }
 
-  @Override
-  public ViewRobot getViewRobot() {
-    return this.viewRobot;
-  }
-
-  public Robot getRobot() {
-    return this.robot;
-  }
-
   /**
    * Our internal representation of the bearing uses zero pointing north.
    * Math functions use zero pointing east.
@@ -170,12 +106,17 @@ public class SimulatedEntity implements RobotEntity {
     return (int) ((this.direction + 90) % 360);
   }
 
-  public int[] getSensorValues() {
-    return this.sensorValues;
+  @Override
+  public ViewRobot getViewRobot() {
+    return this.viewRobot;
   }
 
-  public boolean sonarMotorIsMoving() {
-    return this.motors[SensorConfig.M3].getValue() != this.sensorValues[SensorConfig.M3];
+  public Robot getRobot() {
+    return this.robot;
+  }
+
+  public int[] getSensorValues() {
+    return this.sensorValues;
   }
 
   // performs the next step in the movement currently executed by the robot
@@ -183,42 +124,50 @@ public class SimulatedEntity implements RobotEntity {
   public void step() {
     // let all motors know that another timeslice has passed
 
-    this.motors[SensorConfig.M1].tick(simulator.TIME_SLICE);
-    this.motors[SensorConfig.M2].tick(simulator.TIME_SLICE);
-    this.motors[SensorConfig.M3].tick(simulator.TIME_SLICE);
+    this.motors[EntityConfig.MOTOR_LEFT].tick(simulator.TIME_SLICE);
+    this.motors[EntityConfig.MOTOR_RIGHT].tick(simulator.TIME_SLICE);
+    this.motors[EntityConfig.MOTOR_SONAR].tick(simulator.TIME_SLICE);
 
     // based on the motor's (new) angle's determine the displacement
-    int changeLeft = this.motors[SensorConfig.M1].getValue() - sensorValues[SensorConfig.M1];
-    int changeRight = this.motors[SensorConfig.M2].getValue() - sensorValues[SensorConfig.M2];
+    double changeLeft = this.motors[EntityConfig.MOTOR_LEFT].getFullAngleTurned() - previousTacho[EntityConfig.MOTOR_LEFT];
+    double changeRight = this.motors[EntityConfig.MOTOR_RIGHT].getFullAngleTurned() - previousTacho[EntityConfig.MOTOR_RIGHT];
+    previousTacho[EntityConfig.MOTOR_LEFT] = this.motors[EntityConfig.MOTOR_LEFT].getFullAngleTurned();
+    previousTacho[EntityConfig.MOTOR_RIGHT] = this.motors[EntityConfig.MOTOR_RIGHT].getFullAngleTurned();
 
-    if (changeLeft == changeRight) {
-      // we're moving in one direction 
-      double d = WHEEL_SIZE / 360 * changeRight;
-      double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
-      double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
-      if (MapUtil.hasTile(simulator.getMap(), this.positionX + dx, this.positionY - dy)) {
-        if (!MapUtil.goesThroughWallX(simulator.getMap(), this, dx)) {
-          this.positionX += dx;
-        }
-        if (!MapUtil.goesThroughWallY(simulator.getMap(), this, dy)) {
-          this.positionY -= dy;
-        }
-      }
-    } else if (changeLeft == changeRight * -1) {
-      // we're turning
-      double d = WHEEL_SIZE / 360 * changeLeft;
-      double dr = (d / (Math.PI * WHEEL_BASE)) * 360;
-      this.direction += dr;
-    } else {
-      // hell froze over
-      System.err.println("ERROR: inconsistent motor behaviour.");
-      System.err.println(changeLeft + ", " + changeRight);
-    }
+    moveEntity((changeRight+changeLeft)/2);
+    turnEntity((changeLeft-changeRight) /2);
 
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
-
     this.getRobot().step();
+  }
+
+  private void moveEntity(double distance) {
+    // we're moving in one direction 
+    double error = 0.00;//0.05;
+    double afwijking = 0;// 0.1;
+    double d = EntityConfig.WHEEL_SIZE / 360 * distance;
+    d *= 1 + (random.nextDouble() - 0.5 + afwijking) * error;
+    double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
+    double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
+    if (MapUtil.hasTile(simulator.getMap(), this.positionX + dx, this.positionY - dy)) {
+      if (!MapUtil.goesThroughWallX(simulator.getMap(), this, dx)) {
+        this.positionX += dx;
+      }
+      if (!MapUtil.goesThroughWallY(simulator.getMap(), this, dy)) {
+        this.positionY -= dy;
+      }
+    }
+  }
+
+  private void turnEntity(double angleTacho) {
+    // we're turning
+    double error = 0.00; //0.05;
+    double afwijking = 0.3;
+    double angle = EntityConfig.WHEEL_SIZE / 360 * angleTacho;
+    angle = angle * (1 + (random.nextDouble() - 0.5 + afwijking) * error);
+    double dr = (angle / (Math.PI * EntityConfig.WHEEL_BASE)) * 360;
+    this.direction += dr;
   }
 
   /**
@@ -228,7 +177,7 @@ public class SimulatedEntity implements RobotEntity {
    *       this is shared with the SensorConfig in a way (for now)
    */
   private void updateSensorValues() {
-    for (int i = 0; i < SensorConfig.SENSORVALUES_NUM; i++) {
+    for (int i = 0; i < sensorValues.length; i++) {
       sensorValues[i] = sensors[i].getValue();
     }
   }
