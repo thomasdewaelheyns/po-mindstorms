@@ -19,25 +19,35 @@ public class BarcodeModelPart implements ModelPart {
     return (BarcodeModelPart)model.getPart(ModelPartRegistry.BARCODE_MODEL_PART);
   }
 
-  private Barcode barcode     = null,
+
+  private Barcode barcode     = new Barcode(),
                   prevBarcode = new Barcode();
+  private boolean isReading = false;
 
 
   public void startNewReading() {
-    this.barcode = new Barcode();
+    this.prevBarcode = new Barcode(this.barcode);
+    this.barcode     = new Barcode();
+    this.isReading   = true;
   }
   
   public void addReading(LightColor color) {
-    this.barcode.addColor(color);
+    if( this.isReading ) {
+      this.barcode.addColor(color);
+    }
   }
 
   public void stopReading() {
-    this.prevBarcode = new Barcode(this.barcode);
-    this.barcode = null;
+    this.isReading = false;
+  }
+  
+  public void discardReading() {
+    this.stopReading();
+    this.barcode = new Barcode();
   }
   
   public boolean isReadingBarcode() {
-    return this.barcode != null;
+    return this.isReading;
   }
 
   public int getCurrentBarcodeValue() {

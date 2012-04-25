@@ -37,6 +37,19 @@ public class BarcodeModelPartTest extends TestCase {
     assertFalse(this.part.isReadingBarcode());    
   }
 
+  public void testNeedAtLeast8Readings() {
+    this.setup();
+    this.part.startNewReading();
+    this.simulateBarcode("1111");
+    assertEquals(-1, this.part.getCurrentBarcodeValue());
+  }
+  
+  public void testAddReadingsWhileNotReading() {
+    this.setup();
+    this.simulateBarcode("11111111");
+    assertEquals(-1, this.part.getCurrentBarcodeValue());
+  }
+
   public void testGetCurrentBarcodeValue() {
     this.setup();
     this.part.startNewReading();
@@ -50,7 +63,18 @@ public class BarcodeModelPartTest extends TestCase {
     this.part.startNewReading();
     this.simulateBarcode("10001011");
     this.part.stopReading();
+    assertEquals(-1, this.part.getPreviousBarcodeValue());
+    this.part.startNewReading();
     assertEquals(139, this.part.getPreviousBarcodeValue());
+  }
+  
+  public void testDiscardBarcode() {
+    this.setup();
+    this.part.startNewReading();
+    this.simulateBarcode("10001011");
+    assertEquals(139, this.part.getCurrentBarcodeValue());
+    this.part.discardReading();
+    assertEquals(-1, this.part.getCurrentBarcodeValue());
   }
   
   private void setup() {
