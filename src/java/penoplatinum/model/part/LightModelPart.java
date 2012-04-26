@@ -8,10 +8,9 @@ package penoplatinum.model.part;
  */
 
 import penoplatinum.model.Model;
-import penoplatinum.simulator.Line;
 
 import penoplatinum.util.LightColor;
-
+import penoplatinum.util.Line;
 
 public class LightModelPart implements ModelPart {
   // boilerplate implementation required to register and retrieve a ModelPart
@@ -20,34 +19,30 @@ public class LightModelPart implements ModelPart {
     return (LightModelPart)model.getPart(ModelPartRegistry.LIGHT_MODEL_PART);
   }
 
-  // TODO: I don't think it is worth having an Enum for this, this can all
-  //       be kept internal and exposed using functional methods.
+  private LightColor currentLightColor = LightColor.BROWN;
+  private float      averageLightValue = 0;
+
   private Line line = Line.NONE;
 
-  public boolean isReadingLine() {
-    return this.line != Line.NONE;
-  }
 
-  private LightColor currentLightColor = LightColor.BROWN;
+  public void setCurrentLightColor(LightColor value) {
+    this.currentLightColor = value;
+  }
 
   public LightColor getCurrentLightColor() {
-    return currentLightColor;
+    return this.currentLightColor;
   }
-
-  /*
-  private float averageLightValue;
 
   public void setAverageLightValue(float averageLightValue) {
     this.averageLightValue = averageLightValue;
   }
 
   public float getAverageLightValue() {
-    return averageLightValue;
+    return this.averageLightValue;
   }
 
-
-  public void setCurrentLightColor(LightColor value) {
-    currentLightColor = value;
+  public boolean isReadingLine() {
+    return this.line != Line.NONE;
   }
 
   public Line getLine() {
@@ -57,9 +52,4 @@ public class LightModelPart implements ModelPart {
   public void setLine(Line line) {
     this.line = line;
   }
-
-  @Override
-  public void clearDirty() {
-  }
-  */
 }

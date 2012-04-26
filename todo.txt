@@ -229,3 +229,10 @@ De resterende util classes moeten opgekuist worden. Hoe meer er weg kan hoe bete
 
 INFO: Michiel,Ruben
 TODO: anybody
+
+---
+
+Zaken waar we nog moeten aan denken:
+- rapporteer LightModelPart.averageLightValue en maak histogram in dashboard
+- rapporteer memory-consumption,... (misschien een SystemModelPart/Processor)
+
