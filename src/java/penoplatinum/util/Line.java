@@ -1,8 +1,8 @@
-package penoplatinum.simulator;
+package penoplatinum.util;
 
 /**
+ * Line Enumeration
  * 
- * Enumeration
  * @author: Team Platinum
  */
 
