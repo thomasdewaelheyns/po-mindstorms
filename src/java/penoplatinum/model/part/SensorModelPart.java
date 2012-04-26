@@ -80,12 +80,15 @@ public class SensorModelPart implements ModelPart {
     return hasNewSensorValues;
   }
 
+  public int getLightSensorValue() { 
+    return this.getSensorValue(S4);
+  }
+
 
   /*
   Below this point is older code. When clean up other code that requires it,
   move it up and add unit tests to consolidate it.
-  
-  public int getLightSensorValue() { return this.getSensorValue(S4);  }
+
   public int getSonarDistance()    { return this.getSensorValue(S3);  }
   public int getSonarAngle()       { return this.getSensorValue(M3);  }
   

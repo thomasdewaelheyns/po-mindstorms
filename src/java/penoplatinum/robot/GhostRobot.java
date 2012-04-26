@@ -69,7 +69,7 @@ public class GhostRobot implements Robot {
     this.model = new GhostModel(name);
 
     ModelProcessor processors =
-            new LightColorModelProcessor(
+            new LightModelProcessor(
             new HistogramModelProcessor(
             new BarcodeBlackModelProcessor(
             new LineModelProcessor(
