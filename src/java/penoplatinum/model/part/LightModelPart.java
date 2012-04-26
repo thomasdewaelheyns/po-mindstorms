@@ -20,6 +20,7 @@ public class LightModelPart implements ModelPart {
   }
 
   private LightColor currentLightColor = LightColor.BROWN;
+  private int        currentLightValue = 0;
   private float      averageLightValue = 0;
 
   private Line line = Line.NONE;
@@ -31,6 +32,14 @@ public class LightModelPart implements ModelPart {
 
   public LightColor getCurrentLightColor() {
     return this.currentLightColor;
+  }
+  
+  public void setCurrentLightValue(int currentLightValue) {
+    this.currentLightValue = currentLightValue;
+  }
+
+  public int getCurrentLightValue() {
+    return this.currentLightValue;
   }
 
   public void setAverageLightValue(float averageLightValue) {

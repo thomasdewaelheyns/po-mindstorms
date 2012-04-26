@@ -34,6 +34,13 @@ public class LightModelPartTest extends TestCase {
     this.part.setCurrentLightColor(LightColor.BROWN);
     assertEquals(LightColor.BROWN, this.part.getCurrentLightColor());
   }
+  
+  public void testCurrentLightValue() {
+    this.setup();
+    assertEquals(0, this.part.getCurrentLightValue());
+    this.part.setCurrentLightValue(123);
+    assertEquals(123, this.part.getCurrentLightValue());
+  }
 
   public void testSetAverageLightValue() {
     this.setup();
