@@ -55,4 +55,7 @@ public class Config {
   public final static int BT_WALLS           = 124;
   public final static int BT_VALUES          = 125;
   public final static int BT_AGENTS          = 126;
+  
+  // distance within which we need to detect a wall to consider it a wall
+  public final static int WALL_DISTANCE      = 35;
 }

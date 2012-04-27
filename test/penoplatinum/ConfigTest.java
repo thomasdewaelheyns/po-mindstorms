@@ -44,5 +44,7 @@ public class ConfigTest extends TestCase {
     assertEquals(Config.BT_WALLS, 124);
     assertEquals(Config.BT_VALUES, 125);
     assertEquals(Config.BT_AGENTS, 126);
+    
+    assertEquals(Config.WALL_DISTANCE, 35);
   }
 }

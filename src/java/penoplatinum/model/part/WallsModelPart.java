@@ -9,7 +9,11 @@ package penoplatinum.model.part;
 
 import penoplatinum.grid.Sector;
 
+import penoplatinum.Config;
+
 import penoplatinum.model.Model;
+
+import penoplatinum.util.Bearing;
 
 
 public class WallsModelPart implements ModelPart {
@@ -19,28 +23,27 @@ public class WallsModelPart implements ModelPart {
     return (WallsModelPart)model.getPart(ModelPartRegistry.WALLS_MODEL_PART);
   }
 
-  private int wallLeftDistance;
-  private int wallFrontDistance;
-  private int wallRightDistance;
-
-  private static final int WALL_DISTANCE = 35;
+  private int wallLeftDistance, wallFrontDistance, wallRightDistance;
 
   private boolean hasUpdatedSector;
 
   private Sector currentSector = null;
   private Sector prevSector    = null;
 
+  // a counter producing unique identifying numbers for each sectorupdate
+  private int sectorId = 0;
+
 
   public boolean isWallFront() {
-    return this.getWallFrontDistance() < WALL_DISTANCE;
+    return this.getWallFrontDistance() < Config.WALL_DISTANCE;
   }
 
   public boolean isWallLeft() {
-    return this.getWallLeftDistance() < WALL_DISTANCE;
+    return this.getWallLeftDistance() < Config.WALL_DISTANCE;
   }
 
   public boolean isWallRight() {
-    return this.getWallRightDistance() < WALL_DISTANCE;
+    return this.getWallRightDistance() < Config.WALL_DISTANCE;
   }
 
   public int getWallFrontDistance() {
@@ -67,29 +70,38 @@ public class WallsModelPart implements ModelPart {
     this.wallRightDistance = wallRightDistance;
   }
 
-  public Sector getDetectedSector() {
+  public void updateSector(Sector newSector) {
+    this.prevSector    = this.currentSector;
+    this.currentSector = newSector;
+    this.sectorId++;
+  }
+
+  public int getSectorId() {
+    return this.sectorId;
+  }
+
+  public Sector getCurrentSector() {
     return this.currentSector;
   }
 
-  public void updateSector(Sector newSector) {
-    this.prevSector = this.currentSector;
-    this.currentSector = newSector;
-    hasUpdatedSector = true;
-  }
+  public boolean currentSectorHasChanged() {
+    if(this.currentSector == null) { return false;}
+    if(this.prevSector    == null) { return true; }
 
-  public boolean hasUpdatedSector() {
-    return this.hasUpdatedSector;
-  }
-
-  // Future Use: detect changes (e.g. keep track of change ratio)
-  public boolean sectorHasChanged() {
-    // TODO: make this more intelligent, going from unknown to known is not a
-    //       negative change, but going from known/wall to known/nowall is a 
-    //       bad sign
-    return !prevSector.hasSameWallsAs(currentSector);
-  }
-
-  public void clearDirty() {
-    this.hasUpdatedSector = false;
+    for(Bearing atBearing : Bearing.NESW) {
+      // known -> unknown
+      if( this.prevSector.knowsWall(atBearing) &&
+          ! this.currentSector.knowsWall(atBearing) ) { return true; }
+      // unknown -> known
+      if( ! this.prevSector.knowsWall(atBearing) &&
+          this.currentSector.knowsWall(atBearing) ) { return true; }
+      // known - known
+      // wall <-> nowall
+      if( this.prevSector.knowsWall(atBearing) && 
+          this.currentSector.knowsWall(atBearing) &&
+          this.prevSector.hasWall(atBearing) != 
+          this.currentSector.hasWall(atBearing) ) { return true; }
+    }
+    return false;
   }
 }
