@@ -1,23 +1,30 @@
 package penoplatinum.model.part;
 
-import java.util.ArrayList;
+/**
+ * SonarModelPart
+ *
+ * Contains information about the last sonar sweep.
+ * 
+ * @author Team Platinum
+ */
+
 import java.util.List;
 
-/**
- * Contains information about the last sonar sweep. 
- * 
- * @author MHGameWork
- */
+
 public class SonarModelPart implements ModelPart {
 
-  private List<Integer> distances = new ArrayList<Integer>();
-  private List<Integer> angles = new ArrayList<Integer>();
+  private List<Integer> distances;
+  private List<Integer> angles;
 
-  // method to update a set of distances and angles
-  public void updateDistances(List<Integer> distances,
-          List<Integer> angles) {
+  private int sweepId = 0;
+
+
+  public void update(List<Integer> distances, List<Integer> angles) {
     this.distances = distances;
-    this.angles = angles;
+    this.angles    = angles;
+    // increase the sweepId to allow users of the part to determine when they
+    // want an update and do something with the sonar distances & angles
+    this.sweepId++;
   }
 
   public List<Integer> getDistances() {
@@ -28,38 +35,7 @@ public class SonarModelPart implements ModelPart {
     return this.angles;
   }
 
-  public void updateSonarValues(List<Integer> distances, List<Integer> angles) {
-    this.distances = distances; //TODO: remove double
-    //this.sonarValues = distances; 
-    this.angles = angles;
-
-    this.newSonarValues = true;
-    isSweepDataChanged = true;
-//    this.process();
-  }
-
-  public boolean hasNewSonarValues() {
-    return this.newSonarValues;
-  }
-
-  public boolean isSweepDataChanged() {
-    return isSweepDataChanged; //TODO: does this work???
-  }
-
-  // indicates whether the sweep-values have changed since the last time
-  // they are consulted
-  public boolean hasUpdatedSonarValues() {
-    return this.sweepChanged;
-  }
-  private boolean newSonarValues = false;
-  private boolean isSweepDataChanged;
-  private boolean sweepChanged = true;
-
-
-  public void clearDirty() {
-    this.newSonarValues = false;
-    isSweepDataChanged = false;
-    sweepChanged = false;
-
+  public int getCurrentSweepId() {
+    return this.sweepId;
   }
 }
