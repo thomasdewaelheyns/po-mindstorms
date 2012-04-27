@@ -1,8 +1,6 @@
 package penoplatinum.map.mazeprotocol;
 
 import java.util.Scanner;
-import penoplatinum.barcode.BarcodeBlackBlack;
-import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.map.MapHashed;
 import penoplatinum.simulator.tiles.Sector;
 

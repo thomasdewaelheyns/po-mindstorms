@@ -15,7 +15,6 @@ public class IRdistanceSensorTest extends TestCase {
    */
   @Test
   public void testGetValue() {
-    System.out.println("getValue");
     IRdistanceSensor instance = new IRdistanceSensor(30);
     PacmanEntity p = mock(PacmanEntity.class);
     when(p.getPosX()).thenReturn(30.0);
@@ -48,7 +47,6 @@ public class IRdistanceSensorTest extends TestCase {
    */
   @Test
   public void testUseSimulator() {
-    System.out.println("useSimulator");
     IRdistanceSensor instance = new IRdistanceSensor(30);
     PacmanEntity p = mock(PacmanEntity.class);
     when(p.getPosX()).thenReturn(30.0);
@@ -78,7 +76,6 @@ public class IRdistanceSensorTest extends TestCase {
    */
   @Test
   public void testUseSimulatedEntity() {
-    System.out.println("useSimulatedEntity");
     IRdistanceSensor instance = new IRdistanceSensor(30);
     PacmanEntity p = mock(PacmanEntity.class);
     when(p.getPosX()).thenReturn(30.0);

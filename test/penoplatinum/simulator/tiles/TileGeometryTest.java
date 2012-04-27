@@ -13,7 +13,6 @@ public class TileGeometryTest extends TestCase {
    */
   @Test
   public void testFindHitPoint() {
-    System.out.println("findHitPoint");
     double X = 12.0;
     double Y = 16.0;
     double angle = 0.0;
@@ -57,7 +56,6 @@ public class TileGeometryTest extends TestCase {
    */
   @Test
   public void testGetDistance() {
-    System.out.println("getDistance");
     double x = 0.0;
     double y = 16.0;
     double angle = 53.13;
@@ -73,7 +71,6 @@ public class TileGeometryTest extends TestCase {
    */
   @Test
   public void testGetHitWall() {
-    System.out.println("getHitWall");
     int size = 40;
     assertEquals(Bearing.W, TileGeometry.getHitWall(new Point(0, 10), size, 0.0));
     assertEquals(Bearing.N, TileGeometry.getHitWall(new Point(10, 0), size, 90.0));

@@ -16,7 +16,6 @@ public class PacmanTest extends TestCase {
    */
   @Test
   public void testInterpret() {
-    System.out.println("interpret");
     MapHashed map = new MapHashed();
     map.put(mock(Tile.class), 0, 0);
     Scanner scanner = new Scanner("0 0");
@@ -30,7 +29,6 @@ public class PacmanTest extends TestCase {
    */
   @Test
   public void testGetName() {
-    System.out.println("getName");
     Pacman instance = new Pacman();
     String expResult = "PACMAN";
     String result = instance.getName();

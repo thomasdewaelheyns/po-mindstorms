@@ -91,7 +91,7 @@ public class Motor implements Tickable, Sensor {
 
     // apply the currentSpeed
     double change = this.speed * elapsed * this.direction;
-    System.out.println(this.speed);
+    // System.out.println(this.speed);
     this.tacho += change;
 
     // stop at targetTacho

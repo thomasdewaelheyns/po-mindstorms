@@ -27,7 +27,7 @@ public class Sonar implements Sensor {
     for (int i = -15; i < 16; i++) {
       int distance = sim.getFreeDistance(tile, pos, (angle + i + 360) % 360);
       minimum = Math.min(minimum, distance);
-      System.out.println("minimum: "+minimum+" "+i);
+      // System.out.println("minimum: "+minimum+" "+i);
     }
     return minimum > 90 ? 255 : minimum;
   }

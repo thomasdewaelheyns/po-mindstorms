@@ -12,7 +12,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testGetBarcode() {
-    System.out.println("getBarcode");
     Sector instance = new Sector();
     instance.addBarcode(3, 0);
     assertEquals(6, instance.getBarcode8Bit());
@@ -25,7 +24,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testHasBarcode() {
-    System.out.println("hasBarcode");
     Sector instance = new Sector();
     assertEquals(false, instance.hasBarcode());
     instance.addBarcode(0, 0);
@@ -39,7 +37,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testGetBarcodeLocation() {
-    System.out.println("getBarcodeLocation");
     Sector instance = new Sector();
     assertEquals(-1, instance.getBarcodeLocation());
     int dir = 0;
@@ -61,7 +58,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testGetBarcodeLine() {
-    System.out.println("getBarcodeLine");
     Sector instance = new Sector();
     instance.addBarcode(0, 1);
     for (int i = 0; i < 8; i++) {
@@ -101,7 +97,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testGetBarcodeColor() {
-    System.out.println("getBarcodeColor");
     Sector instance = new Sector();
     int size = instance.getSize();
     for (int i = 0; i < size; i++) {
@@ -113,7 +108,6 @@ public class SectorTest extends TestCase {
 
   @Test
   public void testGetBarcodeColorN() {
-    System.out.println("getBarcodeColorN");
     Sector instance = new Sector();
     int size = instance.getSize();
     instance.addBarcode(42, 0);
@@ -149,7 +143,6 @@ public class SectorTest extends TestCase {
 
   @Test
   public void testGetBarcodeColorE() {
-    System.out.println("getBarcodeColorE");
     Sector instance = new Sector();
     int size = instance.getSize();
     instance.addBarcode(63, 1);
@@ -185,7 +178,6 @@ public class SectorTest extends TestCase {
 
   @Test
   public void testGetColorAtLineN() {
-    System.out.println("getColorAtLineN");
     Sector instance = new Sector();
     final int size = instance.getSize();
     instance.addWall(0);
@@ -201,7 +193,6 @@ public class SectorTest extends TestCase {
 
   @Test
   public void testGetColorAtLineE() {
-    System.out.println("getColorAtLineE");
     Sector instance = new Sector();
     final int size = instance.getSize();
     instance.addWall(1);
@@ -217,7 +208,6 @@ public class SectorTest extends TestCase {
 
   @Test
   public void testGetColorAtLineS() {
-    System.out.println("getColorAtLineS");
     Sector instance = new Sector();
     final int size = instance.getSize();
     instance.addWall(2);
@@ -233,7 +223,6 @@ public class SectorTest extends TestCase {
 
   @Test
   public void testGetColorAtLineW() {
-    System.out.println("getColorAtLineW");
     Sector instance = new Sector();
     final int size = instance.getSize();
     instance.addWall(3);
@@ -252,7 +241,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testGetColorAt() {
-    System.out.println("getColorAt");
     Sector instance = new Sector();
     final int size = instance.getSize();
     for (int i = 0; i < size; i++) {
@@ -273,7 +261,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testHasWall() {
-    System.out.println("hasWall");
     Sector instance = new Sector();
     for(Bearing b : Bearing.values()){
       if(b.equals(Bearing.UNKNOWN)){
@@ -304,7 +291,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testToString() {
-    System.out.println("toString");
     Sector instance = new Sector();
     assertEquals("0000000000000", instance.toString());
     instance.addWall(0).addWall(1).addWall(2).addWall(3);
@@ -329,7 +315,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testAddWall() {
-    System.out.println("addWall");
     Sector instance = new Sector();
     instance.addWall(0);
     assertEquals("0000000000001", instance.toString());
@@ -346,7 +331,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testAddBarcode() {
-    System.out.println("addBarcode");
     Sector instance = new Sector();
     assertEquals("0000000000000", instance.toString());
     instance.addBarcode(3, 0);
@@ -364,7 +348,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testRemoveWall() {
-    System.out.println("removeWall");
     Sector instance = new Sector();
     instance.addWall(0).addWall(1).addWall(2).addWall(3);
     assertEquals("0000000001111", instance.toString());
@@ -383,7 +366,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testRemoveBarcode() {
-    System.out.println("removeBarcode");
     Sector instance = new Sector();
     assertEquals("0000000000000", instance.toString());
     instance.addBarcode(55, 2);
@@ -397,7 +379,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testGetSize() {
-    System.out.println("getSize");
     Sector instance = new Sector();
     int expResult = 40;
     int result = instance.getSize();
@@ -409,7 +390,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testClone() {
-    System.out.println("clone");
     int data = 0;
     Sector instance = new Sector(data);
     assertEquals(data, instance.clone().getData());
@@ -426,7 +406,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testGetDrawer() {
-    System.out.println("getDrawer");
     Sector instance = new Sector();
     assertEquals(SectorDraw.class, instance.getDrawer().getClass());
   }
@@ -436,7 +415,6 @@ public class SectorTest extends TestCase {
    */
   @Test
   public void testGetData() {
-    System.out.println("getData");
     int data = 0;
     Sector instance = new Sector(data);
     assertEquals(data, instance.getData());

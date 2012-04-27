@@ -34,7 +34,6 @@ public class SectorDrawTest {
    */
   @Test
   public void testDrawTile() {
-    System.out.println("drawTile");
     Graphics2D g2d = null;
     int left = 0;
     int top = 0;
@@ -49,7 +48,6 @@ public class SectorDrawTest {
    */
   @Test
   public void testDrawSize() {
-    System.out.println("drawSize");
     SectorDraw instance = null;
     int expResult = 0;
     int result = instance.drawSize();

@@ -16,7 +16,6 @@ public class IRSensorTest extends TestCase {
    */
   @Test
   public void testGetValue() {
-    System.out.println("getValue");
     IRSensor instance = new IRSensor();
     
     RobotEntity r = mock(PacmanEntity.class);
@@ -89,7 +88,6 @@ public class IRSensorTest extends TestCase {
    */
   @Test
   public void testUseSimulator() {
-    System.out.println("useSimulator");
     Simulator sim = mock(Simulator.class);
     when(sim.getPacMan()).thenReturn(mock(PacmanEntity.class));
     IRSensor instance = new IRSensor();
@@ -105,7 +103,6 @@ public class IRSensorTest extends TestCase {
    */
   @Test
   public void testUseSimulatedEntity() {
-    System.out.println("useSimulatedEntity");
     SimulatedEntity simEntity = mock(SimulatedEntity.class);
     IRSensor instance = new IRSensor();
     instance.useSimulatedEntity(simEntity);

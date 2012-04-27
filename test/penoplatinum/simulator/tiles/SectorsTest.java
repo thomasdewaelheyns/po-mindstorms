@@ -1,7 +1,22 @@
 package penoplatinum.simulator.tiles;
 
-import junit.framework.TestCase;
+/**
+ * SectorsTest
+ * 
+ * Tests Sectors data class is available
+ * 
+ * @author: Team Platinum
+ */
+import junit.framework.*;
+import static org.mockito.Mockito.*;
 
 public class SectorsTest extends TestCase {
-  //data class
+
+  public SectorsTest(String name) {
+    super(name);
+  }
+
+  public void testAvailablity() {
+    mock(Sectors.class);
+  }
 }

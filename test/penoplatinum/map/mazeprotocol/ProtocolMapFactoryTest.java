@@ -14,7 +14,6 @@ public class ProtocolMapFactoryTest extends TestCase {
    */
   @Test
   public void testGetMap() {
-    System.out.println("getMap");
     Scanner sc = new Scanner("ABC BARCODEAT 0 0 3 1 ABC BARCODEAT 1 0 4 1 ");
     ProtocolMapFactory instance = new ProtocolMapFactory();
     Map result = instance.getMap(sc);

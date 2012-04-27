@@ -15,7 +15,6 @@ public class PositionTest extends TestCase {
    */
   @Test
   public void testInterpret() {
-    System.out.println("interpret");
     MapHashed map = new MapHashed();
     map.put(new Sector(), 0, 0);
     Scanner scanner = new Scanner("0 0");
@@ -38,7 +37,6 @@ public class PositionTest extends TestCase {
    */
   @Test
   public void testGetName() {
-    System.out.println("getName");
     Position instance = new Position();
     String expResult = "POSITION";
     String result = instance.getName();

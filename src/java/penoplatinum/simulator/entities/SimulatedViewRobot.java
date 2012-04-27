@@ -63,12 +63,12 @@ public class SimulatedViewRobot implements ViewRobot{
     return (int) original.getDir();
   }
   public List<Integer> getDistances() {
-    return new ArrayList();
+    return new ArrayList<Integer>();
     //return original.getRobot().getModel().getSonarPart().getDistances();
   }
   
   public List<Integer> getAngles() {
-    return new ArrayList();
+    return new ArrayList<Integer>();
     //return original.getRobot().getModel().getSonarPart().getAngles();
   }
   

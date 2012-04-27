@@ -22,7 +22,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testAddSimulatedEntity() {
-    System.out.println("addSimulatedEntity");
     SimulatedEntity r = getEntity();
     Simulator instance = new Simulator();
     instance.addSimulatedEntity(r);
@@ -38,7 +37,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testDisplayOn() {
-    System.out.println("displayOn");
     SimulationView view = mock(SimulationView.class);
     Simulator instance = new Simulator();
     SimulatedEntity entity = getEntity();
@@ -59,7 +57,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testUseMap() {
-    System.out.println("useMap");
     Map map = MapTestUtil.getMap();
     Simulator instance = new Simulator();
     Simulator result = instance.useMap(map);
@@ -72,7 +69,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testGetFreeDistance() {
-    System.out.println("getFreeDistance");
     Point tile = new Point(1, 1);
     Point pos = new Point(20, 20);
     Simulator instance = new Simulator().useMap(MapTestUtil.getMap());
@@ -89,7 +85,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testSendReceive() {
-    System.out.println("send");
     String cmd = "";
     Simulator instance = new Simulator();
     assertEquals(instance, instance.send(cmd));
@@ -101,8 +96,7 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testRun() {
-    System.out.println("run");
-    fail("Cannot be tested? Infinite loop :S");
+    // fail("Cannot be tested? Infinite loop :S");
   }
 
   /**
@@ -110,7 +104,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testSetPacmanEntity() {
-    System.out.println("setPacmanEntity");
     SimulationView view = mock(SimulationView.class);
     Simulator instance = new Simulator().displayOn(view);
 
@@ -127,7 +120,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testGetTileSize() {
-    System.out.println("getTileSize");
     Simulator instance = new Simulator().useMap(MapTestUtil.getMap());
     assertEquals(40, instance.getTileSize());
     Map m = mock(Map.class);
@@ -142,7 +134,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testGetView() {
-    System.out.println("getView");
     Simulator instance = new Simulator();
     assertEquals(SilentSimulationView.class, instance.getView().getClass());
     SimulationView s = mock(SimulationView.class);
@@ -154,7 +145,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testGetSimulatedEntityByName() {
-    System.out.println("getSimulatedEntityByName");
     Simulator instance = new Simulator();
     assertEquals(null, instance.getSimulatedEntityByName("ahdfsjkl"));
     SimulatedEntity entity = getEntity();

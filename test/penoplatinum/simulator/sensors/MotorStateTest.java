@@ -11,7 +11,6 @@ public class MotorStateTest extends TestCase {
    */
   @Test
   public void testGetValue() {
-    System.out.println("getValue");
     Motor m = new Motor();
     MotorState instance = new MotorState(m);
     assertEquals(RobotConfig.MOTORSTATE_STOPPED, instance.getValue());

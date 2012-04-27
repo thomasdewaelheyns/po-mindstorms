@@ -15,7 +15,6 @@ public class DiscoverTest extends TestCase {
    */
   @Test
   public void testInterpret() {
-    System.out.println("interpret");
     MapHashed m = new MapHashed();
     Scanner sc = new Scanner("0 0 0 0 1 1");
     Discover instance = new Discover();
@@ -48,7 +47,6 @@ public class DiscoverTest extends TestCase {
    */
   @Test
   public void testGetName() {
-    System.out.println("getName");
     Discover instance = new Discover();
     String expResult = "DISCOVER";
     String result = instance.getName();

@@ -16,7 +16,6 @@ public class BarcodeAtTest extends TestCase {
    */
   @Test
   public void testInterpret() {
-    System.out.println("interpret");
     MapHashed m = new MapHashed();
     BarcodeAt instance = new BarcodeAt();
     Scanner sc = new Scanner("0 0 2 1");
@@ -69,7 +68,6 @@ public class BarcodeAtTest extends TestCase {
    */
   @Test
   public void testGetName() {
-    System.out.println("getName");
     BarcodeAt instance = new BarcodeAt();
     String expResult = "BARCODEAT";
     String result = instance.getName();

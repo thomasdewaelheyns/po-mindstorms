@@ -14,7 +14,6 @@ public class SonarTest extends TestCase {
    */
   @Test
   public void testGetValue() {
-    System.out.println("getValue");
     Motor m = mock(Motor.class);
     Sonar instance = new Sonar(m);
     Simulator s = new Simulator();

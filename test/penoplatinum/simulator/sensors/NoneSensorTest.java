@@ -12,7 +12,6 @@ public class NoneSensorTest extends TestCase {
    */
   @Test
   public void testGetValue() {
-    System.out.println("getValue");
     NoneSensor instance = new NoneSensor();
     int expResult = 0;
     int result = instance.getValue();
@@ -24,7 +23,6 @@ public class NoneSensorTest extends TestCase {
    */
   @Test
   public void testUseSimulator() {
-    System.out.println("useSimulator");
     Simulator sim = null;
     NoneSensor instance = new NoneSensor();
     instance.useSimulator(sim);
@@ -35,7 +33,6 @@ public class NoneSensorTest extends TestCase {
    */
   @Test
   public void testUseSimulatedEntity() {
-    System.out.println("useSimulatedEntity");
     SimulatedEntity simEntity = null;
     NoneSensor instance = new NoneSensor();
     instance.useSimulatedEntity(simEntity);

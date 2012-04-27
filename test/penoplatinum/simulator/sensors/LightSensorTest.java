@@ -18,7 +18,6 @@ public class LightSensorTest extends TestCase {
    */
   @Test
   public void testGetValue() {
-    System.out.println("getValue");
     LightSensor instance = new LightSensor();
     LightSensor spy = spy(instance);
     for (int i = 0; i < LightSensor.LIGHTBUFFER_SIZE; i++) {
@@ -36,7 +35,6 @@ public class LightSensorTest extends TestCase {
    */
   @Test
   public void testGetActualValue() {
-    System.out.println("getActualValue");
     LightSensor instance = new LightSensor();
 
     Simulator sim = mock(Simulator.class);
@@ -114,7 +112,6 @@ public class LightSensorTest extends TestCase {
    */
   @Test
   public void testUseSimulator() {
-    System.out.println("useSimulator");
     LightSensor instance = new LightSensor();
     
     Simulator sim = mock(Simulator.class);
@@ -137,7 +134,6 @@ public class LightSensorTest extends TestCase {
    */
   @Test
   public void testUseSimulatedEntity() {
-    System.out.println("useSimulatedEntity");
     LightSensor instance = new LightSensor();
     
     Simulator sim = mock(Simulator.class);

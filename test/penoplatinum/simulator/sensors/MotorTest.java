@@ -11,7 +11,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testGetDirection() {
-    System.out.println("getDirection");
     Motor instance = new Motor();
     assertEquals(Motor.FORWARD, instance.getDirection());
     assertEquals(Motor.FORWARD, instance.goForward().getDirection());
@@ -23,7 +22,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testIsMoving() {
-    System.out.println("isMoving");
     Motor instance = new Motor();
     assertFalse(instance.isMoving());
     instance.start();
@@ -49,7 +47,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testSetLabel() {
-    System.out.println("setLabel");
     String label = "azerty";
     Motor instance = new Motor();
     Motor result = instance.setLabel(label);
@@ -62,7 +59,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testSetSpeed() {
-    System.out.println("setSpeed");
     Motor instance = new Motor();
     instance.start().tick(1);
     assertEquals(250, instance.getValue());
@@ -78,7 +74,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testStart() {
-    System.out.println("start");
     Motor instance = new Motor();
     assertEquals(instance, instance.start());
     assertTrue(instance.isMoving());
@@ -93,7 +88,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testStop() {
-    System.out.println("stop");
     Motor instance = new Motor();
     instance.start();
     assertTrue(instance.isMoving());
@@ -110,7 +104,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testRotateTo() {
-    System.out.println("rotateTo");
     Motor instance = new Motor();
     Motor result = instance.rotateTo(400);
     assertEquals(instance, result);
@@ -129,7 +122,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testRotateBy() {
-    System.out.println("rotateBy");
     Motor instance = new Motor();
     instance.setSpeed(400);
     instance.rotateBy(398);
@@ -154,7 +146,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testGoForward() {
-    System.out.println("goForward");
     Motor instance = new Motor();
     Motor result = instance.goForward();
     assertEquals(Motor.FORWARD, instance.getDirection());
@@ -166,7 +157,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testGoBackward() {
-    System.out.println("goBackward");
     Motor instance = new Motor();
     Motor result = instance.goBackward();
     assertEquals(Motor.BACKWARD, instance.getDirection());
@@ -178,7 +168,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testToggleDirection() {
-    System.out.println("toggleDirection");
     Motor instance = new Motor();
     int prev = instance.getDirection();
     Motor result = instance.toggleDirection();
@@ -191,7 +180,6 @@ public class MotorTest extends TestCase {
    */
   @Test
   public void testGetValue() {
-    System.out.println("getValue");
     Motor instance = new Motor();
     assertEquals(0, instance.getValue());
     instance.tick(1);

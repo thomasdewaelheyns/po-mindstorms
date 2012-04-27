@@ -81,7 +81,7 @@ public class SensorModelPart implements ModelPart {
   }
 
   public int getLightSensorValue() { 
-    return this.getSensorValue(S4);
+    return this.getSensorValue(RobotConfig.S4);
   }
 
 

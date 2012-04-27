@@ -56,7 +56,7 @@ public class RemoteFileLogger {
             String s;
             s = scanner.nextLine();
             fs.println(s);
-            System.out.println(s);
+            // System.out.println(s);
 
             if (extraOutputStream != null) {
               extraOutputStream.onLog(s);

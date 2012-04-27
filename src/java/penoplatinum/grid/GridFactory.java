@@ -38,7 +38,7 @@ public class GridFactory {
     // load walls
     int width = scanner.nextInt();
     int height = scanner.nextInt();
-    System.out.println("loading grid: " + width + "x" + height);
+    // System.out.println("loading grid: " + width + "x" + height);
 
     Sector currentSector;
     for (int top = 0; top < height; top++) {
