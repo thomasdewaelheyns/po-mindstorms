@@ -1,3 +1,4 @@
+
 /**
  * RunAllTests
  *
@@ -5,7 +6,6 @@
  *
  * @author Team Platonum
  */
-
 import junit.framework.*;
 
 public class RunAllTests {
@@ -62,7 +62,7 @@ public class RunAllTests {
       penoplatinum.navigator.MultiModeNavigatorTest.class,
       penoplatinum.navigator.NavigatorTest.class,
       penoplatinum.protocol.ExternalEventHandlerTest.class,
-      // penoplatinum.protocol.GhostProtocolHandlerTest.class,
+      penoplatinum.protocol.GhostProtocolHandlerTest.class,
       penoplatinum.protocol.ProtocolHandlerTest.class,
       penoplatinum.reporter.ReporterTest.class,
       penoplatinum.robot.RobotAPITest.class,
@@ -97,12 +97,10 @@ public class RunAllTests {
       penoplatinum.util.RotationTest.class,
       penoplatinum.util.ScannerTest.class,
       penoplatinum.util.SimpleHashMapTest.class,
-      penoplatinum.util.SimpleHashMapTest2.class,
       penoplatinum.util.TransformationTRTTest.class,
-      penoplatinum.util.UtilsTest.class   
+      penoplatinum.util.UtilsTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;
   }
 }
-
