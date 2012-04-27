@@ -63,6 +63,7 @@ public class RunAllTests {
       penoplatinum.model.part.BarcodeTest.class,
       penoplatinum.model.part.BarcodeModelPartTest.class,
       penoplatinum.model.part.LightModelPartTest.class,
+      penoplatinum.model.part.GapModelPartTest.class,
       penoplatinum.model.processor.ModelProcessorTest.class,
       penoplatinum.model.processor.BarcodeModelProcessorTest.class,
       penoplatinum.model.processor.BarcodeWallsModelProcessorTest.class,

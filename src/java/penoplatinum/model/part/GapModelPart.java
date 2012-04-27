@@ -1,45 +1,45 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package penoplatinum.model;
+package penoplatinum.model.part;
 
 /**
- * Contains information about the last gap detected by the sonar
+ * GapModelPart
+ *
+ * Contains information about the last gap detected by the sonar.
  * 
- * @author MHGameWork
+ * @author Team Platinum
  */
-public class GapModelPart implements IModelPart {
 
-  private boolean gapFound;
-  private int gapStartAngle;
-  private int gapEndAngle;
 
-  public int getGapEndAngle() {
-    return gapEndAngle;
+public class GapModelPart implements ModelPart {
+
+  private boolean foundGap;
+  private int     gapStart, gapEnd;
+
+
+  public GapModelPart() {
+    this.clearGap();
   }
 
-  public void setGapEndAngle(int gapEndAngle) {
-    this.gapEndAngle = gapEndAngle;
+  public void markGap(int start, int end) {
+    this.foundGap = true;
+    this.gapStart = start;
+    this.gapEnd   = end;
+  }
+  
+  public void clearGap() {
+    this.foundGap = false;
+    this.gapStart = 0;
+    this.gapEnd = 0;
   }
 
-  public boolean isGapFound() {
-    return gapFound;
+  public int getGapStart() {
+    return this.gapStart;
   }
 
-  public void setGapFound(boolean gapFound) {
-    this.gapFound = gapFound;
+  public int getGapEnd() {
+    return this.gapEnd;
   }
 
-  public int getGapStartAngle() {
-    return gapStartAngle;
-  }
-
-  public void setGapStartAngle(int gapStartAngle) {
-    this.gapStartAngle = gapStartAngle;
-  }
-
-  @Override
-  public void clearDirty() {
+  public boolean foundGap() {
+    return this.foundGap;
   }
 }
