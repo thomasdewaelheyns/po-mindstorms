@@ -1,6 +1,9 @@
 package penoplatinum.simulator.entities;
 
 import java.util.Random;
+
+import penoplatinum.Config;
+
 import penoplatinum.map.MapUtil;
 import penoplatinum.robot.Robot;
 import penoplatinum.robot.SimulationRobotAPI;
@@ -124,15 +127,15 @@ public class SimulatedEntity implements RobotEntity {
   public void step() {
     // let all motors know that another timeslice has passed
 
-    this.motors[EntityConfig.MOTOR_LEFT].tick(simulator.TIME_SLICE);
-    this.motors[EntityConfig.MOTOR_RIGHT].tick(simulator.TIME_SLICE);
-    this.motors[EntityConfig.MOTOR_SONAR].tick(simulator.TIME_SLICE);
+    this.motors[Config.MOTOR_LEFT].tick(simulator.TIME_SLICE);
+    this.motors[Config.MOTOR_RIGHT].tick(simulator.TIME_SLICE);
+    this.motors[Config.MOTOR_SONAR].tick(simulator.TIME_SLICE);
 
     // based on the motor's (new) angle's determine the displacement
-    double changeLeft = this.motors[EntityConfig.MOTOR_LEFT].getFullAngleTurned() - previousTacho[EntityConfig.MOTOR_LEFT];
-    double changeRight = this.motors[EntityConfig.MOTOR_RIGHT].getFullAngleTurned() - previousTacho[EntityConfig.MOTOR_RIGHT];
-    previousTacho[EntityConfig.MOTOR_LEFT] = this.motors[EntityConfig.MOTOR_LEFT].getFullAngleTurned();
-    previousTacho[EntityConfig.MOTOR_RIGHT] = this.motors[EntityConfig.MOTOR_RIGHT].getFullAngleTurned();
+    double changeLeft = this.motors[Config.MOTOR_LEFT].getFullAngleTurned() - previousTacho[Config.MOTOR_LEFT];
+    double changeRight = this.motors[Config.MOTOR_RIGHT].getFullAngleTurned() - previousTacho[Config.MOTOR_RIGHT];
+    previousTacho[Config.MOTOR_LEFT] = this.motors[Config.MOTOR_LEFT].getFullAngleTurned();
+    previousTacho[Config.MOTOR_RIGHT] = this.motors[Config.MOTOR_RIGHT].getFullAngleTurned();
 
     moveEntity((changeRight+changeLeft)/2);
     turnEntity((changeLeft-changeRight) /2);
@@ -146,7 +149,7 @@ public class SimulatedEntity implements RobotEntity {
     // we're moving in one direction 
     double error = 0.00;//0.05;
     double afwijking = 0;// 0.1;
-    double d = EntityConfig.WHEEL_SIZE / 360 * distance;
+    double d = Config.WHEEL_SIZE / 360 * distance;
     d *= 1 + (random.nextDouble() - 0.5 + afwijking) * error;
     double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
     double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
@@ -164,9 +167,9 @@ public class SimulatedEntity implements RobotEntity {
     // we're turning
     double error = 0.00; //0.05;
     double afwijking = 0.3;
-    double angle = EntityConfig.WHEEL_SIZE / 360 * angleTacho;
+    double angle = Config.WHEEL_SIZE / 360 * angleTacho;
     angle = angle * (1 + (random.nextDouble() - 0.5 + afwijking) * error);
-    double dr = (angle / (Math.PI * EntityConfig.WHEEL_BASE)) * 360;
+    double dr = (angle / (Math.PI * Config.WHEEL_BASE)) * 360;
     this.direction += dr;
   }
 

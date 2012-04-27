@@ -1,10 +1,5 @@
 package penoplatinum.robot;
 
-import penoplatinum.simulator.entities.SimulatedEntity;
-import java.util.ArrayList;
-import java.util.List;
-import penoplatinum.simulator.entities.RobotConfig;
-
 /**
  * SimulationRobotAPI
  * 
@@ -13,6 +8,15 @@ import penoplatinum.simulator.entities.RobotConfig;
  * 
  * @author: Team Platinum
  */
+
+import java.util.ArrayList;
+import java.util.List;
+
+import penoplatinum.Config;
+
+import penoplatinum.simulator.entities.SimulatedEntity;
+
+
 public class SimulationRobotAPI implements RobotAPI {
 
   private SimulatedEntity simulatedEntity;
@@ -25,22 +29,22 @@ public class SimulationRobotAPI implements RobotAPI {
   public void move(double distance) {
     distance *= 100;
     // calculate the tacho count we need to do to reach this movement
-    int tacho = (int) (distance / RobotConfig.WHEEL_SIZE * 360);
-    this.simulatedEntity.getMotor(RobotConfig.M1).rotateBy(tacho);
-    this.simulatedEntity.getMotor(RobotConfig.M2).rotateBy(tacho);
+    int tacho = (int) (distance / Config.WHEEL_SIZE * 360);
+    this.simulatedEntity.getMotor(Config.M1).rotateBy(tacho);
+    this.simulatedEntity.getMotor(Config.M2).rotateBy(tacho);
   }
 
   public void turn(int angle) {
     // calculate anmount of tacho needed to perform a turn by angle
-    double dist = Math.PI * RobotConfig.WHEEL_BASE / 360 * angle;
-    int tacho = (int) (dist / RobotConfig.WHEEL_SIZE * 360);
-    this.simulatedEntity.getMotor(RobotConfig.M1).rotateBy(tacho);
-    this.simulatedEntity.getMotor(RobotConfig.M2).rotateBy(-tacho);
+    double dist = Math.PI * Config.WHEEL_BASE / 360 * angle;
+    int tacho = (int) (dist / Config.WHEEL_SIZE * 360);
+    this.simulatedEntity.getMotor(Config.M1).rotateBy(tacho);
+    this.simulatedEntity.getMotor(Config.M2).rotateBy(-tacho);
   }
 
   public void stop() {
-    this.simulatedEntity.getMotor(RobotConfig.M1).stop();
-    this.simulatedEntity.getMotor(RobotConfig.M2).stop();
+    this.simulatedEntity.getMotor(Config.M1).stop();
+    this.simulatedEntity.getMotor(Config.M2).stop();
   }
 
   public int[] getSensorValues() {
@@ -64,13 +68,13 @@ public class SimulationRobotAPI implements RobotAPI {
       return;
     }
 
-    int currentTacho = (int) this.simulatedEntity.getSensorValues()[RobotConfig.M3];
+    int currentTacho = (int) this.simulatedEntity.getSensorValues()[Config.M3];
     int currentAngle = currentSweepAngles[currentSweepAngleIndex];
     if (currentTacho != currentAngle) {
-      simulatedEntity.getMotor(RobotConfig.M3).rotateTo(currentAngle);
+      simulatedEntity.getMotor(Config.M3).rotateTo(currentAngle);
       return;
     }
-    resultBuffer.add((int) this.simulatedEntity.getSensorValues()[RobotConfig.S3]);
+    resultBuffer.add((int) this.simulatedEntity.getSensorValues()[Config.S3]);
     currentSweepAngleIndex++;
 
     if (currentSweepAngleIndex >= currentSweepAngles.length) {

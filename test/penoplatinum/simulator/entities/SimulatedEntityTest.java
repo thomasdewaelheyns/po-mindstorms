@@ -1,15 +1,19 @@
 package penoplatinum.simulator.entities;
 
 import junit.framework.TestCase;
-import penoplatinum.map.Map;
-import penoplatinum.simulator.sensors.Motor;
+import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import penoplatinum.Config;
+
+import penoplatinum.map.Map;
+import penoplatinum.simulator.sensors.Motor;
 import penoplatinum.robot.Robot;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.util.Point;
-import static org.mockito.Mockito.*;
+
 
 public class SimulatedEntityTest extends TestCase {
 
@@ -29,9 +33,9 @@ public class SimulatedEntityTest extends TestCase {
     mockedMotorLeft = this.mockMotor();
     mockedMotorRight = this.mockMotor();
     mockedMotorSonar = this.mockMotor();
-    simEntity.setupMotor(mockedMotorRight, EntityConfig.MOTOR_RIGHT);
-    simEntity.setupMotor(mockedMotorLeft, EntityConfig.MOTOR_LEFT);
-    simEntity.setupMotor(mockedMotorSonar, EntityConfig.MOTOR_SONAR);
+    simEntity.setupMotor(mockedMotorRight, Config.MOTOR_RIGHT);
+    simEntity.setupMotor(mockedMotorLeft, Config.MOTOR_LEFT);
+    simEntity.setupMotor(mockedMotorSonar, Config.MOTOR_SONAR);
     simEntity.useSimulator(mockedSimulator);
   }
 

@@ -2,7 +2,9 @@ package penoplatinum.simulator.sensors;
 
 import junit.framework.TestCase;
 import org.junit.Test;
-import penoplatinum.simulator.entities.RobotConfig;
+
+import penoplatinum.Config;
+
 
 public class MotorStateTest extends TestCase {
 
@@ -13,10 +15,10 @@ public class MotorStateTest extends TestCase {
   public void testGetValue() {
     Motor m = new Motor();
     MotorState instance = new MotorState(m);
-    assertEquals(RobotConfig.MOTORSTATE_STOPPED, instance.getValue());
+    assertEquals(Config.MOTORSTATE_STOPPED, instance.getValue());
     m.goForward().start();
-    assertEquals(RobotConfig.MOTORSTATE_FORWARD, instance.getValue());
+    assertEquals(Config.MOTORSTATE_FORWARD, instance.getValue());
     m.goBackward().start();
-    assertEquals(RobotConfig.MOTORSTATE_BACKWARD, instance.getValue());
+    assertEquals(Config.MOTORSTATE_BACKWARD, instance.getValue());
   }
 }

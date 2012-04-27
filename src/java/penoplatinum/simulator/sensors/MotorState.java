@@ -1,9 +1,10 @@
 package penoplatinum.simulator.sensors;
 
+import penoplatinum.Config;
+
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
-import penoplatinum.simulator.entities.RobotConfig;
 
 public class MotorState implements Sensor {
 
@@ -16,11 +17,11 @@ public class MotorState implements Sensor {
   @Override
   public int getValue() {
     if (!m.isMoving()) {
-      return RobotConfig.MOTORSTATE_STOPPED;
+      return Config.MOTORSTATE_STOPPED;
     } else if (m.getDirection() == Motor.FORWARD) {
-      return RobotConfig.MOTORSTATE_FORWARD;
+      return Config.MOTORSTATE_FORWARD;
     } else if (m.getDirection() == Motor.BACKWARD) {
-      return RobotConfig.MOTORSTATE_BACKWARD;
+      return Config.MOTORSTATE_BACKWARD;
     } else {
       throw new RuntimeException("I M P O S S I B L E !");
     }
