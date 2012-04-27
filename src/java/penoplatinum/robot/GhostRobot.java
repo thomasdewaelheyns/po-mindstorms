@@ -197,7 +197,6 @@ public class GhostRobot implements Robot {
     for(String msg : this.model.getMessagePart().getOutgoingMessages()) {
       this.client.send(msg, Config.BT_GHOST_PROTOCOL);
     }
-    this.model.getMessagePart().clearOutbox();
   }
 
   public Boolean reachedGoal() {
