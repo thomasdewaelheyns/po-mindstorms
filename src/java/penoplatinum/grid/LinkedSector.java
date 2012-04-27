@@ -16,6 +16,9 @@ import penoplatinum.util.BitwiseOperations;
  * This sector implementation relies on the fact that the entire grid composing
  * this sector does not contain holes!!
  * 
+ * Note: this class should be able to work with generic 'Grid's, not only with
+ * LinkedGrid
+ * 
  * @author MHGameWork
  */
 public class LinkedSector implements Sector {

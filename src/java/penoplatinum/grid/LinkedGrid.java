@@ -20,6 +20,9 @@ import penoplatinum.util.SimpleHashMap;
  * This class implements a grid using LinkedSectors. The grid can also contain
  * any number of agents, which are placed on sectors.
  * 
+ * Note that this class explicitly uses LinkedSector and will not work with 
+ * any other type of sector!!
+ * 
  * @author MHGameWork
  */
 public class LinkedGrid implements Grid {
