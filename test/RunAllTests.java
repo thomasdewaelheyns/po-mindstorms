@@ -66,6 +66,7 @@ public class RunAllTests {
       penoplatinum.model.processor.ModelProcessorTest.class,
       penoplatinum.model.processor.BarcodeModelProcessorTest.class,
       penoplatinum.model.processor.BarcodeWallsModelProcessorTest.class,
+      penoplatinum.model.processor.LightModelProcessorTest.class,
       penoplatinum.robot.RobotTest.class,
       penoplatinum.robot.RobotAPITest.class,
       penoplatinum.gateway.ConnectionTest.class,

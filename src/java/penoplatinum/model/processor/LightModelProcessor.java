@@ -24,7 +24,7 @@ public class LightModelProcessor extends ModelProcessor {
 
   private final int   BROWN_LOW  = 470;
   private final int   BROWN_HIGH = 540;
-  private final float BROWN_MID  = BROWN_HIGH + BROWN_LOW / 2;
+  private final float BROWN_MID  = (BROWN_HIGH + BROWN_LOW) / 2;
 
   private final float AVERAGE_EXPONENT = 0.001f;
   private final int   SENSOR_VARIATION = 30;
@@ -54,25 +54,22 @@ public class LightModelProcessor extends ModelProcessor {
   }
   
   private float detectAverageLightValue(int currentLightValue) {
-    float averageLightValue    = this.sensors.getAverageLightValue(),
-          newAverageLightValue = averageLightValue;
+    float averageLightValue    = this.sensors.getAverageLightValue();
 
     // if the average light value is outside the brown space, reset it to
     // the center in between the boundaries
-    // WHAT DOES THIS DO, besides initialize ??
     if( averageLightValue < BROWN_LOW || averageLightValue > BROWN_HIGH ) {
-      newAverageLightValue = BROWN_MID;
+      averageLightValue = BROWN_MID;
     }
 
-    // if the currentLightValue is in the brown space, ...
-    // WHAT DOES THIS DO ?
+    // if the currentLightValue is in the brown space, we enhance our idea
+    // of brown by taking into account the current light value
     if( currentLightValue > BROWN_LOW && currentLightValue < BROWN_HIGH) {
-      newAverageLightValue = averageLightValue
-                           * (1 - AVERAGE_EXPONENT) 
-                           + currentLightValue * AVERAGE_EXPONENT;
+      averageLightValue = averageLightValue  * (1 - AVERAGE_EXPONENT) 
+                          + (currentLightValue * AVERAGE_EXPONENT);
     }
 
-    return newAverageLightValue;
+    return averageLightValue;
   }
   
   private LightColor detectColor(int   currentLightValue, 

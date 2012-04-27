@@ -45,7 +45,7 @@ public class LightModelProcessorTest extends TestCase {
     when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(true);
     when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(15);
     this.processor.work();
-    verify(this.mockedLightModelPart).setAverageLightValue(775);
+    verify(this.mockedLightModelPart).setAverageLightValue(505);
     verify(this.mockedLightModelPart).setCurrentLightColor(LightColor.BLACK);
   }
 
@@ -54,7 +54,8 @@ public class LightModelProcessorTest extends TestCase {
     when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(true);
     when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(905);
     this.processor.work();
-    verify(this.mockedLightModelPart).setAverageLightValue(775);
+
+    verify(this.mockedLightModelPart).setAverageLightValue(505);
     verify(this.mockedLightModelPart).setCurrentLightColor(LightColor.WHITE);
   }
 
@@ -63,11 +64,30 @@ public class LightModelProcessorTest extends TestCase {
     when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(true);
     when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(501);
     this.processor.work();
-    verify(this.mockedLightModelPart).setAverageLightValue(0.50100005f);
+    verify(this.mockedLightModelPart).setAverageLightValue(504.996f);
     verify(this.mockedLightModelPart).setCurrentLightColor(LightColor.BROWN);
   }
   
-  // TODO: add test for evolution of avg value
+  public void testAverageLightValueOverLongTime() {
+    this.setup();
+    when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(true);
+    // int he beginning, the average light value is 505
+    // after 150 readings of 471 the average light value is 500.3204
+    when(this.mockedLightModelPart.getAverageLightValue())
+      .thenReturn(505f, 479.999f);
+    when(this.mockedLightModelPart.getCurrentLightValue())
+      .thenReturn(471);
+
+    // int the beginning ...
+    this.processor.work();
+    verify(this.mockedLightModelPart).setAverageLightValue(504.966f);
+    verify(this.mockedLightModelPart).setCurrentLightColor(LightColor.BLACK);
+
+    // 150 readings later ...
+    this.processor.work();
+    verify(this.mockedLightModelPart).setAverageLightValue(479.99002f);
+    verify(this.mockedLightModelPart).setCurrentLightColor(LightColor.BROWN);
+  }
   
   private void setup() {
     this.createProcessor();
