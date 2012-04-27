@@ -17,10 +17,9 @@ public class HistogramModelProcessor extends ModelProcessor {
 
   @Override
   protected void work() {
-    if (!model.getSensorPart().hasNewSensorValues()) {
-      return;
-    }
-    //int value = this.model.getSensorValue(this.model.S4);
+    // we only work with new sensor values...
+    // if( this.robot.getValuesId() == this.sensorUpdate ) { return; }
+
     this.model.getBarcodePart().getLightValueBuffer().insert(model.getLightPart().getCurrentLightColor().getVal());
   }
 }

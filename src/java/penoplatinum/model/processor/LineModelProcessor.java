@@ -68,9 +68,10 @@ public class LineModelProcessor extends ModelProcessor {
   @Override
   protected void work() {
     final SensorModelPart sensorPart = model.getSensorPart();
-    if (!sensorPart.hasNewSensorValues()) {
-      return;
-    }
+
+    // we only work with new sensor values...
+    // if( this.robot.getValuesId() == this.sensorUpdate ) { return; }
+
     LightModelPart lightPart = model.getLightPart();
     lightPart.setLine(Line.NONE);
     if (sensorPart.isTurning()) {

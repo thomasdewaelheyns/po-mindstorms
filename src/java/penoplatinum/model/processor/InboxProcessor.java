@@ -11,27 +11,21 @@ import penoplatinum.model.MessageModelPart;
  * 
  * @author MHGameWork
  */
+
 public class InboxProcessor extends ModelProcessor {
-
-  public InboxProcessor() {
-    super();
-  }
-
+  // boilerplate Decorator setup
+  public InboxProcessor() { super(); }
   public InboxProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
 
-  private List<String> buffer = new ArrayList<String>();
-  
+  // get the messages from our inbox and dispatch them to the protocolHandler
   protected void work() {
-    MessageModelPart message = ((GhostModel) this.model).getMessagePart();
-    
-    buffer.clear();
-    
-    message.receiveIncomingMessages(buffer);
-    
-    for (int i = 0; i < buffer.size(); i++) {
-      message.getProtocol().receive(buffer.get(i));
+    MessageModelPart messagePart     = MessageModelPart.from(this.getModel());
+    ProtocolHandler  protocolHandler = messagePart.getProtocolHandler();
+
+    for( String message : messagePart.getIncomingMessages() ) {
+      protocolHandler.receive(message);
     }
   }
 }

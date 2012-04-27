@@ -46,6 +46,7 @@ public class RunAllTests {
       penoplatinum.model.part.MessageModelPartTest.class,
       penoplatinum.model.part.ModelPartRegistryTest.class,
       penoplatinum.model.part.ModelPartTest.class,
+      penoplatinum.model.part.SensorModelPartTest.class,
       penoplatinum.model.part.SonarModelPartTest.class,
       penoplatinum.model.part.WallsModelPartTest.class,
       penoplatinum.model.processor.BarcodeModelProcessorTest.class,

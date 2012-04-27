@@ -31,7 +31,7 @@ public class IRModelProcessor extends ModelProcessor {
     if (!model.getGridPart().hasRobotMoved()) {
       return;
     }
-    int dir = sensor.getSensorValue(Model.S1);
+    int dir = sensor.getIRDirection();
     int dx = 0, dy = 0;
     switch (dir) {
       case 2:
@@ -49,11 +49,11 @@ public class IRModelProcessor extends ModelProcessor {
     }
     int sum = 0;
     if(dir % 2 == 0){
-      sum += sensor.getSensorValue(Model.IR0+dir/2-1);
-      sum += sensor.getSensorValue(Model.IR0+dir/2);
+      sum += sensor.getIRValue(dir/2-1);
+      sum += sensor.getIRValue(dir/2);
       sum/=2;
     } else {
-      sum += sensor.getSensorValue(Model.IR0+dir/2);
+      sum += sensor.getIRValue(dir/2);
     }
     if (sum <= 150) {
       grid.setPacManInNext(false, 0, 0);

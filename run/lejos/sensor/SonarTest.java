@@ -100,19 +100,21 @@ public class SonarTest {
     }
 
     public void driveAndSample(int minDistance) throws IOException {
-        QueuedPacketTransporter t = samplePacketTransporter;
-        int sensor = Integer.MAX_VALUE;
-        float tacho;
-        while (minDistance < sensor) {
-            mov.driveDistance(2);
-            tacho = mov.getAverageTacho();
-            sensor = sens.getDistance();
-            t.getSendStream().writeFloat(tacho);
-            t.getSendStream().writeInt(sensor);
-            t.SendPacket(samplePacket);
-            Utils.Sleep(500);
-        }
-        mov.stop();
+      throw new RuntimeException("removed getAverageTacho");
+        //       
+        // QueuedPacketTransporter t = samplePacketTransporter;
+        // int sensor = Integer.MAX_VALUE;
+        // float tacho;
+        // while (minDistance < sensor) {
+        //     mov.driveDistance(2);
+        //     tacho = mov.getAverageTacho();
+        //     sensor = sens.getDistance();
+        //     t.getSendStream().writeFloat(tacho);
+        //     t.getSendStream().writeInt(sensor);
+        //     t.SendPacket(samplePacket);
+        //     Utils.Sleep(500);
+        // }
+        // mov.stop();
     }
 
     public void orientSonarHead(UltrasonicSensor sens, Motor m) {

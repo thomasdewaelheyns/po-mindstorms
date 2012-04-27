@@ -32,6 +32,7 @@ public class LightModelProcessor extends ModelProcessor {
   private SensorModelPart  robot;
   private LightModelPart   sensors;
 
+  private int sensorUpdate = 0;
 
   // override the setModel to setup a reference to the BarcodeModelPart
   public void setModel(Model model) {
@@ -42,7 +43,7 @@ public class LightModelProcessor extends ModelProcessor {
 
   protected void work() {
     // we only work with new sensor values...
-    if( ! this.robot.hasNewSensorValues() ) { return; }
+    if( this.robot.getValuesId() == this.sensorUpdate ) { return; }
 
     int currentLightValue = this.sensors.getCurrentLightValue();
 

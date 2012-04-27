@@ -35,14 +35,14 @@ public class LightModelProcessorTest extends TestCase {
 
   public void testNoNewSensorValuesMeansNoWork() {
     this.setup();
-    when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(false);
+    when(this.mockedSensorModelPart.getValuesId()).thenReturn(0);
     this.processor.work();
     verifyZeroInteractions(this.mockedLightModelPart);
   }
   
   public void testDetectBlack() {
     this.setup();
-    when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(true);
+    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
     when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(15);
     this.processor.work();
     verify(this.mockedLightModelPart).setAverageLightValue(505);
@@ -51,7 +51,7 @@ public class LightModelProcessorTest extends TestCase {
 
   public void testDetectWhite() {
     this.setup();
-    when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(true);
+    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
     when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(905);
     this.processor.work();
 
@@ -61,7 +61,7 @@ public class LightModelProcessorTest extends TestCase {
 
   public void testDetectBrown() {
     this.setup();
-    when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(true);
+    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
     when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(501);
     this.processor.work();
     verify(this.mockedLightModelPart).setAverageLightValue(504.996f);
@@ -70,7 +70,7 @@ public class LightModelProcessorTest extends TestCase {
   
   public void testAverageLightValueOverLongTime() {
     this.setup();
-    when(this.mockedSensorModelPart.hasNewSensorValues()).thenReturn(true);
+    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
     // int he beginning, the average light value is 505
     // after 150 readings of 471 the average light value is 500.3204
     when(this.mockedLightModelPart.getAverageLightValue())

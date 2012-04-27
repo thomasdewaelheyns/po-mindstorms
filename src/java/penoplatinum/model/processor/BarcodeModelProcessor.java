@@ -39,6 +39,8 @@ public class BarcodeModelProcessor extends ModelProcessor {
   private BarcodeModelPart barcode;
   private SensorModelPart  robot;
   private LightModelPart   sensors;
+  
+  private int sensorUpdate = 0;
 
 
   // override the setModel to setup a reference to the BarcodeModelPart
@@ -52,7 +54,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
   // actual logic
   protected void work() {
     // we only work with new sensor values...
-    if( ! this.robot.hasNewSensorValues() ) { return; }
+    if( this.robot.getValuesId() == this.sensorUpdate ) { return; }
 
     if( this.isWaiting ) {
       // BLACK marks the beginning of a new barcode

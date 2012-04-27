@@ -63,10 +63,13 @@ public class Config {
   public static final double WHEEL_SIZE = 17.5; // circumf. in cm
   public static final double WHEEL_BASE = 16.0; // wheeldist. in cm
   
-  // 
-  public static final int MOTORSTATE_FORWARD = 1;
+  // states for the motor mapping to logica names
+  public static final int MOTORSTATE_FORWARD  = 1;
   public static final int MOTORSTATE_BACKWARD = 2;
-  public static final int MOTORSTATE_STOPPED = 3;
+  public static final int MOTORSTATE_STOPPED  = 3;
+
+  // we're tracking these sensors/actuators
+  public static final int SENSORVALUES_NUM = 15;
 
   // names for sensor/actuator indexes
   public static final int M1  = 0; 
@@ -84,11 +87,20 @@ public class Config {
   public static final int IR2 = 12;
   public static final int IR3 = 13;
   public static final int IR4 = 14;
-  public static final int SENSORVALUES_NUM = 15;
-
 
   // mapping logical names to physical indexes
-  public static final int MOTOR_RIGHT = M1;
-  public static final int MOTOR_LEFT  = M2;
-  public static final int MOTOR_SONAR = M3;
+  public static final int MOTOR_RIGHT       = M1;
+  public static final int MOTOR_LEFT        = M2;
+  public static final int MOTOR_SONAR       = M3;
+
+  public static final int MOTOR_STATE_RIGHT = MS1;
+  public static final int MOTOR_STATE_LEFT  = MS2;
+  public static final int MOTOR_STATE_SONAR = MS3;
+
+  public static final int IR_DIRECTION      = S1;
+  
+  public static final int SONAR_DISTANCE    = S3;
+  public static final int SONAR_ANGLE       = MOTOR_SONAR;
+  
+  public static final int LIGHT_SENSOR      = S4;
 }
