@@ -29,11 +29,11 @@ public interface ProtocolHandler {
   public ProtocolHandler handleStart();
   public ProtocolHandler handleEnterSector(Sector sector);
   public ProtocolHandler handleFoundSector(Sector sector);
-  // TODO: find a way to turn this into ONE method
+
   public ProtocolHandler handleFoundAgent(Sector sector, BarcodeAgent agent);
   public ProtocolHandler handleFoundAgent(Sector sector, PacmanAgent agent);
 
-  // used to manage incoming messages, called by GatewayClient
+  // used to manage incoming messages
   public void receive(String msg);
 
   // callback to retrieve own name

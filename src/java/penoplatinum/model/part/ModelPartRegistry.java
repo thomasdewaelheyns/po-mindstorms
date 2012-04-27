@@ -15,4 +15,5 @@ public class ModelPartRegistry {
   public static final int LIGHT_MODEL_PART    = 3;
   public static final int GRID_MODEL_PART     = 4;
   public static final int MESSAGE_MODEL_PART  = 5;
+  public static final int SONAR_MODEL_PART    = 6;
 }

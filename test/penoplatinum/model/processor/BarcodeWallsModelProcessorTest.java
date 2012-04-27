@@ -12,7 +12,6 @@ import junit.framework.*;
 import static org.mockito.Mockito.*;
 import org.mockito.Matchers;
 import org.mockito.ArgumentMatcher;
-// import org.hamcrest.Matcher;
 
 import penoplatinum.grid.LinkedSector;
 
