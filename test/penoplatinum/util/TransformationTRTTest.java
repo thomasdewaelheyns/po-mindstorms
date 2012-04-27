@@ -30,6 +30,11 @@ public class TransformationTRTTest extends TestCase {
     assertEquals(expectedPoint, point);
   }
   
+  public void testInverseTransform()
+  {
+    fail();
+  }
+  
   private TransformationTRT createTransformation() {
     return new TransformationTRT().setTransformation( 123, -456,
                                                       Rotation.L270,

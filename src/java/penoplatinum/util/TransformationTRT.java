@@ -5,8 +5,6 @@ package penoplatinum.util;
  *
  * @author Team Platinum
  */
- 
- 
 public class TransformationTRT implements Transformation {
 
   public static TransformationTRT Identity;
@@ -15,23 +13,24 @@ public class TransformationTRT implements Transformation {
     Identity = new TransformationTRT();
     Identity.setTransformation(0, 0, Rotation.NONE, 0, 0);
   }
-
   private int translationAX;
   private int translationAY;
   private int translationBX;
   private int translationBY;
-
   private Rotation rotation;
 
-  public Rotation getRotation() { return this.rotation; }
+  public Rotation getRotation() {
+    return this.rotation;
+  }
 
-  public TransformationTRT setTransformation(int tAX, int tAY, 
-                                             Rotation rotation,
-                                             int tBX, int tBY)
-  {
-    this.rotation      = rotation;
-    this.translationAX = tAX;    this.translationAY = tAY;
-    this.translationBX = tBX;    this.translationBY = tBY;
+  public TransformationTRT setTransformation(int tAX, int tAY,
+          Rotation rotation,
+          int tBX, int tBY) {
+    this.rotation = rotation;
+    this.translationAX = tAX;
+    this.translationAY = tAY;
+    this.translationBX = tBX;
+    this.translationBY = tBY;
 
     return this;
   }
@@ -44,23 +43,34 @@ public class TransformationTRT implements Transformation {
     // translate to B XY
     point.translate(this.translationBX, this.translationBY);
   }
-  
-  public String toString(){
+
+  public void inverseTransform(Point point) {
+    
+    // translate to B XY
+    point.translate(-this.translationBX, -this.translationBY);
+    
+    // rotate
+    point.rotate(rotation.invert());
+    
+    // translate to A XY
+    point.translate(-this.translationAX, -this.translationAY);
+    
+  }
+
+  public String toString() {
     return "Transformation: " + this.translationAX + "," + this.translationAY
-                              + ":" + this.rotation + ":" + this.translationBX
-                              + "," + this.translationBY;
+            + ":" + this.rotation + ":" + this.translationBX
+            + "," + this.translationBY;
   }
 
   @Deprecated
   public Point transform(int x, int y) {
-    Point point = new Point(x,y);
+    Point point = new Point(x, y);
     this.transform(point);
     return point;
   }
-  
-  public static TransformationTRT fromRotation(Rotation r)
-  {
+
+  public static TransformationTRT fromRotation(Rotation r) {
     return new TransformationTRT().setTransformation(0, 0, r, 0, 0);
   }
-
 }
