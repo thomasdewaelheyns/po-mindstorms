@@ -10,6 +10,9 @@ package penoplatinum.model.processor;
 
 import junit.framework.*; 
 import static org.mockito.Mockito.*;
+import org.mockito.Matchers;
+import org.mockito.ArgumentMatcher;
+// import org.hamcrest.Matcher;
 
 import penoplatinum.grid.LinkedSector;
 
@@ -62,9 +65,19 @@ public class BarcodeWallsModelProcessorTest extends TestCase {
             .setWall(Bearing.E)
             .setWall(Bearing.W);
     this.processor.work();
-    verify(this.mockedWallsModelPart).updateSector(expected);
+    verify(this.mockedWallsModelPart).updateSector(argThat(new hasOnlyWallsEW()));
   }
-
+  
+  private class hasOnlyWallsEW extends ArgumentMatcher<LinkedSector> {
+    public boolean matches(Object obj) {
+      LinkedSector sector = (LinkedSector) obj;
+      return sector.hasNoWall(Bearing.N) &&
+             sector.hasNoWall(Bearing.S) &&
+             sector.hasWall(Bearing.E) &&
+             sector.hasWall(Bearing.W);
+    }
+  }
+  
   public void testWorkOnlyOncePerBarcode() {
     this.setup();
     when(this.mockedBarcodeModelPart.isReadingBarcode()).thenReturn(true);
