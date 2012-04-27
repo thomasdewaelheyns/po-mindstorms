@@ -1,11 +1,9 @@
 package penoplatinum.robot;
 
 import penoplatinum.simulator.entities.SimulatedEntity;
-import penoplatinum.util.ExtendedVector;
 import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.simulator.entities.RobotConfig;
-import penoplatinum.util.ReferencePosition;
 
 /**
  * SimulationRobotAPI
@@ -100,11 +98,6 @@ public class SimulationRobotAPI implements RobotAPI {
     return outAngle;
   }
 
-  private void updateCurrentPosition() {
-    currentPosition.setX((float) simulatedEntity.getPosX());
-    currentPosition.setY((float) simulatedEntity.getPosY());
-    currentPosition.setAngle((float) simulatedEntity.getDirection() + 90);
-  }
   private void updateCurrentAngle() {
     currentAngle = ((float)simulatedEntity.getDirection() + 90);
   }

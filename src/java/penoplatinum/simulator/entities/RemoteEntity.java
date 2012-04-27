@@ -16,7 +16,6 @@ import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
-import penoplatinum.simulator.RobotAPI;
 
 public class RemoteEntity implements RobotEntity {
 

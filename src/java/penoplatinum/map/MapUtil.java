@@ -16,7 +16,7 @@ public class MapUtil {
    */
   public static int findHitDistance(Map map, int angle, int left, int top, double x, double y) {
     // Force angles between 0 and 360 !!!
-    angle = penoplatinum.util.Utils.ClampLooped(angle, 0, 360);
+    angle = (int)penoplatinum.util.Utils.ClampLooped(angle, 0, 360);
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this bearing
     double dist = 0;

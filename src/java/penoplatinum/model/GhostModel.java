@@ -110,18 +110,4 @@ public class GhostModel implements Model {
     return this;
   }
 
-  @Override
-  public Model register(ModelPart part) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public ModelPart getPart(int id) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public Model refresh() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
 }

@@ -1,46 +1,58 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.util;
 
 /**
+ * CircularQueue
+ *
+ * A this.queue that stores generic objects. It doesn't discard items but 
+ * instead moves an internal pointer forward when removing an item.
+ *
+ * @author Team Platinum
  *
  * Taken from http://www.scribd.com/doc/14768610/Array-Circular-Queue
  */
+
 public class CircularQueue<T> {
 
-  private int front = 0, rear = 0;
+  private int front = 0, size = 0;
   private Object[] queue;
 
-  public CircularQueue(int maxElements) {
-    queue = new Object[maxElements+1];
-  }
 
-  public void insert(T o) {
-    int temp = rear;
-    rear = (rear + 1) % queue.length;
-    if (front == rear) {
-      rear = temp;
-      throw new RuntimeException("Queue is full!");
-    }
-    queue[rear] = o;
+  public CircularQueue(int maxElements) {
+    this.queue = new Object[maxElements];
   }
 
   public boolean isEmpty() {
-    return front == rear;
+    return this.size == 0;
   }
 
   public boolean isFull() {
-    return ((rear + 1) % queue.length) == front;
+    return this.size == this.queue.length;
+  }
+
+  public void insert(T o) {
+    if(this.isFull()) { throw new RuntimeException( "Queue is full!" ); }
+    this.queue[(this.front+this.size) % this.queue.length] = o;
+    this.size++;
+  }
+  
+  public int size() {
+    return this.size;
+  }
+
+  public String toString() {
+    String buffer = "";
+    for(int i=0; i<this.queue.length; i++) {
+      buffer += this.queue[i] + " ";
+    }
+    return buffer + this.front + " " + this.size;
   }
 
   @SuppressWarnings("unchecked")
   public T remove() {
-    if (front == rear) {
-      throw new RuntimeException("Queue is empty");
-    }
-    front = (front + 1) % queue.length;
-    return (T) queue[front];
+    if( this.isEmpty() ) { throw new RuntimeException( "Queue is empty." ); }
+    Object object = this.queue[this.front];
+    this.front = (this.front + 1) % this.queue.length;
+    this.size--;
+    return (T) object;
   }
 }

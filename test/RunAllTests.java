@@ -77,11 +77,11 @@ public class RunAllTests {
       penoplatinum.simulator.tiles.DistanceTest.class,
       penoplatinum.simulator.tiles.TileGeometryTest.class,
       penoplatinum.map.MapHashedTest.class,
-      penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
-      penoplatinum.map.mazeprotocol.DiscoverTest.class,
-      penoplatinum.map.mazeprotocol.PacmanTest.class,
-      penoplatinum.map.mazeprotocol.PositionTest.class,
-      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class
+//      penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
+//      penoplatinum.map.mazeprotocol.DiscoverTest.class,
+//      penoplatinum.map.mazeprotocol.PacmanTest.class,
+//      penoplatinum.map.mazeprotocol.PositionTest.class,
+//      penoplatinum.map.mazeprotocol.ProtocolMapFactoryTest.class
     };
     TestSuite suite = new TestSuite(testClasses);
     return suite;
