@@ -58,8 +58,13 @@ public class SimpleHashMap<K, T>  {
     return keys.size() == 0;
   }
 
-  public List<T> values() {
+  public Iterable<T> values() {
     return values;
+  }
+  
+  public Iterable<K> keys()
+  {
+    return keys;
   }
 
   public K findKey(T g) {

@@ -21,6 +21,7 @@ import penoplatinum.grid.BarcodeAgent;
 import penoplatinum.grid.Grid;
 
 import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
 
 
 public class GhostProtocolHandlerTest extends TestCase {

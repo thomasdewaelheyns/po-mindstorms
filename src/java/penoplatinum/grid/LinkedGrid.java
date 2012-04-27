@@ -281,9 +281,8 @@ public class LinkedGrid implements Grid {
   }
 
   @Override
-  public List<Sector> getSectors() {
-    List<Sector> sectors = new ArrayList<Sector>(this.sectors.values());
-    return sectors;
+  public Iterable<Sector> getSectors() {
+    return this.sectors.values();
   }
 
   private void connect(Sector sector, Sector other, Bearing location) {
