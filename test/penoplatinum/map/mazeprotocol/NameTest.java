@@ -1,5 +1,6 @@
 package penoplatinum.map.mazeprotocol;
 
+import java.util.Scanner;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ public class NameTest extends TestCase {
   @Test
   public void testInterpret() {
     Name instance = new Name();
-    instance.interpret(null, null);
+    instance.interpret(null, new Scanner("version"));
   }
 
   /**

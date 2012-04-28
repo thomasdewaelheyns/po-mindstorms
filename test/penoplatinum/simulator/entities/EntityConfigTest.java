@@ -2,7 +2,6 @@ package penoplatinum.simulator.entities;
 
 import junit.framework.TestCase;
 import org.junit.Test;
-import penoplatinum.simulator.entities.EntityConfig;
 import static org.junit.Assert.*;
 
 public class EntityConfigTest extends TestCase {

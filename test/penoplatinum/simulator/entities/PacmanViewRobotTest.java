@@ -4,8 +4,6 @@ import java.awt.Color;
 import junit.framework.TestCase;
 import java.awt.Graphics2D;
 import org.junit.Test;
-import penoplatinum.simulator.entities.PacmanEntity;
-import penoplatinum.simulator.entities.PacmanViewRobot;
 import penoplatinum.simulator.view.Board;
 import static org.mockito.Mockito.*;
 
@@ -16,7 +14,6 @@ public class PacmanViewRobotTest extends TestCase {
    */
   @Test
   public void testTrackMovement() {
-    System.out.println("trackMovement");
     Graphics2D g2d = mock(Graphics2D.class);
     PacmanViewRobot instance = new PacmanViewRobot(getPacman());
     instance.trackMovement(g2d);

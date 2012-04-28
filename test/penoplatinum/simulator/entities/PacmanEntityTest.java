@@ -23,7 +23,6 @@ public class PacmanEntityTest extends TestCase {
    */
   @Test
   public void testGetViewRobot() {
-    System.out.println("getViewRobot");
     ViewRobot result = new PacmanEntity(12, 13, 14).getViewRobot();
     assertEquals(PacmanViewRobot.class, result.getClass());
     assertEquals(12 * Board.SCALE, result.getX());
@@ -34,7 +33,6 @@ public class PacmanEntityTest extends TestCase {
    */
   @Test
   public void testGetDir() {
-    System.out.println("getDir");
     PacmanEntity instance = new PacmanEntity(12, 13, 14);
     double result = instance.getDir();
     assertEquals(14, result, 0.0);
@@ -45,7 +43,6 @@ public class PacmanEntityTest extends TestCase {
    */
   @Test
   public void testGetPosX() {
-    System.out.println("getPosX");
     PacmanEntity instance = new PacmanEntity(12, 13, 14);
     double result = instance.getPosX();
     assertEquals(12, result, 0.0);
@@ -56,7 +53,6 @@ public class PacmanEntityTest extends TestCase {
    */
   @Test
   public void testGetPosY() {
-    System.out.println("getPosY");
     PacmanEntity instance = new PacmanEntity(12, 13, 14);
     double result = instance.getPosY();
     assertEquals(13, result, 0.0);
