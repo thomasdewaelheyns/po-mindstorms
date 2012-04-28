@@ -152,13 +152,13 @@ public class SimulatedEntity implements RobotEntity {
     double d = Config.WHEEL_SIZE / 360 * distance;
     d *= 1 + (random.nextDouble() - 0.5 + afwijking) * error;
     double dx = Math.cos(Math.toRadians(this.getAngle())) * d;
-    double dy = Math.sin(Math.toRadians(this.getAngle())) * d;
+    double dy = -Math.sin(Math.toRadians(this.getAngle())) * d;
     if (MapUtil.hasTile(simulator.getMap(), this.positionX + dx, this.positionY - dy)) {
       if (!MapUtil.goesThroughWallX(simulator.getMap(), this, dx)) {
         this.positionX += dx;
       }
       if (!MapUtil.goesThroughWallY(simulator.getMap(), this, dy)) {
-        this.positionY -= dy;
+        this.positionY += dy;
       }
     }
   }

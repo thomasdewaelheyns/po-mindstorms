@@ -1,51 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.map;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import junit.framework.TestCase;
 import org.junit.Test;
-import penoplatinum.map.Map;
-import penoplatinum.map.MapUtil;
 import static org.junit.Assert.*;
 import penoplatinum.simulator.entities.SimulatedEntity;
+import static org.mockito.Mockito.*;
 
-/**
- *
- * @author Rupsbant
- */
-public class MapUtilTest {
-  
-  public MapUtilTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() throws Exception {
-  }
-
-  @AfterClass
-  public static void tearDownClass() throws Exception {
-  }
+public class MapUtilTest extends TestCase {
 
   /**
    * Test of findHitDistance method, of class MapUtil.
    */
   @Test
   public void testFindHitDistance() {
-    System.out.println("findHitDistance");
-    Map map = null;
-    int angle = 0;
-    int left = 0;
-    int top = 0;
-    double x = 0.0;
-    double y = 0.0;
-    int expResult = 0;
-    int result = MapUtil.findHitDistance(map, angle, left, top, x, y);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    Map map = MapTestUtil.getMap();
+    assertEquals(20, MapUtil.findHitDistance(map, 90, 1, 1, 20.0, 20.0));
+    assertEquals(60, MapUtil.findHitDistance(map, 0, 1, 1, 20.0, 20.0));
+    assertEquals(85, MapUtil.findHitDistance(map, -45, 1, 1, 20.0, 20.0));
+    assertEquals(Integer.MAX_VALUE, MapUtil.findHitDistance(map, -44, 1, 1, 20.0, 20.0));
+    assertEquals(64, MapUtil.findHitDistance(map, -71, 1, 1, 20.0, 20.0));
+    assertEquals(Integer.MAX_VALUE, MapUtil.findHitDistance(map, -72, 1, 1, 20.0, 20.0));
   }
 
   /**
@@ -53,15 +27,10 @@ public class MapUtilTest {
    */
   @Test
   public void testHasTile() {
-    System.out.println("hasTile");
-    Map map = null;
-    double positionX = 0.0;
-    double positionY = 0.0;
-    boolean expResult = false;
-    boolean result = MapUtil.hasTile(map, positionX, positionY);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    Map map = MapTestUtil.getMap();
+    assertTrue(MapUtil.hasTile(map, 10.0, 10.0));
+    assertTrue(MapUtil.hasTile(map, 50.0, 10.0));
+    assertFalse(MapUtil.hasTile(map, 90.0, 10.0));
   }
 
   /**
@@ -69,15 +38,28 @@ public class MapUtilTest {
    */
   @Test
   public void testGoesThroughWallX() {
-    System.out.println("goesThroughWallX");
-    Map map = null;
-    SimulatedEntity entity = null;
-    double dx = 0.0;
-    boolean expResult = false;
-    boolean result = MapUtil.goesThroughWallX(map, entity, dx);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    Map map = MapTestUtil.getMap();
+    SimulatedEntity entity = mock(SimulatedEntity.class);
+    when(entity.getPosX()).thenReturn(20.0);
+    when(entity.getPosY()).thenReturn(20.0);
+    assertFalse(MapUtil.goesThroughWallX(map, entity, 10.0));
+    assertFalse(MapUtil.goesThroughWallX(map, entity, 20.0));
+    assertFalse(MapUtil.goesThroughWallX(map, entity, 21.0));
+    assertFalse(MapUtil.goesThroughWallX(map, entity, 30.0));
+    
+    when(entity.getPosX()).thenReturn(60.0);
+    when(entity.getPosY()).thenReturn(20.0);
+    assertFalse(MapUtil.goesThroughWallX(map, entity, 5.0));
+    assertFalse(MapUtil.goesThroughWallX(map, entity, 10.0));
+    assertTrue(MapUtil.goesThroughWallX(map, entity, 10.01));
+    assertTrue(MapUtil.goesThroughWallX(map, entity, 21.0));
+    
+    when(entity.getPosX()).thenReturn(20.0);
+    when(entity.getPosY()).thenReturn(60.0);
+    assertFalse(MapUtil.goesThroughWallX(map, entity, -5.0));
+    assertFalse(MapUtil.goesThroughWallX(map, entity, -10.0));
+    assertTrue(MapUtil.goesThroughWallX(map, entity, -10.01));
+    assertTrue(MapUtil.goesThroughWallX(map, entity, -21.0));
   }
 
   /**
@@ -85,14 +67,30 @@ public class MapUtilTest {
    */
   @Test
   public void testGoesThroughWallY() {
-    System.out.println("goesThroughWallY");
-    Map map = null;
-    SimulatedEntity entity = null;
-    double dy = 0.0;
-    boolean expResult = false;
-    boolean result = MapUtil.goesThroughWallY(map, entity, dy);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    Map map = MapTestUtil.getMap();
+    SimulatedEntity entity = mock(SimulatedEntity.class);
+    when(entity.getPosX()).thenReturn(20.0);
+    when(entity.getPosY()).thenReturn(20.0);
+    assertFalse(MapUtil.goesThroughWallY(map, entity, -4.0));
+    assertFalse(MapUtil.goesThroughWallY(map, entity, -10.0));
+    assertTrue(MapUtil.goesThroughWallY(map, entity, -10.1));
+    assertTrue(MapUtil.goesThroughWallY(map, entity, -15.0));
+    assertTrue(MapUtil.goesThroughWallY(map, entity, -30.0));
+    
+    when(entity.getPosX()).thenReturn(60.0);
+    when(entity.getPosY()).thenReturn(20.0);
+    assertFalse(MapUtil.goesThroughWallY(map, entity, 9.0));
+    assertFalse(MapUtil.goesThroughWallY(map, entity, 10.0));
+    assertFalse(MapUtil.goesThroughWallY(map, entity, 11.0));
+    assertFalse(MapUtil.goesThroughWallY(map, entity, 21.0));
+    assertFalse(MapUtil.goesThroughWallY(map, entity, 30.0));
+    
+    when(entity.getPosX()).thenReturn(60.0);
+    when(entity.getPosY()).thenReturn(60.0);
+    assertFalse(MapUtil.goesThroughWallY(map, entity, 9.0));
+    assertFalse(MapUtil.goesThroughWallY(map, entity, 10.0));
+    assertTrue(MapUtil.goesThroughWallY(map, entity, 10.01));
+    assertTrue(MapUtil.goesThroughWallY(map, entity, 21.0));
+    assertTrue(MapUtil.goesThroughWallY(map, entity, 30.0));
   }
 }

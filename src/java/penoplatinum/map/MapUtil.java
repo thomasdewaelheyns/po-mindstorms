@@ -79,8 +79,8 @@ public class MapUtil {
     int tileY = (int) positionY / size + 1;
 
     return (map.get(tileX, tileY).hasWall(Bearing.N)
-            && dy > 0 && (posYOnTile - dy < LENGTH_ROBOT))
+            && dy < 0 && (posYOnTile + dy < LENGTH_ROBOT))
             || (map.get(tileX, tileY).hasWall(Bearing.S)
-            && dy < 0 && (posYOnTile - dy > size - LENGTH_ROBOT));
+            && dy > 0 && (posYOnTile + dy > size - LENGTH_ROBOT));
   }
 }
