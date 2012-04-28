@@ -22,7 +22,7 @@ public class Barcode {
   private static final int BLACK = -1;
 
   private static final int BARCODE_LENGTH = 8;
-  // how much can a line differ from 0
+  // how much must a line differ from 0
   private static final int MINIMUM_BETTER = 1;
 
   private List<Integer> colorBuffer = new ArrayList<Integer>();
@@ -44,27 +44,31 @@ public class Barcode {
     this.colorBuffer.add(this.toColor(color));
   }
   
-  // TODO: explain algorithm or rename variables to clarify working
+  /**
+   * This method divides the buffer in 8 equals parts,
+   * The number of black values and white values are counted
+   * The color that is best is taken as the barcode
+   * @return The interpreted barcode
+   */
   public int translate() {
     this.trimBrown();
     // we need at least enough colors equal to the length of a barcode
     if( this.colorBuffer.size() < BARCODE_LENGTH ) { return -1; }
 
-    int val = 0,
-        pos = 1;
+    int barcodeOut = 0;
     for(int i = 0; i<BARCODE_LENGTH; i++) {
-      int sum = 0,
+      int totalColor = 0,
           start = i * this.colorBuffer.size() / BARCODE_LENGTH,
           stop  = (i + 1) * this.colorBuffer.size() / BARCODE_LENGTH;
 
       for(int j = start; j<stop; j++) {
-        sum += this.colorBuffer.get(j);
+        totalColor += this.colorBuffer.get(j);
       }
 
-      if(sum < MINIMUM_BETTER && sum > -MINIMUM_BETTER) { return -1; }
-      val = val * 2 + (sum > 0 ? 1 : 0);
+      if(totalColor < MINIMUM_BETTER && totalColor > -MINIMUM_BETTER) { return -1; }
+      barcodeOut = barcodeOut * 2 + (totalColor > 0 ? 1 : 0);
     }
-    return val;
+    return barcodeOut;
   }
   
   private void trimBrown() {
