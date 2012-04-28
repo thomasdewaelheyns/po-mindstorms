@@ -13,8 +13,6 @@ import penoplatinum.util.Point;
  * @author Team Platinum
  */
 public interface Map {
-  
-  Map add(Tile t);
 
   /**
    * returns true if the tile exists at position left, top
@@ -45,7 +43,7 @@ public interface Map {
   //       a map can be constructed.
   // returns the positions where a ghost needs to be positioned
   List<Point> getGhostPositions();
-  
+
   // returns the position where the pacman needs to be positioned
   Point getPacmanPosition();
 }

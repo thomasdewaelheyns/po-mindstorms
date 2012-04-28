@@ -19,11 +19,6 @@ public class MapHashed implements Map {
   Point pacman;
 
   @Override
-  public Map add(Tile t) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
   public Boolean exists(int left, int top) {
     return map.containsKey(this.transformLeftTopIn(new Point(left, top)));
   }
