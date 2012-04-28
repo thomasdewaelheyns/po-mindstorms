@@ -10,19 +10,6 @@ import penoplatinum.util.Point;
 public class MapHashedTest extends TestCase {
 
   /**
-   * Test of add method, of class MapHashed.
-   */
-  @Test
-  public void testAdd() {
-    MapHashed instance = new MapHashed();
-    try{
-      instance.add(null);
-      fail("Should throw exception");
-    } catch(RuntimeException e){
-    }
-  }
-
-  /**
    * Test of exists method, of class MapHashed.
    */
   @Test
