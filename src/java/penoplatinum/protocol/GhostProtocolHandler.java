@@ -25,9 +25,8 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   // indicates if we've successfully joined
   private boolean joined = false;
   private final String protocolVersion = "2.1";
-  static final String baseName = "Platinum";
+  private static final String baseName = "Platinum";
   private final String name = GhostProtocolHandler.generateName();
-  private final String secretString = "My name is Angie and I am a robot 1337.";
 
   // the client we're using to communicate with the gateway
   private GatewayClient client;
@@ -61,10 +60,6 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     String agentName = scanner.next();
     if( "JOIN".equals(agentName) && ! scanner.hasNext() ) {
       this.handleJoin();
-      
-    } else if(agentName.equals("PENOPLATINUM_CMD")){
-      handlePenoplatinumCommand(scanner);
-      
     } else if(agentName.equals(this.name)){
       return;
       //TODO kijk na of de naamcheck nog ergens anders gebeurd
@@ -77,24 +72,26 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   private void handleCommand(String agentName, Scanner scanner){
     String command = scanner.next();
     if(command.equals("NAME")){
-        handleName(agentName, scanner);
-      } else if (command.equals("RENAME")){
-        handleRename(agentName, scanner);
-      } else if (command.equals("POSITION")){
-        handlePosition(agentName, scanner);
-      } else if (command.equals("DISCOVER")){
-        handleDiscover(agentName, scanner);
-      } else if (command.equals("BARCODEAT")){
-        handleBarcodeAt(agentName, scanner);
-      } else if (command.equals("PACMAN")){
-        handlePacman(agentName, scanner);
-      } else if (command.equals("CAPTURED")){
-        handleCaptured(agentName, scanner);
-      } else if (command.equals("PING")){
-        handlePing(agentName, scanner);
-      } else if (command.equals("SHOWMAP")){
-        handleShowMap(agentName, scanner);
-      }
+      handleName(agentName, scanner);
+    } else if (command.equals("RENAME")){
+      handleRename(agentName, scanner);
+    } else if (command.equals("POSITION")){
+      handlePosition(agentName, scanner);
+    } else if (command.equals("DISCOVER")){
+      handleDiscover(agentName, scanner);
+    } else if (command.equals("BARCODEAT")){
+      handleBarcodeAt(agentName, scanner);
+    } else if (command.equals("PACMAN")){
+      handlePacman(agentName, scanner);
+    } else if (command.equals("CAPTURED")){
+      handleCaptured(agentName, scanner);
+    } else if (command.equals("PING")){
+      handlePing(agentName, scanner);
+    } else if (command.equals("SHOWMAP")){
+      handleShowMap(agentName, scanner);
+    } else if (command.equals("PENOPLATINUM_CMD")){
+      handlePenoplatinumCommand(scanner);
+    }
   }
   
   private void handlePenoplatinumCommand(Scanner scanner){
@@ -104,13 +101,12 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     if(counter<= this.commandCounter){
       return;
     }
-    if(command.equals("FORCESTART")){
-      if(MD5.getHashString(secretString+" "+counter+" "+"FORCESTART").equals(signature)){
-        this.commandCounter = counter;
-        if(!joined){
-         handleForceStart();
-        }
-      }
+    if (!MD5.getHashString(Config.SECRET + " " + counter + " " + "FORCESTART").equals(signature)) {
+      return;
+    }
+    this.commandCounter = counter;
+    if (command.equals("FORCESTART") && !joined) {
+      handleForceStart();
     }
   }
   

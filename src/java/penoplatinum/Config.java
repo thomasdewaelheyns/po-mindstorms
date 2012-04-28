@@ -39,6 +39,7 @@ public class Config {
   public static boolean USE_LOCAL_MQ;
   public static String  MQ_SERVER;
   public static String  GHOST_CHANNEL;
+  public static String  SECRET = "My name is Angie and I am a robot 1337.";
 
   // These are also important settings and aren't exposed through the 
   // properties file.
