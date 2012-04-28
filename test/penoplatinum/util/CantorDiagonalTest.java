@@ -52,25 +52,9 @@ public class CantorDiagonalTest extends TestCase {
     win &= 120 == CantorDiagonal.transform(5,-5);
        assertTrue(win);
   }
-
-
   
   @Test
   public void testTransformInverse(){
-    for(int x = -10; x < 10; x++){
-      for(int y = -10; y < 10; y++){
-        int trans = CantorDiagonal.transform(x, y);
-        assertEquals(new Point(x, y), CantorDiagonal.transform(trans));
-      }
-    }
-    for(int i = 0; i < 400; i++){
-      Point p = CantorDiagonal.transform(i);
-      assertEquals(i, CantorDiagonal.transform(p.getX(), p.getY()));
-    }
-  }
-  
-  @Test
-  public void inverse(){
     for(int x = -10; x < 10; x++){
       for(int y = -10; y < 10; y++){
         int trans = CantorDiagonal.transform(x, y);
