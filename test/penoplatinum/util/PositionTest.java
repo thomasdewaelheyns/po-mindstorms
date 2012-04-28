@@ -2,6 +2,8 @@ package penoplatinum.util;
 
 import junit.framework.TestCase;
 import org.junit.Test;
+import penoplatinum.util.Bearing;
+import penoplatinum.util.Position;
 
 public class PositionTest extends TestCase {
 
