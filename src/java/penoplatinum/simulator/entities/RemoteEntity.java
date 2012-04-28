@@ -1,21 +1,17 @@
 package penoplatinum.simulator.entities;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import penoplatinum.Config;
 import penoplatinum.gateway.MQ;
-import penoplatinum.util.CircularQueue;
-import penoplatinum.model.GhostModel;
-import penoplatinum.pacman.GhostProtocolCommandHandler;
-import penoplatinum.protocol.GhostProtocolHandler;
-import penoplatinum.robot.Robot;
+import penoplatinum.gateway.MessageReceiver;
+import penoplatinum.gateway.Queue;
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.ViewRobot;
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
+import penoplatinum.util.Scanner;
 
 public class RemoteEntity implements RobotEntity {
 
@@ -24,38 +20,17 @@ public class RemoteEntity implements RobotEntity {
   private double positionY;       //   expressed in X,Y coordinates
   private double direction;       //   and a direction it's facing
   private Simulator simulator;
-  private CircularQueue<String> messageQueue = new CircularQueue<String>(1000); //TODO: warning this can crash
+  private Queue queue;
   private String entityName;
-  private GhostProtocolHandler protocol;
   private int originX;
   private int originY;
   private int originDirection;
 
-  // TODO: reuse GatewayClient in stead of own MQ implementation
-  public RemoteEntity(final String entityName) {
+  public RemoteEntity(final String entityName) throws IOException, InterruptedException {
     this.entityName = entityName;
-    /*final GhostModel ghostModel = new GhostModel("RemoteEntity-" + entityName);
-
-    createGhostProtocolHandler(ghostModel);
-    try {
-      MQ mq = new MQ() {
-
-        @Override
-        protected void handleIncomingMessage(String message) {
-          synchronized (this) {
-            if (message == null) {
-              throw new RuntimeException("Impossible??");
-            }
-            messageQueue.insert(message);
-          }
-        }
-      }.connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
-    } catch (IOException ex) {
-      Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (InterruptedException ex) {
-      Logger.getLogger(RemoteEntity.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    /**/
+    this.queue = new MQ().connectToMQServer(Config.MQ_SERVER)
+                         .follow(Config.GHOST_CHANNEL);
+    this.queue.subscribe(new RemoteEntityProtocolSpy());
   }
 
   public RemoteEntity setOrigin(int originX, int originY, int originDirection) {
@@ -65,57 +40,8 @@ public class RemoteEntity implements RobotEntity {
     return this;
   }
 
-  private void createGhostProtocolHandler(final GhostModel ghostModel) {
-    this.protocol = new GhostProtocolHandler(ghostModel, new GhostProtocolCommandHandler() {
-
-      @Override
-      public void handleBarcodeAt(String agentName, int x, int y, int code, int bearing) {
-      }
-
-      @Override
-      public void handleDiscover(String agentName, int x, int y, int n, int e, int s, int w) {
-      }
-
-      @Override
-      public void handlePosition(String agentName, int x, int y) {
-        Rotation r = Rotation.NONE;
-        for (int i = 0; i < originDirection; i++) {
-          r = r.add(Rotation.L90); //TODO Check this orientation
-        }
-        Point p = new Point(x, y).rotate(r);
-        positionX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
-        positionY = (p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
-      }
-
-      @Override
-      public void handlePacman(String agentName, int x, int y) {
-      }
-    });/**/
-  }
-
   public void useSimulator(Simulator simulator) {
     this.simulator = simulator;
-  }
-
-  public void setPostition(double positionX, double positionY, double direction) {
-    this.positionX = positionX;
-    this.positionY = positionY;
-    this.direction = direction;
-  }
-
-  /**
-   * A robot is put on the map - as in the real world - on a certain place
-   * and in a given direction.
-   * The Simulator also instruments the robot with a RobotAPI and sets up
-   * the GatewayClient to interact with the robot.
-   */
-  public RemoteEntity putRobotAt(Robot robot, int x, int y, int direction) {
-    this.positionX = x;
-    this.positionY = y;
-    this.direction = direction;
-
-
-    return this;
   }
 
   public double getPosX() {
@@ -145,14 +71,6 @@ public class RemoteEntity implements RobotEntity {
 
   // performs the next step in the movement currently executed by the robot
   public void step() {
-    // Process messages in the queue
-    synchronized (this) {
-      while (!messageQueue.isEmpty()) {
-        String msg = messageQueue.remove();
-        protocol.receive(msg);
-      }
-
-    }
   }
 
   public Point getCurrentTileCoordinates() {
@@ -171,5 +89,32 @@ public class RemoteEntity implements RobotEntity {
 
   public String getEntityName() {
     return this.entityName;
+  }
+
+  private class RemoteEntityProtocolSpy implements MessageReceiver {
+
+    @Override
+    public void receive(String msg) {
+      // strip off the newline
+      msg = msg.substring(0, msg.length() - 1);
+      Scanner scanner = new Scanner(msg);
+      String agentName = scanner.next();
+      if (!agentName.equals(getEntityName())) {
+        return;
+      }
+      String command = scanner.next();
+      if (!command.equals("POSITION")) {
+        return;
+      }
+      int x = scanner.nextInt();
+      int y = scanner.nextInt();
+      Rotation r = Rotation.NONE;
+      for (int i = 0; i < originDirection; i++) {
+        r = r.add(Rotation.L90); //TODO Check this orientation
+      }
+      Point p = new Point(x, y).rotate(r);
+      positionX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
+      positionY = (p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
+    }
   }
 }
