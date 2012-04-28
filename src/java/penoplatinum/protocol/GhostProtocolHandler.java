@@ -1,4 +1,4 @@
-  package penoplatinum.protocol;
+package penoplatinum.protocol;
 
 /**
  * GhostProtocolHandler
@@ -97,11 +97,11 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   private void handlePenoplatinumCommand(Scanner scanner){
     String signature = scanner.next();
     int counter = scanner.nextInt();
-    String command = scanner.next();
     if(counter<= this.commandCounter){
       return;
     }
-    if (!MD5.getHashString(Config.SECRET + " " + counter + " " + "FORCESTART").equals(signature)) {
+    String command = scanner.next();
+    if (!MD5.getHashString(Config.SECRET + " " + counter + " " + command).equals(signature)) {
       return;
     }
     this.commandCounter = counter;
@@ -524,12 +524,12 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     }
     try{
     if(this.renamed.size() >= GhostProtocolHandler.MIN_JOINS-1){
-      for(String s: names.keys()){
+      for(String s: names){
         if(renamed.get(s) == null)
           this.eventHandler.handleRemoveAgent(s);
       }
       this.names = new SimpleHashMap<String, String>();
-      for(String s: renamed.keys()){
+      for(String s: renamed){
         names.put(s, this.renamed.get(s));
       }
       renaming = false;
