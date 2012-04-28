@@ -36,8 +36,8 @@ public class Scanner {
     char[] characters = s.toCharArray();
 
     for(int i = 0; i < characters.length; i++) {
-      if(characters[i] == ',') {
-        characters[i] = ' ';
+      if(characters[i] == oldChar) {
+        characters[i] = newChar;
       }
     }
     return new String(characters);
