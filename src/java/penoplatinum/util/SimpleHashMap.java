@@ -32,6 +32,10 @@ public class SimpleHashMap<K, T>  {
     return -1;
   }
 
+  /**
+   * Puts a new entry into the map, or replaces the old one if key already
+   * exists in the map
+   */
   public void put(K key, T value) {
     int index = indexOf(key);
     if (index == -1) {
