@@ -73,4 +73,20 @@ public class TransformationTRT implements Transformation {
   public static TransformationTRT fromRotation(Rotation r) {
     return new TransformationTRT().setTransformation(0, 0, r, 0, 0);
   }
+
+  /**
+   * Inverts this transformation
+   */
+  public TransformationTRT invert() {
+    rotation = rotation.invert();
+    int x = translationAX;
+    int y = translationAY;
+    
+    translationAX = -translationBX;
+    translationAY = -translationBY;
+    translationBX = -x;
+    translationBY = -y;
+    
+    return this;
+  }
 }

@@ -35,6 +35,11 @@ public class TransformationTRTTest extends TestCase {
     fail();
   }
   
+  public void testInvert()
+  {
+    fail();
+  }
+  
   private TransformationTRT createTransformation() {
     return new TransformationTRT().setTransformation( 123, -456,
                                                       Rotation.L270,
