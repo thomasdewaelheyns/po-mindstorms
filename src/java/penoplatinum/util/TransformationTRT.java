@@ -89,4 +89,26 @@ public class TransformationTRT implements Transformation {
     
     return this;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    final TransformationTRT other = (TransformationTRT) obj;
+    if (this.translationAX != other.translationAX)
+      return false;
+    if (this.translationAY != other.translationAY)
+      return false;
+    if (this.translationBX != other.translationBX)
+      return false;
+    if (this.translationBY != other.translationBY)
+      return false;
+    if (this.rotation != other.rotation)
+      return false;
+    return true;
+  }
+
+  
 }
