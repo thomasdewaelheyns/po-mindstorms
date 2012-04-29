@@ -17,9 +17,27 @@ import penoplatinum.util.TransformationTRT;
  */
 public class TransformedGrid implements Grid {
 
-  private TransformationTRT transformation;
+  private TransformationTRT transformation = TransformationTRT.Identity;
   private Grid grid;
 
+  public TransformedGrid(Grid grid) {
+    this.grid = grid;
+  }
+
+  public TransformationTRT getTransformation() {
+    return transformation;
+  }
+
+  public void setTransformation(TransformationTRT transformation) {
+    this.transformation = transformation;
+  }
+
+  public Grid getGrid() {
+    return grid;
+  }
+
+  
+  
   @Override
   public Grid add(Sector s, Point position) {
     transformation.transform(position);
@@ -44,8 +62,8 @@ public class TransformedGrid implements Grid {
   @Override
   public Point getPositionOf(Sector sector) {
     while (sector instanceof TransformedSector)
-      sector = ((TransformedSector)sector).getDecoratedSector();
-    
+      sector = ((TransformedSector) sector).getDecoratedSector();
+
     Point p = grid.getPositionOf(sector);
     transformation.transform(p);
     return p;
@@ -151,7 +169,7 @@ public class TransformedGrid implements Grid {
   @Override
   public int getWidth() {
     Bearing b = Bearing.N.rotate(transformation.getRotation());
-    
+
     if (b == Bearing.N || b == Bearing.S)
       return grid.getWidth();
     return grid.getHeight();
@@ -160,7 +178,7 @@ public class TransformedGrid implements Grid {
   @Override
   public int getHeight() {
     Bearing b = Bearing.N.rotate(transformation.getRotation());
-    
+
     if (b == Bearing.N || b == Bearing.S)
       return grid.getHeight();
     return grid.getHeight();
