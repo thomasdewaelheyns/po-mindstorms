@@ -15,6 +15,10 @@ import penoplatinum.util.Bearing;
 
 public interface Sector {
   public Sector putOn(Grid grid);
+  /**
+   * TODO: attempt to remove this getter, it brings risks when using grid
+   *        decoration
+   */
   public Grid getGrid();
 
   public String toString();
