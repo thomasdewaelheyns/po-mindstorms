@@ -10,7 +10,13 @@ package penoplatinum.grid;
 
 import penoplatinum.util.Color;
 
-
+/**
+ * A BarcodeAgent is supposed to be unique for each type of barcode!!
+ * Note: barcodes should be normalized!!! (so no reversed BarcodeAgents are 
+ * allowed to exists)
+ * 
+ * @author MHGameWork
+ */
 public class BarcodeAgent extends MovingAgent {
   
   private int code;

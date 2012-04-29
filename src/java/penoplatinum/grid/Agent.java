@@ -12,10 +12,6 @@ import penoplatinum.util.Color;
 
 
 public interface Agent {
-  // an agent is located on a Grid
-  public Agent    assignGrid(Grid grid);
-  public Grid     getGrid();
-
   // an agent has a name, a value and a color
   public String   getName();
   public int      getValue();

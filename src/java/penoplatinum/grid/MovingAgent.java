@@ -23,15 +23,6 @@ public abstract class MovingAgent implements Agent {
     this.name = name;
   }
 
-  public Agent assignGrid(Grid grid) {
-    this.grid = grid;
-    return this;
-  }
-  
-  public Grid getGrid() {
-    return this.grid;
-  }
-
   public String getName() {
     return this.name;
   }
