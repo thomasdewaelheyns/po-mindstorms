@@ -1,4 +1,4 @@
-package penoplatinum.driver.action;
+package penoplatinum.actions;
 
 /**
  * AlignDriverAction
@@ -15,16 +15,111 @@ package penoplatinum.driver.action;
  * @author: Team Platinum
  */
 
-import penoplatinum.driver.action.align.FindLeftWhiteLine;
-import penoplatinum.driver.action.align.SubAction;
-import penoplatinum.model.Model;
-import penoplatinum.model.part.LightModelPart;
-import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.robot.RobotAPI;
+
+import penoplatinum.model.Model;
+import penoplatinum.model.part.SensorModelPart;
+import penoplatinum.model.part.LightModelPart;
+
 
 public class AlignDriverAction implements DriverAction {
 
   private static final int SWEEP_ANGLE = 170;
+
+  private interface SubAction {
+    public boolean isBusy();
+    public void work(RobotAPI api);
+    public SubAction getNextSubAction();
+  }
+  
+  // Step 1: turns to the left until a white line is encountered
+  private class FindLeftWhiteLine implements SubAction {
+    private AlignDriverAction context;
+
+    public FindLeftWhiteLine(AlignDriverAction context) {
+      this.context = context;
+    }
+
+    public boolean isBusy() {
+      return this.context.getLight().getCurrentLightColor() != LightColor.White;
+    }
+
+    public void work(RobotAPI api) {
+      // if we're not turning ... start turning
+      if( ! this.context.getSensors().isTurning() ) {
+        api.turn(-SWEEP_ANGLE);
+      }
+    }
+    
+    public SubAction getNextSubAction() {
+      return new FindRightWhiteLineEnd(this.context);
+    }
+  }
+  
+  // Step 2: turns to the right until a white line is encountered. the angle
+  //         needed is recorded.
+  private class FindRightWhiteLine implements SubAction {
+    private AlignDriverAction context;
+    private int start;
+
+    public FindRightWhiteLine(AlignDriverAction context) {
+      this.context = context;
+      this.start = this.context.getSensor().getTotalTurnedAngle();
+    }
+
+    public boolean isBusy() {
+      // wait until we have turned at least 10 degrees (so we're off the white
+      // line again).
+      // FIXME: this isn't nice ... but it will do for now ;-)
+      return this.getCurrentAngle() < 10 ||
+             this.context.getLight().getCurrentLightColor() != LightColor.White;
+    }
+
+    public void work(RobotAPI api) {
+      // if we're not turning ... start turning
+      if( ! this.context.getSensors().isTurning() ) {
+        api.turn(-(SWEEP_ANGLE * 2));
+      }
+    }
+    
+    public SubAction getNextSubAction() {
+      // turn back half the turn we made to get back to a white line
+      return new TurnToAlign(this.context, -(this.getCurrentAngle()/2));
+    }
+    
+    private int getCurrentAngle() {
+      return this.context.getSensor().getTotalTurnedAngle() - this.start;
+    }
+  }
+  
+  // Step 3: turns a given angle to align again to the crossed white line
+  private class FindRightWhiteLine implements SubAction {
+    private AlignDriverAction context;
+    private int correction;
+    private boolean started = false;
+
+    public FindRightWhiteLine(AlignDriverAction context, int correction) {
+      this.context    = context;
+      this.correction = correction;
+    }
+
+    public boolean isBusy() {
+      return this.context.getSensors().isTurning();
+    }
+
+    public void work(RobotAPI api) {
+      // if we're not turning ... start turning
+      if( ! this.started ) {
+        api.turn(this.correction);
+        this.started = true;
+      }
+    }
+    
+    public SubAction getNextSubAction() {
+      // this is the end ...
+      return this;
+    }
+  }
   
   private SubAction currentSubAction;
 
@@ -60,7 +155,7 @@ public class AlignDriverAction implements DriverAction {
     return false;
   }
 
-  public AlignDriverAction work(RobotAPI api) {
+  public TurnDriverAction work(RobotAPI api) {
     // let the current sub-action do its part
     this.currentSubAction.work(api);
     // wait until the current sub-action is no longer busy
