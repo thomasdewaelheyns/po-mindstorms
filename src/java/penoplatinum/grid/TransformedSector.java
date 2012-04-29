@@ -4,9 +4,7 @@
  */
 package penoplatinum.grid;
 
-import org.mockito.internal.stubbing.answers.Returns;
 import penoplatinum.util.Bearing;
-import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 
 /**
@@ -46,13 +44,13 @@ public class TransformedSector implements Sector {
 
   @Override
   public boolean hasNeighbour(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     return s.hasNeighbour(atBearing);
   }
 
   @Override
   public Sector getNeighbour(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     Sector n = s.getNeighbour(atBearing);
     return new TransformedSector(n, transformation);
   }
@@ -70,46 +68,54 @@ public class TransformedSector implements Sector {
 
   @Override
   public Sector setWall(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     s.setWall(atBearing);
     return this;
   }
 
   @Override
   public Sector setNoWall(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     s.setNoWall(atBearing);
     return this;
   }
 
   @Override
   public Sector clearWall(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     s.clearWall(atBearing);
     return this;
   }
 
   @Override
   public boolean hasWall(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     return s.hasWall(atBearing);
   }
 
   @Override
   public boolean hasNoWall(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     return s.hasNoWall(atBearing);
   }
 
   @Override
   public boolean knowsWall(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     return s.knowsWall(atBearing);
   }
 
   @Override
   public boolean hasSameWallsAs(Sector s) {
-    return s.hasSameWallsAs(this.s);
+     for (Bearing b : Bearing.NESW) {
+      if (knowsWall(b) != s.knowsWall(b))
+        return false;
+      if (!knowsWall(b))
+        continue;
+      if (hasWall(b) != s.hasWall(b))
+        return false;
+    }
+    return true;
   }
 
   @Override
@@ -125,7 +131,22 @@ public class TransformedSector implements Sector {
 
   @Override
   public boolean givesAccessTo(Bearing atBearing) {
-    atBearing = atBearing.rotate(transformation.getRotation());
+    atBearing = mapBearing(atBearing);
     return s.givesAccessTo(atBearing);
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (! (obj instanceof TransformedSector))
+      return super.equals(obj);
+    
+    return ((TransformedSector)obj).s.equals(s) && ((TransformedSector)obj).transformation.equals(transformation);
+  }
+  
+  private Bearing mapBearing(Bearing atBearing)
+  {
+    return atBearing.rotate(transformation.getRotation().invert());
+  }
+  
+  
 }
