@@ -29,7 +29,7 @@ public class RunAllTests {
       penoplatinum.gateway.MessageReceiverTest.class,
       penoplatinum.gateway.QueueTest.class,
       penoplatinum.grid.LinkedGridTest.class,
-      // penoplatinum.grid.LinkedSectorTest.class,
+      penoplatinum.grid.LinkedSectorTest.class,
       penoplatinum.map.MapHashedTest.class,
       penoplatinum.map.MapTest.class,
       // penoplatinum.map.MapTestUtil.class,  <<-- NOT A TEST
