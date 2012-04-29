@@ -1,15 +1,11 @@
 package penoplatinum.grid;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import penoplatinum.Config;
-import penoplatinum.SimpleHashMap;
-import penoplatinum.barcode.BarcodeTranslator;
-import penoplatinum.simulator.Bearing;
-import penoplatinum.simulator.Simulator;
 import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
 import penoplatinum.util.TransformationTRT;
+import sun.security.krb5.internal.crypto.Aes128;
 
 /**
  * AggregatedGrid
@@ -17,157 +13,86 @@ import penoplatinum.util.TransformationTRT;
  * Implementation of a Grid, allowing to take into account multiple Grids and
  * answer as if they were all combined.
  * 
+ * The AggregatedGrid has one Main grid, which is used to relay all write 
+ * operations, no extra logic is added
+ * 
+ * - All write operations go to the Main grid
+ * - All read operations are done by merging all subgrids
+ * 
+ * 
+ * Any number of subgrids can be added to an AggregatedGrid. Each grid can be 
+ * given a transformation relative to the AggregatedGrid's coordinate system
+ * 
+ * Note: write operations are not used in the current project
+ * 
  * Option: cache the aggregated sectors in a hashmap with positions as keys
  * 
  * @author: Team Platinum
  */
 public class AggregatedGrid implements Grid {
 
-  // This is a map of the other robots. It consists of a key representing the
-  // name of the other robot/ghost and a value that contains a Grid.
-  private SimpleHashMap<String, AggregatedSubGrid> otherGrids = new SimpleHashMap<String, AggregatedSubGrid>();
+  private penoplatinum.util.SimpleHashMap<Grid, SubGrid> grids = new penoplatinum.util.SimpleHashMap<Grid, SubGrid>();
+  private List<Grid> gridList = new ArrayList<Grid>();
+          
+  private final Grid mainGrid;
+
+  public AggregatedGrid(Grid mainGrid) {
+    this.mainGrid = mainGrid;
+
+  }
 
   /**
-   * Gives the relative transform between ghost with given name and the main grid
-   * @param name
-   * @param transform The transformation that transforms local ghost coordinates to remote ghost coordinates
+   * Activates a grid given a transfromation on this AggregatedGrid
+   * If given grid already was on this AggregatedGrid, the new transformation
+   * is used
    */
-  public void setGhostRelativeTransformation(String name, TransformationTRT transform) {
-    AggregatedSubGrid otherGrid = otherGrids.get(name);
+  public AggregatedGrid activateSubGrid(Grid grid, TransformationTRT transform) {
+    if (grid == mainGrid)
+      throw new IllegalArgumentException();
 
-    if (otherGrid.getStorageGrid() != null) {
-      // Using a buffergrid!
+    SubGrid sub = new SubGrid(new TransformedGrid(grid), transform);
 
-      // Import the grid
-      SimpleGrid.copyGridTo(this, otherGrid.getStorageGrid(), transform);
-
-      // Release memory!!!!
-      otherGrid.getStorageGrid().disengage();
-
-      // Relay to this grid from now on
-      otherGrid.setStorageGrid(null);
-
-    } else {
-      // Just set the new transformation. 
-      // TODO: if the transformation is not thesame, this means the grid data is corrupted!!!!!
-    }
-
-
-    otherGrid.setTransformation(transform);
+    grids.put(grid, sub);
+    if (!gridList.contains(grid))
+      gridList.add(grid);
+    return this;
   }
 
-  public List<AggregatedSubGrid> getUnmergedGrids() {
-    ArrayList<AggregatedSubGrid> ret = new ArrayList<AggregatedSubGrid>();
-    for (int i = 0; i < otherGrids.values().size(); i++) {
-      AggregatedSubGrid otherGrid = otherGrids.values().get(i);
-      if (otherGrid.getStorageGrid() == null) {
-        continue;
-      }
-
-      ret.add(otherGrid);
-    }
-    return ret;
-
+  /**
+   * Stops using given grid for aggregation
+   */
+  public AggregatedGrid deactivateSubGrid(Grid grid) {
+    grids.remove(grid);
+    gridList.remove(grid);
+    return this;
   }
-
-  public String getGhostNameForGrid(AggregatedSubGrid grid) {
-    return otherGrids.findKey(grid);
-  }
-
-  public AggregatedSubGrid getGhostGrid(String name) {
-    AggregatedSubGrid grid = otherGrids.get(name);
-
-    if (grid == null) {
-      grid = new AggregatedSubGrid(this);
-      grid.setStorageGrid(new SimpleGrid());
-      grid.setTransformation(TransformationTRT.Identity);
-      otherGrids.put(name, grid);
-    }
-
-    return grid;
-  }
-
-  public boolean attemptMapBarcode(Sector ourSector, Sector otherSector, String otherAgentName) {
-    AggregatedGrid thisGrid = this;
-    final Grid otherGrid = thisGrid.getGhostGrid(otherAgentName).getStorageGrid();
-    int ourCode = ourSector.getTagCode();
-    int code = otherSector.getTagCode();
-    int bearing = otherSector.getTagBearing();
-    int invertedCode = BarcodeTranslator.reverse(code, 6);
-
-    if (invertedCode == code) {
-      return false; // THis barcode is symmetrical??
-    }
-    if (ourCode == invertedCode) {
-      code = invertedCode;
-
-      // Switch bearing
-      bearing = Bearing.reverse(bearing);
-    }
-
-    if (ourCode != code) {
-      return false;
-    }
-    final int relativeBearing = (ourSector.getTagBearing() - bearing + 4) % 4;
-
-    TransformationTRT transform = new TransformationTRT().setTransformation(-otherSector.getLeft(), -otherSector.getTop(), relativeBearing, ourSector.getLeft(), ourSector.getTop());
-
-    thisGrid.setGhostRelativeTransformation(otherAgentName, transform);
-
-    return true;
-  }
-
-  public void DEBUG_checkGridCorrectness(Agent agent) {
-    if (!Config.DEBUGMODE) {
-      return;
-    }
-    
-    boolean fail = false;
-
-    Point initial = Simulator.Running_Instance.getSimulatedEntityByName(agent.getName()).getInitialPosition();
-
-    for (Sector s : getSectors()) {
-      penoplatinum.simulator.tiles.Sector t = (penoplatinum.simulator.tiles.Sector) Simulator.Running_Instance.getMap().get(s.getLeft() + initial.x, s.getTop() + initial.y);
-      if (t == null)
-      {
-        fail = true;
-        break;
-        
-      }
-      for (int i = 0; i < 4; i++) {
-        if (!s.isKnown(i)) {
-          continue;
-        }
-        if (s.hasWall(i) != t.hasWall(i)) {
-          fail = true;
-          break;
-          
-        }
-      }
-
-
-    }
-
-    if (fail)
-    {
-      int magic = 5;//throw new RuntimeException("Grid incorrect!!!");
-    }
-
+  
+  /**
+   * For internal use by AggregatedSector
+   */
+  List<Grid> getActiveGrids()
+  {
+    return gridList;
   }
 
   @Override
   public Grid add(Sector s, penoplatinum.util.Point position) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    mainGrid.add(s, position);
+    return this;
   }
 
   @Override
   public Sector getSectorAt(penoplatinum.util.Point position) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return new AggregatedSector(this, position);
   }
 
   @Override
   public penoplatinum.util.Point getPositionOf(Sector sector) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (!(sector instanceof AggregatedSector))
+      throw new UnsupportedOperationException("Not supported yet.");
+
+    return ((AggregatedSector) sector).getPosition();
+
   }
 
   @Override
@@ -177,32 +102,77 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public Grid add(Agent agent, penoplatinum.util.Point position, Bearing bearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    mainGrid.add(agent, position, bearing);
+    return this;
   }
 
   @Override
   public Grid moveTo(Agent agent, penoplatinum.util.Point position, Bearing bearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    mainGrid.moveTo(agent, position, bearing);
+    return this;
   }
 
   @Override
   public Sector getSectorOf(Agent agent) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    Sector ret = mainGrid.getSectorOf(agent);
+    if (ret != null)
+      return ret;
+
+    Point retPos = null;
+
+    for (SubGrid g : grids.values()) {
+      Sector iSector = g.getGrid().getSectorOf(agent);
+      Point iPosition = g.getGrid().getPositionOf(iSector);
+
+      if (iSector == null)
+        continue; // No information about agent for this subgrid
+
+
+      if (ret == null) {
+        // Store information
+        ret = iSector;
+        retPos = iPosition;
+        continue;
+      }
+
+      // Check for conflict
+
+      if (!retPos.equals(iPosition))
+        return null; // conflict!!
+
+      // Subgrid information matches
+
+    }
+
+    return ret;
   }
 
   @Override
   public Bearing getBearingOf(Agent agent) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    // Dont merge bearings :D
+    return mainGrid.getBearingOf(agent);
   }
 
   @Override
   public Agent getAgent(String name) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    // Find it in any of the subgrids
+    for (SubGrid g : grids.values()) {
+      Agent a = g.getGrid().getAgent(name);
+      if (a != null)
+        return a;
+    }
+    return null;
   }
 
   @Override
-  public Agent getAgentAt(penoplatinum.util.Point positionPoint) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Agent getAgentAt(penoplatinum.util.Point point) {
+    // Just return any agent found
+    for (SubGrid g : grids.values()) {
+      Agent a = g.getGrid().getAgentAt(point);
+      if (a != null)
+        return a;
+    }
+    return null;
   }
 
   @Override
@@ -212,36 +182,79 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public int getMinLeft() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int ret = mainGrid.getMinLeft();
+    for (SubGrid g : grids.values()) {
+      int sub = g.getGrid().getMinLeft();
+      if (sub < ret)
+        ret = sub;
+    }
+    return ret;
   }
 
   @Override
   public int getMaxLeft() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int ret = mainGrid.getMaxLeft();
+    for (SubGrid g : grids.values()) {
+      int sub = g.getGrid().getMaxLeft();
+      if (sub > ret)
+        ret = sub;
+    }
+    return ret;
   }
 
   @Override
   public int getMinTop() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int ret = mainGrid.getMinTop();
+    for (SubGrid g : grids.values()) {
+      int sub = g.getGrid().getMinTop();
+      if (sub < ret)
+        ret = sub;
+    }
+    return ret;
   }
 
   @Override
   public int getMaxTop() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int ret = mainGrid.getMaxTop();
+    for (SubGrid g : grids.values()) {
+      int sub = g.getGrid().getMaxTop();
+      if (sub > ret)
+        ret = sub;
+    }
+    return ret;
   }
 
   @Override
   public int getWidth() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return getMaxLeft() - getMinLeft() + 1;
   }
 
   @Override
   public int getHeight() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return getMaxTop() - getMinTop();
   }
 
   @Override
   public int getSize() {
     throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  class SubGrid {
+
+    private TransformedGrid grid;
+    private TransformationTRT transformation;
+
+    public SubGrid(TransformedGrid grid, TransformationTRT transformation) {
+      this.grid = grid;
+      this.transformation = transformation;
+    }
+
+    public TransformedGrid getGrid() {
+      return grid;
+    }
+
+    public TransformationTRT getTransformation() {
+      return transformation;
+    }
   }
 }
