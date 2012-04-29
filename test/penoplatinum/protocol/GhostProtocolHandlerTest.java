@@ -251,12 +251,12 @@ public class GhostProtocolHandlerTest extends TestCase {
     verify(this.mockedEventHandler, times(1)).handleTargetInfo("testRobot2", new Point(2, -2));
   }
   
-  public void testPenoplatinumCommand(){
+  public void testPlatinumCommand(){
     this.setup();
     this.protocolHandler.receive("JOIN\n");
     this.protocolHandler.receive("JOIN\n");
     String signature = MD5.getHashString(Config.SECRET + " " + 1 + " FORCESTART");
-    this.protocolHandler.receive(NAME + " PENOPLATINUM_CMD "+ signature + " 1 FORCESTART\n");
+    this.protocolHandler.receive(NAME + " PLATINUM_CMD "+ signature + " 1 FORCESTART\n");
     verify(this.mockedEventHandler).handleActivation();
     verify(this.mockedGatewayClient).send(NAME + " NAME " + this.protocolHandler.getVersion() + "\n",Config.BT_GHOST_PROTOCOL);
     

@@ -89,12 +89,12 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
       handlePing(agentName, scanner);
     } else if (command.equals("SHOWMAP")){
       handleShowMap(agentName, scanner);
-    } else if (command.equals("PENOPLATINUM_CMD")){
-      handlePenoplatinumCommand(scanner);
+    } else if (command.equals("PLATINUM_CMD")){
+      handlePlatinumCommand(scanner);
     }
   }
   
-  private void handlePenoplatinumCommand(Scanner scanner){
+  private void handlePlatinumCommand(Scanner scanner){
     String signature = scanner.next();
     int counter = scanner.nextInt();
     if(counter<= this.commandCounter){
