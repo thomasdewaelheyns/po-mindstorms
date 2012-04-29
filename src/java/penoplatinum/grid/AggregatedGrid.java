@@ -8,6 +8,7 @@ import penoplatinum.SimpleHashMap;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.Simulator;
+import penoplatinum.util.Bearing;
 import penoplatinum.util.TransformationTRT;
 
 /**
@@ -15,6 +16,8 @@ import penoplatinum.util.TransformationTRT;
  * 
  * Implementation of a Grid, allowing to take into account multiple Grids and
  * answer as if they were all combined.
+ * 
+ * Option: cache the aggregated sectors in a hashmap with positions as keys
  * 
  * @author: Team Platinum
  */
@@ -150,5 +153,95 @@ public class AggregatedGrid implements Grid {
       int magic = 5;//throw new RuntimeException("Grid incorrect!!!");
     }
 
+  }
+
+  @Override
+  public Grid add(Sector s, penoplatinum.util.Point position) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Sector getSectorAt(penoplatinum.util.Point position) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public penoplatinum.util.Point getPositionOf(Sector sector) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Iterable<Sector> getSectors() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid add(Agent agent, penoplatinum.util.Point position, Bearing bearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid moveTo(Agent agent, penoplatinum.util.Point position, Bearing bearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Sector getSectorOf(Agent agent) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Bearing getBearingOf(Agent agent) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Agent getAgent(String name) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Agent getAgentAt(penoplatinum.util.Point positionPoint) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Iterable<Agent> getAgents() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getMinLeft() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getMaxLeft() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getMinTop() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getMaxTop() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getWidth() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getHeight() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getSize() {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }
