@@ -73,7 +73,6 @@ public class RunAllTests {
       penoplatinum.reporter.ReporterTest.class,
       penoplatinum.robot.RobotAPITest.class,
       penoplatinum.robot.RobotTest.class,
-      penoplatinum.simulator.entities.EntityConfigTest.class,
       penoplatinum.simulator.entities.PacmanEntityTest.class,
       penoplatinum.simulator.entities.PacmanViewRobotTest.class,
       penoplatinum.simulator.entities.SimulatedEntityTest.class,

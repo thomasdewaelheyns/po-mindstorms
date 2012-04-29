@@ -17,7 +17,7 @@ public class ConfigTest extends TestCase {
   }
 
   public void testProperties() {
-    //Verschillend met netbeans
+    // path verschilt tussen command-line en netbeans
     try {
       Config.load("test.properties");
     } catch (RuntimeException e) {
@@ -46,5 +46,13 @@ public class ConfigTest extends TestCase {
     assertEquals(Config.BT_AGENTS, 126);
     
     assertEquals(Config.WALL_DISTANCE, 35);
+  }
+
+  public void testPhysicalConfig() {
+    assertEquals(17.5, Config.WHEEL_SIZE, 0.000001);
+    assertEquals(16,   Config.WHEEL_BASE, 0.000001);
+    assertEquals( 1,   Config.MOTOR_LEFT);
+    assertEquals( 0,   Config.MOTOR_RIGHT);
+    assertEquals( 2,   Config.MOTOR_SONAR);
   }
 }
