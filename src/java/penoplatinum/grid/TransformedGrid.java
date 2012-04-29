@@ -10,7 +10,9 @@ import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 
 /**
- *
+ * This grid implementation decorates another grid. It provides a 'view'
+ * for the decorated grid given a transformation
+ * 
  * @author MHGameWork
  */
 public class TransformedGrid implements Grid {
