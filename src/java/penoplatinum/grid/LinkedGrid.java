@@ -34,7 +34,6 @@ public class LinkedGrid implements Grid {
   private SimpleHashMap<Integer, Agent> agents = new SimpleHashMap<Integer, Agent>();
   private SimpleHashMap<Agent, Bearing> agentBearings = new SimpleHashMap<Agent, Bearing>();
 
-
   /**
    * Adds a sector to the grid. If there is no path through sectors to the 
    * given position, extra sectors are added by adding sectors first 
@@ -43,6 +42,8 @@ public class LinkedGrid implements Grid {
    */
   @Override
   public Grid add(Sector sector, Point position) {
+    if (!(sector instanceof LinkedSector))
+      throw new IllegalArgumentException();
     placeNewSectorPathTo(new Point(position));
     sector.putOn(this);
 
@@ -109,7 +110,7 @@ public class LinkedGrid implements Grid {
   public Grid add(Agent agent, Point position, Bearing bearing) {
     if (getSectorAt(position) == null)
       add(new LinkedSector(), position);
-    
+
     int index = CantorDiagonal.transform(position);
     agents.put(index, agent);
     agentBearings.put(agent, bearing);

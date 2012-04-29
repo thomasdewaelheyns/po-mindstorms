@@ -32,6 +32,20 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  public void testAddInvalidSector() {
+
+    Grid grid = new LinkedGrid();
+
+    Sector s = mock(Sector.class);
+   
+
+    // Add sector
+    grid.add(s, new Point(2, 2));
+
+    // Should throw exception:todo catch for test
+
+  }
+
   public void testAddSectorCreatePath() {
 
     Grid grid2Sector = new LinkedGrid();
@@ -63,6 +77,16 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  public void testGetAgentAtMultiple()
+  {
+    fail(); // TODO change specification
+  }
+  
+  public void testAddMultipleAgentsSamePosition()
+  {
+    fail();
+  }
+  
   public void testMoveTo() {
     Agent a = mockAgent();
 
@@ -236,6 +260,4 @@ public class LinkedGridTest extends TestCase {
     when(ag.getName()).thenReturn(name);
     return ag;
   }
-
- 
 }

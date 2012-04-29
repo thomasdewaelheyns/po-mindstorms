@@ -61,6 +61,10 @@ public interface Grid {
    */
   public Grid moveTo(Agent agent, Point position, Bearing bearing);
   
+  /**
+   * Returns the sector on which the given agent is placed, null when the
+   * agent is not on this grid
+   */
   public Sector getSectorOf(Agent agent);
 
   public Bearing getBearingOf(Agent agent);
@@ -71,7 +75,7 @@ public interface Grid {
    * Returns the agent on this grid with given name, null when not found
    */
   public Agent getAgent(String name);
-  public Agent getAgentAt(Point positionPoint);
+  public Agent getAgentAt(Point position);
 
   /**
    * Returns an Iterable for the agents in this grid
