@@ -11,8 +11,6 @@ import junit.framework.*;
 import static org.mockito.Mockito.*;
 
 import penoplatinum.util.Bearing;
-import penoplatinum.util.Rotation;
-import penoplatinum.util.TransformationTRT;
 
 public class LinkedSectorTest extends TestCase {
 
