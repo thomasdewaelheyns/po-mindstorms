@@ -101,16 +101,13 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
       return;
     }
     String command = scanner.next();
-    if (!MD5.getHashString(Config.SECRET + " " + counter + " " + command).equals(signature)) {
-      return;
-    }
+    String expectedSignature = MD5.getHashString(Config.SECRET + " " + counter + " " + command);
+    if( ! signature.equals(expectedSignature) ) { return; }
     this.commandCounter = counter;
     if (command.equals("FORCESTART") && !joined) {
       handleForceStart();
     }
   }
-  
-  
   
   /*
    **************** 
@@ -524,12 +521,12 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     }
     try{
     if(this.renamed.size() >= GhostProtocolHandler.MIN_JOINS-1){
-      for(String s: names){
+      for(String s: names.keys()){
         if(renamed.get(s) == null)
           this.eventHandler.handleRemoveAgent(s);
       }
       this.names = new SimpleHashMap<String, String>();
-      for(String s: renamed){
+      for(String s: renamed.keys()){
         names.put(s, this.renamed.get(s));
       }
       renaming = false;

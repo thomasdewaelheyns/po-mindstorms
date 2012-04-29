@@ -255,7 +255,8 @@ public class GhostProtocolHandlerTest extends TestCase {
     this.setup();
     this.protocolHandler.receive("JOIN\n");
     this.protocolHandler.receive("JOIN\n");
-    this.protocolHandler.receive("PENOPLATINUM_CMD "+MD5.getHashString("My name is Angie and I am a robot 1337. "+1+" FORCESTART")+" 1 FORCESTART\n");
+    String signature = MD5.getHashString(Config.SECRET + " " + 1 + " FORCESTART");
+    this.protocolHandler.receive(NAME + " PENOPLATINUM_CMD "+ signature + " 1 FORCESTART\n");
     verify(this.mockedEventHandler).handleActivation();
     verify(this.mockedGatewayClient).send(NAME + " NAME " + this.protocolHandler.getVersion() + "\n",Config.BT_GHOST_PROTOCOL);
     
