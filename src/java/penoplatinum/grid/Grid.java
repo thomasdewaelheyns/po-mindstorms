@@ -33,25 +33,6 @@ public interface Grid {
 //  public List<Agent>  getAgents();
 //  public Grid         clearAgents();
 //  public Point        getPosition(Agent agent);
-//
-
-//
-
-  /**
-   * Gets the grid's current transformation
-   * @return 
-   */
-  public TransformationTRT getTransformation();
-
-  /**
-   * Transform the grid. All grid functions will work as if the grid is 
-   * transformed
-   * @param transform
-   * @return 
-   */
-  public Grid setTransformation(TransformationTRT transform);
-  // using the navigation links on Sectors, the Grid can traverse through
-  // the sectors, returning the Sector with requested left and top coordinates
 
   /**
    * Adds given sector to the grid at given position

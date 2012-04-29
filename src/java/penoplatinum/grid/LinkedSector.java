@@ -194,7 +194,7 @@ public class LinkedSector implements Sector {
     if (!knowsWall(wall)) {
       throw new IllegalArgumentException();
     }
-    int bit = this.mapBearing(this.applyRotation(wall));
+    int bit = this.mapBearing(wall);
     return BitwiseOperations.hasBit(this.walls, bit);
   }
 
@@ -205,7 +205,7 @@ public class LinkedSector implements Sector {
 
   @Override
   public boolean knowsWall(Bearing atBearing) {
-    int bit = this.mapBearing(this.applyRotation(atBearing));
+    int bit = this.mapBearing(atBearing);
     return BitwiseOperations.hasBit(this.certainty, bit);
   }
 
@@ -304,10 +304,6 @@ public class LinkedSector implements Sector {
       this.neighbours[i] = null;
     }
     grid = null;
-  }
-
-  private Bearing applyRotation(Bearing bearing) {
-    return bearing.rotate(this.grid.getTransformation().getRotation().invert());
   }
 
   @Override

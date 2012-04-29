@@ -184,19 +184,10 @@ public class NullGrid implements Grid {
     return this;
   }
 
-  @Override
-  public Grid setTransformation(TransformationTRT transform) {
-    return this;
-  }
 
   @Override
   public Grid add(Sector s, Point position) {
     return null;
-  }
-
-  @Override
-  public TransformationTRT getTransformation() {
-    return TransformationTRT.Identity;
   }
 
   @Override

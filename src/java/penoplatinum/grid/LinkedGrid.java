@@ -34,15 +34,6 @@ public class LinkedGrid implements Grid {
   private SimpleHashMap<Integer, Agent> agents = new SimpleHashMap<Integer, Agent>();
   private SimpleHashMap<Agent, Bearing> agentBearings = new SimpleHashMap<Agent, Bearing>();
 
-  @Override
-  public TransformationTRT getTransformation() {
-    return TransformationTRT.Identity;
-  }
-
-  @Override
-  public Grid setTransformation(TransformationTRT transform) {
-    throw new UnsupportedOperationException();
-  }
 
   /**
    * Adds a sector to the grid. If there is no path through sectors to the 
