@@ -22,6 +22,7 @@ import penoplatinum.grid.Grid;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
+import penoplatinum.util.MD5;
 
 
 public class GhostProtocolHandlerTest extends TestCase {
@@ -248,6 +249,16 @@ public class GhostProtocolHandlerTest extends TestCase {
     
     this.protocolHandler.receive("testRobot2 PACMAN 2,2\n");
     verify(this.mockedEventHandler, times(1)).handleTargetInfo("testRobot2", new Point(2, -2));
+  }
+  
+  public void testPenoplatinumCommand(){
+    this.setup();
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("JOIN\n");
+    this.protocolHandler.receive("PENOPLATINUM_CMD "+MD5.getHashString("My name is Angie and I am a robot 1337. "+1+" FORCESTART")+" 1 FORCESTART\n");
+    verify(this.mockedEventHandler).handleActivation();
+    verify(this.mockedGatewayClient).send(NAME + " NAME " + this.protocolHandler.getVersion() + "\n",Config.BT_GHOST_PROTOCOL);
+    
   }
 
   // constructors

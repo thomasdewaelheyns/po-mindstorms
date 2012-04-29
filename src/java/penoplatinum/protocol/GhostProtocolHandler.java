@@ -27,6 +27,7 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   private final String protocolVersion = "2.1";
   static final String baseName = "Platinum";
   private final String name = GhostProtocolHandler.generateName();
+  private final String secretString = "My name is Angie and I am a robot 1337.";
 
   // the client we're using to communicate with the gateway
   private GatewayClient client;
@@ -36,6 +37,12 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   private SimpleHashMap<String, String> renamed;
   
   private boolean renaming = false;
+  private int commandCounter;
+  
+  public GhostProtocolHandler(){
+    super();
+    commandCounter = 0;
+  }
   
   
   /*
@@ -54,6 +61,10 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
     String agentName = scanner.next();
     if( "JOIN".equals(agentName) && ! scanner.hasNext() ) {
       this.handleJoin();
+      
+    } else if(agentName.equals("PENOPLATINUM_CMD")){
+      handlePenoplatinumCommand(scanner);
+      
     } else if(agentName.equals(this.name)){
       return;
       //TODO kijk na of de naamcheck nog ergens anders gebeurd
@@ -84,6 +95,23 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
       } else if (command.equals("SHOWMAP")){
         handleShowMap(agentName, scanner);
       }
+  }
+  
+  private void handlePenoplatinumCommand(Scanner scanner){
+    String signature = scanner.next();
+    int counter = scanner.nextInt();
+    String command = scanner.next();
+    if(counter<= this.commandCounter){
+      return;
+    }
+    if(command.equals("FORCESTART")){
+      if(MD5.getHashString(secretString+" "+counter+" "+"FORCESTART").equals(signature)){
+        this.commandCounter = counter;
+        if(!joined){
+         handleForceStart();
+        }
+      }
+    }
   }
   
   
@@ -375,6 +403,10 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
       return;
     this.eventHandler.handleCaptured(agentName);
     
+  }
+  
+  private void handleForceStart(){
+    this.begin();
   }
  
 

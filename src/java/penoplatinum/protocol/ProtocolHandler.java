@@ -8,11 +8,11 @@ package penoplatinum.protocol;
  * @author Team Platinum
  */
 
-import penoplatinum.grid.Sector;
+import penoplatinum.gateway.GatewayClient;
 import penoplatinum.grid.BarcodeAgent;
 import penoplatinum.grid.PacmanAgent;
-
-import penoplatinum.gateway.GatewayClient;
+import penoplatinum.grid.Sector;
+import penoplatinum.util.Point;
 
 
 public interface ProtocolHandler {
@@ -32,6 +32,7 @@ public interface ProtocolHandler {
 
   public ProtocolHandler handleFoundAgent(Sector sector, BarcodeAgent agent);
   public ProtocolHandler handleFoundAgent(Sector sector, PacmanAgent agent);
+  public ProtocolHandler handleResendData(Iterable<Sector> sectors, Point pacmanPoint, Point position);
 
   // used to manage incoming messages
   public void receive(String msg);
