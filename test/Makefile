@@ -1,7 +1,10 @@
 TARGETS=RunAllTests.test
-JUNIT_JAR=../lib/junit-4.10.jar
-MOCKITO_JAR=../lib/mockito-all-1.9.0.jar
-LIBS=${JUNIT_JAR}:${MOCKITO_JAR}
+LIB_DIR=../lib
+JUNIT_JAR=${LIB_DIR}/junit-4.10.jar
+MOCKITO_JAR=${LIB_DIR}/mockito-all-1.9.0.jar
+JAR_CLI=${LIB_DIR}/commons-cli-1.2.jar
+JAR_RABBIT=${LIB_DIR}/rabbitmq-client.jar
+LIBS=${JUNIT_JAR}:${MOCKITO_JAR}:${JAR_CLI}:${JAR_RABBIT}
 
 BUILD_DIR=build
 CP=.:../src/java:${LIBS}

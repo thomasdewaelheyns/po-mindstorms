@@ -36,6 +36,22 @@ public class RobotAdminClientTest extends TestCase {
       fail( "Unknown command should throw Exception." );
     } catch( Exception e ) {}
   }
+
+  public void testHandleEmpty() {
+    this.setup();
+    try {
+      this.client.handleCommand( "" );
+      fail( "Unknown command should throw Exception." );
+    } catch( Exception e ) {}
+  }
+
+  public void testHandleNullCommand() {
+    this.setup();
+    try {
+      this.client.handleCommand( null );
+      fail( "Unknown command should throw Exception." );
+    } catch( Exception e ) {}
+  }
   
   public void testForceStart() {
     this.setup();

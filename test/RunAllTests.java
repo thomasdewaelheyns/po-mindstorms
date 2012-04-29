@@ -96,6 +96,7 @@ public class RunAllTests {
       penoplatinum.simulator.tiles.TileTest.class,
       penoplatinum.ui.admin.RobotAdminClientTest.class,
       penoplatinum.ui.admin.RobotAdminShellTest.class,
+      penoplatinum.ui.admin.RobotAdminShellRunnerTest.class,
       penoplatinum.util.BearingTest.class,
       penoplatinum.util.BitwiseOperationsTest.class,
       penoplatinum.util.CantorDiagonalTest.class,

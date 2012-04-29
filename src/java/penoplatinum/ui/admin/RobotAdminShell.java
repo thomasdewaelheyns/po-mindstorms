@@ -52,8 +52,15 @@ public class RobotAdminShell {
         this.print( this.prompt + "> " );
         String command = this.in.readLine();
         this.handleCommand(command);
+      } catch(NullPointerException e) {
+        // this happens when ctrl+d is used before any input is given
+        this.println("");
+        this.acceptNextCommand = false;
+      } catch(RuntimeException e) {
+        // this happens when the underlying Client cannot process
+        this.println( "ERROR: Failed to process your input: " + e.getMessage() );
       } catch(Exception e) {
-        this.println( "ERROR: Failed to read your input" );
+        this.println( "FATAL: Failed to read your input: " + e );
         this.acceptNextCommand = false;
       }
     }
@@ -63,6 +70,7 @@ public class RobotAdminShell {
   private void print(String msg) {
     try {
       this.out.write(msg, 0, msg.length());
+      this.out.flush();
     } catch( Exception e ) {
       System.err.println( "Could not write to provided output." );
     }
@@ -72,6 +80,7 @@ public class RobotAdminShell {
     this.print(msg);
     try {
       this.out.newLine();
+      this.out.flush();
     } catch( Exception e ) {
       System.err.println( "Could not write to provided output." );
     }
@@ -107,7 +116,7 @@ public class RobotAdminShell {
         this.println("sent: " + line);
       }
     } catch(Exception e){
-      this.println("ERROR: could not read file content.");
+      this.println("ERROR: could not process file content: " + e);
     }
   }
 }
