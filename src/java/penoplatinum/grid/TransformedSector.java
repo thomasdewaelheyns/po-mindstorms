@@ -17,6 +17,8 @@ public class TransformedSector implements Sector {
   private final TransformationTRT transformation;
 
   TransformedSector(Sector s, TransformationTRT transformation) {
+    if (s == null)
+      throw new IllegalArgumentException();
     this.s = s;
     this.transformation = transformation;
   }
@@ -24,8 +26,6 @@ public class TransformedSector implements Sector {
   public Sector getDecoratedSector() {
     return s;
   }
-  
-  
 
   @Override
   public Sector putOn(Grid grid) {
@@ -52,6 +52,8 @@ public class TransformedSector implements Sector {
   public Sector getNeighbour(Bearing atBearing) {
     atBearing = mapBearing(atBearing);
     Sector n = s.getNeighbour(atBearing);
+    if (n == null)
+      return null;
     return new TransformedSector(n, transformation);
   }
 
@@ -107,7 +109,7 @@ public class TransformedSector implements Sector {
 
   @Override
   public boolean hasSameWallsAs(Sector s) {
-     for (Bearing b : Bearing.NESW) {
+    for (Bearing b : Bearing.NESW) {
       if (knowsWall(b) != s.knowsWall(b))
         return false;
       if (!knowsWall(b))
@@ -137,16 +139,18 @@ public class TransformedSector implements Sector {
 
   @Override
   public boolean equals(Object obj) {
-    if (! (obj instanceof TransformedSector))
+    if (!(obj instanceof TransformedSector))
       return super.equals(obj);
-    
-    return ((TransformedSector)obj).s.equals(s) && ((TransformedSector)obj).transformation.equals(transformation);
+
+    return ((TransformedSector) obj).s.equals(s) && ((TransformedSector) obj).transformation.equals(transformation);
   }
-  
-  private Bearing mapBearing(Bearing atBearing)
-  {
+
+  private Bearing mapBearing(Bearing atBearing) {
     return atBearing.rotate(transformation.getRotation().invert());
   }
-  
-  
+
+  @Override
+  public String toString() {
+    return GridUtils.createSectorWallsString(this);
+  }
 }
