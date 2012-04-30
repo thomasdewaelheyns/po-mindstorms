@@ -43,7 +43,6 @@ public class BarcodeModelProcessorTest extends TestCase {
     verifyNoMoreInteractions(this.mockedModel);
   }
 
-
   public void testNoWorkWithoutNewSensorValues() {
     this.setup();
     when(this.mockedSensorModelPart.getValuesId()).thenReturn(0);
@@ -52,16 +51,19 @@ public class BarcodeModelProcessorTest extends TestCase {
     verifyNoMoreInteractions(this.mockedSensorModelPart);
     verifyZeroInteractions(this.mockedBarcodeModelPart,
                            this.mockedLightModelPart);
-  }
+  }                         
 
   public void testWorkAndWait() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
+    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1);
     when(this.mockedLightModelPart.getCurrentLightColor())
       .thenReturn(LightColor.BROWN);
     this.processor.work();
     verify(this.mockedSensorModelPart).getValuesId();
     verify(this.mockedLightModelPart).getCurrentLightColor();
+    this.processor.work();
+    verify(this.mockedSensorModelPart, times(2)).getValuesId();
+    verifyNoMoreInteractions(this.mockedLightModelPart);
   }
   
   public void testWorkAndStart() {

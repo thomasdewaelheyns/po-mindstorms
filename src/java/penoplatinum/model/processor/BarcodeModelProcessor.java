@@ -54,8 +54,8 @@ public class BarcodeModelProcessor extends ModelProcessor {
   // actual logic
   protected void work() {
     // we only work with new sensor values...
-    if( this.robot.getValuesId() == this.sensorUpdate ) { return; }
-
+    if( ! this.newSensorValuesAreAvailable() ) { return; }
+  
     if( this.isWaiting ) {
       // BLACK marks the beginning of a new barcode
       if( this.sensors.getCurrentLightColor() == LightColor.BLACK ) {
@@ -74,6 +74,13 @@ public class BarcodeModelProcessor extends ModelProcessor {
         this.addReading();
       }
     }
+  }
+  
+  private boolean newSensorValuesAreAvailable() {
+    int currentSensorUpdate = this.robot.getValuesId();
+    if( currentSensorUpdate == this.sensorUpdate ) { return false; }
+    this.sensorUpdate = currentSensorUpdate;
+    return true;
   }
 
   private void startReading() {
