@@ -149,6 +149,18 @@ Het ``barcode'' commando wordt vervangen door een ``barcodeat'' commando, dit is
 
 Er werd eveneens een ``removebarcode'' toegevoegd om teams toe te laten eerdere transmissies omtrent barcodes ongedaan te maken.
 
+\subsection{Aanpassingen Demo 3}
+De besproken versie betreft versie 2.2.
+De belangrijkste aanpassingen voor de laatste demo zijn deze met betrekking op een reconnect-procedure.
+
+Ten eerste werd het scenario uitgedacht met betrekking op het ontvangen van een JOIN commando, indien we al bezig zijn. Doormiddel van het RENAME commando worden de oude robots onderscheiden van de nieuwe client, deze gebruikt namelijk het NAME commando. 
+
+Ten tweede werd een broadcast-commando uitgedacht. De robots kunnen dan indien ze uitvallen een SHOWMAP commando gebruiken, nadat ze terug toegelaten tot het spel. Dit heeft als doel het uitzenden van een grote hoeveelheid informatie na herstarten. De commando's stoten oorspronkelijk op enkele problemen en werden uiteindelijk gedoopt met een RE-prefix, ipv het hergebruik van de bestaande commando's. Tevens gaat het niet over het delen van de informatie die men als bekend beschouwd, maar om het heruitzenden van een log van alle uitgezonden commando's.
+
+\subsection{Finale evaluatie}
+
+Doorheen dit semester worstelde ons team vaak met vragen, opmerkingen of gaten in dit protocol. Tot op het laatste moment werden zaken toegevoegd die tegenstrijdig, onlogisch of ondoordacht waren.
+Alleen al het ontbreken van een TimeToLive in sommige commando's is een zeer storende eigenschap. Verder denken we vooral dat er te veel manieren zijn tot interpretatie en dat dit de kans op mislukking vergroot, iets wat de commissie juist moest voorkomen.
 
 \chapter{Robot}
 
@@ -203,9 +215,12 @@ Aangezien in demo 1 bleek dat de lichtsensor niet goed functioneerde, zullen we 
 
 \section{Demo 3}
 
-Dit deel wordt later toegevoegd.
+Aangezien afgesproken werd in de commissie om de robotten te voorzien van een vlaggetje waarop hun kleur bekend gemaakt wordt, werd dit aan de onze robot bevestigd. Verder werden er geen aanpassingen meer ingevoerd, aangezien de lichtsensor bij Demo 2 werkte naar voldoening.
+
 
 \chapter{Strategie}
+TODO: De decentrale strategie die gebruikt wordt voor samenwerking om Pac-Man te vangen. Hoe
+wordt omgegaan met onzekere, incomplete en incorrecte (van andere robots) informatie?
 
 Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome ``ghosts'' gedaan.
 
@@ -259,7 +274,14 @@ De verkenstrategie is gebaseerd op hetzelfde principe. Hier is er niet \'e\'en b
 
 Het toepassen van hetzelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een ``ghost'' onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn ``geur'' dit pad nog extra versterken en zal een ``ghost'' automatisch hierdoor aangetrokken worden.
 
+TODO:De effectiviteit van de strategie: hoe snel wordt Pac-Man in een hoek gedreven en klem
+gereden?
+
 \chapter{Softwaredesign}
+
+TODO:Het software ontwerp van de robot. Is het ontwerp voldoende gebaseerd op onderzoek naar
+bestaande benaderingen uit de multi-agent systemen literatuur? Zijn de voor- en nadelen
+van tenminste een alternatief onderzocht?
 
 In het eerste semester hadden we reeds een redelijk uitgebreid raamwerk opgebouwd om robots samen te stellen uit componenten. Dankzij dit werk kunnen we in het tweede semester hier op verder bouwen door de bestaande concepten verder te verfijnen en uit te breiden.
 
@@ -474,9 +496,15 @@ Overigens werden andere doelstellingen voor demo 2 met betrekking tot de simulat
 
 Dit deel wordt later toegevoegd.
 
+\section{ //TODO AANVULLEN + GEPASTE TITEL } De simulator. Het software ontwerp en de correspondentie met de echte wereld. Is de granu-
+lariteit van de simulatie zodanig dat de relevante eigenschappen van de wereld gesimuleerd
+worden? Zijn er experimenten gedaan om de nauwkeurigheid van de simulator te testen?
+
 \chapter{Conclusies}
 
 \section{Demo 1}
+
+In appendix A werden de verschillende relevante beoordelingsdocumenten toegevoegd.
 
 \subsection{Feedback}
 
@@ -500,7 +528,19 @@ De simulator werkte niet zoals verwacht. Barcodes werden niet goed gelezen en du
 
 \section{Demo 2}
 
-Dit deel wordt later toegevoegd.
+
+\subsection{Feedback}
+
+De feedback kwam deze keer van een ander team, namelijk team zilver. Het grootste deel van deze feedback kwam neer op stijlopmerkingen i.v.m het verslag. Het verslag zelf werd inhoudelijk overzichtelijk en gestructureerd bevonden. Het presentatiegedeelte kreeg echter welverdiende negatieve feedback. Zowel de virtuele simulator als de fysieke simulator faalde immers in zijn uitvoering.
+
+\subsection{Reflectie}
+
+Het rijgedrag van de robot bleef consistent met de vorige demo. De nieuwe lichtsensor implementatie bleek wel beter te werken als de vorige keer.
+
+De virtuele simulator bleek geen rekening te houden met het gebruik van een intern assenstel dat afwijkt van het gebruikte assenstel door de andere teams. Een spijtig voorval dat zijn oorsprong vindt in onze voorsprong uit het eerste semester. Dit werd snel opgelost en getest met de andere teams. Enkele andere interpretatieverschillen met betrekking tot het protocol werden eveneens reeds weggewerkt.
+
+De uitvoering van de strategie was duidelijk niet geslaagd, de implementatie van de grids was dan ook niet vervolledigd, bijgevolg werd de informatie van de teams nog niet correct gecombineerd.
+De doelstellingen opgesteld na demo 1 werden dus niet gehaald en daarom is het ook logisch dat de demo sterk tegenviel. We slaagden er wel in om het geheugengebruik te reduceren tot een werkbaar niveau, zonder functionaliteit te verwijderen.
 
 \section{Demo 3}
 
@@ -508,6 +548,10 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Procesbeschrijving}
 \label{ch:process}
+
+(a) Welke moeilijkheden heb je ondervonden tijdens de uitwerking?
+(b) Welke lessen heb je getrokken uit de manier waarop je het project hebt aangepakt?
+(c) Hoe verliep het werken in het team? Op welke manier werd de teamcoordinatie en planning aangepakt?
 
 \section{Demo 1}
 
@@ -529,7 +573,20 @@ Om te weten aan wat en hoe we extra aandacht moeten geven aan onze architectuur 
 
 Naast deze aanpak gaan we ook proberen om het concept ``pair programming'' toe te passen. Zo is het de bedoeling dat we met twee paren en \'e\'en losse speler die overal bijspringt werken. Dit zowel tijdens als naast de zittingen op maandag.
 
+\section{Demo 3}
+
+Na de grote teleurstelling in demo 2 beslisten we onze aandacht op de architectuur en de code vol te houden. Onze refactoring aanpak werd wel aangevuld met het creeren van een uitgebreid unit test package. Waarbij op het moment van schrijven een dekking van meer dan vijftig percent van de totale codebase is bereikt. Een dekking van honderd percent is natuurlijk nutteloos en dus gaan we enkel voor een dekking van de relevante klassen. Bij de creatie van dit package werd tegelijk bijna alle code gereviewed. Zo werd er veel ongebruikte code verwijderd en haalden we er een reeks bugs uit. We geloven er sterk in dat dit proces onze code veel stabieler heeft gemaakt en onze robot hier dus baat bij heeft.
+
+Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces ge(her)defineerd hebben, zodat we allen konden werken aan afgeronde gehelen. Dit gaf natuurlijk het nadeel dat het volledige programma overhoop lag tot al deze gehelen opnieuw geintegreerd waren. 
+
+
 \chapter{Werkverdeling}
+
+(a) Geef voor elk van de groepsleden aan aan welke delen ze hebben meegewerkt, en welke
+andere taken ze op zich hebben genomen.
+(b) Rapporteer in tabelvorm hoeveel uur elk groepslid elke week aan het project gewerkt
+heeft, zowel tijdens als buiten de begeleide sessies. Geef ook totalen per groepslid voor
+het volledige semester
 
 \begin{longtable}{l l}
 \caption{Focus van elk team lid} \\ [0.5ex]
@@ -575,16 +632,265 @@ gemid./week & 23,6 & 14,2 & 18,3 & 18,4 & 6,5 & 21,8  & 17,13 \\
 
 \chapter{Kritische analyse}
 
-Dit deel wordt later toegevoegd.
+(a) Maak een analyse van de sterke en zwakke punten van het project. Welke punten zijn
+vatbaar voor verbetering. Wat zou je, met je huidige kennis, anders aangepakt hebben?
 
 \appendix
 
 \chapter{Beoordelingen}
 
-Dit deel wordt later toegevoegd.
+\section{Demo 1}
+\begin{center}
+Team Platinum
+\end{center}
 
+\subsection{ Verslag} 
+     
+     \subsubsection{1.a Grote problemen}
+
+\begin{itemize}
+	\item   in sectie 1: 
+	''iedereen is ondertussen vertrouwd geraakt met de volledige architectuur''
+
+ gevaarlijke opmerking 
+\end{itemize}
+
+   \subsubsection{1.b Kleinere opmerkingen}
+
+ 
+\begin{itemize}
+ \item Figuur 5.1, 5.2 dienen beter uitgelegd te zijn. Wat is wat? Legende van kleuren ontbreekt. 
+ \item Figuur 4.1: fit een lijn door de punten om de bewering van exponentiële lijn te ondersteunen 
+ \item Referentie naar een wetenschappelijk paper kan beter in Referenties sectie (via bibtex).
+ \item Sectie 4.1.1: wat is het nut van laatste zin? (wat als de robot rijdt??)
+ \item Referenties naar Wikipedia zijn niet nodig, indien nodig beter verwijzen naar een boek
+ \item mini simulator? welk doel heeft dit? is het niet gewoon een weergave van een simulatie?
+\end{itemize}
+
+   \subsubsection{1.c stilistische opmerkingen}
+
+\begin{itemize}
+	\item typo's: ivm $\rightarrow$ i.v.m., jlasse $\rightarrow$ klasse
+\end{itemize}
+
+\subsection{Presentatie}
+
+	\subsubsection{2.a Presentatie zelf}
+\begin{itemize}
+ \item presentatie was niet voorbereid, langzame start
+ \item wel een van de betere demo's
+ \item denk nog eens na over optimaliseren van rijgedrag (robuustheid versus snelheid)
+\end{itemize}
+
+     \subsubsection{2.b antwoorden op vragen}
+\begin{itemize}
+	\item     Geen.
+ 
+\end{itemize}
+\subsection{ Positieve punten}
+
+\begin{itemize}
+ \item software zit goed in elkaar
+ \item zeer aangename compacte schrijfstijl
+ \item analyse van ghost protocol is zeer goed
+ \item Collaborative diffusion is knap gevonden
+ \item dashboard gui is duidelijk
+\end{itemize}
+
+\section{Demo 2}
+\begin{center}
+Team Platinum
+\end{center}
+
+\subsection{ Verslag} 
+     
+     \subsubsection{1.a Grote problemen}
+
+\begin{itemize}
+	\item    Opgelegde structuur niet nageleefd: strategie en softwareontwerp omgewisseld;
+ beoordelingen in appendix A in plaats van in conclusie.
+\item Sectie 6: Sequentiediagramma toevoegen van bijvoorbeeld sensorwaardeaanroep. Hoe snel wordt er bemonsterd?
+\end{itemize}
+
+   \subsubsection{1.b Kleinere opmerkingen}
+
+ 
+\begin{itemize}
+ \item Namen van de teamleden niet vermeld op voorblad.
+ \item Sectie 2.1: De ghosts, meer bepaald de gesimuleerde robots, hebben w\'el kennis van het parcours nodig (volledige
+kaart gegeven voor elke demo), weliswaar niet rechtstreeks. Nuancering hierover nodig in het verslag.
+ \item Sectie 4.1.1: Op welke manier kan de robot gemakkelijker bestuurd worden door de NXT Brick om te keren?
+ \item Sectie 4.1.1: Foto's van de robot kunnen helpen de beschrijving te ondersteunen.
+ \item Sectie 6: Is er overwogen om gebruik te maken van een PC i.p.v. de robot alles te laten bijhouden en zelf te
+laten beslissen? Hierdoor zou immers het geheugenprobleem verhoplen kunnen worden.
+ \item Sectie 6.1.4: Waarom is een minimum van 60 FPS noodzakelijk? Na ongeveer 17 ms (=1000/60) zijn (waar-
+schijnlijk) nog niet alle gemeten waarden van de sensoren veranderd. Is dit bijgevolg niet redundant?
+\item Sectie 6.1.4, deel geheugengebruik: `mini-simulator': er wordt verwezen naar een verdere sectie in het verslag;
+dit is ongebruikelijk.
+\item Meermaals vermeld dat er in het eerste semester reeds een simulator gemaakt is (samenvatting, sectie 7 pag. 26
+en 27).
+\end{itemize}
+
+   \subsubsection{1.c stilistische opmerkingen}
+
+\begin{itemize}
+	\item Subjectief taalgebruik, onder meer:
+	\begin{itemize}
+	\item ''Spijtig genoeg...'', pag. 6;
+	\item ''... zou het dom zijn te veronderstellen dat...'', pag. 12.
+	\end{itemize}
+	\item Inconsistentie, onder meer:
+\begin{itemize}
+	\item Pac-Man, de Pac-Man, Pac-Man-robot;
+	\item robot, ghost, spook;
+	\item IR, infrarood (en samenstellingen).
+\end{itemize}
+	\item Schrijf-/taal-/tikfouten:
+	
+\begin{itemize}
+	\item Samenvatting: jaar-overschrijdend $\rightarrow$ jaaroverschrijdend, Pac-Man-spel$\rightarrow$ Pac-Manspel, Open Bron project $\rightarrow$ Open Sourceproject;
+	\item Sectie 2.1: ''staat (...) stil in het parcours'': in $\rightarrow$ op;
+	\item Sectie 2.3.2: Pac-Man spel $\rightarrow$ Pac-Manspel;
+	\item Sectie 3.2: ''(...) en bespreken we de voor- en nadelen ervan''; mbt. $\rightarrow$ m.b.t.;
+	\item Sectie 4.1.2: ''(\ldots) IR-bal en sensor.''$\rightarrow$  '' (\ldots) IR-bal en -sensor.'', AC modus ! AC-modus (ook van
+toepassing op analoge situaties);
+	\item Sectie 6.1.1: Leesteken vergeten na laatste zin;
+	\item Sectie 6.1.2: configuratie aanpassingen $\rightarrow$ configuratieaanpassingen;
+	\item Sectie 6.1.3: muur-informatie $\rightarrow$ muurinformatie;
+	\item Sectie 7.1.3: Simulator Modi $\rightarrow$ Simulatormodi, MQ server $\rightarrow$ MQ-server;
+	\item Sectie 9.2: Laatste `zin' van deze sectie heeft geen werkwoord;
+	\item Sectie 10: team lid $\rightarrow$ teamlid.
+\end{itemize}
+	\item Vreemd taalgebruik:
+  \begin{itemize}
+	\item Samenvatting: programmatie, ''effectieve fysieke robot'';
+	\item \textit{Map} veelvuldig gebruikt i.p.v. \textit{kaart}, o.m. op pag. 3.
+\end{itemize}
+	\item Andere opmerkingen:
+\begin{itemize}
+	\item bij voorkeur enkele aanhalingstekens gebruiken i.p.v. dubbele, in het bijzonder bij het benadrukken van \'e\'en
+woord; nog beter is gebruik maken van cursivering i.p.v. aanhalingstekens, dit is minder storend bij het
+lezen;
+	\item zo weinig mogelijk woorden benadrukken om leesbaarheid te bevorderen, bv. sectie 5.1: ''In de voorstelling ontstaat er een ''deuk'' in de ''geur'' achter de ''ghost''.'';
+	\item veel passieve zinnen (wordt, worden, werden,...);
+	\item gebruik van het woord \textit{men} bij voorkeur te vermijden;
+	\item \LaTeX afkortingen zoals i.v.m. en t.o.v. laten eindigen met backslash, zodat een 'normale' spatie gebruikt
+wordt i.p.v. een grotere zoals op het einde van een zin gebruikelijk is;
+	\item bij voorkeur gebruik maken van \textit{sections} i.p.v. chapter in de \LaTeX-broncode; hoofdstukken zijn eerder gebruikelijk bij boeken en cursussen.
+\end{itemize}
+\end{itemize}
+
+\subsection{Presentatie}
+
+	\subsubsection{2.a Presentatie zelf}
+\begin{itemize}
+ \item Paar minuten demostratietijd verloren door te laat aanwezig op demo. Hierdoor is bijvoorbeeld niet gedemonstreerd of de fysieke robot Pac-Man kan signaleren en/of insluiten.
+ \item Niet zelf gezegd op de demo dat de kaarten foutief zijn samengevoegd.
+\end{itemize}
+
+     \subsubsection{2.b antwoorden op vragen}
+\begin{itemize}
+	\item    Geen duidelijk antwoord op de vraag waarom de kaarten verkeerd toegevoegd zijn.
+ 
+\end{itemize}
+\subsection{ Positieve punten}
+
+\begin{itemize}
+ \item Algemene indruk van het verslag is positief:
+ 
+\begin{itemize}
+	\item vlotte schrijfstijl, hoewel soms informeel en indruisend tegen de regels van een wetenschappelijk verslag;
+	\item sectie 6.1.4 in het bijzonder is erg goed geschreven: aangenaam om te lezen en wetenschappelijk onderbouwd.
+\end{itemize}
+ \item Algemene indruk van de presentatie is positief:
+\begin{itemize}
+	\item de presentatie was kort en bondig, hoofdzaken kwamen aan bod, details zijn achterwege gelaten;
+	\item correct taalgebruik tijdens de presentatie.
+\end{itemize}
+\end{itemize}
+
+\section{Demo 2: Beoordeling Team Rood}
+\begin{center}
+Team Rood
+\end{center}
+
+\subsection{ Verslag} 
+     
+\paragraph{Vorige Beoordeling toegepast?}
+
+Algemeen gezien is er nog steeds een grote overlap tussen de verschillende hoofdstukken en houdt men zich niet goed aan de onderverdeling.
+\par Voetnoten zouden een verbetering zijn, want deze verbergen details en kunnnen bijvoorbeeld verwijzen naar een verder hoofstuk als iets nog moet uitgelegd worden (bvb \textit{NearestIncompleteSectorFinder}). Dit geldt niet enkel voor voetnoten, maar ook in het algemeen. Men zou minder moeten herhalen in het verslag en ook moeten vermelden als er iets verder in de tekst wordt uitgelegd.
+\subsubsection{1.a Grote problemen}
+
+\begin{itemize}
+	\item Waarom wordt er geen geaggregeerde voorstelling van de info gemaakt i.p.v. de info te negeren? Een voorstelling van de huidige wereld met behulp van info komende van alle robots zou logischer zijn, er is immers geen geheugengebrek. Mogelijks is dit voor later gehouden.
+	\item Waarom wordt alles op de PC gedaan? Misschien kan men informatie toevoegen i.v.m. onderzoek naar de bluetoothverbinding? Alles stond in het eerste semester op de robot dus dient er toch uitgelegd te worden waarom men deze overschakeling doet?
+	\item Er werd volgens ons te weinig aandacht besteed aan het protocol. Wat waren de voor- en nadelen op het vlak van implementatie voor team rood? Wat hadden ze achteraf gezien anders gedaan, wat hebben ze niet nodig, wat willen ze er nog aan toevoegen, etc ?
+\end{itemize}
+
+   \subsubsection{1.b Kleinere opmerkingen}
+
+ 
+\begin{itemize}
+	\item sectie 2.1.1: De boodschappen worden in plain text verstuurd en zijn ook begrijpbaar voor mensen, wat debugging en implementatie eenvoudiger maakt.(Dit maakt implementatie net minder eenvoudig)
+	\item sectie 2.1.2: \ldots bijzonder sterk is, kan Pac-Man door de muren gezien worden.(men bedoelt waarschijnlijk dat er reflecties zijn, slecht verwoord)
+	\item sectie 2.2.2:\ldots er geen botsingen tussen de ghosts\ldots(wel botsingen?)
+	\item sectie 4.1.3: De eerste sector van dit pad wordt uitgestuurd naar de robot via DataSender.(de robot krijgt enkel richtingen toegestuurd?)
+	\item sectie 4.1.4: \ldots de binnenkomende informatie genegeerd.(Is dit enkel na mergen? Waarom zelfs niet daarna iets doen met deze info? Als meerdere remotes dezelfde info bevestigen, wordt deze toch geloofwaardig.)
+		\item sectie 4.2.3: Waarom staat de BarcodeScanner op de robot en niet op de computer? Dit is toch logica. Wordt de bluetoothcommunicatie dan overbelast met lichtsensor waarden? 
+	\item sectie 5.1.2: Een alternatieve, na\"ieve\ldots(Dit is een overbodige zin.)
+\end{itemize}
+
+   \subsubsection{1.c stilistische opmerkingen}
+
+
+\begin{itemize}
+	\item sectie 1.1  : Belangrijk is dat\ldots (zinsconstructie)
+	\item sectie 2.1.1: zodra i.p.v van zodra (meermaals in tekst), beide i.p.v beiden,
+	\item sectie 3.1.2: (hardware) is een overbodige vermelding  
+	\item sectie 3.2.2: veel voorkomend (veelvoorkomend)
+	\item sectie 4.1.1: geupdateted (ge\"updatet), data is een meervoud
+	\item sectie 4.1.3: receiver- en sendervelden (streepje en velden aan sender, vaak geen streepjes)
+	\item sectie 4.2.2: de zien is  (  te zien is ), achtereenvolgens( s i.p.v d)
+	\item sectie 4.4.1: Er zijn enkele enkele(dubbel)
+	\item sectie 5.1.2: Dit om te vermijden dat (i.p.v. dit om in de te vermijden \ldots)
+	\item sectie 5.2.1: Een stuk doolhof dat niet verkend kan worden(\ldots)wordt niet verkend. overbodig(meermaals overbodige constructies)
+	\item sectie 6.1.2: dat de robot(tweemaal achtereen)
+	\item sectie 7.1.1: een keer in de mist gegaan(de mist ingegaan)
+	\item sectie 8.1  : Er was geen tijd om te testen \ldots (in deze zin missen enkele leestekens)
+	\item overige     : overbodige komma's ; zinnen zonder werkwoord (bvb sectie 3.1.2: zoals bijvoorbeeld het wit\ldots); samenstellingen schrijven met spatie ertussen is fout; tussen persoonsvormen komma gebruiken;  soms enkelvoud gebruikt i.p.v. meervoud bij werkwoorden; foutief gebruik van koppeltekens bij samenstellingen
+	\item consistentie: IRSeeker en IR-Seeker; cursiveren van de klassenamen, methoden,enz. ; RabbitMQ-protocol; Integerwaarde(aan elkaar soms af elkaar)
+\end{itemize}
+
+\subsection{Presentatie}
+
+	\subsubsection{2.a Presentatie zelf}
+\begin{itemize}
+	\item De inleiding was niet zo spontaan als gewenst, er werd van een papier afgelezen.
+	\item Er werd benadrukt dat de correcties op het rijden waren verwijderd om de snelheid op te hogen, dit kwam de robuustheid van de robot duidelijk niet ten goede aangezien er drie maal manueel gecorrigeerd moest worden. Nochtans werd er op voorhand vermeldt dat aan het rijgedrag van de robot hard gewerkt is.
+	\item sectie 4.2.2: Het is de verantwoordelijkheid van de computer om ervoor te zorgen dat de robot niet tegen een muur rijdt. Lagen hier de fouten misschien aan, zijn er tests over de vertraging van de communicatie?
+\end{itemize}
+     \subsubsection{2.b antwoorden op vragen}
+\subsection{ Positieve punten}
+\begin{itemize}
+	\item Robot redesign werd zeer goed onderbouwd.
+	\item De scenario analyses zijn zeer goed voor de strategie, gevaar is natuurlijk wel dat als dit te veel gedaan wordt dat het verslag zijn bondigheid uit het oog verliest. Deze scenario's kunnen ook de indruk wekken dat er enkel gedachtenexperimenten werden opgezet omtrent zeer specifieke situaties, i.p.v. de algemene strategie uitgebreid te testen. Het blijft wel een zeer aangename manier om de denkstrategie toe te lichten.
+\end{itemize}
+
+ 
 \chapter{Grafische User Interface}
 
+TODO: ZIJN DE VOORWAARDEN HIERONDER BESCHREVEN VOLDAAN?
+Elke ghost heeft een GUI, hier volgt een beschrijving van de informatie die tenminste moet worden
+weergegeven in de GUI.
+ Informatie op basis waarvan de robot aangestuurd wordt, vergelijkbaar met semester 1.
+ Weergave van kennis van het doolhof (op basis van eigen waarnemingen en communicatie).
+ Weergave van eigen positie in het doolhof en positie van andere robots.
+Weergave van interne toestand en besluitvormingsproces.
+Het is duidelijk dat hier redelijk wat vrijheid is om deze interface te maken. Je moet steeds voor
+ogen houden dat we op een of andere manier willen zien wat de robot op dat moment aan het doen
+is op software-niveau, zodat dit kan gelinkt worden aan wat de robot feitelijk aan het uitvoeren is
+op het speelveld.
 Dit deel wordt later toegevoegd.
 
 \chapter{Klasse Diagrammen}
