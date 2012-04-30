@@ -232,11 +232,7 @@ public class LinkedSector implements Sector {
   }
 
   public String toString() {
-    return //"(" + getLeft() + "," + getTop() + ")" +
-            "N" + (this.knowsWall(Bearing.N) ? (this.hasWall(Bearing.N) ? "Y" : " ") : "?")
-            + "E" + (this.knowsWall(Bearing.E) ? (this.hasWall(Bearing.E) ? "Y" : " ") : "?")
-            + "S" + (this.knowsWall(Bearing.S) ? (this.hasWall(Bearing.S) ? "Y" : " ") : "?")
-            + "W" + (this.knowsWall(Bearing.W) ? (this.hasWall(Bearing.W) ? "Y" : " ") : "?");
+    return GridUtils.createSectorWallsString(this);
   }
 
   private int mapBearing(Bearing bearing) {

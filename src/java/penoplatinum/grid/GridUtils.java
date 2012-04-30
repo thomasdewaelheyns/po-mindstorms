@@ -4,6 +4,7 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
 /**
@@ -26,6 +27,13 @@ public class GridUtils {
       }
     }
     return ret;
+  }
+
+  public static String createSectorWallsString(Sector s) {
+    return "N" + (s.knowsWall(Bearing.N) ? (s.hasWall(Bearing.N) ? "Y" : " ") : "?")
+            + "E" + (s.knowsWall(Bearing.E) ? (s.hasWall(Bearing.E) ? "Y" : " ") : "?")
+            + "S" + (s.knowsWall(Bearing.S) ? (s.hasWall(Bearing.S) ? "Y" : " ") : "?")
+            + "W" + (s.knowsWall(Bearing.W) ? (s.hasWall(Bearing.W) ? "Y" : " ") : "?");
   }
 
   public void DEBUG_checkGridCorrectness(Agent agent) {
@@ -61,6 +69,5 @@ public class GridUtils {
 //    if (fail) {
 //      int magic = 5;//throw new RuntimeException("Grid incorrect!!!");
 //    }
-
   }
 }
