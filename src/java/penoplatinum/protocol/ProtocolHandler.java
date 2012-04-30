@@ -30,8 +30,8 @@ public interface ProtocolHandler {
   public ProtocolHandler handleEnterSector(Sector sector);
   public ProtocolHandler handleFoundSector(Sector sector);
 
-  public ProtocolHandler handleFoundAgent(Sector sector, BarcodeAgent agent);
-  public ProtocolHandler handleFoundAgent(Sector sector, PacmanAgent agent);
+  public ProtocolHandler handleFoundAgent(BarcodeAgent agent);
+  public ProtocolHandler handleFoundAgent(PacmanAgent agent);
   public ProtocolHandler handleResendData(Iterable<Sector> sectors, Point pacmanPoint, Point position);
 
   // used to manage incoming messages

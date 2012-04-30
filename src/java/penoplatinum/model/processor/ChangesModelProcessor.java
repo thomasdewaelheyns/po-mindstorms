@@ -8,60 +8,60 @@ package penoplatinum.model.processor;
  * @author Team Platinum
  */
 
-import java.util.ArrayList;
+import java.util.List;
 
 import penoplatinum.grid.Sector;
-
-import penoplatinum.model.GhostModel;
-import penoplatinum.model.GridModelPart;
-import penoplatinum.model.Reporter;
-
-import penoplatinum.reporter.DashboardReporter;
-import penoplatinum.pacman.ProtocolHandler;
+import penoplatinum.model.Model;
+import penoplatinum.model.part.GridModelPart;
+import penoplatinum.model.part.MessageModelPart;
+import penoplatinum.model.part.SensorModelPart;
+import penoplatinum.protocol.ProtocolHandler;
 
 /**
  * Responsible for sending robot information to the Ghost communication channel
  * 
  * @author Team Platinum
  */
-
 public class ChangesModelProcessor extends ModelProcessor {
 
-  public GhostProtocolModelProcessor(ModelProcessor p) {
-    super(p);
+  private int pacmanID;
+
+  public ChangesModelProcessor() {
   }
 
-  public GhostProtocolModelProcessor() {
-    super();
+  public ChangesModelProcessor(ModelProcessor nextProcessor) {
+    super(nextProcessor);
   }
 
   protected void work() {
-    GridModelPart grid = ((GhostModel) model).getGridPart();
+    Model model = getModel();
+    if (SensorModelPart.from(model).isMoving()) {
+      return;
+    }
+    GridModelPart gridPart = GridModelPart.from(model);
+    MessageModelPart messagePart = MessageModelPart.from(model);
+    ProtocolHandler protocol = messagePart.getProtocolHandler();
 
-    ProtocolHandler protocol = model.getMessagePart().getProtocol();
-
-    ArrayList<Sector> changed = model.getGridPart().getChangedSectors();
-
-    for (int i = 0; i < changed.size(); i++) {
-      Sector current = changed.get(i);
-
+    List<Sector> changed = gridPart.getChangedSectors();
+    for(Sector current : changed){
       // for each changed sector, notify the GhostProtocol
       protocol.handleFoundSector(current);
       // and report to dashboard (directly)
-      this.model.getReporter().reportWalls(current);
+      model.getReporter().reportSectorUpdate(current);
     }
-    
-    if( grid.hasRobotMoved() ) {
-      // Send position updates
-      if( grid.getLastMovement() == GhostAction.FORWARD ) {
-        protocol.sendPosition();
-        this.model.getReporter().reportAgent(this.model.getGridPart().getAgent());
-      }
+    gridPart.clearChangedSectors();
+
+    // Send position updates 
+/*
+    if (grid.getLastMovement() == GhostAction.FORWARD) {
+      protocol.sendPosition();
+      model.getReporter().reportAgentUpdate(gridPart.getMyAgent());
+    }/**/
 
     // Send pacman position updates
-    if( grid.isPacmanPositionChanged() ) {
-      protocol.sendPacman();
+    if (gridPart.getPacmanID() > pacmanID) {
+      pacmanID = gridPart.getPacmanID();
+      protocol.handleFoundAgent(gridPart.getPacmanAgent());
     }
-
   }
 }

@@ -142,14 +142,16 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   // there are different types of agents:  
   // - Pacman
   @Override
-  public ProtocolHandler handleFoundAgent(Sector sector, PacmanAgent agent) {
-    this.sendPacman(sector.getGrid().getPositionOf(sector));
+  public ProtocolHandler handleFoundAgent(PacmanAgent agent) {
+    Sector sector = agent.getGrid().getSectorOf(agent);
+    this.sendPacman(agent.getGrid().getPositionOf(sector));
     return this;
   }
 
   // - Barcode
   @Override
-  public ProtocolHandler handleFoundAgent(Sector sector, BarcodeAgent agent) {
+  public ProtocolHandler handleFoundAgent(BarcodeAgent agent) {
+    Sector sector = agent.getGrid().getSectorOf(agent);
     this.sendBarcodeAt(sector.getGrid().getPositionOf(sector), agent.getValue(),
                        agent.getBearing());
     return this;
