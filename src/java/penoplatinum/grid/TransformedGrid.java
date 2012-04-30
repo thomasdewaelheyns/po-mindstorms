@@ -40,22 +40,60 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Grid add(Sector s, Point position) {
-    transformation.transform(position);
+    transformation.inverseTransform(position);
+    //inverse transform the input sector!
+    boolean[] knows = new boolean[4];
+    boolean[] wall = new boolean[4];
+    int i = 0;
+    for (Bearing b : Bearing.NESW) {
+      knows[i] = s.knowsWall(b);
+      if (knows[i])
+        wall[i] = s.hasWall(b);
+      i++;
+    }
+    i = 0;
+    for (Bearing b : Bearing.NESW) {
+      Bearing oriBearing = b.rotate(transformation.getRotation().invert());
+
+
+      if (!knows[i])
+        s.clearWall(oriBearing);
+      else {
+        if (wall[i])
+          s.setWall(oriBearing);
+        else
+          s.setNoWall(oriBearing);
+      }
+      i++;
+    }
 
     grid.add(s, position);
 
-    transformation.inverseTransform(position);
+    transformation.transform(position);
 
     return this;
   }
 
+  private void copyWallFrom(Sector source, Sector target, Bearing sourceBearing, Bearing targetBearing) {
+    if (!source.knowsWall(sourceBearing))
+      target.clearWall(targetBearing);
+    else {
+      if (source.hasWall(sourceBearing))
+        target.setWall(targetBearing);
+      else
+        target.setNoWall(targetBearing);
+    }
+  }
+
   @Override
   public Sector getSectorAt(Point position) {
-    transformation.transform(position);
+    transformation.inverseTransform(position);
 
     Sector s = grid.getSectorAt(position);
+    if (s == null)
+      return null;
 
-    transformation.inverseTransform(position);
+    transformation.transform(position);
     return new TransformedSector(s, transformation);
   }
 
@@ -80,24 +118,24 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Grid add(Agent agent, Point position, Bearing bearing) {
-    transformation.transform(position);
-    bearing = bearing.rotate(transformation.getRotation());
+    transformation.inverseTransform(position);
+    bearing = bearing.rotate(transformation.getRotation().invert());
 
     grid.add(agent, position, bearing);
 
-    transformation.inverseTransform(position);
+    transformation.transform(position);
 
     return this;
   }
 
   @Override
   public Grid moveTo(Agent agent, Point position, Bearing bearing) {
-    transformation.transform(position);
-    bearing = bearing.rotate(transformation.getRotation());
+    transformation.inverseTransform(position);
+    bearing = bearing.rotate(transformation.getRotation().invert());
 
     grid.moveTo(agent, position, bearing);
 
-    transformation.inverseTransform(position);
+    transformation.transform(position);
 
     return this;
   }
@@ -121,11 +159,11 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Agent getAgentAt(Point position) {
-    transformation.transform(position);
+    transformation.inverseTransform(position);
 
     Agent a = grid.getAgentAt(position);
 
-    transformation.inverseTransform(position);
+    transformation.transform(position);
     return a;
   }
 
@@ -135,16 +173,26 @@ public class TransformedGrid implements Grid {
   }
 
   private int getBoundAt(Bearing b) {
-    b = b.rotate(transformation.getRotation());
+
+    Point min = new Point(grid.getMinLeft(), grid.getMinTop());
+    Point max = new Point(grid.getMaxLeft(), grid.getMaxTop());
+
+    transformation.transform(min);
+    transformation.transform(max);
+
     switch (b) {
       case N:
-        return grid.getMinTop();
+        return (int) Math.min(min.getY(), max.getY());
+//        return grid.getMinTop();
       case E:
-        return grid.getMaxLeft();
+        return (int) Math.max(min.getX(), max.getX());
+//        return grid.getMaxLeft();
       case S:
-        return grid.getMaxTop();
+        return (int) Math.max(min.getY(), max.getY());
+//        return grid.getMaxTop();
       case W:
-        return grid.getMinLeft();
+        return (int) Math.min(min.getX(), max.getX());
+//        return grid.getMinLeft();
       default:
         throw new UnsupportedOperationException();
     }
@@ -172,7 +220,7 @@ public class TransformedGrid implements Grid {
 
   @Override
   public int getWidth() {
-    Bearing b = Bearing.N.rotate(transformation.getRotation());
+    Bearing b = Bearing.N.rotate(transformation.getRotation().invert());
 
     if (b == Bearing.N || b == Bearing.S)
       return grid.getWidth();
@@ -181,11 +229,11 @@ public class TransformedGrid implements Grid {
 
   @Override
   public int getHeight() {
-    Bearing b = Bearing.N.rotate(transformation.getRotation());
+    Bearing b = Bearing.N.rotate(transformation.getRotation().invert());
 
     if (b == Bearing.N || b == Bearing.S)
       return grid.getHeight();
-    return grid.getHeight();
+    return grid.getWidth();
   }
 
   @Override

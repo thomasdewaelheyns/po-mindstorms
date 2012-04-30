@@ -94,38 +94,34 @@ public class TransformedSectorTest extends TestCase {
             sector.knowsWall(Bearing.S));
   }
 
-  public void testAlterWalls()
-  {
-    
+  public void testAlterWalls() {
   }
-  
-  public void testHasSameWallsAs()
-  {
-    Sector s1 = createSectorWithWallsNW();
-    Sector s2 = createSectorWithWallsNE();
-    
+
+  public void testHasSameWallsAs() {
+    Sector s1 = createSectorWithWallsNE();
+    Sector s2 = createSectorWithWallsNW();
+
     Sector t1 = new TransformedSector(s1, TransformationTRT.fromRotation(Rotation.L90));
     Sector t2 = new TransformedSector(s1, TransformationTRT.fromRotation(Rotation.L90));
+    t1.toString();
     assertFalse(t1.hasSameWallsAs(s1));
     assertTrue(t1.hasSameWallsAs(s2));
-    assertFalse(t1.hasSameWallsAs(t2));
-    assertFalse(t2.hasSameWallsAs(t1));
-    
+    assertTrue(t1.hasSameWallsAs(t2));
+    assertTrue(t2.hasSameWallsAs(t1));
+
   }
-  
-  public void testGivesAccessTo()
-  {
-     Sector s1 = createSectorWithWallsNW();
-    
+
+  public void testGivesAccessTo() {
+    Sector s1 = createSectorWithWallsNE();
+
     Sector t1 = new TransformedSector(s1, TransformationTRT.fromRotation(Rotation.L90));
-    assertFalse(t1.givesAccessTo(Bearing.N));
-    assertFalse(t1.givesAccessTo(Bearing.E));
-    assertTrue(t1.givesAccessTo(Bearing.S));
-    assertFalse(t1.givesAccessTo(Bearing.W));
+        
+    t1.givesAccessTo(Bearing.N);
+    verify(s1).givesAccessTo(Bearing.E);
+    t1.givesAccessTo(Bearing.E);
+    verify(s1).givesAccessTo(Bearing.S);
   }
-  
-  
-  
+
   // utility methods to setup basic components
   private Sector createSectorWithWallsNW() {
     /* result looks like this:
@@ -152,7 +148,7 @@ public class TransformedSectorTest extends TestCase {
 
     return ret;
   }
-  
+
   private Sector createSectorWithWallsNE() {
     /* result looks like this:
      *    +--+
@@ -166,11 +162,12 @@ public class TransformedSectorTest extends TestCase {
     when(ret.hasNoWall(Bearing.N)).thenReturn(false);
     when(ret.knowsWall(Bearing.N)).thenReturn(true);
 
-    when(ret.hasWall(Bearing.W)).thenReturn(false);
-    when(ret.hasNoWall(Bearing.W)).thenReturn(true);
-    when(ret.knowsWall(Bearing.W)).thenReturn(true);
 
-    when(ret.knowsWall(Bearing.S)).thenReturn(false);
+    when(ret.knowsWall(Bearing.W)).thenReturn(false);
+
+    when(ret.hasWall(Bearing.S)).thenReturn(false);
+    when(ret.hasNoWall(Bearing.S)).thenReturn(true);
+    when(ret.knowsWall(Bearing.S)).thenReturn(true);
 
     when(ret.hasWall(Bearing.E)).thenReturn(true);
     when(ret.hasNoWall(Bearing.E)).thenReturn(false);
