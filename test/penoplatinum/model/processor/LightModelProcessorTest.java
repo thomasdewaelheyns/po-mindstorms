@@ -3,7 +3,7 @@ package penoplatinum.model.processor;
 /**
  * LightModelProcessorTest
  * 
- * Tests LightModelProcessor interface is available
+ * Tests LightModelProcessor class
  * 
  * @author: Team Platinum
  */
@@ -88,6 +88,8 @@ public class LightModelProcessorTest extends TestCase {
     verify(this.mockedLightModelPart).setAverageLightValue(479.99002f);
     verify(this.mockedLightModelPart).setCurrentLightColor(LightColor.BROWN);
   }
+  
+  // construction helpers
   
   private void setup() {
     this.createProcessor();

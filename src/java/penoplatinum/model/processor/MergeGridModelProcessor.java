@@ -3,7 +3,8 @@ package penoplatinum.model.processor;
 /**
  *
  * This class checks whether grids can be merged by using new barcode 
- *  information obtained by this robot
+ * 
+ * information obtained by this robot
  * 
  * @author Team Platinum
  */
@@ -26,13 +27,12 @@ public class MergeGridModelProcessor extends ModelProcessor {
 
   @Override
   protected void work() {
-
     // check if we moved forward
-    if (!model.getGridPart().hasRobotMoved() || model.getGridPart().getLastMovement() != GhostAction.FORWARD) {
+    if( ! model.getGridPart().hasRobotMoved() || 
+         model.getGridPart().getLastMovement() != GhostAction.FORWARD) {
       return;
     }
     GridModelPart gridPart = model.getGridPart();
-
 
     // check if we detected a barcode
     if (model.getBarcodePart().getLastBarcode() == -1) {

@@ -17,12 +17,11 @@ import penoplatinum.util.Utils;
  */
 public class WallDetectionModelProcessor extends ModelProcessor {
 
-  public WallDetectionModelProcessor() {
-  }
-
+  public WallDetectionModelProcessor() {}
   public WallDetectionModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
+
   List<Integer> distances;
   List<Integer> angles;
 
@@ -38,8 +37,6 @@ public class WallDetectionModelProcessor extends ModelProcessor {
       return;
     }
 
-    // Simple process of the sweep data
-
     currentIndex = 0;
 
     distances = sonar.getDistances();
@@ -52,20 +49,11 @@ public class WallDetectionModelProcessor extends ModelProcessor {
       angles.addAll(sonar.getAngles());
       Utils.reverse(angles);
       Utils.reverse(distances);
-
     }
 
-
     walls.setWallRightDistance(getEstimatedWallDistance(-110, -70));
-//    model.setWallRightClosestAngle(cheatOutputAngle);
-
     walls.setWallFrontDistance(getEstimatedWallDistance(-25, 25));
-
     walls.setWallLeftDistance(getEstimatedWallDistance(70, 110));
-//    model.setWallLeftClosestAngle(cheatOutputAngle);
-
-
-
   }
   int currentIndex;
   

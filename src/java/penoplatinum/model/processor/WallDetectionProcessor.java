@@ -68,10 +68,6 @@ public class WallDetectorProcessor extends ModelProcessor {
         // a previous step when we entered this sector
         if (detected.isKnown(Bearing.reverse(bearing))) {
           sector.setWall(Bearing.reverse(bearing), detected.hasWall(Bearing.reverse(bearing)));
-        } else {
-          // shouldn't happen
-//          System.err.println( "We turned and don't known what we know ?" );
-//          try { System.in.read(); } catch(Exception e) {}
         }
         break;
       case GhostAction.NONE:
@@ -79,10 +75,6 @@ public class WallDetectorProcessor extends ModelProcessor {
         // we don't know anything more than we knew before, so let's copy that
         if (detected.isKnown(Bearing.reverse(bearing))){
           sector.setWall(Bearing.reverse(bearing), detected.hasWall(Bearing.reverse(bearing)));
-        } else {
-          // this can actually happen, once, when we are at the first sector,
-          // haven't turned around and just did nothing to start with
-          // strange, but it can happen ;-)
         }
     }
 

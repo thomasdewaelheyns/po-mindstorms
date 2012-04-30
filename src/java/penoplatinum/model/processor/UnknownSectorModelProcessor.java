@@ -45,8 +45,6 @@ public class NewSectorsUpdateProcessor extends ModelProcessor {
       if (current.givesAccessTo(location)
               && !current.hasNeighbour(location)) {
         Sector neighbour = current.createNeighbour(location);
-        // TODO: parameterize the value
-        //System.out.println(current.getAgent().getName() + " : adding unknown sector(" + location +")" );
         neighbour.setValue(5000);
         grid.markSectorChanged(neighbour);
       }

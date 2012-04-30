@@ -10,8 +10,12 @@ package penoplatinum.model.part;
 
 import java.util.List;
 
-
 public class SonarModelPart implements ModelPart {
+  // boilerplate implementation required to register and retrieve a ModelPart
+  // from the model
+  public static SonarModelPart from(Model model) {
+    return (SonarModelPart)model.getPart(ModelPartRegistry.SONAR_MODEL_PART);
+  }
 
   private List<Integer> distances;
   private List<Integer> angles;
