@@ -238,6 +238,11 @@ public class AggregatedGrid implements Grid {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
+  @Override
+  public boolean hasAgentOn(Sector sector, Class type) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
   class SubGrid {
 
     private TransformedGrid grid;

@@ -97,7 +97,7 @@ public class AggregatedSector implements Sector {
 
   @Override
   public boolean knowsWall(Bearing atBearing) {
-    return calculateWallValue(atBearing) == 0;
+    return calculateWallValue(atBearing) != 0;
   }
 
   private int calculateWallValue(Bearing atBearing) {
@@ -106,7 +106,7 @@ public class AggregatedSector implements Sector {
       Grid g = grid.getActiveGrids().get(i);
       Sector s = g.getSectorAt(position);
 
-      ret += !s.knowsWall(atBearing) ? 0 : (s.hasWall(atBearing) ? 1 : 0);
+      ret += !s.knowsWall(atBearing) ? 0 : (s.hasWall(atBearing) ? 1 : -1);
 
     }
     return ret;
