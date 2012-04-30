@@ -32,11 +32,13 @@ public class AggregatedGrid implements Grid {
 
   private penoplatinum.util.SimpleHashMap<Grid, SubGrid> grids = new penoplatinum.util.SimpleHashMap<Grid, SubGrid>();
   private List<Grid> gridList = new ArrayList<Grid>();
-          
   private final Grid mainGrid;
 
   public AggregatedGrid(Grid mainGrid) {
     this.mainGrid = mainGrid;
+    SubGrid sub = new SubGrid(new TransformedGrid(mainGrid), TransformationTRT.Identity);
+    grids.put(mainGrid, sub);
+    gridList.add(sub.getGrid());
 
   }
 
@@ -48,12 +50,15 @@ public class AggregatedGrid implements Grid {
   public AggregatedGrid activateSubGrid(Grid grid, TransformationTRT transform) {
     if (grid == mainGrid)
       throw new IllegalArgumentException();
+    SubGrid sub = grids.get(grid);
+    if (sub == null) {
+      sub = new SubGrid(new TransformedGrid(grid), transform);
+      gridList.add(sub.getGrid());
+      grids.put(grid, sub);
+    }
 
-    SubGrid sub = new SubGrid(new TransformedGrid(grid), transform);
+    sub.getGrid().setTransformation(transform);
 
-    grids.put(grid, sub);
-    if (!gridList.contains(grid))
-      gridList.add(grid);
     return this;
   }
 
@@ -61,16 +66,21 @@ public class AggregatedGrid implements Grid {
    * Stops using given grid for aggregation
    */
   public AggregatedGrid deactivateSubGrid(Grid grid) {
+    if (grid == mainGrid)
+      throw new IllegalArgumentException();
+    
+    SubGrid subGrid = grids.get(grid);
+    
+    gridList.remove(subGrid.getGrid());
     grids.remove(grid);
-    gridList.remove(grid);
+    
     return this;
   }
-  
+
   /**
    * For internal use by AggregatedSector
    */
-  List<Grid> getActiveGrids()
-  {
+  List<Grid> getActiveGrids() {
     return gridList;
   }
 
@@ -261,9 +271,4 @@ public class AggregatedGrid implements Grid {
       return transformation;
     }
   }
-  
-  public boolean hasAgentOn(Sector sector, Class type) {
-    throw new RuntimeException("not implemented");
-  }
-
 }

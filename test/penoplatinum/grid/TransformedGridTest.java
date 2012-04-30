@@ -230,6 +230,10 @@ public class TransformedGridTest extends TestCase {
 
   }
 
+  public void testHasAgentOn()
+  {
+  }
+  
   private Grid createRectangularGrid() {
     LinkedGrid grid = new LinkedGrid();
     grid.add(new LinkedSector(), new Point(-1, 0));

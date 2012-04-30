@@ -14,7 +14,7 @@ import penoplatinum.util.TransformationTRT;
  * 
  * @author MHGameWork
  */
-public class AggregatedGridTest {
+public class AggregatedGridTestOld {
 
   public void testBarcodeMap(int codeLocal, int bearingLocal, int codeRemote, int bearingRemote) {
     SimpleGrid local = (SimpleGrid) GridFactory.load("..\\..\\src\\java\\penoplatinum\\simulator\\mini\\testGRTS-local.map");
