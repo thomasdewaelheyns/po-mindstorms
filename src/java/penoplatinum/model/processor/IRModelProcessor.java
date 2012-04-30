@@ -57,7 +57,7 @@ public class IRModelProcessor extends ModelProcessor {
     if (sum <= 150) {
       return;
     }
-    Bearing myBearing = grid.getCurrentBearing();
+    Bearing myBearing = grid.getMyBearing();
     if (myBearing == Bearing.E || myBearing == Bearing.W) { //rotate
       int temp = dx;
       dx = -dy;

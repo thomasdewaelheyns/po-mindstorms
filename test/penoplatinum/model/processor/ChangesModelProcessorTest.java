@@ -1,5 +1,6 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.grid.Grid;
 import java.util.Arrays;
 import penoplatinum.grid.Sector;
 import penoplatinum.reporter.Reporter;
