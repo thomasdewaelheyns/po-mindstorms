@@ -57,7 +57,7 @@ public class BarcodeWallsModelProcessorTest extends TestCase {
   public void testWork() {
     this.setup();
     when(this.mockedBarcodeModelPart.isReadingBarcode()).thenReturn(true);
-    when(this.mockedGridModelPart.getCurrentBearing()).thenReturn(Bearing.N);
+    when(this.mockedGridModelPart.getMyBearing()).thenReturn(Bearing.N);
     LinkedSector expected = new LinkedSector();
     expected.setNoWall(Bearing.N)
             .setNoWall(Bearing.S)
@@ -80,9 +80,9 @@ public class BarcodeWallsModelProcessorTest extends TestCase {
   public void testWorkOnlyOncePerBarcode() {
     this.setup();
     when(this.mockedBarcodeModelPart.isReadingBarcode()).thenReturn(true);
-    when(this.mockedGridModelPart.getCurrentBearing()).thenReturn(Bearing.N);
+    when(this.mockedGridModelPart.getMyBearing()).thenReturn(Bearing.N);
     this.processor.work();
-    verify(this.mockedGridModelPart).getCurrentBearing(); // once
+    verify(this.mockedGridModelPart).getMyBearing(); // once
     this.processor.work();    
     verifyNoMoreInteractions(this.mockedGridModelPart);   // not twice
   }

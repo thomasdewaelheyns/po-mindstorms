@@ -44,7 +44,7 @@ public class BarcodeWallsModelProcessor extends ModelProcessor {
   public void work() {
     if( ! this.needToAddWalls() ) { return; }
 
-    Bearing bearing = this.grid.getCurrentBearing();
+    Bearing bearing = this.grid.getMyBearing();
     
     LinkedSector sector = new LinkedSector();
     sector.setNoWall(bearing);             // no wall in front
