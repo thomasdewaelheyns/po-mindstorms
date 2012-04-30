@@ -33,7 +33,7 @@ public class TileGeometry {
     } else if (angle > 180 && angle <= 270) {
       dx = X;
       dy = T(dx, angle - 180);
-      if (dy > (size - Y)) {
+      if (dy > (size - Y)||dy==0 ) {
         dy = (size - Y);
         dx = T(dy, 270 - angle);
       }

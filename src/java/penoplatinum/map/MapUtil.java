@@ -16,7 +16,7 @@ public class MapUtil {
    */
   public static int findHitDistance(Map map, int angle, int left, int top, double x, double y) {
     // Force angles between 0 and 360 !!!
-    angle = (int)penoplatinum.util.Utils.ClampLooped(angle, 0, 360);
+    angle = (int) penoplatinum.util.Utils.ClampLooped(angle, 0, 360);
     // determine the point on the (virtual) wall on the current tile, where
     // the robot would hit at this bearing
     double dist = 0;
@@ -40,8 +40,25 @@ public class MapUtil {
       bearing = TileGeometry.getHitWall(hit, tile.getSize(), angle);
       left = Position.moveLeft(bearing, left);
       top = Position.moveTop(bearing, top);
-      x = hit.getX() == 0 ? tile.getSize() : (hit.getX() == tile.getSize() ? 0 : hit.getX());
-      y = hit.getY() == 0 ? tile.getSize() : (hit.getY() == tile.getSize() ? 0 : hit.getY());
+      if (x == y) {
+        if (angle > 45 && angle <= 135) {
+          y = 40;
+          x = hit.getX();
+        } else if (angle > 135 && angle <= 225) {
+          x = 40;
+          y = hit.getY();
+        } else if (angle > 225 && angle < 315) {
+          y = 0;
+          x = hit.getX();
+        } else {
+          x = 0;
+          y = hit.getY();
+        }
+      } else {
+        x = hit.getX() == 0 ? tile.getSize() : (hit.getX() == tile.getSize() ? 0 : hit.getX());
+        y = hit.getY() == 0 ? tile.getSize() : (hit.getY() == tile.getSize() ? 0 : hit.getY());
+      }
+
 
     } while (!tile.hasWall(bearing));
     return (int) Math.round(dist);
