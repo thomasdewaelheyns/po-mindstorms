@@ -26,6 +26,8 @@ public class TransformationTRTTest extends TestCase {
     transformation.transform(point);
 
     assertEquals(expectedPoint, point);
+
+
   }
 
   public void testInverseTransform() {
@@ -54,17 +56,17 @@ public class TransformationTRTTest extends TestCase {
   }
 
   private TransformationTRT createTransformation() {
-    return new TransformationTRT().setTransformation(123, -456,
-            Rotation.L270,
-            -656, 423);
+    return new TransformationTRT().setTransformation(-1, -1,
+            Rotation.L90,
+            1, 2);
   }
 
   // we mock all other objects that are not the main scope of this test
   private Point createPoint() {
-    return new Point(55, -757);
+    return new Point(0, 0);
   }
 
   private Point createTransformedPoint() {
-    return new Point(-1869, 245);
+    return new Point(0, 3);
   }
 }

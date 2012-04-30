@@ -6,8 +6,6 @@ package penoplatinum.util;
  * 
  * @author Team Platinum
  */
-
-
 public class Point {
 
   private int x, y;
@@ -16,33 +14,37 @@ public class Point {
     this.x = x;
     this.y = y;
   }
-  
-  public Point(Point p)
-  {
+
+  public Point(Point p) {
     this.x = p.getX();
     this.y = p.getY();
   }
 
-  public int getX() { return this.x; }
-  public int getY() { return this.y; }
+  public int getX() {
+    return this.x;
+  }
+
+  public int getY() {
+    return this.y;
+  }
 
   public Point translate(int dx, int dy) {
     this.x += dx;
     this.y += dy;
     return this;
   }
-  
+
   public Point rotate(Rotation rotation) {
     int oldX = this.x, oldY = this.y;
 
-    switch(rotation.min()) {
+    switch (rotation.min()) {
       case L90:
-        this.x = -1 * oldY;
-        this.y =      oldX;
+        this.x = oldY;
+        this.y = -oldX;
         break;
       case R90:
-        this.x =      oldY;
-        this.y = -1 * oldX;
+        this.x = -oldY;
+        this.y = oldX;
         break;
       case R180:
       case L180:
@@ -52,8 +54,7 @@ public class Point {
     }
     return this;
   }
-  
-  
+
   public String toString() {
     return this.x + "," + this.y;
   }
