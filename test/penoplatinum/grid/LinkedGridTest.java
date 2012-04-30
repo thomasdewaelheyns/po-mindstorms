@@ -37,7 +37,7 @@ public class LinkedGridTest extends TestCase {
     Grid grid = new LinkedGrid();
 
     Sector s = mock(Sector.class);
-   
+
 
     // Add sector
     grid.add(s, new Point(2, 2));
@@ -77,16 +77,14 @@ public class LinkedGridTest extends TestCase {
 
   }
 
-  public void testGetAgentAtMultiple()
-  {
+  public void testGetAgentAtMultiple() {
     fail(); // TODO change specification
   }
-  
-  public void testAddMultipleAgentsSamePosition()
-  {
+
+  public void testAddMultipleAgentsSamePosition() {
     fail();
   }
-  
+
   public void testMoveTo() {
     Agent a = mockAgent();
 

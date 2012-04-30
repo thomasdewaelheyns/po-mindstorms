@@ -196,19 +196,7 @@ public class LinkedGrid implements Grid {
 
   @Override
   public String toString() {
-    String ret = "";
-
-    for (int top = this.getMinTop(); top <= this.getMaxTop(); top++) {
-      for (int left = this.getMinLeft(); left <= this.getMaxLeft(); left++) {
-        Sector sector = this.getSector(left, top);
-        if (sector != null) {
-          ret += "(" + left + "," + top + "): " + sector.toString();
-          ret += "\n";
-        } else {
-        }
-      }
-    }
-    return ret;
+    return GridUtils.createGridSectorsString(this);
   }
 
   // return a list of all agents
