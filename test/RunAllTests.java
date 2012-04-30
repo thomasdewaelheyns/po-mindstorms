@@ -13,6 +13,12 @@ public class RunAllTests {
   public static Test suite() {
     Class[] testClasses = {
       penoplatinum.ConfigTest.class,
+      penoplatinum.driver.action.subaction.FindLeftWhiteLineTest.class, 
+      penoplatinum.driver.action.subaction.FindRightWhiteLineTest.class, 
+      penoplatinum.driver.action.subaction.ReturnSubActionTest.class, 
+      penoplatinum.driver.action.subaction.SubActionTest.class,
+      penoplatinum.driver.action.subaction.TurnToAlignTest.class,
+      penoplatinum.driver.action.AlignDriverActionTest.class,
       penoplatinum.driver.action.CombinedDriverActionTest.class,
       penoplatinum.driver.action.DriverActionTest.class,
       penoplatinum.driver.action.IdleDriverActionTest.class,
