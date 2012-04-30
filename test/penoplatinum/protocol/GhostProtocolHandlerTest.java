@@ -73,9 +73,12 @@ public class GhostProtocolHandlerTest extends TestCase {
   
   public void testHandleFoundAgent() {
     this.setup();
+    Grid grid = mock(Grid.class);
     Sector       sector = this.mockSector(12, 34, true, false, true, true, false, false, true, true);    
     BarcodeAgent agent  = this.mockBarcodeAgent(24, Bearing.E);
-    this.protocolHandler.handleFoundAgent(sector, agent);
+    when(agent.getGrid()).thenReturn(grid);
+    when(grid.getSectorOf(agent)).thenReturn(sector);
+    this.protocolHandler.handleFoundAgent(agent);
     verify(this.mockedGatewayClient).send(NAME + " BARCODEAT 12,-34 24 2\n",
                                           Config.BT_GHOST_PROTOCOL);
     verifyNoMoreInteractions(this.mockedGatewayClient);
@@ -83,9 +86,12 @@ public class GhostProtocolHandlerTest extends TestCase {
 
   public void handleFoundAgent() {
     this.setup();
+    Grid grid = mock(Grid.class);
     Sector      sector = this.mockSector(12, 34, true, false, true, true, false, false, true, true);    
     PacmanAgent agent  = this.mockPacmanAgent();
-    this.protocolHandler.handleFoundAgent(sector, agent);
+    when(agent.getGrid()).thenReturn(grid);
+    when(grid.getSectorOf(agent)).thenReturn(sector);
+    this.protocolHandler.handleFoundAgent(agent);
     verify(this.mockedGatewayClient).send(NAME + " PACMAN 12,-34\n",
                                           Config.BT_GHOST_PROTOCOL);
     verifyNoMoreInteractions(this.mockedGatewayClient);
