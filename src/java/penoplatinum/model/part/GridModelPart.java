@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import penoplatinum.model.Model;
 
 import penoplatinum.grid.Grid;
+import penoplatinum.grid.MultiGhostGrid;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.GhostAgent;
 import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.Sector;
+import penoplatinum.grid.LinkedSector;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
@@ -37,9 +39,29 @@ public class GridModelPart implements ModelPart {
   
   private boolean diffusePacman, diffuseUnknownSectors;
 
+  private MultiGhostGrid grids;
+
+  public GridModelPart() {
+    this.setup();
+  }
+
+  // we create the combined ghosts' grid
+  // we keep a reference to our own grid and set up the first sector and agent
+  private void setup() {
+    this.grids = new MultiGhostGrid("mine");
+    this.myGrid = this.grids.getGhostGrid("mine");
+    Point position = new Point(0,0);
+    this.myGrid.add(new LinkedSector(), position);
+    this.myAgent = new GhostAgent("mine");
+    this.myGrid.add(this.myAgent, position, Bearing.N);
+  }
 
   public Grid getMyGrid() {
     return this.myGrid;
+  }
+
+  public Grid getGridOf(String agentName) {
+    return this.grids.getGhostGrid(agentName);
   }
 
   public Agent getMyAgent() {
@@ -93,11 +115,13 @@ public class GridModelPart implements ModelPart {
     }
   }
   
+  // WARNING: not in use
   public void onlyApplyCollaborateDiffusionOnPacman() {
     this.diffusePacman = true;
     this.diffuseUnknownSectors = false;
   }
-  
+
+  // WARNING: not in use
   public void onlyApplyCollaborateDiffusionOnUnknownSectors() {
     this.diffuseUnknownSectors = true;
     this.diffusePacman = false;
@@ -108,7 +132,7 @@ public class GridModelPart implements ModelPart {
   }
   
   public void markSectorChanged(Sector sector){
-    changedSectors.add(sector);
+    this.changedSectors.add(sector);
   }
   
   public List<Sector> getChangedSectors() {
@@ -116,7 +140,7 @@ public class GridModelPart implements ModelPart {
   }
   
   public void clearChangedSectors() {
-    changedSectors.clear();
+    this.changedSectors.clear();
   }
   
   public Point getMyPosition(){
@@ -144,47 +168,4 @@ public class GridModelPart implements ModelPart {
   public Sector getCurrentSector() {
     return null;
   }
-  
-  /*
-  private Agent agent;
-
-  // we create a new Grid, add the first sector, the starting point
-  private void setupGrid() {
-    this.myGrid = new AggregatedGrid();
-    this.myGrid.setProcessor(new DiffusionGridProcessor()).addSector(new Sector().setCoordinates(0, 0).put(this.agent, Bearing.N));
-  }
-
-  // when running in a UI environment we can provide a View for the Grid
-  public void displayGridOn(GridView view) {
-    this.myGrid.displayOn(view);
-  }
-
-  public AggregatedSubGrid getGrid(String actorName) {
-    return getGrid().getGhostGrid(actorName);
-  }
-  
-  public void markSectorChanged(Sector current) {
-    // TODO: potential fps eater, may be better to just cache everything in the
-    //       list and filter doubles later on
-    for (int i = 0; i < changedSectors.size(); i++) {
-      if (changedSectors.get(i) == current) {
-        return;
-      }
-    }
-    changedSectors.add(current);
-  }
-
-  public ArrayList<Sector> getChangedSectors() {
-    return changedSectors;
-  }
-
-  public Agent getAgent() {
-    return this.agent;
-  }
-
-  public Sector getCurrentSector() {
-    return this.agent.getSector();
-  }
-
-*/
 }

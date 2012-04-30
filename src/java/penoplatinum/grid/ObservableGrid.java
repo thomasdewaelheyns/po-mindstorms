@@ -126,4 +126,9 @@ public class ObservableGrid implements Grid {
   public int getSize() {
     return grid.getSize();
   }
+
+  public boolean hasAgentOn(Sector sector, Class type) {
+    throw new RuntimeException("not implemented");
+  }
+
 }

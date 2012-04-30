@@ -257,4 +257,9 @@ public class AggregatedGrid implements Grid {
       return transformation;
     }
   }
+  
+  public boolean hasAgentOn(Sector sector, Class type) {
+    throw new RuntimeException("not implemented");
+  }
+
 }

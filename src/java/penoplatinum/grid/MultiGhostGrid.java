@@ -215,4 +215,9 @@ public class MultiGhostGrid implements Grid, GridObserver {
       return grid;
     }
   }
+  
+  public boolean hasAgentOn(Sector sector, Class type) {
+    throw new RuntimeException("not implemented");
+  }
+
 }
