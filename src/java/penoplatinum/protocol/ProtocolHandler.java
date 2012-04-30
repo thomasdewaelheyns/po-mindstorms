@@ -9,9 +9,12 @@ package penoplatinum.protocol;
  */
 
 import penoplatinum.gateway.GatewayClient;
+
+import penoplatinum.grid.Grid;
 import penoplatinum.grid.BarcodeAgent;
 import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.Sector;
+
 import penoplatinum.util.Point;
 
 
@@ -30,8 +33,8 @@ public interface ProtocolHandler {
   public ProtocolHandler handleEnterSector(Sector sector);
   public ProtocolHandler handleFoundSector(Sector sector);
 
-  public ProtocolHandler handleFoundAgent(BarcodeAgent agent);
-  public ProtocolHandler handleFoundAgent(PacmanAgent agent);
+  public ProtocolHandler handleFoundAgent(Grid grid, BarcodeAgent agent);
+  public ProtocolHandler handleFoundAgent(Grid grid, PacmanAgent agent);
   public ProtocolHandler handleResendData(Iterable<Sector> sectors, Point pacmanPoint, Point position);
 
   // used to manage incoming messages

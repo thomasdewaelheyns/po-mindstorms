@@ -9,10 +9,14 @@ package penoplatinum.protocol;
  */
 
 import penoplatinum.Config;
+
 import penoplatinum.gateway.GatewayClient;
+
+import penoplatinum.grid.Grid;
 import penoplatinum.grid.BarcodeAgent;
 import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.Sector;
+
 import penoplatinum.util.*;
 
 
@@ -142,17 +146,17 @@ public abstract class GhostProtocolHandler implements ProtocolHandler {
   // there are different types of agents:  
   // - Pacman
   @Override
-  public ProtocolHandler handleFoundAgent(PacmanAgent agent) {
-    Sector sector = agent.getGrid().getSectorOf(agent);
-    this.sendPacman(agent.getGrid().getPositionOf(sector));
+  public ProtocolHandler handleFoundAgent(Grid grid, PacmanAgent agent) {
+    Sector sector = grid.getSectorOf(agent);
+    this.sendPacman(grid.getPositionOf(sector));
     return this;
   }
 
   // - Barcode
   @Override
-  public ProtocolHandler handleFoundAgent(BarcodeAgent agent) {
-    Sector sector = agent.getGrid().getSectorOf(agent);
-    this.sendBarcodeAt(sector.getGrid().getPositionOf(sector), agent.getValue(),
+  public ProtocolHandler handleFoundAgent(Grid grid, BarcodeAgent agent) {
+    Sector sector = grid.getSectorOf(agent);
+    this.sendBarcodeAt(grid.getPositionOf(sector), agent.getValue(),
                        agent.getBearing());
     return this;
   }

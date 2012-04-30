@@ -59,7 +59,7 @@ public class WallDetectionModelProcessorTest extends TestCase {
     when(this.mockedWallsModelPart.isWallLeft()).thenReturn(true);
     when(this.mockedWallsModelPart.isWallRight()).thenReturn(false);
     when(this.mockedWallsModelPart.getCurrentSector()).thenReturn(null);
-    when(this.mockedGridModelPart.getCurrentPosition()).thenReturn(new Point(0,0));
+    when(this.mockedGridModelPart.getMyPosition()).thenReturn(new Point(0,0));
     
     this.processor.work();
     
@@ -92,7 +92,7 @@ public class WallDetectionModelProcessorTest extends TestCase {
       .thenReturn(false, false);
     when(this.mockedWallsModelPart.getCurrentSector())
       .thenReturn(null, prevSector);
-    when(this.mockedGridModelPart.getCurrentPosition())
+    when(this.mockedGridModelPart.getMyPosition())
       .thenReturn(new Point(0,0), new Point(0,0));
     
     this.processor.work();

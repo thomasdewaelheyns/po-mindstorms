@@ -50,7 +50,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
     else                          { sector.setNoWall(bearing.rightFrom()); }
 
     Sector prevSector      = wallsPart.getCurrentSector();
-    Point  currentPosition = gridPart.getCurrentPosition();
+    Point  currentPosition = gridPart.getMyPosition();
 
     // if we have moved into another sector, we came through the rear "wall"
     if( this.prevPosition != null && 

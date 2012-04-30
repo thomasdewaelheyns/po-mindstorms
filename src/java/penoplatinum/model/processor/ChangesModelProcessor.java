@@ -61,7 +61,7 @@ public class ChangesModelProcessor extends ModelProcessor {
     // Send pacman position updates
     if (gridPart.getPacmanID() > pacmanID) {
       pacmanID = gridPart.getPacmanID();
-      protocol.handleFoundAgent(gridPart.getPacmanAgent());
+      protocol.handleFoundAgent(gridPart.getMyGrid(), gridPart.getPacmanAgent());
     }
   }
 }

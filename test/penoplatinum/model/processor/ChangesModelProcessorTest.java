@@ -67,8 +67,8 @@ public class ChangesModelProcessorTest extends TestCase {
     when(mockGridPart.getPacmanID()).thenReturn(1);
     when(mockGridPart.getPacmanAgent()).thenReturn(new PacmanAgent());
     instance.work();
-    verify(mockProtocol).handleFoundAgent(any(PacmanAgent.class));
+    verify(mockProtocol).handleFoundAgent(any(Grid.class), any(PacmanAgent.class));
     instance.work();
-    verify(mockProtocol).handleFoundAgent(any(PacmanAgent.class));
+    verify(mockProtocol).handleFoundAgent(any(Grid.class), any(PacmanAgent.class));
   }
 }

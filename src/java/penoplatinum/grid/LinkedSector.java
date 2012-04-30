@@ -120,7 +120,7 @@ public class LinkedSector implements Sector {
         }
       } else {                           // T/F != F/T
         // conflicting information => clear both, go back to unknown state
-        System.err.println("Conflicting Wall information: ");//+ this.getLeft() + "," + this.getTop() + " / " + atBearing);
+        //System.err.println("Conflicting Wall information: ");//+ this.getLeft() + "," + this.getTop() + " / " + atBearing);
         this.clearWall(atBearing);
         neighbour.clearWall(locationAtNeighbour);
       }
