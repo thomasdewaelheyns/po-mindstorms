@@ -1,9 +1,10 @@
 package penoplatinum.model.processor;
 
-import penoplatinum.model.GhostModel;
-import penoplatinum.model.GridModelPart;
-import penoplatinum.model.SensorModelPart;
-import penoplatinum.simulator.Model;
+import penoplatinum.model.Model;
+import penoplatinum.model.part.GridModelPart;
+import penoplatinum.model.part.SensorModelPart;
+import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
 
 /**
  * Responsible for processing IR information and detecting pacman
@@ -21,16 +22,15 @@ public class IRModelProcessor extends ModelProcessor {
 
   @Override
   protected void work() {
-    GhostModel model = (GhostModel) this.model;
+    Model model = getModel();
     
-    
-    SensorModelPart sensor = model.getSensorPart();
-    GridModelPart grid = model.getGridPart();
-    
-    
-    if (!model.getGridPart().hasRobotMoved()) {
+    SensorModelPart sensor = SensorModelPart.from(model);
+    if(sensor.isMoving()){
       return;
     }
+    
+    GridModelPart grid = GridModelPart.from(model);
+      
     int dir = sensor.getIRDirection();
     int dx = 0, dy = 0;
     switch (dir) {
@@ -44,7 +44,6 @@ public class IRModelProcessor extends ModelProcessor {
         dx = 1;
         break;
       default: 
-        grid.setPacManInNext(false, 0, 0);
         return;
     }
     int sum = 0;
@@ -56,19 +55,20 @@ public class IRModelProcessor extends ModelProcessor {
       sum += sensor.getIRValue(dir/2);
     }
     if (sum <= 150) {
-      grid.setPacManInNext(false, 0, 0);
       return;
     }
-    if ((grid.getAgent().getBearing() & 1) == 1) { //rottate
+    Bearing myBearing = grid.getCurrentBearing();
+    if (myBearing == Bearing.E || myBearing == Bearing.W) { //rotate
       int temp = dx;
       dx = -dy;
       dy = temp;
     }
-    if ((grid.getAgent().getBearing() & 2) == 2) {//mirror 
+    if (myBearing == Bearing.S || myBearing == Bearing.W) {//mirror 
       dy = -dy;
       dx = -dx;
     }
-//    System.out.println("PACMAN");
-    grid.setPacManInNext(true, grid.getAgent().getLeft() + dx, grid.getAgent().getTop() + dy);
+    
+    Point position = grid.getMyPosition();
+    grid.setPacMan(position.getX() + dx, position.getY() + dy);
   }
 }

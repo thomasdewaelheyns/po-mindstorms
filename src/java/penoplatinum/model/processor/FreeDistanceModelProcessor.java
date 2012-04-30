@@ -1,11 +1,10 @@
 package penoplatinum.model.processor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import penoplatinum.model.GhostModel;
-import penoplatinum.model.SonarModelPart;
-import penoplatinum.model.WallsModelPart;
+import penoplatinum.model.Model;
+import penoplatinum.model.part.SonarModelPart;
+import penoplatinum.model.part.WallsModelPart;
 import penoplatinum.util.Utils;
 
 /**
@@ -15,32 +14,30 @@ import penoplatinum.util.Utils;
  * 
  * Author: Team Platinum
  */
-public class WallDetectionModelProcessor extends ModelProcessor {
+public class FreeDistanceModelProcessor extends ModelProcessor {
 
-  public WallDetectionModelProcessor() {}
-  public WallDetectionModelProcessor(ModelProcessor nextProcessor) {
-    super(nextProcessor);
+  public FreeDistanceModelProcessor() {
   }
 
-  List<Integer> distances;
-  List<Integer> angles;
+  public FreeDistanceModelProcessor(ModelProcessor nextProcessor) {
+    super(nextProcessor);
+  }
+  
+  private int lastSweepID;
 
   public void work() {
-    GhostModel model = (GhostModel) this.model;
-    
-    
-    SonarModelPart sonar = model.getSonarPart();
-    WallsModelPart walls = model.getWallsPart();
-    
-    
-    if (!sonar.isSweepDataChanged()) {
+    Model model = getModel();
+    SonarModelPart sonar = SonarModelPart.from(model);
+    WallsModelPart walls = WallsModelPart.from(model);
+
+    if (sonar.getCurrentSweepId()<=lastSweepID) {
       return;
     }
 
-    currentIndex = 0;
+    lastSweepID = sonar.getCurrentSweepId();
 
-    distances = sonar.getDistances();
-    angles = sonar.getAngles();
+    List<Integer> distances = sonar.getDistances();
+    List<Integer> angles = sonar.getAngles();
 
     if (angles.get(0) > angles.get(1)) {
       distances = new ArrayList<Integer>();
@@ -51,23 +48,16 @@ public class WallDetectionModelProcessor extends ModelProcessor {
       Utils.reverse(distances);
     }
 
-    walls.setWallRightDistance(getEstimatedWallDistance(-110, -70));
-    walls.setWallFrontDistance(getEstimatedWallDistance(-25, 25));
-    walls.setWallLeftDistance(getEstimatedWallDistance(70, 110));
+    walls.setWallRightDistance(getEstimatedWallDistance(angles, distances, -110, -70));
+    walls.setWallFrontDistance(getEstimatedWallDistance(angles, distances, -25, 25));
+    walls.setWallLeftDistance (getEstimatedWallDistance(angles, distances, 70, 110));
   }
-  int currentIndex;
-  
 
-  private int getEstimatedWallDistance(int startAngle, int endAngle) {
+  private int getEstimatedWallDistance(List<Integer> angles, List<Integer> distances, int startAngle, int endAngle) {
     int sum = 0;
     int num = 0;
-
-    int minDist = 200000;
-    int minStartAngle = 100000;
-    int minEndAngle = 100000;
-
-    for (; currentIndex < distances.size(); currentIndex++) {
-      int dist = distances.get(currentIndex);
+    
+    for (int currentIndex = 0; currentIndex < distances.size(); currentIndex++) {
       int angle = angles.get(currentIndex);
       if (angle < startAngle) {
         continue;
@@ -75,18 +65,8 @@ public class WallDetectionModelProcessor extends ModelProcessor {
       if (angle > endAngle) {
         break;
       }
-      sum += dist;
+      sum += distances.get(currentIndex);
       num++;
-
-      if (dist < minDist) {
-        minDist = dist;
-        minStartAngle = angle;
-        minEndAngle = angle;
-      } else if (dist == minDist) {
-        minEndAngle = angle;
-      }
-
-
     }
     if (num == 0) {
       return 2000000;
