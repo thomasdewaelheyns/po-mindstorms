@@ -36,7 +36,7 @@ public class IRModelProcessorTest extends TestCase {
     instance.setModel(mockModel);
     setIRValue(5, 0, 0, 250, 0, 0);
     when(mockGrid.getMyPosition()).thenReturn(new Point(4, 8));
-    when(mockGrid.getCurrentBearing()).thenReturn(Bearing.N);
+    when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
     instance.work();
     verify(mockGrid, times(1)).setPacMan(4, 7);
 
@@ -67,19 +67,19 @@ public class IRModelProcessorTest extends TestCase {
     
     when(mockGrid.getMyPosition()).thenReturn(new Point(4, 10));
     setIRValue(8, 0, 0, 0, 250, 200);
-    when(mockGrid.getCurrentBearing()).thenReturn(Bearing.N);
+    when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
     instance.work();
     verify(mockGrid, times(1)).setPacMan(5, 10);
 
-    when(mockGrid.getCurrentBearing()).thenReturn(Bearing.E);
+    when(mockGrid.getMyBearing()).thenReturn(Bearing.E);
     instance.work();
     verify(mockGrid, times(1)).setPacMan(4, 11);
 
-    when(mockGrid.getCurrentBearing()).thenReturn(Bearing.S);
+    when(mockGrid.getMyBearing()).thenReturn(Bearing.S);
     instance.work();
     verify(mockGrid, times(1)).setPacMan(3, 10);
 
-    when(mockGrid.getCurrentBearing()).thenReturn(Bearing.W);
+    when(mockGrid.getMyBearing()).thenReturn(Bearing.W);
     instance.work();
     verify(mockGrid, times(1)).setPacMan(4, 9);
   }

@@ -7,9 +7,9 @@ package penoplatinum.model.part;
  * @author Team Platinum
  */
 
+import java.util.List;
 import java.util.ArrayList;
 
-import java.util.List;
 import penoplatinum.model.Model;
 
 import penoplatinum.grid.Grid;
@@ -27,19 +27,15 @@ public class GridModelPart implements ModelPart {
   public static GridModelPart from(Model model) {
     return (GridModelPart)model.getPart(ModelPartRegistry.GRID_MODEL_PART);
   }
-  private Grid myGrid;
+
+  private Grid  myGrid;
   private Agent myAgent;
   private PacmanAgent pacman = new PacmanAgent();
   private ArrayList<Sector> changedSectors = new ArrayList<Sector>();
-
-
-  public GridModelPart() {
-  }
+  private int pacmanID;
   
-  public Bearing getMyBearing() {
-    // todo
-    return Bearing.N;
-  }
+  private boolean diffusePacman, diffuseUnknownSectors;
+
 
   public Grid getMyGrid() {
     return this.myGrid;
@@ -52,8 +48,22 @@ public class GridModelPart implements ModelPart {
   public void refreshMyGrid() {
     if( ! this.hasChangedSectors()) { return; }
     for(int i=0; i<10; i++) {
-      // this.myGrid.refresh();
+      this.applyDiffusion();
     }
+  }
+  
+  private void applyDiffusion() {
+    
+  }
+  
+  public void onlyApplyCollaborateDiffusionOnPacman() {
+    this.diffusePacman = true;
+    this.diffuseUnknownSectors = false;
+  }
+  
+  public void onlyApplyCollaborateDiffusionOnUnknownSectors() {
+    this.diffuseUnknownSectors = true;
+    this.diffusePacman = false;
   }
   
   public boolean hasChangedSectors() {
@@ -73,22 +83,21 @@ public class GridModelPart implements ModelPart {
   }
   
   public Point getMyPosition(){
-    Sector s = this.myGrid.getSectorOf(this.myAgent);
-    return this.myGrid.getPositionOf(s);
+    Sector sector = this.myGrid.getSectorOf(this.myAgent);
+    return this.myGrid.getPositionOf(sector);
   }
   
-  public Bearing getCurrentBearing(){
+  public Bearing getMyBearing(){
     return this.myGrid.getBearingOf(this.myAgent);
   }
   
-  private int pacmanID;
   public void setPacMan(int x, int y) {
-    this.myGrid.moveTo(pacman, new Point(x, y), Bearing.UNKNOWN);
-    pacmanID ++;
+    this.myGrid.moveTo(this.pacman, new Point(x, y), Bearing.UNKNOWN);
+    this.pacmanID++;
   }
   
   public int getPacmanID() {
-    return pacmanID;
+    return this.pacmanID;
   }
   
   public PacmanAgent getPacmanAgent(){
@@ -99,10 +108,6 @@ public class GridModelPart implements ModelPart {
     return null;
   }
   
-  public Point getCurrentPosition() {
-    return null;
-  }
-
   /*
   private Agent agent;
 

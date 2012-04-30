@@ -24,7 +24,7 @@ public class DiscoverHillClimbingNavigatorMode extends HillClimbingNavigatorMode
 
   public DiscoverHillClimbingNavigatorMode(Model model) {
     super(model);
-    // TODO : this.grids.onlyApplyCollaborateDiffusionOnUnknownSectors();
+    this.grids.onlyApplyCollaborateDiffusionOnUnknownSectors();
   }
 
   // we reached our goal if there are no unknown sectors in our grid anymore
