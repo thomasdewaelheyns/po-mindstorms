@@ -1,10 +1,5 @@
 package penoplatinum.model.processor;
 
-import java.util.ArrayList;
-import java.util.List;
-import penoplatinum.model.GhostModel;
-import penoplatinum.model.MessageModelPart;
-
 /**
  * Responsible for processing received messages from the ghost communication 
  * channel
@@ -12,10 +7,17 @@ import penoplatinum.model.MessageModelPart;
  * @author MHGameWork
  */
 
-public class InboxProcessor extends ModelProcessor {
+import java.util.ArrayList;
+import java.util.List;
+
+import penoplatinum.model.part.MessageModelPart;
+import penoplatinum.protocol.ProtocolHandler;
+
+
+public class InboxModelProcessor extends ModelProcessor {
   // boilerplate Decorator setup
-  public InboxProcessor() { super(); }
-  public InboxProcessor(ModelProcessor nextProcessor) {
+  public InboxModelProcessor() { super(); }
+  public InboxModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
 
