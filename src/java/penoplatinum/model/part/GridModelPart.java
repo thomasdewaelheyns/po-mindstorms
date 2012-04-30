@@ -7,13 +7,14 @@ package penoplatinum.model.part;
  * @author Team Platinum
  */
 
-import java.util.List;
 import java.util.ArrayList;
 
+import java.util.List;
 import penoplatinum.model.Model;
 
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Agent;
+import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.Sector;
 
 import penoplatinum.util.Bearing;
@@ -26,16 +27,13 @@ public class GridModelPart implements ModelPart {
   public static GridModelPart from(Model model) {
     return (GridModelPart)model.getPart(ModelPartRegistry.GRID_MODEL_PART);
   }
-
-  // private AggregatedGrid myGrid;
   private Grid myGrid;
   private Agent myAgent;
+  private PacmanAgent pacman = new PacmanAgent();
   private ArrayList<Sector> changedSectors = new ArrayList<Sector>();
 
 
   public GridModelPart() {
-    // this.myAgent = new GhostAgent(name);
-    // this.setupGrid();
   }
   
   public Bearing getMyBearing() {
@@ -54,13 +52,47 @@ public class GridModelPart implements ModelPart {
   public void refreshMyGrid() {
     if( ! this.hasChangedSectors()) { return; }
     for(int i=0; i<10; i++) {
-      // TODO
       // this.myGrid.refresh();
     }
   }
   
   public boolean hasChangedSectors() {
     return changedSectors.size() != 0;
+  }
+  
+  public void markSectorChanged(Sector sector){
+    changedSectors.add(sector);
+  }
+  
+  public List<Sector> getChangedSectors() {
+    return changedSectors;
+  }
+  
+  public void clearChangedSectors() {
+    changedSectors.clear();
+  }
+  
+  public Point getMyPosition(){
+    Sector s = this.myGrid.getSectorOf(this.myAgent);
+    return this.myGrid.getPositionOf(s);
+  }
+  
+  public Bearing getCurrentBearing(){
+    return this.myGrid.getBearingOf(this.myAgent);
+  }
+  
+  private int pacmanID;
+  public void setPacMan(int x, int y) {
+    this.myGrid.moveTo(pacman, new Point(x, y), Bearing.UNKNOWN);
+    pacmanID ++;
+  }
+  
+  public int getPacmanID() {
+    return pacmanID;
+  }
+  
+  public PacmanAgent getPacmanAgent(){
+    return pacman;
   }
 
   public Sector getCurrentSector() {

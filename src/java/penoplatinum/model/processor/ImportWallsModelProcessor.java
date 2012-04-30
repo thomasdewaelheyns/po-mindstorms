@@ -9,58 +9,56 @@ package penoplatinum.model.processor;
  * @author: Team Platinum
  */
 import penoplatinum.grid.Sector;
-import penoplatinum.model.GhostModel;
+import penoplatinum.model.Model;
+import penoplatinum.model.part.GridModelPart;
+import penoplatinum.model.part.WallsModelPart;
+import penoplatinum.util.Bearing;
 
-import penoplatinum.model.GridModelPart;
-import penoplatinum.model.WallsModelPart;
-import penoplatinum.simulator.Bearing;
+public class ImportWallsModelProcessor extends ModelProcessor {
 
-public class AgentWallsUpdateProcessor extends ModelProcessor {
-
-  public AgentWallsUpdateProcessor() {
-    super();
+  public ImportWallsModelProcessor() {
   }
 
-  public AgentWallsUpdateProcessor(ModelProcessor nextProcessor) {
+  public ImportWallsModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
+  private int lastId = 0;
 
-  // update the agent
   public void work() {
-    if (!((GhostModel) this.model).getWallsPart().hasUpdatedSector()) {
+    Model model = getModel();
+    WallsModelPart wallPart = WallsModelPart.from(model);
+    if (wallPart.getSectorId() <= lastId) {
       return;
     }
+    lastId = wallPart.getSectorId();
     this.updateWallInfo();
-
   }
 
   // update the current Sector on the Grid to reflect the currently selected
   private void updateWallInfo() {
-    GhostModel model = (GhostModel) this.model;
+    Model model = getModel();
 
-    GridModelPart grid = model.getGridPart();
-    WallsModelPart walls = model.getWallsPart();
+    GridModelPart grid = GridModelPart.from(model);
+    WallsModelPart walls = WallsModelPart.from(model);
+
+    Sector detected = walls.getCurrentSector();
+    Sector current = grid.getMyGrid().getSectorOf(grid.getMyAgent());
     
-    Sector detected = walls.getDetectedSector();
-    Sector current = grid.getCurrentSector();
-    for (int atLocation = Bearing.N; atLocation <= Bearing.W; atLocation++) {
-      if (detected.isKnown(atLocation)) {
-        if (detected.hasWall(atLocation)) {
-          //if( current.isKnown(atLocation) && !current.hasWall(atLocation) ) {
-          //  current.clearWall(atLocation);
-          //} else {
-          current.addWall(atLocation);
-          //}
-        } else {
-          //if( current.isKnown(atLocation) && current.hasWall(atLocation) ) {
-          //  current.clearWall(atLocation);
-          //} else {
-          current.removeWall(atLocation);
-          //}
-        }
-      }
+    for (Bearing b : Bearing.NESW) {
+      copyWallSector(detected, current, b);
     }
     grid.markSectorChanged(current);
   }
 
+  private void copyWallSector(Sector from, Sector to, Bearing atLocation) {
+    if (from.knowsWall(atLocation)) {
+      if (from.hasWall(atLocation)) {
+        to.setWall(atLocation);
+      } else {
+        to.setNoWall(atLocation);
+      }
+    } else {
+      to.clearWall(atLocation);
+    }
+  }
 }

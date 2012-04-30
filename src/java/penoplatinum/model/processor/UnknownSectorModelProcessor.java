@@ -7,47 +7,49 @@ package penoplatinum.model.processor;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.grid.LinkedSector;
 import penoplatinum.grid.Sector;
-import penoplatinum.model.GhostModel;
 
-import penoplatinum.model.GridModelPart;
-import penoplatinum.simulator.Bearing;
+import penoplatinum.model.Model;
+import penoplatinum.model.part.GridModelPart;
+import penoplatinum.util.Bearing;
 
-public class NewSectorsUpdateProcessor extends ModelProcessor {
+public class UnknownSectorModelProcessor extends ModelProcessor {
 
-  public NewSectorsUpdateProcessor() {
+  public UnknownSectorModelProcessor() {
     super();
   }
 
-  public NewSectorsUpdateProcessor(ModelProcessor nextProcessor) {
+  public UnknownSectorModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
 
+  @Override
   public void work() {
-    if (!((GhostModel) this.model).getGridPart().hasChangedSectors()) {
+    Model model = getModel();
+    GridModelPart gridPart = GridModelPart.from(model);
+    if (!gridPart.hasChangedSectors()) {
       return;
     }
-
     this.addNewSectors();
-
   }
-
 
   // if there are bearing without walls, providing access to unknown Sectors,
   // add such Sectors to the Grid
   private void addNewSectors() {
-    GridModelPart grid = ((GhostModel) this.model).getGridPart();
+    Model model = getModel();
+    GridModelPart gridPart = GridModelPart.from(model);
+    Sector current = gridPart.getMyGrid().getSectorOf(gridPart.getMyAgent());
+    for(Bearing b : Bearing.NESW){
+      addNewSector(current, b);
+    }
+  }
 
-    //TODO: do this for all new sectors
-    
-    Sector current = grid.getCurrentSector();
-    for (int location = Bearing.N; location <= Bearing.W; location++) {
-      if (current.givesAccessTo(location)
-              && !current.hasNeighbour(location)) {
-        Sector neighbour = current.createNeighbour(location);
-        neighbour.setValue(5000);
-        grid.markSectorChanged(neighbour);
-      }
+  private void addNewSector(Sector current, Bearing direction) {
+    if (current.givesAccessTo(direction) && !current.hasNeighbour(direction)) {
+      Sector neighbour = new LinkedSector();
+      neighbour.setValue(5000);
+      current.addNeighbour(neighbour, direction);
     }
   }
 }

@@ -25,8 +25,6 @@ public class WallsModelPart implements ModelPart {
 
   private int wallLeftDistance, wallFrontDistance, wallRightDistance;
 
-  private boolean hasUpdatedSector;
-
   private Sector currentSector = null;
   private Sector prevSector    = null;
 
