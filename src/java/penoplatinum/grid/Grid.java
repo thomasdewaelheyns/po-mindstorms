@@ -47,6 +47,8 @@ public interface Grid {
   public Point getPositionOf(Sector sector);
 
   public Iterable<Sector> getSectors();
+  
+  public boolean hasAgentOn(Sector sector, Class type);
 
   /**
    * Places given agent on the grid at position. If the agent is already on the

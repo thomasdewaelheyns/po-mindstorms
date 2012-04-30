@@ -245,4 +245,9 @@ public class TransformedGrid implements Grid {
   public String toString() {
     return GridUtils.createGridSectorsString(this);
   }
+
+  public boolean hasAgentOn(Sector sector, Class type) {
+    throw new RuntimeException("not implemented");
+  }
+
 }

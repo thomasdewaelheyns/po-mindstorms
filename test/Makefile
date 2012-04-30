@@ -17,8 +17,8 @@ RM=rm -rf
 
 CLASS_COUNT=$(shell find ../src -name '*.java' | wc -l | head -1)
 LINE_COUNT=$(shell find ../src -name '*.java' | xargs wc -l | sort -rn | head -1)
-TEST_CLASS_COUNT=$(shell find . -name '*.java' | wc -l | head -1)
-TEST_LINE_COUNT=$(shell find . -name '*.java' | xargs wc -l | sort -rn | head -1)
+TEST_CLASS_COUNT=$(shell find . -name '*Test.java' | wc -l | head -1)
+TEST_LINE_COUNT=$(shell find . -name '*Test.java' | xargs wc -l | sort -rn | head -1)
 CLASS_COVERAGE_PCT=$(shell echo "scale=2; ${TEST_CLASS_COUNT}*100/${CLASS_COUNT}" | bc)
 
 all: clean ${TARGETS}

@@ -232,13 +232,6 @@ public class LinkedGrid implements Grid {
   //
   // visualization for the Grid, by default none, is used by Simulator
   private GridView view = NullGridView.getInstance();
-  private GridProcessor processor;
-
-  public Grid setProcessor(GridProcessor processor) {
-    this.processor = processor;
-    this.processor.useGrid(this);
-    return this;
-  }
 
   private void resize(int left, int top) {
     if (left < this.minLeft) {
@@ -272,24 +265,6 @@ public class LinkedGrid implements Grid {
     if (other != null) {
       other.addNeighbour(sector, location.reverse());
     }
-  }
-
-  // sets the view to display the Grid on
-  public Grid displayOn(GridView view) {
-    this.view = view;
-    // CHANGED
-    this.view.display(this, false);
-    return this;
-  }
-
-  // refreshes the Grid
-  // this triggers the GridProcessors and refreshes any attached view
-  public Grid refresh() {
-    if (this.processor != null) {
-      this.processor.process();
-    }
-    this.view.refresh();
-    return this;
   }
 
 //  public static void mergeSector(Sector thisSector, int rotation, Sector s) {
@@ -398,5 +373,9 @@ public class LinkedGrid implements Grid {
 
   public GridView getView() {
     return view;
+  }
+  
+  public boolean hasAgentOn(Sector sector, Class type) {
+    throw new RuntimeException("not implemented");
   }
 }

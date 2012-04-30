@@ -28,10 +28,6 @@ public class NullGrid implements Grid {
     return instance;
   }
 
-  public Grid setProcessor(GridProcessor processor) {
-    return this;
-  }
-
   public Grid addSector(Sector sector) {
     return this;
   }
@@ -204,4 +200,9 @@ public class NullGrid implements Grid {
   public Agent getAgentAt(Point positionPoint) {
     return null;
   }
+  
+  public boolean hasAgentOn(Sector sector, Class type) {
+    throw new RuntimeException("not implemented");
+  }
+
 }

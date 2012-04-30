@@ -14,6 +14,7 @@ import penoplatinum.model.Model;
 
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Agent;
+import penoplatinum.grid.GhostAgent;
 import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.Sector;
 
@@ -53,7 +54,43 @@ public class GridModelPart implements ModelPart {
   }
   
   private void applyDiffusion() {
-    
+    int minLeft = this.myGrid.getMinLeft(), maxLeft = this.myGrid.getMaxLeft(),
+        minTop = this.myGrid.getMinTop(), maxTop = this.myGrid.getMaxTop();
+
+    for(Sector sector : this.myGrid.getSectors()) {
+      int total = 0;
+      int count = 0;
+      // a hunting agent resets the value of its sector
+      if( this.myGrid.hasAgentOn(sector, PacmanAgent.class) ) {
+        total = 10000;
+        count = 1;
+      } else if( this.myGrid.hasAgentOn(sector, GhostAgent.class) ) {
+        // a ghost blocks all diffusion
+      } else {
+        // unknown sectors are "interesting"
+        if( ! sector.isFullyKnown() ) {
+          total = 5000;
+          count = 1;
+        } else {
+          // diffuse
+          for( Bearing atBearing: Bearing.NESW ) { 
+            // if we know about walls and there is NO wall take the sector's
+            // value into account
+            if( sector.knowsWall(atBearing) && ! sector.hasWall(atBearing)) {
+              if( sector.hasNeighbour(atBearing) ) {
+                total += sector.getNeighbour(atBearing).getValue();
+                count++;
+              }
+            }
+          }
+        }
+      }
+      if (count > 0) {
+        sector.setValue((int) ((total / count) * 0.75));
+      } else {
+        sector.setValue(0);
+      }
+    }
   }
   
   public void onlyApplyCollaborateDiffusionOnPacman() {
