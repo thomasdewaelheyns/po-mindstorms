@@ -40,6 +40,83 @@ public class LineModelProcessorTest extends TestCase {
     this.processor.work();
     verifyZeroInteractions(this.mockedLightModelPart);
   }
+  
+  public void testDetectNoLineOnBrown() {
+    this.setup();
+    when(this.mockedSensorModelPart.getValuesId())
+      .thenReturn(1,2,3,4,5);
+    when(this.mockedSensorModelPart.isTurning())
+      .thenReturn(false);
+    when(this.mockedLightModelPart.getCurrentLightColor())
+      .thenReturn(LightColor.BROWN);
+    this.processor.work();
+    this.processor.work();
+    this.processor.work();
+    this.processor.work();
+    this.processor.work();
+    verify(this.mockedLightModelPart, times(5)).getCurrentLightColor();
+  }
+
+  public void testDetectWhiteLine() {
+    this.setup();
+    when(this.mockedSensorModelPart.getValuesId())
+      .thenReturn(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+    when(this.mockedSensorModelPart.isTurning())
+      .thenReturn(false);
+    when(this.mockedLightModelPart.getCurrentLightColor())
+      .thenReturn( LightColor.BROWN,
+                   LightColor.WHITE, LightColor.WHITE, LightColor.WHITE,
+                   LightColor.WHITE, LightColor.WHITE,
+                   LightColor.BROWN, LightColor.BROWN, LightColor.BROWN,
+                   LightColor.BROWN, LightColor.BROWN );
+    for(int i=0;i<12;i++) { // 11 readings + 1 : we detect in the next frame
+      this.processor.work();
+    }
+    verify(this.mockedLightModelPart, times(12)).setLine(Line.NONE);
+    verify(this.mockedLightModelPart, times(12)).getCurrentLightColor();
+    verify(this.mockedLightModelPart).setLine(Line.WHITE);
+    verifyNoMoreInteractions(this.mockedLightModelPart);
+  }
+
+  public void testBlackWhenReadingWhiteEndsDetection() {
+    this.setup();
+    when(this.mockedSensorModelPart.getValuesId())
+      .thenReturn(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+    when(this.mockedSensorModelPart.isTurning())
+      .thenReturn(false);
+    when(this.mockedLightModelPart.getCurrentLightColor())
+      .thenReturn( LightColor.BROWN,
+                   LightColor.WHITE, LightColor.WHITE, LightColor.WHITE,
+                   LightColor.WHITE, LightColor.WHITE,
+                   LightColor.BLACK, LightColor.BROWN, LightColor.BROWN,
+                   LightColor.BROWN, LightColor.BROWN );
+    for(int i=0;i<12;i++) { // 11 readings + 1 : we detect in the next frame
+      this.processor.work();
+    }
+    verify(this.mockedLightModelPart, times(12)).setLine(Line.NONE);
+    verify(this.mockedLightModelPart, times(12)).getCurrentLightColor();
+    verifyNoMoreInteractions(this.mockedLightModelPart);
+  }
+
+  public void testTurningCausesAbortedDetection() {
+    this.setup();
+    when(this.mockedSensorModelPart.getValuesId())
+      .thenReturn(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+    when(this.mockedSensorModelPart.isTurning())
+      .thenReturn(false, false, false, true);
+    when(this.mockedLightModelPart.getCurrentLightColor())
+      .thenReturn( LightColor.BROWN,
+                   LightColor.WHITE, LightColor.WHITE, LightColor.WHITE,
+                   LightColor.WHITE, LightColor.WHITE,
+                   LightColor.BLACK, LightColor.BROWN, LightColor.BROWN,
+                   LightColor.BROWN, LightColor.BROWN );
+    for(int i=0;i<12;i++) { // 11 readings + 1 : we detect in the next frame
+      this.processor.work();
+    }
+    verify(this.mockedLightModelPart, times(12)).setLine(Line.NONE);
+    verify(this.mockedLightModelPart, times(3)).getCurrentLightColor();
+    verifyNoMoreInteractions(this.mockedLightModelPart);
+  }
 
   // construction helpers
   

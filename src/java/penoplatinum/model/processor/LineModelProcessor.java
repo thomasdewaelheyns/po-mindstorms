@@ -1,9 +1,18 @@
 package penoplatinum.model.processor;
 
+/**
+ * LineModelProcessor
+ * 
+ * Detects WHITE lines
+ * 
+ * @author: Team Platinum
+ */
+
 import penoplatinum.model.part.LightModelPart;
 import penoplatinum.model.part.SensorModelPart;
 
 import penoplatinum.util.LightColor;
+import penoplatinum.util.Line;
 
 
 public class LineModelProcessor extends ModelProcessor {
@@ -29,9 +38,7 @@ public class LineModelProcessor extends ModelProcessor {
     // we only work with new sensor values...
     if( ! this.newSensorValuesAreAvailable() ) { return; }
 
-    
-    LightModelPart  lightPart  = LightModelPart.from(this.getModel());
-
+    LightModelPart lightPart  = LightModelPart.from(this.getModel());
     lightPart.setLine(Line.NONE);
 
     if( SensorModelPart.from(this.getModel()).isTurning() ) {
@@ -79,7 +86,8 @@ public class LineModelProcessor extends ModelProcessor {
   }
   
   private boolean newSensorValuesAreAvailable() {
-    int currentSensorUpdate = this.robot.getValuesId();
+    int currentSensorUpdate = 
+      SensorModelPart.from(this.getModel()).getValuesId();
     if( currentSensorUpdate == this.sensorUpdate ) { return false; }
     this.sensorUpdate = currentSensorUpdate;
     return true;
