@@ -30,6 +30,8 @@ public class RunAllTests {
       penoplatinum.gateway.QueueTest.class,
       penoplatinum.grid.LinkedGridTest.class,
       penoplatinum.grid.LinkedSectorTest.class,
+      penoplatinum.grid.TransformedGridTest.class,
+      penoplatinum.grid.TransformedSectorTest.class,
       penoplatinum.map.MapHashedTest.class,
       penoplatinum.map.MapTest.class,
       // penoplatinum.map.MapTestUtil.class,  <<-- NOT A TEST

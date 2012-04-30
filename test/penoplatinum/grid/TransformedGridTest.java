@@ -4,6 +4,9 @@
  */
 package penoplatinum.grid;
 
+import junit.framework.TestCase;
+import static org.mockito.Mockito.*;
+
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
@@ -13,8 +16,9 @@ import penoplatinum.util.TransformationTRT;
  *
  * @author MHGameWork
  */
-public class TransformedGridTest {
-   public void testImportOfIdenticalRotatedGridDoesntChangeOriginalGrid() {
+public class TransformedGridTest extends TestCase {
+
+  public void testRotateOppositeWindings() {
     // create two identical grids, but with different sector objects
     Grid grid1 = this.createSquareGridWithFourSectors();
     Grid grid2 = this.createSquareGridWithFourSectors();
@@ -23,64 +27,18 @@ public class TransformedGridTest {
     Agent reference = this.mockReferenceAgent(Bearing.E);
 
     // add the ReferenceAgent on both grids
-    grid1.add(reference, new Point(1, 0));
-    grid2.add(reference, new Point(1, 0));
+    grid1.add(reference, new Point(1, 0), Bearing.N);
+    grid2.add(reference, new Point(1, 0), Bearing.N);
+
+    TransformedGrid t1 = new TransformedGrid(grid1);
+    TransformedGrid t2 = new TransformedGrid(grid2);
 
     // rotate grid2
-    grid2.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
-
-    // create a snapshot of grid1
-    String original = grid1.toString();
-
-    // import grid2 into grid1 based on the reference point
-    grid2.copyTo(grid1);
+    t1.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
+    t2.setTransformation(TransformationTRT.fromRotation(Rotation.R270));
 
     // validate that grid1 hasn't changed
-    assertEquals(grid1.toString(), original,
-            "grid1 has changed after import of identical grid.");
-  }
-
-  public void testSetTransformationReversible() {
-    // create two identical grids, but with different sector objects
-    Grid grid1 = this.createSquareGridWithFourSectors();
-
-    // create a snapshot of grid1
-    String original = grid1.toString();
-
-    // create a common ReferenceAgent
-    Agent reference = this.mockReferenceAgent(Bearing.E);
-
-    // add the ReferenceAgent on both grids
-    grid1.add(reference, new Point(1, 0));
-
-    // rotate grid2
-    grid1.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
-    grid1.setTransformation(TransformationTRT.fromRotation(Rotation.NONE));
-
-
-    // validate that grid1 hasn't changed
-    assertEquals(grid1.toString(), original,
-            "grid1 has changed after setting transformations.");
-  }
-
-  public void testRotatedGridsEqual() {
-    // create two identical grids, but with different sector objects
-    Grid grid1 = this.createSquareGridWithFourSectors();
-    Grid grid2 = this.createSquareGridWithFourSectors();
-
-    // create a common ReferenceAgent
-    Agent reference = this.mockReferenceAgent(Bearing.E);
-
-    // add the ReferenceAgent on both grids
-    grid1.add(reference, new Point(1, 0));
-    grid2.add(reference, new Point(1, 0));
-
-    // rotate grid2
-    grid1.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
-    grid2.setTransformation(TransformationTRT.fromRotation(Rotation.R270));
-
-    // validate that grid1 hasn't changed
-    assertEquals(grid1.toString(), grid2.toString(),
+    assertEquals(t1.toString(), t2.toString(),
             "grid1 is not equal to grid2 when rotated using opposite windings.");
   }
 
@@ -93,84 +51,61 @@ public class TransformedGridTest {
     Agent reference = this.mockReferenceAgent(Bearing.E);
 
     // add the ReferenceAgent on both grids
-    grid1.add(reference, new Point(1, 0));
-    grid2.add(reference, new Point(1, 0));
+    grid1.add(reference, new Point(1, 1), Bearing.N);
+    grid2.add(reference, new Point(1, 2), Bearing.W);
+    
+    TransformedGrid t1 = new TransformedGrid(grid1);
+    TransformedGrid t2 = new TransformedGrid(grid2);
+    
 
     // transform grid1
-    grid1.setTransformation(this.createGridTransformation());
+    t1.setTransformation(this.createGridTransformation());
 
     // Check if the transformation was successfull
-    assertEquals(grid1.toString(), grid2.toString(),
+    assertEquals(t1.toString(), t2.toString(),
             "Transformed grid1 is not identical to grid2");
   }
 
-  public void testAddSectorPosition() {
+  public void testAddSector()
+  {
     Grid grid = new LinkedGrid();
-
-    LinkedSector s1 = new LinkedSector();
-    LinkedSector s2 = new LinkedSector();
-
-    // Add first sector
-    grid.add(s1, new Point(2, 2));
-
-    // Should just add the one sector
-    assertEquals(s1, grid.get(new Point(2, 2)));
-
-    // Add second sector, should create a path
-    grid.add(s2, new Point(3, 3));
-
-    assertEquals(s1, grid.get(new Point(2, 2)));
-    assertEquals(s2, grid.get(new Point(3, 3)));
-    assertNotNull("s1 has no neighbour!", getSingleNeighbour(s1));
-    assertEquals("There is no path from s1 to s2!!", s2, getSingleNeighbour(getSingleNeighbour(s1)));
-
+    
+    Sector s = new LinkedSector();
+    s.setWall(Bearing.N);
+    s.setWall(Bearing.E);
+    s.clearWall(Bearing.S);
+    s.setNoWall(Bearing.W);
+    
+    TransformedGrid tGrid = new TransformedGrid(grid);
+    tGrid.setTransformation(createGridTransformation());
+    tGrid.add(s, new Point(2,1));
+    Sector ts = tGrid.getSectorAt(new Point(1,3));
+    
+    assertTrue(ts.hasWall(Bearing.W));
+    assertTrue(ts.hasWall(Bearing.N));
+    assertFalse(ts.knowsWall(Bearing.E));
+    assertFalse(ts.hasWall(Bearing.S));
+    
   }
-
-  public void testAgents() {
-    Grid g = new LinkedGrid();
-
-    Agent a1 = mock(Agent.class);
-    Agent a2 = mock(Agent.class);
-    Agent a3 = mock(Agent.class);
-
-    Agent[] agents = new Agent[]{a1, a2, a3};
-    Point[] points = new Point[]{new Point(1, 1), new Point(1, 1), new Point(1, 1)};
-
-    g.add(a1, points[0]);
-    g.add(a2, points[1]);
-    g.add(a3, points[2]);
-
-    assertNotNull(g.get(points[0]));
-    assertNotNull(g.get(points[1]));
-    assertNotNull(g.get(points[2]));
-
-
-    for (Agent a : g.getAgentsIterator()) {
-      boolean found = false;
-      for (int i = 0; i < agents.length; i++) {
-        if (a != agents[i]) {
-          continue;
-        }
-        found = true;
-        assertEquals(points[i], g.getAgentPosition(a));
-      }
-      assertTrue(found);
-
-    }
-
-    //TODO: maybe check if each actor only once in iterator
-
-
+  
+   public void testAddSector()
+  {
+    Grid grid = new LinkedGrid();
+    
+    Sector s = new LinkedSector();
+    
+    TransformedGrid tGrid = new TransformedGrid(grid);
+    tGrid.setTransformation(createGridTransformation());
+    tGrid.add(s, new Point(2,1));
+    Sector ts = tGrid.getSectorAt();
+    
+    assertEquals( new Point(1,3), tGrid.getPositionOf(ts));
+    assertTrue(ts.hasWall(Bearing.N));
+    assertFalse(ts.knowsWall(Bearing.E));
+    assertFalse(ts.hasWall(Bearing.S));
+    
   }
-
-  private Sector getSingleNeighbour(Sector s) {
-    for (Bearing b : Bearing.values()) {
-      if (s.hasNeighbour(b)) {
-        return s.getNeighbour(b);
-      }
-    }
-    return null;
-  }
+ 
 
   // utility methods to setup basic components
   private LinkedGrid createSquareGridWithFourSectors() {
@@ -189,10 +124,10 @@ public class TransformedGridTest {
     sector2.addNeighbour(sector4, Bearing.S);
 
     // Set the walls
-    sector1.withWall(Bearing.N).withWall(Bearing.W);
-    sector2.withWall(Bearing.N).withWall(Bearing.E).withWall(Bearing.S);
-    sector3.withWall(Bearing.S).withWall(Bearing.W);
-    sector4.withWall(Bearing.S).withWall(Bearing.E).withWall(Bearing.N);
+    sector1.setWall(Bearing.N).setWall(Bearing.W);
+    sector2.setWall(Bearing.N).setWall(Bearing.E).setWall(Bearing.S);
+    sector3.setWall(Bearing.S).setWall(Bearing.W);
+    sector4.setWall(Bearing.S).setWall(Bearing.E).setWall(Bearing.N);
 
     /* result looks like this:
      *    +--+--+
@@ -221,10 +156,10 @@ public class TransformedGridTest {
     sector2.addNeighbour(sector4, Bearing.S);
 
     // Set the walls
-    sector1.withWall(Bearing.N).withWall(Bearing.W).withWall(Bearing.E);
-    sector2.withWall(Bearing.N).withWall(Bearing.W).withWall(Bearing.E);
-    sector3.withWall(Bearing.S).withWall(Bearing.W);
-    sector4.withWall(Bearing.S).withWall(Bearing.E);
+    sector1.setWall(Bearing.N).setWall(Bearing.W).setWall(Bearing.E);
+    sector2.setWall(Bearing.N).setWall(Bearing.W).setWall(Bearing.E);
+    sector3.setWall(Bearing.S).setWall(Bearing.W);
+    sector4.setWall(Bearing.S).setWall(Bearing.E);
 
     /* Original looks like this:
      *    +--+--+

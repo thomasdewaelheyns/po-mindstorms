@@ -4,6 +4,8 @@
  */
 package penoplatinum.grid;
 
+import java.util.ArrayList;
+import java.util.List;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
@@ -36,8 +38,6 @@ public class TransformedGrid implements Grid {
     return grid;
   }
 
-  
-  
   @Override
   public Grid add(Sector s, Point position) {
     transformation.transform(position);
@@ -71,7 +71,11 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Iterable<Sector> getSectors() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    //Only use on pc!!!
+    List<Sector> ret = new ArrayList<Sector>();
+    for (Sector s : grid.getSectors())
+      ret.add(new TransformedSector(s, transformation));
+    return ret;
   }
 
   @Override
@@ -127,7 +131,7 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Iterable<Agent> getAgents() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return grid.getAgents();
   }
 
   private int getBoundAt(Bearing b) {
@@ -187,5 +191,10 @@ public class TransformedGrid implements Grid {
   @Override
   public int getSize() {
     return grid.getSize();
+  }
+
+  @Override
+  public String toString() {
+    return GridUtils.createGridSectorsString(this);
   }
 }
