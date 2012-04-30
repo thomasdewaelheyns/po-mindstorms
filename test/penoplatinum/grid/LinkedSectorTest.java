@@ -231,6 +231,11 @@ public class LinkedSectorTest extends TestCase {
     assertFalse(s1.hasWall(Bearing.E));
     
   }
+  
+  public void testToString()
+  {
+    assertEquals("NYE S WY", createSectorWithWallsNW().toString());
+  }
 
   // utility methods to setup basic components
   private Sector createSectorWithWallsNW() {
