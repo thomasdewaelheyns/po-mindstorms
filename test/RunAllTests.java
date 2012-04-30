@@ -102,14 +102,17 @@ public class RunAllTests {
       penoplatinum.util.CantorDiagonalTest.class,
       penoplatinum.util.CircularQueueTest.class,
       penoplatinum.util.ColorTest.class,
+      penoplatinum.util.ColorsTest.class,
       penoplatinum.util.LightColorTest.class,
       penoplatinum.util.LineTest.class,
+      penoplatinum.util.MD5Test.class,
       penoplatinum.util.PointTest.class,
       penoplatinum.util.PositionTest.class,
       penoplatinum.util.RotationTest.class,
       penoplatinum.util.ScannerTest.class,
       penoplatinum.util.SimpleHashMapTest.class,
       penoplatinum.util.TransformationTRTTest.class,
+      penoplatinum.util.TransformationTest.class,
       penoplatinum.util.UtilsTest.class
     };
     TestSuite suite = new TestSuite(testClasses);

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package penoplatinum.map;
 
 import junit.framework.TestCase;
@@ -10,13 +9,8 @@ import static org.mockito.Mockito.*;
  *
  * @author Florian
  */
-public class MapUtilTest extends TestCase {
-
-	private double[] values;
-
-
-public class MapUtilTest {
-
+public class MapUtilTest extends TestCase{
+  private double[] values;
   public MapUtilTest() {
   }
   /**
@@ -27,10 +21,10 @@ public class MapUtilTest {
     Map map = MapTestUtil.getMap();
     assertEquals(20, MapUtil.findHitDistance(map, 90, 1, 1, 20.0, 20.0));
     assertEquals(60, MapUtil.findHitDistance(map, 0, 1, 1, 20.0, 20.0));
-    assertEquals(85, MapUtil.findHitDistance(map, -45, 1, 1, 20.0, 20.0));
+    assertEquals(28, MapUtil.findHitDistance(map, -45, 1, 1, 20.0, 20.0));
     assertEquals(Integer.MAX_VALUE, MapUtil.findHitDistance(map, -44, 1, 1, 20.0, 20.0));
-    assertEquals(64, MapUtil.findHitDistance(map, -71, 1, 1, 20.0, 20.0));
-    assertEquals(Integer.MAX_VALUE, MapUtil.findHitDistance(map, -72, 1, 1, 20.0, 20.0));
+    assertEquals(61, MapUtil.findHitDistance(map, -71, 1, 1, 20.0, 20.0));
+    assertEquals(105, MapUtil.findHitDistance(map, -72, 1, 1, 20.0, 20.0));
   }
   
   /**
@@ -48,7 +42,7 @@ public class MapUtilTest {
     assertEquals(60, values[0],0.01);
     assertEquals(20, values[1],0.01);
     assertEquals(Integer.MAX_VALUE, values[2],0.01);
-    assertEquals(Integer.MAX_VALUE, values[3],0.01);
+    assertEquals(20, values[3],0.01);
     findDirectionedValues(m,1,3);
     assertEquals(100, values[0],0.01);
     assertEquals(Integer.MAX_VALUE, values[1],0.01);
@@ -93,7 +87,7 @@ public class MapUtilTest {
     assertEquals(41, values[0],0.01);
     assertEquals(39, values[1],0.01);
     assertEquals(Integer.MAX_VALUE, values[2],0.01);
-    assertEquals(Integer.MAX_VALUE, values[3],0.01);
+    assertEquals(1, values[3],0.01);
     findDirectionedValues2(m,1,3,2,2);
     assertEquals(82, values[0],0.01);
     assertEquals(Integer.MAX_VALUE, values[1],0.01);
@@ -138,7 +132,7 @@ public class MapUtilTest {
     assertEquals(40, values[0],0.01);
     assertEquals(0, values[1],0.01);
     assertEquals(Integer.MAX_VALUE, values[2],0.01);
-    assertEquals(Integer.MAX_VALUE, values[3],0.01);
+    assertEquals(40, values[3],0.01);
     findDirectionedValues2(m,1,3,9,0);
     assertEquals(80, values[0],0.01);
     assertEquals(Integer.MAX_VALUE, values[1],0.01);
@@ -196,7 +190,7 @@ public class MapUtilTest {
     Map map = MapTestUtil.getMap();
     assertTrue(MapUtil.hasTile(map, 10.0, 10.0));
     assertTrue(MapUtil.hasTile(map, 50.0, 10.0));
-    assertFalse(MapUtil.hasTile(map, 90.0, 10.0));
+    assertFalse(MapUtil.hasTile(map,150.0, 10.0));
   }
 
   /**

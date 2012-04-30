@@ -34,6 +34,6 @@ public class SonarTest extends TestCase {
     
     when(m.getValue()).thenReturn(-45);
     when(e.getAngle()).thenReturn(0);
-    assertEquals(69, instance.getValue());
+    assertEquals(28, instance.getValue());
   }
 }

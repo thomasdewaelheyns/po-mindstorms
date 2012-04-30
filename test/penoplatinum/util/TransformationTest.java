@@ -4,6 +4,7 @@
  */
 package penoplatinum.util;
 
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Florian
  */
-public class TransformationTest {
+public class TransformationTest extends TestCase {
   
   @Test
   public void testAvailablity() {

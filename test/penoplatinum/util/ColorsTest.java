@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package penoplatinum.util;
-
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Florian
  */
-public class ColorsTest {
+public class ColorsTest extends TestCase{
 
   public ColorsTest() {
   }

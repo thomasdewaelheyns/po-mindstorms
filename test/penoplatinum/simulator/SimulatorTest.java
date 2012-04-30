@@ -77,7 +77,7 @@ public class SimulatorTest extends TestCase {
     angle = 90;
     assertEquals(20, instance.getFreeDistance(tile, pos, angle));
     angle = -45;
-    assertEquals(28+56+1, instance.getFreeDistance(tile, pos, angle));
+    assertEquals(28, instance.getFreeDistance(tile, pos, angle));
   }
 
   /**

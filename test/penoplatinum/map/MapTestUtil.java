@@ -5,7 +5,7 @@ import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.util.Bearing;
 
 public class MapTestUtil {
-
+  //WAAAAAAAARNING DO NOT CHANGE OR A LOT OF TESTS DONT WORK POSSIBLY
   public static Map getMap() {
     Map m = new MapHashed();
     Tile t = mock(Tile.class);
