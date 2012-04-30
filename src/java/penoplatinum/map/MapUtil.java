@@ -40,7 +40,7 @@ public class MapUtil {
       bearing = TileGeometry.getHitWall(hit, tile.getSize(), angle);
       left = Position.moveLeft(bearing, left);
       top = Position.moveTop(bearing, top);
-      if (x == y) {
+      if (hit.getX() == hit.getY()) {
         if (angle > 45 && angle <= 135) {
           y = 40;
           x = hit.getX();
@@ -54,7 +54,8 @@ public class MapUtil {
           x = 0;
           y = hit.getY();
         }
-      } else {
+      } 
+      else {
         x = hit.getX() == 0 ? tile.getSize() : (hit.getX() == tile.getSize() ? 0 : hit.getX());
         y = hit.getY() == 0 ? tile.getSize() : (hit.getY() == tile.getSize() ? 0 : hit.getY());
       }
