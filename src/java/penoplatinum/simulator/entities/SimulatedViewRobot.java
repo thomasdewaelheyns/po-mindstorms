@@ -60,7 +60,7 @@ public class SimulatedViewRobot implements ViewRobot{
   }
   @Override
   public int getDirection() {
-    return (int) original.getDir();
+    return (int) original.getDirection();
   }
   public List<Integer> getDistances() {
     return new ArrayList<Integer>();

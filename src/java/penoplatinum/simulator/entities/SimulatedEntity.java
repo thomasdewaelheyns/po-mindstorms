@@ -40,7 +40,7 @@ public class SimulatedEntity implements RobotEntity {
   protected SimulatedEntity(Robot robot, int numberOfSensors) {
     this.robot = robot;
     this.robot.useRobotAPI(new SimulationRobotAPI().setSimulatedEntity(this));
-    this.viewRobot = (new SimulatedViewRobot(this));
+    this.viewRobot = new SimulatedViewRobot(this);
 
     sensorValues = new int[numberOfSensors];
     sensors = new Sensor[numberOfSensors];
@@ -96,7 +96,7 @@ public class SimulatedEntity implements RobotEntity {
    * @return the direction
    */
   @Override
-  public double getDir() {
+  public double getDirection() {
     return direction;
   }
 
@@ -138,7 +138,7 @@ public class SimulatedEntity implements RobotEntity {
     previousTacho[Config.MOTOR_RIGHT] = this.motors[Config.MOTOR_RIGHT].getFullAngleTurned();
 
     moveEntity((changeRight+changeLeft)/2);
-    turnEntity((changeLeft-changeRight) /2);
+    turnEntity((changeRight-changeLeft)/2);
 
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
@@ -197,10 +197,6 @@ public class SimulatedEntity implements RobotEntity {
     int left = (int) (this.positionX % simulator.getTileSize());
     int top = (int) (this.positionY % simulator.getTileSize());
     return new Point(left, top);
-  }
-
-  public double getDirection() {
-    return this.direction;
   }
 
   public Point getInitialPosition() {

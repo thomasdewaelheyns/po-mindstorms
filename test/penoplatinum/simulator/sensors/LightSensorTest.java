@@ -43,7 +43,7 @@ public class LightSensorTest extends TestCase {
     when(sim.getMap()).thenReturn(map);
 
     SimulatedEntity entity = mock(SimulatedEntity.class);
-    when(entity.getDir()).thenReturn(90.0);
+    when(entity.getDirection()).thenReturn(90.0);
     when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
     when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(20, 20));
 
@@ -61,7 +61,7 @@ public class LightSensorTest extends TestCase {
 
     when(map.get(1, 1).getColorAt(15, 20)).thenReturn(Sector.WHITE);
     assertEquals(LightSensor.WHITE, instance.getActualValue());
-    when(entity.getDir()).thenReturn(0.0);
+    when(entity.getDirection()).thenReturn(0.0);
     assertEquals(LightSensor.BLACK, instance.getActualValue());
   }
 
@@ -73,7 +73,7 @@ public class LightSensorTest extends TestCase {
     Map map = MapTestUtil.getMap();
     when(sim.getMap()).thenReturn(map);
     SimulatedEntity entity = mock(SimulatedEntity.class);
-    when(entity.getDir()).thenReturn(90.0);
+    when(entity.getDirection()).thenReturn(90.0);
     when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
     when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(3, 3));
     instance.useSimulatedEntity(entity);
@@ -82,13 +82,13 @@ public class LightSensorTest extends TestCase {
     when(map.get(2, 2).getColorAt(anyInt(), anyInt())).thenReturn(Sector.WHITE);
     when(map.get(1, 2).getColorAt(38, 3)).thenReturn(Sector.NO_COLOR);
     when(map.get(2, 1).getColorAt(3, 38)).thenReturn(Sector.BLACK);
-    when(entity.getDir()).thenReturn(0.0);
+    when(entity.getDirection()).thenReturn(0.0);
     when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
     assertEquals(LightSensor.BLACK, instance.getActualValue());
-    when(entity.getDir()).thenReturn(90.0);
+    when(entity.getDirection()).thenReturn(90.0);
     when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
     assertEquals(LightSensor.BROWN, instance.getActualValue());
-    when(entity.getDir()).thenReturn(180.0);
+    when(entity.getDirection()).thenReturn(180.0);
     when(entity.getCurrentTileCoordinates()).thenReturn(new Point(2, 2));
     assertEquals(LightSensor.WHITE, instance.getActualValue());
     
@@ -96,13 +96,13 @@ public class LightSensorTest extends TestCase {
     when(map.get(1, 1).getColorAt(anyInt(), anyInt())).thenReturn(Sector.WHITE);
     when(map.get(1, 2).getColorAt(2, 3)).thenReturn(Sector.NO_COLOR);
     when(map.get(2, 1).getColorAt(3, 2)).thenReturn(Sector.BLACK);
-    when(entity.getDir()).thenReturn(0.0);
+    when(entity.getDirection()).thenReturn(0.0);
     when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
     assertEquals(LightSensor.WHITE, instance.getActualValue());
-    when(entity.getDir()).thenReturn(-90.0);
+    when(entity.getDirection()).thenReturn(-90.0);
     when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
     assertEquals(LightSensor.BLACK, instance.getActualValue());
-    when(entity.getDir()).thenReturn(-180.0);
+    when(entity.getDirection()).thenReturn(-180.0);
     when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
     assertEquals(LightSensor.BROWN, instance.getActualValue());
   }
@@ -147,7 +147,7 @@ public class LightSensorTest extends TestCase {
     when(sim.getTileSize()).thenReturn((Integer) 40);
     
     instance.getValue();
-    verify(entity, times(1)).getDir();
+    verify(entity, times(1)).getDirection();
     verify(entity, times(1)).getCurrentOnTileCoordinates();
     verify(entity, times(1)).getCurrentTileCoordinates();
   }

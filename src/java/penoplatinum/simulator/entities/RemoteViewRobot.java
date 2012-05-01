@@ -57,6 +57,6 @@ public class RemoteViewRobot implements ViewRobot {
 
   @Override
   public int getDirection() {
-    return (int) original.getDir();
+    return (int) original.getDirection();
   }
 }

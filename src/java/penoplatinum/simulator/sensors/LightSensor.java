@@ -42,7 +42,7 @@ public class LightSensor implements Sensor {
   public int getActualValue() {
     // determine position of light-sensor
     Point pos = simEntity.getCurrentOnTileCoordinates();
-    double rads = Math.toRadians(simEntity.getDir());
+    double rads = Math.toRadians(simEntity.getDirection());
     int x = (int) Math.round((pos.getX() - SimulatedEntity.LIGHTSENSOR_DISTANCE * Math.sin(rads)));
     int y = (int) Math.round((pos.getY() - SimulatedEntity.LIGHTSENSOR_DISTANCE * Math.cos(rads)));
 

@@ -26,7 +26,7 @@ public class PacmanEntity implements RobotEntity {
   }
 
   @Override
-  public double getDir() {
+  public double getDirection() {
     return dir;
   }
 

@@ -79,7 +79,7 @@ public class SimulatedEntityTest extends TestCase {
     when(mockedMotorLeft.getFullAngleTurned()).thenReturn(34.0);
     when(mockedMotorRight.getFullAngleTurned()).thenReturn(6.0);
     simEntity.step();
-    assertEquals(94.874, simEntity.getDirection(), 0.001);
+    assertEquals(85.12587, simEntity.getDirection(), 0.001);
     verify(mockedMotorLeft).tick(Simulator.TIME_SLICE);
     verify(mockedMotorSonar).tick(Simulator.TIME_SLICE);
     verify(mockedMotorRight).tick(Simulator.TIME_SLICE);

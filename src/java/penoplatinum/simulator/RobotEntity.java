@@ -12,7 +12,7 @@ public interface RobotEntity {
 
   ViewRobot getViewRobot();
 
-  double getDir();
+  double getDirection();
 
   double getPosX();
 

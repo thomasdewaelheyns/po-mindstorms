@@ -26,60 +26,60 @@ public class IRSensorTest extends TestCase {
     SimulatedEntity entity = mock(SimulatedEntity.class);
     when(entity.getPosX()).thenReturn(20.0);
     when(entity.getPosY()).thenReturn(40.0);
-    when(entity.getDir()).thenReturn(0.0);
+    when(entity.getDirection()).thenReturn(0.0);
     instance.useSimulatedEntity(entity);
     instance.useSimulator(sim);
     
     assertEquals(0, instance.getValue());
     when(sim.getPacMan()).thenReturn(r);
     assertEquals(5, instance.getValue());
-    when(entity.getDir()).thenReturn(-90.0);
+    when(entity.getDirection()).thenReturn(-90.0);
     assertEquals(2, instance.getValue());
-    when(entity.getDir()).thenReturn(90.0);
+    when(entity.getDirection()).thenReturn(90.0);
     assertEquals(8, instance.getValue());
     
-    when(entity.getDir()).thenReturn(-15.0);
+    when(entity.getDirection()).thenReturn(-15.0);
     assertEquals(5, instance.getValue());
-    when(entity.getDir()).thenReturn(-16.0);
+    when(entity.getDirection()).thenReturn(-16.0);
     assertEquals(4, instance.getValue());
-    when(entity.getDir()).thenReturn(14.0);
+    when(entity.getDirection()).thenReturn(14.0);
     assertEquals(5, instance.getValue());
-    when(entity.getDir()).thenReturn(15.0);
+    when(entity.getDirection()).thenReturn(15.0);
     assertEquals(6, instance.getValue());
     
     
-    when(entity.getDir()).thenReturn(0.0);
+    when(entity.getDirection()).thenReturn(0.0);
     assertEquals(5, instance.getValue());
-    when(entity.getDir()).thenReturn(-30.0);
+    when(entity.getDirection()).thenReturn(-30.0);
     assertEquals(4, instance.getValue());
-    when(entity.getDir()).thenReturn(-60.0);
+    when(entity.getDirection()).thenReturn(-60.0);
     assertEquals(3, instance.getValue());
-    when(entity.getDir()).thenReturn(-90.0);
+    when(entity.getDirection()).thenReturn(-90.0);
     assertEquals(2, instance.getValue());
-    when(entity.getDir()).thenReturn(-120.0);
+    when(entity.getDirection()).thenReturn(-120.0);
     assertEquals(1, instance.getValue());
-    when(entity.getDir()).thenReturn(-150.0);
+    when(entity.getDirection()).thenReturn(-150.0);
     assertEquals(0, instance.getValue());
-    when(entity.getDir()).thenReturn(-180.0);
+    when(entity.getDirection()).thenReturn(-180.0);
     assertEquals(0, instance.getValue());
     
-    when(entity.getDir()).thenReturn(0.0);
+    when(entity.getDirection()).thenReturn(0.0);
     assertEquals(5, instance.getValue());
-    when(entity.getDir()).thenReturn(30.0);
+    when(entity.getDirection()).thenReturn(30.0);
     assertEquals(6, instance.getValue());
-    when(entity.getDir()).thenReturn(60.0);
+    when(entity.getDirection()).thenReturn(60.0);
     assertEquals(7, instance.getValue());
-    when(entity.getDir()).thenReturn(90.0);
+    when(entity.getDirection()).thenReturn(90.0);
     assertEquals(8, instance.getValue());
-    when(entity.getDir()).thenReturn(120.0);
+    when(entity.getDirection()).thenReturn(120.0);
     assertEquals(9, instance.getValue());
-    when(entity.getDir()).thenReturn(150.0);
+    when(entity.getDirection()).thenReturn(150.0);
     assertEquals(0, instance.getValue());
-    when(entity.getDir()).thenReturn(180.0);
+    when(entity.getDirection()).thenReturn(180.0);
     assertEquals(0, instance.getValue());
     
     when(sim.getFreeDistance(any(Point.class), any(Point.class), anyInt())).thenReturn(10); //Far away
-    when(entity.getDir()).thenReturn(120.0);
+    when(entity.getDirection()).thenReturn(120.0);
     assertEquals(0, instance.getValue());
   }
 

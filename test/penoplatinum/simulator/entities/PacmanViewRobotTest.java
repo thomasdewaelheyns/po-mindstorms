@@ -52,7 +52,7 @@ public class PacmanViewRobotTest extends TestCase {
     PacmanEntity mock = mock(PacmanEntity.class);
     when(mock.getPosX()).thenReturn(12.0);
     when(mock.getPosY()).thenReturn(13.0);
-    when(mock.getDir()).thenReturn(14.0);
+    when(mock.getDirection()).thenReturn(14.0);
     return mock;
   }
 }

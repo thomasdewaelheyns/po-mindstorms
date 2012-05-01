@@ -52,7 +52,7 @@ public class RemoteEntity implements RobotEntity {
     return positionY;
   }
 
-  public double getDir() {
+  public double getDirection() {
     return direction;
   }
 

@@ -34,7 +34,7 @@ public class PacmanEntityTest extends TestCase {
   @Test
   public void testGetDir() {
     PacmanEntity instance = new PacmanEntity(12, 13, 14);
-    double result = instance.getDir();
+    double result = instance.getDirection();
     assertEquals(14, result, 0.0);
   }
 

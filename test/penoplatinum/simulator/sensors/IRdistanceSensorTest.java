@@ -32,13 +32,13 @@ public class IRdistanceSensorTest extends TestCase {
     instance.useSimulatedEntity(entity);
     instance.useSimulator(sim);
 
-    when(entity.getDir()).thenReturn(240.0);
+    when(entity.getDirection()).thenReturn(240.0);
     assertEquals(170, instance.getValue());
-    when(entity.getDir()).thenReturn(241.0);
+    when(entity.getDirection()).thenReturn(241.0);
     assertEquals(0, instance.getValue());
-    when(entity.getDir()).thenReturn(150.0);
+    when(entity.getDirection()).thenReturn(150.0);
     assertEquals(170, instance.getValue());
-    when(entity.getDir()).thenReturn(149.0);
+    when(entity.getDirection()).thenReturn(149.0);
     assertEquals(0, instance.getValue());
   }
 

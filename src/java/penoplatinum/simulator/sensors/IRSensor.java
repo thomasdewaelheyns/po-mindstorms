@@ -33,7 +33,7 @@ public class IRSensor implements Sensor {
     }
     angleToNorth += 360;
     angleToNorth %= 360;
-    double actualAngle = (angleToNorth - simEntity.getDir() + 360) % 360;
+    double actualAngle = (angleToNorth - simEntity.getDirection() + 360) % 360;
     final int changedOriginVector = (int) (angleToNorth+90)%360;
     int distanceToWall = sim.getFreeDistance(simEntity.getCurrentTileCoordinates(), simEntity.getCurrentOnTileCoordinates(), changedOriginVector);
     int distanceToPacman = (int) Math.sqrt(dx * dx + dy * dy);
