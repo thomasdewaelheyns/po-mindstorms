@@ -9,60 +9,104 @@ import penoplatinum.util.Position;
 
 public class MapUtil {
 
-  /**
-   * determines the distance to the first hit wall at the current bearing.
-   * if the hit is not on a wall on the current tile, we follow the bearing
-   * to the next tile and recursively try to find the hit-distance
-   */
-  public static int findHitDistance(Map map, int angle, int left, int top, double x, double y) {
-    // Force angles between 0 and 360 !!!
-    angle = (int) penoplatinum.util.Utils.ClampLooped(angle, 0, 360);
-    // determine the point on the (virtual) wall on the current tile, where
-    // the robot would hit at this bearing
-    double dist = 0;
-    Bearing bearing = null;
-    Tile tile = null;
-    Point hit = null;
-    do {
-      tile = map.get(left, top);
-      if (tile == null) {
+  public static Point getCurrentTileCoordinates(double x, double y, int size) {
+    // determine tile coordinates we're on
+    int left = (int) (x / size) + 1;
+    int top = (int) (y / size) + 1;
+    return new Point(left, top);
+  }
+
+  public static Point getCurrentOnTileCoordinates(double x, double y, int size) {
+    // determine tile coordinates on the tile we're on
+    int left = (int) (x % size);
+    int top = (int) (y % size);
+    return new Point(left, top);
+  }
+
+  public static int findHitDistance(Map map, int angle, double x, double y) {
+    angle %= 360;
+    angle += 360;
+    angle %= 360;
+    int EW = findHitPointEW(map, angle, x, y);
+    int NS = findHitPointNS(map, angle, x, y);
+    return (int) Math.min(EW, NS);
+  }
+
+  public static int findHitPointNS(Map map, int angle, double x, double y) {
+    if (angle == 0 || angle == 180) {
+      return Integer.MAX_VALUE;
+    }
+    Bearing b = Bearing.S;
+    int diff = 1;
+    int position = 0;
+    if (angle < 180) {
+      diff = -1;
+      position -= diff;
+      b = b.reverse();
+    }
+    double startY = y % map.getFirst().getSize();
+    while (true) {
+      position += diff;
+      double distY = position * map.getFirst().getSize() - startY;
+      int hitX = (int) Math.round(x + TileGeometry.height(distY, angle - 270));
+      int hitY = (int) (y + position * map.getFirst().getSize() - startY);
+      int tileX = (int) (hitX / map.getFirst().getSize()) + 1;
+      int tileY = (int) (hitY / map.getFirst().getSize()) + (diff == -1 ? 1 : 0);
+
+      if (hitX % map.getFirst().getSize() == 0) {
+        Tile temp = map.get(tileX - 1, tileY);
+        if (temp != null && temp.hasWall(b)) {
+          return (int) TileGeometry.getDistance(x, y, new Point(hitX, hitY));
+        }
+      }
+
+      Tile temp = map.get(tileX, tileY);
+      if (temp == null) {
         return Integer.MAX_VALUE;
       }
-      hit = TileGeometry.findHitPoint(x, y, angle, tile.getSize());
+      if (temp.hasWall(b)) {
+        return (int) TileGeometry.getDistance(x, y, new Point(hitX, hitY));
+      }
+    }
+  }
 
-      // distance from the starting point to the hit-point on this tile
-      dist += TileGeometry.getDistance(x, y, hit);
+  public static int findHitPointEW(Map map, int angle, double x, double y) {
+    if (angle == 90 || angle == 270) {
+      return Integer.MAX_VALUE;
+    }
+    Bearing b = Bearing.E;
+    int position = 0;
+    int diff = 1;
+    if (angle > 90 && angle < 270) {
+      diff = -1;
+      position -= diff;
+      b = b.reverse();
+    }
+    double startX = x % map.getFirst().getSize();
+    while (true) {
+      position += diff;
+      double distX = position * map.getFirst().getSize() - startX;
+      int hitY = (int) Math.round(y - TileGeometry.height(distX, angle));
+      int hitX = (int) (x + position * map.getFirst().getSize() - startX);
+      int tileX = (hitX / map.getFirst().getSize()) + (diff == -1 ? 1 : 0);
+      int tileY = (hitY / map.getFirst().getSize()) + 1;
 
-      // if we don't have a wall on this tile at this bearing, move to the next
-      // at the same bearing, starting at the hit point on the tile
-      // FIXME: throws OutOfBoundException, because we appear to be moving
-      //        through walls.
-      bearing = TileGeometry.getHitWall(hit, tile.getSize(), angle);
-      left = Position.moveLeft(bearing, left);
-      top = Position.moveTop(bearing, top);
-      if (hit.getX() == hit.getY()) {
-        if (angle > 45 && angle <= 135) {
-          y = 40;
-          x = hit.getX();
-        } else if (angle > 135 && angle <= 225) {
-          x = 40;
-          y = hit.getY();
-        } else if (angle > 225 && angle < 315) {
-          y = 0;
-          x = hit.getX();
-        } else {
-          x = 0;
-          y = hit.getY();
+
+      if (hitY % map.getFirst().getSize() == 0) {
+        Tile temp = map.get(tileX, tileY - 1);
+        if (temp != null && temp.hasWall(b)) {
+          return (int) TileGeometry.getDistance(x, y, new Point(hitX, hitY));
         }
-      } 
-      else {
-        x = hit.getX() == 0 ? tile.getSize() : (hit.getX() == tile.getSize() ? 0 : hit.getX());
-        y = hit.getY() == 0 ? tile.getSize() : (hit.getY() == tile.getSize() ? 0 : hit.getY());
       }
 
-
-    } while (!tile.hasWall(bearing));
-    return (int) Math.round(dist);
+      Tile temp = map.get(tileX, tileY);
+      if (temp == null) {
+        return Integer.MAX_VALUE;
+      }
+      if (temp.hasWall(b)) {
+        return (int) TileGeometry.getDistance(x, y, new Point(hitX, hitY));
+      }
+    }
   }
 
   public static boolean hasTile(Map map, double positionX, double positionY) {

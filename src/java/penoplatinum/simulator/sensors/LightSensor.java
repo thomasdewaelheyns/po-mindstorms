@@ -1,5 +1,6 @@
 package penoplatinum.simulator.sensors;
 
+import penoplatinum.map.MapUtil;
 import penoplatinum.util.CircularQueue;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.entities.SimulatedEntity;
@@ -41,7 +42,7 @@ public class LightSensor implements Sensor {
 
   public int getActualValue() {
     // determine position of light-sensor
-    Point pos = simEntity.getCurrentOnTileCoordinates();
+    Point pos = MapUtil.getCurrentOnTileCoordinates(simEntity.getPosX(), simEntity.getPosY(), sim.getTileSize());
     double rads = Math.toRadians(simEntity.getDirection());
     int x = (int) Math.round((pos.getX() - SimulatedEntity.LIGHTSENSOR_DISTANCE * Math.sin(rads)));
     int y = (int) Math.round((pos.getY() - SimulatedEntity.LIGHTSENSOR_DISTANCE * Math.cos(rads)));
@@ -54,7 +55,7 @@ public class LightSensor implements Sensor {
     y -= dy * sim.getTileSize();
 
     // get correct tile
-    Point tilePos = simEntity.getCurrentTileCoordinates();
+    Point tilePos = MapUtil.getCurrentTileCoordinates(simEntity.getPosX(), simEntity.getPosY(), sim.getTileSize());
     tilePos.translate(dx, dy);
     Tile tile = sim.getMap().get(tilePos.getX(), tilePos.getY());
     if (tile == null) {

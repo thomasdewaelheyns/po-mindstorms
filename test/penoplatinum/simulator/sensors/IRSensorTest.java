@@ -22,7 +22,7 @@ public class IRSensorTest extends TestCase {
     when(r.getPosX()).thenReturn(20.0);
     when(r.getPosY()).thenReturn(20.0);
     Simulator sim = mock(Simulator.class);
-    when(sim.getFreeDistance(any(Point.class), any(Point.class), anyInt())).thenReturn(100); //Far away
+    when(sim.getFreeDistance(anyDouble(), anyDouble(), anyInt())).thenReturn(100); //Far away
     SimulatedEntity entity = mock(SimulatedEntity.class);
     when(entity.getPosX()).thenReturn(20.0);
     when(entity.getPosY()).thenReturn(40.0);
@@ -78,7 +78,7 @@ public class IRSensorTest extends TestCase {
     when(entity.getDirection()).thenReturn(180.0);
     assertEquals(0, instance.getValue());
     
-    when(sim.getFreeDistance(any(Point.class), any(Point.class), anyInt())).thenReturn(10); //Far away
+    when(sim.getFreeDistance(anyDouble(), anyDouble(), anyInt())).thenReturn(10); //Far away
     when(entity.getDirection()).thenReturn(120.0);
     assertEquals(0, instance.getValue());
   }
@@ -95,7 +95,7 @@ public class IRSensorTest extends TestCase {
     instance.useSimulatedEntity(mock(SimulatedEntity.class));
     instance.getValue();
     verify(sim, times(1)).getPacMan();
-    verify(sim, times(1)).getFreeDistance(any(Point.class), any(Point.class), anyInt());
+    verify(sim, times(1)).getFreeDistance(anyDouble(), anyDouble(), anyInt());
   }
 
   /**
@@ -111,7 +111,7 @@ public class IRSensorTest extends TestCase {
     instance.useSimulator(sim);
     
     instance.getValue();
-    verify(simEntity, times(1)).getPosX();
-    verify(simEntity, times(1)).getPosY();
+    verify(simEntity, times(2)).getPosX();
+    verify(simEntity, times(2)).getPosY();
   }
 }

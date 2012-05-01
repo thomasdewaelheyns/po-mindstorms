@@ -21,11 +21,11 @@ public class IRdistanceSensorTest extends TestCase {
     when(p.getPosY()).thenReturn(30.0);
     Simulator sim = mock(Simulator.class);
     when(sim.getPacMan()).thenReturn(p);
-    when(sim.getFreeDistance(new Point(1, 1), new Point(20, 20), 315)).thenReturn(100);
+    when(sim.getFreeDistance(20.0, 20.0,  315)).thenReturn(100);
 
     SimulatedEntity entity = mock(SimulatedEntity.class);
-    when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(20, 20));
-    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
+    when(entity.getPosX()).thenReturn(20.0);
+    when(entity.getPosY()).thenReturn(20.0);
     when(entity.getPosX()).thenReturn(20.0);
     when(entity.getPosY()).thenReturn(20.0);
 
@@ -53,11 +53,9 @@ public class IRdistanceSensorTest extends TestCase {
     when(p.getPosY()).thenReturn(30.0);
     Simulator sim = mock(Simulator.class);
     when(sim.getPacMan()).thenReturn(p);
-    when(sim.getFreeDistance(new Point(1, 1), new Point(20, 20), 315)).thenReturn(100);
+    when(sim.getFreeDistance(20.0, 20.0, 315)).thenReturn(100);
 
     SimulatedEntity entity = mock(SimulatedEntity.class);
-    when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(20, 20));
-    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
     when(entity.getPosX()).thenReturn(20.0);
     when(entity.getPosY()).thenReturn(20.0);
 
@@ -66,7 +64,7 @@ public class IRdistanceSensorTest extends TestCase {
     instance.getValue();
 
     verify(sim, times(1)).getPacMan();
-    verify(sim, times(1)).getFreeDistance(new Point(1, 1), new Point(20, 20), 315);
+    verify(sim, times(1)).getFreeDistance(20.0, 20.0, 315);
     verify(p, times(1)).getPosX();
     verify(p, times(1)).getPosY();
   }
@@ -82,11 +80,11 @@ public class IRdistanceSensorTest extends TestCase {
     when(p.getPosY()).thenReturn(30.0);
     Simulator sim = mock(Simulator.class);
     when(sim.getPacMan()).thenReturn(p);
-    when(sim.getFreeDistance(new Point(1, 1), new Point(20, 20), 315)).thenReturn(100);
+    when(p.getPosX()).thenReturn(20.0);
+    when(p.getPosY()).thenReturn(20.0);
+    when(sim.getFreeDistance(20.0, 20.0, 315)).thenReturn(100);
 
     SimulatedEntity entity = mock(SimulatedEntity.class);
-    when(entity.getCurrentOnTileCoordinates()).thenReturn(new Point(20, 20));
-    when(entity.getCurrentTileCoordinates()).thenReturn(new Point(1, 1));
     when(entity.getPosX()).thenReturn(20.0);
     when(entity.getPosY()).thenReturn(20.0);
 
@@ -94,7 +92,7 @@ public class IRdistanceSensorTest extends TestCase {
     instance.useSimulator(sim);
     instance.getValue();
     
-    verify(entity, times(1)).getPosX();
-    verify(entity, times(1)).getPosY();
+    verify(entity, times(2)).getPosX();
+    verify(entity, times(2)).getPosY();
   }
 }

@@ -92,44 +92,6 @@ public class SimulatedEntityTest extends TestCase {
   }
 
   /**
-   * Test of getCurrentTileCoordinates method, of class SimulatedEntity.
-   */
-  @Test
-  public void testGetCurrentTileCoordinates() {
-    Point point11 = new Point(1, 1);
-    Point point22 = new Point(2, 2);
-    assertEquals(point11, simEntity.getCurrentTileCoordinates());
-    simEntity.putRobotAt(39, 39, 30);
-    assertEquals(point11, simEntity.getCurrentTileCoordinates());
-    simEntity.putRobotAt(40, 40, 0);
-    assertEquals(point22, simEntity.getCurrentTileCoordinates());
-    simEntity.putRobotAt(41, 41, 130);
-    assertEquals(point22, simEntity.getCurrentTileCoordinates());
-    simEntity.putRobotAt(50, 50, 130);
-    assertEquals(point22, simEntity.getCurrentTileCoordinates());
-  }
-
-  /**
-   * Test of getCurrentOnTileCoordinates method, of class SimulatedEntity.
-   */
-  @Test
-  public void testGetCurrentOnTileCoordinates() {
-    Point point11 = new Point(39, 39);
-    Point point22 = new Point(0, 0);
-    Point point33 = new Point(1, 1);
-    Point point44 = new Point(10, 10);
-    assertEquals(point22, simEntity.getCurrentOnTileCoordinates());
-    simEntity.putRobotAt(39, 39, 30);
-    assertEquals(point11, simEntity.getCurrentOnTileCoordinates());
-    simEntity.putRobotAt(40, 40, 0);
-    assertEquals(point22, simEntity.getCurrentOnTileCoordinates());
-    simEntity.putRobotAt(41, 41, 130);
-    assertEquals(point33, simEntity.getCurrentOnTileCoordinates());
-    simEntity.putRobotAt(50, 50, 130);
-    assertEquals(point44, simEntity.getCurrentOnTileCoordinates());
-  }
-
-  /**
    * Test of getInitialPosition method, of class SimulatedEntity.
    */
   @Test

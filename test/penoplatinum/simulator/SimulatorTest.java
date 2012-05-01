@@ -73,11 +73,11 @@ public class SimulatorTest extends TestCase {
     Point pos = new Point(20, 20);
     Simulator instance = new Simulator().useMap(MapTestUtil.getMap());
     int angle = 0;
-    assertEquals(60, instance.getFreeDistance(tile, pos, angle));
+    assertEquals(60, instance.getFreeDistance(20.0, 20.0, angle));
     angle = 90;
-    assertEquals(20, instance.getFreeDistance(tile, pos, angle));
+    assertEquals(20, instance.getFreeDistance(20.0, 20.0, angle));
     angle = -45;
-    assertEquals(28, instance.getFreeDistance(tile, pos, angle));
+    assertEquals(28, instance.getFreeDistance(20.0, 20.0, angle));
   }
 
   /**

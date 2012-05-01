@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import penoplatinum.map.MapTestUtil;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
-import penoplatinum.util.Point;
 
 public class SonarTest extends TestCase {
   /**
@@ -20,8 +19,8 @@ public class SonarTest extends TestCase {
     s.useMap(MapTestUtil.getMap());
     instance.useSimulator(s);
     SimulatedEntity e = mock(SimulatedEntity.class);
-    when(e.getCurrentTileCoordinates()).thenReturn(new Point(1,1));
-    when(e.getCurrentOnTileCoordinates()).thenReturn(new Point(20, 20));
+    when(e.getPosX()).thenReturn(20.0);
+    when(e.getPosY()).thenReturn(20.0);
     when(e.getAngle()).thenReturn(0);
     instance.useSimulatedEntity(e);
     

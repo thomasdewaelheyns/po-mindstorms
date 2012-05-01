@@ -185,20 +185,6 @@ public class SimulatedEntity implements RobotEntity {
     }
   }
 
-  public Point getCurrentTileCoordinates() {
-    // determine tile coordinates we're on
-    int left = (int) (this.positionX / simulator.getTileSize()) + 1;
-    int top = (int) (this.positionY / simulator.getTileSize()) + 1;
-    return new Point(left, top);
-  }
-
-  public Point getCurrentOnTileCoordinates() {
-    // determine tile coordinates on the tile we're on
-    int left = (int) (this.positionX % simulator.getTileSize());
-    int top = (int) (this.positionY % simulator.getTileSize());
-    return new Point(left, top);
-  }
-
   public Point getInitialPosition() {
     return initialPosition;
   }

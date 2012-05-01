@@ -14,38 +14,38 @@ public class TileGeometry {
 
     if (angle <= 90) {
       dx = size - X;
-      dy = T(dx, angle);
+      dy = height(dx, angle);
       if (dy > Y) {
         dy = Y;
-        dx = T(dy, 90 - angle);
+        dx = height(dy, 90 - angle);
       }
       x = X + dx;
       y = Y - dy;
     } else if (angle > 90 && angle <= 180) {
       dx = X;
-      dy = T(dx, 180 - angle);
+      dy = height(dx, 180 - angle);
       if (dy > Y) {
         dy = Y;
-        dx = T(dy, angle - 90);
+        dx = height(dy, angle - 90);
       }
       x = X - dx;
       y = Y - dy;
     } else if (angle > 180 && angle <= 270) {
       dx = X;
-      dy = T(dx, angle - 180);
+      dy = height(dx, angle - 180);
       if (dy > (size - Y)||dy==0 ) {
         dy = (size - Y);
-        dx = T(dy, 270 - angle);
+        dx = height(dy, 270 - angle);
       }
       x = X - dx;
       y = Y + dy;
     } else {
       // angle > 270 && angle < 360
       dx = size - X;
-      dy = T(dx, 360 - angle);
+      dy = height(dx, 360 - angle);
       if (dy > (size - Y)) {
         dy = (size - Y);
-        dx = T(dy, angle - 270);
+        dx = height(dy, angle - 270);
       }
       x = X + dx;
       y = Y + dy;
@@ -53,7 +53,7 @@ public class TileGeometry {
     return new Point((int) Math.round(x), (int) Math.round(y));
   }
 
-  private static double T(double x, double d) {
+  public static double height(double distance, double angle) {
     /**
      * Geonometry used:
      *
@@ -66,7 +66,7 @@ public class TileGeometry {
      *
      *    tan(a) = Y/X    =>   Y = tan(a) * X     ||   X = Y / tan(a)
      */
-    return x * Math.tan(Math.toRadians(d));
+    return distance * Math.tan(Math.toRadians(angle));
   }
 
   // simple application of a^2 + b^2 = c^2
