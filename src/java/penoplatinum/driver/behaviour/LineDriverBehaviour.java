@@ -14,7 +14,6 @@ import penoplatinum.model.part.LightModelPart;
 import penoplatinum.driver.action.DriverAction;
 import penoplatinum.driver.action.CombinedDriverAction;
 import penoplatinum.driver.action.MoveDriverAction;
-import penoplatinum.model.part.BarcodeModelPart;
 
 public class LineDriverBehaviour implements DriverBehaviour {
 
@@ -31,17 +30,8 @@ public class LineDriverBehaviour implements DriverBehaviour {
         return false;
       }
     }
-    this.correctingAction = null;
     LightModelPart light = LightModelPart.from(model);
     if (!light.isReadingLine()) {
-      return false;
-    }
-
-    // TODO: this check should not be needed because the BarcodeDriverBehaviour
-    //       covers this. Still it might be a best practice to keep this
-    //       behaviour consistent on its own.
-    BarcodeModelPart barcode = BarcodeModelPart.from(model);
-    if (barcode.isReadingBarcode()) {
       return false;
     }
     this.correctingAction = new CombinedDriverAction()

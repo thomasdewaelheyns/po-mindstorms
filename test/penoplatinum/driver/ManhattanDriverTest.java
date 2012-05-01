@@ -43,10 +43,10 @@ public class ManhattanDriverTest extends TestCase {
 
   public void testCreation() {
     this.setup();
-    verify(this.mockedRobot, times(2)).getModel();
+    verify(this.mockedRobot, times(3)).getModel();
     verifyNoMoreInteractions(this.mockedRobot);
     // note: times(2) is needed probably due to static invocation in real code
-    verify(this.mockedModel, times(2)).getPart(ModelPartRegistry.SENSOR_MODEL_PART);
+    verify(this.mockedModel, times(3)).getPart(ModelPartRegistry.SENSOR_MODEL_PART);
     verifyNoMoreInteractions(this.mockedModel);
   }
 
@@ -70,10 +70,11 @@ public class ManhattanDriverTest extends TestCase {
     this.setup();
     when(this.mockedSensorModelPart.isMoving()).thenReturn(true,true,true);
     this.driver.move();
-    this.driver.proceed(); // 1
+    this.driver.proceed(); // 1, init always busy
     verify(this.mockedRobotAPI).move(SECTOR_SIZE); // move succesfully initiated
-    this.driver.proceed(); // 2
-    this.driver.proceed(); // 3
+    this.driver.proceed(); // 2, step 1
+    this.driver.proceed(); // 3, step 2
+    this.driver.proceed(); // 4, step 3
     verify(this.mockedSensorModelPart, times(3)).isMoving();
     verifyNoMoreInteractions(this.mockedRobotAPI);
     // the movement is still in progress
@@ -86,8 +87,9 @@ public class ManhattanDriverTest extends TestCase {
     this.setup();
     when(this.mockedSensorModelPart.isMoving()).thenReturn(true,true,true,false);
     this.driver.move();
-    this.driver.proceed(); // 1
+    this.driver.proceed(); // 1, init not moving
     this.driver.proceed(); // 2
+    this.driver.proceed(); // 3
     this.driver.proceed(); // 3
     // after four proceeds the action is complete and the motors have stoped
     // moving. this is here triggered by the fact that every time, the Driver
@@ -124,14 +126,14 @@ public class ManhattanDriverTest extends TestCase {
     when(this.mockedSensorModelPart.isTurning()).thenReturn(true,true,true);
     this.driver.turnLeft();
     this.driver.proceed(); // 1
-    verify(this.mockedRobotAPI).turn(-90); // move succesfully initiated
+    verify(this.mockedRobotAPI).turn(90); // move succesfully initiated
     this.driver.proceed(); // 2
     this.driver.proceed(); // 3
-    verify(this.mockedSensorModelPart, times(3)).isTurning();
+    verify(this.mockedSensorModelPart, times(2)).isTurning();
     verifyNoMoreInteractions(this.mockedRobotAPI);
     // the movement is still in progress
     assertTrue("driver isn't ready after 3 steps", this.driver.isBusy());
-    verify(this.mockedSensorModelPart, times(4)).isTurning();
+    verify(this.mockedSensorModelPart, times(3)).isTurning();
     assertFalse(this.driver.completedLastInstruction());
   }
 
@@ -140,14 +142,14 @@ public class ManhattanDriverTest extends TestCase {
     when(this.mockedSensorModelPart.isTurning()).thenReturn(true,true,true);
     this.driver.turnRight();
     this.driver.proceed(); // 1
-    verify(this.mockedRobotAPI).turn(90); // move succesfully initiated
+    verify(this.mockedRobotAPI).turn(-90); // move succesfully initiated
     this.driver.proceed(); // 2
     this.driver.proceed(); // 3
-    verify(this.mockedSensorModelPart, times(3)).isTurning();
+    verify(this.mockedSensorModelPart, times(2)).isTurning();
     verifyNoMoreInteractions(this.mockedRobotAPI);
     // the movement is still in progress
-    assertTrue("driver isn't ready after 3 steps", this.driver.isBusy());
-    verify(this.mockedSensorModelPart, times(4)).isTurning();
+    assertTrue("driver isn't ready after 2 steps", this.driver.isBusy());
+    verify(this.mockedSensorModelPart, times(3)).isTurning();
     assertFalse(this.driver.completedLastInstruction());
   }
   
@@ -155,33 +157,34 @@ public class ManhattanDriverTest extends TestCase {
     this.setup();
     when(this.mockedSensorModelPart.isTurning()).thenReturn(true,true,true,false);
     this.driver.turnLeft();
-    this.driver.proceed(); // 1
+    this.driver.proceed(); // 1, init apiCall, nothing else
     this.driver.proceed(); // 2
     this.driver.proceed(); // 3
     // after four proceeds the action is complete and the motors have stoped
     // moving. this is here triggered by the fact that every time, the Driver
     // checks if the currentAction is ready
     this.driver.proceed(); // 4
+    this.driver.proceed(); // 5
     verify(this.mockedSensorModelPart, times(4)).isTurning();
     // the movement is finished
-    assertFalse("driver should be ready after 4 steps", this.driver.isBusy());
+    assertFalse("driver should be ready after 5 steps", this.driver.isBusy());
     assertTrue(this.driver.completedLastInstruction());
   }
 
   public void testCompleteTurnRight() {
     this.setup();
-    when(this.mockedSensorModelPart.isTurning()).thenReturn(true,true,true,false);
+    when(this.mockedSensorModelPart.isTurning()).thenReturn(true,true,false);
     this.driver.turnRight();
-    this.driver.proceed(); // 1
+    this.driver.proceed(); // 1 //init, always busy
     this.driver.proceed(); // 2
     this.driver.proceed(); // 3
     // after four proceeds the action is complete and the motors have stoped
     // moving. this is here triggered by the fact that every time, the Driver
     // checks if the currentAction is ready
     this.driver.proceed(); // 4
-    verify(this.mockedSensorModelPart, times(4)).isTurning();
+    verify(this.mockedSensorModelPart, times(3)).isTurning();
     // the movement is finished
-    assertFalse("driver should be ready after 4 steps", this.driver.isBusy());
+    assertFalse("driver should be ready after 3 steps", this.driver.isBusy());
     assertTrue(this.driver.completedLastInstruction());
   }
   

@@ -7,26 +7,24 @@ package penoplatinum.driver.action;
  * 
  * @author: Team Platinum
  */
-
 import penoplatinum.robot.RobotAPI;
 
 import penoplatinum.model.Model;
 import penoplatinum.model.part.SensorModelPart;
 
-
-public class MoveDriverAction implements DriverAction {
+public class MoveDriverAction implements DriverAction, Cloneable {
 
   // a referece to the ModelPart dealing with sensors, which we need to
   // determine if we're still moving == executing the instructed move()
   private SensorModelPart sensors;
-
   // the distance we cover in one move
   private double distance = 0;
-  
   // flag to keep track if we have already started this action
   private boolean actionStarted = false;
-  
-  
+
+  private MoveDriverAction() {
+  }
+
   public MoveDriverAction(Model model) {
     this.sensors = SensorModelPart.from(model);
   }
@@ -49,10 +47,18 @@ public class MoveDriverAction implements DriverAction {
   }
 
   public MoveDriverAction work(RobotAPI api) {
-    if( ! this.actionStarted ) {
+    if (!this.actionStarted) {
       api.move(this.distance);
       this.actionStarted = true;
     }
     return this;
+  }
+
+  public MoveDriverAction clone() {
+    MoveDriverAction out = new MoveDriverAction();
+    out.sensors = this.sensors;
+    out.distance = this.distance;
+    out.actionStarted = false;
+    return out;
   }
 }

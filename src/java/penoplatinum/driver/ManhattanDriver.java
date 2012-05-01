@@ -29,6 +29,7 @@ public class ManhattanDriver implements Driver {
   private AdvancedRobot advancedRobot;
 
   // the size of one sector, the atomic unit of movement of this Driver
+  // in meter
   private double sectorSize;
 
   // the behaviours that extend our basic movement actions
@@ -37,7 +38,8 @@ public class ManhattanDriver implements Driver {
   // internal basic movement actions
   private IdleDriverAction IDLE;
   private MoveDriverAction MOVE;
-  private TurnDriverAction TURN;
+  private TurnDriverAction TURN_LEFT;
+  private TurnDriverAction TURN_RIGHT;
 
   // although they're called actions, they in fact implement a strategy 
   // pattern; this is the current action/strategy
@@ -70,22 +72,23 @@ public class ManhattanDriver implements Driver {
   
   private void setupMovementActions() {
     this.MOVE = new MoveDriverAction(this.advancedRobot.getModel()).set(this.sectorSize);
-    this.TURN = new TurnDriverAction(this.advancedRobot.getModel());
+    this.TURN_LEFT = new TurnDriverAction(this.advancedRobot.getModel()).set(90);
+    this.TURN_RIGHT = new TurnDriverAction(this.advancedRobot.getModel()).set(-90);
   }
 
   // movement methods are honoured directly and change the current strategy
   public ManhattanDriver move() {
-    this.perform(MOVE);
+    this.perform(MOVE.clone());
     return this;
   }
   
   public ManhattanDriver turnLeft() {
-    this.perform(TURN.set(-90));
+    this.perform(TURN_LEFT.clone());
     return this;
   }
 
   public ManhattanDriver turnRight() {
-    this.perform(TURN.set(90));
+    this.perform(TURN_RIGHT.clone());
     return this;
   }
   
@@ -111,6 +114,9 @@ public class ManhattanDriver implements Driver {
 
   // return the busy state of our current action
   public boolean isBusy() {
+    if(this.currentAction == null){
+      return false;
+    }
     return this.currentAction.isBusy();
   }
 
@@ -121,11 +127,11 @@ public class ManhattanDriver implements Driver {
     if( this.currentAction.canBeInterrupted() ) {
       this.applyBehaviours();
     }
-    this.currentAction.work(this.advancedRobot.getRobotAPI());
-
     // when we're done we go idle...
     if( ! this.currentAction.isBusy() ) {
       this.goIdle();
+    } else {
+      this.currentAction.work(this.advancedRobot.getRobotAPI());
     }
     return this;
   }

@@ -12,7 +12,7 @@ import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.SimulationView;
 import penoplatinum.simulator.view.SwingSimulationView;
 
-public class RunTest {
+public class DumbTest {
 
   @Test
   public void testSimulator() {
