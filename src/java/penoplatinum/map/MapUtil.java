@@ -5,7 +5,6 @@ import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.tiles.TileGeometry;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.util.Position;
 
 public class MapUtil {
 

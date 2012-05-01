@@ -28,13 +28,12 @@ public class FindLeftWhiteLine implements SubAction {
         state = 3;
       }
     } else if (!context.getSensorPart().isTurning()) {
-      api.turn(-AlignDriverAction.SWEEP_ANGLE);
+      api.turn(AlignDriverAction.SWEEP_ANGLE);
       state = 1;
     }
   }
 
   public SubAction getNextSubAction() {
-    SubAction returnAction = new ReturnSubAction(this.context, startAngle);
-    return (state == 2 ? new FindRightWhiteLine(this.context, returnAction) : returnAction);
+    return (state == 2 ? new FindRightWhiteLine(this.context, startAngle) : new ReturnSubAction(this.context, startAngle));
   }
 }

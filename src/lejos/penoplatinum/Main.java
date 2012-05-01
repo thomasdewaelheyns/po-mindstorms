@@ -7,12 +7,12 @@ import penoplatinum.bluetooth.RobotBluetoothAgent;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.driver.GhostDriver;
 import penoplatinum.navigator.GhostNavigator;
-import penoplatinum.robot.GhostRobot;
+import penoplatinum.robot.GhostRobotOLD;
 
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    GhostRobot robot = new GhostRobot("Michiel");
+    GhostRobotOLD robot = new GhostRobotOLD("Michiel");
     //robot.useNavigator(new LeftFollowingGhostNavigator(robot.getGhostModel()));
     robot.useNavigator(new GhostNavigator());
     robot.useDriver(new GhostDriver());

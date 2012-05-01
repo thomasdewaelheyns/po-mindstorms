@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import penoplatinum.map.MapUtil;
-import penoplatinum.util.Point;
 import penoplatinum.util.Utils;
 
 public class Simulator {
@@ -128,7 +127,7 @@ public class Simulator {
     initRun();
     while(stepCount-->0){
       this.step();
-//      Utils.Sleep(8);
+      //Utils.Sleep(8);
     }
   }
 

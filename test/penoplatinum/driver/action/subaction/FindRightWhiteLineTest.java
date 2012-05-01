@@ -28,14 +28,14 @@ public class FindRightWhiteLineTest extends TestCase {
    */
   @Test
   public void testIsBusy() {
-    FindRightWhiteLine instance = new FindRightWhiteLine(mockAlign, null);
+    FindRightWhiteLine instance = new FindRightWhiteLine(mockAlign, 20);
     assertEquals(true, instance.isBusy());
     instance.work(mockAPI);
     assertEquals(true, instance.isBusy());
     instance.work(mockAPI);
     assertEquals(false, instance.isBusy());
     
-    instance = new FindRightWhiteLine(mockAlign, null);
+    instance = new FindRightWhiteLine(mockAlign, 20);
     assertEquals(true, instance.isBusy());
     instance.work(mockAPI);
     assertEquals(true, instance.isBusy());
@@ -50,9 +50,9 @@ public class FindRightWhiteLineTest extends TestCase {
    */
   @Test
   public void testWork() {
-    FindRightWhiteLine instance = new FindRightWhiteLine(mockAlign, null);
+    FindRightWhiteLine instance = new FindRightWhiteLine(mockAlign, 20);
     instance.work(mockAPI);
-    verify(mockAPI).turn(340);
+    verify(mockAPI).turn(-340);
     verifyNoMoreInteractions(mockAPI);
     instance.work(mockAPI);
   }
@@ -62,12 +62,15 @@ public class FindRightWhiteLineTest extends TestCase {
    */
   @Test
   public void testGetNextSubAction() {
-    FindRightWhiteLine instance = new FindRightWhiteLine(mockAlign, null);
+    FindRightWhiteLine instance = new FindRightWhiteLine(mockAlign, 20);
     instance.work(mockAPI);
     instance.work(mockAPI);
-    assertEquals(null, instance.getNextSubAction());
+    SubAction nextAction = instance.getNextSubAction();
+    assertEquals(ReturnSubAction.class, nextAction.getClass());
+    nextAction.work(mockAPI);
+    verify(mockAPI).turn(20);
     
-    instance = new FindRightWhiteLine(mockAlign, null);
+    instance = new FindRightWhiteLine(mockAlign, 20);
     instance.work(mockAPI);
     when(mockSensor.getTotalTurnedAngle()).thenReturn(-20.0);
     when(mockLight.getCurrentLightColor()).thenReturn(LightColor.WHITE);

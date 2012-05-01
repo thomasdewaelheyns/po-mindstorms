@@ -33,7 +33,7 @@ public class LineTest {
     
     simE.putRobotAt(20, 20, -90);
     sim.addSimulatedEntity(simE);
-    sim.run(1000*4);
+    sim.run(1000*6);
     assertEquals(60.0, simE.getPosX(), 1);
     assertEquals(60.0, simE.getPosY(), 1);
     assertEquals(-720.0+90.0, simE.getDirection(), 5);

@@ -28,6 +28,8 @@ public class LineDriverBehaviour implements DriverBehaviour {
     if (this.correctingAction != null) {
       if (this.correctingAction.isBusy()) {
         return false;
+      } else {
+        this.correctingAction = null;
       }
     }
     LightModelPart light = LightModelPart.from(model);
