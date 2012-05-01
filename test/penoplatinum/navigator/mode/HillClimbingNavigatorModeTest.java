@@ -239,7 +239,7 @@ public class HillClimbingNavigatorModeTest extends TestCase {
       .thenReturn(this.mockedMyGrid);
 
     this.mockedMySector = mock(Sector.class);   
-    when(this.mockedMyGrid.getSectorOf(this.mockedMyAgent))
+    when(this.mockedGridModelPart.getMySector())
       .thenReturn(this.mockedMySector);
     
     this.mockedNorthSector = mock(Sector.class);

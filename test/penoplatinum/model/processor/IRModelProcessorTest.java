@@ -35,18 +35,19 @@ public class IRModelProcessorTest extends TestCase {
     IRModelProcessor instance = new IRModelProcessor();
     instance.setModel(mockModel);
     setIRValue(5, 0, 0, 250, 0, 0);
-    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 8));
+    when(mockGrid.getMyPosition())
+      .thenReturn(new Point(4, 8),new Point(4, 8),new Point(4, 8));
     when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
     instance.work();
-    verify(mockGrid, times(1)).setPacMan(4, 7);
+    verify(mockGrid, times(1)).setPacman(new Point(4, 7));
 
     setIRValue(2, 200, 250, 0, 0, 0);
     instance.work();
-    verify(mockGrid, times(1)).setPacMan(3, 8);
+    verify(mockGrid, times(1)).setPacman(new Point(3, 8));
 
     setIRValue(8, 0, 0, 0, 250, 200);
     instance.work();
-    verify(mockGrid, times(1)).setPacMan(5, 8);
+    verify(mockGrid, times(1)).setPacman(new Point(5, 8));
 
   }
 
@@ -57,7 +58,7 @@ public class IRModelProcessorTest extends TestCase {
     setIRValue(5, 0, 0, 149, 0, 0);
     when(mockGrid.getMyPosition()).thenReturn(new Point(4, 10));
     instance.work();
-    verify(mockGrid, times(0)).setPacMan(4, 7);
+    verify(mockGrid, times(0)).setPacman(new Point(4, 7));
   }
 
   @Test
@@ -65,23 +66,24 @@ public class IRModelProcessorTest extends TestCase {
     IRModelProcessor instance = new IRModelProcessor();
     instance.setModel(mockModel);
     
-    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 10));
+    when(mockGrid.getMyPosition())
+      .thenReturn(new Point(4, 10),new Point(4, 10),new Point(4, 10),new Point(4, 10));
     setIRValue(8, 0, 0, 0, 250, 200);
     when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
     instance.work();
-    verify(mockGrid, times(1)).setPacMan(5, 10);
+    verify(mockGrid, times(1)).setPacman(new Point(5, 10));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.E);
     instance.work();
-    verify(mockGrid, times(1)).setPacMan(4, 11);
+    verify(mockGrid, times(1)).setPacman(new Point(4, 11));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.S);
     instance.work();
-    verify(mockGrid, times(1)).setPacMan(3, 10);
+    verify(mockGrid, times(1)).setPacman(new Point(3, 10));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.W);
     instance.work();
-    verify(mockGrid, times(1)).setPacMan(4, 9);
+    verify(mockGrid, times(1)).setPacman(new Point(4, 9));
   }
 
   private void setIRValue(int dir, int i0, int i1, int i2, int i3, int i4) {

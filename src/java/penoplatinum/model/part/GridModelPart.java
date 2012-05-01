@@ -68,6 +68,18 @@ public class GridModelPart implements ModelPart {
     return this.myAgent;
   }
   
+  public Sector getMySector() {
+    return this.myGrid.getSectorOf(this.myAgent);
+  }
+
+  public Point getMyPosition(){
+    return this.myGrid.getPositionOf(this.getMySector());
+  }
+  
+  public Bearing getMyBearing(){
+    return this.myGrid.getBearingOf(this.myAgent);
+  }
+
   public void refreshMyGrid() {
     if( ! this.hasChangedSectors()) { return; }
     for(int i=0; i<10; i++) {
@@ -115,45 +127,36 @@ public class GridModelPart implements ModelPart {
     }
   }
   
-  // WARNING: not in use
+  // WARNING: not in use, but don't remove yet
   public void onlyApplyCollaborateDiffusionOnPacman() {
     this.diffusePacman = true;
     this.diffuseUnknownSectors = false;
   }
 
-  // WARNING: not in use
+  // WARNING: not in use, but don't remove yet
   public void onlyApplyCollaborateDiffusionOnUnknownSectors() {
     this.diffuseUnknownSectors = true;
     this.diffusePacman = false;
   }
   
-  public boolean hasChangedSectors() {
-    return changedSectors.size() != 0;
-  }
-  
   public void markSectorChanged(Sector sector){
     this.changedSectors.add(sector);
   }
+
+  public boolean hasChangedSectors() {
+    return this.changedSectors.size() > 0;
+  }
   
   public List<Sector> getChangedSectors() {
-    return changedSectors;
+    return this.changedSectors;
   }
   
   public void clearChangedSectors() {
     this.changedSectors.clear();
   }
   
-  public Point getMyPosition(){
-    Sector sector = this.myGrid.getSectorOf(this.myAgent);
-    return this.myGrid.getPositionOf(sector);
-  }
-  
-  public Bearing getMyBearing(){
-    return this.myGrid.getBearingOf(this.myAgent);
-  }
-  
-  public void setPacMan(int x, int y) {
-    this.myGrid.moveTo(this.pacman, new Point(x, y), Bearing.UNKNOWN);
+  public void setPacman(Point position) {
+    this.myGrid.moveTo(this.pacman, position, Bearing.UNKNOWN);
     this.pacmanID++;
   }
   
@@ -162,10 +165,6 @@ public class GridModelPart implements ModelPart {
   }
   
   public PacmanAgent getPacmanAgent(){
-    return pacman;
-  }
-
-  public Sector getCurrentSector() {
-    return null;
+    return this.pacman;
   }
 }

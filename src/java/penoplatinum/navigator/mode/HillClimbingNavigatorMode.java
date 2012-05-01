@@ -65,14 +65,10 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
   // return the Sector's value IF it is accessible (there must be a Sector,
   // and there shouldn't be a wall in between).
   private int getValueAt(Bearing atLocation) {
-    if( this.getCurrentSector().givesAccessTo(atLocation) ) {
-      return this.getCurrentSector().getNeighbour(atLocation).getValue();
+    if( this.grids.getMySector().givesAccessTo(atLocation) ) {
+      return this.grids.getMySector().getNeighbour(atLocation).getValue();
     }
     return -1; // TODO: remove magic number ?
-  }
-  
-  private Sector getCurrentSector() {
-    return this.grids.getMyGrid().getSectorOf(this.grids.getMyAgent());
   }
   
   private List<NavigatorAction> constructPlan(Bearing bestBearing) {
