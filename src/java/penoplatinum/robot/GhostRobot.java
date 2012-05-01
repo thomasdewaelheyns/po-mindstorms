@@ -1,224 +1,113 @@
 package penoplatinum.robot;
 
-import java.util.ArrayList;
-
-import org.mockito.exceptions.Reporter;
 import penoplatinum.Config;
-
-
 import penoplatinum.driver.Driver;
-import penoplatinum.driver.GhostDriver;
-
-import penoplatinum.grid.GridView;
-
-import penoplatinum.model.GhostModel;
-import penoplatinum.model.processor.*;
-
-import penoplatinum.simulator.Model;
-import penoplatinum.simulator.Robot;
-import penoplatinum.simulator.RobotAPI;
-import penoplatinum.simulator.Navigator;
-
 import penoplatinum.gateway.GatewayClient;
+import penoplatinum.model.GhostModel;
 import penoplatinum.model.Model;
-import penoplatinum.navigator.Navigator;
-import penoplatinum.pacman.GhostProtocolModelCommandHandler;
-import penoplatinum.protocol.GhostProtocolHandler;
-import penoplatinum.simulator.entities.SimulatedEntityFactory;
-import penoplatinum.util.ReferencePosition;
+import penoplatinum.model.part.GridModelPart;
+import penoplatinum.model.part.MessageModelPart;
+import penoplatinum.model.part.SensorModelPart;
+import penoplatinum.model.part.SonarModelPart;
+import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.navigator.Navigator;
 import penoplatinum.reporter.Reporter;
-import penoplatinum.robot.Robot;
-import penoplatinum.robot.RobotAPI;
 
+public class GhostRobot implements AdvancedRobot {
 
-public class GhostRobot implements Robot {
-
-  protected GhostModel model;
-  protected RobotAPI api;   // provided from the outside
-
+  /*
+   * RobotParts
+   */
+  private Model model = new GhostModel();
+  private RobotAPI robotAPI;
   private Driver driver;
   private Navigator navigator;
-
-  private int[] sweepAngles = new int[]{ -90, 0, 90 };
-  private ArrayList<Integer> sweepAnglesList = new ArrayList<Integer>();
-  private boolean waitingForSweep = false;
-
-  private GatewayClient client;
+  private GatewayClient gatewayClient;
   private Reporter reporter;
+  
+  /*
+   * Local variables
+   */
+  private float originalTurnedAngle;
+  private int sweepID = 0;
+  private int[] angles = {-90, 0, 90};
 
-  private float initialReference;
+  public GhostRobot(ModelProcessor procs) {
+    this.model.setProcessor(procs);
+  }
 
-
-  public GhostRobot(String name) {
-    this.setupModel(name);
-
-    for (int i = 0; i < sweepAngles.length; i++) {
-      sweepAnglesList.add(sweepAngles[i]);
+  private void linkComponents() {
+    if (this.driver != null) {
+      this.driver.drive(this);
     }
-
-    useDriver(new GhostDriver()); // default
-  }
-
-  public GhostRobot(String name, GridView view) {
-    this(name);
-    this.model.getGridPart().displayGridOn(view);
-  }
-
-  protected void setupModel(String name) {
-    this.model = new GhostModel(name);
-
-    ModelProcessor processors =
-            new LightModelProcessor(
-            new HistogramModelProcessor(
-            new BarcodeBlackModelProcessor(
-            new LineModelProcessor(
-            new WallDetectionModelProcessor(
-            new WallDetectorProcessor(
-            new InboxProcessor(
-            new AgentWallsUpdateProcessor(
-            new NewSectorsUpdateProcessor(
-            new IRModelProcessor(
-            new GhostProtocolModelProcessor(
-            new MergeGridModelProcessor())))))))))));
-    this.model.setProcessor(processors);
-
-    // make sure the messagePart can send messages through the GatewayClient,
-    // using the GhostProtocolHandler
-    // this is only the case for a selection of the messages, most messages
-    // are stored in the outbox and send by this robot implementation at the
-    // end of a step.
-    model.getMessagePart()
-         .setProtocol(new GhostProtocolHandler(model, 
-                        new GhostProtocolModelCommandHandler(model)));
+    if (this.navigator != null) {
+      this.navigator.useModel(model);
+    }
+    if (this.gatewayClient != null) {
+      this.gatewayClient.setRobot(this);
+    }
+    if (this.reporter != null && this.gatewayClient != null) {
+      this.reporter.useGatewayClient(this.gatewayClient);
+    }
   }
 
   @Override
   public GhostRobot useRobotAPI(RobotAPI api) {
-    this.api = api;
-
-    this.api.setReferenceAngle(initialReference);
-    this.api.setSpeed(SimulatedEntityFactory.M3, Config.MOTOR_SPEED_SONAR);
-    this.api.setSpeed(SimulatedEntityFactory.M2, Config.MOTOR_SPEED_MOVE);
-    this.api.setSpeed(SimulatedEntityFactory.M1, Config.MOTOR_SPEED_MOVE);
-
-    this.linkComponents();
+    this.robotAPI = api;
+    //initialReference = this.api.getRelativeAngle(0);
+    this.robotAPI.setSpeed(Config.M3, Config.MOTOR_SPEED_SONAR);
+    this.robotAPI.setSpeed(Config.M2, Config.MOTOR_SPEED_MOVE);
+    this.robotAPI.setSpeed(Config.M1, Config.MOTOR_SPEED_MOVE);
+    originalTurnedAngle = this.robotAPI.getRelativeAngle(0);
     return this;
-  }
-
-  public GhostRobot useNavigator(Navigator nav) {
-    this.navigator = nav;
-    this.linkComponents();
-    return this;
-  }
-
-  public GhostRobot useDriver(Driver driver) {
-    this.driver = driver;
-    this.linkComponents();
-    return this;
-  }
-
-  // This function links the driver, navigator and api correctly
-  protected void linkComponents() {
-    if( driver != null ) {
-      driver.useRobotAPI(api);
-      driver.useModel(model);
-    }
-    if( navigator != null ) {
-      navigator.setModel(model);
-    }
-  }
-
-  public GhostRobot useReporter(Reporter reporter) {
-    this.reporter = reporter;
-    this.reporter.setRobot(this);
-    this.model.setReporter(this.reporter);
-    return this;
-  }
-
-  /**
-   * incoming communication from other ghosts, used by GatewayClient to deliver
-   * incoming messages from the other ghosts. This is thread safe.
-   */
-  public void processCommand(String cmd) {
-    this.model.getMessagePart().addIncomingMessage(cmd);
-  }
-
-  public void step() {
-    if( ! this.model.getGridPart().getAgent().isActive() ) {
-      // wait until we're active
-      // but we need to process incoming messages
-      this.model.process();
-      return;
-    }
-    // poll other sensors and update model
-    this.model.getSensorPart().updateSensorValues(this.api.getSensorValues());
-    this.model.process();
-
-    this.model.getSensorPart().setTotalTurnedAngle(api.getRelativeAngle(initialReference));
-
-    // let the driver do his thing
-    if( this.driver.isBusy() ) {
-      this.driver.step();
-      return;
-    }
-
-    // we want obstacle-information based on Sonar-values
-    // as long as this is in progress, we wait
-    if( this.api.isSweeping() ) { return; }
-
-    // if the sweep is ready ...
-    if (this.waitingForSweep) {
-      this.model.getSonarPart()
-                .updateSonarValues(this.api.getSweepResult(), sweepAnglesList);
-      this.model.process(); // TODO: double call
-      this.waitingForSweep = false;
-    } else {
-      this.api.sweep(sweepAngles);
-      this.waitingForSweep = true;
-      return; // to wait for results
-    }
-
-    // ask navigator what to do and ...
-    // let de driver drive, manhattan style ;-)
-    this.driver.perform(this.navigator.nextAction());
-
-    // send outgoing messages
-    this.sendMessages();
-
-    // report info about our internals
-    if( this.reporter != null ) { this.reporter.report(); }
-
-    System.gc();
-  }
-
-  private void sendMessages() {
-    if( this.client == null ) { return; }
-    for(String msg : this.model.getMessagePart().getOutgoingMessages()) {
-      this.client.send(msg, Config.BT_GHOST_PROTOCOL);
-    }
-  }
-
-  public Boolean reachedGoal() {
-    return false;
-  }
-
-  public void stop() {
-    this.api.stop();
   }
 
   @Override
-  public GhostRobot useGatewayClient(GatewayClient client) {
-    this.client = client;
-    // already set by Runner
-    // this.client.setRobot(this);
-    this.model.getMessagePart().getProtocol().useGatewayClient(this.client);
-    this.client.run();
+  public RobotAPI getRobotAPI() {
+    return this.robotAPI;
+  }
+
+  @Override
+  public GhostRobot useDriver(Driver driver) {
+    this.driver = driver;
+    linkComponents();
     return this;
   }
-  
+
+  @Override
+  public Driver getDriver() {
+    return this.driver;
+  }
+
+  @Override
+  public GhostRobot useNavigator(Navigator navigator) {
+    this.navigator = navigator;
+    linkComponents();
+    return this;
+  }
+
+  @Override
+  public Navigator getNavigator() {
+    return this.navigator;
+  }
+
+  @Override
+  public GhostRobot useGatewayClient(GatewayClient gatewayClient) {
+    this.gatewayClient = gatewayClient;
+    linkComponents();
+    return this;
+  }
+
+  @Override
   public GatewayClient getGatewayClient() {
-    return this.client;
+    return this.gatewayClient;
+  }
+
+  @Override
+  public GhostRobot useReporter(Reporter reporter) {
+    this.reporter = reporter;
+    linkComponents();
+    return this;
   }
 
   @Override
@@ -226,13 +115,110 @@ public class GhostRobot implements Robot {
     return model;
   }
 
-  public GhostModel getGhostModel() {
-    return model;
+  @Override
+  public void processCommand(String cmd) {
+    MessageModelPart.from(this.model).addIncomingMessage(cmd);
+  }
+
+  private void sendMessages() {
+    if (this.gatewayClient == null) {
+      return;
+    }
+    for (String msg : MessageModelPart.from(this.model).getOutgoingMessages()) {
+      this.gatewayClient.send(msg, Config.BT_GHOST_PROTOCOL);
+    }
   }
 
   @Override
   public String getName() {
-    return model.getGridPart().getAgent().getName();
+    return MessageModelPart.from(this.model).getProtocolHandler().getName();
   }
 
+  @Override
+  public Boolean reachedGoal() {
+    return false;
+  }
+
+  @Override
+  public void stop() {
+    this.robotAPI.stop();
+    //GridModelPart.from(model).getMyAgent().deactivate();
+  }
+
+  @Override
+  public void step() {
+    if (initStep()) {       //get sensor and read bluetooth
+      return;
+    }
+    if (driver.isBusy()) {  //driver
+      driver.drive(this);
+      return;
+    }
+    if (inCenterOfTile()) { //get new driveraction
+      return;
+    }
+  }
+
+  /**
+   * What to do every step.
+   * Abort when not activated
+   * @return true is not yet activated.
+   */
+  private boolean initStep() {
+    if (!GridModelPart.from(this.model).getMyAgent().isActive()) {
+      // wait until we're active
+      this.model.refresh();                                       // but we need to process incoming messages
+      return true;
+    }
+    // poll other sensors and update model
+    SensorModelPart.from(this.model).updateSensorValues(this.robotAPI.getSensorValues());
+    SensorModelPart.from(this.model).setTotalTurnedAngle(this.robotAPI.getRelativeAngle(originalTurnedAngle));
+    this.model.refresh();
+    return false;
+  }
+
+  /**
+   * What to do in the center of a tile when waiting:
+   * 1) Get sweep information
+   * 2) Instruct the driver
+   * 3) Send updates
+   * @return true when aborting
+   */
+  private boolean inCenterOfTile() {
+    if (makeSweep()) {
+      return true;
+    }
+    navigator.instruct(driver);
+    sendMessages();
+    if (this.reporter != null) {
+      this.reporter.reportModelUpdate();
+    }
+    System.gc();
+    return false;
+  }
+
+  /**
+   * Only continues when a new sweep is available.
+   * Otherwise make a new sweep, or wait.
+   * @return true, if waiting
+   *          false, when a new sweep is available
+   */
+  private boolean makeSweep() {
+    // we want obstacle-information based on Sonar-values
+    // as long as this is in progress, we wait
+    if (this.robotAPI.isSweeping()) {
+      return true;
+    }
+
+    // if the sweep is ready ...
+    if (this.robotAPI.getSweepID() > sweepID) {
+      SonarModelPart.from(this.model).update(this.robotAPI.getSweepResult(), this.angles);
+      this.model.refresh(); // TODO: double call
+      sweepID = this.robotAPI.getSweepID();
+    } else {
+      this.robotAPI.sweep(angles);
+      return true;
+    }
+    return false;
+  }
 }

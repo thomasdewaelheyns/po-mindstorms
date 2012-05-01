@@ -118,7 +118,22 @@ public class Simulator {
    * This starts the actual simulation, which will start the robot and the 
    * agent.
    */
-  public Simulator run() {
+  public void run() {
+    initRun();
+    while (true) {
+      this.step();
+//      Utils.Sleep(3);
+    }
+  }
+  
+  public void run(long stepCount){
+    initRun();
+    while(stepCount-->0){
+      this.step();
+    }
+  }
+
+  private void initRun() {
     Simulator.Running_Instance = this;
     for (int i = 0; i < this.robotEntities.size(); i++) {
       if (this.robotEntities.get(i) instanceof SimulatedEntity) {
@@ -128,15 +143,6 @@ public class Simulator {
       }
     }
     this.view.showMap(this.map);
-    while (true) {
-      this.step();
-      if (false) {
-        break;
-      }
-//      Utils.Sleep(3);
-    }
-    this.view.log("");
-    return this;
   }
 
   private void step() {
