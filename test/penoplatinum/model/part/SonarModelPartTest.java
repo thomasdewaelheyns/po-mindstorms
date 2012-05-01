@@ -19,7 +19,8 @@ import java.util.Arrays;
 public class SonarModelPartTest extends TestCase {
 
   private SonarModelPart part;
-  private List<Integer> distances, angles;
+  private List<Integer> distances;
+  private int[] angles;
 
 
   public SonarModelPartTest(String name) { 
@@ -48,9 +49,8 @@ public class SonarModelPartTest extends TestCase {
   }
   
   private void generateSweep() {
-    new ArrayList<Integer>(Arrays.asList(1,2,3,5,8,13,21));
     this.distances = new ArrayList<Integer>(Arrays.asList(10, 20, 30));
-    this.angles    = new ArrayList<Integer>(Arrays.asList( 1,  2,  3));
+    this.angles    = new int[]{1, 2, 3};
   }
 
 }

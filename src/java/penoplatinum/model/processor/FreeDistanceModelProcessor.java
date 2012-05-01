@@ -37,14 +37,14 @@ public class FreeDistanceModelProcessor extends ModelProcessor {
     lastSweepID = sonar.getCurrentSweepId();
 
     List<Integer> distances = sonar.getDistances();
-    List<Integer> angles = sonar.getAngles();
+    int[] angles = sonar.getAngles();
 
-    if (angles.get(0) > angles.get(1)) {
+    if (angles[0] > angles[1]) {
       distances = new ArrayList<Integer>();
-      angles = new ArrayList<Integer>();
+      int[] anglesNew = new int[angles.length];
       distances.addAll(sonar.getDistances());
-      angles.addAll(sonar.getAngles());
-      Utils.reverse(angles);
+      Utils.reverse(angles, anglesNew);
+      angles = anglesNew;
       Utils.reverse(distances);
     }
 
@@ -53,12 +53,12 @@ public class FreeDistanceModelProcessor extends ModelProcessor {
     walls.setWallLeftDistance (getEstimatedWallDistance(angles, distances, 70, 110));
   }
 
-  private int getEstimatedWallDistance(List<Integer> angles, List<Integer> distances, int startAngle, int endAngle) {
+  private int getEstimatedWallDistance(int[] angles, List<Integer> distances, int startAngle, int endAngle) {
     int sum = 0;
     int num = 0;
     
     for (int currentIndex = 0; currentIndex < distances.size(); currentIndex++) {
-      int angle = angles.get(currentIndex);
+      int angle = angles[currentIndex];
       if (angle < startAngle) {
         continue;
       }

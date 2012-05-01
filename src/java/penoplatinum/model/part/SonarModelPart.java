@@ -22,12 +22,12 @@ public class SonarModelPart implements ModelPart {
   }
 
   private List<Integer> distances;
-  private List<Integer> angles;
+  private int[] angles;
 
   private int sweepId = 0;
 
 
-  public void update(List<Integer> distances, List<Integer> angles) {
+  public void update(List<Integer> distances, int[] angles) {
     this.distances = distances;
     this.angles    = angles;
     // increase the sweepId to allow users of the part to determine when they
@@ -39,7 +39,7 @@ public class SonarModelPart implements ModelPart {
     return this.distances;
   }
 
-  public List<Integer> getAngles() {
+  public int[] getAngles() {
     return this.angles;
   }
 

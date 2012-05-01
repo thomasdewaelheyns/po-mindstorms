@@ -71,15 +71,11 @@ public class FreeDistanceModelProcessorTest extends TestCase {
 
   private void makeSweep(int[] angles, int[] distances, int id) {
     when(mockSonar.getCurrentSweepId()).thenReturn(id);
-    List<Integer> angle = new ArrayList<Integer>();
-    for(int a : angles){
-      angle.add(a);
-    }
     List<Integer> dist = new ArrayList<Integer>();
     for(int b : distances){
       dist.add(b);
     }
-    when(mockSonar.getAngles()).thenReturn(angle);
+    when(mockSonar.getAngles()).thenReturn(angles);
     when(mockSonar.getDistances()).thenReturn(dist);
   }
 }

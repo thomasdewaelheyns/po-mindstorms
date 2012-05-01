@@ -79,6 +79,7 @@ public class SimulationRobotAPI implements RobotAPI {
 
     if (currentSweepAngleIndex >= currentSweepAngles.length) {
       currentSweepAngles = null;
+      sweepID++;
     }
   }
 
@@ -105,9 +106,10 @@ public class SimulationRobotAPI implements RobotAPI {
   private void updateCurrentAngle() {
     currentAngle = ((float)simulatedEntity.getDirection() + 90);
   }
-  int[] currentSweepAngles;
-  int currentSweepAngleIndex;
-  List<Integer> resultBuffer = new ArrayList<Integer>();
+  private int[] currentSweepAngles;
+  private int currentSweepAngleIndex;
+  private List<Integer> resultBuffer = new ArrayList<Integer>();
+  private int sweepID = 0;
 
   @Override
   public boolean isSweeping() {
@@ -125,5 +127,10 @@ public class SimulationRobotAPI implements RobotAPI {
   @Override
   public List<Integer> getSweepResult() {
     return resultBuffer;
+  }
+  
+  @Override
+  public int getSweepID(){
+    return sweepID;
   }
 }
