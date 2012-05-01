@@ -3,29 +3,14 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{longtable}
-%\usepackage{pgfgantt}
 \usepackage[dutch]{babel}
 \usepackage{url}
-%\usepackage{pgf,pgfplots}
-%\usetikzlibrary{fit,calc}
-%\usepgfplotslibrary{external}
 \usepackage{rotating}
 \geometry{a4paper}
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{pdflscape}
-
-
-\newcommand{\boxplot}[6]{%
-	%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
-	\filldraw[fill=white,line width=0.2mm] let \n{boxxl}={#1-0.1}, \n{boxxr}={#1+0.1} in (axis cs:\n{boxxl},#3) rectangle (axis cs:\n{boxxr},#4);   % draw the box
-	\draw[line width=0.2mm, color=red] let \n{boxxl}={#1-0.1}, \n{boxxr}={#1+0.1} in (axis cs:\n{boxxl},#2) -- (axis cs:\n{boxxr},#2);             	% median
-	\draw[line width=0.2mm] (axis cs:#1,#4) -- (axis cs:#1,#6);                                                                           							% bar up
-	\draw[line width=0.2mm] let \n{whiskerl}={#1-0.025}, \n{whiskerr}={#1+0.025} in (axis cs:\n{whiskerl},#6) -- (axis cs:\n{whiskerr},#6);        % upper quartile
-	\draw[line width=0.2mm] (axis cs:#1,#3) -- (axis cs:#1,#5);                                                                           							% bar down
-	\draw[line width=0.2mm] let \n{whiskerl}={#1-0.025}, \n{whiskerr}={#1+0.025} in (axis cs:\n{whiskerl},#5) -- (axis cs:\n{whiskerr},#5);        % lower quartile
-}
 
 \begin{document}
 
@@ -224,9 +209,6 @@ Aangezien afgesproken werd in de commissie om de robotten te voorzien van een vl
 
 
 \chapter{Strategie}
-TODO: De decentrale strategie die gebruikt wordt voor samenwerking om Pac-Man te vangen. Hoe
-wordt omgegaan met onzekere, incomplete en incorrecte (van andere robots) informatie?
-
 Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome ``ghosts'' gedaan.
 
 We vonden een paper omtrent ``Collaborate Diffusion'' \cite{Repenning06}. Hierin wordt voorgesteld om een vorm van ``Hill Climbing'' toe te passen om zo verschillende autonome ``ghosts'' toe te laten samen te werken om een ``Pac-Man'' te achtervolgen. Hierbij hebben zij geen nood aan bijkomende onderlinge communicatie naast de informatie over de omgeving.
@@ -279,16 +261,33 @@ De verkenstrategie is gebaseerd op hetzelfde principe. Hier is er niet \'e\'en b
 
 Het toepassen van hetzelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een ``ghost'' onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn ``geur'' dit pad nog extra versterken en zal een ``ghost'' automatisch hierdoor aangetrokken worden.
 
-TODO:De effectiviteit van de strategie: hoe snel wordt Pac-Man in een hoek gedreven en klem
-gereden?
+\section{Samenwerking en onzekerheid}
+
+De informatie die van de verschillende robots verzameld wordt is zeker niet perfect. We moeten hiermee rekening houden, zonder parano\"ide te worden en alle informatie te wijgeren. We hanteren in de encodering van de informatie over het doolhof een gelaagd principe: enerzijds houden we bij of we ergens een muur hebben waargenomen of niet. Maar daarnaast houden we ook bij of we iets weten over die muur of niet. Zo ontstaan er drie mogelijk statussen waarin een muur zich kan bevinden: \emph{onbekend}, \emph{geen muur} en \emph{wel een muur}.
+
+Aan de hand van deze statussen kunnen we nu overgangen gaan defini\"eren die we acceptable vinden. Een \emph{onbekende} muur kan zonder problemen omgezet worden in \emph{geen muur} of \emph{wel een muur}. Wanneer we echter over informatie over een muur muur beschikken en we krijgen informatie die tegenstrijdig is, dan zullen we de status van de muur terug naar \emph{onbekend} brengen.
+
+De gevolgen voor het collaborate diffusion algoritme kunnen inhouden dat een sector die volledig gekend was en die dus geen \emph{geur} meer uitstraalde, plots opnieuw een waarde krijgt die zich door het doolhof zal verspreiden. Hierdoor zal de robot geneigd zijn om deze opnieuw te gaan verkennen.
+
+\section{Effectiviteit}
+
+Het collaborate diffusion algoritme werkt optimaal indien alle achtervolgende robots dezelfde implementatie en parameters gebruiken. Ofschoon dit niet het geval is in onze situatie kan het toch zijn nut bewijzen voor onze robot op zich. Zo is de mogelijkheid om simultaan zowel sectoren te verkennen, als het achtervolgen van Pacman, een groot pluspunt voor de robuustheid van de robot.
+
+Het \emph{collaboratie diffusion} algoritme is in essentie een implementatie van het \emph{hillclimbing II} algoritme. Dit zorgt ervoor dat de robot ten alle tijde volgens het meest optimale pad naar de Pacman tracht te rijden. Mits kennis van dit algoritme is het voor de bestuurder van de Pacman zeker mogelijk om hiermee rekening te houden en er voordeel uit te halen. Het algoritme zal bijvoorbeeld nooit een minder optimale weg kiezen om de Pacman via een andere weg klem te rijden.
+
+Dit concept is wel inherent ingebouwd indien een andere robot het meest optimale pad kiest en zo de verspreiding van de \emph{geur} tegen gaat. Op dit moment lijkt het alsof de robot een minder optimaal pad zal volgen, doch het is een pad waarlangs de \emph{geur} hem wel bereikt.
+
+Aan de hand van de mini-simulator, hebben we veelvuldig scenario's uitgetest. Hierbij werd ook gebruik gemaakt van een bewegende Pacman. Buiten enkele exoterische opstellingen, werd de Pacman toch altijd in een redelijke tijdspanne gevangen.
 
 \chapter{Softwaredesign}
 
-TODO:Het software ontwerp van de robot. Is het ontwerp voldoende gebaseerd op onderzoek naar
-bestaande benaderingen uit de multi-agent systemen literatuur? Zijn de voor- en nadelen
-van tenminste een alternatief onderzocht?
-
 In het eerste semester hadden we reeds een redelijk uitgebreid raamwerk opgebouwd om robots samen te stellen uit componenten. Dankzij dit werk kunnen we in het tweede semester hier op verder bouwen door de bestaande concepten verder te verfijnen en uit te breiden.
+
+Echter, vooraleer de definitieve beslissing genomen werd om ver te bouwen op de bestaande architectuur werden andere opties bekeken. Enerzijds werd de bestaande \emph{piloot} klasse van de Lejos software bekeken en anderzijds werd in literatuur gezocht naar andere mogelijke opstellingen.
+
+De bestaande \emph{piloot} klasse van Lejos hield geen radicaal verschillende aanpak. Wel hebben we het \emph{behaviour} idee ge\"incorporeerd in ons eigen ontwerp. Bij onze zoektocht in de literatuur moesten we tot het besluit komen dat er waarschijnlijk evenveel architecturen zijn als er robots zijn. Veel van de bekeken oplossingen begeven zich deels op het vlak van Lejos of belichtten een veel hoger niveau. Een concrete, de facto, alternatieve architectuur voor het aansturen van een robot werd niet gevonden. Wel hebben we veel idee\"en opgedaan die verwerkt werden tijdens de verschillende herwerkingen van de software.
+
+De architectuur van het eerste semester heeft zich bewezen, de structuur en concepten zijn gekend, alsook de problemen en tekortkomingen. Alles in beschouwing genomen werd unaniem besloten om verder te werken op de bestaande design en elementen uit de studie van andere oplossingen op te nemen waar nuttig.
 
 \section{Robot}
 
@@ -499,11 +498,13 @@ Overigens werden andere doelstellingen voor demo 2 met betrekking tot de simulat
 
 \section{Demo 3}
 
-Dit deel wordt later toegevoegd.
+Functioneel werden tijdens de voorbereiding van deze demo geen aanpassingen gedaan aan de simulator. Wel werd hij, net zoals alle belangrijke componenten, onderworpen aan een grondige opkuisactie en werd de logica ingebed in een set van unit tests.
 
-\section{ //TODO AANVULLEN + GEPASTE TITEL } De simulator. Het software ontwerp en de correspondentie met de echte wereld. Is de granu-
-lariteit van de simulatie zodanig dat de relevante eigenschappen van de wereld gesimuleerd
-worden? Zijn er experimenten gedaan om de nauwkeurigheid van de simulator te testen?
+\section{Simulatie versus realiteit}
+
+De simulator is gebouwd volgens een principe van continu\"iteit. Zo worden alle aspecten berekend volgens de fysische grootheden uit de realiteit. Alle sensoren zijn virtueel ge\"mplementeerd en berekenen op basis van de fysische eigenschappen van de echte robot de juiste verschillen tussen twee opeen volgende stappen. Zo worden bijvoorbeeld de motoren gesimuleerd volgens het juist aantal rotaties per seconde, wat een effect heeft op de afstand die afgelegd is in relatie tot de echte omtrek van de wielen en de afstand tussen deze wielen.
+
+Op deze manier gedraagt de robot in de simulator zich nagenoeg identiek aan zijn fysieke tegenhanger. In combinatie met het gebruiken van exact dezelfde software op de fysieke robot als in de simulator zorgt voor een zeer realiteitsgetrouw effect.
 
 \chapter{Conclusies}
 
@@ -536,9 +537,9 @@ De simulator werkte niet zoals verwacht. Barcodes werden niet goed gelezen en du
 
 \subsection{Feedback}
 
-De feedback kwam deze keer van een ander team, namelijk team zilver. Het grootste deel van deze feedback kwam neer op stijlopmerkingen i.v.m het verslag. Het verslag zelf werd inhoudelijk overzichtelijk en gestructureerd bevonden. Het presentatiegedeelte kreeg echter welverdiende negatieve feedback. Zowel de virtuele simulator als de fysieke simulator faalde immers in zijn uitvoering.
+De feedback kwam deze keer van een ander team, namelijk team zilver. Het grootste deel van deze feedback kwam neer op stijlopmerkingen i.v.m.\ het verslag. Het verslag zelf werd inhoudelijk overzichtelijk en gestructureerd bevonden. Het presentatiegedeelte kreeg echter welverdiende negatieve feedback. Zowel de virtuele simulator als de fysieke simulator faalde immers in hun uitvoering.
 
-TODO:Niet zelf gezegd op de demo dat de kaarten foutief zijn samengevoegd.ANTWOORD?
+Ook merkten zij op dat tijdens de presentatie \'e\'en van de gesimuleerde robots een fout had gemaakt bij het importeren van gegevens van een andere robot en dat wij dit niet pro-actief zelf aangekaart hadden. 
 
 \subsection{Reflectie}
 
@@ -555,10 +556,6 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Procesbeschrijving}
 \label{ch:process}
-
-(a) Welke moeilijkheden heb je ondervonden tijdens de uitwerking?
-(b) Welke lessen heb je getrokken uit de manier waarop je het project hebt aangepakt?
-(c) Hoe verliep het werken in het team? Op welke manier werd de teamcoordinatie en planning aangepakt?
 
 \section{Demo 1}
 
@@ -582,23 +579,23 @@ Naast deze aanpak gaan we ook proberen om het concept ``pair programming'' toe t
 
 \section{Demo 3}
 
-Na de grote teleurstelling in demo 2 beslisten we onze aandacht op de architectuur en de code vol te houden. Onze refactoring aanpak werd wel aangevuld met het creeren van een uitgebreid unit test package. Waarbij op het moment van schrijven een dekking van meer dan vijftig percent van de totale codebase is bereikt. Een dekking van honderd percent is natuurlijk nutteloos en dus gaan we enkel voor een dekking van de relevante klassen. Bij de creatie van dit package werd tegelijk bijna alle code gereviewed. Zo werd er veel ongebruikte code verwijderd en haalden we er een reeks bugs uit. We geloven er sterk in dat dit proces onze code veel stabieler heeft gemaakt en onze robot hier dus baat bij heeft.
+Na de grote teleurstelling in demo 2 beslisten we onze aandacht op de architectuur en de code vol te houden. Onze refactoring aanpak werd wel aangevuld met het cre\"ren van een uitgebreid unit test package. Waarbij op het moment van schrijven een dekking van meer dan zestig percent van de totale codebase is bereikt. Een dekking van honderd percent is enerzijds niet realistisch, maar is tevens ook niet nodig. Logischerwijze wensen we een dekking voor de relevante klassen. Bij de creatie van dit package werd in parallel alle code gereviewed. Zo werd er veel ongebruikte code verwijderd en losten we er een heel reeks bugs op. Aangezien we reeds tijdens de voorbereiding van de eerste demo getracht hadden de volledige scope te bereiken, waren we nu tevens in staat op functioneel alles tot in details uit werken zonder onbekende delen.
 
-Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces ge(her)defineerd hebben, zodat we allen konden werken aan afgeronde gehelen. Dit gaf natuurlijk het nadeel dat het volledige programma overhoop lag tot al deze gehelen opnieuw geintegreerd waren. 
+Zo werd o.a.\ de volledige interne voorstelling van de sectoren aangepakt. Met de ervaring die we opgedaan hadden tijdens de voorbereiding van demo2, waren we nu in staat om deze implementatie sterk te verbeteren met het oog op geheugengebruik en inzetbaarheid.
+
+Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces ge(her)defineerd hebben, zodat we allen konden werken aan afgeronde gehelen. Dit gaf natuurlijk het nadeel dat de volledige source code onbruikbaar was tot al deze gehelen opnieuw ge\"integreerd waren. We geloven er sterk in dat dit proces onze code veel stabieler heeft gemaakt en onze robot hier dus baat bij heeft.
 
 
 \chapter{Werkverdeling}
 
-(a) Geef voor elk van de groepsleden aan aan welke delen ze hebben meegewerkt, en welke
-andere taken ze op zich hebben genomen.
-(b) Rapporteer in tabelvorm hoeveel uur elk groepslid elke week aan het project gewerkt
-heeft, zowel tijdens als buiten de begeleide sessies. Geef ook totalen per groepslid voor
-het volledige semester
+Dit deel wordt later toegevoegd.
 
 \chapter{Kritische analyse}
 
-(a) Maak een analyse van de sterke en zwakke punten van het project. Welke punten zijn
-vatbaar voor verbetering. Wat zou je, met je huidige kennis, anders aangepakt hebben?
+%(a) Maak een analyse van de sterke en zwakke punten van het project. Welke punten zijn
+%vatbaar voor verbetering. Wat zou je, met je huidige kennis, anders aangepakt hebben?
+
+Dit deel wordt later toegevoegd.
 
 \appendix
 
@@ -841,21 +838,21 @@ Algemeen gezien is er nog steeds een grote overlap tussen de verschillende hoofd
 	\item Robot redesign werd zeer goed onderbouwd.
 	\item De scenario analyses zijn zeer goed voor de strategie, gevaar is natuurlijk wel dat als dit te veel gedaan wordt dat het verslag zijn bondigheid uit het oog verliest. Deze scenario's kunnen ook de indruk wekken dat er enkel gedachtenexperimenten werden opgezet omtrent zeer specifieke situaties, i.p.v. de algemene strategie uitgebreid te testen. Het blijft wel een zeer aangename manier om de denkstrategie toe te lichten.
 \end{itemize}
-
  
 \chapter{Grafische User Interface}
 
-TODO: ZIJN DE VOORWAARDEN HIERONDER BESCHREVEN VOLDAAN?
-Elke ghost heeft een GUI, hier volgt een beschrijving van de informatie die tenminste moet worden
-weergegeven in de GUI.
- Informatie op basis waarvan de robot aangestuurd wordt, vergelijkbaar met semester 1.
- Weergave van kennis van het doolhof (op basis van eigen waarnemingen en communicatie).
- Weergave van eigen positie in het doolhof en positie van andere robots.
-Weergave van interne toestand en besluitvormingsproces.
-Het is duidelijk dat hier redelijk wat vrijheid is om deze interface te maken. Je moet steeds voor
-ogen houden dat we op een of andere manier willen zien wat de robot op dat moment aan het doen
-is op software-niveau, zodat dit kan gelinkt worden aan wat de robot feitelijk aan het uitvoeren is
-op het speelveld.
+%TODO: ZIJN DE VOORWAARDEN HIERONDER BESCHREVEN VOLDAAN?
+%Elke ghost heeft een GUI, hier volgt een beschrijving van de informatie die tenminste moet worden
+%weergegeven in de GUI.
+%Informatie op basis waarvan de robot aangestuurd wordt, vergelijkbaar met semester 1.
+%Weergave van kennis van het doolhof (op basis van eigen waarnemingen en communicatie).
+%Weergave van eigen positie in het doolhof en positie van andere robots.
+%Weergave van interne toestand en besluitvormingsproces.
+%Het is duidelijk dat hier redelijk wat vrijheid is om deze interface te maken. Je moet steeds voor
+%ogen houden dat we op een of andere manier willen zien wat de robot op dat moment aan het doen
+%is op software-niveau, zodat dit kan gelinkt worden aan wat de robot feitelijk aan het uitvoeren is
+%op het speelveld.
+
 Dit deel wordt later toegevoegd.
 
 \chapter{Klasse Diagrammen}
@@ -864,12 +861,10 @@ Dit deel wordt later toegevoegd.
 
 \chapter{Planning}
 
-
 \label{appendix:planning}
 
 \begin{longtable}{|l|l|l|l|l|l|l|l|l|}
-\caption{Overzicht tijdsbesteding}
-
+\caption{Overzicht tijdsbesteding} \\
 \hline \\[-2ex]
   \multicolumn{1}{l}{week } & 
   \multicolumn{1}{l}{Michiel} &
@@ -878,10 +873,10 @@ Dit deel wordt later toegevoegd.
   \multicolumn{1}{l}{Thomas}&
   \multicolumn{1}{l}{Christophe}&
   \multicolumn{1}{l}{Totaal}&
-  \multicolumn{1}{l}{AVG}
-  &  \multicolumn{1}{l}{Lopend AVG}   \\[0.5ex] \hline \\[-1.8ex]
+  \multicolumn{1}{l}{AVG}&
+  \multicolumn{1}{l}{Lopend AVG}
+  \\[0.5ex] \hline \\[-1.8ex]
 \endfirsthead
-
 avg & 15,5 & 12,6 & 12,0 & 11,5 & 17,5 &  & 13,82 &  \\ 
 \hline
 sum & 201 & 164 & 156,5 & 150 & 227 & 761,5 &  &  \\ 
@@ -919,7 +914,7 @@ sum & 201 & 164 & 156,5 & 150 & 227 & 761,5 &  &  \\
 % Table generated by Excel2LaTeX from sheet 'Sheet1'
 \begin{landscape}
 \begin{longtable}{llp{7cm}p{10cm}l}
-\caption{Michiel tijdsbesteding}
+\caption{Michiel tijdsbesteding} \\
 
 \hline \hline \\[-2ex]
   \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
@@ -1036,7 +1031,7 @@ Mon & 14/mei/12 & Finale Presentatie &  & 1 \\
 
 
 \begin{longtable}{llp{7cm}p{10cm}l}
-\caption{Florian tijdsbesteding}
+\caption{Florian tijdsbesteding} \\
 
 \hline \hline \\[-2ex]
   \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
@@ -1153,7 +1148,7 @@ Mon & 14/mei/12 & Finale Presentatie &  & 1 \\
 \normalsize
 
 \begin{longtable}{llp{7cm}p{10cm}l}
-\caption{Ruben tijdsbesteding}
+\caption{Ruben tijdsbesteding} \\
 
 \hline \hline \\[-2ex]
   \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
@@ -1262,7 +1257,7 @@ Mon & 14/mei/12 & Finale Presentatie &  & 1 \\
 \normalsize
 
 \begin{longtable}{llp{7cm}p{10cm}l}
-\caption{Thomas tijdsbesteding}
+\caption{Thomas tijdsbesteding} \\
 
 \hline \hline \\[-2ex]
   \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
@@ -1380,7 +1375,7 @@ Mon & 14/mei/12 & Finale Presentatie &  & 1 \\
 
 
 \begin{longtable}{llp{7cm}p{10cm}l}
-\caption{Christophe tijdsbesteding}
+\caption{Christophe tijdsbesteding} \\
 
 \hline \hline \\[-2ex]
   \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
@@ -1475,7 +1470,7 @@ Fri & 23-mrt-2012 &  & SimulationRunner, Gateway(Client) & 7 \\
 \hline
 Sat & 24-mrt-2012 &  & SimulatedGatewayClient & 4 \\ 
 \hline
-Sun & 25-mrt-2012 &  & Local Dashboard & co & 7 \\ 
+Sun & 25-mrt-2012 &  & Local Dashboard \& co & 7 \\ 
 \hline
 Mon & 26-mrt-2012 & P\&O Sessie / Demo 2 & Dashboard, DashboardReporter, GhostProtocol,  & 10 \\ 
 \hline
