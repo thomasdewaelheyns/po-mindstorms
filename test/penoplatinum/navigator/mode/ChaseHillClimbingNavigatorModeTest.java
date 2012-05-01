@@ -109,6 +109,8 @@ public class ChaseHillClimbingNavigatorModeTest extends TestCase {
       .thenReturn(this.mockedPacmanAgent);
 
     this.mockedMySector = mock(Sector.class);
+    when(this.mockedGridModelPart.getMySector())
+      .thenReturn(this.mockedMySector);
     when(this.mockedMyGrid.getSectorOf(this.mockedMyAgent))
       .thenReturn(this.mockedMySector);
 

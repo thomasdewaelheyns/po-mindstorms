@@ -12,8 +12,7 @@ import java.awt.geom.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
-
-import penoplatinum.simulator.Bearing;
+import penoplatinum.util.Bearing;
 
 public class GridBoard extends JPanel {
 
@@ -83,19 +82,19 @@ public class GridBoard extends JPanel {
             this.sectorSize, this.sectorSize));
   }
 
-  public void addWall(int left, int top, int location) {
+  public void addWall(int left, int top, Bearing location) {
     Rectangle r;
     switch (location) {
-      case Bearing.N:
+      case N:
         r = new Rectangle(left * this.sectorSize, top * this.sectorSize - 3, this.sectorSize, 6);
         break;
-      case Bearing.W:
+      case W:
         r = new Rectangle(left * this.sectorSize - 3, top * this.sectorSize, 6, this.sectorSize);
         break;
-      case Bearing.E:
+      case E:
         r = new Rectangle((left + 1) * this.sectorSize - 6, top * this.sectorSize, 6, this.sectorSize);
         break;
-      case Bearing.S:
+      case S:
         r = new Rectangle(left * this.sectorSize, (top + 1) * this.sectorSize - 6, this.sectorSize, 6);
         break;
       default:

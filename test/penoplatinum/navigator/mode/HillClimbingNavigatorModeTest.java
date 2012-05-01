@@ -74,6 +74,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     when(this.mockedMyGrid.getBearingOf(this.mockedMyAgent)).
       thenReturn(Bearing.N);
+    when(this.mockedGridModelPart.getMyBearing())
+      .thenReturn(Bearing.N);
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
@@ -93,6 +95,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     when(this.mockedMyGrid.getBearingOf(this.mockedMyAgent)).
       thenReturn(Bearing.E);
+    when(this.mockedGridModelPart.getMyBearing())
+      .thenReturn(Bearing.E);
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
@@ -112,6 +116,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     when(this.mockedMyGrid.getBearingOf(this.mockedMyAgent)).
       thenReturn(Bearing.S);
+    when(this.mockedGridModelPart.getMyBearing())
+      .thenReturn(Bearing.S);
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
@@ -131,6 +137,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     when(this.mockedMyGrid.getBearingOf(this.mockedMyAgent)).
       thenReturn(Bearing.W);
+    when(this.mockedGridModelPart.getMyBearing())
+      .thenReturn(Bearing.W);
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
@@ -150,6 +158,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     when(this.mockedMyGrid.getBearingOf(this.mockedMyAgent)).
       thenReturn(Bearing.N);
+    when(this.mockedGridModelPart.getMyBearing())
+      .thenReturn(Bearing.N);
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
@@ -170,6 +180,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     when(this.mockedMyGrid.getBearingOf(this.mockedMyAgent)).
       thenReturn(Bearing.N);
+    when(this.mockedGridModelPart.getMyBearing())
+      .thenReturn(Bearing.N);
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
@@ -191,6 +203,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     when(this.mockedMyGrid.getBearingOf(this.mockedMyAgent)).
       thenReturn(Bearing.N);
+    when(this.mockedGridModelPart.getMyBearing())
+      .thenReturn(Bearing.N);
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
@@ -212,6 +226,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     when(this.mockedMyGrid.getBearingOf(this.mockedMyAgent)).
       thenReturn(Bearing.N);
+    when(this.mockedGridModelPart.getMyBearing())
+      .thenReturn(Bearing.N);
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     

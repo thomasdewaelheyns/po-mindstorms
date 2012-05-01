@@ -1,17 +1,13 @@
 package penoplatinum.driver.behaviour;
 
-import penoplatinum.model.Model;
-import penoplatinum.model.processor.GapModelProcessor;
-import penoplatinum.navigator.Navigator;
-import penoplatinum.robot.RobotAPI;
-
-public class GapDetectionRestoreAction extends ActionSkeleton {
+public class RestoreDriverBehaviour {
 
   private final RobotAPI api;
   private Model model;
   private GapModelProcessor proc;
+  private int state = -1;
 
-  public GapDetectionRestoreAction(RobotAPI api, Model model) {
+  public RestoreDriverBehaviour(RobotAPI api, Model model) {
     super(model);
     this.api = api;
     this.model = model;
@@ -20,7 +16,6 @@ public class GapDetectionRestoreAction extends ActionSkeleton {
     proc.setModel(model);
 
   }
-  int state = -1;
 
   public int getNextAction() {
     if (model.getSensorPart().isTurning()) {

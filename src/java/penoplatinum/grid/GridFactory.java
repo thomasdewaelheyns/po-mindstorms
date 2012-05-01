@@ -6,9 +6,6 @@ package penoplatinum.grid;
 
 import java.io.File;
 import java.util.Scanner;
-import penoplatinum.pacman.GhostAgent;
-import penoplatinum.pacman.PacmanAgent;
-import penoplatinum.simulator.Bearing;
 
 /**
  *
