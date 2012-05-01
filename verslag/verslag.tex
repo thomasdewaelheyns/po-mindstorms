@@ -14,6 +14,8 @@
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{booktabs}
+\usepackage{pdflscape}
+
 
 \newcommand{\boxplot}[6]{%
 	%#1: center, #2: median, #3: 1/4 quartile, #4: 3/4 quartile, #5: min, #6: max
@@ -35,9 +37,9 @@ Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, bouwen wij een aut
 
 Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen i.v.m. het werken in teamverband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
 
-In het tweede semester wordt hier nog eens de nood tot samenwerking met de andere teams aan toegevoegd. Het traject van de autonome robot blijft behouden, maar de verschillende robots zullen nu moeten samenwerken om een gemeenschappelijk doel te bereiken. Om deze samenwerking in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester is het insluiten van een ``Pac-Man''-robot bestuurd door het didactisch team met behulp van vier autonome ``ghosts''.
+In het tweede semester wordt hier nog eens de nood tot samenwerking met de andere teams aan toegevoegd. Het traject van de autonome robot blijft behouden, maar de verschillende robots zullen nu moeten samenwerken om een gemeenschappelijk doel te bereiken. Om deze samenwerking in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester is het insluiten van een ''Pac-Man''-robot bestuurd door het didactisch team met behulp van vier autonome ``ghosts''.
 
-In het eerste semester werkten we reeds in een parallel traject aan een simulatieomgeving. Aan de hand van deze omgeving waren we in staat om met meerdere teamleden in parallel software voor de robot te ontwikkelen en te testen zonder nood aan een effectieve fysieke robot. Nu is het ontwikkelen van deze simulator deel geworden van de opdracht en dienen we dus de nodige aanpassingen te doen om het Pac-Man-spel in de computer te simuleren. Het gebruik van een simulator is evident, aangezien we niet kunnen verwachten alle fysieke testen uit te voeren met de 4 teams tegelijk.
+In het eerste semester werkten we reeds in een parallel traject aan een simulatieomgeving. Aan de hand van deze omgeving waren we in staat om met meerdere teamleden in parallel software voor de robot te ontwikkelen en te testen zonder nood aan een effectieve fysieke robot. Nu is het ontwikkelen van deze simulator deel geworden van de opdracht en dienen we dus de nodige aanpassingen te doen om het Pac-Manspel in de computer te simuleren. Het gebruik van een simulator is evident, aangezien we niet kunnen verwachten alle fysieke testen uit te voeren met de 4 teams tegelijk.
 \end{abstract}
 
 \chapter{Inleiding}
@@ -110,7 +112,7 @@ De ghosts vertrekken op de vier hoekpunten van het doolhof, zodat de verkenning 
 
 \section{Communicatieprotocol}
 
-We verwijzen naar de offici\"ele documentatie van het Ghost Protocol. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het Ghost Protocol is het resultaat van een werkgroep die aangesteld werd door de scheidsrechtercommissie. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen ervan mbt. onze eigen ontwikkeling.
+We verwijzen naar de offici\"ele documentatie van het Ghost Protocol. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het Ghost Protocol is het resultaat van een werkgroep die aangesteld werd door de scheidsrechtercommissie. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen ervan m.b.t. onze eigen ontwikkeling.
 
 \subsection{Voordelen}
 
@@ -177,9 +179,9 @@ Verder is ook de motor, die de sonar laat draaien, iets naar onder en naar het m
 
 \subsection{IR-sensor}
 
-De infraroodsensor werd vooraan in het midden van de robot aangebracht, net boven de lichtsensor. Het uitlezen van deze sensor zorgde voor een aantal problemen. De maximale gemeten afstand kwam niet overeen met de specificatie van de IR-bal en sensor. Het bleek dat de Lejos implementatie verouderd was en niet alle mogelijkheden van de sensor ondersteunde. Met behulp van de broncode van Lejos versie 9.0 en enkele aanpassingen, is ons team er in geslaagd de verschillende modi van de sensor te activeren.
+De infraroodsensor werd vooraan in het midden van de robot aangebracht, net boven de lichtsensor. Het uitlezen van deze sensor zorgde voor een aantal problemen. De maximale gemeten afstand kwam niet overeen met de specificatie van de IR-bal en -sensor. Het bleek dat de Lejos implementatie verouderd was en niet alle mogelijkheden van de sensor ondersteunde. Met behulp van de broncode van Lejos versie 9.0 en enkele aanpassingen, is ons team er in geslaagd de verschillende modi van de sensor te activeren.
 
-Uit testen bleek dat er voor de bal verschillende AC modi en \'e\'en DC modus is. De sensor heeft \'e\'en AC modus en \'e\'en DC modus. De AC modus van de bal die speciaal voor de sensor ontwikkeld was, werkte uiteindelijk het beste. De sensor had dan een reikwijdte van 5 meter in tegenstelling tot ongeveer 80 cm bij andere modi.
+Uit testen bleek dat er voor de bal verschillende AC modi en \'e\'en DC modus is. De sensor heeft \'e\'en AC-modus en \'e\'en DC-modus. De AC-modus van de bal die speciaal voor de sensor ontwikkeld was, werkte uiteindelijk het beste. De sensor had dan een reikwijdte van 5 meter in tegenstelling tot ongeveer 80 cm bij andere modi.
 
 In figuur \ref{fig:plotIR} kan men zien dat de gemeten lichtsterkte exponentieel afneemt ten opzichte van de afstand tot de lichtbron.
 Hieruit zou men een schatting kunnen maken van de afstand tot de bron. In grafiek \ref{fig:boxplotIR} kan men de variatie van de IR-sensor zien voor verschillende afstanden. We zien dat de varianties zeer klein zijn in vergelijking met de lichtsterkte. Een afstandsschatting lijkt dus goed mogelijk.
@@ -311,7 +313,7 @@ Het is duidelijk dat dit raamwerk een sterk herbruikbare basis biedt om verschil
 
 Ofschoon we een nieuwe Navigator zouden kunnen maken die perfect zou passen, werd snel duidelijk dat er een verfijning van het raamwerk mogelijk was: daar waar tijdens het eerste semester de robot geen resolutie had bij het rijden, is dit in het tweede semester wel het geval. Door het introduceren van het concept van sectoren is er een duidelijk onderscheid tussen het operationele en strategische aspect van het besturen van de robot. Operationeel dient de robot optimaal van sector naar sector te rijden, zodat op strategisch niveau kan geredeneerd worden in termen van deze sectoren.
 
-De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een Navigator-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. ``Driver''. Het klasse diagram op figuur \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor het tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een ``ManhattanDriver''\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie.} 
+De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een Navigator-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. ``Driver''. Het klasse diagram op figuur \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor het tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een ``ManhattanDriver''.\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie.} 
 
 \begin{figure}[htbp]
   \centering
@@ -331,7 +333,7 @@ De Navigator kan zich nu specifiek toeleggen op het bepalen van de volgende Sect
   \label{uml:grids-sectoren}
 \end{figure}
 
-Centraal staat het concept van de Sector in een Grid. Een Sector heeft een co\"ordinaat relatief t.o.v. de Grid waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een Agent. De waarde van een Sector zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de Grid bewegen langs de Sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratie aanpassingen, implementeren de PacmanAgent en GhostAgent zo de agents die op de Grid voorkomen. Een ProxyAgent werd gebruikt om in een simulator een echte Agent voor te stellen die de volledige Grid nog niet kent en de StaticTargetAgent werd speciaal voorzien voor de voorbereiding van de eerste demo.
+Centraal staat het concept van de Sector in een Grid. Een Sector heeft een co\"ordinaat relatief t.o.v. de Grid waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een Agent. De waarde van een Sector zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de Grid bewegen langs de Sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de PacmanAgent en GhostAgent zo de agents die op de Grid voorkomen. Een ProxyAgent werd gebruikt om in een simulator een echte Agent voor te stellen die de volledige Grid nog niet kent en de StaticTargetAgent werd speciaal voorzien voor de voorbereiding van de eerste demo.
 
 Optioneel kan aan een Grid ook een GridView gegeven worden. Deze voorziet een visualisatie van de Grid en kan op verschillende manieren ingevuld worden. Voor dit project hebben we twee implementaties gemaakt: enerzijds een ConsoleGridView die gedetailleerde informatie over de Sectoren weergeeft en een SwingGridView die een grafische voorstelling geeft van de Grid. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
 
@@ -354,7 +356,7 @@ Het GhostModel bevat Grids voor elk van de andere robots alsook een AggregatedGr
 
 De eigen AggregatedGrid beschikt ook over een DiffusingGridProcessor die het algoritme voor het bepalen van de waarde van een Sector zal toepassen op de AggregatedGrid, waardoor de GhostNavigator een redelijk eenvoudige beslissing kan nemen op basis van de waarden van de vier aangrenzende sectoren.
 
-Het GhostModel is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de GhostNavigator beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende Grids in het GhostModel. Anderzijds is er de WallDetectorProcessor die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige Sector. Tot slot is er de GridUpdateProcessor die de nieuwe muur-informatie zal verwerken in de eigen Grid en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie ModelProcessoren zijn er nog andere actief. Het betreft hier bvb. de LineModelProcessor of de WallDetectionModelProcessor. Deze zorgen voor informatie die door de Driver zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze ModelProcessoren maakten reeds deel uit van de robots uit het eerste semester.}
+Het GhostModel is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de GhostNavigator beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende Grids in het GhostModel. Anderzijds is er de WallDetectorProcessor die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige Sector. Tot slot is er de GridUpdateProcessor die de nieuwe muurinformatie zal verwerken in de eigen Grid en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie ModelProcessoren zijn er nog andere actief. Het betreft hier bvb. de LineModelProcessor of de WallDetectionModelProcessor. Deze zorgen voor informatie die door de Driver zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze ModelProcessoren maakten reeds deel uit van de robots uit het eerste semester.}
 
 \subsection{Performantie}
 \label{sect:performance}
@@ -451,7 +453,7 @@ Voor het simuleren van meerdere robots, zowel lokaal als op afstand, moest de ro
 
 Voor het testen van de verschillende algoritmes, specifiek het herori\"entatie algoritme, is er al de mogelijkheid om op sommige plaatsen meet- en stuurafwijkingen in te voegen in de simulator. De afwijkingen op de gesimuleerde motoren kan men in de API van de robot aanpassen. Er kan zowel een variatie als een gemiddelde fout ingesteld worden, onafhankelijk van het vooruitrijden en het draaien.
 
-\subsection{Simulator Modi}
+\subsection{Simulatormodi}
 
 De simulator van het eerste semester was een hulpmiddel om met meerdere team-leden in parallel te kunnen werken zonder te moeten strijden om tijd met de echte fysieke robot. In het tweede semester is de simulator een wezenlijk deel geworden van de opdracht en ook de manier waarop de simulator moet kunnen werken is sterk verschillend van onze eigen doelstellingen in het eerste semester.
 
@@ -463,7 +465,7 @@ In het tweede semester moet de simulator op niet minder dan 3 verschillende mani
 \item Naast onderlinge communicatie tussen de robots in de simulatoren moeten ook fysieke robots kunnen deelnemen, in een zgn. hybride modus.
 \end{itemize}
 
-Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het Ghost Protocol en de MQ server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de ServiceAgent en het Log4J losging framework opgeslagen worden in de databank, waarna ze consulteerbaar zijn via de webclient.
+Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het Ghost Protocol en de MQ-server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de ServiceAgent en het Log4J losging framework opgeslagen worden in de databank, waarna ze consulteerbaar zijn via de webclient.
 
 \begin{figure}[htbp]
   \centering
@@ -536,6 +538,8 @@ De simulator werkte niet zoals verwacht. Barcodes werden niet goed gelezen en du
 
 De feedback kwam deze keer van een ander team, namelijk team zilver. Het grootste deel van deze feedback kwam neer op stijlopmerkingen i.v.m het verslag. Het verslag zelf werd inhoudelijk overzichtelijk en gestructureerd bevonden. Het presentatiegedeelte kreeg echter welverdiende negatieve feedback. Zowel de virtuele simulator als de fysieke simulator faalde immers in zijn uitvoering.
 
+TODO:Niet zelf gezegd op de demo dat de kaarten foutief zijn samengevoegd.ANTWOORD?
+
 \subsection{Reflectie}
 
 Het rijgedrag van de robot bleef consistent met de vorige demo. De nieuwe lichtsensor implementatie bleek wel beter te werken als de vorige keer.
@@ -574,7 +578,7 @@ Aangezien we tijdens de demo 1 voorbereiding ons vooral gefocust hebben op de fu
 
 Om te weten aan wat en hoe we extra aandacht moeten geven aan onze architectuur en code, evenals om iedereen in detail vertrouwd te maken met alle code, besloten we om in de eerste week na demo 1 tijd te nemen om alle code te overlopen. Tijdens dit proces hielden we een gedeeld Google docs bestand bij waarin we opmerkingen, fouten en/of vragen m.b.t. de code konden plaatsen. Hierop konden alle groepsleden commentaar geven of verduidelijkingen toevoegen. Deze lijst werd als basis gebruikt om dan het werk te verdelen over de groepsleden.
 
-Naast deze aanpak gaan we ook proberen om het concept ``pair programming'' toe te passen. Zo is het de bedoeling dat we met twee paren en \'e\'en losse speler die overal bijspringt werken. Dit zowel tijdens als naast de zittingen op maandag.
+Naast deze aanpak gaan we ook proberen om het concept ``pair programming'' toe te passen. Zo is het de bedoeling dat we met twee paren en \'e\'en losse speler die overal bijspringt werken. Dit gebeurt zowel tijdens als naast de zittingen op maandag.
 
 \section{Demo 3}
 
@@ -590,48 +594,6 @@ andere taken ze op zich hebben genomen.
 (b) Rapporteer in tabelvorm hoeveel uur elk groepslid elke week aan het project gewerkt
 heeft, zowel tijdens als buiten de begeleide sessies. Geef ook totalen per groepslid voor
 het volledige semester
-
-\begin{longtable}{l l}
-\caption{Focus van elk team lid} \\ [0.5ex]
-%This is the header for the first page of the table...
-\hline\hline
-Teamlid & Focus \\ [0.5ex]
-\hline 
-\endfirsthead
-%This is the header for the remaining page(s) of the table...
-\multicolumn{2}{c}{{\tablename} \thetable{} -- Vervolg} \\[0.5ex]
-\hline \hline
-Teamlid & Focus \\ [0.5ex]
-\hline 
-\endhead
-Michiel 		& 	(Commissie-lid) GhostRobot, Navigator. \\
-Florian 		&	Simulator, LightSensor, IR-sensor\\
-Ruben 		&	(Co\"ordinator) IR-sensor, Simulator\\
-Thomas 		&	IR-sensor, Simulator\\
-Daniel 		&	\\
-Christophe 	&	Diffusion algoritme, Dashboard \\
-\hline
-\label{tab:focus}
-\end{longtable}
-
-\begin{tabular}{l r r r r r r r}
-\caption{Tijdsbesteding per team lid per week} \\
-%This is the header for the first page of the table...
-\hline\hline
- & Michiel & Florian & Ruben & Thomas & Daniel & Christophe & totaal \\
-\hline 
-\endfirsthead
-totaal & 118 & 71 & 91,5 & 92 & 32,5 & 109 & 514 \\
-\hline
-week 1 & 12 & 9 & 13 & 14 & 0 & 16,5 & 64,5 \\
-week 2 & 16,5 & 14 & 14 & 15 & 10 & 17,5 & 87 \\
-week 3 & 32,5 & 15 & 21 & 17 & 12,5 & 29 & 127 \\
-week 4 & 49 & 24 & 33 & 28 & 5 & 32 & 171 \\
-week 5 & 8 & 9 & 10,5 & 18 & 5 & 14 & 64,5 \\
-\hline
-gemid./week & 23,6 & 14,2 & 18,3 & 18,4 & 6,5 & 21,8  & 17,13 \\
-\label{tab:tijdsregistratie}
-\end{longtable}
 
 \chapter{Kritische analyse}
 
@@ -751,16 +713,16 @@ en 27).
 	\item Schrijf-/taal-/tikfouten:
 	
 \begin{itemize}
-	\item Samenvatting: jaar-overschrijdend $\rightarrow$ jaaroverschrijdend, Pac-Man-spel$\rightarrow$ Pac-Manspel, Open Bron project $\rightarrow$ Open Sourceproject;
-	\item Sectie 2.1: ''staat (...) stil in het parcours'': in $\rightarrow$ op;
+	\item Samenvatting: jaaroverschrijdend $\rightarrow$ jaaroverschrijdend, Pac-Man-spel$\rightarrow$ Pac-Manspel, Open Bron project $\rightarrow$ Open Sourceproject;
+	\item Sectie 2.1: ''staat (...) stil op het parcours'': in $\rightarrow$ op;
 	\item Sectie 2.3.2: Pac-Man spel $\rightarrow$ Pac-Manspel;
 	\item Sectie 3.2: ''(...) en bespreken we de voor- en nadelen ervan''; mbt. $\rightarrow$ m.b.t.;
-	\item Sectie 4.1.2: ''(\ldots) IR-bal en sensor.''$\rightarrow$  '' (\ldots) IR-bal en -sensor.'', AC modus ! AC-modus (ook van
+	\item Sectie 4.1.2: ''(\ldots) IR-bal en -sensor.''$\rightarrow$  '' (\ldots) IR-bal en -sensor.'', AC modus ! AC-modus (ook van
 toepassing op analoge situaties);
 	\item Sectie 6.1.1: Leesteken vergeten na laatste zin;
 	\item Sectie 6.1.2: configuratie aanpassingen $\rightarrow$ configuratieaanpassingen;
 	\item Sectie 6.1.3: muur-informatie $\rightarrow$ muurinformatie;
-	\item Sectie 7.1.3: Simulator Modi $\rightarrow$ Simulatormodi, MQ server $\rightarrow$ MQ-server;
+	\item Sectie 7.1.3: Simulator Modi $\rightarrow$ Simulatormodi, MQ-server $\rightarrow$ MQ-server;
 	\item Sectie 9.2: Laatste `zin' van deze sectie heeft geen werkwoord;
 	\item Sectie 10: team lid $\rightarrow$ teamlid.
 \end{itemize}
@@ -901,204 +863,669 @@ Dit deel wordt later toegevoegd.
 Dit deel wordt later toegevoegd.
 
 \chapter{Planning}
+
+
 \label{appendix:planning}
+
+\begin{longtable}{|l|l|l|l|l|l|l|l|l|}
+\caption{Overzicht tijdsbesteding}
+
+\hline \\[-2ex]
+  \multicolumn{1}{l}{week } & 
+  \multicolumn{1}{l}{Michiel} &
+  \multicolumn{1}{l}{Florian} &
+  \multicolumn{1}{l}{Ruben} &
+  \multicolumn{1}{l}{Thomas}&
+  \multicolumn{1}{l}{Christophe}&
+  \multicolumn{1}{l}{Totaal}&
+  \multicolumn{1}{l}{AVG}
+  &  \multicolumn{1}{l}{Lopend AVG}   \\[0.5ex] \hline \\[-1.8ex]
+\endfirsthead
+
+avg & 15,5 & 12,6 & 12,0 & 11,5 & 17,5 &  & 13,82 &  \\ 
+\hline
+sum & 201 & 164 & 156,5 & 150 & 227 & 761,5 &  &  \\ 
+\hline
+1 & 12 & 9 & 13 & 14 & 16,5 & 64,5 & 12,90 & 12,90 \\ 
+\hline
+2 & 16,5 & 14 & 14 & 15 & 17,5 & 77 & 15,40 & 14,15 \\ 
+\hline
+3 & 32,5 & 15 & 21 & 17 & 29 & 114,5 & 22,90 & 17,07 \\ 
+\hline
+4 & 49 & 24 & 33 & 28 & 32 & 166 & 33,20 & 21,10 \\ 
+\hline
+5 & 8 & 9 & 10,5 & 18 & 14 & 59,5 & 11,90 & 19,26 \\ 
+\hline
+6 & 26 & 23 & 21 & 36 & 36 & 142 & 28,40 & 20,78 \\ 
+\hline
+7 & 14 & 8 & 5 & 5 & 20 & 52 & 10,40 & 19,30 \\ 
+\hline
+8 & 3 & 0 & 0 & 0 & 13 & 16 & 3,20 & 17,29 \\ 
+\hline
+9 & 0 & 0 & 0 & 0 & 11 & 11 & 2,20 & 15,61 \\ 
+\hline
+10 & 11 & 23 & 18 & 5 & 2 & 59 & 11,80 & 15,23 \\ 
+\hline
+11 & 19 & 27 & 14 & 5 & 22 & 87 & 17,40 & 15,43 \\ 
+\hline
+12 & 8 & 10 & 5 & 5 & 10 & 38 & 7,60 & 14,78 \\ 
+\hline
+13 & 2 & 2 & 2 & 2 & 4 & 12 & 2,40 & 13,82 \\ 
+\hline
+\end{longtable}
+\normalsize
+
 % Table generated by Excel2LaTeX from sheet 'Log'
 % Table generated by Excel2LaTeX from sheet 'Sheet1'
-\begin{sideways}
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|}
-\hline
- & datum & omschrijving Michiel & omschrijving Florian & omschrijving Ruben & omschrijving Thomas & omschrijving Christophe & omschrijving Team & michiel & florian & ruben & thomas & christophe \\ 
-\hline
- &  &  &  &  &  &  &  & 198 & 164 & 156,5 & 150 & 201 \\ 
-\hline
-Mon & 13/feb/12 & commissie & simulator refactoring en nieuwe features & simulator refactoring en nieuwe features, Projectleider & simulator refactoring en nieuwe features &  & P&O sessie,discussie aanpak, research pacman ed,  & 5 & 4 & 6 & 5 & 3 \\ 
-\hline
-Tue & 14/feb/12 &  &  &  &  & RabbitMQ research &  &  &  & 2 & 3 & 3,5 \\ 
-\hline
-Wed & 15/feb/12 &  & Sector Opdeling &  &  & AntiObjects &  & 5 & 5 & 5 & 2 & 5 \\ 
-\hline
-Thu & 16/feb/12 &  &  &  &  & AntiObjects &  &  &  &  &  & 3,5 \\ 
-\hline
-Vri & 17/feb/12 &  &  &  &  & AntiObjects, RabbitMQ &  & 2 &  &  &  & 0,5 \\ 
-\hline
-Sat & 18/feb/12 &  &  &  & Sector Opdeling &  &  &  &  &  & 1 & 1 \\ 
-\hline
-Sun & 19/feb/12 &  &  &  & Sector Opdeling &  &  &  &  &  & 3 &  \\ 
-\hline
-Mon & 20/feb/12 & Testen IR,commissie &  & Projectleider &  & AntiObjects & P&O sessie & 5 & 5 & 5 & 6 & 4,5 \\ 
-\hline
-Tue & 21/feb/12 &  &  & IRSeeker &  & AntiObjects,verkenningsstrategie uitwerken &  & 2 & 3 & 4 & 4 & 3 \\ 
-\hline
-Wed & 22/feb/12 & Testen IR & Testen IR & Testen IR &  & verkenningsstrategie uitwerken & Testen IR & 7,5 & 6 & 5 & 2 & 5 \\ 
-\hline
-Thu & 23/feb/12 &  &  &  &  & DFS discovery &  &  &  &  &  & 5 \\ 
-\hline
-Vri & 24/feb/12 &  &  &  &  &  & Driving/map voor bouw robot &  &  &  & 1 &  \\ 
-\hline
-Sat & 25/feb/12 &  &  &  &  &  & Simulator+behaviour & 2 &  &  & 2 &  \\ 
-\hline
-Sun & 26/feb/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Mon & 27/feb/12 &  &  & Projectleider &  & CD discovery & P&O sessie & 8 & 5 & 6 & 6 & 6 \\ 
-\hline
-Tue & 28/feb/12 &  &  &  &  & discovery/hunt & verslag & 8,5 & 5 & 7 & 4 & 5,5 \\ 
-\hline
-Wed & 29/feb/12 &  & verslag &  &  & integratie disc/hunt/comm &  & 7 & 5 & 3 & 1 & 3 \\ 
-\hline
-Thu & 1-mrt-2012 & onderzoek naar mogelijke verbeteringen op gebied van rondrijden & onderzoek naar mogelijke verbeteringen op gebied van rondrijden & onderzoek naar mogelijke verbeteringen op gebied van rondrijden &  &  &  & 7 &  & 5 & 2 &  \\ 
-\hline
-Vri & 2-mrt-2012 &  &  &  &  & mini-simulator &  & 2 &  &  &  & 3,5 \\ 
-\hline
-Sat & 3-mrt-2012 &  &  &  &  & mini-simulator & code bekeken voor verslag &  &  &  & 2 & 6 \\ 
-\hline
-Sun & 4-mrt-2012 &  &  &  &  & mini-simulator & verslag &  &  &  & 2 & 5 \\ 
-\hline
-Mon & 5-mrt-2012 & commissie, code integration mini-simulator and real simulator & verslag & Projectleider verslag &  & agents,logging,,grids,... & P&O sessie & 5 & 5 & 5 & 6 & 6,5 \\ 
-\hline
-Tue & 6-mrt-2012 & lichtsensor herimplementatie & lichtsensor herimplementatie & barcodes, verslag &  & dashboard, verslag & verslag, debugging & 8 & 5 & 6 & 5 & 6 \\ 
-\hline
-Wed & 7-mrt-2012 & verslag, ghost protocol & verslag, ghost protocol & verslag nalezen &  & AggregatedGrid, verslag &  & 9 & 7 & 7 & 8 & 4 \\ 
-\hline
-Thu & 8-mrt-2012 & Testen ghost protocol, implementatie RobotBluetoothAgent, schrijven scanner implementatie, aanpassen code voor lejos, schrijven ontbrekende code in lejos & pair programming michiel & MazeProtocol &  & AggregatedGrid &  & 9 & 5 & 4 & 3 & 2 \\ 
-\hline
-Vri & 9-mrt-2012 & Optimalisatie robot, bespreking memory management, implementatie barcodes in protocol, implementatie grid importing &  & MazeProtocol, IR in simulator, bugfixes &  & AggregatedGrid & Memory Management & 5 & 2 & 3 & 3 & 6 \\ 
-\hline
-Sat & 10-mrt-2012 &  &  &  &  & ServiceAgent &  &  &  &  &  & 1 \\ 
-\hline
-Sun & 11-mrt-2012 & refactored unit tests, fixed all build errors, work on grid importing, barcode bugfixing, MQ bugfixing, Dashboard agent implementation &  &  &  & ServiceAgent, UI Server, Dashboard &  & 13 &  & 8 & 3 & 6,5 \\ 
-\hline
-Mon & 12-mrt-2012 & Barcode bugfixing, grid mapping bugfixing, pacman protocl implementatie, reverse mapping implementatie, dashboardagent implementatie &  & Testen robot, Framerate verhogen op robot, pacman herkennen &  & MiniSimulator,ServiceAgent, UI Server, Dashboard, memory usage improvements & P&O Sessie & 7 & 5 & 6 & 5 & 10 \\ 
-\hline
-Tue & 13-mrt-2012 &  &  &  & code review: action, bluetooth, driver,... & review code tree &  &  &  &  & 3 & 1 \\ 
-\hline
-Wed & 14-mrt-2012 &  & Bitwiseoperations &  & code review: map, modelprocessors, sensors &  & Review code tree  &  & 4 & 4,5 & 2 & 3 \\ 
-\hline
-Thu & 15-mrt-2012 &  &  &  & code review: vizualization + start simulator &  &  &  &  &  & 4 &  \\ 
-\hline
-Vri & 16-mrt-2012 &  &  &  & code review: simulator &  &  &  &  &  & 2 &  \\ 
-\hline
-Sat & 17-mrt-2012 &  &  &  & code review: simulator &  &  & 1 &  &  & 2 &  \\ 
-\hline
-Sun & 18-mrt-2012 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Mon & 19-mrt-2012 & Vergadering + planning, scheidsrechtercommisie, initial model refactoring & verslag  & verslag &  &  & P&O Sessie, overlopen resultaten code review en taakverdeling & 5 & 5 & 5 & 5 & 6 \\ 
-\hline
-Tue & 20-mrt-2012 & completed model refactoring, merged minisimulator robot implementation with the actual robot implementation, cleanup of robot project &  & verslag & refactoring &  & verslag (performantie,review.merge) &  & 4 &  & 2 & 4 & 4 \\ 
-\hline
-Wed & 21-mrt-2012 & Added light consistency test, fixed barcode bug, adding barcodes to swinggridview &  & refactoring &  & verslag (merge reviews) & Inleveren verslag 2 & 3 & 2 & 6 & 3 & 2 \\ 
-\hline
-Thu & 22-mrt-2012 & Added barcodes to the minisimulator &  &  &  & dashboard: multi-robot, local-file source / Agent -> Gateway + UpdatesJSAppender &  & 1 &  &  & 3 & 6 \\ 
-\hline
-Vri & 23-mrt-2012 &  &  &  &  & SimulationRunner, Gateway(Client) &  &  &  &  & 3 & 7 \\ 
-\hline
-Sat & 24-mrt-2012 & implementatie gridmerging & verslag rood+colors +dashboardagent+collision & barcodegedrag voor robot &  & SimulatedGatewayClient &  & 6 & 9 & 5 & 12 & 4 \\ 
-\hline
-Sun & 25-mrt-2012 & implementatie gridmerging & ill be there prob & Robot, bluetooth & memorytests &  & Local Dashboard & co &  & 7 & 7 & 3 & 6 & 7 \\ 
-\hline
-Mon & 26-mrt-2012 &  &  &  &  & Dashboard, DashboardReporter, GhostProtocol,  & P&O Sessie / Demo 2 & 5 & 8 & 5 & 5 & 10 \\ 
-\hline
-Tue & 27-mrt-2012 &  &  &  &  & model documentatie + refactoring strategie + unit tests &  &  &  &  &  & 3 \\ 
-\hline
-Wed & 28-mrt-2012 &  &  &  &  & unit test voorbeelden &  &  &  &  &  & 4 \\ 
-\hline
-Thu & 29-mrt-2012 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Vri & 30-mrt-2012 &  &  &  &  & unit tests &  &  &  &  &  & 3 \\ 
-\hline
-Sat & 31-mrt-2012 & Unit testen voor grid package &  &  &  &  &  & 6 &  &  &  &  \\ 
-\hline
-Sun & 1/apr/12 & Transformatietesten grid &  &  &  &  &  & 3 &  &  &  &  \\ 
-\hline
-Mon & 2/apr/12 & Sector interface &  &  &  &  & Paasvakantie & 3 &  &  &  &  \\ 
-\hline
-Tue & 3/apr/12 &  &  &  &  &  & Paasvakantie &  &  &  &  &  \\ 
-\hline
-Wed & 4/apr/12 &  &  &  &  &  & Paasvakantie &  &  &  &  &  \\ 
-\hline
-Thu & 5/apr/12 &  &  &  &  & unit tests & Paasvakantie &  &  &  &  & 6 \\ 
-\hline
-Vri & 6/apr/12 &  &  &  &  & unit tests & Paasvakantie &  &  &  &  & 3 \\ 
-\hline
-Sat & 7/apr/12 &  &  &  &  & unit tests & Paasvakantie &  &  &  &  & 3 \\ 
-\hline
-Sun & 8/apr/12 &  &  &  &  & unit tests & Paasvakantie &  &  &  &  & 1 \\ 
-\hline
-Mon & 9/apr/12 &  &  &  &  &  & Paasvakantie &  &  &  &  &  \\ 
-\hline
-Tue & 10/apr/12 &  &  &  &  & unit tests & Paasvakantie &  &  &  &  & 2 \\ 
-\hline
-Wed & 11/apr/12 &  &  &  &  & unit tests & Paasvakantie &  &  &  &  & 1 \\ 
-\hline
-Thu & 12/apr/12 &  &  &  &  & unit tests & Paasvakantie &  &  &  &  & 4 \\ 
-\hline
-Vri & 13/apr/12 &  &  &  &  & unit tests & Paasvakantie &  &  &  &  & 4 \\ 
-\hline
-Sat & 14/apr/12 &  &  &  &  &  & Paasvakantie &  &  &  &  &  \\ 
-\hline
-Sun & 15/apr/12 &  &  &  &  &  & Paasvakantie &  &  &  &  &  \\ 
-\hline
-Mon & 16/apr/12 &  &  & unit_testen map &  &  & P&O Sessie & 5 & 5 & 5 & 5 & 2 \\ 
-\hline
-Tue & 17/apr/12 &  &  &  &  &  &  &  & 3 &  &  &  \\ 
-\hline
-Wed & 18/apr/12 &  &  &  &  &  &  &  & 5 &  &  &  \\ 
-\hline
-Thu & 19/apr/12 &  &  &  &  &  &  &  & 4 &  &  &  \\ 
-\hline
-Vri & 20/apr/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Sat & 21/apr/12 &  &  & unit_testen simulator &  &  &  &  & 6 & 8 &  &  \\ 
-\hline
-Sun & 22/apr/12 & Mergen branches + fixen various tests, Implementatie LinkedSector + testen &  & unit_testen sensoren &  &  &  & 6 &  & 5 &  &  \\ 
-\hline
-Mon & 23/apr/12 & Interface grid + implementatie, compilation errors in test fixen &  & unit_testen sensoren &  &  & P&O Sessie & 5 & 5 & 6 & 5 & 3 \\ 
-\hline
-Tue & 24/apr/12 & Implementatie Linkedgrid &  &  &  & fixed off-by-one bug in CircularQueue &  & 2 & 4 & 2 &  & 1 \\ 
-\hline
-Wed & 25/apr/12 & Testen Linkedgrid &  &  &  &  &  & 4 & 4 &  &  &  \\ 
-\hline
-Thu & 26/apr/12 &  &  &  &  &  &  &  & 3 &  &  &  \\ 
-\hline
-Vri & 27/apr/12 &  &  &  &  &  &  &  & 2 &  &  &  \\ 
-\hline
-Sat & 28/apr/12 &  &  &  &  &  &  &  & 7 & 6 &  &  \\ 
-\hline
-Sun & 29/apr/12 &  &  &  &  &  &  & 8 & 2 &  &  &  \\ 
-\hline
-Mon & 30/apr/12 &  &  &  &  &  & P&O Sessie & 5 & 10 & 5 & 5 & 2 \\ 
-\hline
-Tue & 1/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Wed & 2/mei/12 &  &  &  &  &  & Inleveren verslag 3 &  &  &  &  &  \\ 
-\hline
-Thu & 3/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Vri & 4/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Sat & 5/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Sun & 6/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Mon & 7/mei/12 &  &  &  &  &  & Finale Demo & 1 & 1 & 1 & 1 & 2 \\ 
-\hline
-Tue & 8/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Wed & 9/mei/12 &  &  &  &  &  & Eindverslag &  &  &  &  &  \\ 
-\hline
-Thu & 10/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Fri & 11/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Sat & 12/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Sun & 13/mei/12 &  &  &  &  &  &  &  &  &  &  &  \\ 
-\hline
-Mon & 14/mei/12 &  &  &  &  &  & Finale Presentatie & 1 & 1 & 1 & 1 & 2 \\ 
-\hline
-\end{tabular}
-\end{sideways}
+\begin{landscape}
+\begin{longtable}{llp{7cm}p{10cm}l}
+\caption{Michiel tijdsbesteding}
 
-Dit deel wordt later toegevoegd.
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Michiel} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endfirsthead
+
+\multicolumn{5}{l}{{\tablename} \thetable{} -- Continued} \\[0.5ex]
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Michiel} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endhead
+
+\multicolumn{5}{l}{{Continued on Next Page\ldots}} \\
+\endfoot
+
+\\[-1.8ex] \hline \hline
+\endlastfoot
+
+\hline
+ &  &  &  & 198 \\ 
+\hline
+Mon & 13/feb/12 & P\&O sessie,discussie aanpak, research pacman ed,  & commissie & 5 \\ 
+\hline
+Wed & 15/feb/12 &  &  & 5 \\ 
+\hline
+Fri & 17/feb/12 &  &  & 2 \\ 
+\hline
+Mon & 20/feb/12 & P\&O  sessie & Testen IR,commissie & 5 \\ 
+\hline
+Tue & 21/feb/12 &  &  & 2 \\ 
+\hline
+Wed & 22/feb/12 & Testen IR & Testen IR & 7,5 \\ 
+\hline
+Fri & 24/feb/12 & Driving/map voor bouw robot &  &  \\ 
+\hline
+Sat & 25/feb/12 & Simulator+behaviour &  & 2 \\ 
+\hline
+Mon & 27/feb/12 & P\&O sessie &  & 8 \\ 
+\hline
+Tue & 28/feb/12 & verslag &  & 8,5 \\ 
+\hline
+Thu & 1-mrt-2012 &  & onderzoek naar mogelijke verbeteringen op gebied van rondrijden & 7 \\ 
+\hline
+Sat & 3-mrt-2012 & code bekeken voor verslag &  &  \\ 
+\hline
+Sun & 4-mrt-2012 & verslag &  &  \\ 
+\hline
+Mon & 5-mrt-2012 & P\&O sessie & commissie, code integration mini-simulator and real simulator & 5 \\ 
+\hline
+Tue & 6-mrt-2012 & verslag, debugging & lichtsensor herimplementatie & 8 \\ 
+\hline
+Wed & 7-mrt-2012 &  & verslag, ghost protocol & 9 \\ 
+\hline
+Thu & 8-mrt-2012 &  & Testen ghost protocol, implementatie RobotBluetoothAgent, schrijven scanner implementatie, aanpassen code voor lejos, schrijven ontbrekende code in lejos & 9 \\ 
+\hline
+Fri & 9-mrt-2012 & Memory Management & Optimalisatie robot, bespreking memory management, implementatie barcodes in protocol, implementatie grid importing & 5 \\ 
+\hline
+Sun & 11-mrt-2012 &  & refactored unit tests, fixed all build errors, work on grid importing, barcode bugfixing, MQ bugfixing, Dashboard agent implementation & 13 \\ 
+\hline
+Mon & 12-mrt-2012 & P\&O Sessie & Barcode bugfixing, grid mapping bugfixing, pacman protocl implementatie, reverse mapping implementatie, dashboardagent implementatie & 7 \\ 
+\hline
+Wed & 14-mrt-2012 & Review code tree  &  &  \\ 
+\hline
+Sat & 17-mrt-2012 &  &  & 1 \\ 
+\hline
+Mon & 19-mrt-2012 & P\&O Sessie, overlopen resultaten code review en taakverdeling & Vergadering + planning, scheidsrechtercommisie, initial model refactoring & 5 \\ 
+\hline
+Tue & 20-mrt-2012 &  & completed model refactoring, merged minisimulator robot implementation with the actual robot implementation, cleanup of robot project & 4 \\ 
+\hline
+Wed & 21-mrt-2012 & Inleveren verslag 2 & Added light consistency test, fixed barcode bug, adding barcodes to swinggridview & 3 \\ 
+\hline
+Thu & 22-mrt-2012 &  & Added barcodes to the minisimulator & 1 \\ 
+\hline
+Sat & 24-mrt-2012 &  & implementatie gridmerging & 6 \\ 
+\hline
+Sun & 25-mrt-2012 &  & implementatie gridmerging & 7 \\ 
+\hline
+Mon & 26-mrt-2012 & P\&O Sessie / Demo 2 &  & 5 \\ 
+\hline
+Sat & 31-mrt-2012 &  & Unit testen voor grid package & 6 \\ 
+\hline
+Sun & 1/apr/12 &  & Transformatietesten grid & 3 \\ 
+\hline
+Mon & 2/apr/12 & Paasvakantie & Sector interface & 3 \\ 
+\hline
+Mon & 16/apr/12 & P\&O Sessie &  & 5 \\ 
+\hline
+Sun & 22/apr/12 &  & Mergen branches + fixen various tests, Implementatie LinkedSector + testen & 6 \\ 
+\hline
+Mon & 23/apr/12 & P\&O Sessie & Interface grid + implementatie, compilation errors in test fixen & 5 \\ 
+\hline
+Tue & 24/apr/12 &  & Implementatie Linkedgrid & 2 \\ 
+\hline
+Wed & 25/apr/12 &  & Testen Linkedgrid & 4 \\ 
+\hline
+Sun & 29/apr/12 &  &  & 8 \\ 
+\hline
+Mon & 30/apr/12 & P\&O Sessie &  & 5 \\ 
+\hline
+Wed & 2/mei/12 & Inleveren verslag 3 &  &  \\ 
+\hline
+Mon & 7/mei/12 & Finale Demo &  & 1 \\ 
+\hline
+Wed & 9/mei/12 & Eindverslag &  &  \\ 
+\hline
+Mon & 14/mei/12 & Finale Presentatie &  & 1 \\ 
+\hline
+\end{longtable}
+\normalsize
+
+
+\begin{longtable}{llp{7cm}p{10cm}l}
+\caption{Florian tijdsbesteding}
+
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Florian} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endfirsthead
+
+\multicolumn{5}{l}{{\tablename} \thetable{} -- Continued} \\[0.5ex]
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Florian} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endhead
+
+\multicolumn{5}{l}{{Continued on Next Page\ldots}} \\
+\endfoot
+
+\\[-1.8ex] \hline \hline
+\endlastfoot
+
+\hline
+ &  &  &  & 172 \\ 
+\hline
+Mon & 13/feb/12 & P\&O sessie,discussie aanpak, research pacman ed,  & simulator refactoring en nieuwe features & 4 \\ 
+\hline
+Wed & 15/feb/12 &  & Sector Opdeling & 5 \\ 
+\hline
+Mon & 20/feb/12 & P\&O sessie &  & 5 \\ 
+\hline
+Tue & 21/feb/12 &  &  & 3 \\ 
+\hline
+Wed & 22/feb/12 & Testen IR & Testen IR & 6 \\ 
+\hline
+Fri & 24/feb/12 & Driving/map voor bouw robot &  &  \\ 
+\hline
+Sat & 25/feb/12 & Simulator+behaviour &  &  \\ 
+\hline
+Mon & 27/feb/12 & P\&O sessie &  & 5 \\ 
+\hline
+Tue & 28/feb/12 & verslag &  & 5 \\ 
+\hline
+Wed & 29/feb/12 &  & verslag & 5 \\ 
+\hline
+Thu & 1-mrt-2012 &  & onderzoek naar mogelijke verbeteringen op gebied van rondrijden &  \\ 
+\hline
+Sat & 3-mrt-2012 & code bekeken voor verslag &  &  \\ 
+\hline
+Sun & 4-mrt-2012 & verslag &  &  \\ 
+\hline
+Mon & 5-mrt-2012 & P\&O sessie & verslag & 5 \\ 
+\hline
+Tue & 6-mrt-2012 & verslag, debugging & lichtsensor herimplementatie & 5 \\ 
+\hline
+Wed & 7-mrt-2012 &  & verslag, ghost protocol & 7 \\ 
+\hline
+Thu & 8-mrt-2012 &  & pair programming michiel & 5 \\ 
+\hline
+Fri & 9-mrt-2012 & Memory Management &  & 2 \\ 
+\hline
+Mon & 12-mrt-2012 & P\&O Sessie &  & 5 \\ 
+\hline
+Wed & 14-mrt-2012 & Review code tree  & Bitwiseoperations & 4 \\ 
+\hline
+Mon & 19-mrt-2012 & P\&O Sessie, overlopen resultaten code review en taakverdeling & verslag  & 5 \\ 
+\hline
+Wed & 21-mrt-2012 & Inleveren verslag 2 &  & 2 \\ 
+\hline
+Sat & 24-mrt-2012 &  & verslag rood+colors +dashboardagent+collision & 9 \\ 
+\hline
+Sun & 25-mrt-2012 &  & ill be there prob & 7 \\ 
+\hline
+Mon & 26-mrt-2012 & P\&O Sessie / Demo 2 &  & 8 \\ 
+\hline
+Mon & 16/apr/12 & P\&O Sessie &  & 5 \\ 
+\hline
+Tue & 17/apr/12 &  &  & 3 \\ 
+\hline
+Wed & 18/apr/12 &  &  & 5 \\ 
+\hline
+Thu & 19/apr/12 &  &  & 4 \\ 
+\hline
+Sat & 21/apr/12 &  &  & 6 \\ 
+\hline
+Mon & 23/apr/12 & P\&O Sessie & unit testen & 5 \\ 
+\hline
+Tue & 24/apr/12 &  & unit testen & 4 \\ 
+\hline
+Wed & 25/apr/12 &  & unit testen & 4 \\ 
+\hline
+Thu & 26/apr/12 &  & unit testen & 3 \\ 
+\hline
+Fri & 27/apr/12 &  & unit testen & 2 \\ 
+\hline
+Sat & 28/apr/12 &  & unit testen & 7 \\ 
+\hline
+Sun & 29/apr/12 &  & unit testen & 2 \\ 
+\hline
+Mon & 30/apr/12 & P\&O Sessie & Verslag & 10 \\ 
+\hline
+Tue & 1/mei/12 &  & Verslag & 8 \\ 
+\hline
+Wed & 2/mei/12 & Inleveren verslag 3 &  &  \\ 
+\hline
+Mon & 7/mei/12 & Finale Demo &  & 1 \\ 
+\hline
+Wed & 9/mei/12 & Eindverslag &  &  \\ 
+Sun & 13/mei/12 &  &  &  \\ 
+\hline
+Mon & 14/mei/12 & Finale Presentatie &  & 1 \\ 
+\hline
+\end{longtable}
+\normalsize
+
+\begin{longtable}{llp{7cm}p{10cm}l}
+\caption{Ruben tijdsbesteding}
+
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Ruben} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endfirsthead
+
+\multicolumn{5}{l}{{\tablename} \thetable{} -- Continued} \\[0.5ex]
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Ruben} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endhead
+
+\multicolumn{5}{l}{{Continued on Next Page\ldots}} \\
+\endfoot
+
+\\[-1.8ex] \hline \hline
+\endlastfoot
+
+\hline
+ &  &  &  & 156,5 \\ 
+\hline
+Mon & 13/feb/12 & P\&O sessie,discussie aanpak, research pacman ed,  & simulator refactoring en nieuwe features, Projectleider & 6 \\ 
+\hline
+Tue & 14/feb/12 &  &  & 2 \\ 
+\hline
+Wed & 15/feb/12 &  &  & 5 \\ 
+\hline
+Mon & 20/feb/12 & P\&O sessie & Projectleider & 5 \\ 
+\hline
+Tue & 21/feb/12 &  & IRSeeker & 4 \\ 
+\hline
+Wed & 22/feb/12 & Testen IR & Testen IR & 5 \\ 
+\hline
+Fri & 24/feb/12 & Driving/map voor bouw robot &  &  \\ 
+\hline
+Sat & 25/feb/12 & Simulator+behaviour &  &  \\ 
+\hline
+Mon & 27/feb/12 & P\&O sessie & Projectleider & 6 \\ 
+\hline
+Tue & 28/feb/12 & verslag &  & 7 \\ 
+\hline
+Wed & 29/feb/12 &  &  & 3 \\ 
+\hline
+Thu & 1-mrt-2012 &  & onderzoek naar mogelijke verbeteringen op gebied van rondrijden & 5 \\ 
+\hline
+Sat & 3-mrt-2012 & code bekeken voor verslag &  &  \\ 
+\hline
+Sun & 4-mrt-2012 & verslag &  &  \\ 
+\hline
+Mon & 5-mrt-2012 & P\&O sessie & Projectleider verslag & 5 \\ 
+\hline
+Tue & 6-mrt-2012 & verslag, debugging & barcodes, verslag & 6 \\ 
+\hline
+Wed & 7-mrt-2012 &  & verslag nalezen & 7 \\ 
+\hline
+Thu & 8-mrt-2012 &  & MazeProtocol & 4 \\ 
+\hline
+Fri & 9-mrt-2012 & Memory Management & MazeProtocol, IR in simulator, bugfixes & 3 \\ 
+\hline
+Sun & 11-mrt-2012 &  &  & 8 \\ 
+\hline
+Mon & 12-mrt-2012 & P\&O Sessie & Testen robot, Framerate verhogen op robot, pacman herkennen & 6 \\ 
+\hline
+Wed & 14-mrt-2012 & Review code tree  &  & 4,5 \\ 
+\hline
+Mon & 19-mrt-2012 & P\&O Sessie, overlopen resultaten code review en taakverdeling & verslag & 5 \\ 
+\hline
+Tue & 20-mrt-2012 &  & verslag, refactoring & 2 \\ 
+\hline
+Wed & 21-mrt-2012 & Inleveren verslag 2 & refactoring & 6 \\ 
+\hline
+Sat & 24-mrt-2012 &  & barcodegedrag voor robot & 5 \\ 
+\hline
+Sun & 25-mrt-2012 &  & Robot, bluetooth, memorytests & 3 \\ 
+\hline
+Mon & 26-mrt-2012 & P\&O Sessie / Demo 2 &  & 5 \\ 
+\hline
+Mon & 16/apr/12 & P\&O Sessie & unittesten map & 5 \\ 
+\hline
+Sat & 21/apr/12 &  & unittesten simulator & 8 \\ 
+\hline
+Sun & 22/apr/12 &  & unittesten sensoren & 5 \\ 
+\hline
+Mon & 23/apr/12 & P\&O Sessie & unittesten sensoren & 6 \\ 
+\hline
+Tue & 24/apr/12 &  &  & 2 \\ 
+\hline
+Sat & 28/apr/12 &  &  & 6 \\ 
+\hline
+Mon & 30/apr/12 & P\&O Sessie &  & 5 \\ 
+\hline
+Wed & 2/mei/12 & Inleveren verslag 3 &  &  \\ 
+\hline
+Mon & 7/mei/12 & Finale Demo &  & 1 \\ 
+\hline
+Wed & 9/mei/12 & Eindverslag &  &  \\ 
+\hline
+Mon & 14/mei/12 & Finale Presentatie &  & 1 \\ 
+\hline
+
+\end{longtable}
+\normalsize
+
+\begin{longtable}{llp{7cm}p{10cm}l}
+\caption{Thomas tijdsbesteding}
+
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Thomas} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endfirsthead
+
+\multicolumn{5}{l}{{\tablename} \thetable{} -- Continued} \\[0.5ex]
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Thomas} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endhead
+
+\multicolumn{5}{l}{{Continued on Next Page\ldots}} \\
+\endfoot
+
+\\[-1.8ex] \hline \hline
+\endlastfoot
+
+\hline
+ &  &  &  & 150 \\ 
+\hline
+Mon & 13/feb/12 & P\&O sessie,discussie aanpak, research pacman ed,  & simulator refactoring en nieuwe features & 5 \\ 
+\hline
+Tue & 14/feb/12 &  &  & 3 \\ 
+\hline
+Wed & 15/feb/12 &  &  & 2 \\ 
+\hline
+Sat & 18/feb/12 &  & Sector Opdeling & 1 \\ 
+\hline
+Sun & 19/feb/12 &  & Sector Opdeling & 3 \\ 
+\hline
+Mon & 20/feb/12 & P\&O sessie &  & 6 \\ 
+\hline
+Tue & 21/feb/12 &  &  & 4 \\ 
+\hline
+Wed & 22/feb/12 & Testen IR &  & 2 \\ 
+\hline
+Fri & 24/feb/12 & Driving/map voor bouw robot &  & 1 \\ 
+\hline
+Sat & 25/feb/12 & Simulator+behaviour &  & 2 \\ 
+\hline
+Mon & 27/feb/12 & P\&O sessie &  & 6 \\ 
+\hline
+Tue & 28/feb/12 & verslag &  & 4 \\ 
+\hline
+Wed & 29/feb/12 &  &  & 1 \\ 
+\hline
+Thu & 1-mrt-2012 &  &  & 2 \\ 
+\hline
+Sat & 3-mrt-2012 & code bekeken voor verslag &  & 2 \\ 
+\hline
+Sun & 4-mrt-2012 & verslag &  & 2 \\ 
+\hline
+Mon & 5-mrt-2012 & P\&O sessie &  & 6 \\ 
+\hline
+Tue & 6-mrt-2012 & verslag, debugging &  & 5 \\ 
+\hline
+Wed & 7-mrt-2012 &  &  & 8 \\ 
+\hline
+Thu & 8-mrt-2012 &  &  & 3 \\ 
+\hline
+Fri & 9-mrt-2012 & Memory Management &  & 3 \\ 
+\hline
+Sun & 11-mrt-2012 &  &  & 3 \\ 
+\hline
+Mon & 12-mrt-2012 & P\&O Sessie &  & 5 \\ 
+\hline
+Tue & 13-mrt-2012 &  & code review: action, bluetooth, driver,... & 3 \\ 
+\hline
+Wed & 14-mrt-2012 & Review code tree  & code review: map, modelprocessors, sensors & 2 \\ 
+\hline
+Thu & 15-mrt-2012 &  & code review: vizualization + start simulator & 4 \\ 
+\hline
+Fri & 16-mrt-2012 &  & code review: simulator & 2 \\ 
+\hline
+Sat & 17-mrt-2012 &  & code review: simulator & 2 \\ 
+\hline
+Mon & 19-mrt-2012 & P\&O Sessie, overlopen resultaten code review en taakverdeling &  & 5 \\ 
+\hline
+Tue & 20-mrt-2012 &  &  & 4 \\ 
+\hline
+Wed & 21-mrt-2012 & Inleveren verslag 2 &  & 3 \\ 
+\hline
+Thu & 22-mrt-2012 &  &  & 3 \\ 
+\hline
+Fri & 23-mrt-2012 &  &  & 3 \\ 
+\hline
+Sat & 24-mrt-2012 &  &  & 12 \\ 
+\hline
+Sun & 25-mrt-2012 &  &  & 6 \\ 
+\hline
+Mon & 26-mrt-2012 & P\&O Sessie / Demo 2 &  & 5 \\ 
+\hline
+Mon & 16/apr/12 & P\&O Sessie &  & 5 \\ 
+\hline
+Mon & 23/apr/12 & P\&O Sessie &  & 5 \\ 
+\hline
+Mon & 30/apr/12 & P\&O Sessie &  & 5 \\ 
+\hline
+Wed & 2/mei/12 & Inleveren verslag 3 &  &  \\ 
+\hline
+Mon & 7/mei/12 & Finale Demo &  & 1 \\ 
+\hline
+Wed & 9/mei/12 & Eindverslag &  &  \\ 
+\hline
+Mon & 14/mei/12 & Finale Presentatie &  & 1 \\ 
+\hline
+
+\end{longtable}
+\normalsize
+
+
+\begin{longtable}{llp{7cm}p{10cm}l}
+\caption{Christophe tijdsbesteding}
+
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Christophe} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endfirsthead
+
+\multicolumn{5}{l}{{\tablename} \thetable{} -- Continued} \\[0.5ex]
+\hline \hline \\[-2ex]
+  \multicolumn{1}{l}{Dag} & \multicolumn{1}{l}{Datum} &
+  \multicolumn{1}{p{7cm}}{omschrijving team} &
+  \multicolumn{1}{p{10cm}}{omschrijving Christophe} &
+  \multicolumn{1}{l}{Uren}  \\[0.5ex] \hline \\[-1.8ex]
+\endhead
+
+\multicolumn{5}{l}{{Continued on Next Page\ldots}} \\
+\endfoot
+
+\\[-1.8ex] \hline \hline
+\endlastfoot
+
+ 
+\hline
+ &  &  &  & 201 \\ 
+\hline
+Mon & 13/feb/12 & P\&O sessie,discussie aanpak, research pacman ed,  &  & 3 \\ 
+\hline
+Tue & 14/feb/12 &  & RabbitMQ research & 3,5 \\ 
+\hline
+Wed & 15/feb/12 &  & AntiObjects & 5 \\ 
+\hline
+Thu & 16/feb/12 &  & AntiObjects & 3,5 \\ 
+\hline
+Fri & 17/feb/12 &  & AntiObjects, RabbitMQ & 0,5 \\ 
+\hline
+Sat & 18/feb/12 &  &  & 1 \\ 
+\hline
+Mon & 20/feb/12 & P\&O sessie AntiObjects & 4,5 \\ 
+\hline
+Tue & 21/feb/12 &  & AntiObjects,verkenningsstrategie uitwerken & 3 \\ 
+\hline
+Wed & 22/feb/12 & Testen IR verkenningsstrategie uitwerken & 5 \\ 
+\hline
+Thu & 23/feb/12 &  & DFS discovery & 5 \\ 
+\hline
+Fri & 24/feb/12 & Driving/map voor bouw robot &  &  \\ 
+\hline
+Sat & 25/feb/12 & Simulator+behaviour &  &  \\ 
+\hline
+Mon & 27/feb/12 & P\&O sessie CD discovery & 6 \\ 
+\hline
+Tue & 28/feb/12 & verslag & discovery/hunt & 5,5 \\ 
+\hline
+Wed & 29/feb/12 &  & integratie disc/hunt/comm & 3 \\ 
+\hline
+Fri & 2-mrt-2012 &  & mini-simulator & 3,5 \\ 
+\hline
+Sat & 3-mrt-2012 & code bekeken voor verslag & mini-simulator & 6 \\ 
+\hline
+Sun & 4-mrt-2012 & verslag & mini-simulator & 5 \\ 
+\hline
+Mon & 5-mrt-2012 & P\&O sessie agents,logging,,grids,... & 6,5 \\ 
+\hline
+Tue & 6-mrt-2012 & verslag, debugging & dashboard, verslag & 6 \\ 
+\hline
+Wed & 7-mrt-2012 &  & AggregatedGrid, verslag & 4 \\ 
+\hline
+Thu & 8-mrt-2012 &  & AggregatedGrid & 2 \\ 
+\hline
+Fri & 9-mrt-2012 & Memory Management & AggregatedGrid & 6 \\ 
+\hline
+Sat & 10-mrt-2012 &  & ServiceAgent & 1 \\ 
+\hline
+Sun & 11-mrt-2012 &  & ServiceAgent, UI Server, Dashboard & 6,5 \\ 
+\hline
+Mon & 12-mrt-2012 & P\&O Sessie & MiniSimulator,ServiceAgent, UI Server, Dashboard, memory usage improvements & 10 \\ 
+\hline
+Tue & 13-mrt-2012 &  & review code tree & 1 \\ 
+\hline
+Wed & 14-mrt-2012 & Review code tree  &  & 3 \\ 
+\hline
+Mon & 19-mrt-2012 & P\&O Sessie, overlopen resultaten code review en taakverdeling &  & 6 \\ 
+\hline
+Tue & 20-mrt-2012 &  & verslag (performantie,review.merge) & 4 \\ 
+\hline
+Wed & 21-mrt-2012 & Inleveren verslag 2 verslag (merge reviews) & 2 \\ 
+\hline
+Thu & 22-mrt-2012 &  & dashboard: multi-robot, local-file source / Agent -> Gateway + UpdatesJSAppender & 6 \\ 
+\hline
+Fri & 23-mrt-2012 &  & SimulationRunner, Gateway(Client) & 7 \\ 
+\hline
+Sat & 24-mrt-2012 &  & SimulatedGatewayClient & 4 \\ 
+\hline
+Sun & 25-mrt-2012 &  & Local Dashboard & co & 7 \\ 
+\hline
+Mon & 26-mrt-2012 & P\&O Sessie / Demo 2 & Dashboard, DashboardReporter, GhostProtocol,  & 10 \\ 
+\hline
+Tue & 27-mrt-2012 &  & model documentatie + refactoring strategie + unit tests & 3 \\ 
+\hline
+Wed & 28-mrt-2012 &  & unit test voorbeelden & 4 \\ 
+\hline
+Fri & 30-mrt-2012 &  & unit tests & 3 \\ 
+\hline
+Thu & 5/apr/12 & Paasvakantie & unit tests & 6 \\ 
+\hline
+Fri & 6/apr/12 & Paasvakantie & unit tests & 3 \\ 
+\hline
+Sat & 7/apr/12 & Paasvakantie & unit tests & 3 \\ 
+\hline
+Sun & 8/apr/12 & Paasvakantie & unit tests & 1 \\ 
+\hline
+Tue & 10/apr/12 & Paasvakantie & unit tests & 2 \\ 
+\hline
+Wed & 11/apr/12 & Paasvakantie & unit tests & 1 \\ 
+\hline
+Thu & 12/apr/12 & Paasvakantie & unit tests & 4 \\ 
+\hline
+Fri & 13/apr/12 & Paasvakantie & unit tests & 4 \\ 
+\hline
+Mon & 16/apr/12 & P\&O Sessie &  & 2 \\ 
+\hline
+Mon & 23/apr/12 & P\&O Sessie &  & 3 \\ 
+\hline
+Tue & 24/apr/12 &  & fixed off-by-one bug in CircularQueue & 1 \\ 
+\hline
+Mon & 30/apr/12 & P\&O Sessie &  & 2 \\ 
+\hline
+Wed & 2/mei/12 & Inleveren verslag 3 &  &  \\ 
+\hline
+Mon & 7/mei/12 & Finale Demo &  & 2 \\ 
+\hline
+Wed & 9/mei/12 & Eindverslag &  &  \\ 
+\hline
+Thu & 10/mei/12 &  &  &  \\ 
+\hline
+Mon & 14/mei/12 & Finale Presentatie &  & 2 \\ 
+\hline
+
+
+
+\end{longtable}
+\normalsize
+
+\end{landscape}
 
 %Verwijzen naar de docs planning, gedeeld met assistenten.
 %Finale demo zal een kopie bevatten.
