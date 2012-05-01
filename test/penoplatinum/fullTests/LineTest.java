@@ -4,26 +4,20 @@ package penoplatinum.fullTests;
 import org.junit.Test;
 import penoplatinum.driver.ManhattanDriver;
 import static org.junit.Assert.*;
-import penoplatinum.driver.Driver;
 import penoplatinum.map.Map;
 import penoplatinum.map.MapHashed;
 import penoplatinum.navigator.Navigator;
-import penoplatinum.robot.Robot;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.entities.SimulatedEntityFactory;
 import penoplatinum.simulator.tiles.Sector;
-import penoplatinum.simulator.view.SimulationView;
-import penoplatinum.simulator.view.SwingSimulationView;
 
 public class LineTest {
 
   @Test
   public void testSimulator() {
     Simulator sim = new Simulator();
-    SimulationView simView = new SwingSimulationView();
     sim.useMap(makeSquareMap());
-    sim.displayOn(simView);
     
     LineRobot line = new LineRobot();
     ManhattanDriver manhattan = new LineDriver(Sector.SIZE/100.0);

@@ -13,9 +13,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import penoplatinum.util.Bearing;
-import penoplatinum.util.Rotation;
 
-import penoplatinum.grid.Sector;
 
 import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
@@ -93,11 +91,10 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
     }
     // and move forward into the Sector
     plan.add( new ForwardNavigatorAction(this.grids) );
-
     return plan;
   }
   
   private Bearing getMyBearing() {
-    return this.grids.getMyGrid().getBearingOf(this.grids.getMyAgent());    
+    return this.grids.getMyBearing();
   }
 }

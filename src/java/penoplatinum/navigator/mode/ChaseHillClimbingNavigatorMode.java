@@ -38,7 +38,7 @@ public class ChaseHillClimbingNavigatorMode extends HillClimbingNavigatorMode {
     Agent pacman = myGrid.getAgent("pacman"), // TODO: magic name constant
           me     = this.grids.getMyAgent();
     Sector pacmanSector = myGrid.getSectorOf(pacman),
-           mySector     = myGrid.getSectorOf(me);
+           mySector     = this.grids.getMySector();
 
     for(Bearing atLocation : Bearing.NESW) {
       if( pacmanSector == mySector.getNeighbour(atLocation) ) { return true; }

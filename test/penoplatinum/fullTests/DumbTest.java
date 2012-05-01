@@ -9,8 +9,6 @@ import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.entities.SimulatedEntityFactory;
 import penoplatinum.simulator.tiles.Sector;
-import penoplatinum.simulator.view.SimulationView;
-import penoplatinum.simulator.view.SwingSimulationView;
 
 public class DumbTest {
 
@@ -18,9 +16,8 @@ public class DumbTest {
   public void testSimulator() {
     //This tests the simulator with a driver that first moves forward an then turns to the right. 
     Simulator sim = new Simulator();
-    SimulationView simView = new SwingSimulationView();
     sim.useMap(makeSquareMap());
-    sim.displayOn(simView);
+    
     Robot dumb = new DumbRobot();
     SimulatedEntity simE = SimulatedEntityFactory.make(dumb);
     simE.putRobotAt(20, 20, -90);

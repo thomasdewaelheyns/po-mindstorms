@@ -89,16 +89,16 @@ public class MultiModeNavigator implements Navigator {
 
   // when we're at the last action of the last mode, there is no next action
   private boolean noNextAction() {
-    return this.plan.size() < 2 && this.modes.size() < 2;
+    return this.plan.size() < 1 && this.modes.size() < 2;
   }
   
   private NavigatorAction getNextAction() {
     this.discardCurrentAction();
-    return this.getCurrentAction();
+    NavigatorAction next = this.getCurrentAction();
+    return next;
   }  
 
   private void discardCurrentAction() {
-    if( this.noNextAction() ) { return; } // don't discard the last action
     if( this.plan.size() > 0 ) { this.plan.remove(0); }
   }
   
