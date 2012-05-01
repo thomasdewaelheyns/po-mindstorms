@@ -35,15 +35,15 @@ public class LightModelProcessorTest extends TestCase {
 
   public void testNoNewSensorValuesMeansNoWork() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(0);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(0);
     this.processor.work();
     verifyZeroInteractions(this.mockedLightModelPart);
   }
   
   public void testDetectBlack() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
-    when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(15);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(1, 2, 3, 4, 5);
+    when(this.mockedSensorModelPart.getLightSensorValue()).thenReturn(15);
     this.processor.work();
     verify(this.mockedLightModelPart).setAverageLightValue(505);
     verify(this.mockedLightModelPart).setCurrentLightColor(LightColor.BLACK);
@@ -51,8 +51,8 @@ public class LightModelProcessorTest extends TestCase {
 
   public void testDetectWhite() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
-    when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(905);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(1, 2, 3, 4, 5);
+    when(this.mockedSensorModelPart.getLightSensorValue()).thenReturn(905);
     this.processor.work();
 
     verify(this.mockedLightModelPart).setAverageLightValue(505);
@@ -61,8 +61,8 @@ public class LightModelProcessorTest extends TestCase {
 
   public void testDetectBrown() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
-    when(this.mockedLightModelPart.getCurrentLightValue()).thenReturn(501);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(1, 2, 3, 4, 5);
+    when(this.mockedSensorModelPart.getLightSensorValue()).thenReturn(501);
     this.processor.work();
     verify(this.mockedLightModelPart).setAverageLightValue(504.996f);
     verify(this.mockedLightModelPart).setCurrentLightColor(LightColor.BROWN);
@@ -70,12 +70,12 @@ public class LightModelProcessorTest extends TestCase {
   
   public void testAverageLightValueOverLongTime() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(1, 2, 3, 4, 5);
     // int he beginning, the average light value is 505
     // after 150 readings of 471 the average light value is 500.3204
     when(this.mockedLightModelPart.getAverageLightValue())
       .thenReturn(505f, 479.999f);
-    when(this.mockedLightModelPart.getCurrentLightValue())
+    when(this.mockedSensorModelPart.getLightSensorValue())
       .thenReturn(471);
 
     // int the beginning ...

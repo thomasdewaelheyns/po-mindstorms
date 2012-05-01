@@ -45,9 +45,9 @@ public class BarcodeModelProcessorTest extends TestCase {
 
   public void testNoWorkWithoutNewSensorValues() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(0);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(0);
     this.processor.work();
-    verify(this.mockedSensorModelPart).getValuesId();
+    verify(this.mockedSensorModelPart).getValuesID();
     verifyNoMoreInteractions(this.mockedSensorModelPart);
     verifyZeroInteractions(this.mockedBarcodeModelPart,
                            this.mockedLightModelPart);
@@ -55,20 +55,20 @@ public class BarcodeModelProcessorTest extends TestCase {
 
   public void testWorkAndWait() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(1);
     when(this.mockedLightModelPart.getCurrentLightColor())
       .thenReturn(LightColor.BROWN);
     this.processor.work();
-    verify(this.mockedSensorModelPart).getValuesId();
+    verify(this.mockedSensorModelPart).getValuesID();
     verify(this.mockedLightModelPart).getCurrentLightColor();
     this.processor.work();
-    verify(this.mockedSensorModelPart, times(2)).getValuesId();
+    verify(this.mockedSensorModelPart, times(2)).getValuesID();
     verifyNoMoreInteractions(this.mockedLightModelPart);
   }
   
   public void testWorkAndStart() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(1, 2, 3, 4, 5);
     when(this.mockedLightModelPart.getCurrentLightColor())
       .thenReturn(LightColor.BROWN, LightColor.BLACK, LightColor.BLACK);
     this.processor.work();
@@ -79,7 +79,7 @@ public class BarcodeModelProcessorTest extends TestCase {
 
   public void testWorkAndTurn() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(1, 2, 3, 4, 5);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(1, 2, 3, 4, 5);
     when(this.mockedLightModelPart.getCurrentLightColor())
       .thenReturn(LightColor.BROWN, LightColor.BLACK, LightColor.BLACK);
     when(this.mockedSensorModelPart.isTurning()).thenReturn(true);
@@ -91,7 +91,7 @@ public class BarcodeModelProcessorTest extends TestCase {
 
   public void testWorkWithInterference() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId())
+    when(this.mockedSensorModelPart.getValuesID())
       .thenReturn(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     when(this.mockedLightModelPart.getCurrentLightColor())
       .thenReturn(LightColor.BROWN, LightColor.BLACK, LightColor.BLACK,
@@ -114,7 +114,7 @@ public class BarcodeModelProcessorTest extends TestCase {
 
   public void testWorkAndStop() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId())
+    when(this.mockedSensorModelPart.getValuesID())
       .thenReturn(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
                   16, 17, 18, 19, 20, 21, 22, 23, 24, 25);
     when(this.mockedLightModelPart.getCurrentLightColor())

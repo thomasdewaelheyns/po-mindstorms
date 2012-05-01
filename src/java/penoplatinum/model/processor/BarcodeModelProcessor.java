@@ -77,7 +77,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
   }
   
   private boolean newSensorValuesAreAvailable() {
-    int currentSensorUpdate = this.robot.getValuesId();
+    int currentSensorUpdate = this.robot.getValuesID();
     if( currentSensorUpdate == this.sensorUpdate ) { return false; }
     this.sensorUpdate = currentSensorUpdate;
     return true;

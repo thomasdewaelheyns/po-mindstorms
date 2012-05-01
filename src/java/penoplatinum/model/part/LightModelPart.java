@@ -33,14 +33,6 @@ public class LightModelPart implements ModelPart {
   public LightColor getCurrentLightColor() {
     return this.currentLightColor;
   }
-  
-  public void setCurrentLightValue(int currentLightValue) {
-    this.currentLightValue = currentLightValue;
-  }
-
-  public int getCurrentLightValue() {
-    return this.currentLightValue;
-  }
 
   public void setAverageLightValue(float averageLightValue) {
     this.averageLightValue = averageLightValue;

@@ -22,7 +22,6 @@ public class SensorModelPart implements ModelPart {
   }
 
   private int[] sensors = new int[Config.SENSORVALUES_NUM];
-  private boolean hasNewSensorValues;
   private double totalTurnedAngle;
   private int valuesId = 0;
 
@@ -77,7 +76,7 @@ public class SensorModelPart implements ModelPart {
     return this.totalTurnedAngle;
   }
 
-  public int getValuesId() {
+  public int getValuesID() {
     return this.valuesId;
   }
 

@@ -59,6 +59,7 @@ public class LineModelProcessor extends ModelProcessor {
         break;
       case WAITING:
         if( currentColor == LightColor.WHITE) {
+          System.out.println("OOH, I hope it's a line!!");
           this.state = RECORDING;
           this.brownCounter = 0;
           this.colorCounter = 0;
@@ -70,6 +71,7 @@ public class LineModelProcessor extends ModelProcessor {
           if( this.brownCounter > 5 && this.colorCounter < 2 ) {
             this.state = WAITING;
           } else if( this.brownCounter > 5 ) {
+            System.out.println("OOH, It is, It is a line!");
             lightPart.setLine(Line.WHITE);
             this.state = WAITING;
           }
@@ -87,7 +89,7 @@ public class LineModelProcessor extends ModelProcessor {
   
   private boolean newSensorValuesAreAvailable() {
     int currentSensorUpdate = 
-      SensorModelPart.from(this.getModel()).getValuesId();
+      SensorModelPart.from(this.getModel()).getValuesID();
     if( currentSensorUpdate == this.sensorUpdate ) { return false; }
     this.sensorUpdate = currentSensorUpdate;
     return true;

@@ -36,14 +36,14 @@ public class LineModelProcessorTest extends TestCase {
 
   public void testNoNewSensorValuesMeansNoWork() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId()).thenReturn(0);
+    when(this.mockedSensorModelPart.getValuesID()).thenReturn(0);
     this.processor.work();
     verifyZeroInteractions(this.mockedLightModelPart);
   }
   
   public void testDetectNoLineOnBrown() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId())
+    when(this.mockedSensorModelPart.getValuesID())
       .thenReturn(1,2,3,4,5);
     when(this.mockedSensorModelPart.isTurning())
       .thenReturn(false);
@@ -59,7 +59,7 @@ public class LineModelProcessorTest extends TestCase {
 
   public void testDetectWhiteLine() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId())
+    when(this.mockedSensorModelPart.getValuesID())
       .thenReturn(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
     when(this.mockedSensorModelPart.isTurning())
       .thenReturn(false);
@@ -80,7 +80,7 @@ public class LineModelProcessorTest extends TestCase {
 
   public void testBlackWhenReadingWhiteEndsDetection() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId())
+    when(this.mockedSensorModelPart.getValuesID())
       .thenReturn(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
     when(this.mockedSensorModelPart.isTurning())
       .thenReturn(false);
@@ -100,7 +100,7 @@ public class LineModelProcessorTest extends TestCase {
 
   public void testTurningCausesAbortedDetection() {
     this.setup();
-    when(this.mockedSensorModelPart.getValuesId())
+    when(this.mockedSensorModelPart.getValuesID())
       .thenReturn(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
     when(this.mockedSensorModelPart.isTurning())
       .thenReturn(false, false, false, true);

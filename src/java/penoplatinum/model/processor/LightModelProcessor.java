@@ -29,33 +29,34 @@ public class LightModelProcessor extends ModelProcessor {
   private final float AVERAGE_EXPONENT = 0.001f;
   private final int   SENSOR_VARIATION = 30;
 
-  private SensorModelPart  robot;
-  private LightModelPart   sensors;
+  private SensorModelPart  sensor;
+  private LightModelPart   light;
 
   private int sensorUpdate = 0;
 
   // override the setModel to setup a reference to the BarcodeModelPart
   public void setModel(Model model) {
     super.setModel(model);
-    this.robot   = SensorModelPart.from(this.getModel());
-    this.sensors = LightModelPart.from(this.getModel());
+    this.sensor   = SensorModelPart.from(this.getModel());
+    this.light = LightModelPart.from(this.getModel());
   }
 
   protected void work() {
     // we only work with new sensor values...
-    if( this.robot.getValuesId() == this.sensorUpdate ) { return; }
+    if( this.sensor.getValuesID() <= this.sensorUpdate ) { return; }
+    this.sensorUpdate = this.sensor.getValuesID();
 
-    int currentLightValue = this.sensors.getCurrentLightValue();
+    int currentLightValue = this.sensor.getLightSensorValue();
 
     float averageLightValue = this.detectAverageLightValue(currentLightValue);
-    this.sensors.setAverageLightValue(averageLightValue);
+    this.light.setAverageLightValue(averageLightValue);
 
     LightColor color = this.detectColor(currentLightValue, averageLightValue);
-    this.sensors.setCurrentLightColor(color);
+    this.light.setCurrentLightColor(color);
   }
   
   private float detectAverageLightValue(int currentLightValue) {
-    float averageLightValue    = this.sensors.getAverageLightValue();
+    float averageLightValue    = this.light.getAverageLightValue();
 
     // if the average light value is outside the brown space, reset it to
     // the center in between the boundaries
