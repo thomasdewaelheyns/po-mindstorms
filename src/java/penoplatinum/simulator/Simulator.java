@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import penoplatinum.map.MapUtil;
 import penoplatinum.util.Point;
+import penoplatinum.util.Utils;
 
 public class Simulator {
 
@@ -82,11 +83,9 @@ public class Simulator {
 
   // determine the distance to the first obstacle in direct line of sight 
   // under a given angle
-  public int getFreeDistance(Point tile, Point pos, int angle) {
+  public int getFreeDistance(double x, double y, int angle) {
     // find distance to first wall in line of sight
-    return MapUtil.findHitDistance(this.map, angle,
-            tile.getX(), tile.getY(),
-            pos.getX(), pos.getY());
+    return MapUtil.findHitDistance(this.map, angle, x, y);
   }
 
   /**
@@ -122,7 +121,6 @@ public class Simulator {
     initRun();
     while (true) {
       this.step();
-//      Utils.Sleep(3);
     }
   }
   
@@ -130,6 +128,7 @@ public class Simulator {
     initRun();
     while(stepCount-->0){
       this.step();
+//      Utils.Sleep(8);
     }
   }
 
@@ -138,7 +137,7 @@ public class Simulator {
     for (int i = 0; i < this.robotEntities.size(); i++) {
       if (this.robotEntities.get(i) instanceof SimulatedEntity) {
         SimulatedEntity ent = (SimulatedEntity) this.robotEntities.get(i);
-        ent.setInitialPosition(ent.getCurrentTileCoordinates());
+        ent.setInitialPosition(MapUtil.getCurrentTileCoordinates(ent.getPosX(), ent.getPosY(), getTileSize()));
         ent.setInitialBearing((4 - (int) (ent.getDirection() / 90) + 1) % 4);
       }
     }
