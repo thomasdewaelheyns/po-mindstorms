@@ -16,20 +16,17 @@ package penoplatinum.driver;
 
 import java.util.List;
 import java.util.ArrayList;
-
-import penoplatinum.robot.Robot;
-
 import penoplatinum.driver.behaviour.DriverBehaviour;
-
 import penoplatinum.driver.action.DriverAction;
 import penoplatinum.driver.action.IdleDriverAction;
 import penoplatinum.driver.action.MoveDriverAction;
 import penoplatinum.driver.action.TurnDriverAction;
+import penoplatinum.robot.AdvancedRobot;
 
 
 public class ManhattanDriver implements Driver {
-  // a reference to the robot we're driving
-  private Robot robot;
+  // a reference to the AdvancedRobot we're driving
+  private AdvancedRobot advancedRobot;
 
   // the size of one sector, the atomic unit of movement of this Driver
   private double sectorSize;
@@ -65,15 +62,15 @@ public class ManhattanDriver implements Driver {
     return this;
   }
 
-  public ManhattanDriver drive(Robot robot) {
-    this.robot = robot;
+  public ManhattanDriver drive(AdvancedRobot advancedRobot) {
+    this.advancedRobot = advancedRobot;
     this.setupMovementActions();
     return this;
   }
   
   private void setupMovementActions() {
-    this.MOVE = new MoveDriverAction(this.robot.getModel()).set(this.sectorSize);
-    this.TURN = new TurnDriverAction(this.robot.getModel());
+    this.MOVE = new MoveDriverAction(this.advancedRobot.getModel()).set(this.sectorSize);
+    this.TURN = new TurnDriverAction(this.advancedRobot.getModel());
   }
 
   // movement methods are honoured directly and change the current strategy
@@ -124,7 +121,7 @@ public class ManhattanDriver implements Driver {
     if( this.currentAction.canBeInterrupted() ) {
       this.applyBehaviours();
     }
-    this.currentAction.work(this.robot.getRobotAPI());
+    this.currentAction.work(this.advancedRobot.getRobotAPI());
 
     // when we're done we go idle...
     if( ! this.currentAction.isBusy() ) {
@@ -137,7 +134,7 @@ public class ManhattanDriver implements Driver {
   // performing the action they provide.
   private void applyBehaviours() {
     for( DriverBehaviour behaviour : this.behaviours ) {
-      if( behaviour.requiresAction(this.robot.getModel(), 
+      if( behaviour.requiresAction(this.advancedRobot.getModel(), 
                                    this.currentAction) )
       {
         this.interrupt(behaviour.getNextAction());

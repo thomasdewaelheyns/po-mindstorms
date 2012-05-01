@@ -21,6 +21,7 @@ import penoplatinum.model.part.SensorModelPart;
 
 import penoplatinum.driver.action.DriverAction;
 import penoplatinum.driver.behaviour.DriverBehaviour;
+import penoplatinum.robot.AdvancedRobot;
 
 
 public class ManhattanDriverTest extends TestCase {
@@ -28,7 +29,7 @@ public class ManhattanDriverTest extends TestCase {
   private final static double SECTOR_SIZE = 0.04;
 
   private ManhattanDriver driver;
-  private Robot           mockedRobot;
+  private AdvancedRobot   mockedRobot;
   private RobotAPI        mockedRobotAPI;
   private Model           mockedModel;
   private SensorModelPart mockedSensorModelPart;
@@ -274,7 +275,7 @@ public class ManhattanDriverTest extends TestCase {
   }
 
   private void mockRobot() {
-    this.mockedRobot = mock(Robot.class);
+    this.mockedRobot = mock(AdvancedRobot.class);
 
     this.mockedRobotAPI = mock(RobotAPI.class);
     when(this.mockedRobot.getRobotAPI()).thenReturn(this.mockedRobotAPI);

@@ -4,43 +4,16 @@ package penoplatinum.robot;
  * Robot Interface
  * 
  * Defines all the required methods a robot needs to implement to allow for
- * the framework to work with this robot.
- * It offers access to all components of the robot, allowing the construction
- * of completely custom robots.
+ * the framework to work with this robot. This uses only the basic input/output.
  * 
  * @author: Team Platinum
  */
-
-import penoplatinum.model.Model;
-import penoplatinum.driver.Driver;
-import penoplatinum.navigator.Navigator;
-import penoplatinum.gateway.GatewayClient;
-import penoplatinum.reporter.Reporter;
-
 
 public interface Robot {
   // a robot consists of:
   // - a RobotAPI, offering access to the sensors and actuators
   public Robot useRobotAPI(RobotAPI api);
   public RobotAPI getRobotAPI();
-  
-  // - a Driver, that knows how to move from one point to the other,
-  public Robot useDriver(Driver driver);
-  public Driver getDriver();
-  
-  // - a Navigator, that decides what point to move next to
-  public Robot useNavigator(Navigator navigator);
-  public Navigator getNavigator();
-
-  // - a GatyewayClient, that provides access to the Gateway to send out msgs
-  public Robot useGatewayClient(GatewayClient agent);
-  public GatewayClient getGatewayClient();
-  
-  // - a Reporter, that interrogates the Robot and can send information out
-  public Robot useReporter(Reporter reporter);
-
-  // - an internal Model
-  public Model getModel();
   
   // incoming commands are processed
   public void processCommand(String cmd);

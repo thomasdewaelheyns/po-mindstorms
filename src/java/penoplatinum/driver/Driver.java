@@ -21,12 +21,12 @@ package penoplatinum.driver;
  * @author: Team Platinum
  */
  
-import penoplatinum.robot.Robot;
+import penoplatinum.robot.AdvancedRobot;
 
 
 public interface Driver {
   // we're driving Miss Robot
-  public Driver drive(Robot robot);
+  public Driver drive(AdvancedRobot advancedRobot);
 
   // I can indicate that I'm still busy performing an Action, this might be an
   // instruction, but can also be some internal action, like re-alignment or
