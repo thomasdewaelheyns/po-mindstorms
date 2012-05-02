@@ -188,6 +188,12 @@ public class GhostRobot implements AdvancedRobot {
     if (makeSweep()) {
       return true;
     }
+    navigator.finish(driver);
+    
+    SonarModelPart.from(this.model).update(this.robotAPI.getSweepResult(), this.angles);
+    this.sweepID = this.robotAPI.getSweepID();
+    this.model.refresh(); // TODO: double call
+    
     navigator.instruct(driver);
     sendMessages();
     if (this.reporter != null) {
@@ -211,12 +217,8 @@ public class GhostRobot implements AdvancedRobot {
     }
 
     // if the sweep is ready ...
-    if (this.robotAPI.getSweepID() > sweepID) {
-      SonarModelPart.from(this.model).update(this.robotAPI.getSweepResult(), this.angles);
-      this.model.refresh(); // TODO: double call
-      sweepID = this.robotAPI.getSweepID();
-    } else {
-      this.robotAPI.sweep(angles);
+    if (this.robotAPI.getSweepID() <= this.sweepID) {
+      this.robotAPI.sweep(this.angles);
       return true;
     }
     return false;
