@@ -894,18 +894,6 @@ Algemeen gezien is er nog steeds een grote overlap tussen de verschillende hoofd
  
 \chapter{Grafische User Interface}
 
-%TODO: ZIJN DE VOORWAARDEN HIERONDER BESCHREVEN VOLDAAN?
-%Elke ghost heeft een GUI, hier volgt een beschrijving van de informatie die tenminste moet worden
-%weergegeven in de GUI.
-%Informatie op basis waarvan de robot aangestuurd wordt, vergelijkbaar met semester 1.
-%Weergave van kennis van het doolhof (op basis van eigen waarnemingen en communicatie).
-%Weergave van eigen positie in het doolhof en positie van andere robots.
-%Weergave van interne toestand en besluitvormingsproces.
-%Het is duidelijk dat hier redelijk wat vrijheid is om deze interface te maken. Je moet steeds voor
-%ogen houden dat we op een of andere manier willen zien wat de robot op dat moment aan het doen
-%is op software-niveau, zodat dit kan gelinkt worden aan wat de robot feitelijk aan het uitvoeren is
-%op het speelveld.
-
 Het project voorziet verschillende gebruikers interfaces: een dashboard dat informatie geeft over verschillende parameters van de werking van een robot, een simulator die een beeld geeft van de gesimuleerde wereld en van de manier waarop de gesimuleerde robot de wereld ervaart en een administratie \emph{shell} om een robot van op afstand commando's door te sturen.
 
 \section{Dashboard}
@@ -925,13 +913,22 @@ Dankzij de uitwerking aan de hand van HTML en Javascript kunnen we het \emph{Das
 
 \section{Simulator}
 
-TODO: beschrijving simulator toevoegen met uitleg over de \emph{GridView} als inplugbaar component.
+De simulator, weergegeven in figuur \ref{fig:simulator2}, bestaat uit twee grote delen: \'e\'en overzichtsscherm en maximaal vier kleinere deelschermen voor de visualisatie van de \emph{Grid} van elk van de gesimuleerde robots. Deze visualisatie van de \emph{Grid} wordt voorzien door de \emph{GridView}, een optionele component die verbonden kan worden met de effectieve \emph{Grid} van een robot.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=150mm]{resources/simulator2.png}
   \caption{De Simulator simuleert vier robots.}
   \label{fig:simulator2}
+\end{figure}
+
+De simulator wordt opgestart aan de hand van de \emph{SimulationRunner}. Deze applicatie biedt tal van mogelijkheden om de simulator op te starten. Zo kan elke mogelijke \emph{Driver}, \emph{Navigator}, ... opgegeven worden op de command line, waardoor het een uiterst flexibele tool wordt. Figuur \ref{fig:simulationrunner} toont het help scherm met alle opties.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=110mm]{resources/simulationrunner.png}
+  \caption{Opties om de simulator op te starten.}
+  \label{fig:simulationrunner}
 \end{figure}
 
 \section{RASH - Robot Administratie Shell}
@@ -973,16 +970,7 @@ De opstelling met \emph{rash} bood ons nog een bijkomende opportuniteit. Zo kunn
 
 De keuze om van \emph{rash} een aparte applicatie te maken was evident: het beheren van de robot op dit niveau is niet verenigbaar met het eenvoudig volgen van informatie omtrent de robot, zoals dit in het \emph{Dashboard} mogelijk is. De gevoeligheid van de functionaliteit is veel hoger. Anderzijds is het moeten toepassen van deze acties eerder uitzonderlijk.
 
-Toch is het design van \emph{rash} zo uitgewerkt dat een integratie met het \emph{Dashboard} mogelijk is. De effectieve administratie is ondergebracht in een \emph{RobotAdminClient}. Deze is ingebed in de eigenlijk gebruikersinterface, \emph{RobotAdminShell}. Figuur \ref{fig:rash_design} toont de verschillende klassen die voorzien zijn. Mits het toevoegen van een schrijfbaar veld in het \emph{Dashboard} en het opvangen van de inhoud van dit veld in de \emph{Gateway}, kan deze laatste de \emph{RobotAdminClient} zonder aanpassingen gebruiken om langs dit kanaal ook dezelfde functionaliteit te implementeren.
-
-TODO: screenshot klassediagram toevoegen
-
-%\begin{figure}[htbp]
-%  \centering
-%  \includegraphics[width=150mm]{resources/rash_design.png}
-%  \caption{Design van de RobotAdminClient en RobotAdminShell}
-%  \label{fig:rash_design}
-%\end{figure}
+Toch is het design van \emph{rash} zo uitgewerkt dat een integratie met het \emph{Dashboard} mogelijk is. De effectieve administratie is ondergebracht in een \emph{RobotAdminClient}. Deze is ingebed in de eigenlijk gebruikersinterface, \emph{RobotAdminShell}. Mits het toevoegen van een schrijfbaar veld in het \emph{Dashboard} en het opvangen van de inhoud van dit veld in de \emph{Gateway}, kan deze laatste de \emph{RobotAdminClient} zonder aanpassingen gebruiken om langs dit kanaal ook dezelfde functionaliteit te implementeren.
 
 \chapter{Klasse Diagrammen}
 
