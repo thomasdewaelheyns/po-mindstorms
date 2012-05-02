@@ -585,6 +585,48 @@ Zo werd o.a.\ de volledige interne voorstelling van de sectoren aangepakt. Met d
 
 Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces ge(her)defineerd hebben, zodat we allen konden werken aan afgeronde gehelen. Dit gaf natuurlijk het nadeel dat de volledige source code onbruikbaar was tot al deze gehelen opnieuw ge\"integreerd waren. We geloven er sterk in dat dit proces onze code veel stabieler heeft gemaakt en onze robot hier dus baat bij heeft.
 
+\section{Unit testen}
+
+Na de eerste demo van het tweede semester werden we geconfronteerd met de gevolgen van het negeren van \'e\'en van de belangrijkste geboden van software ontwikkeling: ``Gij zult uw code testbaar maken en testen.''. Bijna elke aanpassing aan \'e\'en deel van de code zorgde voor verschrikkelijke gevolgen aan een ander deel. Elke kleinste wijziging brak andere delen van de oplossing.
+
+Gegeven de manier waarop de software ontwikkeld was tot dan toe, was dit niet geheel onbegrijpelijk. We hadden twee opties: verder gaan op de manier die we gehanteerd hadden en elk probleempje proberen te ``fixen'' of structureel een ingrijpende verandering doorvoeren in de manier waarop we met de code omgingen.
+
+Aangezien \'e\'en van de doelen van P\&O Computerwetenschappen net is om te leren in praktijk hoe een middelgroot softwareproject dient uitgebaat te worden, hebben we deze kans aangegrepen om een stap verder te gaan en zelf aan den lijve te ondervinden of en hoe een andere aanpak effectief meer stabiliteit kan brengen. We begonnen aan het invoeren van structurele unit testen voor zoveel mogelijk code.
+
+Aangezien de functionaliteit compleet was, konden we de volledige scope overzien. De architectuur die we gekozen hadden bleek een goed antwoord voor de meeste van de uitdagingen die in de opdracht vervat zaten. Vertrekkende van deze twee pijlers konden we dus sequentieel door de volledige code gaan en elke klasse op zich perfect vormgeven en voorzien van testen.
+
+Met een codebase van ongeveer 17.000 lijnen code is dit echter geen sinecure en ging dit veel tijd vragen. Het alternatief was nog veel onzekerder: verder gaan met een onstabiele codebase zou mogelijk een onbetrouwbare oplossing met zich meebrengen en de wetenschap hieromtrent zou net een falen zijn in \'e\'en van de belangrijkste aspecten van de opdracht.
+
+Met nog vier weken voor de finale deadline begonnen we aan een grote onderneming. Week na week groeide het volume aan testen en begon de \emph{coverage} stilaan nuttige vormen aan te nemen. Toen uitspraken als ``God zij dank dat we de unit testen hebben.'' bij alle teamleden begonnen te rijzen, wisten we dat we op de goede weg zaken. Figuur \ref{fig:sloc} toont de evolutie van de volledige codebase en het aantal lijnen code (SLOC). Hier is duidelijk te zien dat vanaf begin april er een sterke en gestage toename is van het aantal lijnen code te wijten aan het structureel invoeren van unit testen. Ook toont deze grafiek zeer duidelijk dat ook de groei van de functionele code gestopt is en dat er zelfs een lichte daling is op te tekenen.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=125mm]{resources/sloc.pdf}
+  \caption{Evolutie van het totale aantal SLOC en het aandeel van de unit testen}
+  \label{fig:sloc}
+\end{figure}
+
+Figuur \ref{fig:coverage} toont dan weer het aantal klassen in het project samen met de \emph{coverage} van de unit test klassen. De evolutie is natuurlijk gelijklopend, maar beide grafieken bieden een ander inzicht in de evolutie. Op amper vier weken bereikten we reeds een \emph{class coverage} van meer dan 60\%.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=120mm]{resources/coverage.pdf}
+  \caption{Evolutie van het aantal klassen en de coverage van de unit test klassen}
+  \label{fig:coverage}
+\end{figure}
+
+Alle voordelen van een codebase met een goede \emph{coverage} begonnen zich op te werpen: bij elke commit kon een \emph{RunAllTests} test suite doorlopen worden en bracht een succesvolle uitvoering een gegronde zekerheid dat een aanpassing geen problemen had teweeggebracht in andere delen van de oplossing. Figuur \ref{fig:runalltests} toont deze uitvoer en bevestiging.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=100mm]{resources/runalltests.png}
+  \caption{De RunAllTests test suite in actie.}
+  \label{fig:runalltests}
+\end{figure}
+
+Deze aanpak heeft natuurlijk \'e\'en groot nadeel. Door sequentieel door de volledige codebase te lopen en alle code op te schonen en elke klasse op zich van de nodige unit testen te voorzien, betekent dat de codebase als een geheel niet langer functioneel is. Dit was een risico dat we moesten nemen om zelf te kunnen ondervinden of deze piste inderdaad een onderbouwde zekerheid kan bieden.
+
+Dit deel wordt nog verder aangevuld nadat de effectieve resultaten van deze onderneming bereikt zijn.
 
 \chapter{Werkverdeling}
 
