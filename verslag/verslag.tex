@@ -31,7 +31,7 @@
 \begin{abstract}
 Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, bouwen wij een autonome robot met behulp van Lego Mindstorms. Voor de programmatie wordt beroep gedaan op Lejos, een Open Bron project dat een minimale JAVA virtuele machine heeft gemaakt die de plaats kan innemen van de standaard programmatie omgeving van Lego.
 
-Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen i.v.m. het werken in teamverband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
+Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen i.v.m.\ het werken in teamverband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
 
 In het tweede semester wordt hier nog eens de nood tot samenwerking met de andere teams aan toegevoegd. Het traject van de autonome robot blijft behouden, maar de verschillende robots zullen nu moeten samenwerken om een gemeenschappelijk doel te bereiken. Om deze samenwerking in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester is het insluiten van een Pac-Manrobot bestuurd door het didactisch team met behulp van vier autonome \emph{ghosts}.
 
@@ -46,7 +46,7 @@ Het doel van de eerste demo is een vereenvoudigde vorm van het einddoel waarbij 
 
 Tijdens het eerste semester zijn we er in geslaagd om zeer herbruikbare code te produceren: de architecturale concepten, zoals \emph{Robot}, \emph{Navigator} en Model, zijn duidelijk binnen het team en de verdere uitwerking van deze concepten in het tweede semester werd ervaren als een natuurlijke evolutie. Aangezien we te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
 
-Het verslag is anders opgebouwd ten opzichte van het vorige semester: er werd gekozen voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is erg gelijkend hoewel natuurlijk de inhoud veranderd is t.o.v. het eerste semester. Nieuw zijn de stukken over de strategie i.v.m. de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
+Het verslag is anders opgebouwd ten opzichte van het vorige semester: er werd gekozen voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is erg gelijkend hoewel natuurlijk de inhoud veranderd is t.o.v.\ het eerste semester. Nieuw zijn de stukken over de strategie i.v.m.\ de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
 
 \chapter{Probleemstelling}
 
@@ -103,12 +103,12 @@ Insluiting van Pac-Man is gedefinieerd als het niet meer kunnen bewegen van de P
 
 \subsection{Ghosts}
 
-De ghosts vertrekken op de vier hoekpunten van het doolhof, zodat de verkenning van het doolhof zo snel mogelijk van start kan gaan. De ori\"entatie van de robot is onbekend hoewel de hoek t.o.v. het assenstelsel wel een veelvoud is van 90 graden.
+De ghosts vertrekken op de vier hoekpunten van het doolhof, zodat de verkenning van het doolhof zo snel mogelijk van start kan gaan. De ori\"entatie van de robot is onbekend hoewel de hoek t.o.v.\ het assenstelsel wel een veelvoud is van 90 graden.
 
 
 \section{Communicatieprotocol}
 
-We verwijzen naar de offici\"ele documentatie van het \emph{Ghost Protocol}. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het \emph{Ghost Protocol} is het resultaat van een werkgroep die aangesteld werd door de scheidsrechtercommissie. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen ervan m.b.t. onze eigen ontwikkeling.
+We verwijzen naar de offici\"ele documentatie van het \emph{Ghost Protocol}. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het \emph{Ghost Protocol} is het resultaat van een werkgroep die aangesteld werd door de scheidsrechtercommissie. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen ervan m.b.t.\ onze eigen ontwikkeling.
 
 \subsection{Voordelen}
 
@@ -343,7 +343,7 @@ De \emph{Navigator} kan zich nu specifiek toeleggen op het bepalen van de volgen
   \label{uml:grids-sectoren}
 \end{figure}
 
-Centraal staat het concept van de \emph{Sector} in een \emph{Grid}. Een \emph{Sector} heeft een co\"ordinaat relatief t.o.v. de \emph{Grid} waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een Agent. De waarde van een \emph{Sector} zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de \emph{Grid} bewegen langs de sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de Pac-ManAgent en \emph{GhostAgent} zo de agents die op de \emph{Grid} voorkomen. Een \emph{ProxyAgent} werd gebruikt om in een simulator een echte \emph{Agent} voor te stellen die de volledige \emph{Grid} nog niet kent en de \emph{StaticTargetAgent} werd speciaal voorzien voor de voorbereiding van de eerste demo.
+Centraal staat het concept van de \emph{Sector} in een \emph{Grid}. Een \emph{Sector} heeft een co\"ordinaat relatief t.o.v.\ de \emph{Grid} waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een Agent. De waarde van een \emph{Sector} zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de \emph{Grid} bewegen langs de sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de Pac-ManAgent en \emph{GhostAgent} zo de agents die op de \emph{Grid} voorkomen. Een \emph{ProxyAgent} werd gebruikt om in een simulator een echte \emph{Agent} voor te stellen die de volledige \emph{Grid} nog niet kent en de \emph{StaticTargetAgent} werd speciaal voorzien voor de voorbereiding van de eerste demo.
 
 Optioneel kan aan een \emph{Grid} ook een \emph{GridView} gegeven worden. Deze voorziet een visualisatie van de \emph{Grid} en kan op verschillende manieren ingevuld worden. Voor dit project hebben we twee implementaties gemaakt: enerzijds een \emph{ConsoleGridView} die gedetailleerde informatie over de sectoren weergeeft en een \emph{SwingGridView} die een grafische voorstelling geeft van de \emph{Grid}. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
 
@@ -544,7 +544,7 @@ In appendix A werden de verschillende relevante beoordelingsdocumenten toegevoeg
 
 De robot reed consistent en robuust. Zelfs wanneer de robot fouten maakte werden deze hersteld. In het begin las de lichtsensor foute waarden en reed de robot heen en weer. De introductie van het nieuwe algoritme om deze sensor automatisch te kalibreren lag hier aan de oorsprong. Na enige tijd was de kalibratie duidelijk beter en begon de robot alsnog het speelveld verder te verkennen. Hierbij viel op hoe robuust de implementatie van de Driver is.
 
-De feedback van het didactische team was overwegend positief. Er werd duidelijk goed nagedacht over de softwarearchitectuur, zowel op niveau van robuustheid, uitbreidbaarheid als structuur. De gebruikte strategie i.v.m. Collaborative diffusion is goed gevonden en werkt duidelijk goed door zijn eenvoud. Het dashboard werd positief vermeld en de inhoud en opmaak van het verslag waren in lijn met de overige kwaliteit.
+De feedback van het didactische team was overwegend positief. Er werd duidelijk goed nagedacht over de softwarearchitectuur, zowel op niveau van robuustheid, uitbreidbaarheid als structuur. De gebruikte strategie i.v.m.\ Collaborative diffusion is goed gevonden en werkt duidelijk goed door zijn eenvoud. Het dashboard werd positief vermeld en de inhoud en opmaak van het verslag waren in lijn met de overige kwaliteit.
 
 Naast opmerkingen over opmaak en verduidelijking, waren er ook tips met zicht op verbetering van de presentatie en het rijgedrag van de robot.
 
@@ -589,7 +589,7 @@ Dit deel wordt later toegevoegd.
 
 Onze werkwijze tijdens het eerste semester heeft zijn vruchten afgeworpen. We willen deze aanpak ook in het tweede semester verder zetten. Zo volgen we opnieuw twee paden naar ons doel: enerzijds wordt er verder gewerkt aan de simulator en wordt de robot verder verbeterd. Anderzijds starten we ook een traject op dat zich focust op het einddoel.
 
-Omdat de scope van de eerste demo in essentie zo sterkt aanleunt bij het uiteindelijke doel en omdat we met de ontwikkeling van de simulator tijdens het eerste semester een voorsprong hebben t.o.v. de overige teams willen we de scope van de finale demo reeds als doelstelling nemen voor de eerste demo.
+Omdat de scope van de eerste demo in essentie zo sterkt aanleunt bij het uiteindelijke doel en omdat we met de ontwikkeling van de simulator tijdens het eerste semester een voorsprong hebben t.o.v.\ de overige teams willen we de scope van de finale demo reeds als doelstelling nemen voor de eerste demo.
 
 Dit gaat hand in hand met de tijd die we ter beschikking hebben tijdens de eerste weken van het semester, wanneer oefenzittingen voor andere vakken nog niet begonnen zijn. We kiezen dus voor een \emph{blitzkrieg} waarbij we trachten om de totale scope in een korte tijd te realiseren, waarna we tijdens de resterende weken dan verder kunnen verfijnen.
 
@@ -601,7 +601,7 @@ Ten gevolge van overlappingen in het uurrooster en in samenspraak met het didact
 
 Aangezien we tijdens de demo 1 voorbereiding ons vooral gefocust hebben op de functionele scope, gebruiken we de tijd voor demo 2 om verfijning aan ons model en onze code aan te brengen. Hierbij denken we vooral aan bugfixes, het opkuisen van de code tree en het opkuisen van de klassen zelf.
 
-Om te weten aan wat en hoe we extra aandacht moeten geven aan onze architectuur en code, evenals om iedereen in detail vertrouwd te maken met alle code, besloten we om in de eerste week na demo 1 tijd te nemen om alle code te overlopen. Tijdens dit proces hielden we een gedeeld Google docs bestand bij waarin we opmerkingen, fouten en/of vragen m.b.t. de code konden plaatsen. Hierop konden alle groepsleden commentaar geven of verduidelijkingen toevoegen. Deze lijst werd als basis gebruikt om dan het werk te verdelen over de groepsleden.
+Om te weten aan wat en hoe we extra aandacht moeten geven aan onze architectuur en code, evenals om iedereen in detail vertrouwd te maken met alle code, besloten we om in de eerste week na demo 1 tijd te nemen om alle code te overlopen. Tijdens dit proces hielden we een gedeeld Google docs bestand bij waarin we opmerkingen, fouten en/of vragen m.b.t.\ de code konden plaatsen. Hierop konden alle groepsleden commentaar geven of verduidelijkingen toevoegen. Deze lijst werd als basis gebruikt om dan het werk te verdelen over de groepsleden.
 
 Naast deze aanpak gaan we ook proberen om het concept \emph{pair programming} toe te passen. Zo is het de bedoeling dat we met twee paren en \'e\'en losse speler die overal bijspringt werken. Dit gebeurt zowel tijdens als naast de zittingen op maandag.
 
@@ -754,7 +754,7 @@ Team Platinum
 kaart gegeven voor elke demo), weliswaar niet rechtstreeks. Nuancering hierover nodig in het verslag.
  \item Sectie 4.1.1: Op welke manier kan de robot gemakkelijker bestuurd worden door de NXT Brick om te keren?
  \item Sectie 4.1.1: Foto's van de robot kunnen helpen de beschrijving te ondersteunen.
- \item Sectie 6: Is er overwogen om gebruik te maken van een PC i.p.v. de robot alles te laten bijhouden en zelf te
+ \item Sectie 6: Is er overwogen om gebruik te maken van een PC i.p.v.\ de robot alles te laten bijhouden en zelf te
 laten beslissen? Hierdoor zou immers het geheugenprobleem verhoplen kunnen worden.
  \item Sectie 6.1.4: Waarom is een minimum van 60 FPS noodzakelijk? Na ongeveer 17 ms (=1000/60) zijn (waar-
 schijnlijk) nog niet alle gemeten waarden van de sensoren veranderd. Is dit bijgevolg niet redundant?
@@ -797,19 +797,19 @@ toepassing op analoge situaties);
 	\item Vreemd taalgebruik:
   \begin{itemize}
 	\item Samenvatting: programmatie, ''effectieve fysieke robot'';
-	\item \textit{Map} veelvuldig gebruikt i.p.v. \textit{kaart}, o.m. op pag. 3.
+	\item \textit{Map} veelvuldig gebruikt i.p.v.\ \textit{kaart}, o.m. op pag. 3.
 \end{itemize}
 	\item Andere opmerkingen:
 \begin{itemize}
-	\item bij voorkeur enkele aanhalingstekens gebruiken i.p.v. dubbele, in het bijzonder bij het benadrukken van \'e\'en
-woord; nog beter is gebruik maken van cursivering i.p.v. aanhalingstekens, dit is minder storend bij het
+	\item bij voorkeur enkele aanhalingstekens gebruiken i.p.v.\ dubbele, in het bijzonder bij het benadrukken van \'e\'en
+woord; nog beter is gebruik maken van cursivering i.p.v.\ aanhalingstekens, dit is minder storend bij het
 lezen;
 	\item zo weinig mogelijk woorden benadrukken om leesbaarheid te bevorderen, bv. sectie 5.1: ''In de voorstelling ontstaat er een ''deuk'' in de ''geur'' achter de ''ghost''.'';
 	\item veel passieve zinnen (wordt, worden, werden,...);
 	\item gebruik van het woord \textit{men} bij voorkeur te vermijden;
-	\item \LaTeX afkortingen zoals i.v.m. en t.o.v. laten eindigen met backslash, zodat een 'normale' spatie gebruikt
-wordt i.p.v. een grotere zoals op het einde van een zin gebruikelijk is;
-	\item bij voorkeur gebruik maken van \textit{sections} i.p.v. chapter in de \LaTeX-broncode; hoofdstukken zijn eerder gebruikelijk bij boeken en cursussen.
+	\item \LaTeX afkortingen zoals i.v.m.\ en t.o.v.\ laten eindigen met backslash, zodat een 'normale' spatie gebruikt
+wordt i.p.v.\ een grotere zoals op het einde van een zin gebruikelijk is;
+	\item bij voorkeur gebruik maken van \textit{sections} i.p.v.\ chapter in de \LaTeX-broncode; hoofdstukken zijn eerder gebruikelijk bij boeken en cursussen.
 \end{itemize}
 \end{itemize}
 
@@ -856,8 +856,8 @@ Algemeen gezien is er nog steeds een grote overlap tussen de verschillende hoofd
 \subsubsection{1.a Grote problemen}
 
 \begin{itemize}
-	\item Waarom wordt er geen geaggregeerde voorstelling van de info gemaakt i.p.v. de info te negeren? Een voorstelling van de huidige wereld met behulp van info komende van alle robots zou logischer zijn, er is immers geen geheugengebrek. Mogelijks is dit voor later gehouden.
-	\item Waarom wordt alles op de PC gedaan? Misschien kan men informatie toevoegen i.v.m. onderzoek naar de bluetoothverbinding? Alles stond in het eerste semester op de robot dus dient er toch uitgelegd te worden waarom men deze overschakeling doet?
+	\item Waarom wordt er geen geaggregeerde voorstelling van de info gemaakt i.p.v.\ de info te negeren? Een voorstelling van de huidige wereld met behulp van info komende van alle robots zou logischer zijn, er is immers geen geheugengebrek. Mogelijks is dit voor later gehouden.
+	\item Waarom wordt alles op de PC gedaan? Misschien kan men informatie toevoegen i.v.m.\ onderzoek naar de bluetoothverbinding? Alles stond in het eerste semester op de robot dus dient er toch uitgelegd te worden waarom men deze overschakeling doet?
 	\item Er werd volgens ons te weinig aandacht besteed aan het protocol. Wat waren de voor- en nadelen op het vlak van implementatie voor team rood? Wat hadden ze achteraf gezien anders gedaan, wat hebben ze niet nodig, wat willen ze er nog aan toevoegen, etc ?
 \end{itemize}
 
@@ -886,12 +886,12 @@ Algemeen gezien is er nog steeds een grote overlap tussen de verschillende hoofd
 	\item sectie 4.1.3: receiver- en sendervelden (streepje en velden aan sender, vaak geen streepjes)
 	\item sectie 4.2.2: de zien is  (  te zien is ), achtereenvolgens( s i.p.v d)
 	\item sectie 4.4.1: Er zijn enkele enkele(dubbel)
-	\item sectie 5.1.2: Dit om te vermijden dat (i.p.v. dit om in de te vermijden \ldots)
+	\item sectie 5.1.2: Dit om te vermijden dat (i.p.v.\ dit om in de te vermijden \ldots)
 	\item sectie 5.2.1: Een stuk doolhof dat niet verkend kan worden(\ldots)wordt niet verkend. overbodig(meermaals overbodige constructies)
 	\item sectie 6.1.2: dat de robot(tweemaal achtereen)
 	\item sectie 7.1.1: een keer in de mist gegaan(de mist ingegaan)
 	\item sectie 8.1  : Er was geen tijd om te testen \ldots (in deze zin missen enkele leestekens)
-	\item overige     : overbodige komma's ; zinnen zonder werkwoord (bvb sectie 3.1.2: zoals bijvoorbeeld het wit\ldots); samenstellingen schrijven met spatie ertussen is fout; tussen persoonsvormen komma gebruiken;  soms enkelvoud gebruikt i.p.v. meervoud bij werkwoorden; foutief gebruik van koppeltekens bij samenstellingen
+	\item overige     : overbodige komma's ; zinnen zonder werkwoord (bvb sectie 3.1.2: zoals bijvoorbeeld het wit\ldots); samenstellingen schrijven met spatie ertussen is fout; tussen persoonsvormen komma gebruiken;  soms enkelvoud gebruikt i.p.v.\ meervoud bij werkwoorden; foutief gebruik van koppeltekens bij samenstellingen
 	\item consistentie: IRSeeker en IR-Seeker; cursiveren van de klassenamen, methoden,enz. ; RabbitMQ-protocol; Integerwaarde(aan elkaar soms af elkaar)
 \end{itemize}
 
@@ -907,7 +907,7 @@ Algemeen gezien is er nog steeds een grote overlap tussen de verschillende hoofd
 \subsection{ Positieve punten}
 \begin{itemize}
 	\item Robot redesign werd zeer goed onderbouwd.
-	\item De scenario analyses zijn zeer goed voor de strategie, gevaar is natuurlijk wel dat als dit te veel gedaan wordt dat het verslag zijn bondigheid uit het oog verliest. Deze scenario's kunnen ook de indruk wekken dat er enkel gedachtenexperimenten werden opgezet omtrent zeer specifieke situaties, i.p.v. de algemene strategie uitgebreid te testen. Het blijft wel een zeer aangename manier om de denkstrategie toe te lichten.
+	\item De scenario analyses zijn zeer goed voor de strategie, gevaar is natuurlijk wel dat als dit te veel gedaan wordt dat het verslag zijn bondigheid uit het oog verliest. Deze scenario's kunnen ook de indruk wekken dat er enkel gedachtenexperimenten werden opgezet omtrent zeer specifieke situaties, i.p.v.\ de algemene strategie uitgebreid te testen. Het blijft wel een zeer aangename manier om de denkstrategie toe te lichten.
 \end{itemize}
  
 \chapter{Grafische User Interface}
