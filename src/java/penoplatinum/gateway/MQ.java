@@ -25,7 +25,6 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.AMQP;
 
-import penoplatinum.util.Utils;
 
 public class MQ implements Queue {
   private String  channelName = "default";

@@ -7,6 +7,7 @@ public class GhostRobotNewFactory {
   
   public static GhostRobot make(){
     ModelProcessor procs = new LightModelProcessor();
+    
     return new GhostRobot(procs);
   }
   

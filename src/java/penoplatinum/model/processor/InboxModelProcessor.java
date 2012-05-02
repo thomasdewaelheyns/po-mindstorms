@@ -7,9 +7,6 @@ package penoplatinum.model.processor;
  * @author MHGameWork
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import penoplatinum.model.part.MessageModelPart;
 import penoplatinum.protocol.ProtocolHandler;
 

@@ -78,12 +78,20 @@ public class LineRobot implements AdvancedRobot {
   public Model getModel() {
     return this.model;
   }
+  
+  public void setModel(Model model){
+    this.model = model;
+  }
 
   @Override
   public LineRobot useRobotAPI(RobotAPI api) {
     this.api = api;
     this.originalAngle = this.api.getRelativeAngle(0);
     return this;
+  }
+  
+  protected float getOriginalAngle(){
+    return this.originalAngle;
   }
 
   @Override
@@ -100,7 +108,7 @@ public class LineRobot implements AdvancedRobot {
   public void step() {
     // poll other sensors and update model
     SensorModelPart.from(this.model).updateSensorValues(this.api.getSensorValues());
-    SensorModelPart.from(this.model).setTotalTurnedAngle(this.api.getRelativeAngle(originalAngle));
+    SensorModelPart.from(this.model).setTotalTurnedAngle(this.api.getRelativeAngle(getOriginalAngle()));
     
     this.model.refresh();
     if (driver.isBusy()) {  //driver
