@@ -77,6 +77,7 @@ public class LineModelProcessor extends ModelProcessor {
           }
         } else {
           if( currentColor != LightColor.WHITE) {
+            System.out.println("BOho, It's a barcode, I can't read yet.");
             this.state = END_CORRUPTED;
             break;
           }

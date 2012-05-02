@@ -100,24 +100,23 @@ public class GridModelPart implements ModelPart {
         count = 1;
       } else if( this.myGrid.hasAgentOn(sector, GhostAgent.class) ) {
         // a ghost blocks all diffusion
-      } else {
+      } else if( ! sector.isFullyKnown() ) {
         // unknown sectors are "interesting"
-        if( ! sector.isFullyKnown() ) {
-          total = 5000;
-          count = 1;
-        } else {
-          // diffuse
-          for( Bearing atBearing: Bearing.NESW ) { 
-            // if we know about walls and there is NO wall take the sector's
-            // value into account
-            if( sector.knowsWall(atBearing) && ! sector.hasWall(atBearing)) {
-              if( sector.hasNeighbour(atBearing) ) {
-                total += sector.getNeighbour(atBearing).getValue();
-                count++;
-              }
+        total = 5000;
+        count = 1;
+      } else {
+        // diffuse
+        for( Bearing atBearing: Bearing.NESW ) { 
+          // if we know about walls and there is NO wall take the sector's
+          // value into account
+          if( sector.knowsWall(atBearing) && ! sector.hasWall(atBearing)) {
+            if( sector.hasNeighbour(atBearing) ) {
+              total += sector.getNeighbour(atBearing).getValue();
+              count++;
             }
           }
         }
+        
       }
       if (count > 0) {
         sector.setValue((int) ((total / count) * 0.75));

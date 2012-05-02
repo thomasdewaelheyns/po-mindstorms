@@ -1,4 +1,4 @@
-package penoplatinum.model;
+package penoplatinum.fullTests;
 
 /**
  * GhostModel
@@ -8,6 +8,7 @@ package penoplatinum.model;
  * @author: Team Platinum
  */
 
+import penoplatinum.model.Model;
 import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.reporter.Reporter;
 

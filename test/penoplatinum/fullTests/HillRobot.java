@@ -2,7 +2,6 @@ package penoplatinum.fullTests;
 
 import penoplatinum.driver.Driver;
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.model.LineModel;
 import penoplatinum.model.Model;
 import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.model.processor.LightModelProcessor;
@@ -128,6 +127,6 @@ public class HillRobot implements AdvancedRobot {
 
   @Override
   public String getName() {
-    return "Hello, i am dumb but have a driver.";
+    return "Hello, I climb hills!";
   }
 }
