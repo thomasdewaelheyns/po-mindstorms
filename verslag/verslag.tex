@@ -12,6 +12,15 @@
 \usepackage{booktabs}
 \usepackage{pdflscape}
 
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
 \begin{document}
 
 \include{lc-titel}
@@ -140,12 +149,12 @@ Het ``barcode'' commando wordt vervangen door een ``barcodeat'' commando, dit is
 Er werd eveneens een ``removebarcode'' toegevoegd om teams toe te laten eerdere transmissies omtrent barcodes ongedaan te maken.
 
 \subsection{Aanpassingen Demo 3}
-De besproken versie betreft versie 2.2.
-De belangrijkste aanpassingen voor de laatste demo zijn deze met betrekking op een reconnect-procedure.
 
-Ten eerste werd het scenario uitgedacht met betrekking op het ontvangen van een JOIN commando, indien we al bezig zijn. Doormiddel van het RENAME commando worden de oude robots onderscheiden van de nieuwe client, deze gebruikt namelijk het NAME commando. 
+De besproken versie betreft versie 2.2. De belangrijkste aanpassingen voor de laatste demo zijn deze met betrekking op een reconnect-procedure.
 
-Ten tweede werd een broadcast-commando uitgedacht. De robots kunnen dan indien ze uitvallen een SHOWMAP commando gebruiken, nadat ze terug toegelaten tot het spel. Dit heeft als doel het uitzenden van een grote hoeveelheid informatie na herstarten. De commando's stoten oorspronkelijk op enkele problemen en werden uiteindelijk gedoopt met een RE-prefix, ipv het hergebruik van de bestaande commando's. Tevens gaat het niet over het delen van de informatie die men als bekend beschouwd, maar om het heruitzenden van een log van alle uitgezonden commando's.
+Ten eerste werd het scenario uitgewerkt met betrekking op het ontvangen van een \emph{JOIN} commando, indien we al bezig zijn. Doormiddel van het \emph{RENAME} commando worden de oude robots onderscheiden van de robot die na falen opnieuw verbindt met de message queue en zich (opnieuw) aanmeldt met een \emph{JOIN} commando. Deze robot zal uit de \emph{RENAME} antwoorden kunnen opmaken dat hij een bestaande sessie vervoegt. Zelf gebruikt hij wel het \emph{NAME} commando.
+
+Ten tweede werd een commando in het leven geroepen waarmee robots informatie van elkaar kunnen vragen. De robots kunnen, bijvoorbeeld wanneer ze uitvallen, een \emph{SHOWMAP} commando gebruiken, nadat ze terug toegelaten zijn tot het spel. Dit heeft als doel het uitzenden van een grote hoeveelheid informatie na herstarten. Initieel werd voorgesteld om de bestaande commando's ter hergebruiken. Dit zorgde blijkbaar voor problemen, waardoor ze voorzien werden van een \emph{RE-} prefix. Tevens gaat het niet over het delen van de informatie die men als bekend beschouwd, maar om het heruitzenden van een log van alle reeds uitgezonden commando's. Echter deze definitie wordt verder gespecificeerd en het samenballen van informatie, bijvoorbeeld over \'e\'en zelfde sector, wordt tevens toegestaan.
 
 \subsection{Finale evaluatie}
 
@@ -205,10 +214,10 @@ Aangezien in demo 1 bleek dat de lichtsensor niet goed functioneerde, zullen we 
 
 \section{Demo 3}
 
-Aangezien afgesproken werd in de commissie om de robotten te voorzien van een vlaggetje waarop hun kleur bekend gemaakt wordt, werd dit aan de onze robot bevestigd. Verder werden er geen aanpassingen meer ingevoerd, aangezien de lichtsensor bij Demo 2 werkte naar voldoening.
-
+Aangezien afgesproken werd in de commissie om de robots te voorzien van een vlaggetje waarop hun kleur bekend gemaakt wordt, werd dit aan de onze robot bevestigd. Verder werden er geen aanpassingen meer doorgevoerd, aangezien de lichtsensor bij Demo 2 werkte naar verwachting.
 
 \chapter{Strategie}
+
 Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome ``ghosts'' gedaan.
 
 We vonden een paper omtrent ``Collaborate Diffusion'' \cite{Repenning06}. Hierin wordt voorgesteld om een vorm van ``Hill Climbing'' toe te passen om zo verschillende autonome ``ghosts'' toe te laten samen te werken om een ``Pac-Man'' te achtervolgen. Hierbij hebben zij geen nood aan bijkomende onderlinge communicatie naast de informatie over de omgeving.
@@ -263,9 +272,9 @@ Het toepassen van hetzelfde algoritme voor beide deelproblemen, levert ons in es
 
 \section{Samenwerking en onzekerheid}
 
-De informatie die van de verschillende robots verzameld wordt is zeker niet perfect. We moeten hiermee rekening houden, zonder parano\"ide te worden en alle informatie te wijgeren. We hanteren in de encodering van de informatie over het doolhof een gelaagd principe: enerzijds houden we bij of we ergens een muur hebben waargenomen of niet. Maar daarnaast houden we ook bij of we iets weten over die muur of niet. Zo ontstaan er drie mogelijk statussen waarin een muur zich kan bevinden: \emph{onbekend}, \emph{geen muur} en \emph{wel een muur}.
+De informatie die van de verschillende robots verzameld wordt is zeker niet perfect. We moeten hiermee rekening houden, zonder parano\"ide te worden en alle informatie te weigeren. We hanteren in de encodering van de informatie over het doolhof een gelaagd principe: enerzijds houden we bij of we ergens een muur hebben waargenomen of niet. Maar daarnaast houden we ook bij of we iets weten over die muur of niet. Zo ontstaan er drie mogelijk statussen waarin een muur zich kan bevinden: \emph{onbekend}, \emph{geen muur} en \emph{wel een muur}.
 
-Aan de hand van deze statussen kunnen we nu overgangen gaan defini\"eren die we acceptable vinden. Een \emph{onbekende} muur kan zonder problemen omgezet worden in \emph{geen muur} of \emph{wel een muur}. Wanneer we echter over informatie over een muur muur beschikken en we krijgen informatie die tegenstrijdig is, dan zullen we de status van de muur terug naar \emph{onbekend} brengen.
+Aan de hand van deze statussen kunnen we nu overgangen gaan defini\"eren die we acceptable vinden. Een \emph{onbekende} muur kan zonder problemen omgezet worden in \emph{geen muur} of \emph{wel een muur}. Wanneer we echter over informatie over een muur beschikken en we krijgen informatie die tegenstrijdig is, dan zullen we de status van de muur terug naar \emph{onbekend} brengen.
 
 De gevolgen voor het collaborate diffusion algoritme kunnen inhouden dat een sector die volledig gekend was en die dus geen \emph{geur} meer uitstraalde, plots opnieuw een waarde krijgt die zich door het doolhof zal verspreiden. Hierdoor zal de robot geneigd zijn om deze opnieuw te gaan verkennen.
 
@@ -283,9 +292,9 @@ Aan de hand van de mini-simulator, hebben we veelvuldig scenario's uitgetest. Hi
 
 In het eerste semester hadden we reeds een redelijk uitgebreid raamwerk opgebouwd om robots samen te stellen uit componenten. Dankzij dit werk kunnen we in het tweede semester hier op verder bouwen door de bestaande concepten verder te verfijnen en uit te breiden.
 
-Echter, vooraleer de definitieve beslissing genomen werd om ver te bouwen op de bestaande architectuur werden andere opties bekeken. Enerzijds werd de bestaande \emph{piloot} klasse van de Lejos software bekeken en anderzijds werd in literatuur gezocht naar andere mogelijke opstellingen.
+Echter, vooraleer de definitieve beslissing genomen werd om ver te bouwen op de bestaande architectuur, werden enkele andere opties bekeken. Enerzijds werd de bestaande \emph{piloot} klasse van de Lejos software bekeken en anderzijds werd in literatuur gezocht naar andere mogelijke opstellingen.
 
-De bestaande \emph{piloot} klasse van Lejos hield geen radicaal verschillende aanpak. Wel hebben we het \emph{behaviour} idee ge\"incorporeerd in ons eigen ontwerp. Bij onze zoektocht in de literatuur moesten we tot het besluit komen dat er waarschijnlijk evenveel architecturen zijn als er robots zijn. Veel van de bekeken oplossingen begeven zich deels op het vlak van Lejos of belichtten een veel hoger niveau. Een concrete, de facto, alternatieve architectuur voor het aansturen van een robot werd niet gevonden. Wel hebben we veel idee\"en opgedaan die verwerkt werden tijdens de verschillende herwerkingen van de software.
+De bestaande \emph{piloot} klasse van Lejos kende geen radicaal verschillende aanpak. Wel hebben we het \emph{behaviour} idee ge\"incorporeerd in ons eigen ontwerp. Bij onze zoektocht in de literatuur moesten we tot het besluit komen dat er waarschijnlijk evenveel mogelijke ontwerpen zijn als er robots zijn. Veel van de bekeken oplossingen begeven zich deels op het vlak van Lejos of belichtten een veel hoger niveau. Een concrete, de facto, alternatieve architectuur voor het aansturen van een robot werd niet gevonden. Wel hebben we veel idee\"en opgedaan die verwerkt werden tijdens de verschillende bijwerkingen van de software.
 
 De architectuur van het eerste semester heeft zich bewezen, de structuur en concepten zijn gekend, alsook de problemen en tekortkomingen. Alles in beschouwing genomen werd unaniem besloten om verder te werken op de bestaande design en elementen uit de studie van andere oplossingen op te nemen waar nuttig.
 
@@ -581,7 +590,7 @@ Naast deze aanpak gaan we ook proberen om het concept ``pair programming'' toe t
 
 Na de grote teleurstelling in demo 2 beslisten we onze aandacht op de architectuur en de code vol te houden. Onze refactoring aanpak werd wel aangevuld met het cre\"ren van een uitgebreid unit test package. Waarbij op het moment van schrijven een dekking van meer dan zestig percent van de totale codebase is bereikt. Een dekking van honderd percent is enerzijds niet realistisch, maar is tevens ook niet nodig. Logischerwijze wensen we een dekking voor de relevante klassen. Bij de creatie van dit package werd in parallel alle code gereviewed. Zo werd er veel ongebruikte code verwijderd en losten we er een heel reeks bugs op. Aangezien we reeds tijdens de voorbereiding van de eerste demo getracht hadden de volledige scope te bereiken, waren we nu tevens in staat op functioneel alles tot in details uit werken zonder onbekende delen.
 
-Zo werd o.a.\ de volledige interne voorstelling van de sectoren aangepakt. Met de ervaring die we opgedaan hadden tijdens de voorbereiding van demo2, waren we nu in staat om deze implementatie sterk te verbeteren met het oog op geheugengebruik en inzetbaarheid.
+Zo werd o.a.\ de volledige interne voorstelling van de sectoren aangepakt. Met de ervaring die we opgedaan hadden tijdens de voorbereiding van demo 2, waren we nu in staat om deze implementatie sterk te verbeteren met het oog op geheugengebruik en inzetbaarheid.
 
 Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces ge(her)defineerd hebben, zodat we allen konden werken aan afgeronde gehelen. Dit gaf natuurlijk het nadeel dat de volledige source code onbruikbaar was tot al deze gehelen opnieuw ge\"integreerd waren. We geloven er sterk in dat dit proces onze code veel stabieler heeft gemaakt en onze robot hier dus baat bij heeft.
 
