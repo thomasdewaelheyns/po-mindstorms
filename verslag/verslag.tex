@@ -916,23 +916,21 @@ TODO: details toevoegen.
 
 TODO: beschrijving simulator toevoegen met uitleg over de GridView als inplugbaar component.
 
-TODO: screenshot nieuwe simulator toevoegen
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=150mm]{resources/simulator2.png}
+  \caption{De Simulator simuleert vier robots.}
+  \label{fig:simulator2}
+\end{figure}
 
-%\begin{figure}[htbp]
-%  \centering
-%  \includegraphics[width=150mm]{resources/simulator2.png}
-%  \caption{De Simulator simuleert vier robots.}
-%  \label{fig:simulator2}
-%\end{figure}
-
-\section{Robot Administratie Shell, RASH}
+\section{RASH - Robot Administratie Shell}
 
 De Robot Administratie Shell, kortweg \emph{rash}, werd in het leven geroepen om commando's door te sturen naar de robot. De nood voor een dergelijke tool ontstond uit de noodzaak om bijvoorbeeld een robot te verplichten om het gewone verloop van de start-procedure, zoals gedefinieerd in het \emph{GhostProtocol}, te doorbreken en de robot te verplichten om toch te starten.
 
-Aangezien er in het protocol impliciet ruimte is gelaten om eigen commando's te specificeren, door het verplichten van het negeren van onbekende commando's, en over de rabbitMQ server te sturen kozen we om een uitbreidbaar commando in gebruik te nemen.
+Aangezien er in het protocol impliciet ruimte is gelaten om eigen commando's te specificeren, door het verplichten van het negeren van onbekende commando's, en deze via de message queue te sturen, kozen we om een generiek eigen \emph{custom} commando te gebruiken:
 
 \begin{center}
-{\tt name PENOPLATINUM\_CMD signature counter command}
+{\tt <name> PENOPLATINUM\_CMD <signature> <counter> <command>}
 \end{center}
 
 Hierin is \emph{name} de naam van onze robot, \emph{signature} een MD5 hash die dient om het \emph{PENOPLATINUM\_CMD} te beveiligen, \emph{counter} een teller om te zorgen dat elk bericht uniek is en niet meerdere malen zou geaccepteerd worden en \emph{command} een commando met eventueel eigen argumenten. Door deze opbouw is het makkelijk om meer eigen commando’s toe te voegen. Voorlopig is een \emph{FORCESTART} commando op deze manier ge\"implementeerd. Figuur \ref{fig:rash_help} toont \emph{rash} opgestart met het \emph{help} argument, waardoor een overzicht wordt getoond van de mogelijke command line argumenten. 
