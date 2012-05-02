@@ -411,9 +411,9 @@ Met het oog op demo 2 en 3 willen we nog verdere optimalisaties doorvoeren op he
 
 \section{PC}
 
-Op het vlak van de PC kunnen we opnieuw verder bouwen op onze bestaande ServiceAgent. Naast het logging-kanaal, zal deze nu ook een tweede Bluetooth kanaal volgen, langs het welke de boodschappen van het GhostProtocol kunnen uitgewisseld worden met de Exchange-queue op de RabbitMQ server.
+Op het vlak van de PC kunnen we opnieuw verder bouwen op onze bestaande \emph{ServiceAgent}. Naast het logging-kanaal, zal deze nu ook een tweede Bluetooth kanaal volgen, langs het welke de boodschappen van het \emph{Ghost Protocol} kunnen uitgewisseld worden met de \emph{exchange-queue} op de RabbitMQ server.
 
-Ook het Dashboard wordt uitgebreid met meer informatie over de werking van het zoek-algoritme en de map-verkenning. Hiervoor moet louter bijkomende informatie vanuit het Model en de Navigator doorgestuurd worden, kunnen we Log4J eenvoudig aanpassen in configuratie en voorzien we de databank van bijkomende kolommen om de nieuwe gegevens op te slaan.
+Ook het \emph{Dashboard} wordt uitgebreid met meer informatie over de werking van het zoek-algoritme en de map-verkenning. Hiervoor moet louter bijkomende informatie vanuit het \emph{Model} en de \emph{Navigator} doorgestuurd worden, kunnen we \emph{Log4J} eenvoudig aanpassen in configuratie en voorzien we de databank van bijkomende kolommen om de nieuwe gegevens op te slaan.
 
 Het Dashboard zelf wordt voorzien van de nodige visualisaties voor deze nieuwe informatie. Figuur \ref{fig:dashboard} toont de nieuwe samenstelling.
 
@@ -423,6 +423,16 @@ Het Dashboard zelf wordt voorzien van de nodige visualisaties voor deze nieuwe i
   \caption{Nieuw Dashboard}
   \label{fig:dashboard}
 \end{figure}
+
+\subsection{Externe componenten}
+
+We trachten bij de ontwikkeling van de software zo veel mogelijk bestaande componenten te gebruiken. Zo worden alle op de PC uitgevoerde applicaties voorzien van opties die kunnen meegegeven worden op de command line. Hierdoor worden de applicaties flexibel en kan veel van de configuratie langs deze weg dynamisch voorzien worden.
+
+Anderzijds trachten we ook het wiel niet opnieuw uit te vinden. Het inzetten van \emph{Log4J} begon als een klassieke keuze voor een industri\"ele standaard, maar groeide gaandeweg uit tot een centrale component. Via de configuratie van \emph{Log4J} zijn we niet alleen in staat om de informatie die van de robot naar de \emph{Gateway} wordt gezonden, op te slaan in een simpele log file of in de databank. Ook de detail uitsplitsing van deze informatie naar verschillende tabellen kan ondertussen op dit niveau gebeuren. Ook werd een eigen \emph{LogAppender} gemaakt die de informatie in een bestand opslaat, zodat het gebruikt kan worden door een \emph{Dashboard} zonder dat dit zich moet verbinden met een server.
+
+Zonder enige uitbreiding van de code zijn we zelfs in staat om deze informatie te posten naar bijvoorbeeld Twitter, waardoor onze robot zonder twijfel de eerste \emph{twitterende} robot is geworden. Er bestaat immers een Log4J Appender die dit voor ons doet\footnote{\url{http://code.google.com/p/twitter-log4j/}}. We moeten louter een sectie toevoegen aan de configuratie en onze robot kan gevolgd worden op Twitter: \url{https://twitter.com/\#!/RobotPlatinum}. Dus \emph{follow @RobotPlatinum}.
+
+Een laatste belangrijke externe component is zonder twijfel \emph{Mockito}\footnote{\url{http://code.google.com/p/mockito/}}. Dit \emph{mocking framework} is de hoeksteen van een goed uitgevoerde suite aan unit testen. Van oorsprong was \emph{Mockito} echter een \emph{spying framework}, maar omdat de lijn tussen de twee verantwoordelijkheden zo dun begon te worden en meer en meer mensen gebruik wensten te maken van \emph{Mockito} is de nodige functionaliteit toegevoegd en is het op dit ogenblik \'e\'en van de beste \emph{mocking frameworks} dat beschikbaar is. De belangrijkste eigenschap van \emph{Mockito} is de laagdrempeligheid. Dit was binnen het team een belangrijke factor, omdat er weinig tot geen ervaring was hieromtrent bij de meeste van de teamleden. Dankzij deze laagdrempeligheid en de snelle \emph{return on investment} werden alle teamleden snel grote fans van dit framework.
 
 \section{Refactoring}
 
@@ -434,7 +444,7 @@ Een van de grootste acties bestond er in om het sterk uitgegroeide Model op te s
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=120mm]{resources/refactoring-model.png}
+  \includegraphics[width=110mm]{resources/refactoring-model.png}
   \caption{Refactoring van Model}
   \label{uml:refactoring}
 \end{figure}
@@ -442,6 +452,13 @@ Een van de grootste acties bestond er in om het sterk uitgegroeide Model op te s
 Samen met deze refactoring werd ook de redundante code die ontstond bij de introductie van de mini-simulator maximaal weggewerkt. Beide simulatoren gebruiken nu zo veel mogelijk dezelfde code.
 
 Daarnaast wordt er ook bij elke verbetering rekening gehouden met het geheugengebruik. Waar mogelijk worden zo klein mogelijke datastructuren gebruikt om het onnodig reserveren van geheugenruimte te beperken. Dit geldt natuurlijk alleen voor klassen die effectief op de robot gebruikt worden.
+
+\subsection{Van pure refactoring naar test coverage}
+
+Tijdens het refactoren tussen demo 1 en 2 kwamen veel verdoken problemen naar boven en het refactoren zelf verliep zeer moeizaam. De code voelde aan al een groot \emph{Mikadospel}. Wanneer we aan \'e\'en kant iets aanpasten, viel aan de andere kant een groot deel van het project in duigen. Het was duidelijk dat we een structurele ingreep moesten doen om te voorkomen dat dit probleem verder zou escaleren.
+
+We besloten om het refactoren verder door te drijven en de code sequentieel te doorlopen, alles in orde te brengen en vooral volledig te voorzien van unit testen. Met een Paasvakantie voor de boeg leek ons dit een opportuun moment om de kwaliteit van de code structureel aan te pakken.
+In sectie \ref{unittesten} bespreken het unit testen in groter detail in het kader van de procesbeschrijving.
 
 \chapter{Simulator}
 
@@ -475,7 +492,7 @@ In het tweede semester moet de simulator op niet minder dan 3 verschillende mani
 \item Naast onderlinge communicatie tussen de robots in de simulatoren moeten ook fysieke robots kunnen deelnemen, in een zgn. hybride modus.
 \end{itemize}
 
-Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het \emph{Ghost Protocol} en de MQ-server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de ServiceAgent en het Log4J losging framework opgeslagen worden in de databank, waarna ze consulteerbaar zijn via de webclient.
+Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het \emph{Ghost Protocol} en de MQ-server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de ServiceAgent en het \emph{Log4J} logging framework opgeslagen worden in de databank, waarna ze consulteerbaar zijn via de webclient.
 
 \begin{figure}[htbp]
   \centering
@@ -597,6 +614,7 @@ Zo werd o.a.\ de volledige interne voorstelling van de sectoren aangepakt. Met d
 Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces ge(her)defineerd hebben, zodat we allen konden werken aan afgeronde gehelen. Dit gaf natuurlijk het nadeel dat de volledige source code onbruikbaar was tot al deze gehelen opnieuw ge\"integreerd waren. We geloven er sterk in dat dit proces onze code veel stabieler heeft gemaakt en onze robot hier dus baat bij heeft.
 
 \section{Unit testen}
+\label{unittesten}
 
 Na de eerste demo van het tweede semester werden we geconfronteerd met de gevolgen van het negeren van \'e\'en van de belangrijkste geboden van software ontwikkeling: \emph{Gij zult uw code testbaar maken en testen.}. Bijna elke aanpassing aan \'e\'en deel van de code zorgde voor verschrikkelijke gevolgen aan een ander deel. Elke kleinste wijziging brak andere delen van de oplossing.
 
@@ -955,7 +973,7 @@ Figuur \ref{fig:rash_forcestart} toont \emph{rash} in actie\footnote{\emph{rash}
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=110mm]{resources/rash_forcestart.png}
-  \caption{Het versturen van het FORCESTART commando met behulp van rash.}
+  \caption{Het versturen van het FORCESTART commando met rash.}
   \label{fig:rash_forcestart}
 \end{figure}
 
@@ -968,9 +986,7 @@ De opstelling met \emph{rash} bood ons nog een bijkomende opportuniteit. Zo kunn
   \label{fig:rash_load}
 \end{figure}
 
-De keuze om van \emph{rash} een aparte applicatie te maken was evident: het beheren van de robot op dit niveau is niet verenigbaar met het eenvoudig volgen van informatie omtrent de robot, zoals dit in het \emph{Dashboard} mogelijk is. De gevoeligheid van de functionaliteit is veel hoger. Anderzijds is het moeten toepassen van deze acties eerder uitzonderlijk.
-
-Toch is het design van \emph{rash} zo uitgewerkt dat een integratie met het \emph{Dashboard} mogelijk is. De effectieve administratie is ondergebracht in een \emph{RobotAdminClient}. Deze is ingebed in de eigenlijk gebruikersinterface, \emph{RobotAdminShell}. Mits het toevoegen van een schrijfbaar veld in het \emph{Dashboard} en het opvangen van de inhoud van dit veld in de \emph{Gateway}, kan deze laatste de \emph{RobotAdminClient} zonder aanpassingen gebruiken om langs dit kanaal ook dezelfde functionaliteit te implementeren.
+De keuze om van \emph{rash} een aparte applicatie te maken was evident: het beheren van de robot op dit niveau is niet verenigbaar met het eenvoudig volgen van informatie omtrent de robot, zoals dit in het \emph{Dashboard} mogelijk is. De gevoeligheid van de functionaliteit is veel hoger. Anderzijds is het moeten toepassen van deze acties eerder uitzonderlijk. Toch is het design van \emph{rash} zo uitgewerkt dat een integratie met bijvoorbeeld het \emph{Dashboard} mogelijk is. De effectieve logica is ondergebracht in een \emph{RobotAdminClient}. Deze is ingebed in de eigenlijke gebruikersinterface, de \emph{RobotAdminShell}. Mits het toevoegen van een schrijfbaar veld in het \emph{Dashboard} en het opvangen van de inhoud van dit veld in de \emph{Gateway}, kan deze laatste de \emph{RobotAdminClient} zonder aanpassingen gebruiken om ook langs dit kanaal ook dezelfde functionaliteit te implementeren.
 
 \chapter{Klasse Diagrammen}
 
