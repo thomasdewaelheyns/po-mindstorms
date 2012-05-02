@@ -895,7 +895,85 @@ Algemeen gezien is er nog steeds een grote overlap tussen de verschillende hoofd
 %is op software-niveau, zodat dit kan gelinkt worden aan wat de robot feitelijk aan het uitvoeren is
 %op het speelveld.
 
-Dit deel wordt later toegevoegd.
+Het project voorziet verschillende gebruikers interfaces: een dashboard dat informatie geeft over verschillende parameters van de werking van een robot, een simulator die een beeld geeft van de gesimuleerde wereld en van de manier waarop de gesimuleerde robot de wereld ervaart en een administratie \emph{shell} om een robot van op afstand commando's door te sturen.
+
+\section{Dashboard}
+
+Het \emph{Dashboard} is een web toepassing die informatie ontvangt uit de databank waarin de \emph{Gateway} de ontvangen feedback van een robot opslaat. De web toepassing ontvangt deze informatie via een \emph{JSONP}\footnote{JSONP wordt typisch opgebouwd met een lang-lopende connectie waarover de server constant nieuwe Javascript commando's verstuurd. Deze worden op de client uitgevoerd, waardoor updates van bijvoorbeeld data kunnen verwerkt worden. Zie ook \url{http://en.wikipedia.org/wiki/JSONP}} connectie. Op deze manier kan de web toepassing toch in real-time een informatiestroom van de robot ontvangen.
+
+Figuur \ref{fig:dashboard_overview} toont het \emph{Dashboard} met al zijn samenstellende delen. Het principe van het \emph{Dashboard} bestaat uit een reeks van onafhankelijke panelen die elk een conceptueel deel van de informatie waarover de robot beschikt en mee werkt voorstellen. De verschillende onderdelen zijn: 
+
+TODO: details toevoegen.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=150mm]{resources/dashboard.png}
+  \caption{Overzicht van de functionaliteit van het Dashboard}
+  \label{fig:dashboard_overview}
+\end{figure}
+
+\section{Simulator}
+
+TODO: beschrijving simulator toevoegen met uitleg over de GridView als inplugbaar component.
+
+TODO: screenshot nieuwe simulator toevoegen
+
+%\begin{figure}[htbp]
+%  \centering
+%  \includegraphics[width=150mm]{resources/simulator2.png}
+%  \caption{De Simulator simuleert vier robots.}
+%  \label{fig:simulator2}
+%\end{figure}
+
+\section{Robot Administratie Shell, RASH}
+
+De Robot Administratie Shell, kortweg \emph{rash}, werd in het leven geroepen om commando's door te sturen naar de robot. De nood voor een dergelijke tool ontstond uit de noodzaak om bijvoorbeeld een robot te verplichten om het gewone verloop van de start-procedure, zoals gedefinieerd in het \emph{GhostProtocol}, te doorbreken en de robot te verplichten om toch te starten.
+
+Aangezien er in het protocol impliciet ruimte is gelaten om eigen commando's te specificeren, door het verplichten van het negeren van onbekende commando's, en over de rabbitMQ server te sturen kozen we om een uitbreidbaar commando in gebruik te nemen.
+
+\begin{center}
+{\tt name PENOPLATINUM\_CMD signature counter command}
+\end{center}
+
+Hierin is \emph{name} de naam van onze robot, \emph{signature} een MD5 hash die dient om het \emph{PENOPLATINUM\_CMD} te beveiligen, \emph{counter} een teller om te zorgen dat elk bericht uniek is en niet meerdere malen zou geaccepteerd worden en \emph{command} een commando met eventueel eigen argumenten. Door deze opbouw is het makkelijk om meer eigen commando’s toe te voegen. Voorlopig is een \emph{FORCESTART} commando op deze manier ge\"implementeerd. Figuur \ref{fig:rash_help} toont \emph{rash} opgestart met het \emph{help} argument, waardoor een overzicht wordt getoond van de mogelijke command line argumenten. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=110mm]{resources/rash_help.png}
+  \caption{Het help overzicht van rash.}
+  \label{fig:rash_help}
+\end{figure}
+
+Figuur \ref{fig:rash_forcestart} toont \emph{rash} in actie\footnote{\emph{rash} voorziet een \emph{debug} mode waarbij de boodschappen die naar de MQ server wordt verstuurd op de console getoond worden.}, waarbij het \emph{FORCESTART} commando uitgevoerd wordt.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=110mm]{resources/rash_forcestart.png}
+  \caption{Het versturen van het FORCESTART commando met behulp van rash.}
+  \label{fig:rash_forcestart}
+\end{figure}
+
+De opstelling met \emph{rash} bood ons nog een bijkomende opportuniteit. Zo kunnen we \emph{rash} ook gebruiken om een log van een sessie opnieuw af te spelen. Dit maakt het mogelijk om een reeks commando's van andere robots te simuleren en zo een uitgebreide communicatie tussen andere robots en onze eigen robot te testen zonder effectief andere robots nodig te hebben.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=110mm]{resources/rash_load.png}
+  \caption{Met behulp van rash kan een log van commando's verstuurd worden.}
+  \label{fig:rash_load}
+\end{figure}
+
+De keuze om van \emph{rash} een aparte applicatie te maken was evident: het beheren van de robot op dit niveau is niet verenigbaar met het eenvoudig volgen van informatie omtrent de robot, zoals dit in het \emph{Dashboard} mogelijk is. De gevoeligheid van de functionaliteit is veel hoger. Anderzijds is het moeten toepassen van deze acties eerder uitzonderlijk.
+
+Toch is het design van \emph{rash} zo uitgewerkt dat een integratie met het \emph{Dashboard} mogelijk is. De effectieve administratie is ondergebracht in een \emph{RobotAdminClient}. Deze is ingebed in de eigenlijk gebruikersinterface, \emph{RobotAdminShell}. Figuur \ref{fig:rash_design} toont de verschillende klassen die voorzien zijn. Mits het toevoegen van een schrijfbaar veld in het \emph{Dashboard} en het opvangen van de inhoud van dit veld in de \emph{Gateway}, kan deze laatste de \emph{RobotAdminClient} zonder aanpassingen gebruiken om langs dit kanaal ook dezelfde functionaliteit te implementeren.
+
+TODO: screenshot klassediagram toevoegen
+
+%\begin{figure}[htbp]
+%  \centering
+%  \includegraphics[width=150mm]{resources/rash_design.png}
+%  \caption{Design van de RobotAdminClient en RobotAdminShell}
+%  \label{fig:rash_design}
+%\end{figure}
 
 \chapter{Klasse Diagrammen}
 
