@@ -32,7 +32,6 @@ public class MockedAgent extends MovingAgent {
   @Override
   public Agent turnLeft() {
     super.turnLeft();
-    System.out.println("Changed bearing: " + getBearing());
     when(toChange.getGridModelPart().getMyBearing()).thenReturn(getBearing());
     return this;
   }
@@ -40,7 +39,6 @@ public class MockedAgent extends MovingAgent {
   @Override
   public Agent turnRight() {
     super.turnRight();
-    System.out.println("Changed bearing: " + getBearing());
     when(toChange.getGridModelPart().getMyBearing()).thenReturn(getBearing());
     return this;
   }
