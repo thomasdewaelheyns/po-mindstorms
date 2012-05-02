@@ -19,7 +19,7 @@ import penoplatinum.gateway.MQ;
 import penoplatinum.gateway.GatewayClient;
 import penoplatinum.gateway.Queue;
 import penoplatinum.gateway.Gateway;
-import penoplatinum.robot.Robot;
+import penoplatinum.robot.AdvancedRobot;
 
 
 public class SimulatedGatewayClient implements GatewayClient {
@@ -28,7 +28,7 @@ public class SimulatedGatewayClient implements GatewayClient {
   private Logger logger;
 
   // the robot we're the GatewayClient for
-  private Robot robot;
+  private AdvancedRobot robot;
 
   // we have a SimulatedConnection and a (Simulated)MQ
   private SimulatedConnection connection;
@@ -40,7 +40,7 @@ public class SimulatedGatewayClient implements GatewayClient {
   private boolean connected = false;
   
 
-  public SimulatedGatewayClient setRobot(Robot robot) {
+  public SimulatedGatewayClient setRobot(AdvancedRobot robot) {
     this.robot = robot;
     this.logger = Logger.getLogger( "SimulatedGatewayClient/"
                                   + this.robot.getName() );

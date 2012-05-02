@@ -26,6 +26,9 @@ public interface AdvancedRobot extends Robot {
   public AdvancedRobot useGatewayClient(GatewayClient agent);
   public GatewayClient getGatewayClient();
   
+  // incoming commands are processed
+  public void processCommand(String cmd);
+  
   // - a Reporter, that interrogates the Robot and can send information out
   public AdvancedRobot useReporter(Reporter reporter);
 

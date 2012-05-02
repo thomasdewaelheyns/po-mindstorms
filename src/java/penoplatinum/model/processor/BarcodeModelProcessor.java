@@ -36,6 +36,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
     
   // are we waiting for a new barcode to start (or are we reading it...)
   private boolean isWaiting = true;
+  private boolean wasCorrupt = true;
 
   private BarcodeModelPart barcodePart;
   private SensorModelPart  robot;
@@ -57,7 +58,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
     // we only work with new sensor values...
     if( ! this.newSensorValuesAreAvailable() ) { return; }
   
-    if( this.isWaiting ) {
+     if( this.isWaiting ) {
       // BLACK marks the beginning of a new barcode
       if( this.sensors.getCurrentLightColor() == LightColor.BLACK ) {
         System.out.println("Hey, it may be a barcode, I should pay attention!");
@@ -66,8 +67,21 @@ public class BarcodeModelProcessor extends ModelProcessor {
     } else { // we're reading...
       // turning makes the barcodereading corrupted, discard it
       // reading too much interference also discards the reading
-      if( this.robot.isTurning() || this.readInterference() ) {
+       if (this.wasCorrupt) {
+         if( this.passedBarcode()){
+           wasCorrupt = false;
+           isWaiting = true;
+         } else {
+           addReading();
+         }
+         
+       } else if (this.robot.isTurning() ) {
         System.out.println("Stupid driver, now I don't know the barcode :(");
+        this.discardReading();
+        wasCorrupt = true;
+        
+       }else if( this.readInterference()){
+         System.out.println("Whoa, what happened, I confuzzled!");
         this.discardReading();
         
       } else if( !this.robot.isMoving() ){  // if we are not moving wait until we are moving again.

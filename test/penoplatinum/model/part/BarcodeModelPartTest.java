@@ -41,40 +41,46 @@ public class BarcodeModelPartTest extends TestCase {
     this.setup();
     this.part.startNewReading();
     this.simulateBarcode("1111");
-    assertEquals(-1, this.part.getCurrentBarcodeValue());
+    this.part.finishReading();
+    assertEquals(-1, this.part.getLastBarcodeValue());
   }
   
   public void testAddReadingsWhileNotReading() {
     this.setup();
     this.simulateBarcode("11111111");
-    assertEquals(-1, this.part.getCurrentBarcodeValue());
+    this.part.finishReading();
+    assertEquals(-1, this.part.getLastBarcodeValue());
   }
 
   public void testGetCurrentBarcodeValue() {
     this.setup();
     this.part.startNewReading();
     this.simulateBarcode("10001011");
-    assertEquals(139, this.part.getCurrentBarcodeValue());
+    this.part.finishReading();
+    assertEquals(139, this.part.getLastBarcodeValue());
   }
   
   public void testGetPreviousBarcodeValue() {
     this.setup();
-    assertEquals(-1, this.part.getPreviousBarcodeValue());
+    assertEquals(-1, this.part.getLastBarcodeValue());
     this.part.startNewReading();
     this.simulateBarcode("10001011");
     this.part.finishReading();
-    assertEquals(-1, this.part.getPreviousBarcodeValue());
+    assertEquals(139, this.part.getLastBarcodeValue());
     this.part.startNewReading();
-    assertEquals(139, this.part.getPreviousBarcodeValue());
+    assertEquals(139, this.part.getLastBarcodeValue());
   }
   
   public void testDiscardBarcode() {
     this.setup();
     this.part.startNewReading();
+    this.simulateBarcode("11111011");
+    this.part.finishReading();
+    this.part.startNewReading();
     this.simulateBarcode("10001011");
-    assertEquals(139, this.part.getCurrentBarcodeValue());
+    assertEquals(251, this.part.getLastBarcodeValue());
     this.part.discardReading();
-    assertEquals(-1, this.part.getCurrentBarcodeValue());
+    assertEquals(251, this.part.getLastBarcodeValue());
   }
   
   private void setup() {

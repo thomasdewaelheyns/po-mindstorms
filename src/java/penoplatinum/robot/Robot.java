@@ -14,9 +14,6 @@ public interface Robot {
   // - a RobotAPI, offering access to the sensors and actuators
   public Robot useRobotAPI(RobotAPI api);
   public RobotAPI getRobotAPI();
-  
-  // incoming commands are processed
-  public void processCommand(String cmd);
 
   // in this method, the robot performs one step of its event loop. in this
   // step, it should poll its sensors, update its model and ask the 

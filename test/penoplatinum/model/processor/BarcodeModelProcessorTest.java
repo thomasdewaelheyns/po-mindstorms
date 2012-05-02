@@ -142,6 +142,7 @@ public class BarcodeModelProcessorTest extends TestCase {
     this.createProcessor();
     this.mockModel();
     this.processor.setModel(this.mockedModel);
+    when(this.mockedSensorModelPart.isMoving()).thenReturn(Boolean.TRUE);
   }
 
   private void createProcessor() {

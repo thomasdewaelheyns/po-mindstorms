@@ -8,7 +8,7 @@ package penoplatinum.gateway;
  * @author: Team Platinum
  */
 
-import penoplatinum.robot.Robot;
+import penoplatinum.robot.AdvancedRobot;
 
 
 // the GatewayClient is used to send out messages to the Gateway. it also 
@@ -16,7 +16,7 @@ import penoplatinum.robot.Robot;
 public interface GatewayClient extends MessageReceiver {
   // sets the robot this client works for, this is used to dispatch incoming
   // commands
-  public GatewayClient setRobot(Robot robot);
+  public GatewayClient setRobot(AdvancedRobot robot);
 
   // executed when new data is received from the Gateway. We only receive
   // one stream of information.
