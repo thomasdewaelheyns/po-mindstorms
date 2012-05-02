@@ -105,8 +105,7 @@ public class GateRobot implements AdvancedRobot {
 
   @Override
   public void processCommand(String cmd) {
-    System.out.println("I have mail!");
-    System.out.println(cmd);
+    System.out.println("I have mail!" + cmd);
   }
 
   @Override
@@ -122,6 +121,7 @@ public class GateRobot implements AdvancedRobot {
     }
     GridModelPart gridPart = GridModelPart.from(this.model);
     Point p = gridPart.getMyPosition();
+    System.out.println("Sending mail: "+p);
     this.gatewayClient.send("Position: " + p, Config.BT_GHOST_PROTOCOL);
     navigator.instruct(driver);
   }

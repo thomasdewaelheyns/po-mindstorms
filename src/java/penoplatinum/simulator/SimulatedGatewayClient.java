@@ -65,7 +65,7 @@ public class SimulatedGatewayClient implements GatewayClient {
   }
 
   private void setupLocalMQ() {
-    this.queue = SimulatedMQ.getInstance().subscribe(this);
+    this.queue = SimulatedMQ.getInstance();
     this.connected = true;    
   }
   

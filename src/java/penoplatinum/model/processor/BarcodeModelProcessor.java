@@ -67,7 +67,19 @@ public class BarcodeModelProcessor extends ModelProcessor {
     } else { // we're reading...
       // turning makes the barcodereading corrupted, discard it
       // reading too much interference also discards the reading
-       if (this.wasCorrupt) {
+       if (this.robot.isTurning() ) {
+        System.out.println("Stupid driver, now I don't know the barcode :(");
+        this.discardReading();
+        wasCorrupt = true;
+        
+       } else if( this.readInterference()){
+         System.out.println("Whoa, what happened, I confuzzled!");
+        this.discardReading();
+        
+      } else if( !this.robot.isMoving() ){  // if we are not moving wait until we are moving again.
+        System.out.println("I hope we start moving again soon, I can't wait!");
+        
+      } else if (this.wasCorrupt) {
          if( this.passedBarcode()){
            wasCorrupt = false;
            isWaiting = true;
@@ -75,19 +87,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
            addReading();
          }
          
-       } else if (this.robot.isTurning() ) {
-        System.out.println("Stupid driver, now I don't know the barcode :(");
-        this.discardReading();
-        wasCorrupt = true;
-        
-       }else if( this.readInterference()){
-         System.out.println("Whoa, what happened, I confuzzled!");
-        this.discardReading();
-        
-      } else if( !this.robot.isMoving() ){  // if we are not moving wait until we are moving again.
-        System.out.println("I hope we start moving again soon, I can't wait!");
-        
-      } else if( this.passedBarcode() ) {   // if we passed the barcode, we can stop
+       } else if( this.passedBarcode() ) {   // if we passed the barcode, we can stop
         this.stopReading();
         
       } else {

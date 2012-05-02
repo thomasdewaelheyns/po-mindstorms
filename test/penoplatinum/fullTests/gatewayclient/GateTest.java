@@ -4,6 +4,7 @@ import java.util.Collections;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+import penoplatinum.Config;
 import penoplatinum.driver.ManhattanDriver;
 import penoplatinum.fullTests.barcode.BarcodeDriver;
 import penoplatinum.fullTests.hill.MockedGrid;
@@ -27,6 +28,8 @@ public class GateTest {
 
   @Test
   public void testSimulator() {
+    Config.load("../../src/java/robot.properties");
+    
     Simulator sim = new Simulator();
     SimulationView simView = new SwingSimulationView();
     sim.useMap(makeSquareMap());

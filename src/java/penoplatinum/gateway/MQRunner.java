@@ -7,33 +7,36 @@ package penoplatinum.gateway;
  *
  * Author: Team Platinum
  */
-
+import java.io.IOException;
+import java.util.Scanner;
 import penoplatinum.Config;
+import penoplatinum.simulator.SimulatedMQ;
+import penoplatinum.util.Utils;
 
 public class MQRunner {
 
-  public static void main(String[] argv) throws java.io.IOException,
-          java.lang.InterruptedException {
+  public static void main(String[] argv) throws IOException, InterruptedException {
     if (argv.length == 0) {
       argv = new String[]{"MQRunner"};
     }
+    Config.load("../../src/java/robot.properties");
 
-    MQ mq = new MQ() {
+    Queue queue = new MQ().connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
+    queue.subscribe(new MessageReceiver() {
 
-      protected void handleIncomingMessage(String message) {
-        // handling the incoming messages ...
-        System.out.println(message);
+      @Override
+      public void receive(String message) {
+        System.out.println("MSG: "+message);
       }
-    }.connectToMQServer(Config.MQ_SERVER).follow(Config.GHOST_CHANNEL);
-
-    // be nice ...
-    // mq.sendMessage("Hello everybody.");
+    });
 
     // our actual event loop
     System.out.println("Waiting for messages. To exit press CTRL+C");
+    Scanner sc = new Scanner(System.in);
     while (true) {
-      Thread.sleep(100);
-      // mq.sendMessage("Some message");
+      if(sc.hasNextLine()){
+        queue.send(sc.nextLine());
+      }
     }
   }
 }

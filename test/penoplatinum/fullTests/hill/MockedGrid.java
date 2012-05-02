@@ -1,5 +1,6 @@
 package penoplatinum.fullTests.hill;
 
+import penoplatinum.util.Point;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.model.part.GridModelPart;
@@ -58,6 +59,7 @@ public class MockedGrid {
   }
 
   public void setPosition(int x, int y) {
+    when(mockPart.getMyPosition()).thenReturn(new Point(x, y));
     when(mockPart.getMySector()).thenReturn(sectors[y - 1][x - 1]);
   }
   

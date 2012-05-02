@@ -1,6 +1,6 @@
 package penoplatinum.gateway;
 
-import penoplatinum.robot.Robot;
+import penoplatinum.robot.AdvancedRobot;
 
 /**
  * A GatewacyClient that doesn't do anything, used for initialization.
@@ -12,7 +12,7 @@ import penoplatinum.robot.Robot;
 public class NullGatewayClient implements GatewayClient {
   public void run() {}
   public void receive(String cmd) {}
-  public GatewayClient setRobot(Robot robot) {
+  public GatewayClient setRobot(AdvancedRobot robot) {
     return this;
   }
   public void send(String data, int channel) {}

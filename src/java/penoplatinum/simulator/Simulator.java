@@ -127,7 +127,7 @@ public class Simulator {
     initRun();
     while(stepCount-->0){
       this.step();
-      //Utils.Sleep(8);
+      Utils.Sleep(8);
     }
   }
 
