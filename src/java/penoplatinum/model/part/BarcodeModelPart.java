@@ -20,41 +20,47 @@ public class BarcodeModelPart implements ModelPart {
   }
 
 
-  private Barcode barcode     = new Barcode(),
-                  prevBarcode = new Barcode();
+  private Barcode readingBarcode      = new Barcode();
+  private Barcode lastFinishedBarcode = new Barcode();
   private boolean isReading = false;
 
 
   public void startNewReading() {
-    this.prevBarcode = new Barcode(this.barcode);
-    this.barcode     = new Barcode();
+    this.readingBarcode     = new Barcode();
     this.isReading   = true;
   }
   
   public void addReading(LightColor color) {
     if( this.isReading ) {
-      this.barcode.addColor(color);
+      this.readingBarcode.addColor(color);
     }
   }
 
-  public void stopReading() {
+  public void finishReading() {
+    this.lastFinishedBarcode = this.readingBarcode;
+    stopReading();
+  }
+  
+  private void stopReading(){
     this.isReading = false;
   }
   
   public void discardReading() {
-    this.stopReading();
-    this.barcode = new Barcode();
+    stopReading();
   }
   
   public boolean isReadingBarcode() {
     return this.isReading;
   }
 
+  /*
+   * Not interesting?
+   *
   public int getCurrentBarcodeValue() {
-    return this.barcode.translate();
-  }
+    return this.readingBarcode.translate();
+  }/**/
   
-  public int getPreviousBarcodeValue() {
-    return this.prevBarcode.translate();
+  public int getLastBarcodeValue() {
+    return this.lastFinishedBarcode.translate();
   }
 }

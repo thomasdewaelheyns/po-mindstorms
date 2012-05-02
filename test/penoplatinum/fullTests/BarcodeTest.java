@@ -73,7 +73,7 @@ public class BarcodeTest {
     s1 = new Sector();
     s1.addWall(1);
     s1.addWall(3);
-    s1.addBarcode(3, 2);
+    s1.addBarcode(19, 2);
     out.put(s1, 2, 2);
     
     s1 = new Sector();

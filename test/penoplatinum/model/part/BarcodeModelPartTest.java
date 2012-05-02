@@ -33,7 +33,7 @@ public class BarcodeModelPartTest extends TestCase {
   public void testStopReading() {
     this.setup();
     this.part.startNewReading();
-    this.part.stopReading();
+    this.part.finishReading();
     assertFalse(this.part.isReadingBarcode());    
   }
 
@@ -62,7 +62,7 @@ public class BarcodeModelPartTest extends TestCase {
     assertEquals(-1, this.part.getPreviousBarcodeValue());
     this.part.startNewReading();
     this.simulateBarcode("10001011");
-    this.part.stopReading();
+    this.part.finishReading();
     assertEquals(-1, this.part.getPreviousBarcodeValue());
     this.part.startNewReading();
     assertEquals(139, this.part.getPreviousBarcodeValue());

@@ -9,6 +9,7 @@ package penoplatinum.model.processor;
 
 import penoplatinum.model.Model;
 
+import penoplatinum.model.part.Barcode;
 import penoplatinum.model.part.BarcodeModelPart;
 import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.model.part.LightModelPart;
@@ -36,7 +37,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
   // are we waiting for a new barcode to start (or are we reading it...)
   private boolean isWaiting = true;
 
-  private BarcodeModelPart barcode;
+  private BarcodeModelPart barcodePart;
   private SensorModelPart  robot;
   private LightModelPart   sensors;
   
@@ -46,7 +47,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
   // override the setModel to setup a reference to the BarcodeModelPart
   public void setModel(Model model) {
     super.setModel(model);
-    this.barcode = BarcodeModelPart.from(this.getModel());
+    this.barcodePart = BarcodeModelPart.from(this.getModel());
     this.robot   = SensorModelPart.from(this.getModel());
     this.sensors = LightModelPart.from(this.getModel());
   }
@@ -68,10 +69,13 @@ public class BarcodeModelProcessor extends ModelProcessor {
       if( this.robot.isTurning() || this.readInterference() ) {
         System.out.println("Stupid driver, now I don't know the barcode :(");
         this.discardReading();
-      }
-      // if we passed the barcode, we can stop
-      if( this.passedBarcode() ) { 
+        
+      } else if( !this.robot.isMoving() ){  // if we are not moving wait until we are moving again.
+        System.out.println("I hope we start moving again soon, I can't wait!");
+        
+      } else if( this.passedBarcode() ) {   // if we passed the barcode, we can stop
         this.stopReading();
+        
       } else {
         this.addReading();
       }
@@ -89,18 +93,21 @@ public class BarcodeModelProcessor extends ModelProcessor {
     this.isWaiting  = false;
     this.totalCount = 0;
     this.brownCount = 0;
-    this.barcode.startNewReading();
+    this.barcodePart.startNewReading();
     this.addReading();
   }
   
   private void discardReading() {
-    this.barcode.discardReading();
+    this.barcodePart.discardReading();
   }
   
   private void stopReading() {
     System.out.println("The barcode ended, now to translate...");
-    this.barcode.stopReading();
-    System.out.println("It was: "+this.barcode.getCurrentBarcodeValue());
+    this.barcodePart.finishReading();
+    System.out.println("It was: "+this.barcodePart.getLastBarcodeValue());
+    System.out.println("Without border: "+this.barcodePart.getLastBarcodeValue()/2);
+    System.out.println("Reversed: " + Barcode.reverse(this.barcodePart.getLastBarcodeValue(), 8));
+    System.out.println("W/O border: " + Barcode.reverse(this.barcodePart.getLastBarcodeValue(), 8)/2);
     this.isWaiting = true;
   }
 
@@ -110,7 +117,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
     // count consecutive brown readings
     if( color == LightColor.BROWN ) { this.brownCount++;   }
     else                            { this.brownCount = 0; }
-    this.barcode.addReading(color);
+    this.barcodePart.addReading(color);
   }
   
   private boolean readInterference() {

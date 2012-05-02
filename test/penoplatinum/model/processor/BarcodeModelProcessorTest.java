@@ -130,12 +130,12 @@ public class BarcodeModelProcessorTest extends TestCase {
       this.processor.work();
     }
     verify(this.mockedBarcodeModelPart, never()).discardReading();
-    verify(this.mockedBarcodeModelPart, never()).stopReading();
+    verify(this.mockedBarcodeModelPart, never()).finishReading();
 
     this.processor.work();
 
     verify(this.mockedBarcodeModelPart, never()).discardReading();
-    verify(this.mockedBarcodeModelPart).stopReading();
+    verify(this.mockedBarcodeModelPart).finishReading();
   }
   
   private void setup() {

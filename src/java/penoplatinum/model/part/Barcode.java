@@ -26,11 +26,6 @@ public class Barcode {
   private static final int MINIMUM_BETTER = 1;
 
   private List<Integer> colorBuffer = new ArrayList<Integer>();
-  private int brownCount = 0;
-  
-  // private static byte[] expand = 
-  //   new byte[]{  1,  2,  3,  4,  5,  6,  7,  9, 10, 11, 13, 14, 15, 
-  //               17, 19, 21, 22, 23, 25, 27, 29, 31, 35, 37, 39, 43, 47, 55 };
 
   public Barcode() {}
 
@@ -92,12 +87,6 @@ public class Barcode {
     }
     return out;
   }
-
-  // NOT IN USE ? 
-  // public byte expandBarcode(int compressed) {
-  //   if(compressed >= expand.length) { return 0; }
-  //   return expand[compressed];
-  // }
 
   // translate LightColor to internal int representation
   private int toColor(LightColor color){
