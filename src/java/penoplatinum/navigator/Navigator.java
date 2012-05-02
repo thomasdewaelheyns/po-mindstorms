@@ -21,9 +21,11 @@ public interface Navigator {
 
   // the navigator can be asked to instruct a driver what to do
   public Navigator instruct(Driver driver);
+  public Navigator finish(Driver driver);
 
   // when the Navigator has reached its goal, it will no longer instruct any
   // movement to the Driver, but will also provide this information as feedback
   public boolean reachedGoal();
+
 
 }

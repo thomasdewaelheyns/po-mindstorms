@@ -2,7 +2,6 @@ package penoplatinum.fullTests.hill;
 
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.MovingAgent;
-import penoplatinum.util.Bearing;
 import penoplatinum.util.Color;
 import penoplatinum.util.Position;
 import static org.mockito.Mockito.*;
@@ -17,7 +16,9 @@ public class MockedAgent extends MovingAgent {
     super(name);
     this.toChange = toChange;
     this.toChange.setPosition(x, y);
-    when(toChange.getGridModelPart().getMyBearing()).thenReturn(getBearing());
+    turnRight();  // start in the east.
+                  // otherwise the MockedGrid is wrong
+                  // (grid was made with north up, robot startes looking left;
   }
 
   @Override
@@ -31,6 +32,7 @@ public class MockedAgent extends MovingAgent {
   @Override
   public Agent turnLeft() {
     super.turnLeft();
+    System.out.println("Changed bearing: " + getBearing());
     when(toChange.getGridModelPart().getMyBearing()).thenReturn(getBearing());
     return this;
   }
@@ -38,6 +40,7 @@ public class MockedAgent extends MovingAgent {
   @Override
   public Agent turnRight() {
     super.turnRight();
+    System.out.println("Changed bearing: " + getBearing());
     when(toChange.getGridModelPart().getMyBearing()).thenReturn(getBearing());
     return this;
   }

@@ -6,6 +6,7 @@ import penoplatinum.model.Model;
 import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.model.processor.LightModelProcessor;
 import penoplatinum.model.processor.LineModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.navigator.Navigator;
 import penoplatinum.reporter.Reporter;
 import penoplatinum.robot.AdvancedRobot;
@@ -20,17 +21,11 @@ public class LineRobot implements AdvancedRobot {
   private int state = 0;
   private float originalAngle;
 
-  public LineRobot() {
-    this.model = new LineModel();
-    this.model.setProcessor(new LightModelProcessor(
-                            new LineModelProcessor()));
-  }
-
   private void linkComponents() {
-    if(this.driver != null){
+    if (this.driver != null) {
       this.driver.drive(this);
     }
-    if(this.navigator != null){
+    if (this.navigator != null) {
       this.navigator.useModel(this.model);
     }
   }
@@ -78,9 +73,10 @@ public class LineRobot implements AdvancedRobot {
   public Model getModel() {
     return this.model;
   }
-  
-  public void setModel(Model model){
+
+  public void setModel(Model model) {
     this.model = model;
+    this.model.setProcessor(getProcessors());
   }
 
   @Override
@@ -89,8 +85,8 @@ public class LineRobot implements AdvancedRobot {
     this.originalAngle = this.api.getRelativeAngle(0);
     return this;
   }
-  
-  protected float getOriginalAngle(){
+
+  protected float getOriginalAngle() {
     return this.originalAngle;
   }
 
@@ -109,12 +105,13 @@ public class LineRobot implements AdvancedRobot {
     // poll other sensors and update model
     SensorModelPart.from(this.model).updateSensorValues(this.api.getSensorValues());
     SensorModelPart.from(this.model).setTotalTurnedAngle(this.api.getRelativeAngle(getOriginalAngle()));
-    
+
     this.model.refresh();
     if (driver.isBusy()) {  //driver
       driver.proceed();
       return;
     }
+    navigator.finish(driver);
     navigator.instruct(driver);
   }
 
@@ -132,5 +129,10 @@ public class LineRobot implements AdvancedRobot {
   @Override
   public String getName() {
     return "Hello, i am dumb but have a driver.";
+  }
+
+  protected ModelProcessor getProcessors() {
+    return new LightModelProcessor(
+            new LineModelProcessor());
   }
 }

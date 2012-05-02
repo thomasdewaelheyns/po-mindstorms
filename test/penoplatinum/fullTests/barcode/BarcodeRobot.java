@@ -4,15 +4,15 @@ import penoplatinum.fullTests.hill.HillRobot;
 import penoplatinum.model.processor.BarcodeModelProcessor;
 import penoplatinum.model.processor.LightModelProcessor;
 import penoplatinum.model.processor.LineModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 
 public class BarcodeRobot extends HillRobot {
 
-  public BarcodeRobot() {
-    setModel(new BarcodeModel());
-    getModel().setProcessor(new LightModelProcessor(
-                            new LineModelProcessor(
-                            new BarcodeModelProcessor(
-                                    ))));
+  @Override
+  protected ModelProcessor getProcessors() {
+    return new LightModelProcessor(
+            new LineModelProcessor(
+            new BarcodeModelProcessor()));
   }
 
   @Override

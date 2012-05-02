@@ -8,17 +8,18 @@ import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.model.processor.BarcodeModelProcessor;
 import penoplatinum.model.processor.LightModelProcessor;
 import penoplatinum.model.processor.LineModelProcessor;
+import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.util.Point;
 
 public class GateRobot extends HillRobot {
 
   private GatewayClient gatewayClient;
 
-  public GateRobot() {
-    setModel(new GateModel());
-    getModel().setProcessor(new LightModelProcessor(
+  @Override
+  protected ModelProcessor getProcessors() {
+    return new LightModelProcessor(
             new LineModelProcessor(
-            new BarcodeModelProcessor())));
+            new BarcodeModelProcessor()));
   }
 
   @Override
@@ -49,6 +50,7 @@ public class GateRobot extends HillRobot {
       getDriver().proceed();
       return;
     }
+    getNavigator().finish(getDriver());
     GridModelPart gridPart = GridModelPart.from(getModel());
     Point p = gridPart.getMyPosition();
     System.out.println("Sending mail: " + p);
@@ -58,6 +60,6 @@ public class GateRobot extends HillRobot {
 
   @Override
   public String getName() {
-    return "Hello, I can read!";
+    return "Hello, I can speak!";
   }
 }

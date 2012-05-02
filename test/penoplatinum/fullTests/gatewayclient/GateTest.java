@@ -36,6 +36,7 @@ public class GateTest {
     sim.displayOn(simView);
 
     GateRobot gateRobot = new GateRobot();
+    gateRobot.setModel(new GateModel());
     GatewayClient client = new SimulatedGatewayClient();
     gateRobot.useGatewayClient(client);
     gateRobot.setModel(spyMockModel(gateRobot.getModel()));

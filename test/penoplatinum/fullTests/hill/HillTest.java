@@ -6,21 +6,18 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.junit.Test;
 import penoplatinum.driver.ManhattanDriver;
+import penoplatinum.fullTests.line.LineModel;
 import penoplatinum.grid.Grid;
 import penoplatinum.map.Map;
 import penoplatinum.map.MapHashed;
 import penoplatinum.model.Model;
-import penoplatinum.model.part.LightModelPart;
 import penoplatinum.model.part.ModelPartRegistry;
-import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.navigator.GhostNavigator;
 import penoplatinum.navigator.Navigator;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.entities.SimulatedEntityFactory;
 import penoplatinum.simulator.tiles.Sector;
-import penoplatinum.simulator.view.SimulationView;
-import penoplatinum.simulator.view.SwingSimulationView;
 
 public class HillTest {
 
@@ -30,6 +27,7 @@ public class HillTest {
     sim.useMap(makeSquareMap());
     
     HillRobot hill = new HillRobot();
+    hill.setModel(new LineModel());
     hill.setModel(spyMockModel(hill.getModel()));
     ManhattanDriver manhattan = new LineDriver(Sector.SIZE/100.0);
     Navigator ghostNavigator = new GhostNavigator();

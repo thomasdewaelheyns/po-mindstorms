@@ -31,5 +31,11 @@ public class DumbNavigator implements Navigator {
   public boolean reachedGoal() {
     return state == -1;
   }
+
+  @Override
+  public Navigator finish(Driver driver) {
+    //do nothing
+    return this;
+  }
   
 }

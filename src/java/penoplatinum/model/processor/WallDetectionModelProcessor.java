@@ -34,6 +34,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
   protected void work() {
     // only update when we have a complete set of sensorvalues
     if( ! this.newSonarValuesAreAvailable() ) { return; }
+    
 
     WallsModelPart wallsPart = WallsModelPart.from(this.getModel());
     GridModelPart  gridPart  = GridModelPart.from(this.getModel());
@@ -68,7 +69,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
             sector.setNoWall(bearing.reverse());
           }
         }
-      }
+      }/**/
     }
 
     // keep track of the (new) position ;-)
@@ -76,6 +77,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
 
     // store the new sector layout
     wallsPart.updateSector(sector);
+    System.out.println("Detected walls: "+sector);
   }
   
   private boolean newSonarValuesAreAvailable() {

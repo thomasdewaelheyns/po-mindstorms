@@ -16,10 +16,12 @@ package penoplatinum.navigator;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import penoplatinum.driver.Driver;
 
 import penoplatinum.model.Model;
 
+import penoplatinum.navigator.action.IdleAction;
 import penoplatinum.navigator.action.NavigatorAction;
 import penoplatinum.navigator.mode.NavigatorMode;
 
@@ -31,7 +33,7 @@ public class MultiModeNavigator implements Navigator {
 
   // a plan consists of a series of NavigatorActions. this list is created
   // by the createNewPlan method on the NavigatorMode
-  private List<NavigatorAction> plan = new ArrayList<NavigatorAction>();
+  private List<NavigatorAction> plan = new ArrayList<NavigatorAction>(Arrays.asList(new IdleAction()));
 
 
   // overriding classes can add Modes to define their logic
@@ -50,17 +52,22 @@ public class MultiModeNavigator implements Navigator {
   // by default we don't use a Model, but an actual implementation can 
   // override this method to extract a ModelPart
   public Navigator useModel(Model model) { return this; }
+  
+  public final MultiModeNavigator finish(Driver driver) {
+    this.processFeedback(driver);
+    return this;
+  }
 
   // first we check if our previous/current action was successfully performed
   // next we give the next instruction in our plan
   public final MultiModeNavigator instruct(Driver driver) {
-    this.processFeedback(driver);
     this.provideNextInstruction(driver);
     return this;
   }
-
-  public final boolean reachedGoal() {
-    return this.getCurrentMode().reachedGoal();
+  
+  private void provideNextInstruction(Driver driver) {
+    if( this.reachedGoal() && this.noNextAction() ) { return; } // we're done
+    this.getNextAction().instruct(driver);
   }
 
   private void processFeedback(Driver driver) {
@@ -81,10 +88,9 @@ public class MultiModeNavigator implements Navigator {
   private void discardCurrentPlan() {
     this.plan.clear();
   }
-  
-  private void provideNextInstruction(Driver driver) {
-    if( this.reachedGoal() && this.noNextAction() ) { return; } // we're done
-    this.getNextAction().instruct(driver);
+
+  public final boolean reachedGoal() {
+    return this.getCurrentMode().reachedGoal();
   }
 
   // when we're at the last action of the last mode, there is no next action

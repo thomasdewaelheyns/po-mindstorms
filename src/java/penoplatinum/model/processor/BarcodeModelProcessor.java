@@ -36,7 +36,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
     
   // are we waiting for a new barcode to start (or are we reading it...)
   private boolean isWaiting = true;
-  private boolean wasCorrupt = true;
+  private boolean wasCorrupt = false;
 
   private BarcodeModelPart barcodePart;
   private SensorModelPart  robot;
@@ -75,9 +75,10 @@ public class BarcodeModelProcessor extends ModelProcessor {
        } else if( this.readInterference()){
          System.out.println("Whoa, what happened, I confuzzled!");
         this.discardReading();
+        isWaiting = true;
+        wasCorrupt = false;
         
       } else if( !this.robot.isMoving() ){  // if we are not moving wait until we are moving again.
-        System.out.println("I hope we start moving again soon, I can't wait!");
         
       } else if (this.wasCorrupt) {
          if( this.passedBarcode()){

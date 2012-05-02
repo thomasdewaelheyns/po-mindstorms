@@ -21,6 +21,7 @@ public class LineTest {
     sim.useMap(makeSquareMap());
     
     LineRobot line = new LineRobot();
+    line.setModel(new LineModel());
     ManhattanDriver manhattan = new LineDriver(Sector.SIZE/100.0);
     Navigator dumbNavigator = new DumbNavigator();
     line.useDriver(manhattan).useNavigator(dumbNavigator);
