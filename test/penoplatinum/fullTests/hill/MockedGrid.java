@@ -1,4 +1,4 @@
-package penoplatinum.fullTests;
+package penoplatinum.fullTests.hill;
 
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;

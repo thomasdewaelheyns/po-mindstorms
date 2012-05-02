@@ -1,5 +1,7 @@
-package penoplatinum.fullTests;
+package penoplatinum.fullTests.barcode;
 
+import penoplatinum.fullTests.hill.MockedGrid;
+import penoplatinum.fullTests.line.LineDriver;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import java.util.Collections;
@@ -30,7 +32,7 @@ public class BarcodeTest {
     
     BarcodeRobot hill = new BarcodeRobot();
     hill.setModel(spyMockModel(hill.getModel()));
-    ManhattanDriver manhattan = new LineDriver(Sector.SIZE/100.0);
+    ManhattanDriver manhattan = new BarcodeDriver(Sector.SIZE/100.0);
     Navigator ghostNavigator = new GhostNavigator();
     hill.useDriver(manhattan).useNavigator(ghostNavigator);
     SimulatedEntity simE = SimulatedEntityFactory.make(hill);

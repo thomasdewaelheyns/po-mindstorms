@@ -1,10 +1,9 @@
-package penoplatinum.fullTests;
+package penoplatinum.fullTests.line;
 
 import penoplatinum.driver.Driver;
 import penoplatinum.gateway.GatewayClient;
 import penoplatinum.model.Model;
 import penoplatinum.model.part.SensorModelPart;
-import penoplatinum.model.processor.BarcodeModelProcessor;
 import penoplatinum.model.processor.LightModelProcessor;
 import penoplatinum.model.processor.LineModelProcessor;
 import penoplatinum.navigator.Navigator;
@@ -12,7 +11,7 @@ import penoplatinum.reporter.Reporter;
 import penoplatinum.robot.AdvancedRobot;
 import penoplatinum.robot.RobotAPI;
 
-public class BarcodeRobot implements AdvancedRobot {
+public class LineRobot implements AdvancedRobot {
 
   private Driver driver;
   private Navigator navigator;
@@ -21,12 +20,10 @@ public class BarcodeRobot implements AdvancedRobot {
   private int state = 0;
   private float originalAngle;
 
-  public BarcodeRobot() {
-    this.model = new BarcodeModel();
+  public LineRobot() {
+    this.model = new LineModel();
     this.model.setProcessor(new LightModelProcessor(
-                            new LineModelProcessor(
-                            new BarcodeModelProcessor(
-                                    ))));
+                            new LineModelProcessor()));
   }
 
   private void linkComponents() {
@@ -39,7 +36,7 @@ public class BarcodeRobot implements AdvancedRobot {
   }
 
   @Override
-  public BarcodeRobot useDriver(Driver driver) {
+  public LineRobot useDriver(Driver driver) {
     this.driver = driver;
     linkComponents();
     return this;
@@ -51,7 +48,7 @@ public class BarcodeRobot implements AdvancedRobot {
   }
 
   @Override
-  public BarcodeRobot useNavigator(Navigator navigator) {
+  public LineRobot useNavigator(Navigator navigator) {
     this.navigator = navigator;
     linkComponents();
     return this;
@@ -63,7 +60,7 @@ public class BarcodeRobot implements AdvancedRobot {
   }
 
   @Override
-  public BarcodeRobot useGatewayClient(GatewayClient agent) {
+  public LineRobot useGatewayClient(GatewayClient agent) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -73,7 +70,7 @@ public class BarcodeRobot implements AdvancedRobot {
   }
 
   @Override
-  public BarcodeRobot useReporter(Reporter reporter) {
+  public LineRobot useReporter(Reporter reporter) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -81,13 +78,9 @@ public class BarcodeRobot implements AdvancedRobot {
   public Model getModel() {
     return this.model;
   }
-  
-  public void setModel(Model model){
-    this.model = model;
-  }
 
   @Override
-  public BarcodeRobot useRobotAPI(RobotAPI api) {
+  public LineRobot useRobotAPI(RobotAPI api) {
     this.api = api;
     this.originalAngle = this.api.getRelativeAngle(0);
     return this;
@@ -130,6 +123,6 @@ public class BarcodeRobot implements AdvancedRobot {
 
   @Override
   public String getName() {
-    return "Hello, I can read!";
+    return "Hello, i am dumb but have a driver.";
   }
 }

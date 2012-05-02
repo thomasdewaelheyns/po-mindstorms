@@ -1,6 +1,7 @@
-package penoplatinum.fullTests;
+package penoplatinum.fullTests.line;
 
 
+import penoplatinum.fullTests.dumb.DumbNavigator;
 import org.junit.Test;
 import penoplatinum.driver.ManhattanDriver;
 import static org.junit.Assert.*;

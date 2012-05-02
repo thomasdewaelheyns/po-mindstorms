@@ -1,4 +1,4 @@
-package penoplatinum.fullTests;
+package penoplatinum.fullTests.dumb;
 
 import penoplatinum.driver.Driver;
 import penoplatinum.driver.ManhattanDriver;

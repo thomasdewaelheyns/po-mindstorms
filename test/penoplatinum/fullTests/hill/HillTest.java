@@ -1,5 +1,6 @@
-package penoplatinum.fullTests;
+package penoplatinum.fullTests.hill;
 
+import penoplatinum.fullTests.line.LineDriver;
 import java.util.Collections;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

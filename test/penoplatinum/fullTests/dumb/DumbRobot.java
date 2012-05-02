@@ -1,4 +1,4 @@
-package penoplatinum.fullTests;
+package penoplatinum.fullTests.dumb;
 
 import penoplatinum.Config;
 import penoplatinum.robot.Robot;
@@ -24,11 +24,6 @@ public class DumbRobot implements Robot {
   @Override
   public RobotAPI getRobotAPI() {
     return this.api;
-  }
-
-  @Override
-  public void processCommand(String cmd) {
-    //do nothing
   }
 
   @Override

@@ -1,5 +1,6 @@
-package penoplatinum.fullTests;
+package penoplatinum.fullTests.hill;
 
+import penoplatinum.fullTests.line.LineModel;
 import penoplatinum.driver.Driver;
 import penoplatinum.gateway.GatewayClient;
 import penoplatinum.model.Model;
@@ -11,7 +12,7 @@ import penoplatinum.reporter.Reporter;
 import penoplatinum.robot.AdvancedRobot;
 import penoplatinum.robot.RobotAPI;
 
-public class LineRobot implements AdvancedRobot {
+public class HillRobot implements AdvancedRobot {
 
   private Driver driver;
   private Navigator navigator;
@@ -20,7 +21,7 @@ public class LineRobot implements AdvancedRobot {
   private int state = 0;
   private float originalAngle;
 
-  public LineRobot() {
+  public HillRobot() {
     this.model = new LineModel();
     this.model.setProcessor(new LightModelProcessor(
                             new LineModelProcessor()));
@@ -36,7 +37,7 @@ public class LineRobot implements AdvancedRobot {
   }
 
   @Override
-  public LineRobot useDriver(Driver driver) {
+  public HillRobot useDriver(Driver driver) {
     this.driver = driver;
     linkComponents();
     return this;
@@ -48,7 +49,7 @@ public class LineRobot implements AdvancedRobot {
   }
 
   @Override
-  public LineRobot useNavigator(Navigator navigator) {
+  public HillRobot useNavigator(Navigator navigator) {
     this.navigator = navigator;
     linkComponents();
     return this;
@@ -60,7 +61,7 @@ public class LineRobot implements AdvancedRobot {
   }
 
   @Override
-  public LineRobot useGatewayClient(GatewayClient agent) {
+  public HillRobot useGatewayClient(GatewayClient agent) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -70,7 +71,7 @@ public class LineRobot implements AdvancedRobot {
   }
 
   @Override
-  public LineRobot useReporter(Reporter reporter) {
+  public HillRobot useReporter(Reporter reporter) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -78,9 +79,13 @@ public class LineRobot implements AdvancedRobot {
   public Model getModel() {
     return this.model;
   }
+  
+  public void setModel(Model model){
+    this.model = model;
+  }
 
   @Override
-  public LineRobot useRobotAPI(RobotAPI api) {
+  public HillRobot useRobotAPI(RobotAPI api) {
     this.api = api;
     this.originalAngle = this.api.getRelativeAngle(0);
     return this;
@@ -123,6 +128,6 @@ public class LineRobot implements AdvancedRobot {
 
   @Override
   public String getName() {
-    return "Hello, i am dumb but have a driver.";
+    return "Hello, I climb hills!";
   }
 }
