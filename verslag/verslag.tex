@@ -1,13 +1,15 @@
 \documentclass[12pt,a4paper]{report}
 
-\usepackage{geometry}
-\usepackage{graphicx}
-\usepackage{longtable}
 \usepackage[dutch]{babel}
-\usepackage{url}
-\usepackage{rotating}
+
+\usepackage{geometry}
 \geometry{a4paper}
+
+\usepackage{graphicx}
+\usepackage{url}
+
 \usepackage{longtable}
+\usepackage{rotating}
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{pdflscape}
@@ -31,7 +33,7 @@ Tijdens de uitwerking van dit jaar-overschrijdend groepswerk, bouwen wij een aut
 
 Naast de doelstelling om kennis te maken met het ontwikkelen van een autonome robot, willen we in dit project ook ervaring opdoen i.v.m. het werken in teamverband aan een middelgroot softwareproject. Hierbij zijn organisatie van werk, planning, analyse, architectuur,... belangrijke begrippen.
 
-In het tweede semester wordt hier nog eens de nood tot samenwerking met de andere teams aan toegevoegd. Het traject van de autonome robot blijft behouden, maar de verschillende robots zullen nu moeten samenwerken om een gemeenschappelijk doel te bereiken. Om deze samenwerking in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester is het insluiten van een ''Pac-Man''-robot bestuurd door het didactisch team met behulp van vier autonome ``ghosts''.
+In het tweede semester wordt hier nog eens de nood tot samenwerking met de andere teams aan toegevoegd. Het traject van de autonome robot blijft behouden, maar de verschillende robots zullen nu moeten samenwerken om een gemeenschappelijk doel te bereiken. Om deze samenwerking in goede banen te leiden werd een scheidsrechtercommissie in het leven geroepen om beslissingen te nemen die voor alle teams van belang zijn. Het doel van dit semester is het insluiten van een Pac-Manrobot bestuurd door het didactisch team met behulp van vier autonome \emph{ghosts}.
 
 In het eerste semester werkten we reeds in een parallel traject aan een simulatieomgeving. Aan de hand van deze omgeving waren we in staat om met meerdere teamleden in parallel software voor de robot te ontwikkelen en te testen zonder nood aan een effectieve fysieke robot. Nu is het ontwikkelen van deze simulator deel geworden van de opdracht en dienen we dus de nodige aanpassingen te doen om het Pac-Manspel in de computer te simuleren. Het gebruik van een simulator is evident, aangezien we niet kunnen verwachten alle fysieke testen uit te voeren met de 4 teams tegelijk.
 \end{abstract}
@@ -48,13 +50,13 @@ Het verslag is anders opgebouwd ten opzichte van het vorige semester: er werd ge
 
 \chapter{Probleemstelling}
 
-De doelstellingen van de demo's worden hier achtereenvolgens beschreven. Zij volgen stapsgewijs een ontwerpproces dat tracht een autonome robot op te leveren die, samen met drie andere ``ghosts'', probeert de Pac-Man in te sluiten.
+De doelstellingen van de demo's worden hier achtereenvolgens beschreven. Zij volgen stapsgewijs een ontwerpproces dat tracht een autonome robot op te leveren die, samen met drie andere \emph{ghosts}, probeert de Pac-Man in te sluiten.
 
 \section{Demo 1}
 
-Het probleem dat we eerst aanpakken is het zo effici\"ent mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier ``ghosts''. Belangrijk hierbij is natuurlijk dat de gedetecteerde wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een zgn. hybride simulator: onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en worden vertegenwoordigd door drie virtuele ``ghosts'' die in de simulator ``leven''.
+Het probleem dat we eerst aanpakken is het zo effici\"ent mogelijk in kaart brengen van een onbekende omgeving met behulp van de vier \emph{ghosts}. Belangrijk hierbij is natuurlijk dat de gedetecteerde wereld overeenkomt met de realiteit. Tijdens de demo gebruiken we een zgn. hybride simulator: onze eigen robot bestaat in de fysieke wereld, de andere drie zijn virtueel en worden vertegenwoordigd door drie virtuele \emph{ghosts} die in de simulator \emph{leven}.
 
-De ``ghosts'' hebben geen enkele informatie over het doolhof waarin ze zich bevinden, ze kennen wel hun eigen globale positie, maar dan weer niet hun ori\"entatie. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol ge\"implementeerd is.
+De \emph{ghosts} hebben geen enkele informatie over het doolhof waarin ze zich bevinden, ze kennen wel hun eigen globale positie, maar dan weer niet hun ori\"entatie. Verder staat de Pac-Man stil in het parcours en dient hij enkel gevonden te worden. We dienen ook aan te tonen dat het door de commissie afgesproken communicatieprotocol ge\"implementeerd is.
 
 Elk team wordt tijdens de demo afzonderlijk beoordeeld.
  
@@ -74,7 +76,7 @@ De robots rijden in een onbekend doolhof. Alle info die verzameld wordt door de 
 
 \subsection{Pac-Man}
 
-Het Pac-Man spel zelf kunnen we winnen door alle vluchtwegen van de Pac-Man af te sluiten. Dit houdt in dat alle omliggende sectoren door een ``ghost'' bezet of door een muur afgeschermd worden. Men wint enkel als alle robots die meewerken aan de insluiting ook effectief aangeven dat ze gewonnen hebben via hun grafische interface. De probleemstelling vereist dus een afdoende samenwerking, waarbij een consensus moet bereikt worden over de verzamelde informatie en de te volgen strategie.
+Het Pac-Man spel zelf kunnen we winnen door alle vluchtwegen van de Pac-Man af te sluiten. Dit houdt in dat alle omliggende sectoren door een \emph{ghost} bezet of door een muur afgeschermd worden. Men wint enkel als alle robots die meewerken aan de insluiting ook effectief aangeven dat ze gewonnen hebben via hun grafische interface. De probleemstelling vereist dus een afdoende samenwerking, waarbij een consensus moet bereikt worden over de verzamelde informatie en de te volgen strategie.
 
 \chapter{Scheidsrechtercommissie}
 
@@ -93,20 +95,20 @@ De spelwereld bestaat uit aangepaste panelen uit het eerste semester. Er is een 
 
 \subsection{Pac-Man}
 
-De Pac-Man wordt zichtbaar gemaakt door een infrarood-beacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen ``ghosts'' bevinden.
+De Pac-Man wordt zichtbaar gemaakt door een infrarood-beacon dat kan opgemerkt worden met behulp van de voorziene IR-sensor. Het didactisch team kiest waar deze vertrekt en bestuurt hem tijdens de demo's. Hij mag enkel bewegen op sectoren waar zich geen \emph{ghosts} bevinden.
 
 De beweging van Pac-Man is beperkt tot het rechtdoor oversteken van de witte lijnen die de sectoren scheiden.
 
 Insluiting van Pac-Man is gedefinieerd als het niet meer kunnen bewegen van de Pac-Man of het ingesloten zijn in een doodlopend pad.
 
-\subsection{Ghosts}
+\subsection{ghosts}
 
 De ghosts vertrekken op de vier hoekpunten van het doolhof, zodat de verkenning van het doolhof zo snel mogelijk van start kan gaan. De ori\"entatie van de robot is onbekend hoewel de hoek t.o.v. het assenstelsel wel een veelvoud is van 90 graden.
 
 
 \section{Communicatieprotocol}
 
-We verwijzen naar de offici\"ele documentatie van het Ghost Protocol. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het Ghost Protocol is het resultaat van een werkgroep die aangesteld werd door de scheidsrechtercommissie. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen ervan m.b.t. onze eigen ontwikkeling.
+We verwijzen naar de offici\"ele documentatie van het \emph{Ghost Protocol}. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het \emph{Ghost Protocol} is het resultaat van een werkgroep die aangesteld werd door de scheidsrechtercommissie. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen ervan m.b.t. onze eigen ontwikkeling.
 
 \subsection{Voordelen}
 
@@ -128,25 +130,25 @@ In het algemeen ondervinden we geen nadelen van de beslissingen die genomen zijn
 
 \subsection{Analyse van het GhostProtocol}
 
-De ``join'' procedure lijkt overbodig. Wanneer een spook laattijdig ``joint'', zal hij gewoon de volgende berichten horen en zijn wereldbeeld beginnen opbouwen. Eventueel kan een commando toegevoegd worden om reeds gestuurde informatie opnieuw te sturen. In een latere versie van het protocol werd het ``showmap'' commando toegevoegd, wat deze functie gedeeltelijk vervult. Dit overlapt gedeeltelijk met het ``join'' principe. Bovendien eist de procedure dat er exact 4 spoken zijn. Indien een spook uitvalt, of een extra spook op het kanaal komt, zorgt dit voor problemen. Hiervoor werd een 'override' commando toegevoegd, om toch te starten indien er een spook geen join stuurt. De protocolrestrictie voor 4 spoken is volgens ons volledig onnodig, net als de join procedure. 
+De \emph{JOIN} procedure lijkt overbodig. Wanneer een spook laattijdig \emph{JOIN't}, zal hij gewoon de volgende berichten horen en zijn wereldbeeld beginnen opbouwen. Eventueel kan een commando toegevoegd worden om reeds gestuurde informatie opnieuw te sturen. In een latere versie van het protocol werd het \emph{SHOWMAP} commando toegevoegd, wat deze functie gedeeltelijk vervult. Dit overlapt gedeeltelijk met het \emph{JOIN} principe. Bovendien eist de procedure dat er exact 4 spoken zijn. Indien een spook uitvalt, of een extra spook op het kanaal komt, zorgt dit voor problemen. Hiervoor werd een 'override' commando toegevoegd, om toch te starten indien er een spook geen \emph{JOIN} stuurt. Het protocol voorziet een beperking van 4 spoken is volgens ons volledig onnodig, net als de \emph{JOIN} procedure. 
 
 In plaats van dynamisch namen uit te wisselen kunnen evengoed vaste namen afgesproken worden, dit zou het protocol eenvoudiger maken. Er zijn tal van mogelijkheden: alle teams hebben een naam of de echte namen van de vier spoken kunnen gehanteerd worden. Een conventie lijkt ons hier ver boven een configuratie te verkiezen.
 
-Voor het ``discover'' commando lijkt het beter om een bitfield te gebruiken voor de aanduiding van de muren. Omdat er zeer veel discover commando's gestuurd kunnen worden, kan dit de overhead op de communicatie verkleinen en zelfs het parsen vereenvoudigen. Met eenvoudige bit-wise shift operaties kan getest worden of een tegel een muur heeft of niet. Dit geldt tevens ook voor de commando's zelf. Ook deze waren beter vervangen door getallen, zodat alle informatie louter numeriek was en optimaler verstuurd zou kunnen worden.
+Voor het \emph{DISCOVER} commando lijkt het beter om een \emph{bitfield} te gebruiken voor de aanduiding van de muren. Omdat er zeer veel discover commando's gestuurd kunnen worden, kan dit de overhead op de communicatie verkleinen en zelfs het parsen vereenvoudigen. Met eenvoudige bit-wise shift operaties kan getest worden of een tegel een muur heeft of niet. Dit geldt tevens ook voor de commando's zelf. Ook deze waren beter vervangen door getallen, zodat alle informatie louter numeriek was en optimaler verstuurd zou kunnen worden.
 
-Het ``plan'' commando is naar onze mening onvolledig. Het doorsturen van een pad is pas nuttig indien er ook een ``election''-procedure voorzien zou zijn. Verder is zonder een tijdsynchronisatie en informatie over hoe snel de robot zijn pad aflegt al deze informatie nutteloos.
+Het \emph{PLAN} commando is naar onze mening onvolledig. Het doorsturen van een pad is pas nuttig indien er ook een \emph{election}-procedure voorzien zou zijn. Verder is zonder een tijdsynchronisatie en informatie over hoe snel de robot zijn pad aflegt al deze informatie nutteloos.
 
 Voor ons algoritme is dit commando tevens volledig overbodig. Onze robot rijdt op enkel informatie van het doolhof, de positie van de andere robots en Pac-Man. De pad informatie zal initieel niet gebruikt worden in onze implementatie.
 
 Nog een algemene opmerking is dat het protocol moeilijk te parsen is door combinatie van strings en numerieke waardes, inconsistenties in de structuur van de commando's, gebruik van verschillende soorten scheidingstekens, enz.
 
-Oorspronkelijk was het idee dat het Ghost Protocol letterlijk gebruikt zou worden in het Maze Protocol - het Maze Protocol is een doorslag van het Ghost Protocol en wordt gebruikt om doolhoven te beschrijven, bvb. voor de simulator. Op deze manier zou de implementatie van het Ghost Protocol kunnen hergebruikt worden. Spijtig genoeg zijn er enkele aanpassingen doorgevoerd waardoor het nu niet meer 100\% compatibel is met het Ghost Protocol. Deze aanpassingen waren naar onze mening beter doorgevoerd geweest op het Ghost Protocol zelf.
+Oorspronkelijk was het idee dat het \emph{Ghost Protocol} letterlijk gebruikt zou worden in het Maze Protocol - het Maze Protocol is een doorslag van het \emph{Ghost Protocol} en wordt gebruikt om doolhoven te beschrijven, bvb. voor de simulator. Op deze manier zou de implementatie van het \emph{Ghost Protocol} kunnen hergebruikt worden. Spijtig genoeg zijn er enkele aanpassingen doorgevoerd waardoor het nu niet meer 100\% compatibel is met het \emph{Ghost Protocol}. Deze aanpassingen waren naar onze mening beter doorgevoerd geweest op het \emph{Ghost Protocol} zelf.
 
 \subsection{Aanpassingen Demo 2}
 
-Het ``barcode'' commando wordt vervangen door een ``barcodeat'' commando, dit is een vooruitgang aangezien er nu geen logica meer voorzien moet worden om de barcodes aan een positie te linken. 
+Het \emph{BARCODE} commando wordt vervangen door een \emph{BARCODEAT} commando, dit is een vooruitgang aangezien er nu geen logica meer voorzien moet worden om de barcodes aan een positie te linken. 
 
-Er werd eveneens een ``removebarcode'' toegevoegd om teams toe te laten eerdere transmissies omtrent barcodes ongedaan te maken.
+Er werd eveneens een \emph{removebarcode} toegevoegd om teams toe te laten eerdere transmissies omtrent barcodes ongedaan te maken.
 
 \subsection{Aanpassingen Demo 3}
 
@@ -169,7 +171,7 @@ Alleen al het ontbreken van een TimeToLive in sommige commando's is een zeer sto
 
 Door de gewijzigde specificaties van de fysieke omgeving en de extra infrarood sensor, moesten enkele wijzigingen gemaakt worden aan de fysieke robot. Zo zijn de druksensoren verwijderd om een sensorpoort vrij te maken voor de infraroodsensor. Bovendien is het in dit project noodzakelijk om zo precies mogelijk door het midden van de sectoren te rijden - touch-sensoren zijn minder van toepassing in deze strategie. Aangezien het doolhof minder breed is (sectoren zijn 40 centimeter in plaats van 80) zijn de extra wielen weggehaald om het geheel iets slanker te maken.
 
-Verder is ook de motor, die de sonar laat draaien, iets naar onder en naar het midden verplaatst. Hierdoor hebben we de tandwielen tussen de motor en de sensor kunnen elimineren waardoor de sensor rechtstreeks op de motor zit. Om eenvoudiger de uitvoer op het scherm van de robot te kunnen lezen, is de ``NXT Brick'' omgedraaid, zodat het scherm zich nu aan de onderzijde van de robot bevindt. Hiermee kunnen we de robot gemakkelijker besturen en connecteren met de computer.
+Verder is ook de motor, die de sonar laat draaien, iets naar onder en naar het midden verplaatst. Hierdoor hebben we de tandwielen tussen de motor en de sensor kunnen elimineren waardoor de sensor rechtstreeks op de motor zit. Om eenvoudiger de uitvoer op het scherm van de robot te kunnen lezen, is de \emph{NXT Brick} omgedraaid, zodat het scherm zich nu aan de onderzijde van de robot bevindt. Hiermee kunnen we de robot gemakkelijker besturen en connecteren met de computer.
 
 \subsection{IR-sensor}
 
@@ -210,7 +212,7 @@ Een nadeel van zo'n filtering is dat deze de afstand waarop geschat kan worden i
 
 \section{Demo 2}
 
-Aangezien in demo 1 bleek dat de lichtsensor niet goed functioneerde, zullen we naar demo 2 toe de lichtsensor opnieuw van dichterbij bekijken. Het is moeilijk om de exacte condities van de demo na te bootsen, maar we kunnen wel de in de databank opgeslagen gegevens analyseren. Tevens zullen andere pistes bewandeld worden, op zoek naar een stabieler resultaat. Een eerste test zal opnieuw het plaatsten van een ``kapje'' zijn, zoals in het eerste semester getest werd. Deze aanpak werd toen niet gebruikt vanwege de hoogteverschillen in het parcours. 
+Aangezien in demo 1 bleek dat de lichtsensor niet goed functioneerde, zullen we naar demo 2 toe de lichtsensor opnieuw van dichterbij bekijken. Het is moeilijk om de exacte condities van de demo na te bootsen, maar we kunnen wel de in de databank opgeslagen gegevens analyseren. Tevens zullen andere pistes bewandeld worden, op zoek naar een stabieler resultaat. Een eerste test zal opnieuw het plaatsten van een \emph{kapje} zijn, zoals in het eerste semester getest werd. Deze aanpak werd toen niet gebruikt vanwege de hoogteverschillen in het parcours. 
 
 \section{Demo 3}
 
@@ -218,28 +220,28 @@ Aangezien afgesproken werd in de commissie om de robots te voorzien van een vlag
 
 \chapter{Strategie}
 
-Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome ``ghosts'' gedaan.
+Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome \emph{ghosts} gedaan.
 
-We vonden een paper omtrent ``Collaborate Diffusion'' \cite{Repenning06}. Hierin wordt voorgesteld om een vorm van ``Hill Climbing'' toe te passen om zo verschillende autonome ``ghosts'' toe te laten samen te werken om een ``Pac-Man'' te achtervolgen. Hierbij hebben zij geen nood aan bijkomende onderlinge communicatie naast de informatie over de omgeving.
+We vonden een paper omtrent \emph{Collaborate Diffusion} \cite{Repenning06}. Hierin wordt voorgesteld om een vorm van \emph{Hill Climbing} toe te passen om zo verschillende autonome \emph{ghosts} toe te laten samen te werken om een Pac-Man te achtervolgen. Hierbij hebben zij geen nood aan bijkomende onderlinge communicatie naast de informatie over de omgeving.
 
 Ondanks het feit dat we geen overeenstemming met de andere teams konden bereiken om allen dit algoritme te implementeren, blijft het een zeer interessant algoritme om toe te passen voor het bepalen van ons eigen pad.
 
 \section{Achtervolgstrategie}
 
-Wanneer de Pac-Man gezien wordt, stuurt deze een ``geur'' uit. Deze plant zich langs gekende sectoren voort. Dit wordt gedaan door het gemiddelde van de 4 omliggende sectoren te berekenen, indien er een muur staat is de waarde 0. Zo ontstaat er een ``hoogte-kaart'' met aan de top een Pac-Man. De ``ghosts'' kunnen nu aan de hand van een eenvoudig ``Hill Climbing'' algoritme een optimale weg volgen naar de Pac-Man.
+Wanneer de Pac-Man gezien wordt, stuurt deze een \emph{geur} uit. Deze plant zich langs gekende sectoren voort. Dit wordt gedaan door het gemiddelde van de 4 omliggende sectoren te berekenen, indien er een muur staat is de waarde 0. Zo ontstaat er een \emph{hoogte-kaart} met aan de top een Pac-Man. De \emph{ghosts} kunnen nu aan de hand van een eenvoudig \emph{Hill Climbing} algoritme een optimale weg volgen naar de Pac-Man.
 
-Wanneer een ``ghost'' de Pac-Man opmerkt, kan deze positie op de kaart een zeer hoge waarde gegeven worden. Deze kaart wordt vaak herberekend en de geur van een Pac-Man zal dus snel verdwijnen. En dit is zoals het in de realiteit ook zal zijn. De Pac-Man beweegt zich doorheen het doolhof en zal niet op \'e\'en plek blijven wachten. Als een Pac-Man meerdere keren gezien wordt, zal zijn positie ook een constantere ``geur'' verspreiden, waardoor de ``ghosts'' van alle kanten op hem kunnen naderen. 
+Wanneer een \emph{ghost} de Pac-Man opmerkt, kan deze positie op de kaart een zeer hoge waarde gegeven worden. Deze kaart wordt vaak herberekend en de geur van een Pac-Man zal dus snel verdwijnen. En dit is zoals het in de realiteit ook zal zijn. De Pac-Man beweegt zich doorheen het doolhof en zal niet op \'e\'en plek blijven wachten. Als een Pac-Man meerdere keren gezien wordt, zal zijn positie ook een constantere \emph{geur} verspreiden, waardoor de \emph{ghosts} van alle kanten op hem kunnen naderen. 
 
-Een handige manier om de geur van een Pac-Man te visualiseren is door middel van een kleurenpallet. We hebben hierbij gekozen voor het kleurenpallet zoals dit in de natuur voorkomt. Figuur \ref{fig:colormap} toont dit kleurenpallet met een aanduiding van de overeenkomstige interne numerieke waarde die aan een sector toegekend wordt om de intensiteit van de ``geur'' voor te stellen.
+Een handige manier om de geur van een Pac-Man te visualiseren is door middel van een kleurenpallet. We hebben hierbij gekozen voor het kleurenpallet zoals dit in de natuur voorkomt. Figuur \ref{fig:colormap} toont dit kleurenpallet met een aanduiding van de overeenkomstige interne numerieke waarde die aan een sector toegekend wordt om de intensiteit van de \emph{geur} voor te stellen.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=150mm]{resources/colormap.png}
-  \caption{Kleuren en voorgestelde interne ``geur''-waarden}
+  \caption{Kleuren en voorgestelde interne \emph{geur}-waarden}
   \label{fig:colormap}
 \end{figure}
 
-Figuur \ref{fig:hillclimbing1} toont een uitgangssituatie met een Pac-Man die een een uitdijende ``geur'' verspreidt.
+Figuur \ref{fig:hillclimbing1} toont een uitgangssituatie met een Pac-Man die een een uitdijende \emph{geur} verspreidt.
 
 \begin{figure}[htbp]
   \centering
@@ -248,7 +250,7 @@ Figuur \ref{fig:hillclimbing1} toont een uitgangssituatie met een Pac-Man die ee
   \label{fig:hillclimbing1}
 \end{figure}
 
-Om te voorkomen dat ``ghosts'' allemaal dezelfde weg volgen en enkel achter Pac-Man lopen slorpt iedere ``ghost'' de geur op door de waarde van zijn huidige sector op 0 te zetten. Hierdoor ontstaat er een dal rond iedere ``ghost'' en zullen de anderen een omweg zoeken. Dit zorgt er ook voor dat de ``ghosts'' elkaar van nature uit ontwijken en niet zullen botsen. Figuur \ref{fig:hillclimbing2} illustreert dat, eens een ``ghost'' een bepaalde ``beste'' route naar de Pac-Man heeft ingeslagen, het pad achter hem minder interessant wordt voor de overige achtervolgers. In de voorstelling ontstaat er een ``deuk'' in de ``geur'' achter de ``ghost''. Andere ``ghosts'' zullen daarom eerder andere paden, parallel aan het reeds ingeslagen pad, kiezen.
+Om te voorkomen dat \emph{ghosts} allemaal dezelfde weg volgen en enkel achter Pac-Man lopen slorpt iedere \emph{ghost} de geur op door de waarde van zijn huidige sector op 0 te zetten. Hierdoor ontstaat er een dal rond iedere \emph{ghost} en zullen de anderen een omweg zoeken. Dit zorgt er ook voor dat de \emph{ghosts} elkaar van nature uit ontwijken en niet zullen botsen. Figuur \ref{fig:hillclimbing2} illustreert dat, eens een \emph{ghost} een bepaalde \emph{beste} route naar de Pac-Man heeft ingeslagen, het pad achter hem minder interessant wordt voor de overige achtervolgers. In de voorstelling ontstaat er een \emph{deuk} in de \emph{geur} achter de \emph{ghost}. Andere \emph{ghosts} zullen daarom eerder andere paden, parallel aan het reeds ingeslagen pad, kiezen.
 
 \begin{figure}[htbp]
   \centering
@@ -259,16 +261,16 @@ Om te voorkomen dat ``ghosts'' allemaal dezelfde weg volgen en enkel achter Pac-
 
 \section{Verkenstrategie}
 
-De verkenstrategie is gebaseerd op hetzelfde principe. Hier is er niet \'e\'en bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het meest onverkende stuk van het doolhof willen gaan. Daarnaast zorgt dit principe er ook voor dat een robot zal terugkeren op zijn stappen en automatisch terugkeert naar achtergelaten onbekende sectoren. We kunnen stellen dat het algoritme impliciet ``Depth-First-Search'' implementeert. Figuur \ref{fig:dfs} toont een robot die een onbekend doolhof aan het verkennen is. De felgroene sectoren zijn onbekende sectoren en hebben een hogere waarde dan de reeds bezochte sectoren.
+De verkenstrategie is gebaseerd op hetzelfde principe. Hier is er niet \'e\'en bron die een geur uitstuurt, maar iedere onbekende sector stuurt een geur uit. De robot zal hierdoor altijd naar het dichtstbijzijnde en het meest onverkende stuk van het doolhof willen gaan. Daarnaast zorgt dit principe er ook voor dat een robot zal terugkeren op zijn stappen en automatisch terugkeert naar achtergelaten onbekende sectoren. We kunnen stellen dat het algoritme impliciet \emph{Depth-First-Search} implementeert. Figuur \ref{fig:dfs} toont een robot die een onbekend doolhof aan het verkennen is. De felgroene sectoren zijn onbekende sectoren en hebben een hogere waarde dan de reeds bezochte sectoren.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=50mm]{resources/dfs.png}
-  \caption{Hill Climbing met impliciet ``Depth-First-Search'' zoekgedrag}
+  \caption{Hill Climbing met impliciet \emph{Depth-First-Search} zoekgedrag}
   \label{fig:dfs}
 \end{figure}
 
-Het toepassen van hetzelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een ``ghost'' onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn ``geur'' dit pad nog extra versterken en zal een ``ghost'' automatisch hierdoor aangetrokken worden.
+Het toepassen van hetzelfde algoritme voor beide deelproblemen, levert ons in essentie een enkelvoudige implementatie van beide. Door het toekennen van goed gekozen waarden aan onbekende sectoren en aan sectoren waar Pac-Man werd gezien, stelt het algoritme ons in staat om steeds het optimale doel te kiezen. Wanneer er zich geen pad bevindt naar de Pac-Man zal een \emph{ghost} onbekende sectoren trachten te verkennen. Wanneer er een pad bestaat naar de Pac-Man zal zijn \emph{geur} dit pad nog extra versterken en zal een \emph{ghost} automatisch hierdoor aangetrokken worden.
 
 \section{Samenwerking en onzekerheid}
 
@@ -280,13 +282,13 @@ De gevolgen voor het collaborate diffusion algoritme kunnen inhouden dat een sec
 
 \section{Effectiviteit}
 
-Het collaborate diffusion algoritme werkt optimaal indien alle achtervolgende robots dezelfde implementatie en parameters gebruiken. Ofschoon dit niet het geval is in onze situatie kan het toch zijn nut bewijzen voor onze robot op zich. Zo is de mogelijkheid om simultaan zowel sectoren te verkennen, als het achtervolgen van Pacman, een groot pluspunt voor de robuustheid van de robot.
+Het collaborate diffusion algoritme werkt optimaal indien alle achtervolgende robots dezelfde implementatie en parameters gebruiken. Ofschoon dit niet het geval is in onze situatie kan het toch zijn nut bewijzen voor onze robot op zich. Zo is de mogelijkheid om simultaan zowel sectoren te verkennen, als het achtervolgen van Pac-Man, een groot pluspunt voor de robuustheid van de robot.
 
-Het \emph{collaboratie diffusion} algoritme is in essentie een implementatie van het \emph{hillclimbing II} algoritme. Dit zorgt ervoor dat de robot ten alle tijde volgens het meest optimale pad naar de Pacman tracht te rijden. Mits kennis van dit algoritme is het voor de bestuurder van de Pacman zeker mogelijk om hiermee rekening te houden en er voordeel uit te halen. Het algoritme zal bijvoorbeeld nooit een minder optimale weg kiezen om de Pacman via een andere weg klem te rijden.
+Het \emph{collaboratie diffusion} algoritme is in essentie een implementatie van het \emph{hillclimbing II} algoritme. Dit zorgt ervoor dat de robot ten alle tijde volgens het meest optimale pad naar de Pac-Man tracht te rijden. Mits kennis van dit algoritme is het voor de bestuurder van de Pac-Man zeker mogelijk om hiermee rekening te houden en er voordeel uit te halen. Het algoritme zal bijvoorbeeld nooit een minder optimale weg kiezen om de Pac-Man via een andere weg klem te rijden.
 
 Dit concept is wel inherent ingebouwd indien een andere robot het meest optimale pad kiest en zo de verspreiding van de \emph{geur} tegen gaat. Op dit moment lijkt het alsof de robot een minder optimaal pad zal volgen, doch het is een pad waarlangs de \emph{geur} hem wel bereikt.
 
-Aan de hand van de mini-simulator, hebben we veelvuldig scenario's uitgetest. Hierbij werd ook gebruik gemaakt van een bewegende Pacman. Buiten enkele exoterische opstellingen, werd de Pacman toch altijd in een redelijke tijdspanne gevangen.
+Aan de hand van de mini-simulator, hebben we veelvuldig scenario's uitgetest. Hierbij werd ook gebruik gemaakt van een bewegende Pac-Man. Buiten enkele exoterische opstellingen, werd de Pac-Man toch altijd in een redelijke tijdspanne gevangen.
 
 \chapter{Softwaredesign}
 
@@ -311,7 +313,7 @@ Het klasse diagram op figuur \ref{uml:design-semester1} toont de belangrijkste b
 
 De Robot beschikt verder over een Model waarin alle informatie uit de wereld wordt samengebracht. Dit Model kan verrijkt of bijgewerkt worden door zgn. ModelProcessors. Deze onderzoeken bepaalde delen van het Model en trachten hieruit informatie van een hoger niveau te distilleren. Voorbeelden hiervan zijn processors die op basis van metingen door de sonar-sensor bepalen waar er zich muren bevinden.
 
-Tot slot heeft de Robot ook een Navigator die op basis van de informatie in het Model bepaalt waarheen de Robot dient te rijden. De navigator geeft zeer basische instructies aan de Robot, in de vorm van ``beweeg voor- of achterwaarts'' en ``draai zoveel graden''.
+Tot slot heeft de Robot ook een Navigator die op basis van de informatie in het Model bepaalt waarheen de Robot dient te rijden. De navigator geeft zeer basische instructies aan de Robot, in de vorm van \emph{beweeg voor- of achterwaarts} en \emph{draai zoveel graden}.
 
 Om met de Robot te kunnen communiceren is een RobotAgent voorzien, waarlangs berichten kunnen verzonden en ontvangen worden.
 
@@ -321,7 +323,7 @@ Het is duidelijk dat dit raamwerk een sterk herbruikbare basis biedt om verschil
 
 Ofschoon we een nieuwe Navigator zouden kunnen maken die perfect zou passen, werd snel duidelijk dat er een verfijning van het raamwerk mogelijk was: daar waar tijdens het eerste semester de robot geen resolutie had bij het rijden, is dit in het tweede semester wel het geval. Door het introduceren van het concept van sectoren is er een duidelijk onderscheid tussen het operationele en strategische aspect van het besturen van de robot. Operationeel dient de robot optimaal van sector naar sector te rijden, zodat op strategisch niveau kan geredeneerd worden in termen van deze sectoren.
 
-De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een Navigator-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. ``Driver''. Het klasse diagram op figuur \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor het tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een ``ManhattanDriver''.\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie.} 
+De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een Navigator-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. \emph{Driver}. Het klasse diagram op figuur \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor het tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een \emph{ManhattanDriver}.\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie.} 
 
 \begin{figure}[htbp]
   \centering
@@ -332,7 +334,7 @@ De functionaliteit om van sector naar sector te rijden zou typisch terecht gekom
 
 \subsection{Grids en Sectoren}
 
-De Navigator kan zich nu specifiek toeleggen op het bepalen van de volgende Sector, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten Grid, Sector en Agent in het leven geroepen. Het klasse diagram op figuur \ref{uml:grids-sectoren} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. ``GhostRobot'' opbouwen.
+De Navigator kan zich nu specifiek toeleggen op het bepalen van de volgende \emph{Sector}, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten \emph{Grid}, \emph{Sector} en Agent in het leven geroepen. Het klasse diagram op figuur \ref{uml:grids-sectoren} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. \emph{GhostRobot} opbouwen.
 
 \begin{figure}[htbp]
   \centering
@@ -341,17 +343,17 @@ De Navigator kan zich nu specifiek toeleggen op het bepalen van de volgende Sect
   \label{uml:grids-sectoren}
 \end{figure}
 
-Centraal staat het concept van de Sector in een Grid. Een Sector heeft een co\"ordinaat relatief t.o.v. de Grid waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een Agent. De waarde van een Sector zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de Grid bewegen langs de Sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de PacmanAgent en GhostAgent zo de agents die op de Grid voorkomen. Een ProxyAgent werd gebruikt om in een simulator een echte Agent voor te stellen die de volledige Grid nog niet kent en de StaticTargetAgent werd speciaal voorzien voor de voorbereiding van de eerste demo.
+Centraal staat het concept van de \emph{Sector} in een \emph{Grid}. Een \emph{Sector} heeft een co\"ordinaat relatief t.o.v. de \emph{Grid} waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een Agent. De waarde van een \emph{Sector} zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de \emph{Grid} bewegen langs de sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de Pac-ManAgent en \emph{GhostAgent} zo de agents die op de \emph{Grid} voorkomen. Een \emph{ProxyAgent} werd gebruikt om in een simulator een echte \emph{Agent} voor te stellen die de volledige \emph{Grid} nog niet kent en de \emph{StaticTargetAgent} werd speciaal voorzien voor de voorbereiding van de eerste demo.
 
-Optioneel kan aan een Grid ook een GridView gegeven worden. Deze voorziet een visualisatie van de Grid en kan op verschillende manieren ingevuld worden. Voor dit project hebben we twee implementaties gemaakt: enerzijds een ConsoleGridView die gedetailleerde informatie over de Sectoren weergeeft en een SwingGridView die een grafische voorstelling geeft van de Grid. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
+Optioneel kan aan een \emph{Grid} ook een \emph{GridView} gegeven worden. Deze voorziet een visualisatie van de \emph{Grid} en kan op verschillende manieren ingevuld worden. Voor dit project hebben we twee implementaties gemaakt: enerzijds een \emph{ConsoleGridView} die gedetailleerde informatie over de sectoren weergeeft en een \emph{SwingGridView} die een grafische voorstelling geeft van de \emph{Grid}. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
 
-Een Grid beschikt ook over een GridProcessor. Net zoals de ModelProcessor kan dit een geschakelde lijst van Processoren zijn die de Grid kunnen ondervragen en bijwerken. Zo hebben we een DiffusionGridProcessor ge\"implementeerd die de waarde van de Sectoren zal bijwerken volgens het eerder beschreven algoritme.
+Een \emph{Grid} beschikt ook over een \emph{GridProcessor}. Net zoals de \emph{ModelProcessor} kan dit een geschakelde lijst van processoren zijn die de \emph{Grid} kunnen ondervragen en bijwerken. Zo hebben we een \emph{DiffusionGridProcessor} ge\"implementeerd die de waarde van de sectoren zal bijwerken volgens het eerder beschreven algoritme.
 
-De nieuwe robot zal ook informatie van andere robots ontvangen. Deze worden allemaal opgeslagen in een zelfde Grid. Een tweede implementatie van het Grid concept, de zgn. AggregatedGrid, is in staat om een aantal verschillende grids samen in beschouwing te nemen en de ``som'' van deze als een geaggregeerd beeld aan te bieden.
+De nieuwe robot zal ook informatie van andere robots ontvangen. Deze worden allemaal opgeslagen in een zelfde \emph{Grid}. Een tweede implementatie van het \emph{Grid} concept, de zgn. \emph{AggregatedGrid}, is in staat om een aantal verschillende grids samen in beschouwing te nemen en de \emph{som} van deze als een geaggregeerd beeld aan te bieden.
 
 \subsection{GhostRobot}
 
-Het klasse diagram op figuur \ref{uml:ghostrobot} geeft tot slot de volledige compositie van de nieuwe ``GhostRobot'' weer. De GhostRobot beschikt over een GhostModel, GhostNavigator en GhostDriver.
+Het klasse diagram op figuur \ref{uml:ghostrobot} geeft tot slot de volledige compositie van de nieuwe \emph{GhostRobot} weer. De \emph{GhostRobot} beschikt over een \emph{GhostModel}, \emph{GhostNavigator} en \emph{GhostDriver}.
 
 \begin{figure}[htbp]
   \centering
@@ -360,26 +362,26 @@ Het klasse diagram op figuur \ref{uml:ghostrobot} geeft tot slot de volledige co
   \label{uml:ghostrobot}
 \end{figure}
 
-Het GhostModel bevat Grids voor elk van de andere robots alsook een AggregatedGrid voor de eigen Agent. Zolang er geen gemeenschappelijk referentiepunt\footnote{Referentiepunten worden op het parcours voorgesteld door geori\"enteerde barcodes.} is gevonden zijn de verschillende Grids niet met elkaar in verband te brengen. Wanneer er echter een gemeenschappelijk referentiepunt gevonden is, kan de corresponderende Grid van de andere robot toegevoegd worden aan de eigen AggregatedGrid, waardoor de informatie van beide Grids gecombineerd wordt en een ruimer wereldbeeld beschikbaar wordt.
+Het \emph{GhostModel} bevat \emph{Grids} voor elk van de andere robots alsook een \emph{AggregatedGrid} voor de eigen Agent. Zolang er geen gemeenschappelijk referentiepunt\footnote{Referentiepunten worden op het parcours voorgesteld door geori\"enteerde barcodes.} is gevonden zijn de verschillende \emph{Grids} niet met elkaar in verband te brengen. Wanneer er echter een gemeenschappelijk referentiepunt gevonden is, kan de corresponderende \emph{Grid} van de andere robot toegevoegd worden aan de eigen \emph{AggregatedGrid}, waardoor de informatie van beide \emph{Grids} gecombineerd wordt en een ruimer wereldbeeld beschikbaar wordt.
 
-De eigen AggregatedGrid beschikt ook over een DiffusingGridProcessor die het algoritme voor het bepalen van de waarde van een Sector zal toepassen op de AggregatedGrid, waardoor de GhostNavigator een redelijk eenvoudige beslissing kan nemen op basis van de waarden van de vier aangrenzende sectoren.
+De eigen \emph{AggregatedGrid} beschikt ook over een \emph{DiffusingGridProcessor} die het algoritme voor het bepalen van de waarde van een \emph{Sector} zal toepassen op de \emph{AggregatedGrid}, waardoor de \emph{GhostNavigator} een redelijk eenvoudige beslissing kan nemen op basis van de waarden van de vier aangrenzende sectoren.
 
-Het GhostModel is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de GhostNavigator beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende Grids in het GhostModel. Anderzijds is er de WallDetectorProcessor die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige Sector. Tot slot is er de GridUpdateProcessor die de nieuwe muurinformatie zal verwerken in de eigen Grid en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie ModelProcessoren zijn er nog andere actief. Het betreft hier bvb. de LineModelProcessor of de WallDetectionModelProcessor. Deze zorgen voor informatie die door de Driver zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze ModelProcessoren maakten reeds deel uit van de robots uit het eerste semester.}
+Het \emph{GhostModel} is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de \emph{GhostNavigator} beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende \emph{Grids} in het \emph{GhostModel}. Anderzijds is er de \emph{WallDetectorProcessor} die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige \emph{Sector}. Tot slot is er de \emph{GridUpdateProcessor} die de nieuwe muurinformatie zal verwerken in de eigen \emph{Grid} en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie \emph{ModelProcessoren} zijn er nog andere actief. Het betreft hier bvb. de \emph{LineModelProcessor} of de \emph{WallDetectionModelProcessor}. Deze zorgen voor informatie die door de \emph{Driver} zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze \emph{ModelProcessoren} maakten reeds deel uit van de robots uit het eerste semester.}
 
 \subsection{Performantie}
 \label{sect:performance}
 
-Met de expliciete keuze om alle software op de robot zelf te implementeren, zijn we natuurlijk gebonden aan de beperkingen van de robot. Enerzijds heeft deze geen processor die te vergelijken is met de processors van hedendaagse computers. Dit is echter voor onze architectuur en gekozen zoekstrategie geen probleem. Door gebruik te maken van een zeer eenvoudig ``local hill climbing'' algoritme, gebaseerd op het principe van ``Collaborate Diffusion'', vragen we zeer weinig van de processor. We slagen er in om een ``frame rate'' te bekomen die rond de 80 FPS \footnote{Frames Per Second is een term die uit de grafische sector komt en weergeeft hoeveel beelden per seconde gemaakt worden, maar wordt ook gebruikt in andere contexten. Een ``frame'' is dan het geheel van taken. Voor onze robot bestaat \'e\'en frame uit het opvragen van de sensorwaarden, het bijwerken van het Model, het kiezen van een volgende actie en het initi\"eren van de uitvoering.} ligt, wat betekent dat de frequentie waarmee de robot al zijn taken uitvoert meer dan hoog genoeg is voor de taken die moeten uitgevoerd worden. Proefondervindelijk hebben we vastgesteld dat een frame rate van 60 FPS een minimum is om de verschillende taken naar behoren uit te voeren.
+Met de expliciete keuze om alle software op de robot zelf te implementeren, zijn we natuurlijk gebonden aan de beperkingen van de robot. Enerzijds heeft deze geen processor die te vergelijken is met de processors van hedendaagse computers. Dit is echter voor onze architectuur en gekozen zoekstrategie geen probleem. Door gebruik te maken van een zeer eenvoudig \emph{local hill climbing} algoritme, gebaseerd op het principe van \emph{Collaborate Diffusion}, vragen we zeer weinig van de processor. We slagen er in om een \emph{frame rate} te bekomen die rond de 80 FPS \footnote{Frames Per Second is een term die uit de grafische sector komt en weergeeft hoeveel beelden per seconde gemaakt worden, maar wordt ook gebruikt in andere contexten. Een \emph{frame} is dan het geheel van taken. Voor onze robot bestaat \'e\'en frame uit het opvragen van de sensorwaarden, het bijwerken van het Model, het kiezen van een volgende actie en het initi\"eren van de uitvoering.} ligt, wat betekent dat de frequentie waarmee de robot al zijn taken uitvoert meer dan hoog genoeg is voor de taken die moeten uitgevoerd worden. Proefondervindelijk hebben we vastgesteld dat een frame rate van 60 FPS een minimum is om de verschillende taken naar behoren uit te voeren.
 
 \subsubsection{Geheugengebruik}
 
 Het aspect geheugen is dan weer wel een sterk beperkende factor. De robot beschikt slechts over een werkgeheugen van 64KB waarvan een deel reeds wordt ingenomen door het geladen programma. Tijdens het eerste semester was de hoeveelheid informatie die opgeslagen werd in het Model nagenoeg constant, of had ten minste een gekende bovengrens. In het tweede semester moeten we echter informatie bijhouden over het speelveld waarop we ons bewegen. Aangezien we op voorhand niet weten hoe groot dit speelveld is kunnen we niet op voorhand een bovengrens bepalen voor het geheugen nodig om deze informatie op te slagen. Daarbij komt dat we dit speelveld niet alleen moeten bijhouden voor onze eigen robot, maar ook voor de drie andere robots.
 
-Intern stellen we het speelveld of Map voor als een verzameling sectoren, die verbonden zijn met elkaar door bi-directionele verwijzingen. Telkens een robot een nieuwe sector ``ontdekt'' wordt er intern ook een nieuw Sector object aangemaakt. De grootte van zo'n Sector object is dus bepalend voor de hoeveelheid sectoren we maximaal kunnen bijhouden in het geheugen van de robot.
+Intern stellen we het speelveld of \emph{Map} voor als een verzameling sectoren, die verbonden zijn met elkaar door bi-directionele verwijzingen. Telkens een robot een nieuwe sector \emph{ontdekt} wordt er intern ook een nieuw \emph{Sector} object aangemaakt. De grootte van zo'n \emph{Sector} object is dus bepalend voor de hoeveelheid sectoren we maximaal kunnen bijhouden in het geheugen van de robot.
 
-Vlak voor demo 1, was een Sector ongeveer 370 bytes groot en konden we ongeveer 145 Sectoren opslaan in ons geheugen. In een worst-case scenario betekent dit dat we per robot 36 sectoren konden opslaan, wat overeenkomt met een speelveld van 6 bij 6. We hebben vervolgens twee pistes gestart om dit probleem aan te pakken. Enerzijds hebben we het geheugengebruik van de Sector klasse aangepakt en gereduceerd tot 280 bytes. Anderzijds hebben we besloten om binnenkomende informatie van andere robots slechts te bewaren totdat deze informatie op basis van een barcode kon ge\"importeerd worden in de Map van de eigen robot. Op dat ogenblik gooien we de Map van de andere robot weg en voegen de nog volgende binnenkomende informatie rechtstreeks toe aan onze eigen Map.
+Vlak voor demo 1, was een \emph{Sector} ongeveer 370 bytes groot en konden we ongeveer 145 sectoren opslaan in ons geheugen. In een worst-case scenario betekent dit dat we per robot 36 sectoren konden opslaan, wat overeenkomt met een speelveld van 6 bij 6. We hebben vervolgens twee pistes gestart om dit probleem aan te pakken. Enerzijds hebben we het geheugengebruik van de \emph{Sector} klasse aangepakt en gereduceerd tot 280 bytes. Anderzijds hebben we besloten om binnenkomende informatie van andere robots slechts te bewaren totdat deze informatie op basis van een barcode kon ge\"importeerd worden in de \emph{Map} van de eigen robot. Op dat ogenblik gooien we de Map van de andere robot weg en voegen de nog volgende binnenkomende informatie rechtstreeks toe aan onze eigen \emph{Map}.
 
-Op deze manier zal er een trapsgewijs verval zijn van het totale aantal sectoren die moeten bijgehouden worden. Immers wanneer alle robots een gemeenschappelijke barcode hebben gevonden, zal er slechts \'e\'en Map overblijven, nl. die van de eigen robot.
+Op deze manier zal er een trapsgewijs verval zijn van het totale aantal sectoren die moeten bijgehouden worden. Immers wanneer alle robots een gemeenschappelijke barcode hebben gevonden, zal er slechts \'e\'en \emph{Map} overblijven, nl. die van de eigen robot.
 
 Met deze aanpassingen konden we voor demo 1 een maximaal aantal van 200 sectoren opslaan, ofwel 50 per Robot, wat overeenkomt met een speelveld van 7 bij 7. Rekening houdend dat deze situatie zich niet kan voordoen, omdat de robots nooit allemaal afzonderlijk het hele speelveld moeten ontdekken en sowieso gemeenschappelijke barcodes zullen tegenkomen, ligt de bovengrens voor de dimensies van het speelveld in realiteit hoger. Simulaties wezen uit dat we met 200 sectoren in staat waren om een (realistisch) speelveld van 10 bij 10 zonder problemen te kunnen verkennen met vier robots.
 
@@ -392,7 +394,7 @@ We hebben deze simulaties gedaan aan de hand van de mini-simulator (zie sectie \
   \label{chart:sectors-no-merge}
 \end{figure}
 
-Figuur \ref{chart:sectors-with-merge} toont vervolgens het resultaat van dezelfde simulatie, echter nu zal onze robot de door andere robots verkende sectoren importeren in zijn eigen map, de Map van de andere robot uit zijn geheugen verwijderen en alle volgende nieuwe informatie rechtstreeks toepassen op zijn eigen Map.
+Figuur \ref{chart:sectors-with-merge} toont vervolgens het resultaat van dezelfde simulatie, echter nu zal onze robot de door andere robots verkende sectoren importeren in zijn eigen map, de \emph{Map} van de andere robot uit zijn geheugen verwijderen en alle volgende nieuwe informatie rechtstreeks toepassen op zijn eigen \emph{Map}.
 
 \begin{figure}[htbp]
   \centering
@@ -403,9 +405,9 @@ Figuur \ref{chart:sectors-with-merge} toont vervolgens het resultaat van dezelfd
 
 We zien hier duidelijk twee zaken naar voor komen: enerzijds beschikt de robot veel sneller over informatie van het hele speelveld en anderzijds wordt het totale geheugengebruik ook drastisch beperkt.
 
-Deze aanpak heeft natuurlijk een groot nadeel. Eens de gegevens van een andere robot ge\"importeerd zijn, is het niet mogelijk om deze terug te verwijderen. De architectuur voorziet een AggregatedGrid die de gegevens van de echte Grids dynamisch aggregeert. Hierbij moeten de Grids  van de verschillende robots echter wel in het geheugen bewaard blijven.
+Deze aanpak heeft natuurlijk een groot nadeel. Eens de gegevens van een andere robot ge\"importeerd zijn, is het niet mogelijk om deze terug te verwijderen. De architectuur voorziet een \emph{AggregatedGrid} die de gegevens van de echte \emph{Grids} dynamisch aggregeert. Hierbij moeten de \emph{Grids}  van de verschillende robots echter wel in het geheugen bewaard blijven.
 
-Met het oog op demo 2 en 3 willen we nog verdere optimalisaties doorvoeren op het vlak van het geheugengebruik van een Sector. Anderzijds onderzoeken we een oplossing waarbij er Sectoren uit de verschillende Mappen van andere Robots verwijderd worden in functie van het nog beschikbare geheugen.
+Met het oog op demo 2 en 3 willen we nog verdere optimalisaties doorvoeren op het vlak van het geheugengebruik van een \emph{Sector}. Anderzijds onderzoeken we een oplossing waarbij er sectoren uit de verschillende mappen van andere Robots verwijderd worden in functie van het nog beschikbare geheugen.
 
 \section{PC}
 
@@ -469,11 +471,11 @@ In het tweede semester moet de simulator op niet minder dan 3 verschillende mani
 
 \begin{itemize}
 \item Meerdere (virtuele) robots moeten tegelijkertijd binnen dezelfde simulator aangestuurd kunnen worden.
-\item Meerdere instanties van de simulator moeten robots kunnen laten communiceren met elkaar via het Ghost Protocol langs de MQ server.
+\item Meerdere instanties van de simulator moeten robots kunnen laten communiceren met elkaar via het \emph{Ghost Protocol} langs de MQ server.
 \item Naast onderlinge communicatie tussen de robots in de simulatoren moeten ook fysieke robots kunnen deelnemen, in een zgn. hybride modus.
 \end{itemize}
 
-Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het Ghost Protocol en de MQ-server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de ServiceAgent en het Log4J losging framework opgeslagen worden in de databank, waarna ze consulteerbaar zijn via de webclient.
+Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het \emph{Ghost Protocol} en de MQ-server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de ServiceAgent en het Log4J losging framework opgeslagen worden in de databank, waarna ze consulteerbaar zijn via de webclient.
 
 \begin{figure}[htbp]
   \centering
@@ -493,7 +495,7 @@ Om het onderzoek naar het algoritme onafhankelijk te laten verlopen van de echte
   \label{fig:mini-simulator}
 \end{figure}
 
-Door de introductie van de ``Driver'' naast de ``Navigator'' is er een duidelijke opdeling tussen het effectieve rijden van sector naar sector en de keuze van de volgende sector waarheen gereden moet worden. Deze abstractie is doorgetrokken in de mini-simulator die zich louter met het ``Navigator'' niveau bezighoudt, waar de (volledige) simulator ook het niveau van de ``Driver'' in beschouwing neemt.
+Door de introductie van de \emph{Driver} naast de \emph{Navigator} is er een duidelijke opdeling tussen het effectieve rijden van sector naar sector en de keuze van de volgende sector waarheen gereden moet worden. Deze abstractie is doorgetrokken in de mini-simulator die zich louter met het \emph{Navigator} niveau bezighoudt, waar de (volledige) simulator ook het niveau van de \emph{Driver} in beschouwing neemt.
 
 Zo wordt de mini-simulator ook gebruikt om onderzoek te doen naar het geheugengebruik, nodig om al de navigator-informatie bij te houden. Net zoals bij de (volledige) simulator, is het ook mogelijk om zonder visualisatie te werken, waardoor veel scenario's kunnen getest worden.
 
@@ -572,7 +574,7 @@ Onze werkwijze tijdens het eerste semester heeft zijn vruchten afgeworpen. We wi
 
 Omdat de scope van de eerste demo in essentie zo sterkt aanleunt bij het uiteindelijke doel en omdat we met de ontwikkeling van de simulator tijdens het eerste semester een voorsprong hebben t.o.v. de overige teams willen we de scope van de finale demo reeds als doelstelling nemen voor de eerste demo.
 
-Dit gaat hand in hand met de tijd die we ter beschikking hebben tijdens de eerste weken van het semester, wanneer oefenzittingen voor andere vakken nog niet begonnen zijn. We kiezen dus voor een ``blitzkrieg'' waarbij we trachten om de totale scope in een korte tijd te realiseren, waarna we tijdens de resterende weken dan verder kunnen verfijnen.
+Dit gaat hand in hand met de tijd die we ter beschikking hebben tijdens de eerste weken van het semester, wanneer oefenzittingen voor andere vakken nog niet begonnen zijn. We kiezen dus voor een \emph{blitzkrieg} waarbij we trachten om de totale scope in een korte tijd te realiseren, waarna we tijdens de resterende weken dan verder kunnen verfijnen.
 
 De taken van co\"ordinator (Michiel) en secretaris (Christophe) werden opnieuw verdeeld. Ruben is de nieuwe co\"ordinator. Voor de rol van secretaris werd niet \'e\'en teamlid aangesteld, maar werd besloten om dit een gedeelde verantwoordelijkheid te maken.
 
@@ -584,7 +586,7 @@ Aangezien we tijdens de demo 1 voorbereiding ons vooral gefocust hebben op de fu
 
 Om te weten aan wat en hoe we extra aandacht moeten geven aan onze architectuur en code, evenals om iedereen in detail vertrouwd te maken met alle code, besloten we om in de eerste week na demo 1 tijd te nemen om alle code te overlopen. Tijdens dit proces hielden we een gedeeld Google docs bestand bij waarin we opmerkingen, fouten en/of vragen m.b.t. de code konden plaatsen. Hierop konden alle groepsleden commentaar geven of verduidelijkingen toevoegen. Deze lijst werd als basis gebruikt om dan het werk te verdelen over de groepsleden.
 
-Naast deze aanpak gaan we ook proberen om het concept ``pair programming'' toe te passen. Zo is het de bedoeling dat we met twee paren en \'e\'en losse speler die overal bijspringt werken. Dit gebeurt zowel tijdens als naast de zittingen op maandag.
+Naast deze aanpak gaan we ook proberen om het concept \emph{pair programming} toe te passen. Zo is het de bedoeling dat we met twee paren en \'e\'en losse speler die overal bijspringt werken. Dit gebeurt zowel tijdens als naast de zittingen op maandag.
 
 \section{Demo 3}
 
@@ -596,9 +598,9 @@ Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces 
 
 \section{Unit testen}
 
-Na de eerste demo van het tweede semester werden we geconfronteerd met de gevolgen van het negeren van \'e\'en van de belangrijkste geboden van software ontwikkeling: ``Gij zult uw code testbaar maken en testen.''. Bijna elke aanpassing aan \'e\'en deel van de code zorgde voor verschrikkelijke gevolgen aan een ander deel. Elke kleinste wijziging brak andere delen van de oplossing.
+Na de eerste demo van het tweede semester werden we geconfronteerd met de gevolgen van het negeren van \'e\'en van de belangrijkste geboden van software ontwikkeling: \emph{Gij zult uw code testbaar maken en testen.}. Bijna elke aanpassing aan \'e\'en deel van de code zorgde voor verschrikkelijke gevolgen aan een ander deel. Elke kleinste wijziging brak andere delen van de oplossing.
 
-Gegeven de manier waarop de software ontwikkeld was tot dan toe, was dit niet geheel onbegrijpelijk. We hadden twee opties: verder gaan op de manier die we gehanteerd hadden en elk probleempje proberen te ``fixen'' of structureel een ingrijpende verandering doorvoeren in de manier waarop we met de code omgingen.
+Gegeven de manier waarop de software ontwikkeld was tot dan toe, was dit niet geheel onbegrijpelijk. We hadden twee opties: verder gaan op de manier die we gehanteerd hadden en elk probleempje proberen te \emph{fixen} of structureel een ingrijpende verandering doorvoeren in de manier waarop we met de code omgingen.
 
 Aangezien \'e\'en van de doelen van P\&O Computerwetenschappen net is om te leren in praktijk hoe een middelgroot softwareproject dient uitgebaat te worden, hebben we deze kans aangegrepen om een stap verder te gaan en zelf aan den lijve te ondervinden of en hoe een andere aanpak effectief meer stabiliteit kan brengen. We begonnen aan het invoeren van structurele unit testen voor zoveel mogelijk code.
 
@@ -606,7 +608,7 @@ Aangezien de functionaliteit compleet was, konden we de volledige scope overzien
 
 Met een codebase van ongeveer 17.000 lijnen code is dit echter geen sinecure en ging dit veel tijd vragen. Het alternatief was nog veel onzekerder: verder gaan met een onstabiele codebase zou mogelijk een onbetrouwbare oplossing met zich meebrengen en de wetenschap hieromtrent zou net een falen zijn in \'e\'en van de belangrijkste aspecten van de opdracht.
 
-Met nog vier weken voor de finale deadline begonnen we aan een grote onderneming. Week na week groeide het volume aan testen en begon de \emph{coverage} stilaan nuttige vormen aan te nemen. Toen uitspraken als ``God zij dank dat we de unit testen hebben.'' bij alle teamleden begonnen te rijzen, wisten we dat we op de goede weg zaken. Figuur \ref{fig:sloc} toont de evolutie van de volledige codebase en het aantal lijnen code (SLOC). Hier is duidelijk te zien dat vanaf begin april er een sterke en gestage toename is van het aantal lijnen code te wijten aan het structureel invoeren van unit testen. Ook toont deze grafiek zeer duidelijk dat ook de groei van de functionele code gestopt is en dat er zelfs een lichte daling is op te tekenen.
+Met nog vier weken voor de finale deadline begonnen we aan een grote onderneming. Week na week groeide het volume aan testen en begon de \emph{coverage} stilaan nuttige vormen aan te nemen. Toen uitspraken als \emph{God zij dank dat we de unit testen hebben.} bij alle teamleden begonnen te rijzen, wisten we dat we op de goede weg zaken. Figuur \ref{fig:sloc} toont de evolutie van de volledige codebase en het aantal lijnen code (SLOC). Hier is duidelijk te zien dat vanaf begin april er een sterke en gestage toename is van het aantal lijnen code te wijten aan het structureel invoeren van unit testen. Ook toont deze grafiek zeer duidelijk dat ook de groei van de functionele code gestopt is en dat er zelfs een lichte daling is op te tekenen.
 
 \begin{figure}[htbp]
   \centering
@@ -910,9 +912,9 @@ Het project voorziet verschillende gebruikers interfaces: een dashboard dat info
 
 Het \emph{Dashboard} is een web toepassing die informatie ontvangt uit de databank waarin de \emph{Gateway} de ontvangen feedback van een robot opslaat. De web toepassing ontvangt deze informatie via een \emph{JSONP}\footnote{JSONP wordt typisch opgebouwd met een lang-lopende connectie waarover de server constant nieuwe Javascript commando's verstuurd. Deze worden op de client uitgevoerd, waardoor updates van bijvoorbeeld data kunnen verwerkt worden. Zie ook \url{http://en.wikipedia.org/wiki/JSONP}} connectie. Op deze manier kan de web toepassing toch in real-time een informatiestroom van de robot ontvangen.
 
-Figuur \ref{fig:dashboard_overview} toont het \emph{Dashboard} met al zijn samenstellende delen. Het principe van het \emph{Dashboard} bestaat uit een reeks van onafhankelijke panelen die elk een conceptueel deel van de informatie waarover de robot beschikt en mee werkt voorstellen. De verschillende onderdelen zijn: 
+Figuur \ref{fig:dashboard_overview} toont het \emph{Dashboard} met al zijn samenstellende delen. Het principe van het \emph{Dashboard} bestaat uit een reeks van onafhankelijke panelen die elk een conceptueel deel van de informatie waarover de robot beschikt en mee werkt voorstellen. Zo zijn er typisch panelen voor elk van de sensoren. Een paneel voor een sensor toont enerzijds de laatst gelezen waarde, maar tracht ook een nuttige histogram van de informatie aan te bieden. Zo is er bijvoorbeeld voor de lichtsensor een voortschrijdende balk waarop barcodes visueel ook kunnen herkend worden. de sonar wordt weergegeven zoals een klassieke sonar, enz. Daarnaast worden de verschillende \emph{Grids} gevisualiseerd. Tot slot zijn er nog panelen die informatie geven over de gebeurtenissen waarop de robot reageert en de acties dat hij hiervoor onderneemt.
 
-TODO: details toevoegen.
+Dankzij de uitwerking aan de hand van HTML en Javascript kunnen we het \emph{Dashboard} zeer eenvoudig aanpassen en panelen bijmaken of verwijderen.
 
 \begin{figure}[htbp]
   \centering
@@ -923,7 +925,7 @@ TODO: details toevoegen.
 
 \section{Simulator}
 
-TODO: beschrijving simulator toevoegen met uitleg over de GridView als inplugbaar component.
+TODO: beschrijving simulator toevoegen met uitleg over de \emph{GridView} als inplugbaar component.
 
 \begin{figure}[htbp]
   \centering
