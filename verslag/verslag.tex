@@ -44,7 +44,7 @@ Het project wordt zoals in het eerste semester begeleid door het gebruik van tus
 
 Het doel van de eerste demo is een vereenvoudigde vorm van het einddoel waarbij we een stilstaande Pac-Man zoeken binnen het doolhof. De simulator dient  reeds beschikbaar te zijn en moet drie virtuele robots de fysieke laten bijstaan. Voor de tweede demo mag de commissie beslissen welke doelstellingen passen in het verdere proces richting het einddoel.
 
-Tijdens het eerste semester zijn we er in geslaagd om zeer herbruikbare code te produceren: de architecturale concepten, zoals Robot, Navigator en Model, zijn duidelijk binnen het team en de verdere uitwerking van deze concepten in het tweede semester werd ervaren als een natuurlijke evolutie. Aangezien we te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
+Tijdens het eerste semester zijn we er in geslaagd om zeer herbruikbare code te produceren: de architecturale concepten, zoals \emph{Robot}, \emph{Navigator} en Model, zijn duidelijk binnen het team en de verdere uitwerking van deze concepten in het tweede semester werd ervaren als een natuurlijke evolutie. Aangezien we te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
 
 Het verslag is anders opgebouwd ten opzichte van het vorige semester: er werd gekozen voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is erg gelijkend hoewel natuurlijk de inhoud veranderd is t.o.v. het eerste semester. Nieuw zijn de stukken over de strategie i.v.m. de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
 
@@ -101,7 +101,7 @@ De beweging van Pac-Man is beperkt tot het rechtdoor oversteken van de witte lij
 
 Insluiting van Pac-Man is gedefinieerd als het niet meer kunnen bewegen van de Pac-Man of het ingesloten zijn in een doodlopend pad.
 
-\subsection{ghosts}
+\subsection{Ghosts}
 
 De ghosts vertrekken op de vier hoekpunten van het doolhof, zodat de verkenning van het doolhof zo snel mogelijk van start kan gaan. De ori\"entatie van de robot is onbekend hoewel de hoek t.o.v. het assenstelsel wel een veelvoud is van 90 graden.
 
@@ -288,7 +288,7 @@ Het \emph{collaboratie diffusion} algoritme is in essentie een implementatie van
 
 Dit concept is wel inherent ingebouwd indien een andere robot het meest optimale pad kiest en zo de verspreiding van de \emph{geur} tegen gaat. Op dit moment lijkt het alsof de robot een minder optimaal pad zal volgen, doch het is een pad waarlangs de \emph{geur} hem wel bereikt.
 
-Aan de hand van de mini-simulator, hebben we veelvuldig scenario's uitgetest. Hierbij werd ook gebruik gemaakt van een bewegende Pac-Man. Buiten enkele exoterische opstellingen, werd de Pac-Man toch altijd in een redelijke tijdspanne gevangen.
+Met de mini-simulator hebben we verschillende scenario's uitgetest. Hierbij werd ook gebruik gemaakt van een bewegende Pac-Man. Buiten enkele exoterische opstellingen, werd de Pac-Man toch altijd in een redelijke tijdspanne gevangen.
 
 \chapter{Softwaredesign}
 
@@ -302,7 +302,7 @@ De architectuur van het eerste semester heeft zich bewezen, de structuur en conc
 
 \section{Robot}
 
-Het klasse diagram op figuur \ref{uml:design-semester1} toont de belangrijkste bouwstenen van ons robot-raamwerk, zoals dit tijdens het eerste semester werd ontworpen: een Robot-entiteit beschikt over een RobotAPI om met de fysieke robot informatie uit te wisselen. Deze informatie heeft betrekking op de gemeten waarden van de verschillende sensoren als ook het instellen van de motoren. De RobotAPI stelt ons in staat om door het vervangen van \'e\'en enkele klasse, identiek dezelfde Robot-entiteit te gebruiken in een echte fysieke robot, alsook in een gesimuleerde wereld.
+Het klasse diagram op figuur \ref{uml:design-semester1} toont de belangrijkste bouwstenen van ons robot-raamwerk, zoals dit tijdens het eerste semester werd ontworpen: een \emph{Robot}-entiteit beschikt over een \emph{RobotAPI} om met de fysieke robot informatie uit te wisselen. Deze informatie heeft betrekking op de gemeten waarden van de verschillende sensoren als ook het instellen van de motoren. De \emph{RobotAPI} stelt ons in staat om door het vervangen van \'e\'en enkele klasse, identiek dezelfde \emph{Robot}-entiteit te gebruiken in een echte fysieke robot, alsook in een gesimuleerde wereld.
 
 \begin{figure}[htbp]
   \centering
@@ -311,19 +311,19 @@ Het klasse diagram op figuur \ref{uml:design-semester1} toont de belangrijkste b
   \label{uml:design-semester1}
 \end{figure}
 
-De Robot beschikt verder over een Model waarin alle informatie uit de wereld wordt samengebracht. Dit Model kan verrijkt of bijgewerkt worden door zgn. ModelProcessors. Deze onderzoeken bepaalde delen van het Model en trachten hieruit informatie van een hoger niveau te distilleren. Voorbeelden hiervan zijn processors die op basis van metingen door de sonar-sensor bepalen waar er zich muren bevinden.
+De \emph{Robot} beschikt verder over een \emph{Model} waarin alle informatie uit de wereld wordt samengebracht. Dit \emph{Model} kan verrijkt of bijgewerkt worden door zgn. \emph{ModelProcessors}. Deze onderzoeken bepaalde delen van het \emph{Model} en trachten hieruit informatie van een hoger niveau te distilleren. Voorbeelden hiervan zijn processors die op basis van metingen door de sonar-sensor bepalen waar er zich muren bevinden.
 
-Tot slot heeft de Robot ook een Navigator die op basis van de informatie in het Model bepaalt waarheen de Robot dient te rijden. De navigator geeft zeer basische instructies aan de Robot, in de vorm van \emph{beweeg voor- of achterwaarts} en \emph{draai zoveel graden}.
+Tot slot heeft de \emph{Robot} ook een \emph{Navigator} die op basis van de informatie in het \emph{Model} bepaalt waarheen de \emph{Robot} dient te rijden. De navigator geeft zeer basische instructies aan de \emph{Robot}, in de vorm van \emph{beweeg voor- of achterwaarts} en \emph{draai zoveel graden}.
 
-Om met de Robot te kunnen communiceren is een RobotAgent voorzien, waarlangs berichten kunnen verzonden en ontvangen worden.
+Om met de \emph{Robot} te kunnen communiceren is een \emph{RobotAgent} voorzien, waarlangs berichten kunnen verzonden en ontvangen worden.
 
-Het is duidelijk dat dit raamwerk een sterk herbruikbare basis biedt om verschillende robots te bouwen. Dit heeft al tijdens het eerste semester zijn nut bewezen, maar komt nog sterker naar voor bij aanvang van het tweede semester. Door het maken van een nieuwe specifieke Navigator en bijhorend Model met Modelprocessors, kunnen we opnieuw een robot samenstellen.
+Het is duidelijk dat dit raamwerk een sterk herbruikbare basis biedt om verschillende robots te bouwen. Dit heeft al tijdens het eerste semester zijn nut bewezen, maar komt nog sterker naar voor bij aanvang van het tweede semester. Door het maken van een nieuwe specifieke \emph{Navigator} en bijhorend \emph{Model} met \emph{Modelprocessors}, kunnen we opnieuw een robot samenstellen, waarbij we maximaal gebruik maken van de bestaande software.
 
 \subsection{Driver}
 
-Ofschoon we een nieuwe Navigator zouden kunnen maken die perfect zou passen, werd snel duidelijk dat er een verfijning van het raamwerk mogelijk was: daar waar tijdens het eerste semester de robot geen resolutie had bij het rijden, is dit in het tweede semester wel het geval. Door het introduceren van het concept van sectoren is er een duidelijk onderscheid tussen het operationele en strategische aspect van het besturen van de robot. Operationeel dient de robot optimaal van sector naar sector te rijden, zodat op strategisch niveau kan geredeneerd worden in termen van deze sectoren.
+Ofschoon we een nieuwe \emph{Navigator} zouden kunnen maken die perfect zou passen, werd snel duidelijk dat er een verfijning van het raamwerk mogelijk was: daar waar tijdens het eerste semester de robot geen resolutie had bij het rijden, is dit in het tweede semester wel het geval. Door het introduceren van het concept van sectoren is er een duidelijk onderscheid tussen het operationele en strategische aspect van het besturen van de robot. Operationeel dient de robot optimaal van sector naar sector te rijden, zodat op strategisch niveau kan geredeneerd worden in termen van deze sectoren.
 
-De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een Navigator-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. \emph{Driver}. Het klasse diagram op figuur \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor het tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een \emph{ManhattanDriver}.\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie.} 
+De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een \emph{Navigator}-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. \emph{Driver}. Het klasse diagram op figuur \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor het tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een \emph{ManhattanDriver}.\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie.} 
 
 \begin{figure}[htbp]
   \centering
@@ -334,7 +334,7 @@ De functionaliteit om van sector naar sector te rijden zou typisch terecht gekom
 
 \subsection{Grids en Sectoren}
 
-De Navigator kan zich nu specifiek toeleggen op het bepalen van de volgende \emph{Sector}, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten \emph{Grid}, \emph{Sector} en Agent in het leven geroepen. Het klasse diagram op figuur \ref{uml:grids-sectoren} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. \emph{GhostRobot} opbouwen.
+De \emph{Navigator} kan zich nu specifiek toeleggen op het bepalen van de volgende \emph{Sector}, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten \emph{Grid}, \emph{Sector} en Agent in het leven geroepen. Het klasse diagram op figuur \ref{uml:grids-sectoren} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. \emph{GhostRobot} opbouwen.
 
 \begin{figure}[htbp]
   \centering
@@ -366,16 +366,16 @@ Het \emph{GhostModel} bevat \emph{Grids} voor elk van de andere robots alsook ee
 
 De eigen \emph{AggregatedGrid} beschikt ook over een \emph{DiffusingGridProcessor} die het algoritme voor het bepalen van de waarde van een \emph{Sector} zal toepassen op de \emph{AggregatedGrid}, waardoor de \emph{GhostNavigator} een redelijk eenvoudige beslissing kan nemen op basis van de waarden van de vier aangrenzende sectoren.
 
-Het \emph{GhostModel} is verder voorzien van een aantal ModelProcessoren die de inkomende informatie verwerken tot informatie waarmee de \emph{GhostNavigator} beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende \emph{Grids} in het \emph{GhostModel}. Anderzijds is er de \emph{WallDetectorProcessor} die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige \emph{Sector}. Tot slot is er de \emph{GridUpdateProcessor} die de nieuwe muurinformatie zal verwerken in de eigen \emph{Grid} en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie \emph{ModelProcessoren} zijn er nog andere actief. Het betreft hier bvb. de \emph{LineModelProcessor} of de \emph{WallDetectionModelProcessor}. Deze zorgen voor informatie die door de \emph{Driver} zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze \emph{ModelProcessoren} maakten reeds deel uit van de robots uit het eerste semester.}
+Het \emph{GhostModel} is verder voorzien van een aantal \emph{ModelProcessoren} die de inkomende informatie verwerken tot informatie waarmee de \emph{GhostNavigator} beslissingen kan nemen. Enerzijds is er een InboxProcessor die de binnenkomende berichten van de andere robots omzet in aanpassingen aan de verschillende \emph{Grids} in het \emph{GhostModel}. Anderzijds is er de \emph{WallDetectorProcessor} die op basis van de gemeten waarden door de sonar-sensor een beeld zal samenstellen van de huidige \emph{Sector}. Tot slot is er de \emph{GridUpdateProcessor} die de nieuwe muurinformatie zal verwerken in de eigen \emph{Grid} en eventueel nieuwe sectoren zal toevoegen.\footnote{Naast deze drie \emph{ModelProcessoren} zijn er nog andere actief. Het betreft hier bvb. de \emph{LineModelProcessor} of de \emph{WallDetectionModelProcessor}. Deze zorgen voor informatie die door de \emph{Driver} zal gebruikt worden om optimaal naar de volgende sector te rijden. Veel van deze \emph{ModelProcessoren} maakten reeds deel uit van de robots uit het eerste semester.}
 
 \subsection{Performantie}
 \label{sect:performance}
 
-Met de expliciete keuze om alle software op de robot zelf te implementeren, zijn we natuurlijk gebonden aan de beperkingen van de robot. Enerzijds heeft deze geen processor die te vergelijken is met de processors van hedendaagse computers. Dit is echter voor onze architectuur en gekozen zoekstrategie geen probleem. Door gebruik te maken van een zeer eenvoudig \emph{local hill climbing} algoritme, gebaseerd op het principe van \emph{Collaborate Diffusion}, vragen we zeer weinig van de processor. We slagen er in om een \emph{frame rate} te bekomen die rond de 80 FPS \footnote{Frames Per Second is een term die uit de grafische sector komt en weergeeft hoeveel beelden per seconde gemaakt worden, maar wordt ook gebruikt in andere contexten. Een \emph{frame} is dan het geheel van taken. Voor onze robot bestaat \'e\'en frame uit het opvragen van de sensorwaarden, het bijwerken van het Model, het kiezen van een volgende actie en het initi\"eren van de uitvoering.} ligt, wat betekent dat de frequentie waarmee de robot al zijn taken uitvoert meer dan hoog genoeg is voor de taken die moeten uitgevoerd worden. Proefondervindelijk hebben we vastgesteld dat een frame rate van 60 FPS een minimum is om de verschillende taken naar behoren uit te voeren.
+Met de expliciete keuze om alle software op de robot zelf te implementeren, zijn we natuurlijk gebonden aan de beperkingen van de robot. Enerzijds heeft deze geen processor die te vergelijken is met de processors van hedendaagse computers. Dit is echter voor onze architectuur en gekozen zoekstrategie geen probleem. Door gebruik te maken van een zeer eenvoudig \emph{local hill climbing} algoritme, gebaseerd op het principe van \emph{Collaborate Diffusion}, vragen we zeer weinig van de processor. We slagen er in om een \emph{frame rate} te bekomen die rond de 80 FPS \footnote{Frames Per Second is een term die uit de grafische sector komt en weergeeft hoeveel beelden per seconde gemaakt worden, maar wordt ook gebruikt in andere contexten. Een \emph{frame} is dan het geheel van taken. Voor onze robot bestaat \'e\'en frame uit het opvragen van de sensorwaarden, het bijwerken van het \emph{Model}, het kiezen van een volgende actie en het initi\"eren van de uitvoering.} ligt, wat betekent dat de frequentie waarmee de robot al zijn taken uitvoert meer dan hoog genoeg is voor de taken die moeten uitgevoerd worden. Proefondervindelijk hebben we vastgesteld dat een frame rate van 60 FPS een minimum is om de verschillende taken naar behoren uit te voeren.
 
 \subsubsection{Geheugengebruik}
 
-Het aspect geheugen is dan weer wel een sterk beperkende factor. De robot beschikt slechts over een werkgeheugen van 64KB waarvan een deel reeds wordt ingenomen door het geladen programma. Tijdens het eerste semester was de hoeveelheid informatie die opgeslagen werd in het Model nagenoeg constant, of had ten minste een gekende bovengrens. In het tweede semester moeten we echter informatie bijhouden over het speelveld waarop we ons bewegen. Aangezien we op voorhand niet weten hoe groot dit speelveld is kunnen we niet op voorhand een bovengrens bepalen voor het geheugen nodig om deze informatie op te slagen. Daarbij komt dat we dit speelveld niet alleen moeten bijhouden voor onze eigen robot, maar ook voor de drie andere robots.
+Het aspect geheugen is dan weer wel een sterk beperkende factor. De robot beschikt slechts over een werkgeheugen van 64KB waarvan een deel reeds wordt ingenomen door het geladen programma. Tijdens het eerste semester was de hoeveelheid informatie die opgeslagen werd in het \emph{Model} nagenoeg constant, of had ten minste een gekende bovengrens. In het tweede semester moeten we echter informatie bijhouden over het speelveld waarop we ons bewegen. Aangezien we op voorhand niet weten hoe groot dit speelveld is kunnen we niet op voorhand een bovengrens bepalen voor het geheugen nodig om deze informatie op te slagen. Daarbij komt dat we dit speelveld niet alleen moeten bijhouden voor onze eigen robot, maar ook voor de drie andere robots.
 
 Intern stellen we het speelveld of \emph{Map} voor als een verzameling sectoren, die verbonden zijn met elkaar door bi-directionele verwijzingen. Telkens een robot een nieuwe sector \emph{ontdekt} wordt er intern ook een nieuw \emph{Sector} object aangemaakt. De grootte van zo'n \emph{Sector} object is dus bepalend voor de hoeveelheid sectoren we maximaal kunnen bijhouden in het geheugen van de robot.
 
@@ -383,7 +383,7 @@ Vlak voor demo 1, was een \emph{Sector} ongeveer 370 bytes groot en konden we on
 
 Op deze manier zal er een trapsgewijs verval zijn van het totale aantal sectoren die moeten bijgehouden worden. Immers wanneer alle robots een gemeenschappelijke barcode hebben gevonden, zal er slechts \'e\'en \emph{Map} overblijven, nl. die van de eigen robot.
 
-Met deze aanpassingen konden we voor demo 1 een maximaal aantal van 200 sectoren opslaan, ofwel 50 per Robot, wat overeenkomt met een speelveld van 7 bij 7. Rekening houdend dat deze situatie zich niet kan voordoen, omdat de robots nooit allemaal afzonderlijk het hele speelveld moeten ontdekken en sowieso gemeenschappelijke barcodes zullen tegenkomen, ligt de bovengrens voor de dimensies van het speelveld in realiteit hoger. Simulaties wezen uit dat we met 200 sectoren in staat waren om een (realistisch) speelveld van 10 bij 10 zonder problemen te kunnen verkennen met vier robots.
+Met deze aanpassingen konden we voor demo 1 een maximaal aantal van 200 sectoren opslaan, ofwel 50 per robot, wat overeenkomt met een speelveld van 7 bij 7. Rekening houdend dat deze situatie zich niet kan voordoen, omdat de robots nooit allemaal afzonderlijk het hele speelveld moeten ontdekken en sowieso gemeenschappelijke barcodes zullen tegenkomen, ligt de bovengrens voor de dimensies van het speelveld in realiteit hoger. Simulaties wezen uit dat we met 200 sectoren in staat waren om een (realistisch) speelveld van 10 bij 10 zonder problemen te kunnen verkennen met vier robots.
 
 We hebben deze simulaties gedaan aan de hand van de mini-simulator (zie sectie \ref{sect:mini-simulator}). Wanneer 4 robots een speelveld van 10 bij 10 verkennen, zonder gebruik te maken van barcodes om informatie uit te wisselen, dan zal het totaal aantal sectoren in het geheugen van onze robot oplopen tot 400. Figuur \ref{chart:sectors-no-merge} toont een grafiek die het verloop van zo'n sessie weergeeft.
 
@@ -407,7 +407,7 @@ We zien hier duidelijk twee zaken naar voor komen: enerzijds beschikt de robot v
 
 Deze aanpak heeft natuurlijk een groot nadeel. Eens de gegevens van een andere robot ge\"importeerd zijn, is het niet mogelijk om deze terug te verwijderen. De architectuur voorziet een \emph{AggregatedGrid} die de gegevens van de echte \emph{Grids} dynamisch aggregeert. Hierbij moeten de \emph{Grids}  van de verschillende robots echter wel in het geheugen bewaard blijven.
 
-Met het oog op demo 2 en 3 willen we nog verdere optimalisaties doorvoeren op het vlak van het geheugengebruik van een \emph{Sector}. Anderzijds onderzoeken we een oplossing waarbij er sectoren uit de verschillende mappen van andere Robots verwijderd worden in functie van het nog beschikbare geheugen.
+Met het oog op demo 2 en 3 willen we nog verdere optimalisaties doorvoeren op het vlak van het geheugengebruik van een \emph{Sector}. Anderzijds onderzoeken we een oplossing waarbij er sectoren uit de verschillende mappen van andere robots verwijderd worden in functie van het nog beschikbare geheugen.
 
 \section{PC}
 
@@ -951,7 +951,7 @@ De simulator wordt opgestart aan de hand van de \emph{SimulationRunner}. Deze ap
 
 \section{RASH - Robot Administratie Shell}
 
-De Robot Administratie Shell, kortweg \emph{rash}, werd in het leven geroepen om commando's door te sturen naar de robot. De nood voor een dergelijke tool ontstond uit de noodzaak om bijvoorbeeld een robot te verplichten om het gewone verloop van de start-procedure, zoals gedefinieerd in het \emph{GhostProtocol}, te doorbreken en de robot te verplichten om toch te starten.
+De \emph{Robot Administratie Shell}, kortweg \emph{rash}, werd in het leven geroepen om commando's door te sturen naar de robot. De nood voor een dergelijke tool ontstond uit de noodzaak om bijvoorbeeld een robot te verplichten om het gewone verloop van de start-procedure, zoals gedefinieerd in het \emph{GhostProtocol}, te doorbreken en de robot te verplichten om toch te starten.
 
 Aangezien er in het protocol impliciet ruimte is gelaten om eigen commando's te specificeren, door het verplichten van het negeren van onbekende commando's, en deze via de message queue te sturen, kozen we om een generiek eigen \emph{custom} commando te gebruiken:
 
