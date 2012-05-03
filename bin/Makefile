@@ -17,12 +17,19 @@ JAVA=java -cp ${BUILD_DIR}:${LIBS}
 RM=rm -rf
 
 RASH_ARGS=-d
+MQ_ARGS=
 
 rash: project-rash ${BUILD_DIR}
 	@echo "*** compiling rash..."
 	@${JAVAC} RobotAdminShellRunner.java
 	@echo "*** running rash..."
 	@${JAVA} RobotAdminShellRunner ${RASH_ARGS}
+
+spy: project-mq ${BUILD_DIR}
+	@echo "*** compiling MQ spy..."
+	@${JAVAC} MQSpy.java
+	@echo "*** running mq..."
+	@${JAVA} MQSpy ${MQ_ARGS}
 
 project-%:
 	$(eval PROJECT=rash)

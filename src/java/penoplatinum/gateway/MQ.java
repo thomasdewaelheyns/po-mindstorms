@@ -65,7 +65,6 @@ public class MQ implements Queue {
   // public method to send a message. the implementation adds the internal
   // identification of the sender.
   public MQ send(String message) {
-    // System.out.println( "SEND: " + message );
     try {
       this.channel.basicPublish(this.channelName, "", null, message.getBytes());
     } catch (Exception e) {
@@ -80,9 +79,7 @@ public class MQ implements Queue {
   }
 
   protected void handleIncomingMessage(String message) {
-    // System.out.println( "HANDLE " + message );
     if( this.receiver != null ) {
-      // System.out.println( "   -=> calling receive" );
       this.receiver.receive(message);
     } else {
       System.err.println("No MessageReceiver, can't handle incoming MQ msg.");
