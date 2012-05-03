@@ -166,7 +166,7 @@ public class GridModelPart implements ModelPart {
   }
   
   public void setPacMan(int x, int y) {
-    this.myGrid.moveTo(this.pacman, new Point(x, y), Bearing.UNKNOWN);
+    this.myGrid.moveTo(this.pacman, new Point(x, y), Bearing.N);
     this.pacmanID++;
   }
   
