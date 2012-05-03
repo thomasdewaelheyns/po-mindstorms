@@ -5,7 +5,6 @@ package penoplatinum;
  * TODO: WARNING, WHEN CHANGIN' PORTS THIS ENTIRE CLASS MUST BE CHECKED
  * @author: Team Platinum
  */
-
 import java.util.List;
 import lejos.nxt.*;
 import penoplatinum.movement.RotationMovement;
@@ -13,7 +12,6 @@ import penoplatinum.robot.RobotAPI;
 import penoplatinum.sensor.IRSeekerV2;
 import penoplatinum.sensor.RotatingSonarSensor;
 import penoplatinum.util.Utils;
-
 
 public class AngieRobotAPI implements RobotAPI {
 
@@ -27,16 +25,14 @@ public class AngieRobotAPI implements RobotAPI {
   private RotatingSonarSensor sonar;
   private IRSeekerV2 irSeeker;
   private RotationMovement movement;
-  
+  private int fps = 0;
   private static final int sensorNumberInfraRed = Config.S1;
   private static final int sensorNumberLight = Config.S4;
   private static final int sensorNumberSonar = Config.S3;
   private static final int sensorNumberMotorLeft = Config.M1;
   private static final int sensorNumberMotorRight = Config.M2;
   private static final int sensorNumberMotorSonar = Config.M3;
-  
   int[] values = new int[Config.SENSORVALUES_NUM];
-  
 
   public AngieRobotAPI() {
     //Reset tacho's
@@ -166,7 +162,7 @@ public class AngieRobotAPI implements RobotAPI {
   public void setReferenceAngle(float reference) {
     reference = movement.getInternalOrientation();
   }
-  
+
   public float getRelativeAngle(float reference) {
     outAngle = -reference + movement.getInternalOrientation();
     return outAngle;
@@ -186,5 +182,22 @@ public class AngieRobotAPI implements RobotAPI {
 
   public int getSweepID() {
     return this.sonar.getSweepID();
+  }
+
+  public long getFreeMemory() {
+    return Runtime.getRuntime().freeMemory();
+  }
+
+  public long getTotalmemory() {
+    return Runtime.getRuntime().totalMemory();
+  }
+
+  public void setFps(int fps) {
+    this.fps = fps;
+  }
+
+  public int getFps() {
+    return this.fps;
+  
   }
 }
