@@ -69,7 +69,7 @@ public class GridModelPart implements ModelPart {
   }
   
   public Sector getMySector() {
-    return this.myGrid.getSectorOf(this.myAgent);
+    return this.myGrid.getSectorAt(getMyPosition());
   }
 
   public Point getMyPosition(){
@@ -157,16 +157,9 @@ public class GridModelPart implements ModelPart {
     this.changedSectors.clear();
   }
   
-  public Point getMyPosition(){
-    return this.myGrid.getPositionOf(this.myAgent);
-  }
   
-  public Bearing getMyBearing(){
-    return this.myGrid.getBearingOf(this.myAgent);
-  }
-  
-  public void setPacMan(int x, int y) {
-    this.myGrid.moveTo(this.pacman, new Point(x, y), Bearing.N);
+  public void setPacman(Point pos) {
+    this.myGrid.moveTo(this.pacman, pos, Bearing.N);
     this.pacmanID++;
   }
   

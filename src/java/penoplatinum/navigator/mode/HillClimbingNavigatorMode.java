@@ -12,6 +12,7 @@ package penoplatinum.navigator.mode;
 import java.util.List;
 import java.util.ArrayList;
 
+import penoplatinum.grid.Sector;
 import penoplatinum.util.Bearing;
 
 
