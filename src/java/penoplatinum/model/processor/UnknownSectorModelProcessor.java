@@ -39,8 +39,8 @@ public class UnknownSectorModelProcessor extends ModelProcessor {
   private void addNewSectors() {
     Model model = getModel();
     GridModelPart gridPart = GridModelPart.from(model);
-    Sector current = gridPart.getMyGrid().getSectorOf(gridPart.getMyAgent());
-    for(Bearing b : Bearing.NESW){
+    Sector current = gridPart.getMyGrid().getSectorAt(gridPart.getMyGrid().getPositionOf(gridPart.getMyAgent()));
+    for (Bearing b : Bearing.NESW) {
       addNewSector(current, b);
     }
   }

@@ -28,7 +28,7 @@ public class UnknownSectorModelProcessorTest extends TestCase {
     mockModel = mock(Model.class);
     when(mockModel.getPart(ModelPartRegistry.GRID_MODEL_PART)).thenReturn(mockGridPart);
     when(mockGridPart.getMyGrid()).thenReturn(mockGrid);
-    when(mockGrid.getSectorOf(any(Agent.class))).thenReturn(mockCurrentSector);
+//    when(mockGrid.getSectorOf(any(Agent.class))).thenReturn(mockCurrentSector);
   }
 
   /**

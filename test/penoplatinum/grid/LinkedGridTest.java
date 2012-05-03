@@ -76,19 +76,12 @@ public class LinkedGridTest extends TestCase {
 
     assertEquals(Bearing.E, grid.getBearingOf(a));
 
-    assertEquals(a, grid.getAgentAt(pos));
+    assertEquals(a, grid.getAgentAt(pos, a.getClass()));
+    assertNull(grid.getAgentAt(pos, LinkedGridTest.class));
 
     assertNotNull(grid.getSectorAt(pos)); // Sector must be created
-    assertEquals(grid.getSectorAt(pos), grid.getSectorOf(a));
+    assertEquals(pos, grid.getPositionOf(a));
 
-  }
-
-  public void testGetAgentAtMultiple() {
-//    fail(); // TODO change specification
-  }
-
-  public void testAddMultipleAgentsSamePosition() {
-//    fail();
   }
 
   public void testMoveTo() {
@@ -106,16 +99,38 @@ public class LinkedGridTest extends TestCase {
 
     assertEquals(Bearing.W, grid.getBearingOf(a));
 
-    assertNull(grid.getAgentAt(pos));
-    assertEquals(a, grid.getAgentAt(newPos));
+    assertNull(grid.getAgentAt(pos, a.getClass()));
+    assertEquals(a, grid.getAgentAt(newPos, a.getClass()));
 
     assertNotNull(grid.getSectorAt(pos)); // Old sector must exist
     assertNotNull(grid.getSectorAt(newPos)); // Old sector must exist
-    assertEquals(grid.getSectorAt(newPos), grid.getSectorOf(a));
+    assertEquals(newPos, grid.getPositionOf(a));
 
 
 
 
+  }
+
+  public void testAgentsSamePosition() {
+    Agent a = mockAgent();
+    Agent subA = mockSubAgent();
+
+
+
+    Grid grid = new LinkedGrid();
+    Point pos = new Point(4, 4);
+
+    grid.add(a, pos, Bearing.E);
+    grid.add(subA, pos, Bearing.N);
+
+    assertEquals(pos, grid.getPositionOf(a));
+    assertEquals(pos, grid.getPositionOf(subA));
+    assertEquals(Bearing.E, grid.getBearingOf(a));
+    assertEquals(Bearing.N, grid.getBearingOf(subA));
+
+    assertEquals(a, grid.getAgentAt(pos, a.getClass()));
+    assertEquals(subA, grid.getAgentAt(pos, subA.getClass()));
+    
   }
 
   public void testGetAgent() {
@@ -263,5 +278,12 @@ public class LinkedGridTest extends TestCase {
     Agent ag = mock(Agent.class);
     when(ag.getName()).thenReturn(name);
     return ag;
+  }
+
+  private Agent mockSubAgent() {
+    return mock(SubAgent.class);
+  }
+
+  interface SubAgent extends Agent {
   }
 }

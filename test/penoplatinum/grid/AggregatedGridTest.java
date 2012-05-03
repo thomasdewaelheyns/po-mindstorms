@@ -112,26 +112,26 @@ public class AggregatedGridTest extends TestCase {
 
     AggregatedGrid grid = new AggregatedGrid(mainGrid);
 
-    assertEquals(new Point(1, 0), grid.getPositionOf(grid.getSectorOf(mainAgent)));
+    assertEquals(new Point(1, 0), grid.getPositionOf(mainAgent));
 
-    assertNull(null, grid.getSectorOf(agent1));
-    assertNull(null, grid.getSectorOf(agent2));
-    assertNull(null, grid.getSectorOf(agent3));
+    assertNull(null, grid.getPositionOf(agent1));
+    assertNull(null, grid.getPositionOf(agent2));
+    assertNull(null, grid.getPositionOf(agent3));
 
     grid.activateSubGrid(grid1, TransformationTRT.Identity);
 
-    assertEquals(new Point(1, 0), grid.getPositionOf(grid.getSectorOf(mainAgent)));
-    assertEquals(new Point(0, 1), grid.getPositionOf(grid.getSectorOf(agent1)));
+    assertEquals(new Point(1, 0), grid.getPositionOf(mainAgent));
+    assertEquals(new Point(0, 1), grid.getPositionOf(agent1));
 
-    assertNull(null, grid.getSectorOf(agent2));
-    assertNull(null, grid.getSectorOf(agent3));
+    assertNull(null, grid.getPositionOf(agent2));
+    assertNull(null, grid.getPositionOf(agent3));
 
     grid.activateSubGrid(grid2, TransformationTRT.Identity);
 
-    assertEquals(new Point(1, 0), grid.getPositionOf(grid.getSectorOf(mainAgent)));
-    assertEquals(new Point(0, 1), grid.getPositionOf(grid.getSectorOf(agent1)));
-    assertEquals(new Point(0, 1), grid.getPositionOf(grid.getSectorOf(agent2)));
-    assertEquals(new Point(1, 0), grid.getPositionOf(grid.getSectorOf(agent3)));
+    assertEquals(new Point(1, 0), grid.getPositionOf(mainAgent));
+    assertEquals(new Point(0, 1), grid.getPositionOf(agent1));
+    assertEquals(new Point(0, 1), grid.getPositionOf(agent2));
+    assertEquals(new Point(1, 0), grid.getPositionOf(agent3));
 
 
 
@@ -148,8 +148,8 @@ public class AggregatedGridTest extends TestCase {
     assertEquals(Bearing.N, grid.getBearingOf(mainAgent));
     assertEquals(Bearing.N, grid.getBearingOf(agent1));
 
-    assertEquals(new Point(1, 0), grid.getPositionOf(grid.getSectorOf(mainAgent)));
-    assertEquals(new Point(0, 1), grid.getPositionOf(grid.getSectorOf(agent1)));
+    assertEquals(new Point(1, 0), grid.getPositionOf(mainAgent));
+    assertEquals(new Point(0, 1), grid.getPositionOf(agent1));
 
     grid.activateSubGrid(grid2, TransformationTRT.Identity);
 
@@ -197,38 +197,34 @@ public class AggregatedGridTest extends TestCase {
 
   public void testHasAgentOn() {
 
-    Class clsAgent = mockAgent("lalal").getClass();
-    Class clsBarcode = mockAgent("lalal").getClass();
+    Class clsAgent = mainAgent.getClass();
+    Class clsSubAgent = agent3.getClass();
 
     AggregatedGrid grid = new AggregatedGrid(mainGrid);
 
-    assertTrue(grid.hasAgentOn(grid.getSectorAt(new Point(0, 0)), clsAgent));
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(0, 1)), clsAgent));
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsAgent));
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsBarcode));
+    assertEquals(mainAgent, grid.getAgentAt(new Point(1, 0), clsAgent));
+    assertNull(grid.getAgentAt(new Point(0, 1), clsAgent));
+    assertNull(grid.getAgentAt(new Point(1, 0), clsSubAgent));
 
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsBarcode));
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(0, 1)), clsBarcode));
-    
+    assertNull(grid.getAgentAt(new Point(1, 0), clsSubAgent));
+    assertNull(grid.getAgentAt(new Point(0, 1), clsSubAgent));
+
     grid.activateSubGrid(grid1, TransformationTRT.Identity);
 
-    assertTrue(grid.hasAgentOn(grid.getSectorAt(new Point(0, 0)), clsAgent));
-    assertTrue(grid.hasAgentOn(grid.getSectorAt(new Point(0, 1)), clsAgent));
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsAgent));
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsBarcode));
+    assertEquals(mainAgent, grid.getAgentAt(new Point(1, 0), clsAgent));
+    assertEquals(agent1, grid.getAgentAt(new Point(0, 1), clsAgent));
+    assertNull(grid.getAgentAt(new Point(1, 0), clsSubAgent));
 
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsBarcode));
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(0, 1)), clsBarcode));
-    
+    assertNull(grid.getAgentAt(new Point(1, 0), clsSubAgent));
+    assertNull(grid.getAgentAt(new Point(0, 1), clsSubAgent));
+
     grid.activateSubGrid(grid2, TransformationTRT.Identity);
 
-    assertTrue(grid.hasAgentOn(grid.getSectorAt(new Point(0, 0)), clsAgent));
-    assertTrue(grid.hasAgentOn(grid.getSectorAt(new Point(0, 1)), clsAgent));
-    assertTrue(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsAgent));
-    assertTrue(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsBarcode));
+    assertEquals(mainAgent, grid.getAgentAt(new Point(1, 0), clsAgent));
+    assertEquals(agent1, grid.getAgentAt(new Point(0, 1), clsAgent));
+    assertEquals(agent3, grid.getAgentAt(new Point(1, 0), clsSubAgent));
 
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(1, 0)), clsBarcode));
-    assertFalse(grid.hasAgentOn(grid.getSectorAt(new Point(0, 1)), clsBarcode));
+    assertNull(grid.getAgentAt(new Point(0, 1), clsSubAgent));
   }
 
   private Grid mockGrid() {

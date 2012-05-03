@@ -45,7 +45,7 @@ public class ImportWallsModelProcessorTest extends TestCase {
     when(mockGridPart.getMyGrid()).thenReturn(mockGrid);
     when(mockWalls.getCurrentSector()).thenReturn(mockWallCurrent);
     when(mockWalls.getSectorId()).thenReturn(1);
-    when(mockGrid.getSectorOf(any(Agent.class))).thenReturn(mockGridCurrent);
+//    when(mockGrid.getSectorOf(any(Agent.class))).thenReturn(mockGridCurrent);
     
     when(mockWallCurrent.knowsWall(Bearing.N)).thenReturn(Boolean.TRUE);
     when(mockWallCurrent.hasWall(Bearing.N))  .thenReturn(Boolean.TRUE);

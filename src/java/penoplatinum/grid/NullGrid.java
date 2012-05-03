@@ -180,7 +180,6 @@ public class NullGrid implements Grid {
     return this;
   }
 
-
   @Override
   public Grid add(Sector s, Point position) {
     return null;
@@ -197,12 +196,12 @@ public class NullGrid implements Grid {
   }
 
   @Override
-  public Agent getAgentAt(Point positionPoint) {
-    return null;
-  }
-  
-  public boolean hasAgentOn(Sector sector, Class type) {
-    throw new RuntimeException("not implemented");
+  public Point getPositionOf(Agent agent) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
+  @Override
+  public Agent getAgentAt(Point position, Class cls) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 }

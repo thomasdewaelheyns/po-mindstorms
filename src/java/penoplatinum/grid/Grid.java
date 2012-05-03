@@ -10,8 +10,12 @@ package penoplatinum.grid;
 
 import penoplatinum.util.Point;
 import penoplatinum.util.Bearing;
-import penoplatinum.util.TransformationTRT;
 
+/**
+ * Optimization idea: replace all Points by sectors!!
+ * 
+ * @author MHGameWork
+ */
 public interface Grid {
 //  // set the root-processor for this Grid
 //  public Grid         setProcessor(GridProcessor processor);
@@ -48,8 +52,6 @@ public interface Grid {
 
   public Iterable<Sector> getSectors();
   
-  public boolean hasAgentOn(Sector sector, Class type);
-
   /**
    * Places given agent on the grid at position. If the agent is already on the
    * grid, it will fail
@@ -64,10 +66,10 @@ public interface Grid {
   public Grid moveTo(Agent agent, Point position, Bearing bearing);
   
   /**
-   * Returns the sector on which the given agent is placed, null when the
+   * Returns the position of the given agent, null when the
    * agent is not on this grid
    */
-  public Sector getSectorOf(Agent agent);
+  public Point getPositionOf(Agent agent);
 
   public Bearing getBearingOf(Agent agent);
 
@@ -77,7 +79,7 @@ public interface Grid {
    * Returns the agent on this grid with given name, null when not found
    */
   public Agent getAgent(String name);
-  public Agent getAgentAt(Point position);
+  public Agent getAgentAt(Point position,Class cls);
 
   /**
    * Returns an Iterable for the agents in this grid

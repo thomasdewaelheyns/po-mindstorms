@@ -7,10 +7,10 @@ package penoplatinum.grid;
  * 
  * @author: Team Platinum
  */
-
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.CantorDiagonal;
+import penoplatinum.util.Position;
 import penoplatinum.util.SimpleHashMap;
 
 /**
@@ -28,7 +28,7 @@ public class LinkedGrid implements Grid {
   int minLeft = 0, maxLeft = 0, minTop = 0, maxTop = 0;
   // mapping from coordinates to allocating Sector
   private SimpleHashMap<Integer, Sector> sectors = new SimpleHashMap<Integer, Sector>();
-  private SimpleHashMap<Integer, Agent> agents = new SimpleHashMap<Integer, Agent>();
+  private SimpleHashMap<Agent, Point> agentPositions = new SimpleHashMap<Agent, Point>();
   private SimpleHashMap<Agent, Bearing> agentBearings = new SimpleHashMap<Agent, Bearing>();
 
   /**
@@ -109,7 +109,7 @@ public class LinkedGrid implements Grid {
       add(new LinkedSector(), position);
 
     int index = CantorDiagonal.transform(position);
-    agents.put(index, agent);
+    agentPositions.put(agent, position);
     agentBearings.put(agent, bearing);
     //this.view.agentsNeedRefresh();
     return this;
@@ -126,19 +126,24 @@ public class LinkedGrid implements Grid {
   }
 
   @Override
-  public Agent getAgentAt(Point pos) {
-    Integer i = CantorDiagonal.transform(pos);
-    if (i == null)
-      return null;
-    return agents.get(i);
+  public Agent getAgentAt(Point pos, Class cls) {
+    // This is a cheat for optimization!
+
+    for (int i = 0; i < agentPositions.values.size(); i++) {
+      if (!pos.equals(agentPositions.values.get(i)))
+        continue;
+      Agent a = agentPositions.keys.get(i);
+
+      if (a.getClass() == cls)
+        return a;
+    }
+    
+    return null;
   }
 
   @Override
-  public Sector getSectorOf(Agent agent) {
-    Integer index = agents.findKey(agent);
-    if (index == null)
-      return null;
-    return sectors.get(index);
+  public Point getPositionOf(Agent agent) {
+    return agentPositions.get(agent);
   }
 
   @Override
@@ -148,12 +153,8 @@ public class LinkedGrid implements Grid {
 
   @Override
   public Grid moveTo(Agent agent, Point position, Bearing bearing) {
-    Integer key = agents.findKey(agent);
-    if (key == null)
+    if (agentPositions.get(agent) == null)
       throw new IllegalArgumentException();
-
-    agents.remove(key);
-    agentBearings.remove(agent);
 
     add(agent, position, bearing);
 
@@ -199,7 +200,7 @@ public class LinkedGrid implements Grid {
   // return a list of all agents
   @Override
   public Iterable<Agent> getAgents() {
-    return this.agents.values();
+    return this.agentPositions.keys();
   }
   //
   //
@@ -371,11 +372,5 @@ public class LinkedGrid implements Grid {
   public GridView getView() {
     return view;
   }
-  
-  public boolean hasAgentOn(Sector sector, Class type) {
-    
-    
-    
-    throw new RuntimeException("not implemented");
-  }
+
 }

@@ -118,34 +118,24 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Grid add(Agent agent, Point position, Bearing bearing) {
+    position = new Point(position); // We need to copy this position!!!
     transformation.inverseTransform(position);
     bearing = bearing.rotate(transformation.getRotation().invert());
 
     grid.add(agent, position, bearing);
-
-    transformation.transform(position);
 
     return this;
   }
 
   @Override
   public Grid moveTo(Agent agent, Point position, Bearing bearing) {
+    position = new Point(position);
     transformation.inverseTransform(position);
     bearing = bearing.rotate(transformation.getRotation().invert());
 
     grid.moveTo(agent, position, bearing);
 
-    transformation.transform(position);
-
     return this;
-  }
-
-  @Override
-  public Sector getSectorOf(Agent agent) {
-    Sector s = grid.getSectorOf(agent);
-    if (s == null)
-      return null;
-    return new TransformedSector(s, transformation);
   }
 
   @Override
@@ -161,16 +151,27 @@ public class TransformedGrid implements Grid {
     return grid.getAgent(name);
   }
 
+
   @Override
-  public Agent getAgentAt(Point position) {
+  public Point getPositionOf(Agent agent) {
+    Point pos = grid.getPositionOf(agent);
+    if (pos == null) return null;
+    
+    transformation.transform(pos);
+    
+    return pos;
+  }
+
+  @Override
+  public Agent getAgentAt(Point position, Class cls) {
     transformation.inverseTransform(position);
 
-    Agent a = grid.getAgentAt(position);
+    Agent a = grid.getAgentAt(position,cls);
 
     transformation.transform(position);
     return a;
   }
-
+  
   @Override
   public Iterable<Agent> getAgents() {
     return grid.getAgents();
@@ -250,10 +251,4 @@ public class TransformedGrid implements Grid {
     return GridUtils.createGridSectorsString(this);
   }
 
-  public boolean hasAgentOn(Sector sector, Class type) {
-    while (sector instanceof TransformedSector)
-      sector = ((TransformedSector) sector).getDecoratedSector();
-    
-    return grid.hasAgentOn(sector, type);
-  }
 }

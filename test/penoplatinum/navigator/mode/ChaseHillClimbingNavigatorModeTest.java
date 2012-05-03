@@ -47,8 +47,8 @@ public class ChaseHillClimbingNavigatorModeTest extends TestCase {
   public void testNotReachedGoal() {
     this.setup();
 
-    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
-      .thenReturn(this.mockUnknownSector());
+//    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
+//      .thenReturn(this.mockUnknownSector());
     
     assertFalse(this.mode.reachedGoal());
 	}
@@ -56,8 +56,8 @@ public class ChaseHillClimbingNavigatorModeTest extends TestCase {
   public void testReachedGoalBecausePacmanIsAtNorth() {
     this.setup();
 
-    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
-      .thenReturn(this.mockedNorthSector);
+//    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
+//      .thenReturn(this.mockedNorthSector);
     
     assertTrue(this.mode.reachedGoal());
 	}
@@ -65,8 +65,8 @@ public class ChaseHillClimbingNavigatorModeTest extends TestCase {
   public void testReachedGoalBecausePacmanIsAtEast() {
     this.setup();
 
-    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
-      .thenReturn(this.mockedEastSector);
+//    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
+//      .thenReturn(this.mockedEastSector);
     
     assertTrue(this.mode.reachedGoal());
 	}
@@ -74,8 +74,8 @@ public class ChaseHillClimbingNavigatorModeTest extends TestCase {
   public void testReachedGoalBecausePacmanIsAtSouth() {
     this.setup();
 
-    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
-      .thenReturn(this.mockedSouthSector);
+//    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
+//      .thenReturn(this.mockedSouthSector);
     
     assertTrue(this.mode.reachedGoal());
 	}
@@ -83,8 +83,8 @@ public class ChaseHillClimbingNavigatorModeTest extends TestCase {
   public void testReachedGoalBecausePacmanIsAtWest() {
     this.setup();
 
-    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
-      .thenReturn(this.mockedWestSector);
+//    when(this.mockedMyGrid.getSectorOf(this.mockedPacmanAgent))
+//      .thenReturn(this.mockedWestSector);
     
     assertTrue(this.mode.reachedGoal());
 	}

@@ -1,8 +1,16 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package penoplatinum.grid;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
+/**
+ *
+ * @author MHGameWork
+ */
 public class ObservableGrid implements Grid {
 
   private final Grid grid;
@@ -60,11 +68,6 @@ public class ObservableGrid implements Grid {
   }
 
   @Override
-  public Sector getSectorOf(Agent agent) {
-    return grid.getSectorOf(agent);
-  }
-
-  @Override
   public Bearing getBearingOf(Agent agent) {
     return grid.getBearingOf(agent);
   }
@@ -72,11 +75,6 @@ public class ObservableGrid implements Grid {
   @Override
   public Agent getAgent(String name) {
     return grid.getAgent(name);
-  }
-
-  @Override
-  public Agent getAgentAt(Point position) {
-    return grid.getAgentAt(position);
   }
 
   @Override
@@ -119,8 +117,13 @@ public class ObservableGrid implements Grid {
     return grid.getSize();
   }
 
-  public boolean hasAgentOn(Sector sector, Class type) {
-    throw new RuntimeException("not implemented");
+  @Override
+  public Point getPositionOf(Agent agent) {
+    return grid.getPositionOf(agent);
   }
 
+  @Override
+  public Agent getAgentAt(Point position, Class cls) {
+    return grid.getAgentAt(position, cls);
+  }
 }

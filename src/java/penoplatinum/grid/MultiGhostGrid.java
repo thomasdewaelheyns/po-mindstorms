@@ -80,11 +80,6 @@ public class MultiGhostGrid implements Grid, GridObserver {
   }
 
   @Override
-  public Sector getSectorOf(Agent agent) {
-    return grid.getSectorOf(agent);
-  }
-
-  @Override
   public Bearing getBearingOf(Agent agent) {
     return grid.getBearingOf(agent);
   }
@@ -94,10 +89,6 @@ public class MultiGhostGrid implements Grid, GridObserver {
     return grid.getAgent(name);
   }
 
-  @Override
-  public Agent getAgentAt(Point position) {
-    return grid.getAgentAt(position);
-  }
 
   @Override
   public Iterable<Agent> getAgents() {
@@ -151,7 +142,7 @@ public class MultiGhostGrid implements Grid, GridObserver {
       if (iGrid == g)
         continue;
 
-      if (iGrid.getSectorOf(a) == null)
+      if (iGrid.getPositionOf(a) == null)
         continue; // Barcode not found on grid
 
       TransformationTRT transform = mapBarcode(g, iGrid, barcode);
@@ -195,16 +186,21 @@ public class MultiGhostGrid implements Grid, GridObserver {
   private TransformationTRT mapBarcode(Grid g1, Grid g2, BarcodeAgent barcode) {
     Bearing b1 = g1.getBearingOf(barcode);
     Bearing b2 = g2.getBearingOf(barcode);
-    Point pos1 = g1.getPositionOf(g1.getSectorOf(barcode));
-    Point pos2 = g1.getPositionOf(g1.getSectorOf(barcode));
+    Point pos1 = g1.getPositionOf(barcode);
+    Point pos2 = g1.getPositionOf(barcode);
 
     TransformationTRT transform = new TransformationTRT().setTransformation(-pos2.getX(), -pos2.getY(), b2.to(b1), pos1.getX(), pos1.getY());
     return transform;
   }
 
   @Override
-  public boolean hasAgentOn(Sector sector, Class type) {
-    return grid.hasAgentOn(sector, type);
+  public Point getPositionOf(Agent agent) {
+    return grid.getPositionOf(agent);
+  }
+
+  @Override
+  public Agent getAgentAt(Point position, Class cls) {
+    return grid.getAgentAt(position, cls);
   }
 
   class Ghost {

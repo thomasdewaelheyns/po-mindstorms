@@ -148,7 +148,7 @@ public class TransformedGridTest extends TestCase {
     tg.setTransformation(createGridTransformation());
     tg.add(a, new Point(1, 2), Bearing.N);
 
-    assertEquals(a, g.getAgentAt(new Point(1, 1)));
+    assertEquals(a, g.getAgentAt(new Point(1, 1), a.getClass()));
     assertEquals(Bearing.E, g.getBearingOf(a));
 
 
@@ -166,7 +166,7 @@ public class TransformedGridTest extends TestCase {
     tg.setTransformation(createGridTransformation());
     tg.moveTo(a, new Point(1, 2), Bearing.N);
 
-    assertEquals(a, g.getAgentAt(new Point(1, 1)));
+    assertEquals(a, g.getAgentAt(new Point(1, 1),a.getClass()));
     assertEquals(Bearing.E, g.getBearingOf(a));
   }
 
@@ -176,9 +176,9 @@ public class TransformedGridTest extends TestCase {
     TransformedGrid tGrid = new TransformedGrid(grid);
     tGrid.setTransformation(createGridTransformation());
 
-    assertEquals(tGrid.getSectorAt(new Point(1, 1)), tGrid.getSectorOf(a));
+    assertEquals(new Point(1, 1), tGrid.getPositionOf(a));
 
-    assertEquals(null, tGrid.getSectorOf(mockAgent()));
+    assertEquals(null, tGrid.getPositionOf(mockAgent()));
 
   }
 
@@ -190,7 +190,7 @@ public class TransformedGridTest extends TestCase {
 
     assertEquals(Bearing.N, tGrid.getBearingOf(a));
     assertNull(tGrid.getBearingOf(mockAgent()));
-    
+
   }
 
   public void testGetAgent() {
@@ -203,9 +203,9 @@ public class TransformedGridTest extends TestCase {
     TransformedGrid tGrid = new TransformedGrid(grid);
     tGrid.setTransformation(createGridTransformation());
 
-    assertEquals(a, tGrid.getAgentAt(new Point(1, 1)));
-    assertEquals(null, tGrid.getAgentAt(new Point(2, 1)));
-    assertEquals(null, tGrid.getAgentAt(new Point(0, 0)));
+    assertEquals(a, tGrid.getAgentAt(new Point(1, 1),a.getClass()));
+    assertEquals(null, tGrid.getAgentAt(new Point(2, 1),a.getClass()));
+    assertEquals(null, tGrid.getAgentAt(new Point(0, 0),a.getClass()));
   }
 
   public void testGetBounds() {

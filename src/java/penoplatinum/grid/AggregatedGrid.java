@@ -1,6 +1,7 @@
 package penoplatinum.grid;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
@@ -25,6 +26,9 @@ import penoplatinum.util.TransformationTRT;
  * Note: write operations are not used in the current project
  * 
  * Option: cache the aggregated sectors in a hashmap with positions as keys
+ * 
+ * TODO: when there are conflicts between agents, they are not resolved, just
+ *        randomly picked
  * 
  * @author: Team Platinum
  */
@@ -92,6 +96,7 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public Sector getSectorAt(penoplatinum.util.Point position) {
+    //TODO: MAYBE COPY THE POSITION OBJECT
     return new AggregatedSector(this, position);
   }
 
@@ -121,39 +126,68 @@ public class AggregatedGrid implements Grid {
     return this;
   }
 
-  @Override
-  public Sector getSectorOf(Agent agent) {
-    Sector ret = mainGrid.getSectorOf(agent);
+//  @Override
+//  public Sector getSectorOf(Agent agent) {
+//    Sector ret = mainGrid.getSectorOf(agent);
+//    if (ret != null)
+//      return getSectorAt(mainGrid.getPositionOf(ret));
+//
+//    Point retPos = null;
+//
+//    for (SubGrid g : grids.values()) {
+//      Sector iSector = g.getGrid().getSectorOf(agent);
+//      if (iSector == null)
+//        continue; // No information about agent for this subgrid
+//      Point iPosition = g.getGrid().getPositionOf(iSector);
+//
+//      if (retPos == null) {
+//        // Store information
+//        retPos = iPosition;
+//        continue;
+//      }
+//
+//      // Check for conflict
+//
+//      if (!retPos.equals(iPosition))
+//        return null; // conflict!!
+//
+//      // Subgrid information matches
+//
+//    }
+//    if (retPos == null)
+//      return null;
+//    return getSectorAt(retPos);
+//  }
+
+   @Override
+  public Point getPositionOf(Agent agent) {
+    // Dont merge bearings :D
+    Point ret = mainGrid.getPositionOf(agent);
     if (ret != null)
-      return getSectorAt(mainGrid.getPositionOf(ret));
-
-    Point retPos = null;
-
+      return ret;
     for (SubGrid g : grids.values()) {
-      Sector iSector = g.getGrid().getSectorOf(agent);
-      if (iSector == null)
-        continue; // No information about agent for this subgrid
-      Point iPosition = g.getGrid().getPositionOf(iSector);
-
-      if (retPos == null) {
-        // Store information
-        retPos = iPosition;
-        continue;
-      }
-
-      // Check for conflict
-
-      if (!retPos.equals(iPosition))
-        return null; // conflict!!
-
-      // Subgrid information matches
-
+      ret = g.getGrid().getPositionOf(agent);
+      if (ret != null)
+        return ret;
     }
-    if (retPos == null)
-      return null;
-    return getSectorAt(retPos);
+
+    return null;
   }
 
+  @Override
+  public Agent getAgentAt(Point position, Class cls) {
+    Agent ret = mainGrid.getAgentAt(position, cls);
+    if (ret != null)
+      return ret;
+
+    for (SubGrid g : grids.values()) {
+      Agent iSector = g.getGrid().getAgentAt(position, cls);
+      if (iSector != null)
+        return iSector;
+    }
+    return null;
+  }
+  
   @Override
   public Bearing getBearingOf(Agent agent) {
     // Dont merge bearings :D
@@ -181,19 +215,21 @@ public class AggregatedGrid implements Grid {
   }
 
   @Override
-  public Agent getAgentAt(penoplatinum.util.Point point) {
-    // Just return any agent found
-    for (SubGrid g : grids.values()) {
-      Agent a = g.getGrid().getAgentAt(point);
-      if (a != null)
-        return a;
-    }
-    return null;
-  }
-
-  @Override
   public Iterable<Agent> getAgents() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    
+    ArrayList<Agent> ret = new ArrayList<Agent>();
+    
+    for(Agent a : mainGrid.getAgents())
+    {
+      ret.add(a);
+    }
+    for(SubGrid g : grids.values())
+    {
+      for(Agent a : g.getGrid().getAgents())
+        if (!ret.contains(a))
+          ret.add(a);
+    }
+    return ret;
   }
 
   @Override
@@ -255,25 +291,7 @@ public class AggregatedGrid implements Grid {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  @Override
-  public boolean hasAgentOn(Sector sector, Class type) {
-    if (!(sector instanceof AggregatedSector))
-      throw new IllegalArgumentException();
-
-    Point position = getPositionOf(sector);
-
-    boolean ret = mainGrid.hasAgentOn(mainGrid.getSectorAt(position), type);
-    if (ret)
-      return ret;
-
-    for (SubGrid g : grids.values()) {
-      boolean iSector = g.getGrid().hasAgentOn(g.getGrid().getSectorAt(position), type);
-      if (iSector)
-        return true;
-    }
-    return false;
-
-  }
+ 
 
   class SubGrid {
 

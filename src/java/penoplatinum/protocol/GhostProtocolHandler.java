@@ -147,17 +147,15 @@ public class GhostProtocolHandler implements ProtocolHandler {
   // - Pacman
   @Override
   public ProtocolHandler handleFoundAgent(Grid grid, PacmanAgent agent) {
-    Sector sector = grid.getSectorOf(agent);
-    this.sendPacman(grid.getPositionOf(sector));
+    this.sendPacman(grid.getPositionOf(agent));
     return this;
   }
 
   // - Barcode
   @Override
   public ProtocolHandler handleFoundAgent(Grid grid, BarcodeAgent agent) {
-    Sector sector = grid.getSectorOf(agent);
-    this.sendBarcodeAt(grid.getPositionOf(sector), agent.getValue(),
-                       agent.getBearing());
+    this.sendBarcodeAt(grid.getPositionOf(agent), agent.getValue(),
+                       grid.getBearingOf(agent));
     return this;
   }
   

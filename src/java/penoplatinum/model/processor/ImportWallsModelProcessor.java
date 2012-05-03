@@ -42,8 +42,8 @@ public class ImportWallsModelProcessor extends ModelProcessor {
     WallsModelPart walls = WallsModelPart.from(model);
 
     Sector detected = walls.getCurrentSector();
-    Sector current = grid.getMyGrid().getSectorOf(grid.getMyAgent());
-    
+    Sector current = grid.getMyGrid().getSectorAt(grid.getMyGrid().getPositionOf(grid.getMyAgent()));
+
     for (Bearing b : Bearing.NESW) {
       copyWallSector(detected, current, b);
     }

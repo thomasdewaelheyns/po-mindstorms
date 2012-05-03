@@ -94,11 +94,14 @@ public class GridModelPart implements ModelPart {
     for(Sector sector : this.myGrid.getSectors()) {
       int total = 0;
       int count = 0;
+      
+      Point position = this.myGrid.getPositionOf(sector);
+      
       // a hunting agent resets the value of its sector
-      if( this.myGrid.hasAgentOn(sector, PacmanAgent.class) ) {
+      if( this.myGrid.getAgentAt(position, PacmanAgent.class) != null ) {
         total = 10000;
         count = 1;
-      } else if( this.myGrid.hasAgentOn(sector, GhostAgent.class) ) {
+      } else if( this.myGrid.getAgentAt(position, GhostAgent.class) != null) {
         // a ghost blocks all diffusion
       } else if( ! sector.isFullyKnown() ) {
         // unknown sectors are "interesting"
@@ -154,8 +157,16 @@ public class GridModelPart implements ModelPart {
     this.changedSectors.clear();
   }
   
-  public void setPacman(Point position) {
-    this.myGrid.moveTo(this.pacman, position, Bearing.UNKNOWN);
+  public Point getMyPosition(){
+    return this.myGrid.getPositionOf(this.myAgent);
+  }
+  
+  public Bearing getMyBearing(){
+    return this.myGrid.getBearingOf(this.myAgent);
+  }
+  
+  public void setPacMan(int x, int y) {
+    this.myGrid.moveTo(this.pacman, new Point(x, y), Bearing.UNKNOWN);
     this.pacmanID++;
   }
   
