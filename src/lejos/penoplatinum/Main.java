@@ -1,9 +1,6 @@
 package penoplatinum;
 
 import penoplatinum.util.Utils;
-import java.io.PrintStream;
-import penoplatinum.bluetooth.QueuedPacketTransporter;
-import penoplatinum.bluetooth.RobotBluetoothGatewayClient;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.driver.ManhattanDriver;
 import penoplatinum.fulltests.dumb.DumbNavigator;
@@ -11,7 +8,6 @@ import penoplatinum.fulltests.line.LineDriver;
 import penoplatinum.fulltests.line.LineModel;
 import penoplatinum.fulltests.line.LineRobot;
 import penoplatinum.navigator.Navigator;
-import penoplatinum.simulator.tiles.Sector;
 
 public class Main {
 
@@ -19,7 +15,7 @@ public class Main {
     //robot.useNavigator(new LeftFollowingGhostNavigator(robot.getGhostModel()));
     LineRobot line = new LineRobot();
     line.setModel(new LineModel());
-    ManhattanDriver manhattan = new LineDriver(Sector.SIZE/100.0);
+    ManhattanDriver manhattan = new LineDriver(0.4);
     Navigator dumbNavigator = new DumbNavigator();
     line.useDriver(manhattan).useNavigator(dumbNavigator);
 
