@@ -13,6 +13,11 @@ public class RunAllTests {
   public static Test suite() {
     Class[] testClasses = {
       penoplatinum.ConfigTest.class,
+      penoplatinum.bluetooth.IConnectionTest.class,
+      penoplatinum.bluetooth.IPacketHandlerTest.class,
+      penoplatinum.bluetooth.IPacketReceiverTest.class,
+      penoplatinum.bluetooth.IPacketTransporterTest.class,
+      penoplatinum.bluetooth.IRemoteLoggerCallbackTest.class,
       penoplatinum.driver.action.subaction.FindLeftWhiteLineTest.class, 
       penoplatinum.driver.action.subaction.FindRightWhiteLineTest.class, 
       penoplatinum.driver.action.subaction.ReturnSubActionTest.class, 
