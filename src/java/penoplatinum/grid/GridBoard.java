@@ -14,6 +14,8 @@ import java.awt.image.*;
 import javax.swing.*;
 import penoplatinum.util.Bearing;
 
+import penoplatinum.util.Bearing;
+
 public class GridBoard extends JPanel {
 
   private int width = 0, height = 0;
@@ -112,7 +114,7 @@ public class GridBoard extends JPanel {
     }
   }
 
-  public void addAgent(int left, int top, int orientation, String name,
+  public void addAgent(int left, int top, Bearing orientation, String name,
           Color color) {
     left *= this.sectorSize;
     top *= this.sectorSize;
@@ -122,8 +124,18 @@ public class GridBoard extends JPanel {
     triangle.addPoint(left + this.sectorSize / 2, top + 3);
     triangle.addPoint(left + this.sectorSize - 3, top + this.sectorSize - 3);
     triangle.addPoint(left + 3, top + this.sectorSize - 3);
-
-    double angle = orientation * Math.PI / 2;
+    double angle = 0;
+    switch(orientation){
+       case N: angle = 0;
+         break;
+       case E: angle = Math.PI / 2;
+         break;
+       case S: angle = Math.PI ;
+         break;
+       case W: angle = Math.PI *(3/ 2);
+         break;
+    }
+    
 
     this.agentsG.rotate(angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
     this.agentsG.fillPolygon(triangle);
@@ -139,17 +151,32 @@ public class GridBoard extends JPanel {
     this.agentsG.drawString(name.substring(0, 1), left + this.sectorSize / 2 - w / 2, top + this.sectorSize - h / 2);
   }
 
-  public void addBarcode(int left, int top, int orientation, int code) {
+  public void addBarcode(int left, int top, Bearing orientation, int code) {
     left *= this.sectorSize;
     top *= this.sectorSize;
-
-    // add label
+    double angle = 0;
+    
+    switch(orientation){
+       case N: angle = 0;
+         break;
+       case E: angle = Math.PI / 2;
+         break;
+       case S: angle = Math.PI ;
+         break;
+       case W: angle = Math.PI *(3/ 2);
+         break;
+    } 
+    this.barcodesG.rotate(angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
     FontMetrics fm = this.agentsG.getFontMetrics();
     this.barcodesG.setColor(WHITE);
     this.barcodesG.setFont(this.agentsG.getFont().deriveFont(12F));
     int w = fm.stringWidth(Integer.toString(code));
     int h = fm.getHeight();
     this.barcodesG.drawString(Integer.toString(code), left + this.sectorSize / 2 - w / 2, top + this.sectorSize - h / 2);
+    this.barcodesG.rotate(-1 * angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
+    // add label
+
+    
   }
 
   private Color mapToHeatColor(int value) {
@@ -252,4 +279,6 @@ public class GridBoard extends JPanel {
       this.setRatio(widthRatio);
     }
   }
+
+
 }

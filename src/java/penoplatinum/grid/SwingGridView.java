@@ -9,9 +9,9 @@ package penoplatinum.grid;
  */
 import javax.swing.JFrame;
 
-import penoplatinum.Color;
-import penoplatinum.simulator.Bearing;
+import penoplatinum.util.Bearing;
 import penoplatinum.simulator.ColorLink;
+import penoplatinum.util.Point;
 
 public class SwingGridView extends JFrame implements GridView {
 
@@ -100,19 +100,13 @@ public class SwingGridView extends JFrame implements GridView {
       somethingChanged = true;
     }
 
-    if (this.refreshAgents) {
+    if (this.refreshAgents || this.refreshBarcodes) {
       this.board.clearAgents();
       this.addAgents();
       this.refreshAgents = false;
       somethingChanged = true;
     }
 
-    if (this.refreshBarcodes) {
-      this.board.clearBarcodes();
-      this.addBarcodes();
-      this.refreshBarcodes = false;
-      somethingChanged = true;
-    }
 
 
     if (somethingChanged) {
@@ -127,7 +121,7 @@ public class SwingGridView extends JFrame implements GridView {
 
     // add sectors
     for (Sector sector : this.grid.getSectors()) {
-      this.board.addSector(sector.getLeft() - minLeft, sector.getTop() - minTop);
+      this.board.addSector(grid.getPositionOf(sector).getX()-minLeft,grid.getPositionOf(sector).getY()-minTop);
     }
 
     this.board.addOrigin(-minLeft, -minTop);
@@ -139,11 +133,11 @@ public class SwingGridView extends JFrame implements GridView {
 
     // add sectors
     for (Sector sector : this.grid.getSectors()) {
-      for (int wall = Bearing.N; wall <= Bearing.W; wall++) {
-        if (sector.isKnown(wall) && sector.hasWall(wall)) {
-          this.board.addWall(sector.getLeft() - minLeft, sector.getTop() - minTop,
-                  wall);
-        }
+      for (Bearing b : Bearing.NESW) {
+        if (sector.knowsWall(b) && sector.hasWall(b)) {
+          this.board.addWall(grid.getPositionOf(sector).getX() - minLeft,grid.getPositionOf(sector).getY() - minTop,
+                  b);
+         }
       }
     }
   }
@@ -153,7 +147,7 @@ public class SwingGridView extends JFrame implements GridView {
             minTop = this.grid.getMinTop();
 
     for (Sector sector : this.grid.getSectors()) {
-      this.board.addValue(sector.getLeft() - minLeft, sector.getTop() - minTop,
+      this.board.addValue(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop,
               sector.getValue());
     }
   }
@@ -164,23 +158,15 @@ public class SwingGridView extends JFrame implements GridView {
 
     for (Agent agent : this.grid.getAgents()) {
       final java.awt.Color c = ColorLink.getColorByName(agent.getName());
-
-      this.board.addAgent(agent.getLeft() - minLeft, agent.getTop() - minTop,
-              agent.getBearing(), agent.getName(), c);
-    }
-  }
-
-  private void addBarcodes() {
-    int minLeft = this.grid.getMinLeft(),
-            minTop = this.grid.getMinTop();
-
-    // add sectors
-    for (Sector sector : this.grid.getSectors()) {
-      if (sector.getTagCode() == -1) {
-        continue;
+      if(!(agent instanceof BarcodeAgent)){
+        this.board.addAgent(grid.getPositionOf(grid.getSectorOf(agent)).getX() - minLeft, grid.getPositionOf(grid.getSectorOf(agent)).getY() - minTop,
+              grid.getBearingOf(agent), agent.getName(), c);
       }
-
-      this.board.addBarcode(sector.getLeft() - minLeft, sector.getTop() - minTop, sector.getTagBearing(), sector.getTagCode());
+      else{
+              Point point= grid.getPositionOf(grid.getSectorOf(agent));
+              this.board.addBarcode(point.getX() - minLeft, point.getY() - minTop, grid.getBearingOf(agent), agent.getValue());
+      }
+      
     }
   }
 
