@@ -1,4 +1,4 @@
-package penoplatinum.fulltests;
+package penoplatinum.fulltests.line;
 
 import penoplatinum.driver.ManhattanDriver;
 import penoplatinum.driver.behaviour.LineDriverBehaviour;

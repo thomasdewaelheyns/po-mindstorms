@@ -1,4 +1,4 @@
-package penoplatinum.fullTests.dumb;
+package penoplatinum.fulltests.dumb;
 
 import penoplatinum.Config;
 import penoplatinum.robot.Robot;

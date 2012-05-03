@@ -4,6 +4,7 @@ import java.io.IOException;
 import penoplatinum.Config;
 import penoplatinum.util.Utils;
 import penoplatinum.gateway.GatewayClient;
+import penoplatinum.robot.AdvancedRobot;
 import penoplatinum.robot.Robot;
 
 /**
@@ -17,7 +18,7 @@ import penoplatinum.robot.Robot;
  */
 public class RobotBluetoothGatewayClient implements GatewayClient {
 
-  private Robot robot;
+  private AdvancedRobot robot;
   private IConnection conn;
   private CallbackPacketTransporter t;
 
@@ -30,7 +31,7 @@ public class RobotBluetoothGatewayClient implements GatewayClient {
   }
 
   @Override
-  public RobotBluetoothGatewayClient setRobot(Robot robot) {
+  public RobotBluetoothGatewayClient setRobot(AdvancedRobot robot) {
     this.robot = robot;
     return this;
   }

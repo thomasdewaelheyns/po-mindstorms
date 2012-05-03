@@ -1,4 +1,4 @@
-package penoplatinum.fullTests.line;
+package penoplatinum.fulltests.line;
 
 /**
  * GhostModel

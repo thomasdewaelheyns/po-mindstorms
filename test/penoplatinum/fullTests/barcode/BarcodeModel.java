@@ -1,6 +1,6 @@
 package penoplatinum.fullTests.barcode;
 
-import penoplatinum.fullTests.line.LineModel;
+import penoplatinum.fulltests.line.LineModel;
 import penoplatinum.model.part.BarcodeModelPart;
 import penoplatinum.model.part.ModelPart;
 import penoplatinum.model.part.ModelPartRegistry;

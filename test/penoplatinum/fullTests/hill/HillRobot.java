@@ -1,6 +1,6 @@
 package penoplatinum.fullTests.hill;
 
-import penoplatinum.fullTests.line.LineRobot;
+import penoplatinum.fulltests.line.LineRobot;
 
 public class HillRobot extends LineRobot {
 

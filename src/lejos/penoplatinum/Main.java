@@ -5,25 +5,31 @@ import java.io.PrintStream;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
 import penoplatinum.bluetooth.RobotBluetoothGatewayClient;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
-import penoplatinum.driver.GhostDriver;
-import penoplatinum.fulltests.LineRobot;
-import penoplatinum.navigator.GhostNavigator;
+import penoplatinum.driver.ManhattanDriver;
+import penoplatinum.fulltests.dumb.DumbNavigator;
+import penoplatinum.fulltests.line.LineDriver;
+import penoplatinum.fulltests.line.LineModel;
+import penoplatinum.fulltests.line.LineRobot;
+import penoplatinum.navigator.Navigator;
+import penoplatinum.simulator.tiles.Sector;
 
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    LineRobot robot = new LineRobot();
     //robot.useNavigator(new LeftFollowingGhostNavigator(robot.getGhostModel()));
-    robot.useNavigator(new GhostNavigator());
-    robot.useDriver(new GhostDriver());
+    LineRobot line = new LineRobot();
+    line.setModel(new LineModel());
+    ManhattanDriver manhattan = new LineDriver(Sector.SIZE/100.0);
+    Navigator dumbNavigator = new DumbNavigator();
+    line.useDriver(manhattan).useNavigator(dumbNavigator);
 
-    final AngieEventLoop angie = new AngieEventLoop(robot);
+    final AngieEventLoop angie = new AngieEventLoop(line);
     RobotBluetoothConnection conn = new RobotBluetoothConnection();
     conn.initializeConnection();
     Utils.EnableRemoteLogging(conn);
 
-    final RobotBluetoothGatewayClient robotBluetoothAgent = new RobotBluetoothGatewayClient();
-    robot.useGatewayClient(robotBluetoothAgent.useConnection(conn));
+    //final RobotBluetoothGatewayClient robotBluetoothAgent = new RobotBluetoothGatewayClient();
+    //robot.useGatewayClient(robotBluetoothAgent.useConnection(conn));
     Runnable runnable = new Runnable() {
 
       public void run() {
@@ -34,7 +40,7 @@ public class Main {
 
     runnable.run();
   }
-
+/*
   private static void initializeAgent(final AngieEventLoop angie) {
     RobotBluetoothConnection connection = new RobotBluetoothConnection();
     connection.initializeConnection();
@@ -64,5 +70,5 @@ public class Main {
     };
     Thread t = new Thread(communication);
     t.start();
-  }
+  }/**/
 }

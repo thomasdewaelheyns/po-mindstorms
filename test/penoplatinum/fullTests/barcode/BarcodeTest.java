@@ -1,7 +1,7 @@
 package penoplatinum.fullTests.barcode;
 
 import penoplatinum.fullTests.hill.MockedGrid;
-import penoplatinum.fullTests.line.LineDriver;
+import penoplatinum.fulltests.line.LineDriver;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import java.util.Collections;

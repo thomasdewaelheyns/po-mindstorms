@@ -1,12 +1,12 @@
 package penoplatinum.fullTests.hill;
 
-import penoplatinum.fullTests.line.LineDriver;
+import penoplatinum.fulltests.line.LineDriver;
 import java.util.Collections;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.junit.Test;
 import penoplatinum.driver.ManhattanDriver;
-import penoplatinum.fullTests.line.LineModel;
+import penoplatinum.fulltests.line.LineModel;
 import penoplatinum.grid.Grid;
 import penoplatinum.map.Map;
 import penoplatinum.map.MapHashed;

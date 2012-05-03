@@ -1,5 +1,6 @@
 package penoplatinum.fullTests.dumb;
 
+import penoplatinum.fulltests.dumb.DumbRobot;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import penoplatinum.map.Map;
