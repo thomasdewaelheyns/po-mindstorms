@@ -19,6 +19,7 @@ public class RotatingSonarSensor {
   private int[] currentSweepAngles;
   private int currentSweepAngleIndex;
   private List<Integer> resultBuffer = new ArrayList<Integer>();
+  private int sweepID = 0;
 
   public RotatingSonarSensor(Motor motor, UltrasonicSensor sensor) {
     this.motor = motor;
@@ -56,7 +57,7 @@ public class RotatingSonarSensor {
     if (currentSweepAngleIndex >= currentSweepAngles.length) {
       motor.rotateTo(currentSweepAngles[0] - forwardTacho, true);
       currentSweepAngles = null;
-
+      sweepID++;
     }
   }
 
@@ -78,5 +79,9 @@ public class RotatingSonarSensor {
 
   public List<Integer> getSweepResult() {
     return resultBuffer;
+  }
+  
+  public int getSweepID(){
+    return this.sweepID;
   }
 }

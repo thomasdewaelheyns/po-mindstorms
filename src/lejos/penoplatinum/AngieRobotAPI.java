@@ -7,23 +7,11 @@ package penoplatinum;
  */
 
 import java.util.List;
-
-import lejos.nxt.LightSensor;
-import lejos.nxt.Motor;
-import lejos.nxt.SensorPort;
-import lejos.nxt.TouchSensor;
-import lejos.nxt.UltrasonicSensor;
-
-import penoplatinum.Config;
-
-import penoplatinum.model.Model;
+import lejos.nxt.*;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.robot.RobotAPI;
-import penoplatinum.sensor.RotatingSonarSensor;
-import penoplatinum.util.ExtendedVector;
-import penoplatinum.util.ReferencePosition;
-
 import penoplatinum.sensor.IRSeekerV2;
+import penoplatinum.sensor.RotatingSonarSensor;
 import penoplatinum.util.Utils;
 
 
@@ -48,6 +36,7 @@ public class AngieRobotAPI implements RobotAPI {
   private static final int sensorNumberMotorSonar = Config.M3;
   
   int[] values = new int[Config.SENSORVALUES_NUM];
+  
 
   public AngieRobotAPI() {
     //Reset tacho's
@@ -177,17 +166,7 @@ public class AngieRobotAPI implements RobotAPI {
   public void setReferenceAngle(float reference) {
     reference = movement.getInternalOrientation();
   }
-
-  public ExtendedVector getRelativePosition(ReferencePosition reference) {
-    if (reference.internalValue == null) {
-      throw new IllegalArgumentException("This reference has not yet been set using setReferencePoint.");
-    }
-    outVector.set(reference.internalValue);
-    outVector.negate();
-    outVector.add(movement.getInternalOrientation());
-
-    return outVector;
-  }
+  
   public float getRelativeAngle(float reference) {
     outAngle = -reference + movement.getInternalOrientation();
     return outAngle;
@@ -203,5 +182,9 @@ public class AngieRobotAPI implements RobotAPI {
 
   public List<Integer> getSweepResult() {
     return sonar.getSweepResult();
+  }
+
+  public int getSweepID() {
+    return this.sonar.getSweepID();
   }
 }

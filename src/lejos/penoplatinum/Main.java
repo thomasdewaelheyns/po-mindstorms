@@ -3,16 +3,16 @@ package penoplatinum;
 import penoplatinum.util.Utils;
 import java.io.PrintStream;
 import penoplatinum.bluetooth.QueuedPacketTransporter;
-import penoplatinum.bluetooth.RobotBluetoothAgent;
+import penoplatinum.bluetooth.RobotBluetoothGatewayClient;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.driver.GhostDriver;
+import penoplatinum.fulltests.LineRobot;
 import penoplatinum.navigator.GhostNavigator;
-import penoplatinum.robot.GhostRobotOLD;
 
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    GhostRobotOLD robot = new GhostRobotOLD("Michiel");
+    LineRobot robot = new LineRobot();
     //robot.useNavigator(new LeftFollowingGhostNavigator(robot.getGhostModel()));
     robot.useNavigator(new GhostNavigator());
     robot.useDriver(new GhostDriver());
@@ -22,7 +22,7 @@ public class Main {
     conn.initializeConnection();
     Utils.EnableRemoteLogging(conn);
 
-    final RobotBluetoothAgent robotBluetoothAgent = new RobotBluetoothAgent();
+    final RobotBluetoothGatewayClient robotBluetoothAgent = new RobotBluetoothGatewayClient();
     robot.useGatewayClient(robotBluetoothAgent.useConnection(conn));
     Runnable runnable = new Runnable() {
 

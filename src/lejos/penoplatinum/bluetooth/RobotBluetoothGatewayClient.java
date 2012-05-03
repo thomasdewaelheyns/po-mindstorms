@@ -1,12 +1,13 @@
 package penoplatinum.bluetooth;
 
 import java.io.IOException;
+import penoplatinum.Config;
 import penoplatinum.util.Utils;
 import penoplatinum.gateway.GatewayClient;
 import penoplatinum.robot.Robot;
 
 /**
- * RobotBluetoothAgent
+ * RobotBluetoothGatewayClient
  * 
  * Implements the GatewayClient interface for use in the SimulationEnvironment.
  * It provides additional methods for the Simulator to set up links between
@@ -14,26 +15,26 @@ import penoplatinum.robot.Robot;
  * 
  * @author: Team Platinum
  */
-public class RobotBluetoothAgent implements GatewayClient {
+public class RobotBluetoothGatewayClient implements GatewayClient {
 
   private Robot robot;
   private IConnection conn;
   private CallbackPacketTransporter t;
 
-  public RobotBluetoothAgent() {
+  public RobotBluetoothGatewayClient() {
   }
 
-  public RobotBluetoothAgent useConnection(IConnection conn) {
+  public RobotBluetoothGatewayClient useConnection(IConnection conn) {
     this.conn = conn;
     return this;
   }
 
   @Override
-  public void setRobot(Robot robot) {
+  public RobotBluetoothGatewayClient setRobot(Robot robot) {
     this.robot = robot;
+    return this;
   }
 
-  @Override
   public void run() {
     if (conn == null) {
       throw new RuntimeException();
@@ -42,11 +43,16 @@ public class RobotBluetoothAgent implements GatewayClient {
     this.t = new CallbackPacketTransporter(conn, new IPacketHandler() {
 
       public void receive(int packetID, byte[] dgram) {
-        RobotBluetoothAgent.this.receive(new String(dgram));
+        RobotBluetoothGatewayClient.this.receive(new String(dgram));
       }
     });
 
-    conn.RegisterTransporter(t, AgentConfig.MQRelayPacket);
+    conn.RegisterTransporter(t, Config.BT_GHOST_PROTOCOL);
+    
+    conn.RegisterTransporter(t, Config.BT_AGENTS);
+    conn.RegisterTransporter(t, Config.BT_MODEL);
+    conn.RegisterTransporter(t, Config.BT_VALUES);
+    conn.RegisterTransporter(t, Config.BT_WALLS);
   }
 
   @Override
@@ -55,13 +61,13 @@ public class RobotBluetoothAgent implements GatewayClient {
   }
 
   @Override
-  public void send(String msg) {
+  public void send(String msg, int channel) {
     byte[] buf = null;
     buf = getBytes(msg);
 
     try {
       t.getSendStream().write(buf, 0, buf.length);
-      t.SendPacket(AgentConfig.MQRelayPacket);
+      t.SendPacket(channel);
     } catch (IOException ex) {
       Utils.Log("Send error!");
     }
