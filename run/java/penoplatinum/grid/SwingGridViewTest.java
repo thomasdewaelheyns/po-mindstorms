@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package java.penoplatinum.grid;
+package penoplatinum.grid;
 
 import junit.framework.TestCase;
 import org.junit.Test;

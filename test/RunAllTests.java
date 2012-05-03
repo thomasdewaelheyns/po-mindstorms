@@ -52,6 +52,7 @@ public class RunAllTests {
       penoplatinum.grid.StaticTargetAgentTest.class,
       penoplatinum.grid.TransformedGridTest.class,
       penoplatinum.grid.TransformedSectorTest.class,
+      penoplatinum.grid.MultiGhostGridTest.class,
       penoplatinum.map.mazeprotocol.BarcodeAtTest.class,
       penoplatinum.map.mazeprotocol.CommandoTest.class,
       penoplatinum.map.mazeprotocol.DiscoverTest.class,

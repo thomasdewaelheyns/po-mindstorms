@@ -5,11 +5,12 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>Client</name>
             <source-roots>
-                <root id="src.java.dir"/>
+                <root id="src.java.dir" name="Source"/>
             </source-roots>
             <test-roots>
-                <root id="test.run.dir"/>
-                <root id="test.test.dir"/>
+                <root id="test.test.dir" name="Test"/>
+                <root id="test.java.dir" name="Run java"/>
+                <root id="test.lejos.dir" name="Run Lejos"/>
             </test-roots>
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/2"/>
