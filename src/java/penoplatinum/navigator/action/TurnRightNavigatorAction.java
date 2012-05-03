@@ -7,12 +7,10 @@ package penoplatinum.navigator.action;
  *
  * @author Team Platinum
  */
-
 import penoplatinum.driver.Driver;
 import penoplatinum.driver.ManhattanDriver;
 
 import penoplatinum.model.part.GridModelPart;
-
 
 public class TurnRightNavigatorAction implements NavigatorAction {
 
@@ -23,10 +21,10 @@ public class TurnRightNavigatorAction implements NavigatorAction {
   }
 
   public void instruct(Driver driver) {
-    ((ManhattanDriver)driver).turnRight();
+    ((ManhattanDriver) driver).turnRight();
   }
-  
+
   public void complete() {
-    this.grids.getMyAgent().turnRight();
+    this.grids.getMyGrid().moveTo(this.grids.getMyAgent(), this.grids.getMyPosition(), this.grids.getMyBearing().rightFrom());
   }
 }

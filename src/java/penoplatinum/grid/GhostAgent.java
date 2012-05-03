@@ -25,8 +25,4 @@ public class GhostAgent extends MovingAgent {
   
   public Color getColor() { return this.color; }
 
-  public Agent createCopy() {
-    GhostAgent ret = new GhostAgent(this.getName(), this.getColor());
-    return ret;
-  }
 }

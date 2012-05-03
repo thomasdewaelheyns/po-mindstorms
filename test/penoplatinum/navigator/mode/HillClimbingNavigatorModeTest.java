@@ -24,6 +24,7 @@ import penoplatinum.model.part.ModelPartRegistry;
 import penoplatinum.model.part.GridModelPart;
 
 import penoplatinum.navigator.action.*;
+import penoplatinum.util.Point;
 
 
 public class HillClimbingNavigatorModeTest extends TestCase {
@@ -38,6 +39,7 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   private Sector                    mockedEastSector;
   private Sector                    mockedSouthSector;
   private Sector                    mockedWestSector;
+  private Point mockPosition;
 
 
   public HillClimbingNavigatorModeTest(String name) { 
@@ -254,6 +256,10 @@ public class HillClimbingNavigatorModeTest extends TestCase {
     when(this.mockedGridModelPart.getMyGrid())
       .thenReturn(this.mockedMyGrid);
 
+    this.mockedMySector = mock(Sector.class);   
+    mockPosition = mock(Point.class);
+    when(mockedMyGrid.getSectorAt(mockPosition)).thenReturn(mockedMySector);
+    when(mockedMyGrid.getPositionOf(mockedMyAgent)).thenReturn(mockPosition);
     this.mockedMySector = mock(Sector.class);   
     when(this.mockedGridModelPart.getMySector())
       .thenReturn(this.mockedMySector);

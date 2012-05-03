@@ -25,8 +25,4 @@ public class ProxyAgent extends MovingAgent {
     return this.color;
   }
 
-  @Override
-  public Agent createCopy() {
-    return new ProxyAgent(this.getName());
-  }
 }

@@ -1,5 +1,6 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.util.Point;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Grid;
@@ -19,6 +20,7 @@ public class UnknownSectorModelProcessorTest extends TestCase {
   private Grid mockGrid;
   private GridModelPart mockGridPart;
   private Model mockModel;
+  private Point mockPosition;
   
   @Before
   public void setUp() {
@@ -28,7 +30,9 @@ public class UnknownSectorModelProcessorTest extends TestCase {
     mockModel = mock(Model.class);
     when(mockModel.getPart(ModelPartRegistry.GRID_MODEL_PART)).thenReturn(mockGridPart);
     when(mockGridPart.getMyGrid()).thenReturn(mockGrid);
-//    when(mockGrid.getSectorOf(any(Agent.class))).thenReturn(mockCurrentSector);
+    mockPosition = mock(Point.class);
+    when(mockGrid.getSectorAt(mockPosition)).thenReturn(mockCurrentSector);
+    when(mockGrid.getPositionOf(any(Agent.class))).thenReturn(mockPosition);
   }
 
   /**

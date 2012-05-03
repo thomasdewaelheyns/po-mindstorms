@@ -22,13 +22,4 @@ public class PacmanAgent extends MovingAgent {
   public int   getValue() { return PacmanAgent.VALUE; }
   public Color getColor() { return this.color;   }
 
-  // FIXME: this should be a copy constructor
-  public Agent copyAgent() {
-    return new PacmanAgent();
-  }
-
-  @Override
-  public Agent createCopy() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
 }

@@ -16,10 +16,10 @@ import penoplatinum.Config;
 import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.grid.Sector;
-import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.BarcodeAgent;
 import penoplatinum.grid.Grid;
 
+import penoplatinum.grid.PacmanAgent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.MD5;
@@ -75,9 +75,10 @@ public class GhostProtocolHandlerTest extends TestCase {
     this.setup();
     Grid grid = mock(Grid.class);
     Sector       sector = this.mockSector(12, 34, true, false, true, true, false, false, true, true);    
-    BarcodeAgent agent  = this.mockBarcodeAgent(24, Bearing.E);
+    BarcodeAgent agent  = this.mockBarcodeAgent(24);
     when(grid.getPositionOf(agent)).thenReturn(new Point(12,34));
     when(grid.getPositionOf(sector)).thenReturn(new Point(12,34));
+    when(grid.getBearingOf(agent)).thenReturn(Bearing.E);
     this.protocolHandler.handleFoundAgent(grid, agent);
     verify(this.mockedGatewayClient).send(NAME + " BARCODEAT 12,-34 24 2\n",
                                           Config.BT_GHOST_PROTOCOL);
@@ -89,7 +90,10 @@ public class GhostProtocolHandlerTest extends TestCase {
     Grid grid = mock(Grid.class);
     Sector      sector = this.mockSector(12, 34, true, false, true, true, false, false, true, true);    
     PacmanAgent agent  = this.mockPacmanAgent();
-//    when(grid.getSectorOf(agent)).thenReturn(sector);
+    
+    Point mockPosition = mock(Point.class);
+    when(grid.getSectorAt(mockPosition)).thenReturn(sector);
+    when(grid.getPositionOf(agent)).thenReturn(mockPosition);
     this.protocolHandler.handleFoundAgent(grid, agent);
     verify(this.mockedGatewayClient).send(NAME + " PACMAN 12,-34\n",
                                           Config.BT_GHOST_PROTOCOL);
@@ -440,10 +444,9 @@ public class GhostProtocolHandlerTest extends TestCase {
     return mockedSector;
   }
 
-  private BarcodeAgent mockBarcodeAgent(int code, Bearing direction) {
+  private BarcodeAgent mockBarcodeAgent(int code) {
     BarcodeAgent mockedAgent = mock(BarcodeAgent.class);
     when(mockedAgent.getValue()).thenReturn(code);
-    when(mockedAgent.getBearing()).thenReturn(direction);
     return mockedAgent;
   }
 

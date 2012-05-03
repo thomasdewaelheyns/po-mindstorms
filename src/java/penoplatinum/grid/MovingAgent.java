@@ -15,8 +15,6 @@ import penoplatinum.util.Bearing;
 public abstract class MovingAgent implements Agent {
 
   private String  name;
-  private Grid    grid;
-  private Bearing bearing = Bearing.N;
   private boolean active  = false;
 
   public MovingAgent(String name) {
@@ -31,36 +29,14 @@ public abstract class MovingAgent implements Agent {
     return -1;
   }
 
-  public Bearing getBearing() {
-    return this.bearing;
-  }
-
-  public Agent turnLeft() {
-    this.bearing = this.bearing.leftFrom();
-    return this;
-  }
-
-  public Agent turnRight() {
-    this.bearing = this.bearing.rightFrom();
-    return this;
-  }
-
-  public Agent moveForward() {
-//    this.grid.moveForward(this);
-    throw new UnsupportedOperationException();
-  }
-  
+  @Override
   public Agent activate() {
     this.active = true;
     return this;
   }
   
+  @Override
   public boolean isActive() {
     return this.active;
-  }
-  
-  public Agent createCopy()
-  {
-    throw new UnsupportedOperationException();
   }
 }

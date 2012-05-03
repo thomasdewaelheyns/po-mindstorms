@@ -29,4 +29,18 @@ public class Color {
   public int getR() {
     return (rgb >> 16) & 0xFF;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    final Color other = (Color) obj;
+    if (this.rgb != other.rgb)
+      return false;
+    return true;
+  }
+
+  
 }

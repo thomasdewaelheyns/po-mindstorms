@@ -7,13 +7,14 @@ package penoplatinum.navigator.action;
  *
  * @author Team Platinum
  */
-
 import penoplatinum.driver.Driver;
 import penoplatinum.driver.ManhattanDriver;
 
+import penoplatinum.grid.Agent;
 import penoplatinum.model.part.GridModelPart;
-
-
+import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
+import penoplatinum.util.Position;
 
 public class ForwardNavigatorAction implements NavigatorAction {
 
@@ -24,10 +25,14 @@ public class ForwardNavigatorAction implements NavigatorAction {
   }
 
   public void instruct(Driver driver) {
-    ((ManhattanDriver)driver).move();
+    ((ManhattanDriver) driver).move();
   }
-  
+
   public void complete() {
-    this.grids.getMyAgent().moveForward();
+    Agent myAgent = this.grids.getMyAgent();
+    Bearing b = this.grids.getMyBearing();
+    Point myPosition = new Point(Position.moveLeft(b, this.grids.getMyPosition().getX()), Position.moveTop(b, this.grids.getMyPosition().getY()));
+
+    this.grids.getMyGrid().moveTo(myAgent, myPosition, b);
   }
 }

@@ -1,5 +1,6 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.util.Point;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
@@ -22,6 +23,7 @@ public class ImportWallsModelProcessorTest extends TestCase {
   private WallsModelPart mockWalls;
   private GridModelPart mockGridPart;
   private Model mockModel;
+  private Point mockPosition;
   
   @Before
   public void setUp() {
@@ -42,9 +44,13 @@ public class ImportWallsModelProcessorTest extends TestCase {
   public void testWork() {
     ImportWallsModelProcessor instance = new ImportWallsModelProcessor();
     instance.setModel(mockModel);
+    
     when(mockGridPart.getMyGrid()).thenReturn(mockGrid);
     when(mockWalls.getCurrentSector()).thenReturn(mockWallCurrent);
     when(mockWalls.getSectorId()).thenReturn(1);
+    mockPosition = mock(Point.class);
+    when(mockGrid.getSectorAt(mockPosition)).thenReturn(mockGridCurrent);
+    when(mockGrid.getPositionOf(any(Agent.class))).thenReturn(mockPosition);
 //    when(mockGrid.getSectorOf(any(Agent.class))).thenReturn(mockGridCurrent);
     
     when(mockWallCurrent.knowsWall(Bearing.N)).thenReturn(Boolean.TRUE);
