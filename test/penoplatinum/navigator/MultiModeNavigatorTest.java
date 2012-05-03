@@ -55,7 +55,6 @@ public class MultiModeNavigatorTest extends TestCase {
         
     // first action of first plan of first mode
     this.navigator.instruct(mockedDriver);
-    verify(mockedDriver).completedLastInstruction(); // false
     verify(this.mockedMode1, times(2)).reachedGoal();
     verify(this.mockedMode2, never()).reachedGoal();
     verify(this.mockedMode1).createNewPlan();
@@ -65,6 +64,9 @@ public class MultiModeNavigatorTest extends TestCase {
     verify(this.plan2.get(1), never()).instruct(mockedDriver);
 
     assertFalse(this.navigator.reachedGoal());
+    
+    this.navigator.finish(mockedDriver);
+    verify(mockedDriver).completedLastInstruction(); // false
 
     // second action of first plan of first mode
     this.navigator.instruct(mockedDriver);

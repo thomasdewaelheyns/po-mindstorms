@@ -11,6 +11,8 @@ import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.model.part.SonarModelPart;
 import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.navigator.Navigator;
+import penoplatinum.protocol.ExternalEventHandler;
+import penoplatinum.protocol.GhostProtocolHandler;
 import penoplatinum.reporter.Reporter;
 
 public class GhostRobot implements AdvancedRobot {
@@ -23,6 +25,7 @@ public class GhostRobot implements AdvancedRobot {
   private Driver driver;
   private Navigator navigator;
   private GatewayClient gatewayClient;
+  private ExternalEventHandler handler;
   private Reporter reporter;
   
   /*
@@ -34,6 +37,14 @@ public class GhostRobot implements AdvancedRobot {
 
   public GhostRobot(ModelProcessor procs) {
     this.model.setProcessor(procs);
+    this.handler = new GhostEventHandler(this);
+    MessageModelPart.from(model).setProtocolHandler(new GhostProtocolHandler(){
+      public void receive(String message){
+        System.out.println(message);
+        super.receive(message);
+      }
+    });
+    MessageModelPart.from(this.model).getProtocolHandler().useExternalEventHandler(handler);
   }
 
   private void linkComponents() {
@@ -42,6 +53,9 @@ public class GhostRobot implements AdvancedRobot {
     }
     if (this.navigator != null) {
       this.navigator.useModel(model);
+      if(MessageModelPart.from(this.model).getProtocolHandler() != null){
+        MessageModelPart.from(this.model).getProtocolHandler().useGatewayClient(gatewayClient);
+      }
     }
     if (this.gatewayClient != null) {
       this.gatewayClient.setRobot(this);

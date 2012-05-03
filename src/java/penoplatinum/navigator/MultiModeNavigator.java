@@ -36,6 +36,9 @@ public class MultiModeNavigator implements Navigator {
   private List<NavigatorAction> plan = new ArrayList<NavigatorAction>(Arrays.asList(new IdleAction()));
 
 
+  protected void clearModes(){
+    this.modes.clear();
+  }
   // overriding classes can add Modes to define their logic
   protected void firstUse(NavigatorMode mode) {
     if(modes.size() > 0) {
@@ -123,7 +126,7 @@ public class MultiModeNavigator implements Navigator {
     }
     this.plan = this.getCurrentMode().createNewPlan();
     if( this.plan.size() == 0 ) {
-      throw new RuntimeException( "Cloudn't create a plan ?!" );
+      throw new RuntimeException( "Couldn't create a plan ?!" );
     }
   }
   

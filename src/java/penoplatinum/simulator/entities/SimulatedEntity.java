@@ -6,7 +6,6 @@ import penoplatinum.Config;
 
 import penoplatinum.map.MapUtil;
 import penoplatinum.robot.Robot;
-import penoplatinum.robot.SimulationRobotAPI;
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Sensor;
 import penoplatinum.simulator.Simulator;
@@ -39,7 +38,6 @@ public class SimulatedEntity implements RobotEntity {
 
   protected SimulatedEntity(Robot robot, int numberOfSensors) {
     this.robot = robot;
-    this.robot.useRobotAPI(new SimulationRobotAPI().setSimulatedEntity(this));
     this.viewRobot = new SimulatedViewRobot(this);
 
     sensorValues = new int[numberOfSensors];

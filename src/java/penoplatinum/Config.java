@@ -29,7 +29,7 @@ public class Config {
   
   private static void extractConfiguration(Properties props) {
     Config.DEBUGMODE     = props.getProperty("debug").toLowerCase().equals("true");
-    Config.ROBOT_NAME    = props.getProperty("robot.name");
+    Config.ROBOT_NAME    = props.getProperty("robot.name", "NXJ Platinum");
     Config.USE_LOCAL_MQ  = props.getProperty("mq.type").toLowerCase().equals("local");
     Config.MQ_SERVER     = props.getProperty("mq.server");
     Config.GHOST_CHANNEL = props.getProperty("mq.channel");

@@ -1,16 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.grid;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
-/**
- *
- * @author MHGameWork
- */
 public class ObservableGrid implements Grid {
 
   private final Grid grid;

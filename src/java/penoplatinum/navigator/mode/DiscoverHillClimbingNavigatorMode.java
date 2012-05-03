@@ -9,16 +9,8 @@ package penoplatinum.navigator.mode;
  * @author Team Platinum
  */
 
-import java.util.List;
-import java.util.Arrays;
-
 import penoplatinum.grid.Sector;
-
 import penoplatinum.model.Model;
-import penoplatinum.model.part.GridModelPart;
-
-import penoplatinum.navigator.action.NavigatorAction;
-
 
 public class DiscoverHillClimbingNavigatorMode extends HillClimbingNavigatorMode {
 

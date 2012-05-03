@@ -15,7 +15,6 @@ import penoplatinum.model.part.WallsModelPart;
 
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.LinkedSector;
-import penoplatinum.grid.Agent;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;

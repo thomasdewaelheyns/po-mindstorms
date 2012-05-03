@@ -8,12 +8,10 @@ package penoplatinum.model.processor;
  * @author Team Platinum
  */
 
-import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
 import penoplatinum.model.part.SensorModelPart;
 
 import penoplatinum.util.Bearing;
-import penoplatinum.util.Point;
 
 
 public class IRModelProcessor extends ModelProcessor {

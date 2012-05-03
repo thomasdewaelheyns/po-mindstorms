@@ -7,7 +7,6 @@ package penoplatinum.model;
  * 
  * @author: Team Platinum
  */
-
 import penoplatinum.model.processor.ModelProcessor;
 import penoplatinum.reporter.Reporter;
 
@@ -18,56 +17,61 @@ import penoplatinum.model.part.WallsModelPart;
 import penoplatinum.model.part.BarcodeModelPart;
 import penoplatinum.model.part.LightModelPart;
 import penoplatinum.model.part.GridModelPart;
+import penoplatinum.model.part.MessageModelPart;
 import penoplatinum.model.part.SonarModelPart;
-
 
 public class GhostModel implements Model {
 
   // the modelparts we need
-  private SensorModelPart  sensorPart;
-  private WallsModelPart   wallsPart;
+  private SensorModelPart sensorPart;
+  private WallsModelPart wallsPart;
   private BarcodeModelPart barcodePart;
-  private LightModelPart   lightPart;
-  private GridModelPart    gridPart;
-  private SonarModelPart   sonarPart;
-
+  private LightModelPart lightPart;
+  private GridModelPart gridPart;
+  private SonarModelPart sonarPart;
+  private MessageModelPart messagePart;
   // processors are a chain of decorators.
-  private ModelProcessor   processor;
-
+  private ModelProcessor processor;
   // a reporter reports on a Model
-  private Reporter         reporter;
-
+  private Reporter reporter;
 
   // setup the parts of the GhostModel
   public GhostModel() {
-    this.sensorPart  = new SensorModelPart();
-    this.wallsPart   = new WallsModelPart();
+    this.sensorPart = new SensorModelPart();
+    this.wallsPart = new WallsModelPart();
     this.barcodePart = new BarcodeModelPart();
-    this.lightPart   = new LightModelPart();
-    this.gridPart    = new GridModelPart();
-    this.sonarPart   = new SonarModelPart();
-    // this.gapPart     = new GapModelPart();
-    // this.messagePart = new MessageModelPart();
+    this.lightPart = new LightModelPart();
+    this.gridPart = new GridModelPart();
+    this.sonarPart = new SonarModelPart();
+    this.messagePart = new MessageModelPart();
   }
 
   // adds a part to the Model
   public Model register(ModelPart part) {
     throw new RuntimeException("GhostModel doesn't allow adding more parts.");
   }
-  
+
   // retrieves a registered ModelPart based on its assigned ID
   public ModelPart getPart(int id) {
-    switch(id) {
-      case ModelPartRegistry.SENSOR_MODEL_PART  : return this.sensorPart;
-      case ModelPartRegistry.WALLS_MODEL_PART   : return this.wallsPart;
-      case ModelPartRegistry.BARCODE_MODEL_PART : return this.barcodePart;
-      case ModelPartRegistry.LIGHT_MODEL_PART   : return this.lightPart;
-      case ModelPartRegistry.GRID_MODEL_PART    : return this.gridPart;
-      case ModelPartRegistry.SONAR_MODEL_PART   : return this.sonarPart;
+    switch (id) {
+      case ModelPartRegistry.SENSOR_MODEL_PART:
+        return this.sensorPart;
+      case ModelPartRegistry.WALLS_MODEL_PART:
+        return this.wallsPart;
+      case ModelPartRegistry.BARCODE_MODEL_PART:
+        return this.barcodePart;
+      case ModelPartRegistry.LIGHT_MODEL_PART:
+        return this.lightPart;
+      case ModelPartRegistry.GRID_MODEL_PART:
+        return this.gridPart;
+      case ModelPartRegistry.SONAR_MODEL_PART:
+        return this.sonarPart;
+      case ModelPartRegistry.MESSAGE_MODEL_PART:
+        return this.messagePart;
       // case GAP_MODEL_PART     : return this.gapPart;
       // case MESSAGE_MODEL_PART : return this.gapPart;
     }
-    throw new RuntimeException( "Unknown model part: " + id );
+    throw new RuntimeException("Unknown model part: " + id);
   }
 
   // a Model can be processed by ModelProcessors
@@ -93,8 +97,9 @@ public class GhostModel implements Model {
   // a reporter to report on any interesting changes
   public Model refresh() {
     this.processor.process();
-    this.reporter.reportModelUpdate();
+    if (reporter != null) {
+      this.reporter.reportModelUpdate();
+    }
     return this;
   }
-
 }

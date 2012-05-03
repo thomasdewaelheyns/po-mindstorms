@@ -24,10 +24,6 @@ import penoplatinum.util.Utils;
 
 public class Simulator {
 
-  /**
-   * 
-   */
-  public static Simulator Running_Instance;
   // the Simulator can run until different goals are reached
   public static final double TIME_SLICE = 0.008;
   // a view to display the simulation, by default it does nothing
@@ -133,7 +129,6 @@ public class Simulator {
   }
 
   private void initRun() {
-    Simulator.Running_Instance = this;
     for (int i = 0; i < this.robotEntities.size(); i++) {
       if (this.robotEntities.get(i) instanceof SimulatedEntity) {
         SimulatedEntity ent = (SimulatedEntity) this.robotEntities.get(i);

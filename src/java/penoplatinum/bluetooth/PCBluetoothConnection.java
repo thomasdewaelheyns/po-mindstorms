@@ -39,7 +39,6 @@ public class PCBluetoothConnection implements IConnection {
         if (isConnected()) {
             close();
         }
-
         if (open != null) {
             try {
                 open.close();
@@ -54,28 +53,17 @@ public class PCBluetoothConnection implements IConnection {
             Utils.Log("Restarting connection");
         }
         Utils.Log("Connected!");
-
         // Connected to NXJ, perform packet ID synchronization here (possible optimization)
-
-
-
-
         createPacketBuilder();
-
         builder.startReceiving();
         connected = true;
-
     }
 
     private void createPacketBuilder() {
-
         if (builder != null) {
             builder.stopReceiving();
         }
-
-
         builder = new PacketBuilder(outputStream, inputStream, new IPacketReceiver() {
-
             @Override
             public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
                 IPacketTransporter t = listenerMap.get(packetIdentifier);
@@ -84,14 +72,11 @@ public class PCBluetoothConnection implements IConnection {
                     return;
                 }
                 t.onPacketReceived(packetIdentifier, dgram, 0, size);
-
             }
-
             @Override
             public void onError(Exception ex) {
                 //WARNING!!! DANGEROUS MULTITHREADING, FIX USING DEDICATED CONNECT THREAD
                 //initializeConnection();
-
             }
         });
     }
@@ -101,9 +86,7 @@ public class PCBluetoothConnection implements IConnection {
         if (listenerMap.containsKey(packetIdentifier)) {
             throw new RuntimeException("A listener has already been created with given packetIdentifer");
         }
-
         listenerMap.put(packetIdentifier, l);
-
     }
 
     @Override
@@ -113,28 +96,20 @@ public class PCBluetoothConnection implements IConnection {
         }
         builder.sendPacket(packetIdentifier, dgram);
         //TODO: flush??
-
-
     }
 
     private boolean connect() {
         try {
-
             outputStream = null;
             inputStream = null;
-
             NXTConnector conn = new NXTConnector();
             NXTInfo[] infos = conn.search(null, null, NXTCommFactory.ALL_PROTOCOLS);
-
             NXTInfo lejosInfo = null;
             for (NXTInfo inf : infos) {
                 if (inf.name.equals(Config.ROBOT_NAME)) {
                     lejosInfo = inf;
-
                 }
             }
-
-
             if (lejosInfo != null) {
             } else if (infos.length == 1) {
                 lejosInfo = infos[0];
@@ -143,7 +118,6 @@ public class PCBluetoothConnection implements IConnection {
                 Utils.Log("Multiple possible connections found, aborting!");
                 return false;
             }
-
             if (lejosInfo == null) {
                 Utils.Log("No robot found!");
                 return false;

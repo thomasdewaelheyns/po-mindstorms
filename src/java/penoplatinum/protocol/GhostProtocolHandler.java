@@ -20,7 +20,7 @@ import penoplatinum.grid.Sector;
 import penoplatinum.util.*;
 
 
-public abstract class GhostProtocolHandler implements ProtocolHandler {
+public class GhostProtocolHandler implements ProtocolHandler {
 
   private final static int MIN_JOINS = 4;
 

@@ -17,8 +17,11 @@ import penoplatinum.util.Bearing;
 
 import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
+import penoplatinum.navigator.action.ForwardNavigatorAction;
+import penoplatinum.navigator.action.NavigatorAction;
+import penoplatinum.navigator.action.TurnLeftNavigatorAction;
+import penoplatinum.navigator.action.TurnRightNavigatorAction;
 
-import penoplatinum.navigator.action.*;
 
 
 public class HillClimbingNavigatorMode implements NavigatorMode {

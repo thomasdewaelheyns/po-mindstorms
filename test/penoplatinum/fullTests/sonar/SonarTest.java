@@ -3,8 +3,6 @@ package penoplatinum.fullTests.sonar;
 import java.util.Collections;
 import penoplatinum.Config;
 import penoplatinum.driver.ManhattanDriver;
-import penoplatinum.fullTests.barcode.BarcodeDriver;
-import penoplatinum.fullTests.gatewayclient.GateRobot;
 import penoplatinum.fullTests.hill.MockedGrid;
 import penoplatinum.gateway.GatewayClient;
 import penoplatinum.grid.Grid;

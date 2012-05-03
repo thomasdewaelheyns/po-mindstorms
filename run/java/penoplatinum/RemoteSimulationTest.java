@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import penoplatinum.simulator.entities.SimulatedEntity;
-import penoplatinum.robot.SimulationRobotAPI;
+import penoplatinum.simulator.entities.SimulationRobotAPI;
 import penoplatinum.simulator.SimulatedGatewayClient;
 import penoplatinum.util.debugging.SimulationRunner;
 import penoplatinum.simulator.Simulator;

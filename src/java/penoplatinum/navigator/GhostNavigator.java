@@ -21,6 +21,7 @@ public class GhostNavigator extends MultiModeNavigator {
 
   // as soon as we get a Model, we can setup our Modes
   public GhostNavigator useModel(Model model) {
+    this.clearModes();
     this.firstUse(new DiscoverHillClimbingNavigatorMode(model));
     this.thenUse (new ChaseHillClimbingNavigatorMode   (model));
     return this;

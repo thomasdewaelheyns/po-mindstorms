@@ -1,5 +1,10 @@
 package penoplatinum.driver;
 
+import penoplatinum.driver.behaviour.BarcodeDriverBehaviour;
+import penoplatinum.driver.behaviour.FrontProximityDriverBehaviour;
+import penoplatinum.driver.behaviour.LineDriverBehaviour;
+import penoplatinum.driver.behaviour.SideProximityDriverBehaviour;
+
 /**
  * GhostDriver
  *
@@ -9,7 +14,6 @@ package penoplatinum.driver;
  * @author Team Platinum
  */
 
-import penoplatinum.driver.behaviour.*;
 
 
 public class GhostDriver extends ManhattanDriver {

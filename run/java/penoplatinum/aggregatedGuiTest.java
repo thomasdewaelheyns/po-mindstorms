@@ -4,7 +4,7 @@
  */
 package penoplatinum;
 
-import penoplatinum.robot.SimulationRobotAPI;
+import penoplatinum.simulator.entities.SimulationRobotAPI;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

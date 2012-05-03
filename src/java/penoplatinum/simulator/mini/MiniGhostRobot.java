@@ -28,7 +28,7 @@ import penoplatinum.pacman.GhostProtocolHandler;
 import penoplatinum.pacman.GhostProtocolModelCommandHandler;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.simulator.RobotAPI;
-import penoplatinum.robot.SimulationRobotAPI;
+import penoplatinum.simulator.entities.SimulationRobotAPI;
 
 public class MiniGhostRobot extends GhostRobot {
   

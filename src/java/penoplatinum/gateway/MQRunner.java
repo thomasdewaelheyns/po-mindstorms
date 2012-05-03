@@ -10,8 +10,6 @@ package penoplatinum.gateway;
 import java.io.IOException;
 import java.util.Scanner;
 import penoplatinum.Config;
-import penoplatinum.simulator.SimulatedMQ;
-import penoplatinum.util.Utils;
 
 public class MQRunner {
 
