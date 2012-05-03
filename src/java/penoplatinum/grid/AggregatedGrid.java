@@ -36,14 +36,25 @@ public class AggregatedGrid implements Grid {
 
   private penoplatinum.util.SimpleHashMap<Grid, SubGrid> grids = new penoplatinum.util.SimpleHashMap<Grid, SubGrid>();
   private List<Grid> gridList = new ArrayList<Grid>();
-  private final Grid mainGrid;
+  private Grid mainGrid;
 
   public AggregatedGrid(Grid mainGrid) {
+    useMainGrid(mainGrid);
+
+  }
+
+  public AggregatedGrid() {
+    mainGrid = null;
+  }
+
+  public AggregatedGrid useMainGrid(Grid mainGrid) {
+    if (this.mainGrid != null)
+      throw new IllegalArgumentException();
     this.mainGrid = mainGrid;
     SubGrid sub = new SubGrid(new TransformedGrid(mainGrid), TransformationTRT.Identity);
     grids.put(mainGrid, sub);
     gridList.add(sub.getGrid());
-
+    return this;
   }
 
   /**
@@ -111,7 +122,13 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public Iterable<Sector> getSectors() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    List<Sector> ret = new ArrayList<Sector>();
+    for (int top = getMinTop(); top <= getMaxTop(); top++) {
+      for (int left = getMinLeft(); left <= getMaxLeft(); left++) {
+        ret.add(new AggregatedSector(this, new Point(top, left)));
+      }
+    }
+    return ret;
   }
 
   @Override
@@ -158,8 +175,7 @@ public class AggregatedGrid implements Grid {
 //      return null;
 //    return getSectorAt(retPos);
 //  }
-
-   @Override
+  @Override
   public Point getPositionOf(Agent agent) {
     // Dont merge bearings :D
     Point ret = mainGrid.getPositionOf(agent);
@@ -187,7 +203,7 @@ public class AggregatedGrid implements Grid {
     }
     return null;
   }
-  
+
   @Override
   public Bearing getBearingOf(Agent agent) {
     // Dont merge bearings :D
@@ -216,16 +232,14 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public Iterable<Agent> getAgents() {
-    
+
     ArrayList<Agent> ret = new ArrayList<Agent>();
-    
-    for(Agent a : mainGrid.getAgents())
-    {
+
+    for (Agent a : mainGrid.getAgents()) {
       ret.add(a);
     }
-    for(SubGrid g : grids.values())
-    {
-      for(Agent a : g.getGrid().getAgents())
+    for (SubGrid g : grids.values()) {
+      for (Agent a : g.getGrid().getAgents())
         if (!ret.contains(a))
           ret.add(a);
     }
@@ -283,7 +297,7 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public int getHeight() {
-    return getMaxTop() - getMinTop();
+    return getMaxTop() - getMinTop() + 1;
   }
 
   @Override
@@ -291,7 +305,10 @@ public class AggregatedGrid implements Grid {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
- 
+  @Override
+  public String toString() {
+    return GridUtils.createGridSectorsString(this);
+  }
 
   class SubGrid {
 

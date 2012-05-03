@@ -9,6 +9,7 @@ package penoplatinum.grid;
  */
 
 import penoplatinum.util.Color;
+import penoplatinum.util.SimpleHashMap;
 
 /**
  * A BarcodeAgent is supposed to be unique for each type of barcode!!
@@ -19,9 +20,22 @@ import penoplatinum.util.Color;
  */
 public class BarcodeAgent extends MovingAgent {
   
+  private  static SimpleHashMap<Integer,BarcodeAgent> agents = new SimpleHashMap<Integer, BarcodeAgent>();
+  
+  public static BarcodeAgent getBarcodeAgent(int code)
+  {
+    BarcodeAgent ret = agents.get(code);
+    if (ret == null)
+    {
+      ret = new BarcodeAgent(code);
+      agents.put(code, ret);
+    }
+    return ret;
+  }
+  
   private int code;
   
-  public BarcodeAgent(int code) { 
+  private BarcodeAgent(int code) { 
     super("barcode-" + code);
     this.code = code;
   }

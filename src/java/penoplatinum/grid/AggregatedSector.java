@@ -58,12 +58,29 @@ public class AggregatedSector implements Sector {
 
   @Override
   public Sector setValue(int value) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    for (int i = 0; i < grid.getActiveGrids().size(); i++) {
+      Grid g = grid.getActiveGrids().get(i);
+      Sector s = g.getSectorAt(position);
+      if (s == null)
+        continue;
+      s.setValue(value);
+    }
+
+    return this;
   }
 
   @Override
   public int getValue() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    for (int i = 0; i < grid.getActiveGrids().size(); i++) {
+      Grid g = grid.getActiveGrids().get(i);
+      Sector s = g.getSectorAt(position);
+      if (s == null)
+        continue;
+      return s.getValue();
+    }
+
+    return -1;
+
   }
 
   @Override
@@ -83,7 +100,8 @@ public class AggregatedSector implements Sector {
 
   @Override
   public boolean hasWall(Bearing wall) {
-    final int val = calculateWallValue(wall);
+    int val = calculateWallValue(wall);
+    val = -1;
     if (val == 0)
       throw new UnsupportedOperationException();
     return val > 0;
@@ -107,6 +125,8 @@ public class AggregatedSector implements Sector {
     for (int i = 0; i < grid.getActiveGrids().size(); i++) {
       Grid g = grid.getActiveGrids().get(i);
       Sector s = g.getSectorAt(position);
+      if (s == null)
+        continue;
 
       ret += !s.knowsWall(atBearing) ? 0 : (s.hasWall(atBearing) ? 1 : -1);
 
@@ -144,5 +164,10 @@ public class AggregatedSector implements Sector {
   @Override
   public boolean givesAccessTo(Bearing atBearing) {
     return knowsWall(atBearing) && hasNoWall(atBearing);
+  }
+
+  @Override
+  public String toString() {
+    return GridUtils.createSectorWallsString(this);
   }
 }

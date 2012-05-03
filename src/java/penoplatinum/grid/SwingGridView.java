@@ -121,7 +121,7 @@ public class SwingGridView extends JFrame implements GridView {
 
     // add sectors
     for (Sector sector : this.grid.getSectors()) {
-      this.board.addSector(grid.getPositionOf(sector).getX()-minLeft,grid.getPositionOf(sector).getY()-minTop);
+      this.board.addSector(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop);
     }
 
     this.board.addOrigin(-minLeft, -minTop);
@@ -134,10 +134,12 @@ public class SwingGridView extends JFrame implements GridView {
     // add sectors
     for (Sector sector : this.grid.getSectors()) {
       for (Bearing b : Bearing.NESW) {
-        if (sector.knowsWall(b) && sector.hasWall(b)) {
-          this.board.addWall(grid.getPositionOf(sector).getX() - minLeft,grid.getPositionOf(sector).getY() - minTop,
-                  b);
-         }
+        if (!sector.knowsWall(b))
+          continue;
+        if (!sector.hasWall(b))
+          continue;
+        this.board.addWall(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop,
+                b);
       }
     }
   }
@@ -158,15 +160,14 @@ public class SwingGridView extends JFrame implements GridView {
 
     for (Agent agent : this.grid.getAgents()) {
       final java.awt.Color c = ColorLink.getColorByName(agent.getName());
-      if(!(agent instanceof BarcodeAgent)){
-        this.board.addAgent(grid.getPositionOf(grid.getSectorOf(agent)).getX() - minLeft, grid.getPositionOf(grid.getSectorOf(agent)).getY() - minTop,
-              grid.getBearingOf(agent), agent.getName(), c);
+      if (!(agent instanceof BarcodeAgent)) {
+        this.board.addAgent(grid.getPositionOf(agent).getX() - minLeft, grid.getPositionOf(agent).getY() - minTop,
+                grid.getBearingOf(agent), agent.getName(), c);
+      } else {
+        Point point = grid.getPositionOf(agent);
+        this.board.addBarcode(point.getX() - minLeft, point.getY() - minTop, grid.getBearingOf(agent), agent.getValue());
       }
-      else{
-              Point point= grid.getPositionOf(grid.getSectorOf(agent));
-              this.board.addBarcode(point.getX() - minLeft, point.getY() - minTop, grid.getBearingOf(agent), agent.getValue());
-      }
-      
+
     }
   }
 

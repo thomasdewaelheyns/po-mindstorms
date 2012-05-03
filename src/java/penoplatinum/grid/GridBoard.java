@@ -166,14 +166,14 @@ public class GridBoard extends JPanel {
        case W: angle = Math.PI *(3/ 2);
          break;
     } 
-    this.barcodesG.rotate(angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
+    this.agentsG.rotate(angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
     FontMetrics fm = this.agentsG.getFontMetrics();
-    this.barcodesG.setColor(WHITE);
-    this.barcodesG.setFont(this.agentsG.getFont().deriveFont(12F));
+    this.agentsG.setColor(WHITE);
+    this.agentsG.setFont(this.agentsG.getFont().deriveFont(12F));
     int w = fm.stringWidth(Integer.toString(code));
     int h = fm.getHeight();
-    this.barcodesG.drawString(Integer.toString(code), left + this.sectorSize / 2 - w / 2, top + this.sectorSize - h / 2);
-    this.barcodesG.rotate(-1 * angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
+    this.agentsG.drawString(Integer.toString(code), left + this.sectorSize / 2 - w / 2, top + this.sectorSize - h / 2);
+    this.agentsG.rotate(-1 * angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
     // add label
 
     

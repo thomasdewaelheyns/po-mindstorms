@@ -6,11 +6,6 @@ package penoplatinum.grid;
 
 import junit.framework.TestCase;
 import org.junit.Test;
-import penoplatinum.grid.Grid;
-import penoplatinum.grid.GridBoard;
-import penoplatinum.grid.GridTestUtil;
-import penoplatinum.grid.LinkedGrid;
-import penoplatinum.grid.SwingGridView;
 
 /**
  *
@@ -42,11 +37,10 @@ public class SwingGridViewTest extends TestCase {
     showme4.display(grid4);
     showme5.display(grid5);
 
+    
+    
   }
 
-  ;
-
-    
 
   public static void main(String[] args) {
     testRenderMap();

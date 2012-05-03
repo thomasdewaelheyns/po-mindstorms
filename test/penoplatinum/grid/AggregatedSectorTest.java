@@ -60,6 +60,25 @@ public class AggregatedSectorTest extends TestCase {
     assertTrue(!s.knowsWall(Bearing.S));
   }
 
+  public void testAggregatedEmptySector() {
+    ArrayList<Grid> grids = new ArrayList<Grid>();
+    grids.add(mockEmptyGrid());
+    grids.add(mockEmptyGrid());
+
+    AggregatedGrid agg = mockAggregatedGrid(grids);
+
+    Sector s = new AggregatedSector(agg, new Point(10,10));
+    for (Bearing b : Bearing.NESW)
+      assertFalse(s.knowsWall(b));
+
+  }
+
+  private Grid mockEmptyGrid() {
+    Grid g = mock(Grid.class);
+    when(g.getSectorAt(any(Point.class))).thenReturn(null);
+    return g;
+  }
+
   private AggregatedGrid mockAggregatedGrid(List<Grid> activeGrids) {
     AggregatedGrid grid = mock(AggregatedGrid.class);
     when(grid.getActiveGrids()).thenReturn(activeGrids);
@@ -75,6 +94,6 @@ public class AggregatedSectorTest extends TestCase {
       grids.add(g);
     }
     AggregatedGrid agg = mockAggregatedGrid(grids);
-    return new AggregatedSector(agg, new Point(0,0));
+    return new AggregatedSector(agg, new Point(0, 0));
   }
 }

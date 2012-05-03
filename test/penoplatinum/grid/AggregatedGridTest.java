@@ -59,6 +59,9 @@ public class AggregatedGridTest extends TestCase {
     assertEquals(g, ((TransformedGrid) agg.getActiveGrids().get(0)).getGrid());
     assertEquals(TransformationTRT.Identity,
             ((TransformedGrid) agg.getActiveGrids().get(0)).getTransformation());
+
+    assertEquals(g.toString(), agg.toString());
+
   }
 
   public void testActivateSubGrid() {
@@ -97,8 +100,13 @@ public class AggregatedGridTest extends TestCase {
     //testMoveAgentTo
   }
 
-  public void testGetSectorAt() {
-    //DURR
+  public void testGetSectorAtEmptySpot() {
+    AggregatedGrid agg = new AggregatedGrid(mainGrid);
+    agg.activateSubGrid(grid1, TransformationTRT.Identity);
+
+    Sector s = agg.getSectorAt(new Point(10, 10));
+    assertNotNull(s);
+
   }
 
   public void testGetPositionOfSector() {
@@ -106,6 +114,14 @@ public class AggregatedGridTest extends TestCase {
   }
 
   public void testGetSectors() {
+    AggregatedGrid agg = new AggregatedGrid(mainGrid);
+    agg.activateSubGrid(grid1, TransformationTRT.Identity);
+    
+    int count = 0;
+    for (Sector s : agg.getSectors())
+      count++;
+    
+    assertEquals(4, count);
   }
 
   public void testGetSectorOf() {
@@ -186,16 +202,38 @@ public class AggregatedGridTest extends TestCase {
 
   }
 
-  public void testGetAgentAt() {
-  }
-
   public void testBounds() {
+    AggregatedGrid grid = new AggregatedGrid(mainGrid);
+    assertEquals(0, grid.getMinLeft());
+    assertEquals(1, grid.getMaxLeft());
+    assertEquals(0, grid.getMinTop());
+    assertEquals(0, grid.getMaxTop());
+    assertEquals(2, grid.getWidth());
+    assertEquals(1, grid.getHeight());
+
+    grid.activateSubGrid(grid1, TransformationTRT.Identity);
+
+    assertEquals(0, grid.getMinLeft());
+    assertEquals(1, grid.getMaxLeft());
+    assertEquals(0, grid.getMinTop());
+    assertEquals(1, grid.getMaxTop());
+    assertEquals(2, grid.getWidth());
+    assertEquals(2, grid.getHeight());
+
+    grid.activateSubGrid(grid2, TransformationTRT.Identity);
+
+    assertEquals(0, grid.getMinLeft());
+    assertEquals(1, grid.getMaxLeft());
+    assertEquals(0, grid.getMinTop());
+    assertEquals(1, grid.getMaxTop());
+    assertEquals(2, grid.getWidth());
+    assertEquals(2, grid.getHeight());
   }
 
   public void testSize() {
   }
 
-  public void testHasAgentOn() {
+  public void testGetAgentAt() {
 
     Class clsAgent = mainAgent.getClass();
     Class clsSubAgent = agent3.getClass();

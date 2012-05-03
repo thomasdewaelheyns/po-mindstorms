@@ -13,7 +13,7 @@ import penoplatinum.util.Point;
  */
 public class GridTestUtil {
 
-  public static void createGridNorth(Grid northGrid) {
+  public static Grid createGridNorth(Grid northGrid) {
     //CREATE SECTORS
     Sector Sector00 = createSector().setWall(Bearing.W);
     Sector Sector10 = createSector();
@@ -35,7 +35,9 @@ public class GridTestUtil {
     northGrid.add(Sector12, new Point(1, 2));
     northGrid.add(Sector22, new Point(2, 2));
     //Barcode
-    northGrid.add(new BarcodeAgent(19), new Point(1, 0), Bearing.N);
+    northGrid.add(BarcodeAgent.getBarcodeAgent(19), new Point(1, 0), Bearing.N);
+    
+    return northGrid;
   }
 
   public static Grid createGridEast(Grid eastGrid) {
@@ -58,7 +60,7 @@ public class GridTestUtil {
     eastGrid.add(Sector02, new Point(0, 2));
     eastGrid.add(Sector12, new Point(1, 2));
     eastGrid.add(Sector22, new Point(2, 2));
-     eastGrid.add(new BarcodeAgent(13) ,new Point(1, 0),Bearing.N);
+     eastGrid.add(BarcodeAgent.getBarcodeAgent(13) ,new Point(1, 0),Bearing.N);
     //Barcode
     return eastGrid;
   }
@@ -90,8 +92,8 @@ public class GridTestUtil {
     eastGrid.add(Sector13, new Point(1, 3));
     eastGrid.add(Sector23, new Point(2, 3));
     //Barcode
-     eastGrid.add(new BarcodeAgent(13) ,new Point(0, 2),Bearing.S);
-     eastGrid.add(new BarcodeAgent(19) ,new Point(1, 1),Bearing.W);
+     eastGrid.add(BarcodeAgent.getBarcodeAgent(13) ,new Point(0, 2),Bearing.S);
+     eastGrid.add(BarcodeAgent.getBarcodeAgent(19) ,new Point(1, 1),Bearing.W);
 
     return eastGrid;
   }
@@ -131,7 +133,7 @@ public class GridTestUtil {
     mergedGrid.add(Sector24, new Point(2, 4));
 
     //Barcode
-    mergedGrid.add(new BarcodeAgent(19), new Point(1, 2), Bearing.N);
+    mergedGrid.add(BarcodeAgent.getBarcodeAgent(19), new Point(1, 2), Bearing.N);
     return mergedGrid;
   }
 
@@ -177,8 +179,8 @@ public class GridTestUtil {
     mergedGrid.add(Sector24, new Point(2, 4));
 
     //Barcode
-    mergedGrid.add(new BarcodeAgent(19), new Point(1, 2), Bearing.N);
-    mergedGrid.add(new BarcodeAgent(13) ,new Point(0, 1),Bearing.E);
+    mergedGrid.add(BarcodeAgent.getBarcodeAgent(19), new Point(1, 2), Bearing.N);
+    mergedGrid.add(BarcodeAgent.getBarcodeAgent(13),new Point(0, 1),Bearing.E);
     return mergedGrid;
   }
 

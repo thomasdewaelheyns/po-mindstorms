@@ -27,8 +27,16 @@ public class MultiGhostGrid implements Grid, GridObserver {
   public MultiGhostGrid(String mainGhostName) {
     this.mainGhostName = mainGhostName;
 
-    grid = new AggregatedGrid(getGhostGrid(mainGhostName));
 
+  }
+
+  public MultiGhostGrid useAggregatedGrid(AggregatedGrid aggGrid) {
+    if (grid != null)
+      throw new IllegalArgumentException();
+    grid = aggGrid;
+    aggGrid.useMainGrid(getGhostGrid(mainGhostName));
+    
+    return this;
   }
 
   public Grid getGhostGrid(String name) {
@@ -88,7 +96,6 @@ public class MultiGhostGrid implements Grid, GridObserver {
   public Agent getAgent(String name) {
     return grid.getAgent(name);
   }
-
 
   @Override
   public Iterable<Agent> getAgents() {
@@ -189,7 +196,7 @@ public class MultiGhostGrid implements Grid, GridObserver {
     Point pos1 = g1.getPositionOf(barcode);
     Point pos2 = g1.getPositionOf(barcode);
 
-    TransformationTRT transform = new TransformationTRT().setTransformation(-pos2.getX(), -pos2.getY(), b2.to(b1), pos1.getX(), pos1.getY());
+    TransformationTRT transform = new TransformationTRT().setTransformation(-pos2.getX(), -pos2.getY(), b2.to(b1).invert(), pos1.getX(), pos1.getY());
     return transform;
   }
 
@@ -216,9 +223,9 @@ public class MultiGhostGrid implements Grid, GridObserver {
       return grid;
     }
   }
-  
-  public boolean hasAgentOn(Sector sector, Class type) {
-    throw new RuntimeException("not implemented");
-  }
 
+  @Override
+  public String toString() {
+    return grid.toString();
+  }
 }

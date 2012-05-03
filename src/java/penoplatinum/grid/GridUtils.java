@@ -19,11 +19,10 @@ public class GridUtils {
     for (int top = grid.getMinTop(); top <= grid.getMaxTop(); top++) {
       for (int left = grid.getMinLeft(); left <= grid.getMaxLeft(); left++) {
         Sector sector = grid.getSectorAt(new Point(left, top));
-        if (sector != null) {
-          ret += "(" + left + "," + top + "): " + sector.toString();
-          ret += "\n";
-        } else {
-        }
+        if (sector == null)
+          continue;
+        ret += "(" + left + "," + top + "): " + sector.toString();
+        ret += "\n";
       }
     }
     return ret;
