@@ -40,7 +40,9 @@ public class RobotAdminClient {
   public RobotAdminClient handleCommand(String input) { 
     String[] args = input.split(" ");
     if(args[0].equalsIgnoreCase("forcestart")) { this.sendForcedStart(); }
-    else { throw new RuntimeException("Unknown command: " + args[0]); }
+    else if( ! input.trim().equals("") ) {
+      this.send(input);
+    } else { throw new RuntimeException("Unknown command: " + args[0]); }
     return this;
   }
  

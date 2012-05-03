@@ -1,5 +1,3 @@
-package penoplatinum.ui.admin;
-
 /**
  * RobotAdminShellRunner
  * 
@@ -21,28 +19,39 @@ import penoplatinum.gateway.Queue;
 import penoplatinum.gateway.MQ;
 import penoplatinum.gateway.MessageReceiver;
 
+import penoplatinum.ui.admin.RobotAdminClient;
+import penoplatinum.ui.admin.RobotAdminShell;
 
 public class RobotAdminShellRunner {
 
-  private static final String DEFAULT_ROBOT      = Config.ROBOT_NAME;
-  private static final String DEFAULT_MQ_SERVER  = Config.MQ_SERVER;
-  private static final String DEFAULT_MQ_CHANNEL = Config.GHOST_CHANNEL;
+  private static String DEFAULT_ROBOT;
+  private static String DEFAULT_MQ_SERVER;
+  private static String DEFAULT_MQ_CHANNEL;
 
   // cli options
   private Options options;
 
   private String robotName, mqServerName, mqChannelName;
+  private String secret;
 
   private Queue            queue;
   private RobotAdminClient client;
   private RobotAdminShell  shell;
 
   private RobotAdminShellRunner(String[] args) {
+    this.loadConfig();
     this.prepareCommandLineOptions();
     this.processCommandLine(args);
     this.setupMQ();
     this.setupClient();
     this.setupShell();
+  }
+  
+  private void loadConfig() {
+    Config.load("robot.properties");
+    DEFAULT_ROBOT      = Config.ROBOT_NAME;
+    DEFAULT_MQ_SERVER  = Config.MQ_SERVER;
+    DEFAULT_MQ_CHANNEL = Config.GHOST_CHANNEL;
   }
   
   private void prepareCommandLineOptions() {
@@ -51,6 +60,7 @@ public class RobotAdminShellRunner {
     this.options.addOption( "d", "debug", false, "run in debug-mode." );
     this.options.addOption( "r", "robot", true, "admin robot <name>. " +
                                                 "default=" + DEFAULT_ROBOT );
+    this.options.addOption( "s", "secret", true, "<secret> for robot. ");
     this.options.addOption( "m", "mq",   true,  "connect to MQ <server>. " +
                                                 "default=" + DEFAULT_MQ_SERVER);
     this.options.addOption( "j", "join", true,  "join <channel>. " +
@@ -69,6 +79,9 @@ public class RobotAdminShellRunner {
         if( ! line.hasOption("debug") ) {
           this.mqServerName  = line.getOptionValue("mq", DEFAULT_MQ_SERVER);
           this.mqChannelName = line.getOptionValue("channel", DEFAULT_MQ_CHANNEL);
+        }
+        if( line.hasOption("secret") ) {
+          this.secret = line.getOptionValue("secret");
         }
       }
     } catch( ParseException e ) {
@@ -123,6 +136,10 @@ public class RobotAdminShellRunner {
       .useInput(new BufferedReader(new InputStreamReader(System.in)))
       .useOutput(new BufferedWriter(new OutputStreamWriter(System.out)))
       .useClient(this.client);
+    if( this.secret != null ) {
+      this.client.authenticateWith(this.robotName, this.secret);
+      this.shell.setPrompt(this.robotName);
+    }
   }
   
   public void start() {

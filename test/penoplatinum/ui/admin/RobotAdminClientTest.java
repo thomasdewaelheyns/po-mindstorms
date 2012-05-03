@@ -31,10 +31,8 @@ public class RobotAdminClientTest extends TestCase {
   
   public void testHandleUnknownCommand() {
     this.setup();
-    try {
-      this.client.handleCommand( "beebabelooba" );
-      fail( "Unknown command should throw Exception." );
-    } catch( Exception e ) {}
+    this.client.handleCommand( "beebabelooba" );
+    verify(this.mockedQueue).send( "beebabelooba\n" );
   }
 
   public void testHandleEmpty() {
