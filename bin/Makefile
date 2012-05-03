@@ -1,4 +1,6 @@
 LIB_DIR=../lib
+LEJOS_DIR=../../lejos_nxj
+
 JAR_LOG4J=${LIB_DIR}/log4j-1.2.16.jar
 JAR_MYSQL=${LIB_DIR}/mysql-connector-java-5.0.8-bin.jar
 JAR_CLI=${LIB_DIR}/commons-cli-1.2.jar
@@ -6,39 +8,50 @@ JAR_IO=${LIB_DIR}/commons-io-1.2.jar
 JAR_LEJOS=${LEJOS_DIR}/lib/pccomm.jar
 JAR_BLUE=${LEJOS_DIR}/3rdparty/lib/bluecove.jar
 JAR_RABBIT=${LIB_DIR}/rabbitmq-client.jar
+JAR_LEJOS=${LEJOS_DIR}/lib/pccomm.jar
+JAR_BLUE=${LEJOS_DIR}/3rdparty/lib/bluecove.jar
+
 LIBS=${JAR_LOG4J}:${JAR_MYSQL}:${JAR_CLI}:${JAR_IO}:${JAR_LEJOS}:${JAR_BLUE}:${JAR_RABBIT}
 
-BUILD_DIR=build/${PROJECT}
-CP=../src/java:${LIBS}
+BUILD_DIR=build
+CP=./:../src/java:${LIBS}
 
 JAVAC=javac -cp ${CP} -d ${BUILD_DIR} -Xlint:unchecked -Xlint:deprecation
-JAVA=java -cp ${BUILD_DIR}:${LIBS}
+JAVA=java -d32 -cp .:${BUILD_DIR}:${LIBS}
 
 RM=rm -rf
 
-RASH_ARGS=-d
-MQ_ARGS=
+ARGS=
 
-rash: project-rash ${BUILD_DIR}
+rash:
+	@BUILD_DIR=build/$@
+	@mkdir -p ${BUILD_DIR}
 	@echo "*** compiling rash..."
 	@${JAVAC} RobotAdminShellRunner.java
 	@echo "*** running rash..."
-	@${JAVA} RobotAdminShellRunner ${RASH_ARGS}
+	@${JAVA} RobotAdminShellRunner ${ARGS}
 
-spy: project-mq ${BUILD_DIR}
+spy:
+	@BUILD_DIR=build/$@
+	@mkdir -p ${BUILD_DIR}
 	@echo "*** compiling MQ spy..."
 	@${JAVAC} MQSpy.java
-	@echo "*** running mq..."
-	@${JAVA} MQSpy ${MQ_ARGS}
+	@echo "*** running MQ spy..."
+	@${JAVA} MQSpy ${ARGS}
 
-project-%:
-	$(eval PROJECT=rash)
+gw:
+	@BUILD_DIR=build/$@
+	@mkdir -p ${BUILD_DIR}
+	@echo "*** compiling Gateway..."
+	@${JAVAC} GatewayRunner.java
+	@${JAVAC} ../src/java/penoplatinum/bluetooth/IConnection.java
+	@${JAVAC} ../src/java/penoplatinum/bluetooth/IPacketReceiver.java
+	@${JAVAC} ../src/java/penoplatinum/gateway/UpdatesJSAppender.java
+	@echo "*** running Gateway..."
+	@${JAVA} GatewayRunner ${ARGS}
 
 %.class: src/java/%.java ${BUILD_DIR}
 	@${JAVAC} $<
-
-${BUILD_DIR}:
-	@mkdir -p ${BUILD_DIR}
 
 clean:
 	@${RM} ${BUILD_DIR}

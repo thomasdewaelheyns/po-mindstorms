@@ -16,6 +16,7 @@ import penoplatinum.bluetooth.*;
 import penoplatinum.util.Utils;
 
 import penoplatinum.bluetooth.IPacketTransporter;
+import penoplatinum.bluetooth.IConnection;
 
 import penoplatinum.Config;
 
