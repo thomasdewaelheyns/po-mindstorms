@@ -22,7 +22,7 @@ import penoplatinum.gateway.MessageReceiver;
 import penoplatinum.ui.admin.RobotAdminClient;
 import penoplatinum.ui.admin.RobotAdminShell;
 
-public class RobotAdminShellRunner {
+public class RobotAdminShellRunner implements MessageReceiver {
 
   private static String DEFAULT_ROBOT;
   private static String DEFAULT_MQ_SERVER;
@@ -108,12 +108,17 @@ public class RobotAdminShellRunner {
   private void setupRemoteMQ() {
     try {
       this.queue = new MQ().connectToMQServer(this.mqServerName)
-                           .follow(this.mqChannelName);
+                           .follow(this.mqChannelName)
+                           .subscribe(this);
     } catch(Exception e) {
       System.err.println( "ERROR: " + e.getMessage() );
       System.exit(1);
     }
   }  
+  
+  public void receive(String message) {
+    // this space is intentionally left blank
+  }
 
   private void setupDebugMQ() {
     System.out.println( "--- Setting up debugging MQ using stdout." );
