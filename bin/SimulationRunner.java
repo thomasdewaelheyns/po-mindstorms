@@ -1,5 +1,3 @@
-package penoplatinum.util.debugging;
-
 /**
  * SimulationRunner
  * 
@@ -7,8 +5,7 @@ package penoplatinum.util.debugging;
  * 
  * @author: Team Platinum
  */
-import penoplatinum.simulator.entities.PacmanEntity;
-import penoplatinum.simulator.entities.SimulatedEntity;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -20,6 +17,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.cli.*;
+
+import penoplatinum.simulator.entities.PacmanEntity;
+import penoplatinum.simulator.entities.SimulatedEntity;
 
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.SwingSimulationView;
@@ -34,11 +34,15 @@ import penoplatinum.driver.Driver;
 import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.navigator.Navigator;
+
 import penoplatinum.reporter.Reporter;
+
 import penoplatinum.robot.Robot;
 import penoplatinum.robot.RobotAPI;
+
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.Simulator;
+
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
@@ -230,7 +234,6 @@ public class SimulationRunner {
       int robotNr = this.start;
       for (Point position : map.getGhostPositions()) {
         robotNr++;
-//        this.putGhostAt("Ghost" + robotNr, position.getX(), position.getY(), Bearing.N);
         this.putGhostAt("" + robotNr, position.getX(), position.getY(), Bearing.N);
       }
 
