@@ -7,12 +7,9 @@ package penoplatinum.grid;
  * 
  * @author: Team Platinum
  */
-import java.util.List;
-import java.util.ArrayList;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.util.TransformationTRT;
 import penoplatinum.util.CantorDiagonal;
 import penoplatinum.util.SimpleHashMap;
 
@@ -376,6 +373,9 @@ public class LinkedGrid implements Grid {
   }
   
   public boolean hasAgentOn(Sector sector, Class type) {
+    
+    
+    
     throw new RuntimeException("not implemented");
   }
 }

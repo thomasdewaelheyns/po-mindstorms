@@ -143,12 +143,16 @@ public class TransformedGrid implements Grid {
   @Override
   public Sector getSectorOf(Agent agent) {
     Sector s = grid.getSectorOf(agent);
+    if (s == null)
+      return null;
     return new TransformedSector(s, transformation);
   }
 
   @Override
   public Bearing getBearingOf(Agent agent) {
     Bearing b = grid.getBearingOf(agent);
+    if (b == null)
+      return null;
     return b.rotate(transformation.getRotation());
   }
 
@@ -247,7 +251,9 @@ public class TransformedGrid implements Grid {
   }
 
   public boolean hasAgentOn(Sector sector, Class type) {
-    throw new RuntimeException("not implemented");
+    while (sector instanceof TransformedSector)
+      sector = ((TransformedSector) sector).getDecoratedSector();
+    
+    return grid.hasAgentOn(sector, type);
   }
-
 }

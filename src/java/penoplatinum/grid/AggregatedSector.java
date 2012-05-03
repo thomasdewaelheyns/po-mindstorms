@@ -17,6 +17,8 @@ public class AggregatedSector implements Sector {
   private final Point position;
 
   AggregatedSector(AggregatedGrid grid, Point position) {
+    if (position == null)
+      throw new IllegalArgumentException();
     this.grid = grid;
     this.position = position;
   }

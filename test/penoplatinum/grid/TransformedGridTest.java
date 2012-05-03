@@ -64,7 +64,6 @@ public class TransformedGridTest extends TestCase {
 //    assertEquals(t1.toString(), t2.toString(),
 //            "Transformed grid1 is not identical to grid2");
 //  }
-
   public void testDoubleTransform() {
     Grid grid = this.createSquareGridWithFourSectors();
 
@@ -169,8 +168,6 @@ public class TransformedGridTest extends TestCase {
 
     assertEquals(a, g.getAgentAt(new Point(1, 1)));
     assertEquals(Bearing.E, g.getBearingOf(a));
-
-
   }
 
   public void testSectorOf() {
@@ -181,7 +178,7 @@ public class TransformedGridTest extends TestCase {
 
     assertEquals(tGrid.getSectorAt(new Point(1, 1)), tGrid.getSectorOf(a));
 
-
+    assertEquals(null, tGrid.getSectorOf(mockAgent()));
 
   }
 
@@ -192,6 +189,8 @@ public class TransformedGridTest extends TestCase {
     tGrid.setTransformation(createGridTransformation());
 
     assertEquals(Bearing.N, tGrid.getBearingOf(a));
+    assertNull(tGrid.getBearingOf(mockAgent()));
+    
   }
 
   public void testGetAgent() {
@@ -230,10 +229,9 @@ public class TransformedGridTest extends TestCase {
 
   }
 
-  public void testHasAgentOn()
-  {
+  public void testHasAgentOn() {
   }
-  
+
   private Grid createRectangularGrid() {
     LinkedGrid grid = new LinkedGrid();
     grid.add(new LinkedSector(), new Point(-1, 0));

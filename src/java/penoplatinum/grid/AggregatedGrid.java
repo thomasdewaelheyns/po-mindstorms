@@ -68,12 +68,12 @@ public class AggregatedGrid implements Grid {
   public AggregatedGrid deactivateSubGrid(Grid grid) {
     if (grid == mainGrid)
       throw new IllegalArgumentException();
-    
+
     SubGrid subGrid = grids.get(grid);
-    
+
     gridList.remove(subGrid.getGrid());
     grids.remove(grid);
-    
+
     return this;
   }
 
@@ -125,21 +125,18 @@ public class AggregatedGrid implements Grid {
   public Sector getSectorOf(Agent agent) {
     Sector ret = mainGrid.getSectorOf(agent);
     if (ret != null)
-      return ret;
+      return getSectorAt(mainGrid.getPositionOf(ret));
 
     Point retPos = null;
 
     for (SubGrid g : grids.values()) {
       Sector iSector = g.getGrid().getSectorOf(agent);
-      Point iPosition = g.getGrid().getPositionOf(iSector);
-
       if (iSector == null)
         continue; // No information about agent for this subgrid
+      Point iPosition = g.getGrid().getPositionOf(iSector);
 
-
-      if (ret == null) {
+      if (retPos == null) {
         // Store information
-        ret = iSector;
         retPos = iPosition;
         continue;
       }
@@ -152,14 +149,24 @@ public class AggregatedGrid implements Grid {
       // Subgrid information matches
 
     }
-
-    return ret;
+    if (retPos == null)
+      return null;
+    return getSectorAt(retPos);
   }
 
   @Override
   public Bearing getBearingOf(Agent agent) {
     // Dont merge bearings :D
-    return mainGrid.getBearingOf(agent);
+    Bearing ret = mainGrid.getBearingOf(agent);
+    if (ret != null)
+      return ret;
+    for (SubGrid g : grids.values()) {
+      ret = g.getGrid().getBearingOf(agent);
+      if (ret != null)
+        return ret;
+    }
+
+    return null;
   }
 
   @Override
@@ -250,7 +257,22 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public boolean hasAgentOn(Sector sector, Class type) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (!(sector instanceof AggregatedSector))
+      throw new IllegalArgumentException();
+
+    Point position = getPositionOf(sector);
+
+    boolean ret = mainGrid.hasAgentOn(mainGrid.getSectorAt(position), type);
+    if (ret)
+      return ret;
+
+    for (SubGrid g : grids.values()) {
+      boolean iSector = g.getGrid().hasAgentOn(g.getGrid().getSectorAt(position), type);
+      if (iSector)
+        return true;
+    }
+    return false;
+
   }
 
   class SubGrid {

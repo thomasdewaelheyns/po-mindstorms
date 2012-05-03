@@ -202,6 +202,11 @@ public class MultiGhostGrid implements Grid, GridObserver {
     return transform;
   }
 
+  @Override
+  public boolean hasAgentOn(Sector sector, Class type) {
+    return grid.hasAgentOn(sector, type);
+  }
+
   class Ghost {
 
     private Grid grid;
