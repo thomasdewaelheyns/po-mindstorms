@@ -5,7 +5,9 @@ import penoplatinum.util.Utils;
 
 public class OldTests {
   
-
+/*
+ * Commentaar verwijderen, maar eerst herstellen voor uitvoeren. 
+ *
   public static void testCountMemory() {
     int step = 1024 * 3;
     int size = step;
@@ -80,6 +82,6 @@ public class OldTests {
     return false;
   }
 
-  
+/**/  
   
 }
