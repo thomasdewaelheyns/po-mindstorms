@@ -6,6 +6,7 @@ import penoplatinum.util.LightColor;
 
 // Step 2: turns to the right until a white line is encountered. the angle
 public class FindRightWhiteLine implements SubAction {
+  public static final int MIN_RETURNANGLE = -20;
 
   private AlignDriverAction context;
   private int originalAngle;
@@ -28,7 +29,7 @@ public class FindRightWhiteLine implements SubAction {
       api.turn(- AlignDriverAction.SWEEP_ANGLE * 2);
       state = 1;
     } else if (state == 1) {
-      if (getCurrentAngle() <= -10 && this.context.getLightPart().getCurrentLightColor() == LightColor.WHITE) {
+      if (getCurrentAngle() <= MIN_RETURNANGLE && this.context.getLightPart().getCurrentLightColor() == LightColor.WHITE) {
         state = 2;
       } else if (!this.context.getSensorPart().isMoving()) {
         state = 3;

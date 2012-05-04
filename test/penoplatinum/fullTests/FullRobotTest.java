@@ -39,7 +39,7 @@ public class FullRobotTest extends TestCase {
   
   @Test
   public void testSimulator() {
-    Config.load("../bin/robot.properties");
+    Config.load("bin/robot.properties");
     
     // create the robot with all of its parts...
     GhostRobot     robot     = this.createRobot();
