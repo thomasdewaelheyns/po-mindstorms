@@ -20,7 +20,7 @@ public class GridTestUtil {
     Sector Sector20 = createSector().setWall(Bearing.N).setWall(Bearing.E).setWall(Bearing.S);
     Sector Sector01 = createSector().setWall(Bearing.W).setWall(Bearing.E);
     Sector Sector11 = createSector().setWall(Bearing.W).setWall(Bearing.S);
-    Sector Sector21 = createSector().setWall(Bearing.E);
+    Sector Sector21 = createSector().setWall(Bearing.E).setWall(Bearing.N);
     Sector Sector02 = createSector().setWall(Bearing.W).setWall(Bearing.S);
     Sector Sector12 = createSector().setWall(Bearing.S).setWall(Bearing.N).setWall(Bearing.E);
     Sector Sector22 = createSector().setWall(Bearing.S).setWall(Bearing.E).setWall(Bearing.W);
@@ -69,14 +69,14 @@ public class GridTestUtil {
     Sector Sector00 = createSector();
     Sector Sector10 = createSector().setWall(Bearing.E);
     Sector Sector20 = createSector().setWall(Bearing.W).setWall(Bearing.N);
-    Sector Sector01 = createSector().setWall(Bearing.E).setWall(Bearing.S);
+    Sector Sector01 = createSector().setWall(Bearing.W).setWall(Bearing.S);
     Sector Sector11 = createSector();
     Sector Sector21 = createSector().setWall(Bearing.S).setWall(Bearing.E);
     Sector Sector02 = createSector().setWall(Bearing.N).setWall(Bearing.W);
     Sector Sector12 = createSector().setWall(Bearing.S);
-    Sector Sector22 = createSector();
+    Sector Sector22 = createSector().setWall(Bearing.N);
     Sector Sector03 = createSector().setWall(Bearing.W).setWall(Bearing.S);
-    Sector Sector13 = createSector().setWall(Bearing.N);
+    Sector Sector13 = createSector().setWall(Bearing.N).setWall(Bearing.S);
     Sector Sector23 = createSector().setWall(Bearing.S).setWall(Bearing.E);
     //ADD NEIGHBOURS
     eastGrid.add(Sector00, new Point(0, 0));
@@ -133,7 +133,9 @@ public class GridTestUtil {
     mergedGrid.add(Sector22, new Point(2, 2));
 
     //Barcode
-    mergedGrid.add(BarcodeAgent.getBarcodeAgent(19), new Point(1, 0), Bearing.N);
+    mergedGrid.add(BarcodeAgent.getBarcodeAgent(19), new Point(1, 0), Bearing.N);   
+    mergedGrid.add(BarcodeAgent.getBarcodeAgent(13), new Point(0, -1), Bearing.W);
+
     return mergedGrid;
   }
 
@@ -148,7 +150,7 @@ public class GridTestUtil {
     Sector Sector0_1 = createSector().setWall(Bearing.N).setWall(Bearing.E);
     Sector Sector1_1 = createSector().setWall(Bearing.N).setWall(Bearing.W);
     Sector Sector2_1 = createSector().setNoWall(Bearing.S);
-    Sector Sector00 = createSector().setWall(Bearing.W);
+    Sector Sector00 = createSector().clearWall(Bearing.W);
     Sector Sector10 = createSector();
     Sector Sector20 = createSector().setNoWall(Bearing.N).setNoWall(Bearing.E).setWall(Bearing.S);
     Sector Sector01 = createSector().clearWall(Bearing.W).setWall(Bearing.E);
@@ -159,8 +161,8 @@ public class GridTestUtil {
     Sector Sector22 = createSector().setWall(Bearing.S).setWall(Bearing.E).setWall(Bearing.W);
     //ADD NEIGHBOURS
     LinkedGrid mergedGrid = new LinkedGrid();
-    mergedGrid.add(Sector_11, new Point(-1, 1));
     mergedGrid.add(Sector_1_1, new Point(-1, -1));
+    mergedGrid.add(Sector_10, new Point(-1, 0));
     mergedGrid.add(Sector_11, new Point(-1, 1));
     mergedGrid.add(Sector0_2, new Point(0, -2));
     mergedGrid.add(Sector1_2, new Point(1, -2));
@@ -180,7 +182,7 @@ public class GridTestUtil {
 
     //Barcode
     mergedGrid.add(BarcodeAgent.getBarcodeAgent(19), new Point(1, 0), Bearing.N);
-    mergedGrid.add(BarcodeAgent.getBarcodeAgent(13), new Point(0, -1), Bearing.E);
+    mergedGrid.add(BarcodeAgent.getBarcodeAgent(13), new Point(0, -1), Bearing.W);
     return mergedGrid;
   }
 
@@ -188,3 +190,4 @@ public class GridTestUtil {
     return new LinkedSector().setNoWall(Bearing.E).setNoWall(Bearing.S).setNoWall(Bearing.W).setNoWall(Bearing.N);
   }
 }
+ 

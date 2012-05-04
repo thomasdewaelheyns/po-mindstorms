@@ -17,7 +17,7 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Bearing;
 
 public class GridBoard extends JPanel {
-
+  
   private int width = 0, height = 0;
   private BufferedImage sectors, walls, values, agents, barcodes;
   private Graphics2D sectorsG, wallsG, valuesG, agentsG, barcodesG; // TODO: improve name
@@ -28,64 +28,69 @@ public class GridBoard extends JPanel {
   public static final Color BROWN = new Color(205, 165, 100);
   private int sectorSize = 40;
   private double ratio = 1.0;
-
+  
   public GridBoard resizeTo(int width, int height) {
     this.width = width;
     this.height = height;
     this.setupCanvas();
     return this;
   }
-
+  
   public GridBoard setSectorSize(int size) {
     this.sectorSize = size;
     return this;
   }
-
+  
   public int getSectorSize() {
     return this.sectorSize;
   }
-
+  
   private void setupCanvas() {
     this.setBackground(BROWN);
     this.setDoubleBuffered(true);
     this.clearSectors();
   }
-
+  
   public void clearSectors() {
     this.sectors = this.createBuffer();
     this.sectorsG = this.sectors.createGraphics();
     this.clearWalls();
   }
-
+  
   public void clearWalls() {
     this.walls = this.createBuffer();
     this.wallsG = this.walls.createGraphics();
   }
-
+  
   public void clearValues() {
     this.values = this.createBuffer();
     this.valuesG = this.values.createGraphics();
   }
-
+  
   public void clearAgents() {
     this.agents = this.createBuffer();
     this.agentsG = this.agents.createGraphics();
   }
-
+  
   public void clearBarcodes() {
     this.barcodes = this.createBuffer();
     this.barcodesG = this.barcodes.createGraphics();
   }
-
+  
   public void addSector(int left, int top) {
     this.sectorsG.setColor(BLACK);
     this.sectorsG.fill(new Rectangle(this.sectorSize * left,
             this.sectorSize * top,
             this.sectorSize, this.sectorSize));
   }
-
+  
   public void addWall(int left, int top, Bearing location) {
-    Rectangle r;
+    addWall(left,top,location,false);
+  }
+
+  public void addWall(int left, int top, Bearing location , 
+  boolean unknown){
+  Rectangle r;
     switch (location) {
       case N:
         r = new Rectangle(left * this.sectorSize, top * this.sectorSize - 3, this.sectorSize, 6);
@@ -102,10 +107,15 @@ public class GridBoard extends JPanel {
       default:
         r = new Rectangle(0, 0, 0, 0);
     }
-    this.wallsG.setColor(WHITE);
+    if (unknown) {
+      this.wallsG.setColor(Color.RED);
+    } else {
+      this.wallsG.setColor(WHITE);
+      
+    }
     this.wallsG.fill(r);
   }
-
+  
   public void addValue(int left, int top, int value) {
     if (value > 0) {
       Color color = this.mapToHeatColor(value);
@@ -113,30 +123,34 @@ public class GridBoard extends JPanel {
       this.valuesG.fill(new Rectangle(this.sectorSize * left + 3, this.sectorSize * top + 3, this.sectorSize - 6, this.sectorSize - 6));
     }
   }
-
+  
   public void addAgent(int left, int top, Bearing orientation, String name,
           Color color) {
     left *= this.sectorSize;
     top *= this.sectorSize;
     this.agentsG.setColor(color);
-
+    
     Polygon triangle = new Polygon();
     triangle.addPoint(left + this.sectorSize / 2, top + 3);
     triangle.addPoint(left + this.sectorSize - 3, top + this.sectorSize - 3);
     triangle.addPoint(left + 3, top + this.sectorSize - 3);
     double angle = 0;
-    switch(orientation){
-       case N: angle = 0;
-         break;
-       case E: angle = Math.PI / 2;
-         break;
-       case S: angle = Math.PI ;
-         break;
-       case W: angle = Math.PI *(3/ 2);
-         break;
+    switch (orientation) {
+      case N:
+        angle = 0;
+        break;
+      case E:
+        angle = Math.PI / 2;
+        break;
+      case S:
+        angle = Math.PI;
+        break;
+      case W:
+        angle = Math.PI * (3 / 2);
+        break;
     }
     
-
+    
     this.agentsG.rotate(angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
     this.agentsG.fillPolygon(triangle);
     // reset
@@ -150,22 +164,26 @@ public class GridBoard extends JPanel {
     int h = fm.getHeight();
     this.agentsG.drawString(name.substring(0, 1), left + this.sectorSize / 2 - w / 2, top + this.sectorSize - h / 2);
   }
-
+  
   public void addBarcode(int left, int top, Bearing orientation, int code) {
     left *= this.sectorSize;
     top *= this.sectorSize;
     double angle = 0;
     
-    switch(orientation){
-       case N: angle = 0;
-         break;
-       case E: angle = Math.PI / 2;
-         break;
-       case S: angle = Math.PI ;
-         break;
-       case W: angle = Math.PI *(3f/ 2);
-         break;
-    } 
+    switch (orientation) {
+      case N:
+        angle = 0;
+        break;
+      case E:
+        angle = Math.PI / 2;
+        break;
+      case S:
+        angle = Math.PI;
+        break;
+      case W:
+        angle = Math.PI * (3f / 2);
+        break;
+    }    
     this.agentsG.rotate(angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
     FontMetrics fm = this.agentsG.getFontMetrics();
     this.agentsG.setColor(WHITE);
@@ -178,16 +196,16 @@ public class GridBoard extends JPanel {
 
     
   }
-
+  
   private Color mapToHeatColor(int value) {
     // TODO: make this relative to a configurable maximum
     // now: 750 ... possibly needs to go up to 10000
     // Quick Fix to test:
     value /= 10;
-
+    
     float r, g, b, v = value;
     v = (v / 1000) * 400 + 350;
-
+    
     if (v >= 350 && v <= 439) {            // violet
       r = (440 - v) * 255 / 90;
       g = 0;
@@ -219,17 +237,17 @@ public class GridBoard extends JPanel {
     }
     return new Color((int) r, (int) g, (int) b);
   }
-
+  
   public void render() {
     this.repaint();
   }
-
+  
   public void paint(Graphics g) {
     super.paint(g);
     Graphics2D g2d = (Graphics2D) g;
-    g2d.scale(this.ratio,this.ratio);
-
-
+    g2d.scale(this.ratio, this.ratio);
+    
+    
     this.wallsG.setColor(BLACK);
     this.wallsG.drawRect(0, 0, width * this.sectorSize, height * this.sectorSize);
 
@@ -239,46 +257,43 @@ public class GridBoard extends JPanel {
     g2d.drawImage(this.walls, null, 0, 0);
     g2d.drawImage(this.barcodes, null, 0, 0);
     g2d.drawImage(this.agents, null, 0, 0);
-
-
+    
+    
     Toolkit.getDefaultToolkit().sync();
     g.dispose();
   }
-
+  
   private BufferedImage createBuffer() {
     int w = this.width * this.sectorSize;
     int h = this.height * this.sectorSize;
     return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
   }
-
+  
   void addOrigin(int minLeft, int minTop) {
     sectorsG.setColor(Color.WHITE);
     sectorsG.setStroke(new java.awt.BasicStroke(2));
-    sectorsG.drawRect(minLeft*this.sectorSize +1, minTop*this.sectorSize+1, this.sectorSize-1, this.sectorSize-1);
+    sectorsG.drawRect(minLeft * this.sectorSize + 1, minTop * this.sectorSize + 1, this.sectorSize - 1, this.sectorSize - 1);
   }
   
-  public void setRatio(double d){
-    if(d>1.0){
+  public void setRatio(double d) {
+    if (d > 1.0) {
       d = 1.0;
     }
     this.ratio = d;
   }
   
-  public void calculateRatio(int windowWidth, int windowHeight){
+  public void calculateRatio(int windowWidth, int windowHeight) {
     this.setRatio(2.0);
-    double availableWidth = (((double)windowWidth-10.0)/2.0)/2.0;
-    double availableHeight = (((double)windowHeight-10.0)/2.0);
-    double availableSectorWidth = availableWidth/(double)this.width;
-    double availableSectorHeight = availableHeight/(double)this.height;
-    double widthRatio = availableSectorWidth/(double)this.sectorSize;
-    double heightRatio = availableSectorHeight/(double)this.sectorSize;
-    if(widthRatio>heightRatio){
+    double availableWidth = (((double) windowWidth - 10.0) / 2.0) / 2.0;
+    double availableHeight = (((double) windowHeight - 10.0) / 2.0);
+    double availableSectorWidth = availableWidth / (double) this.width;
+    double availableSectorHeight = availableHeight / (double) this.height;
+    double widthRatio = availableSectorWidth / (double) this.sectorSize;
+    double heightRatio = availableSectorHeight / (double) this.sectorSize;
+    if (widthRatio > heightRatio) {
       this.setRatio(heightRatio);
-    }
-    else{
+    } else {
       this.setRatio(widthRatio);
     }
   }
-
-
 }

@@ -134,12 +134,14 @@ public class SwingGridView extends JFrame implements GridView {
     // add sectors
     for (Sector sector : this.grid.getSectors()) {
       for (Bearing b : Bearing.NESW) {
-        if (!sector.knowsWall(b))
-          continue;
+        if (!sector.knowsWall(b)){
+          this.board.addWall(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop,
+                  b, true);continue;
+        }
         if (!sector.hasWall(b))
           continue;
         this.board.addWall(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop,
-                b);
+                b, false);
       }
     }
   }
