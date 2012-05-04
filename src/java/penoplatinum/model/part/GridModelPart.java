@@ -69,11 +69,11 @@ public class GridModelPart implements ModelPart {
   }
   
   public Sector getMySector() {
-    return this.myGrid.getSectorAt(getMyPosition());
+    return this.myGrid.getSectorAt(this.getMyPosition());
   }
 
   public Point getMyPosition(){
-    return this.myGrid.getPositionOf(this.getMySector());
+    return this.myGrid.getPositionOf(this.myAgent);
   }
   
   public Bearing getMyBearing(){

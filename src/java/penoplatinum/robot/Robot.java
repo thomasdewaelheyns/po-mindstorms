@@ -9,6 +9,10 @@ package penoplatinum.robot;
  * @author: Team Platinum
  */
 
+import penoplatinum.model.Model;
+import penoplatinum.driver.Driver;
+
+
 public interface Robot {
   // a robot consists of:
   // - a RobotAPI, offering access to the sensors and actuators

@@ -1,10 +1,19 @@
 TARGETS=RunAllTests.test
+
 LIB_DIR=../lib
-JUNIT_JAR=${LIB_DIR}/junit-4.10.jar
-MOCKITO_JAR=${LIB_DIR}/mockito-all-1.9.0.jar
+JAR_JUNIT=${LIB_DIR}/junit-4.10.jar
+JAR_MOCKITO=${LIB_DIR}/mockito-all-1.9.0.jar
+JAR_LOG4J=${LIB_DIR}/log4j-1.2.16.jar
+JAR_MYSQL=${LIB_DIR}/mysql-connector-java-5.0.8-bin.jar
 JAR_CLI=${LIB_DIR}/commons-cli-1.2.jar
+JAR_IO=${LIB_DIR}/commons-io-1.2.jar
+JAR_LEJOS=${LEJOS_DIR}/lib/pccomm.jar
+JAR_BLUE=${LEJOS_DIR}/3rdparty/lib/bluecove.jar
 JAR_RABBIT=${LIB_DIR}/rabbitmq-client.jar
-LIBS=${JUNIT_JAR}:${MOCKITO_JAR}:${JAR_CLI}:${JAR_RABBIT}
+JAR_LEJOS=${LEJOS_DIR}/lib/pccomm.jar
+JAR_BLUE=${LEJOS_DIR}/3rdparty/lib/bluecove.jar
+
+LIBS=${JAR_JUNIT}:${JAR_MOCKITO}:${JAR_LOG4J}:${JAR_MYSQL}:${JAR_CLI}:${JAR_IO}:${JAR_LEJOS}:${JAR_BLUE}:${JAR_RABBIT}
 
 BUILD_DIR=build
 CP=.:../src/java:${LIBS}
@@ -38,6 +47,7 @@ stat:
 
 ${BUILD_DIR}:
 	@mkdir -p build
+	@cp -r ../resources build/
 
 clean:
 	@${RM} ${BUILD_DIR}

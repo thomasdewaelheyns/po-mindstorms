@@ -69,7 +69,7 @@ public class MultiModeNavigator implements Navigator {
   }
   
   private void provideNextInstruction(Driver driver) {
-    if( this.reachedGoal() && this.noNextAction() ) { return; } // we're done
+    if( this.reachedGoal() ) { return; } // we're done
     this.getNextAction().instruct(driver);
   }
 
@@ -93,7 +93,7 @@ public class MultiModeNavigator implements Navigator {
   }
 
   public final boolean reachedGoal() {
-    return this.getCurrentMode().reachedGoal();
+    return this.getCurrentMode().reachedGoal() && this.noNextAction();
   }
 
   // when we're at the last action of the last mode, there is no next action
@@ -121,7 +121,7 @@ public class MultiModeNavigator implements Navigator {
 
   private void createNewPlan() {
     // switch to next mode once the current one has reached its goal
-    if( this.reachedGoal() ) {
+    while( this.getCurrentMode().reachedGoal() ) {
       this.discardCurrentMode();
     }
     this.plan = this.getCurrentMode().createNewPlan();

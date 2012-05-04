@@ -51,7 +51,7 @@ public class HillClimbingNavigatorModeTest extends TestCase {
     assertFalse(this.mode.reachedGoal());
 	}
 
-  public void testNoAccessToNeighboursCreatesEmptyPlan() {
+  public void testNoAccessToNeighboursCreatesPlanWithLeftTurn() {
     this.setup();
 
     when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
@@ -61,7 +61,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
 
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
-    assertEquals(0, plan.size());
+    assertEquals(1, plan.size());
+    assertTrue(plan.get(0) instanceof TurnLeftNavigatorAction);
   }
 
   public void testFacingNorthAccessToNorthNeighbourCreatesForwardPlan() {

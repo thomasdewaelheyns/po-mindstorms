@@ -1,12 +1,15 @@
 package penoplatinum.simulator;
 
-import penoplatinum.simulator.entities.SimulatedViewRobot;
 import java.awt.Color;
 import java.awt.Image;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
+
+import penoplatinum.Config;
+
+import penoplatinum.simulator.entities.SimulatedViewRobot;
 
 public class ColorLink {
 
@@ -37,10 +40,10 @@ public class ColorLink {
 
   private static HashMap<Color, Image> fillFiles() {
     HashMap<Color, Image> temp = new HashMap<Color, Image>();
-    addFile(temp, Color.CYAN, "images/ghost_cyan.png");
-    addFile(temp, Color.RED, "images/ghost_red.png");
-    addFile(temp, Color.PINK, "images/ghost_pink.png");
-    addFile(temp, Color.ORANGE, "images/ghost_orange.png");
+    addFile(temp, Color.CYAN,   "../../" + Config.IMAGE_DIR + "/ghost_cyan.png"  );
+    addFile(temp, Color.RED,    "../../" + Config.IMAGE_DIR + "/ghost_red.png"   );
+    addFile(temp, Color.PINK,   "../../" + Config.IMAGE_DIR + "/ghost_pink.png"  );
+    addFile(temp, Color.ORANGE, "../../" + Config.IMAGE_DIR + "/ghost_orange.png");
     return temp;
   }
 

@@ -156,18 +156,19 @@ public class SwingGridView extends JFrame implements GridView {
 
   private void addAgents() {
     int minLeft = this.grid.getMinLeft(),
-            minTop = this.grid.getMinTop();
+        minTop  = this.grid.getMinTop();
 
-    for (Agent agent : this.grid.getAgents()) {
+    for( Agent agent : this.grid.getAgents() ) {
       final java.awt.Color c = ColorLink.getColorByName(agent.getName());
-      if (!(agent instanceof BarcodeAgent)) {
-        this.board.addAgent(grid.getPositionOf(agent).getX() - minLeft, grid.getPositionOf(agent).getY() - minTop,
-                grid.getBearingOf(agent), agent.getName(), c);
+      Point position = this.grid.getPositionOf(agent);
+      position.translate(-minLeft, -minTop);
+      if( ! (agent instanceof BarcodeAgent) ) {
+        this.board.addAgent(position.getX(), position.getY(),
+                            grid.getBearingOf(agent), agent.getName(), c);
       } else {
-        Point point = grid.getPositionOf(agent);
-        this.board.addBarcode(point.getX() - minLeft, point.getY() - minTop, grid.getBearingOf(agent), agent.getValue());
+        this.board.addBarcode(position.getX(), position.getY(),
+                              grid.getBearingOf(agent), agent.getValue());
       }
-
     }
   }
 

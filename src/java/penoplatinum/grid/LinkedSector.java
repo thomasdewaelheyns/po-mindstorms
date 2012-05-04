@@ -191,8 +191,8 @@ public class LinkedSector implements Sector {
 
   @Override
   public boolean hasWall(Bearing wall) {
-    if (!knowsWall(wall)) {
-      throw new IllegalArgumentException();
+    if( ! this.knowsWall(wall) ) {
+      throw new IllegalArgumentException("Don't know wall: " + wall);
     }
     int bit = this.mapBearing(wall);
     return BitwiseOperations.hasBit(this.walls, bit);

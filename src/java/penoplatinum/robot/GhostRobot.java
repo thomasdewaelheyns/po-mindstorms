@@ -165,7 +165,7 @@ public class GhostRobot implements AdvancedRobot {
       return;
     }
     if (driver.isBusy()) {  //driver
-      driver.drive(this);
+      driver.proceed();
       return;
     }
     if (inCenterOfTile()) { //get new driveraction

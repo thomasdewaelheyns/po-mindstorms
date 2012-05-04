@@ -26,33 +26,24 @@ public class Simulator {
 
   // the Simulator can run until different goals are reached
   public static final double TIME_SLICE = 0.008;
+
   // a view to display the simulation, by default it does nothing
   SimulationView view = new SilentSimulationView();
   private Map map;                // the map that the robot will run on
   private List<RobotEntity> robotEntities = new ArrayList<RobotEntity>();
   
-  //UNUSED!!!
-  //private HashMap<String, RemoteEntity> remoteEntities = new HashMap<String, RemoteEntity>();
-
   private RobotEntity pacmanEntity;
   private ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<String>();
   private Runnable stepRunnable;
 
-  // main constructor, no arguments, Simulator is selfcontained
-  public Simulator() {
-  }
 
-  public void addSimulatedEntity(SimulatedEntity r) {
-    robotEntities.add(r);
-    view.addRobot(r.getViewRobot());
-    r.useSimulator(this);
+  public Simulator addSimulatedEntity(SimulatedEntity entity) {
+    this.robotEntities.add(entity);
+    this.view.addRobot(entity.getViewRobot());
+    entity.useSimulator(this);
+    return this;
   }
   
-  public void addRobotEntity(RobotEntity r) {
-    robotEntities.add(r);
-    view.addRobot(r.getViewRobot());
-  }
-
   /**
    * On a SimulationView, the Simulator can visually show what happens during
    * the simulation.

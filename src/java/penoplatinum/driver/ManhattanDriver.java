@@ -59,7 +59,7 @@ public class ManhattanDriver implements Driver {
     this.IDLE = new IdleDriverAction();
   }
   
-  protected ManhattanDriver addBehaviour(DriverBehaviour behaviour) {
+  public ManhattanDriver addBehaviour(DriverBehaviour behaviour) {
     this.behaviours.add(behaviour);
     return this;
   }
@@ -71,8 +71,8 @@ public class ManhattanDriver implements Driver {
   }
   
   private void setupMovementActions() {
-    this.MOVE = new MoveDriverAction(this.advancedRobot.getModel()).set(this.sectorSize);
-    this.TURN_LEFT = new TurnDriverAction(this.advancedRobot.getModel()).set(90);
+    this.MOVE       = new MoveDriverAction(this.advancedRobot.getModel()).set(this.sectorSize);
+    this.TURN_LEFT  = new TurnDriverAction(this.advancedRobot.getModel()).set(90);
     this.TURN_RIGHT = new TurnDriverAction(this.advancedRobot.getModel()).set(-90);
   }
 

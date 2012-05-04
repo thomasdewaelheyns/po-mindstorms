@@ -60,6 +60,7 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
         bestBearing = bearing;
       }
     }
+
     return bestBearing;
   }
 
@@ -81,7 +82,11 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
     List<NavigatorAction> plan = new ArrayList<NavigatorAction>();
 
     // not one neighbour has a value above -1 ???? okay ... but this is weird
-    if( bestBearing == Bearing.UNKNOWN ) { return plan; }
+    // turn left ... maybe we can detect a way out
+    if( bestBearing == Bearing.UNKNOWN ) { 
+      plan.add( new TurnLeftNavigatorAction(this.grids) );
+      return plan;
+    }
 
     // turn towards the bestBearing
     switch(this.getMyBearing().to(bestBearing)) {
@@ -97,6 +102,7 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
         plan.add( new TurnRightNavigatorAction(this.grids) );
         break;
     }
+
     // and move forward into the Sector
     plan.add( new ForwardNavigatorAction(this.grids) );
     return plan;

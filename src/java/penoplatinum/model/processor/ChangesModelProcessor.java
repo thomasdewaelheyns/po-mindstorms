@@ -52,7 +52,7 @@ public class ChangesModelProcessor extends ModelProcessor {
     gridPart.clearChangedSectors();
 
     // Send position updates 
-/*
+    /*
     if (grid.getLastMovement() == GhostAction.FORWARD) {
       protocol.sendPosition();
       model.getReporter().reportAgentUpdate(gridPart.getMyAgent());

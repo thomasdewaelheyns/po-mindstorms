@@ -33,7 +33,10 @@ public class Config {
     Config.USE_LOCAL_MQ  = props.getProperty("mq.type").toLowerCase().equals("local");
     Config.MQ_SERVER     = props.getProperty("mq.server");
     Config.GHOST_CHANNEL = props.getProperty("mq.channel");
+    Config.IMAGE_DIR     = props.getProperty("dir.images");
   }
+
+  public static String  IMAGE_DIR;
 
   public static boolean DEBUGMODE;
   public static String  ROBOT_NAME;
