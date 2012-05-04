@@ -101,7 +101,6 @@ public class AggregatedSector implements Sector {
   @Override
   public boolean hasWall(Bearing wall) {
     int val = calculateWallValue(wall);
-    val = -1;
     if (val == 0)
       throw new UnsupportedOperationException();
     return val > 0;

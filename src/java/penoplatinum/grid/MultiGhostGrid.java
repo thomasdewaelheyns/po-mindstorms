@@ -35,7 +35,7 @@ public class MultiGhostGrid implements Grid, GridObserver {
       throw new IllegalArgumentException();
     grid = aggGrid;
     aggGrid.useMainGrid(getGhostGrid(mainGhostName));
-    
+
     return this;
   }
 
@@ -154,14 +154,21 @@ public class MultiGhostGrid implements Grid, GridObserver {
 
       TransformationTRT transform = mapBarcode(g, iGrid, barcode);
 
-      //TODO: test
-
+      Ghost remoteGhost;
       if (g == getGhostGrid(mainGhostName))
-        // g is the local ghost, so transform maps from remote to local
-        mapGhost(ghosts.get(mainGhostName), transform.invert());
+      {
+        // g is the local ghost, so iGrid is the remote ghost
+        // transformation is ok!
+        remoteGhost = findGhostWithGrid(iGrid);
+      }
       else
-        // g is a remote ghost, so transform maps from local to remote
-        mapGhost(findGhostWithGrid(g), transform);
+      {
+        // g is the remote and transform maps from iGrid to g
+        transform.invert();
+        remoteGhost = findGhostWithGrid(g);
+      }
+      
+      mapGhost(remoteGhost, transform);
 
     }
 
@@ -194,9 +201,9 @@ public class MultiGhostGrid implements Grid, GridObserver {
     Bearing b1 = g1.getBearingOf(barcode);
     Bearing b2 = g2.getBearingOf(barcode);
     Point pos1 = g1.getPositionOf(barcode);
-    Point pos2 = g1.getPositionOf(barcode);
+    Point pos2 = g2.getPositionOf(barcode);
 
-    TransformationTRT transform = new TransformationTRT().setTransformation(-pos2.getX(), -pos2.getY(), b2.to(b1).invert(), pos1.getX(), pos1.getY());
+    TransformationTRT transform = new TransformationTRT().setTransformation(-pos2.getX(), -pos2.getY(), b1.to(b2).invert(), pos1.getX(), pos1.getY());
     return transform;
   }
 

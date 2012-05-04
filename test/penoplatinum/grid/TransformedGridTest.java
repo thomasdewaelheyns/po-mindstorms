@@ -11,6 +11,7 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
+import penoplatinum.util.Utils;
 
 /**
  *
@@ -39,6 +40,22 @@ public class TransformedGridTest extends TestCase {
 
     // validate that grid1 hasn't changed
     assertEquals("grid1 is not equal to grid2 when rotated using opposite windings.", t1.toString(), t2.toString());
+  }
+
+  public void testTransform() {
+    Grid grid1 = GridTestUtil.createGridEast(new LinkedGrid());
+
+    TransformationTRT trans = new TransformationTRT().setTransformation(0, -1, Rotation.L90, 1, 0);
+    TransformedGrid transGrid = new TransformedGrid(grid1).setTransformation(trans);
+
+//    (new SwingGridView()).display(grid1);
+//    (new SwingGridView()).display(transGrid);
+//    Utils.Sleep(1000000);
+
+    String s = transGrid.toString();
+
+    assertEquals("(0,-2): N E SYW \n(1,-2): N E SYW \n(2,-2): N E S W \n(0,-1): NYEYS W \n"
+            + "(1,-1): NYE S WY\n(2,-1): N E S W \n(0,0): N E S W \n(1,0): N E S W \n(2,0): N E S W \n", s);
   }
 
 //  public void testTransformGrid() {
@@ -166,7 +183,7 @@ public class TransformedGridTest extends TestCase {
     tg.setTransformation(createGridTransformation());
     tg.moveTo(a, new Point(1, 2), Bearing.N);
 
-    assertEquals(a, g.getAgentAt(new Point(1, 1),a.getClass()));
+    assertEquals(a, g.getAgentAt(new Point(1, 1), a.getClass()));
     assertEquals(Bearing.E, g.getBearingOf(a));
   }
 
@@ -203,9 +220,9 @@ public class TransformedGridTest extends TestCase {
     TransformedGrid tGrid = new TransformedGrid(grid);
     tGrid.setTransformation(createGridTransformation());
 
-    assertEquals(a, tGrid.getAgentAt(new Point(1, 1),a.getClass()));
-    assertEquals(null, tGrid.getAgentAt(new Point(2, 1),a.getClass()));
-    assertEquals(null, tGrid.getAgentAt(new Point(0, 0),a.getClass()));
+    assertEquals(a, tGrid.getAgentAt(new Point(1, 1), a.getClass()));
+    assertEquals(null, tGrid.getAgentAt(new Point(2, 1), a.getClass()));
+    assertEquals(null, tGrid.getAgentAt(new Point(0, 0), a.getClass()));
   }
 
   public void testGetBounds() {

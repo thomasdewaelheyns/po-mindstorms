@@ -125,7 +125,7 @@ public class AggregatedGrid implements Grid {
     List<Sector> ret = new ArrayList<Sector>();
     for (int top = getMinTop(); top <= getMaxTop(); top++) {
       for (int left = getMinLeft(); left <= getMaxLeft(); left++) {
-        ret.add(new AggregatedSector(this, new Point(top, left)));
+        ret.add(new AggregatedSector(this, new Point(left, top)));
       }
     }
     return ret;

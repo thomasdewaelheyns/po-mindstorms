@@ -30,8 +30,9 @@ public class TransformedGrid implements Grid {
     return transformation;
   }
 
-  public void setTransformation(TransformationTRT transformation) {
+  public TransformedGrid setTransformation(TransformationTRT transformation) {
     this.transformation = transformation;
+    return this;
   }
 
   public Grid getGrid() {
@@ -88,12 +89,12 @@ public class TransformedGrid implements Grid {
   @Override
   public Sector getSectorAt(Point position) {
     transformation.inverseTransform(position);
-
     Sector s = grid.getSectorAt(position);
+    transformation.transform(position);
+
     if (s == null)
       return null;
 
-    transformation.transform(position);
     return new TransformedSector(s, transformation);
   }
 

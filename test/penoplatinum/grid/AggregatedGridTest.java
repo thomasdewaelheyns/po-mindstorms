@@ -13,6 +13,7 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
+import penoplatinum.util.Utils;
 
 /**
  *
@@ -52,6 +53,29 @@ public class AggregatedGridTest extends TestCase {
 
   }
 
+  public void testAggregate() {
+    AggregatedGrid multiGrid = new AggregatedGrid();
+    Grid mainGrid = GridTestUtil.createGridNorth(new LinkedGrid());
+    Grid grid1 = GridTestUtil.createGridEast(new LinkedGrid());
+
+    TransformationTRT trans = new TransformationTRT().setTransformation(0, -1, Rotation.L90, 1, 0);
+
+
+    multiGrid.useMainGrid(mainGrid);
+    multiGrid.activateSubGrid(grid1, trans);
+//
+//    (new SwingGridView()).display(mainGrid);
+//    (new SwingGridView()).display(grid1);
+//    (new SwingGridView()).display(multiGrid);
+//    Utils.Sleep(1000000);
+
+    String s = multiGrid.toString();
+    assertEquals(
+            "(0,-2): N E SYW \n(1,-2): N E SYW \n(2,-2): N E S W \n(0,-1): NYEYS W \n(1,-1): NYE S WY\n(2,-1): N E S W \n"
+            +"(0,0): N E S W?\n(1,0): N E S W \n(2,0): N?E?S W \n(0,1): N EYS WY\n"
+            +"(1,1): N E SYWY\n(2,1): N?EYS W \n(0,2): N E SYWY\n(1,2): NYEYSYW \n(2,2): N EYSYWY\n",s);
+  }
+
   public void testMainGrid() {
     Grid g = mockGrid();
     AggregatedGrid agg = new AggregatedGrid(g);
@@ -59,8 +83,6 @@ public class AggregatedGridTest extends TestCase {
     assertEquals(g, ((TransformedGrid) agg.getActiveGrids().get(0)).getGrid());
     assertEquals(TransformationTRT.Identity,
             ((TransformedGrid) agg.getActiveGrids().get(0)).getTransformation());
-
-    assertEquals(g.toString(), agg.toString());
 
   }
 
@@ -116,11 +138,11 @@ public class AggregatedGridTest extends TestCase {
   public void testGetSectors() {
     AggregatedGrid agg = new AggregatedGrid(mainGrid);
     agg.activateSubGrid(grid1, TransformationTRT.Identity);
-    
+
     int count = 0;
     for (Sector s : agg.getSectors())
       count++;
-    
+
     assertEquals(4, count);
   }
 
