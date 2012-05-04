@@ -75,7 +75,7 @@ public class GhostExternalEventHandler implements ExternalEventHandler{
       g.moveTo(agent, position, bearing);
     }
     else{
-      BarcodeAgent barcode = new BarcodeAgent(value);
+      BarcodeAgent barcode = BarcodeAgent.getBarcodeAgent(value);
       g.add(barcode, position, bearing);
     }
   }
@@ -88,7 +88,6 @@ public class GhostExternalEventHandler implements ExternalEventHandler{
 
   @Override
   public void handleSendGridInformation() {
-    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
@@ -99,6 +98,10 @@ public class GhostExternalEventHandler implements ExternalEventHandler{
   @Override
   public void handleRemoveAgent(String agentName) {
     
+  }
+  
+  public Model getModel(){
+    return this.model;
   }
   
 }
