@@ -161,11 +161,16 @@ public class MultiGhostGrid implements Grid, GridObserver {
         // transformation is ok!
         remoteGhost = findGhostWithGrid(iGrid);
       }
-      else
+      else if (iGrid == getGhostGrid(mainGhostName))
       {
         // g is the remote and transform maps from iGrid to g
         transform.invert();
         remoteGhost = findGhostWithGrid(g);
+      }
+      else
+      {
+        // Remote grids are mapped, don't use this info yet!
+        continue;
       }
       
       mapGhost(remoteGhost, transform);
