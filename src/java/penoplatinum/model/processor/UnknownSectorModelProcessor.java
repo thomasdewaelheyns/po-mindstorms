@@ -37,19 +37,15 @@ public class UnknownSectorModelProcessor extends ModelProcessor {
   // if there are bearing without walls, providing access to unknown Sectors,
   // add such Sectors to the Grid
   private void addNewSectors() {
-    Model model = getModel();
-    GridModelPart gridPart = GridModelPart.from(model);
-    Sector current = gridPart.getMyGrid().getSectorAt(gridPart.getMyGrid().getPositionOf(gridPart.getMyAgent()));
-    for (Bearing b : Bearing.NESW) {
-      addNewSector(current, b);
-    }
-  }
+    GridModelPart gridPart = GridModelPart.from(this.getModel());
+    Sector current = gridPart.getMySector();
 
-  private void addNewSector(Sector current, Bearing direction) {
-    if (current.givesAccessTo(direction) && !current.hasNeighbour(direction)) {
-      Sector neighbour = new LinkedSector();
-      neighbour.setValue(5000);
-      current.addNeighbour(neighbour, direction);
+    for (Bearing bearing : Bearing.NESW) {
+      if( current.givesAccessTo(bearing) && ! current.hasNeighbour(bearing) ) {
+        Sector neighbour = new LinkedSector();
+        neighbour.setValue(5000);
+        current.addNeighbour(neighbour, bearing);
+      }
     }
   }
 }

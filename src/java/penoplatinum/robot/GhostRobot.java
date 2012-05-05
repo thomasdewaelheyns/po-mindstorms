@@ -18,8 +18,8 @@ import penoplatinum.gateway.GatewayClient;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.LinkedSector;
-import penoplatinum.grid.agent.Agent;
-import penoplatinum.grid.agent.BarcodeAgent;
+import penoplatinum.grid.Agent;
+import penoplatinum.grid.BarcodeAgent;
 
 import penoplatinum.model.Model;
 import penoplatinum.model.GhostModel;
@@ -228,8 +228,6 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
 
     this.sweepID = this.robotAPI.getSweepID();
     this.model.refresh(); // TODO: double call
-    
-    GridModelPart.from(this.model).showGrid(); // this is for debugging only
     
     this.navigator.instruct(driver);
     this.sendMessages();

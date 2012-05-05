@@ -8,17 +8,23 @@ package penoplatinum.simulator.view;
  * 
  * @author: Team Platinum
  */
+
+import java.util.ArrayList;
+
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.ArrayList;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.JFrame;
+
 import penoplatinum.grid.SwingGridView;
 import penoplatinum.map.Map;
+
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.tiles.SectorDraw;
+
 
 public class SwingSimulationView extends JFrame implements SimulationView {
   
@@ -30,10 +36,8 @@ public class SwingSimulationView extends JFrame implements SimulationView {
   private Map map;
 
   public SwingSimulationView() {
-    
     this.setupWindow();
     this.setupBoard();
-    
   }
 
   private void setupBoard() {
@@ -47,14 +51,10 @@ public class SwingSimulationView extends JFrame implements SimulationView {
 
   private void setupWindow() {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // by default we're 2 tiles by 2 (of 160px with 2px/cm
-    //this.setSize(1280, 800);
     this.setUndecorated(false); 
-   //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     this.setSize(800, 400);
-    //this.setBounds(0,0,screenSize.width, screenSize.height);
     this.setLocationRelativeTo(null);
-    setLocation(0, 0);
+    this.setLocation(0, 0);
     this.setTitle("Simulator");
     this.setResizable(true);
     this.setVisible(true);
@@ -72,29 +72,25 @@ public class SwingSimulationView extends JFrame implements SimulationView {
     double width = this.getWidth();
     double width2 = ((width-20)/2.0)/(double)map.getWidth();
     Board.scaleRatio = (double)width2/(double)(Sector.SIZE*Board.SCALE);
-    if(SwingSimulationView.lockHeight)
-            this.setSize((int)width, (int)((double)map.getHeight()*(double) Board.SCALE*Board.scaleRatio *(double)Sector.SIZE)+35);
-    rescaleGrid();
+    if(SwingSimulationView.lockHeight) {
+      this.setSize((int)width, (int)((double)map.getHeight()*(double) Board.SCALE*Board.scaleRatio *(double)Sector.SIZE)+35);
+    }
+    this.rescaleGrid();
   }
 
-  @Override
   public void showMap(Map map) {
-    if (map == null) {
-      return;
-    }
+    if( map == null ) { return; }
+
     this.map = map;
     this.rescaleBoard();
     this.board.showMap(map);
-    //int size = map.getFirst().getDrawer().drawSize();
-    // a tile is 80cm in reality, we apply a scale of 2px/cm
-    //this.setSize(map.getWidth() * size, map.getHeight() * size + 22);
   }
 
-  @Override
   public void updateRobots() {
     this.rescaleBoard();
     this.board.updateRobots();
-
+    this.updateGrids();
+    
     // pass on control for a little while
     try {
       Thread.sleep(1);
@@ -102,25 +98,25 @@ public class SwingSimulationView extends JFrame implements SimulationView {
       System.err.println(e);
     }
   }
-
-  @Override
-  public void log(String msg) {
-    System.out.println(msg);
+  
+  private void updateGrids() {
+    for(SwingGridView gridView : this.grids) {
+      // gridView.refresh();
+    }
   }
 
-  @Override
   public void addRobot(ViewRobot r) {
-    board.addRobot(r);
+    this.board.addRobot(r);
   }
 
   public Board getBoard() {
-    return board;
+    return this.board;
   }
   
-  public void addGrid(SwingGridView grid){
-    this.grids.add(grid);
-    rescaleGrid();
-    setupLayout();
+  public void addGrid(SwingGridView gridView){
+    this.grids.add(gridView);
+    this.rescaleGrid();
+    this.setupLayout();
   }
   
   private void setupLayout(){

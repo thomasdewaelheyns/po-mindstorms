@@ -9,21 +9,16 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
 
+import penoplatinum.grid.Grid;
+
 public interface GridView {
   public GridView display(Grid grid);
+  public GridView displayWithoutWindow(Grid grid);
 
   public GridView setSectorSize(int size);
 
   public GridView refresh();
-  public GridView sectorsNeedRefresh();
-  public GridView valuesNeedRefresh();
-  public GridView agentsNeedRefresh();
 
   public GridView changeTitle(String title);
   public GridView changeLocation(int left, int top);
-
-  GridView barcodesNeedsRefresh();
-
-  //CHANGED
-  public GridView display(Grid aThis, boolean b);
 }

@@ -11,52 +11,42 @@ import javax.swing.JFrame;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.simulator.ColorLink;
+
 import penoplatinum.util.Point;
 
 public class SwingGridView extends JFrame implements GridView {
 
-  private Grid grid;
+  private Grid  grid;
+
   private String title = "Grid";
+
   private int left = -1,
-          top = -1,
-          width = 0,
-          height = 0,
-          size = 40;
-  private boolean refreshSectors = true;
-  private boolean refreshValues = true;
-  private boolean refreshAgents = true;
-  private boolean refreshBarcodes = true;
+              top = -1,
+              width = 0,
+              height = 0,
+              size = 40;
+
   private GridBoard board;
+
 
   public GridView display(Grid grid) {
     this.grid = grid;
-
-    this.setupBoard();  // yes keep this order ;-)
-    this.setupWindow(); // the board needs to be ready before we construct
-    // the window
+    this.setupBoard();
+    this.setupWindow();
     this.refresh();
-
     return this;
   }
 
-  public GridView display(Grid grid, boolean noWindow) {
-    if (!noWindow) {
-      display(grid);
-      return this;
-    }
+  public GridView displayWithoutWindow(Grid grid) {
     this.grid = grid;
-
-    this.setupBoard();  // yes keep this order ;-)
-    // the board needs to be ready before we construct
-    // the window
+    this.setupBoard();
     this.refresh();
-
     return this;
   }
 
   public GridView setSectorSize(int size) {
     this.size = size;
-    if (this.board != null) {
+    if( this.board != null ) {
       this.board.setSectorSize(this.size);
     }
     return this;
@@ -83,45 +73,28 @@ public class SwingGridView extends JFrame implements GridView {
 
   public GridView refresh() {
     this.refreshSize();
-    boolean somethingChanged = false;
 
-    if (this.refreshSectors) {
-      this.board.clearSectors();
-      this.addSectors();
-      this.addWalls();
-      this.refreshSectors = false;
-      somethingChanged = true;
-    }
+    this.board.clearSectors();
+    this.addSectors();
+    this.addWalls();
 
-    if (this.refreshValues || this.refreshAgents) {
-      this.board.clearValues();
-      this.addValues();
-      this.refreshValues = false;
-      somethingChanged = true;
-    }
+    this.board.clearValues();
+    this.addValues();
 
-    if (this.refreshAgents || this.refreshBarcodes) {
-      this.board.clearAgents();
-      this.addAgents();
-      this.refreshAgents = false;
-      somethingChanged = true;
-    }
+    this.board.clearAgents();
+    this.addAgents();
 
-
-
-    if (somethingChanged) {
-      this.board.render();
-    }
+    this.board.render();
     return this;
   }
 
   private void addSectors() {
     int minLeft = this.grid.getMinLeft(),
-            minTop = this.grid.getMinTop();
+        minTop  = this.grid.getMinTop();
 
     // add sectors
     for (Sector sector : this.grid.getSectors()) {
-      this.board.addSector(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop);
+      this.board.addSector(this.grid.getPositionOf(sector).translate(-minLeft,-minTop));
     }
 
     this.board.addOrigin(-minLeft, -minTop);
@@ -129,30 +102,27 @@ public class SwingGridView extends JFrame implements GridView {
 
   private void addWalls() {
     int minLeft = this.grid.getMinLeft(),
-            minTop = this.grid.getMinTop();
+        minTop = this.grid.getMinTop();
 
     // add sectors
     for (Sector sector : this.grid.getSectors()) {
-      for (Bearing b : Bearing.NESW) {
-        if (!sector.knowsWall(b)){
-          this.board.addWall(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop,
-                  b, true);continue;
+      for (Bearing bearing : Bearing.NESW) {
+        if( ! sector.knowsWall(bearing) ) {
+          this.board.addUnknownWall(grid.getPositionOf(sector).translate(-minLeft, -minTop), bearing);
+        } else if( sector.hasWall(bearing) ) {
+          this.board.addWall(grid.getPositionOf(sector).translate(-minLeft, -minTop), bearing);
         }
-        if (!sector.hasWall(b))
-          continue;
-        this.board.addWall(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop,
-                b, false);
       }
     }
   }
 
   private void addValues() {
     int minLeft = this.grid.getMinLeft(),
-            minTop = this.grid.getMinTop();
+        minTop = this.grid.getMinTop();
 
     for (Sector sector : this.grid.getSectors()) {
-      this.board.addValue(grid.getPositionOf(sector).getX() - minLeft, grid.getPositionOf(sector).getY() - minTop,
-              sector.getValue());
+      Point position = grid.getPositionOf(sector).translate(-minLeft, -minTop);
+      this.board.addValue(position, sector.getValue());
     }
   }
 
@@ -165,45 +135,17 @@ public class SwingGridView extends JFrame implements GridView {
       Point position = this.grid.getPositionOf(agent);
       position.translate(-minLeft, -minTop);
       if( ! (agent instanceof BarcodeAgent) ) {
-        this.board.addAgent(position.getX(), position.getY(),
-                            grid.getBearingOf(agent), agent.getName(), c);
+        this.board.addAgent(position, grid.getBearingOf(agent), agent.getName(), c);
       } else {
-        this.board.addBarcode(position.getX(), position.getY(),
-                              grid.getBearingOf(agent), agent.getValue());
+        this.board.addBarcode(position, grid.getBearingOf(agent), agent.getValue());
       }
     }
   }
 
-  public GridView sectorsNeedRefresh() {
-    this.refreshSectors = true;
-    return this;
-  }
-
-  public GridView valuesNeedRefresh() {
-    this.refreshValues = true;
-    return this;
-  }
-
-  public GridView agentsNeedRefresh() {
-    this.refreshAgents = true;
-    return this;
-  }
-
-  public GridView barcodesNeedsRefresh() {
-    this.refreshBarcodes = true;
-    return this;
-  }
-
   private void refreshSize() {
     int newWidth = this.grid.getWidth(),
-            newHeight = this.grid.getHeight();
+        newHeight = this.grid.getHeight();
     if (newWidth != this.width || newHeight != this.height) {
-      // Force everything to redraw
-      sectorsNeedRefresh();
-      valuesNeedRefresh();
-      agentsNeedRefresh();
-      barcodesNeedsRefresh();
-
       final int width = Math.max(newWidth * this.board.getSectorSize() - 2, this.board.getSectorSize() * 5);
       // set our own size
       this.setSize(width,

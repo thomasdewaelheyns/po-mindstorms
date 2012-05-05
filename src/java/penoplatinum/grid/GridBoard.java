@@ -12,22 +12,27 @@ import java.awt.geom.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
-import penoplatinum.util.Bearing;
 
 import penoplatinum.util.Bearing;
+import penoplatinum.util.Position;
+import penoplatinum.util.Point;
+
 
 public class GridBoard extends JPanel {
-  
   private int width = 0, height = 0;
   private BufferedImage sectors, walls, values, agents, barcodes;
-  private Graphics2D sectorsG, wallsG, valuesG, agentsG, barcodesG; // TODO: improve name
+  private Graphics2D sectorsG, wallsG, valuesG, agentsG, barcodesG;
+
   // colors on the board
   public static final Color BLACK = new Color(0, 0, 0);
   public static final Color WHITE = new Color(255, 255, 255);
   public static final Color YELLOW = new Color(255, 255, 0);
   public static final Color BROWN = new Color(205, 165, 100);
+  
   private int sectorSize = 40;
+  
   private double ratio = 1.0;
+
   
   public GridBoard resizeTo(int width, int height) {
     this.width = width;
@@ -77,57 +82,56 @@ public class GridBoard extends JPanel {
     this.barcodesG = this.barcodes.createGraphics();
   }
   
-  public void addSector(int left, int top) {
+  public void addSector(Point position) {
     this.sectorsG.setColor(BLACK);
-    this.sectorsG.fill(new Rectangle(this.sectorSize * left,
-            this.sectorSize * top,
-            this.sectorSize, this.sectorSize));
+    this.sectorsG.fill(new Rectangle(this.sectorSize * position.getX(),
+                                     this.sectorSize * position.getY(),
+                                     this.sectorSize, this.sectorSize));
   }
   
-  public void addWall(int left, int top, Bearing location) {
-    addWall(left,top,location,false);
+  public void addWall(Point position, Bearing location) {
+    this.wallsG.setColor(Color.WHITE);
+    this.wallsG.fill(this.createWall(position, location));
   }
 
-  public void addWall(int left, int top, Bearing location , 
-  boolean unknown){
-  Rectangle r;
+  public void addUnknownWall(Point position, Bearing location) {
+    this.wallsG.setColor(Color.RED);
+    this.wallsG.fill(this.createWall(position, location));
+  }
+
+  private Rectangle createWall(Point position, Bearing location) {
     switch (location) {
-      case N:
-        r = new Rectangle(left * this.sectorSize, top * this.sectorSize - 3, this.sectorSize, 6);
-        break;
-      case W:
-        r = new Rectangle(left * this.sectorSize - 3, top * this.sectorSize, 6, this.sectorSize);
-        break;
-      case E:
-        r = new Rectangle((left + 1) * this.sectorSize - 6, top * this.sectorSize, 6, this.sectorSize);
-        break;
-      case S:
-        r = new Rectangle(left * this.sectorSize, (top + 1) * this.sectorSize - 6, this.sectorSize, 6);
-        break;
-      default:
-        r = new Rectangle(0, 0, 0, 0);
+      case N: return new Rectangle(position.getX() * this.sectorSize, 
+                                   position.getY() * this.sectorSize - 3,
+                                   this.sectorSize, 6);
+      case W: return new Rectangle(position.getX() * this.sectorSize - 3,
+                                   position.getY() * this.sectorSize,
+                                   6, this.sectorSize);
+      case E: return new Rectangle((position.getX() + 1) * this.sectorSize - 6,
+                                    position.getY() * this.sectorSize,
+                                    6, this.sectorSize);
+      case S: return new Rectangle(position.getX() * this.sectorSize,
+                                  (position.getY() + 1) * this.sectorSize - 6,
+                                  this.sectorSize, 6);
     }
-    if (unknown) {
-      this.wallsG.setColor(Color.RED);
-    } else {
-      this.wallsG.setColor(WHITE);
-      
-    }
-    this.wallsG.fill(r);
+    throw new RuntimeException( "Can't create wall at bearing = " + location );
   }
   
-  public void addValue(int left, int top, int value) {
+  public void addValue(Point position, int value) {
     if (value > 0) {
       Color color = this.mapToHeatColor(value);
       this.valuesG.setColor(color);
-      this.valuesG.fill(new Rectangle(this.sectorSize * left + 3, this.sectorSize * top + 3, this.sectorSize - 6, this.sectorSize - 6));
+      this.valuesG.fill(new Rectangle(this.sectorSize * position.getX() + 3, 
+                                      this.sectorSize * position.getY() + 3,
+                                      this.sectorSize - 6, this.sectorSize - 6));
     }
   }
   
-  public void addAgent(int left, int top, Bearing orientation, String name,
-          Color color) {
-    left *= this.sectorSize;
-    top *= this.sectorSize;
+  public void addAgent(Point position, Bearing orientation, String name,
+                       Color color)
+  {
+    int left = position.getX() * this.sectorSize,
+        top  = position.getY() * this.sectorSize;
     this.agentsG.setColor(color);
     
     Polygon triangle = new Polygon();
@@ -136,20 +140,11 @@ public class GridBoard extends JPanel {
     triangle.addPoint(left + 3, top + this.sectorSize - 3);
     double angle = 0;
     switch (orientation) {
-      case N:
-        angle = 0;
-        break;
-      case E:
-        angle = Math.PI / 2;
-        break;
-      case S:
-        angle = Math.PI;
-        break;
-      case W:
-        angle = Math.PI * (3 / 2);
-        break;
+      case N: angle = 0;                 break;
+      case E: angle = Math.PI / 2;       break;
+      case S: angle = Math.PI;           break;
+      case W: angle = Math.PI * (3 / 2); break;
     }
-    
     
     this.agentsG.rotate(angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
     this.agentsG.fillPolygon(triangle);
@@ -165,9 +160,9 @@ public class GridBoard extends JPanel {
     this.agentsG.drawString(name.substring(0, 1), left + this.sectorSize / 2 - w / 2, top + this.sectorSize - h / 2);
   }
   
-  public void addBarcode(int left, int top, Bearing orientation, int code) {
-    left *= this.sectorSize;
-    top *= this.sectorSize;
+  public void addBarcode(Point position, Bearing orientation, int code) {
+    int left = position.getX() * this.sectorSize,
+        top  = position.getY() * this.sectorSize;
     double angle = 0;
     
     switch (orientation) {
@@ -192,9 +187,6 @@ public class GridBoard extends JPanel {
     int h = fm.getHeight();
     this.agentsG.drawString(Integer.toString(code), left + this.sectorSize / 2 - w / 2, top + this.sectorSize - h / 2);
     this.agentsG.rotate(-1 * angle, left + this.sectorSize / 2, top + this.sectorSize / 2);
-    // add label
-
-    
   }
   
   private Color mapToHeatColor(int value) {

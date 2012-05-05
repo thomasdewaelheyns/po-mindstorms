@@ -61,7 +61,6 @@ public class GhostProtocolHandler implements ProtocolHandler {
   // accepts a string, parses it and dispatches it...
   @Override
   public void receive(String msg) {
-    System.out.println( "GhostProtocolHandler: receive("+msg+")" );
     // strip off the newline
     msg = msg.substring(0, msg.length() -1);
     Scanner scanner = new Scanner(msg);

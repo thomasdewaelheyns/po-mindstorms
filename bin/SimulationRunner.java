@@ -49,29 +49,32 @@ import penoplatinum.util.Point;
 public class SimulationRunner {
 
   // TODO move this to a properties-file
-  private final static String DEFAULT_ROBOT = "penoplatinum.pacman.GhostRobot";
-  private final static String DEFAULT_NAVIGATOR = "penoplatinum.pacman.GhostNavigator";
-  private final static String DEFAULT_DRIVER = "penoplatinum.driver.GhostDriver";
+  private final static String DEFAULT_ROBOT          = "penoplatinum.robot.GhostRobot";
+  private final static String DEFAULT_NAVIGATOR      = "penoplatinum.navigator.GhostNavigator";
+  private final static String DEFAULT_DRIVER         = "penoplatinum.driver.ManhattanDriver";
   private final static String DEFAULT_GATEWAY_CLIENT = "penoplatinum.simulator.SimulatedGatewayClient";
-  private final static String DEFAULT_REPORTER       = "penoplatinum.pacman.DashboardReporter";
+  private final static String DEFAULT_REPORTER       = "penoplatinum.reporter.DashboardReporter";
   private final static String DEFAULT_MAP            = "../../maps/wolfraam.txt";
   private final static String DEFAULT_START          = "0";
 
   private Simulator simulator;
+
   private String robotClassName;
   private String navigatorClassName;
   private String driverClassName;
   private String gatewayClientClassName;
   private String reporterClassName;
-  private Map<String, Robot> robots = new HashMap<String, Robot>();
-  private Map<String, Navigator> navigators = new HashMap<String, Navigator>();
-  private Map<String, Driver> drivers = new HashMap<String, Driver>();
-  private Map<String, GatewayClient> gatewayClients = new HashMap<String, GatewayClient>();
-  private Map<String, Reporter> reporters = new HashMap<String, Reporter>();
-  private Map<String, RobotAPI> robotAPIs = new HashMap<String, RobotAPI>();
-  private Map<String, RobotEntity> simulatedEntities = new HashMap<String, RobotEntity>();
+
+  private Map<String, Robot>         robots            = new HashMap<String, Robot>();
+  private Map<String, Navigator>     navigators        = new HashMap<String, Navigator>();
+  private Map<String, Driver>        drivers           = new HashMap<String, Driver>();
+  private Map<String, GatewayClient> gatewayClients    = new HashMap<String, GatewayClient>();
+  private Map<String, Reporter>      reporters         = new HashMap<String, Reporter>();
+  private Map<String, RobotAPI>      robotAPIs         = new HashMap<String, RobotAPI>();
+  private Map<String, RobotEntity>   simulatedEntities = new HashMap<String, RobotEntity>();
 
   private int start = 0;
+
 
   public SimulationRunner() {
     this.simulator = new Simulator();
@@ -261,7 +264,11 @@ public class SimulationRunner {
     simulatedEntity.putRobotAt(x * Sector.SIZE + Sector.SIZE / 2, y * Sector.SIZE + Sector.SIZE / 2, direction);
     this.simulatedEntities.put(name, simulatedEntity);
 
-    robot.useNavigator(navigator).useGatewayClient(gatewayClient).useDriver(driver).useReporter(reporter).getModel().getGridPart().displayGridOn(new SwingGridView());
+    robot.useNavigator(navigator)
+         .useGatewayClient(gatewayClient)
+         .useDriver(driver)
+         .useReporter(reporter)
+         .getModel().getGridPart().displayGridOn(new SwingGridView());
 
     this.simulator.addSimulatedEntity(simulatedEntity);
 

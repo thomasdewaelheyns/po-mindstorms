@@ -79,7 +79,8 @@ public class AggregatedSectorTest extends TestCase {
     return g;
   }
 
-  private AggregatedGrid mockAggregatedGrid(List<Grid> activeGrids) {
+  @SuppressWarnings("unchecked")
+  private AggregatedGrid mockAggregatedGrid(List activeGrids) {
     AggregatedGrid grid = mock(AggregatedGrid.class);
     when(grid.getActiveGrids()).thenReturn(activeGrids);
     return grid;

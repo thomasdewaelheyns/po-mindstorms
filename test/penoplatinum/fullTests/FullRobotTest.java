@@ -33,6 +33,8 @@ import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.SimulationView;
 import penoplatinum.simulator.view.SwingSimulationView;
 
+import penoplatinum.grid.SwingGridView;
+
 
 public class FullRobotTest extends TestCase {
   
@@ -75,6 +77,11 @@ public class FullRobotTest extends TestCase {
     SimulatedEntity entity = this.createSimulatedEntityFor(robot);
     entity.putRobotAt(x, y, b);
     simulator.addSimulatedEntity(entity);
+
+    SwingGridView gridView = new SwingGridView();
+    gridView.displayWithoutWindow(GridModelPart.from(robot.getModel()).getMyGrid());
+    ((SwingSimulationView) simulator.getView()).addGrid(gridView);
+
     return robot;
   }
   

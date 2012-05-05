@@ -51,7 +51,7 @@ public class GridModelPart implements ModelPart {
     this.grids = new MultiGhostGrid("mine");
     this.myGrid = this.grids.getGhostGrid("mine");
     Point position = new Point(0,0);
-    this.myGrid.add(new LinkedSector(), position);
+    // this.myGrid.add(new LinkedSector(), position);
     this.myAgent = new GhostAgent("mine");
     this.myGrid.add(this.myAgent, position, Bearing.N);
   }
@@ -69,7 +69,11 @@ public class GridModelPart implements ModelPart {
   }
   
   public Sector getMySector() {
-    return this.myGrid.getSectorAt(this.getMyPosition());
+    Sector sector  = this.myGrid.getSectorAt(this.getMyPosition());
+    if( sector == null ) {
+      throw new RuntimeException( "GridModelPart::getMySector: my current sector == null" );
+    }
+    return sector;
   }
 
   public Point getMyPosition(){

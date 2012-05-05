@@ -14,5 +14,4 @@ public interface SimulationView {
   public void showMap(Map map);
   public void addRobot(ViewRobot r);
   public void updateRobots();
-  public void log(String msg);
 }

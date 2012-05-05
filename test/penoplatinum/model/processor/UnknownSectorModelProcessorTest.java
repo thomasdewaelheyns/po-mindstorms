@@ -30,14 +30,13 @@ public class UnknownSectorModelProcessorTest extends TestCase {
     mockModel = mock(Model.class);
     when(mockModel.getPart(ModelPartRegistry.GRID_MODEL_PART)).thenReturn(mockGridPart);
     when(mockGridPart.getMyGrid()).thenReturn(mockGrid);
+    when(mockGridPart.getMySector()).thenReturn(mockCurrentSector);
     mockPosition = mock(Point.class);
     when(mockGrid.getSectorAt(mockPosition)).thenReturn(mockCurrentSector);
     when(mockGrid.getPositionOf(any(Agent.class))).thenReturn(mockPosition);
   }
 
-  /**
-   * Test of work method, of class UnknownSectorModelProcessor.
-   */
+  // Test of work method, of class UnknownSectorModelProcessor.
   @Test
   public void testWork() {
     UnknownSectorModelProcessor instance = new UnknownSectorModelProcessor();

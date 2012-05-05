@@ -52,20 +52,20 @@ gw:
 
 sim:
 	@echo "!!! not yet ;-)"
-	@#BUILD_DIR=build/$@
-	@#mkdir -p ${BUILD_DIR}
-	@#echo "*** compiling Simulator..."
-	@#${JAVAC} SimulationRunner.java
-	@#${JAVAC}	../src/java/penoplatinum/simulator/SimulatedGatewayClient.java
-	@#${JAVAC}	../src/java/penoplatinum/simulator/ColorLink.java
-	@#${JAVAC}	../src/java/penoplatinum/driver/ManhattanDriver.java
-	@#${JAVAC}	../src/java/penoplatinum/robot/GhostRobot.java
-	@#${JAVAC}	../src/java/penoplatinum/navigator/GhostNavigator.java
-	@#${JAVAC}	../src/java/penoplatinum/reporter/DashboardReporter.java
-	@#${JAVAC}	../src/java/penoplatinum/gateway/UpdatesJSAppender.class
-	@#cp -r ../src/java/penoplatinum/simulator/images ${BUILD_DIR}/penoplatinum/simulator/
-	@#echo "*** running Simulator..."
-	@#${JAVA} SimulationRunner ${ARGS}
+	@BUILD_DIR=build/$@
+	@mkdir -p ${BUILD_DIR}
+	@echo "*** compiling Simulator..."
+	@${JAVAC} SimulationRunner.java
+	@${JAVAC}	../src/java/penoplatinum/simulator/SimulatedGatewayClient.java
+	@${JAVAC}	../src/java/penoplatinum/simulator/ColorLink.java
+	@${JAVAC}	../src/java/penoplatinum/driver/ManhattanDriver.java
+	@${JAVAC}	../src/java/penoplatinum/robot/GhostRobot.java
+	@${JAVAC}	../src/java/penoplatinum/navigator/GhostNavigator.java
+	@${JAVAC}	../src/java/penoplatinum/reporter/DashboardReporter.java
+	@${JAVAC}	../src/java/penoplatinum/gateway/UpdatesJSAppender.class
+	@cp -r ../src/java/penoplatinum/simulator/images ${BUILD_DIR}/penoplatinum/simulator/
+	@echo "*** running Simulator..."
+	@${JAVA} SimulationRunner ${ARGS}
 
 %.class: src/java/%.java ${BUILD_DIR}
 	@${JAVAC} $<
