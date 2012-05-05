@@ -48,7 +48,7 @@ public class MapUtil {
       position += diff;
       double distY = position * map.getFirst().getSize() - startY;
       int hitX = (int) Math.round(x + TileGeometry.height(distY, angle - 270));
-      int hitY = (int) (y + position * map.getFirst().getSize() - startY);
+      int hitY = (int) Math.round(y + position * map.getFirst().getSize() - startY);
       int tileX = (int) (hitX / map.getFirst().getSize()) + 1;
       int tileY = (int) (hitY / map.getFirst().getSize()) + (diff == -1 ? 1 : 0);
 
@@ -86,7 +86,7 @@ public class MapUtil {
       position += diff;
       double distX = position * map.getFirst().getSize() - startX;
       int hitY = (int) Math.round(y - TileGeometry.height(distX, angle));
-      int hitX = (int) (x + position * map.getFirst().getSize() - startX);
+      int hitX = (int) Math.round(x + position * map.getFirst().getSize() - startX);
       int tileX = (hitX / map.getFirst().getSize()) + (diff == -1 ? 1 : 0);
       int tileY = (hitY / map.getFirst().getSize()) + 1;
 
