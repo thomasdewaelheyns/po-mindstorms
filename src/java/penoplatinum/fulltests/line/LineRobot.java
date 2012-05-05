@@ -116,7 +116,7 @@ public class LineRobot implements AdvancedRobot {
   }
 
   @Override
-  public Boolean reachedGoal() {
+  public boolean reachedGoal() {
     return state == -1;
   }
 

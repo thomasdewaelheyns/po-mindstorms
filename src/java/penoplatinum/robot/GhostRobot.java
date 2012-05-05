@@ -63,7 +63,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
 
   // a robot needs a name ... it should be unique :-)
   public GhostRobot(String name) {
-    this(name, new GhostModel());
+    this(name, new GhostModel(name));
   }
 
   private void setupModel(GhostModel model) {

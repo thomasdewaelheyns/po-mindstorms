@@ -74,7 +74,7 @@ public class GhostModelTest extends TestCase {
   }
   
 	private void createGhostModel() {
-	  this.model = new GhostModel();
+	  this.model = new GhostModel("mine");
   }
 
   private void mockModelProcessor() {

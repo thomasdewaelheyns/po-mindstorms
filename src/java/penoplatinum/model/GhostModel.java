@@ -35,13 +35,22 @@ public class GhostModel implements Model {
   // a reporter reports on a Model
   private Reporter reporter;
 
-  // setup the parts of the GhostModel
+  /**
+   * Dit is verwijderd aangezien deze de kleuren kapot doet.
+   * Gebruik vanaf nu altijd de naam van de robot om de grid mee op te stellen.
+   * Zie ook GridModelPart.
+   *
   public GhostModel() {
+    this("mine");
+  }/**/
+  
+  // setup the parts of the GhostModel
+  public GhostModel(String name) {
     this.sensorPart = new SensorModelPart();
     this.wallsPart = new WallsModelPart();
     this.barcodePart = new BarcodeModelPart();
     this.lightPart = new LightModelPart();
-    this.gridPart = new GridModelPart();
+    this.gridPart = new GridModelPart(name);
     this.sonarPart = new SonarModelPart();
     this.messagePart = new MessageModelPart();
   }

@@ -41,18 +41,26 @@ public class GridModelPart implements ModelPart {
 
   private MultiGhostGrid grids;
 
+  /**
+   * Dit is verwijderd aangezien deze de kleuren kapot doet.
+   * Gebruik vanaf nu altijd de naam van de robot om de grid mee op te stellen.
+   *
   public GridModelPart() {
-    this.setup();
+    this("mine");
+  }/**/
+  
+  public GridModelPart(String name) {
+    this.setup(name);
   }
 
   // we create the combined ghosts' grid
   // we keep a reference to our own grid and set up the first sector and agent
-  private void setup() {
-    this.grids = new MultiGhostGrid("mine");
-    this.myGrid = this.grids.getGhostGrid("mine");
+  private void setup(String name) {
+    this.grids = new MultiGhostGrid(name);
+    this.myGrid = this.grids.getGhostGrid(name);
     Point position = new Point(0,0);
     // this.myGrid.add(new LinkedSector(), position);
-    this.myAgent = new GhostAgent("mine");
+    this.myAgent = new GhostAgent(name);
     this.myGrid.add(this.myAgent, position, Bearing.N);
   }
 
@@ -160,8 +168,7 @@ public class GridModelPart implements ModelPart {
   public void clearChangedSectors() {
     this.changedSectors.clear();
   }
-  
-  
+
   public void setPacman(Point pos) {
     this.myGrid.moveTo(this.pacman, pos, Bearing.N);
     this.pacmanID++;
