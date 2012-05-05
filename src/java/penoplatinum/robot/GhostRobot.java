@@ -97,7 +97,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
   
   private void setupProtocolHandling() {
     MessageModelPart.from(this.model)
-      .setProtocolHandler(new GhostProtocolHandler()
+      .setProtocolHandler(new GhostProtocolHandler().setName(getName())
                             .useExternalEventHandler(this));
   }
 

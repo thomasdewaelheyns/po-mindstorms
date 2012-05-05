@@ -143,7 +143,7 @@ public class GridBoard extends JPanel {
       case N: angle = 0;                 break;
       case E: angle = Math.PI / 2;       break;
       case S: angle = Math.PI;           break;
-      case W: angle = Math.PI * (3 / 2); break;
+      case W: angle = (Math.PI * 3) / 2; break;
     }
     
     this.agentsG.rotate(angle, left + this.sectorSize / 2, top + this.sectorSize / 2);

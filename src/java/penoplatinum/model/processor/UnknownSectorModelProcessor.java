@@ -33,7 +33,7 @@ public class UnknownSectorModelProcessor extends ModelProcessor {
   public void work() {
     Model model = getModel();
     GridModelPart gridPart = GridModelPart.from(model);
-    if(prevPosition == gridPart.getMyPosition() && prevBearing == gridPart.getMyBearing()){
+    if(gridPart.getMyPosition().equals(prevPosition) && prevBearing == gridPart.getMyBearing()){
       return;
     }
     prevPosition = gridPart.getMyPosition();

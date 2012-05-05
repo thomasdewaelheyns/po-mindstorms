@@ -142,8 +142,8 @@ public class GhostProtocolHandler implements ProtocolHandler {
     this.sendDiscover(sector.getGrid().getPositionOf(sector),sector.knowsWall(Bearing.N),
                       sector.knowsWall(Bearing.E), sector.knowsWall(Bearing.S),
                       sector.knowsWall(Bearing.W),
-                      sector.hasWall(Bearing.N), sector.hasWall(Bearing.E),
-                      sector.hasWall(Bearing.S), sector.hasWall(Bearing.W));
+                      sector.givesAccessTo(Bearing.N), sector.givesAccessTo(Bearing.E),
+                      sector.givesAccessTo(Bearing.S), sector.givesAccessTo(Bearing.W));
     return this;
   }
 
@@ -170,8 +170,8 @@ public class GhostProtocolHandler implements ProtocolHandler {
       this.sendReDiscover(sec.getGrid().getPositionOf(sec), sec.knowsWall(Bearing.N),
                       sec.knowsWall(Bearing.E), sec.knowsWall(Bearing.S),
                       sec.knowsWall(Bearing.W),
-                      sec.hasWall(Bearing.N), sec.hasWall(Bearing.E),
-                      sec.hasWall(Bearing.S), sec.hasWall(Bearing.W));
+                      sec.givesAccessTo(Bearing.N), sec.givesAccessTo(Bearing.E),
+                      sec.givesAccessTo(Bearing.S), sec.givesAccessTo(Bearing.W));
       //TODO check voor barcode
     }
     return this;
