@@ -13,9 +13,9 @@ import penoplatinum.simulator.entities.SimulatedViewRobot;
 
 public class ColorLink {
 
-  static ArrayList<Color> colors;
-  static HashMap<String, Color> link = new HashMap<String, Color>();
-  static HashMap<Color, Image> files;
+  private static ArrayList<Color> colors;
+  private static HashMap<String, Color> link = new HashMap<String, Color>();
+  private static HashMap<Color, Image> files;
 
   static {
     colors = fillColors();
@@ -47,14 +47,15 @@ public class ColorLink {
     return temp;
   }
 
-  public static Color getColorByName(String name) {
-    if (link.get(name) == null) {
-      addName(name);
-    }
+  public synchronized static Color getColorByName(String name) {
+    addName(name);
     return link.get(name);
   }
 
-  public static void addName(String name) {
+  private synchronized static void addName(String name) {
+    if (link.get(name) != null) {
+      return;
+    }
     if (colors.isEmpty()) {
       link.put(name, Color.GRAY);
     } else {
