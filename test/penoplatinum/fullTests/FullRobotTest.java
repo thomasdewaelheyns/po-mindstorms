@@ -39,30 +39,28 @@ public class FullRobotTest extends TestCase {
   
   @Test
   public void testSimulator() {
-    Config.load("bin/robot.properties");
-    
-    // create the robot with all of its parts...
-    GhostRobot     robot     = this.createRobot();
-    Driver         driver    = this.createDriver();
-    Navigator      navigator = this.createNavigator();
-    GatewayClient  client    = this.createGatewayClient();
-    robot.useDriver(driver)
-         .useNavigator(navigator)
-         .useGatewayClient(client);
+    Config.load("test.properties");
 
-    // setup simulator and simulated entity for the robot
+    // setup simulator
     Simulator       simulator = this.createSimulator();    
-    SimulatedEntity entity    = this.createSimulatedEntityFor(robot);
-    entity.putRobotAt(20, 20, -90);
-    simulator.addSimulatedEntity(entity);
-    
-    // activate the robot
-    GridModelPart.from(robot.getModel()).getMyAgent().activate();
 
-    // run the simulator for 6000 steps
-    simulator.run(6000);
+    // add four ghosts ...
+    GhostRobot robot1 = this.createGhostRobot(simulator, 20, 20, -90);
+    GridModelPart.from(robot1.getModel()).getMyAgent().activate();
+
+    GhostRobot robot2 = this.createGhostRobot(simulator, 100, 20, -180);
+    GridModelPart.from(robot2.getModel()).getMyAgent().activate();
+
+    GhostRobot robot3 = this.createGhostRobot(simulator, 20, 100, 90);
+    GridModelPart.from(robot3.getModel()).getMyAgent().activate();
+
+    GhostRobot robot4 = this.createGhostRobot(simulator, 100, 100, 90);
+    GridModelPart.from(robot4.getModel()).getMyAgent().activate();
+
+    // run the simulator for 30000 steps
+    simulator.run(30000);
   }
-  
+
   private Simulator createSimulator() {
     Simulator simulator    = new Simulator();
     SimulationView simView = new SwingSimulationView();
@@ -71,16 +69,33 @@ public class FullRobotTest extends TestCase {
     return simulator;
   }
 
+  private GhostRobot createGhostRobot(Simulator simulator, int x, int y, int b) {
+    // create the robot with all of its parts...
+    GhostRobot      robot     = this.createRobot();
+    // setup simulator and simulated entity for the robot
+    SimulatedEntity entity    = this.createSimulatedEntityFor(robot);
+    entity.putRobotAt(x, y, b);
+    simulator.addSimulatedEntity(entity);
+    return robot;
+  }
+  
   private GhostRobot createRobot() {
-    return new GhostRobot( new LightModelProcessor(
-                           new FreeDistanceModelProcessor(
-                           new LineModelProcessor(
-                           new BarcodeModelProcessor(
-                           new InboxModelProcessor(
-                           new WallDetectionModelProcessor(
-                           new ImportWallsModelProcessor(
-                           new UnknownSectorModelProcessor(
-                          )))))))));
+    GhostRobot robot = new GhostRobot( new LightModelProcessor(
+                                       new FreeDistanceModelProcessor(
+                                       new LineModelProcessor(
+                                       new BarcodeModelProcessor(
+                                       new InboxModelProcessor(
+                                       new WallDetectionModelProcessor(
+                                       new ImportWallsModelProcessor(
+                                       new UnknownSectorModelProcessor(
+                                    )))))))));
+    Driver         driver    = this.createDriver();
+    Navigator      navigator = this.createNavigator();
+    GatewayClient  client    = this.createGatewayClient();
+    robot.useDriver(driver)
+         .useNavigator(navigator)
+         .useGatewayClient(client);
+    return robot;
   }
   
   private Driver createDriver() {
