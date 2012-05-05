@@ -1,8 +1,10 @@
 package penoplatinum.fullTests;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import junit.framework.TestCase;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
 import penoplatinum.Config;
 
@@ -34,38 +36,40 @@ import penoplatinum.simulator.view.SimulationView;
 import penoplatinum.simulator.view.SwingSimulationView;
 
 import penoplatinum.grid.SwingGridView;
+import penoplatinum.map.MapFactory;
+import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
 
 public class FullRobotTest extends TestCase {
   
   @Test
-  public void testSimulator() {
-    Config.load("test.properties");
+  public void testSimulator() throws FileNotFoundException {
+    Config.load("../../test/test.properties");
 
     // setup simulator
-    Simulator       simulator = this.createSimulator();    
+    Simulator       simulator = this.createSimulator(makeMap());    
 
     // add four ghosts ...
-    GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 20, 20, -90);
+    GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 220, 220, -90);
     GridModelPart.from(robot1.getModel()).getMyAgent().activate();
 
-    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 100, 20, -180);
+    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -180);
     GridModelPart.from(robot2.getModel()).getMyAgent().activate();
 
-    GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 20, 100, 90);
+    GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 20, 220, 0);
     GridModelPart.from(robot3.getModel()).getMyAgent().activate();
 
-    GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 100, 100, 90);
+    GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
     GridModelPart.from(robot4.getModel()).getMyAgent().activate();
 
     // run the simulator for 30000 steps
     simulator.run(30000);
   }
 
-  private Simulator createSimulator() {
+  private Simulator createSimulator(Map map) {
     Simulator simulator    = new Simulator();
     SimulationView simView = new SwingSimulationView();
-    simulator.useMap(this.makeSquareMap());
+    simulator.useMap(map);
     simulator.displayOn(simView);
     return simulator;
   }
@@ -99,9 +103,9 @@ public class FullRobotTest extends TestCase {
   private Driver createDriver() {
     return new ManhattanDriver(0.4)
 	    .addBehaviour(new FrontProximityDriverBehaviour())
-      .addBehaviour(new SideProximityDriverBehaviour())
-		  .addBehaviour(new BarcodeDriverBehaviour())
-		  .addBehaviour(new LineDriverBehaviour());
+            .addBehaviour(new SideProximityDriverBehaviour())
+            .addBehaviour(new BarcodeDriverBehaviour())
+            .addBehaviour(new LineDriverBehaviour());
   }
   
   private Navigator createNavigator() {
@@ -114,6 +118,12 @@ public class FullRobotTest extends TestCase {
   
   private SimulatedEntity createSimulatedEntityFor(GhostRobot robot) {
     return SimulatedEntityFactory.make(robot);
+  }
+  
+  private Map makeMap() throws FileNotFoundException{
+    MapFactory mapFac = new ProtocolMapFactory();
+    Scanner sc = new Scanner(new File("../../maps/wolfraam.txt"));
+    return mapFac.getMap(sc);
   }
   
   private Map makeSquareMap() {
