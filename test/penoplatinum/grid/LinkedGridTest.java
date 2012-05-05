@@ -2,7 +2,8 @@ package penoplatinum.grid;
 
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.*;
+import junit.framework.TestCase;
+import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 import penoplatinum.util.Bearing;
@@ -19,6 +20,7 @@ public class LinkedGridTest extends TestCase {
     super.setUp();
   }
 
+  @Test
   public void testAddSector() {
     Grid grid = new LinkedGrid();
 
@@ -32,6 +34,7 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  @Test
   public void testAddInvalidSector() {
 
     Grid grid = new LinkedGrid();
@@ -52,6 +55,7 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  @Test
   public void testAddSectorCreatePath() {
 
     Grid grid2Sector = new LinkedGrid();
@@ -67,6 +71,7 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  @Test
   public void testAddAgent() {
     Agent a = mockAgent();
 
@@ -84,6 +89,7 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  @Test
   public void testMoveTo() {
     Agent a = mockAgent();
 
@@ -111,6 +117,7 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  @Test
   public void testAgentsSamePosition() {
     Agent a = mockAgent();
     Agent subA = mockSubAgent();
@@ -133,6 +140,7 @@ public class LinkedGridTest extends TestCase {
     
   }
 
+  @Test
   public void testGetAgent() {
     Agent a1 = mockAgent("Steve");
     Agent a2 = mockAgent("Mike");
@@ -147,6 +155,7 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  @Test
   public void testGetSectors() {
     Grid g = new LinkedGrid();
 
@@ -178,6 +187,7 @@ public class LinkedGridTest extends TestCase {
       assertTrue(list.contains(a));
   }
 
+  @Test
   public void testGetAgents() {
     Grid g = new LinkedGrid();
 
@@ -192,23 +202,17 @@ public class LinkedGridTest extends TestCase {
     g.add(a2, points[1], Bearing.E);
     g.add(a3, points[2], Bearing.S);
 
-
     List<Agent> list = new ArrayList<Agent>();
-
-
     for (Agent a : g.getAgents()) {
       list.add(a);
     }
-
     assertEquals(agents.length, list.size());
-
-
-    for (Agent a : agents)
+    for (Agent a : agents){
       assertTrue(list.contains(a));
-
-
+    }
   }
 
+  @Test
   public void testMinMaxBounds() {
     Grid grid = new LinkedGrid();
 
@@ -241,6 +245,7 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  @Test
   public void testGetSize() {
     Grid grid = new LinkedGrid();
 
@@ -257,6 +262,29 @@ public class LinkedGridTest extends TestCase {
 
   }
 
+  @Test
+  public void testGetPositionOf(){
+    Grid g = new LinkedGrid();
+    Agent a1 = mock(Agent.class);
+    Point p1 = new Point(0, 0);
+    g.add(a1, p1, Bearing.N);
+    
+    Point p = g.getPositionOf(a1).translate(1, 1);
+    assertNotSame(p1, p);
+    assertEquals(new Point(0, 0), g.getPositionOf(a1));
+  }
+  
+    @Test
+  public void testGetPositionOfSector(){
+    Grid g = new LinkedGrid();
+    Sector a1 = new LinkedSector();
+    Point p1 = new Point(0, 0);
+    g.add(a1, p1);
+    
+    Point p = g.getPositionOf(a1).translate(1, 1);
+    assertNotSame(p1, p);
+    assertEquals(new Point(0, 0), g.getPositionOf(a1));
+  }
   //
   //
   //

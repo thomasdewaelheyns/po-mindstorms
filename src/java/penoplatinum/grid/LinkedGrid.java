@@ -130,7 +130,7 @@ public class LinkedGrid implements Grid {
   }
 
   public Point getPositionOf(Agent agent) {
-    return agentPositions.get(agent);
+    return agentPositions.get(agent).clone();
   }
 
   public Bearing getBearingOf(Agent agent) {
