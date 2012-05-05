@@ -25,7 +25,7 @@ public interface Robot {
   public void step();
 
   // indicates that the robot reached its goal and doesn't do anything anymore
-  public Boolean reachedGoal();
+  public boolean reachedGoal();
 
   // a method to stop the robot (immediately)
   public void stop();

@@ -16,7 +16,6 @@ import penoplatinum.map.Map;
 import penoplatinum.map.MapHashed;
 
 import penoplatinum.model.part.GridModelPart;
-import penoplatinum.model.processor.*;
 
 import penoplatinum.navigator.Navigator;
 import penoplatinum.navigator.GhostNavigator;
@@ -45,16 +44,16 @@ public class FullRobotTest extends TestCase {
     Simulator       simulator = this.createSimulator();    
 
     // add four ghosts ...
-    GhostRobot robot1 = this.createGhostRobot(simulator, 20, 20, -90);
+    GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 20, 20, -90);
     GridModelPart.from(robot1.getModel()).getMyAgent().activate();
 
-    GhostRobot robot2 = this.createGhostRobot(simulator, 100, 20, -180);
+    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 100, 20, -180);
     GridModelPart.from(robot2.getModel()).getMyAgent().activate();
 
-    GhostRobot robot3 = this.createGhostRobot(simulator, 20, 100, 90);
+    GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 20, 100, 90);
     GridModelPart.from(robot3.getModel()).getMyAgent().activate();
 
-    GhostRobot robot4 = this.createGhostRobot(simulator, 100, 100, 90);
+    GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 100, 100, 90);
     GridModelPart.from(robot4.getModel()).getMyAgent().activate();
 
     // run the simulator for 30000 steps
@@ -69,29 +68,21 @@ public class FullRobotTest extends TestCase {
     return simulator;
   }
 
-  private GhostRobot createGhostRobot(Simulator simulator, int x, int y, int b) {
+  private GhostRobot createGhostRobot(String name, Simulator simulator, int x, int y, int b) {
     // create the robot with all of its parts...
-    GhostRobot      robot     = this.createRobot();
+    GhostRobot robot = this.createRobot(name);
     // setup simulator and simulated entity for the robot
-    SimulatedEntity entity    = this.createSimulatedEntityFor(robot);
+    SimulatedEntity entity = this.createSimulatedEntityFor(robot);
     entity.putRobotAt(x, y, b);
     simulator.addSimulatedEntity(entity);
     return robot;
   }
   
-  private GhostRobot createRobot() {
-    GhostRobot robot = new GhostRobot( new LightModelProcessor(
-                                       new FreeDistanceModelProcessor(
-                                       new LineModelProcessor(
-                                       new BarcodeModelProcessor(
-                                       new InboxModelProcessor(
-                                       new WallDetectionModelProcessor(
-                                       new ImportWallsModelProcessor(
-                                       new UnknownSectorModelProcessor(
-                                    )))))))));
-    Driver         driver    = this.createDriver();
-    Navigator      navigator = this.createNavigator();
-    GatewayClient  client    = this.createGatewayClient();
+  private GhostRobot createRobot(String name) {
+    GhostRobot    robot     = new GhostRobot(name);
+    Driver        driver    = this.createDriver();
+    Navigator     navigator = this.createNavigator();
+    GatewayClient client    = this.createGatewayClient();
     robot.useDriver(driver)
          .useNavigator(navigator)
          .useGatewayClient(client);

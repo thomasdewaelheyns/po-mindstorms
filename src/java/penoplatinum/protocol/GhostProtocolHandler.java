@@ -29,8 +29,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
   // indicates if we've successfully joined
   private boolean joined = false;
   private final String protocolVersion = "2.1";
-  private static final String baseName = "Platinum";
-  private final String name = GhostProtocolHandler.generateName();
+  private String name;
 
   // the client we're using to communicate with the gateway
   private GatewayClient client;
@@ -47,6 +46,11 @@ public class GhostProtocolHandler implements ProtocolHandler {
     commandCounter = 0;
   }
   
+  public GhostProtocolHandler setName(String name) {
+    this.name = name;
+    return this;
+  }
+  
   
   /*
    ********************
@@ -57,6 +61,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
   // accepts a string, parses it and dispatches it...
   @Override
   public void receive(String msg) {
+    System.out.println( "GhostProtocolHandler: receive("+msg+")" );
     // strip off the newline
     msg = msg.substring(0, msg.length() -1);
     Scanner scanner = new Scanner(msg);
@@ -513,10 +518,6 @@ public class GhostProtocolHandler implements ProtocolHandler {
     if(names.get(agentName) == null)
       return false;
     return true;
-  }
-  
-  private static String generateName(){
-    return baseName+System.currentTimeMillis();
   }
   
   private void checkRenamingFinished(){

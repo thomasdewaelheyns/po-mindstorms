@@ -1,194 +1,214 @@
 package penoplatinum.robot;
 
+/**
+ * GhostRobot
+ *
+ * Top-level aggregating and delegating implementation of THE ROBOT
+ *
+ * @author Team Platinum
+ */
+
+import java.text.NumberFormat;
+
 import penoplatinum.Config;
+
 import penoplatinum.driver.Driver;
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.model.GhostModel;
+
+import penoplatinum.grid.Grid;
+import penoplatinum.grid.Sector;
+import penoplatinum.grid.LinkedSector;
+import penoplatinum.grid.agent.Agent;
+import penoplatinum.grid.agent.BarcodeAgent;
+
 import penoplatinum.model.Model;
+import penoplatinum.model.GhostModel;
 import penoplatinum.model.part.GridModelPart;
 import penoplatinum.model.part.MessageModelPart;
 import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.model.part.SonarModelPart;
-import penoplatinum.model.processor.ModelProcessor;
+import penoplatinum.model.processor.*;
+
 import penoplatinum.navigator.Navigator;
+
 import penoplatinum.protocol.ExternalEventHandler;
 import penoplatinum.protocol.GhostProtocolHandler;
+
 import penoplatinum.reporter.Reporter;
 
-public class GhostRobot implements AdvancedRobot {
+import penoplatinum.util.Point;
+import penoplatinum.util.Bearing;
 
-  /*
-   * RobotParts
-   */
-  private Model model = new GhostModel();
-  private RobotAPI robotAPI;
-  private Driver driver;
-  private Navigator navigator;
-  private GatewayClient gatewayClient;
-  private ExternalEventHandler handler;
-  private Reporter reporter;
+
+public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
+
+  private Model                model;
+  private RobotAPI             robotAPI;
+  private Driver               driver;
+  private Navigator            navigator;
+  private GatewayClient        gatewayClient;
+  private Reporter             reporter;
   
-  /*
-   * Local variables
-   */
-  private float originalTurnedAngle;
-  private int sweepID = 0;
+  private String name;
+
+  private int   sweepID = 0;
   private int[] angles = {-90, 0, 90};
 
-  public GhostRobot(ModelProcessor procs) {
-    this.model.setProcessor(procs);
-    this.handler = new GhostEventHandler(this);
-    MessageModelPart.from(model).setProtocolHandler(new GhostProtocolHandler(){
-      public void receive(String message){
-        System.out.println(message);
-        super.receive(message);
-      }
-    });
-    MessageModelPart.from(this.model).getProtocolHandler().useExternalEventHandler(handler);
+  // overloaded constructor to allow providing a model
+  public GhostRobot(String name, GhostModel model) {
+    this.setupName(name);
+    this.setupModel(model);
+    this.setupProtocolHandling();
   }
 
-  private void linkComponents() {
-    if (this.driver != null) {
-      this.driver.drive(this);
-    }
-    if (this.navigator != null) {
-      this.navigator.useModel(model);
-      if(MessageModelPart.from(this.model).getProtocolHandler() != null){
-        MessageModelPart.from(this.model).getProtocolHandler().useGatewayClient(gatewayClient);
-      }
-    }
-    if (this.gatewayClient != null) {
-      this.gatewayClient.setRobot(this);
-    }
-    if (this.reporter != null && this.gatewayClient != null) {
-      this.reporter.useGatewayClient(this.gatewayClient);
-    }
+  // a robot needs a name ... it should be unique :-)
+  public GhostRobot(String name) {
+    this(name, new GhostModel());
   }
 
-  @Override
+  private void setupModel(GhostModel model) {
+    this.model = model;
+    this.model.setProcessor( new LightModelProcessor(
+                             new FreeDistanceModelProcessor(
+                             new LineModelProcessor(
+                             new BarcodeModelProcessor(
+                             new InboxModelProcessor(
+                             new WallDetectionModelProcessor(
+                             new ImportWallsModelProcessor(
+                             new UnknownSectorModelProcessor(
+                           )))))))));
+    // TODO:
+
+    // BarcodeWallsModelProcessor
+    // ChangesModelProcessor
+    // IRModelProcessor
+    // MergeGridModelProcessor
+  }
+  
+  private void setupName(String name) {
+    this.name = name;
+  }
+
+  public Model getModel() {
+    return this.model;
+  }
+
+  
+  private void setupProtocolHandling() {
+    MessageModelPart.from(this.model)
+      .setProtocolHandler(new GhostProtocolHandler()
+                            .useExternalEventHandler(this));
+  }
+
   public GhostRobot useRobotAPI(RobotAPI api) {
     this.robotAPI = api;
-    //initialReference = this.api.getRelativeAngle(0);
     this.robotAPI.setSpeed(Config.M3, Config.MOTOR_SPEED_SONAR);
     this.robotAPI.setSpeed(Config.M2, Config.MOTOR_SPEED_MOVE);
     this.robotAPI.setSpeed(Config.M1, Config.MOTOR_SPEED_MOVE);
-    originalTurnedAngle = this.robotAPI.getRelativeAngle(0);
     return this;
   }
 
-  @Override
   public RobotAPI getRobotAPI() {
     return this.robotAPI;
   }
 
-  @Override
   public GhostRobot useDriver(Driver driver) {
     this.driver = driver;
-    linkComponents();
+    if( this.driver != null ) {
+      this.driver.drive(this);
+    }
     return this;
   }
 
-  @Override
   public Driver getDriver() {
     return this.driver;
   }
 
-  @Override
   public GhostRobot useNavigator(Navigator navigator) {
     this.navigator = navigator;
-    linkComponents();
+    if( this.navigator != null ) {
+      this.navigator.useModel(this.model);
+    }
     return this;
   }
 
-  @Override
   public Navigator getNavigator() {
     return this.navigator;
   }
 
-  @Override
   public GhostRobot useGatewayClient(GatewayClient gatewayClient) {
     this.gatewayClient = gatewayClient;
-    linkComponents();
+    if( this.gatewayClient != null ) {
+      this.gatewayClient.setRobot(this);
+      MessageModelPart.from(this.model)
+        .getProtocolHandler().useGatewayClient(this.gatewayClient);
+      if( this.reporter != null ) {
+        this.reporter.useGatewayClient(this.gatewayClient);
+      }
+    }
     return this;
   }
 
-  @Override
   public GatewayClient getGatewayClient() {
     return this.gatewayClient;
   }
 
-  @Override
   public GhostRobot useReporter(Reporter reporter) {
     this.reporter = reporter;
-    linkComponents();
+    if( this.reporter != null && this.gatewayClient != null ) {
+      this.reporter.useGatewayClient(this.gatewayClient);
+    }
     return this;
   }
 
-  @Override
-  public Model getModel() {
-    return model;
-  }
-
-  @Override
+  // this method is used by the GateWayClient that has a reference to the
+  // robot ... this should of course have been merged with the External-
+  // EventHandling :-( too bad
   public void processCommand(String cmd) {
     MessageModelPart.from(this.model).addIncomingMessage(cmd);
   }
 
   private void sendMessages() {
-    if (this.gatewayClient == null) {
-      return;
-    }
-    for (String msg : MessageModelPart.from(this.model).getOutgoingMessages()) {
+    if( this.gatewayClient == null ) { return; }
+    for( String msg : MessageModelPart.from(this.model).getOutgoingMessages()) {
       this.gatewayClient.send(msg, Config.BT_GHOST_PROTOCOL);
     }
   }
 
-  @Override
   public String getName() {
-    return MessageModelPart.from(this.model).getProtocolHandler().getName();
+    return this.name;
   }
 
-  @Override
-  public Boolean reachedGoal() {
-    return false;
-  }
+  public boolean reachedGoal() { return false; }
 
-  @Override
   public void stop() {
     this.robotAPI.stop();
-    //GridModelPart.from(model).getMyAgent().deactivate();
   }
 
-  @Override
+  // we are ...
+  // 1) inactive
+  // 2) still driving
+  // 3) in the center of a tile
   public void step() {
-    if (initStep()) {       //get sensor and read bluetooth
-      return;
-    }
-    if (driver.isBusy()) {  //driver
-      driver.proceed();
-      return;
-    }
-    if (inCenterOfTile()) { //get new driveraction
-      return;
-    }
+    if( ! this.isActive() ) { this.model.refresh();  return; }
+    this.updateSensors();
+    if( driver.isBusy() )   { this.driver.proceed(); return; }
+    
+    this.inCenterOfTile();
+  }
+  
+  private boolean isActive() {
+    return GridModelPart.from(this.model).getMyAgent().isActive();  
   }
 
-  /**
-   * What to do every step.
-   * Abort when not activated
-   * @return true is not yet activated.
-   */
-  private boolean initStep() {
-    if (!GridModelPart.from(this.model).getMyAgent().isActive()) {
-      // wait until we're active
-      this.model.refresh();                                       // but we need to process incoming messages
-      return true;
-    }
-    // poll other sensors and update model
-    SensorModelPart.from(this.model).updateSensorValues(this.robotAPI.getSensorValues());
-    SensorModelPart.from(this.model).setTotalTurnedAngle(this.robotAPI.getRelativeAngle(originalTurnedAngle));
+  private void updateSensors() {
+    // poll other sensors...
+    SensorModelPart.from(this.model)
+      .updateSensorValues(this.robotAPI.getSensorValues());
+    SensorModelPart.from(this.model)
+      .setTotalTurnedAngle(this.robotAPI.getRelativeAngle(0));
+    // and update model      
     this.model.refresh();
-    return false;
   }
 
   /**
@@ -198,43 +218,125 @@ public class GhostRobot implements AdvancedRobot {
    * 3) Send updates
    * @return true when aborting
    */
-  private boolean inCenterOfTile() {
-    if (makeSweep()) {
-      return true;
-    }
-    navigator.finish(driver);
+  private void inCenterOfTile() {
+    if( ! this.newSweepIsReady() ) { return; }
+
+    this.navigator.finish(driver);
     
-    SonarModelPart.from(this.model).update(this.robotAPI.getSweepResult(), this.angles);
+    SonarModelPart.from(this.model)
+      .update(this.robotAPI.getSweepResult(), this.angles);
+
     this.sweepID = this.robotAPI.getSweepID();
     this.model.refresh(); // TODO: double call
     
-    navigator.instruct(driver);
-    sendMessages();
-    if (this.reporter != null) {
-      this.reporter.reportModelUpdate();
-    }
-    System.gc();
-    return false;
-  }
+    GridModelPart.from(this.model).showGrid(); // this is for debugging only
+    
+    this.navigator.instruct(driver);
+    this.sendMessages();
 
+    if( this.reporter != null ) { this.reporter.reportModelUpdate(); }
+
+    this.manageMemory();
+  }
+  
   /**
    * Only continues when a new sweep is available.
    * Otherwise make a new sweep, or wait.
    * @return true, if waiting
    *          false, when a new sweep is available
    */
-  private boolean makeSweep() {
+  private boolean newSweepIsReady() {
     // we want obstacle-information based on Sonar-values
     // as long as this is in progress, we wait
-    if (this.robotAPI.isSweeping()) {
-      return true;
+    if( this.robotAPI.isSweeping() ) { return false; }
+
+    // if we already know this sweep and we're not sweeping, we need to start
+    // sweeping.
+    if( this.robotAPI.getSweepID() <= this.sweepID ) {
+      this.robotAPI.sweep(this.angles);
+      return false;
     }
 
-    // if the sweep is ready ...
-    if (this.robotAPI.getSweepID() <= this.sweepID) {
-      this.robotAPI.sweep(this.angles);
-      return true;
-    }
-    return false;
+    // new sweep is ready ...
+    return true;
   }
+
+  private void manageMemory() {
+    System.gc(); System.gc(); System.gc(); System.gc();
+
+    Runtime       runtime = Runtime.getRuntime();
+    NumberFormat  format  = NumberFormat.getInstance();
+    StringBuilder sb      = new StringBuilder();
+    long maxMemory        = runtime.maxMemory(),
+         allocatedMemory  = runtime.totalMemory(),
+         freeMemory       = runtime.freeMemory();
+
+    sb.append("memory free      : " + format.format(freeMemory / 1024) + "\n");
+    sb.append("       allocated : " + format.format(allocatedMemory / 1024) + "\n");
+    sb.append("       max       : " + format.format(maxMemory / 1024) + "\n");
+    sb.append("       total free: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + "\n");
+    
+    System.out.println(sb);
+  }
+  
+  // ExternalEventHandler
+  
+  public void handleActivation() {
+    GridModelPart.from(this.model).getMyAgent().activate();
+  }
+
+  public void handleSectorInfo(String agentName, Point position, boolean knowsN, boolean n, boolean knowsE, boolean e, boolean knowsS, boolean s, boolean knowsW, boolean w) {
+    GridModelPart gridModel = GridModelPart.from(this.model);
+    Grid g = gridModel.getGridOf(agentName);
+    Sector sec = g.getSectorAt(position);
+    if(sec == null){
+      sec = new LinkedSector();
+      g.add(sec, position);
+    }
+    
+    if(knowsN){
+      if(n){ sec.setWall(Bearing.N); } else{ sec.setNoWall(Bearing.N); }
+    }
+    if(knowsE){
+      if(e){ sec.setWall(Bearing.E); } else{ sec.setNoWall(Bearing.E); }
+    }
+    if(knowsS){
+      if(s){ sec.setWall(Bearing.S); } else{ sec.setNoWall(Bearing.S); }
+    }
+    if(knowsW){
+      if(w){ sec.setWall(Bearing.W); } else{ sec.setNoWall(Bearing.W); }
+    }
+  }
+
+  public void handleNewAgent(String agentName) {
+    GridModelPart gridModel = GridModelPart.from(this.model);
+    gridModel.getGridOf(agentName);
+  }
+
+  public void handleAgentInfo(String agentName, Point position, int value, Bearing bearing) {
+    GridModelPart gridModel = GridModelPart.from(this.model);
+    Grid g = gridModel.getGridOf(agentName);
+    Sector sec = g.getSectorAt(position);
+    if(sec == null){
+      sec = new LinkedSector();
+      g.add(sec, position);
+    }
+    if(value == 0){
+      Agent agent = g.getAgent(agentName);
+      g.moveTo(agent, position, bearing);
+    }
+    else{
+      BarcodeAgent barcode = BarcodeAgent.getBarcodeAgent(value);
+      g.add(barcode, position, bearing);
+    }
+  }
+
+  public void handleTargetInfo(String agentName, Point position) {
+    GridModelPart gridModel = GridModelPart.from(this.model);
+    gridModel.setPacman(position);
+  }
+
+  public void handleSendGridInformation() {}
+  public void handleCaptured(String agentName) {}
+  public void handleRemoveAgent(String agentName) {}
 }
