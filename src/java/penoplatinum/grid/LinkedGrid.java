@@ -130,6 +130,9 @@ public class LinkedGrid implements Grid {
   }
 
   public Point getPositionOf(Agent agent) {
+    if(agentPositions.get(agent) == null){
+      return null;
+    }
     return agentPositions.get(agent).clone();
   }
 
