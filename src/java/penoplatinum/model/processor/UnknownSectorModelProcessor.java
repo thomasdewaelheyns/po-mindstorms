@@ -13,6 +13,8 @@ import penoplatinum.grid.Sector;
 import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
 import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
+import penoplatinum.util.Position;
 
 public class UnknownSectorModelProcessor extends ModelProcessor {
 
@@ -23,14 +25,19 @@ public class UnknownSectorModelProcessor extends ModelProcessor {
   public UnknownSectorModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
+  
+  private Point prevPosition;
+  private Bearing prevBearing;
 
   @Override
   public void work() {
     Model model = getModel();
     GridModelPart gridPart = GridModelPart.from(model);
-    if (!gridPart.hasChangedSectors()) {
+    if(prevPosition == gridPart.getMyPosition() && prevBearing == gridPart.getMyBearing()){
       return;
     }
+    prevPosition = gridPart.getMyPosition();
+    prevBearing = gridPart.getMyBearing();
     this.addNewSectors();
   }
 
@@ -44,7 +51,11 @@ public class UnknownSectorModelProcessor extends ModelProcessor {
       if( current.givesAccessTo(bearing) && ! current.hasNeighbour(bearing) ) {
         Sector neighbour = new LinkedSector();
         neighbour.setValue(5000);
-        current.addNeighbour(neighbour, bearing);
+        System.out.println("Adding wall: "+bearing);
+        Point p = gridPart.getMyPosition();
+        int left = Position.moveLeft(bearing, p.getX());
+        int top = Position.moveTop(bearing, p.getY());
+        gridPart.getMyGrid().add(neighbour, new Point(left, top));
       }
     }
   }

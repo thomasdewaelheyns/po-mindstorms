@@ -76,7 +76,8 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
                              new WallDetectionModelProcessor(
                              new ImportWallsModelProcessor(
                              new UnknownSectorModelProcessor(
-                           )))))))));
+                             new ChangesModelProcessor(
+                                     ))))))))));
     // TODO:
 
     // BarcodeWallsModelProcessor
