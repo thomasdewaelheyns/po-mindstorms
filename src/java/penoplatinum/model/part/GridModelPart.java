@@ -103,7 +103,8 @@ public class GridModelPart implements ModelPart {
   }
   
   private void applyDiffusion() {
-    Grid diffuseGrid = this.myGrid;
+    Grid diffuseGrid = this.grids;
+    //Grid diffuseGrid = this.myGrid;
     
     int minLeft = diffuseGrid.getMinLeft(), maxLeft = diffuseGrid.getMaxLeft(),
         minTop = diffuseGrid.getMinTop(), maxTop = diffuseGrid.getMaxTop();
