@@ -61,19 +61,16 @@ public class BarcodeModelProcessor extends ModelProcessor {
      if( this.isWaiting ) {
       // BLACK marks the beginning of a new barcode
       if( this.sensors.getCurrentLightColor() == LightColor.BLACK ) {
-        System.out.println("Hey, it may be a barcode, I should pay attention!");
         this.startReading();
       }
     } else { // we're reading...
       // turning makes the barcodereading corrupted, discard it
       // reading too much interference also discards the reading
        if (this.robot.isTurning() ) {
-        System.out.println("Stupid driver, now I don't know the barcode :(");
         this.discardReading();
         wasCorrupt = true;
         
        } else if( this.readInterference()){
-         System.out.println("Whoa, what happened, I confuzzled!");
         this.discardReading();
         isWaiting = true;
         wasCorrupt = false;
@@ -117,7 +114,6 @@ public class BarcodeModelProcessor extends ModelProcessor {
   }
   
   private void stopReading() {
-    System.out.println("The barcode ended, now to translate...");
     this.barcodePart.finishReading();
     System.out.println("It was: "+this.barcodePart.getLastBarcodeValue());
     System.out.println("Without border: "+this.barcodePart.getLastBarcodeValue()/2);

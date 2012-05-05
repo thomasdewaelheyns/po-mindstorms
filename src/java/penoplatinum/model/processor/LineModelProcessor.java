@@ -59,7 +59,6 @@ public class LineModelProcessor extends ModelProcessor {
         break;
       case WAITING:
         if( currentColor == LightColor.WHITE) {
-          System.out.println("OOH, I hope it's a line!!");
           this.state = RECORDING;
           this.brownCounter = 0;
           this.colorCounter = 0;
@@ -77,7 +76,6 @@ public class LineModelProcessor extends ModelProcessor {
           }
         } else {
           if( currentColor != LightColor.WHITE) {
-            System.out.println("BOho, It's a barcode, I can't read yet.");
             this.state = END_CORRUPTED;
             break;
           }
