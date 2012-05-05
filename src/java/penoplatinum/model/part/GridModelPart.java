@@ -15,6 +15,7 @@ import penoplatinum.model.Model;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.MultiGhostGrid;
 import penoplatinum.grid.Agent;
+import penoplatinum.grid.AggregatedGrid;
 import penoplatinum.grid.GhostAgent;
 import penoplatinum.grid.PacmanAgent;
 import penoplatinum.grid.Sector;
@@ -58,6 +59,8 @@ public class GridModelPart implements ModelPart {
   private void setup(String name) {
     this.grids = new MultiGhostGrid(name);
     this.myGrid = this.grids.getGhostGrid(name);
+    AggregatedGrid aggGrid = new AggregatedGrid();
+    this.grids.useAggregatedGrid(aggGrid);
     Point position = new Point(0,0);
     // this.myGrid.add(new LinkedSector(), position);
     this.myAgent = new GhostAgent(name);
@@ -100,20 +103,22 @@ public class GridModelPart implements ModelPart {
   }
   
   private void applyDiffusion() {
-    int minLeft = this.myGrid.getMinLeft(), maxLeft = this.myGrid.getMaxLeft(),
-        minTop = this.myGrid.getMinTop(), maxTop = this.myGrid.getMaxTop();
+    Grid diffuseGrid = this.myGrid;
+    
+    int minLeft = diffuseGrid.getMinLeft(), maxLeft = diffuseGrid.getMaxLeft(),
+        minTop = diffuseGrid.getMinTop(), maxTop = diffuseGrid.getMaxTop();
 
-    for(Sector sector : this.myGrid.getSectors()) {
+    for(Sector sector : diffuseGrid.getSectors()) {
       int total = 0;
       int count = 0;
       
-      Point position = this.myGrid.getPositionOf(sector);
+      Point position = diffuseGrid.getPositionOf(sector);
       
       // a hunting agent resets the value of its sector
-      if( this.myGrid.getAgentAt(position, PacmanAgent.class) != null ) {
+      if( diffuseGrid.getAgentAt(position, PacmanAgent.class) != null ) {
         total = 10000;
         count = 1;
-      } else if( this.myGrid.getAgentAt(position, GhostAgent.class) != null) {
+      } else if( diffuseGrid.getAgentAt(position, GhostAgent.class) != null) {
         // a ghost blocks all diffusion
       } else if( ! sector.isFullyKnown() ) {
         // unknown sectors are "interesting"
@@ -169,8 +174,12 @@ public class GridModelPart implements ModelPart {
     this.changedSectors.clear();
   }
 
-  public void setPacman(Point pos) {
-    this.myGrid.moveTo(this.pacman, pos, Bearing.N);
+  public void setPacman(Grid g, Point pos) {
+    if(this.pacman == null){
+      g.add(this.pacman, pos, Bearing.N);
+    } else {
+      g.moveTo(this.pacman, pos, Bearing.N);
+    }
     this.pacmanID++;
   }
   
@@ -180,5 +189,9 @@ public class GridModelPart implements ModelPart {
   
   public PacmanAgent getPacmanAgent(){
     return this.pacman;
+  }
+
+  public Grid getFullGrid() {
+    return this.grids;
   }
 }

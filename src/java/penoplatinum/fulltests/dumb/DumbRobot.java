@@ -44,7 +44,7 @@ public class DumbRobot implements Robot {
   }
 
   @Override
-  public Boolean reachedGoal() {
+  public boolean reachedGoal() {
     return state == -1;
   }
 

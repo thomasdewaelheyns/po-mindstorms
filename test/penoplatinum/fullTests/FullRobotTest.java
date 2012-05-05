@@ -41,6 +41,29 @@ import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
 
 public class FullRobotTest extends TestCase {
+  @Test
+  public void testMerge() throws FileNotFoundException {
+    Config.load("../../test/test.properties");
+
+    // setup simulator
+    Simulator       simulator = this.createSimulator(makeLongMap());    
+
+    // add four ghosts ...
+    GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 260, 20, -90);
+    //GridModelPart.from(robot1.getModel()).getMyAgent().activate();
+
+    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 20, 20, 90);
+    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
+    // add four ghosts ...
+    GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 260, 60, -90);
+    //GridModelPart.from(robot1.getModel()).getMyAgent().activate();
+
+    GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 20, 60, -90);
+    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
+
+    // run the simulator for 30000 steps
+    simulator.run(30000);
+  }
   
   @Test
   public void testSimulator() throws FileNotFoundException {
@@ -50,17 +73,17 @@ public class FullRobotTest extends TestCase {
     Simulator       simulator = this.createSimulator(makeMap());    
 
     // add four ghosts ...
-    GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 220, 220, -90);
-    GridModelPart.from(robot1.getModel()).getMyAgent().activate();
+    GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 220, 220, -180);
+    //GridModelPart.from(robot1.getModel()).getMyAgent().activate();
 
-    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -180);
-    GridModelPart.from(robot2.getModel()).getMyAgent().activate();
+    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -90);
+    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
 
     GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 20, 220, 0);
-    GridModelPart.from(robot3.getModel()).getMyAgent().activate();
+    //GridModelPart.from(robot3.getModel()).getMyAgent().activate();
 
     GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
-    GridModelPart.from(robot4.getModel()).getMyAgent().activate();
+    //GridModelPart.from(robot4.getModel()).getMyAgent().activate();
 
     // run the simulator for 30000 steps
     simulator.run(30000);
@@ -83,7 +106,7 @@ public class FullRobotTest extends TestCase {
     simulator.addSimulatedEntity(entity);
 
     SwingGridView gridView = new SwingGridView();
-    gridView.displayWithoutWindow(GridModelPart.from(robot.getModel()).getMyGrid());
+    gridView.displayWithoutWindow(GridModelPart.from(robot.getModel()).getFullGrid());
     ((SwingSimulationView) simulator.getView()).addGrid(gridView);
 
     return robot;
@@ -124,6 +147,86 @@ public class FullRobotTest extends TestCase {
     MapFactory mapFac = new ProtocolMapFactory();
     Scanner sc = new Scanner(new File("../../maps/wolfraam.txt"));
     return mapFac.getMap(sc);
+  }
+  
+  private Map makeLongMap(){
+    MapHashed out = new MapHashed();
+    Sector s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    s1.addWall(3);
+    out.put(s1, 1, 1);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    out.put(s1, 2, 1);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    out.put(s1, 3, 1);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    s1.addBarcode(15, 3);
+    out.put(s1, 4, 1);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    out.put(s1, 5, 1);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    out.put(s1, 6, 1);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    s1.addWall(1);
+    out.put(s1, 7, 1);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    s1.addWall(3);
+    out.put(s1, 1, 2);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    out.put(s1, 2, 2);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    out.put(s1, 3, 2);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    s1.addBarcode(14, 3);
+    out.put(s1, 4, 2);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    out.put(s1, 5, 2);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    out.put(s1, 6, 2);
+    
+    s1 = new Sector();
+    s1.addWall(0);
+    s1.addWall(2);
+    s1.addWall(1);
+    out.put(s1, 7, 2);
+    return out;
   }
   
   private Map makeSquareMap() {

@@ -1,5 +1,6 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.grid.Grid;
 import junit.framework.TestCase;
 import penoplatinum.util.Point;
 import penoplatinum.model.Model;
@@ -15,6 +16,7 @@ public class IRModelProcessorTest extends TestCase {
 
   private SensorModelPart mockSensor;
   private GridModelPart mockGrid;
+  private Grid mockMyGrid;
   private Model mockModel;
 
   @Before
@@ -23,8 +25,10 @@ public class IRModelProcessorTest extends TestCase {
     mockSensor = mock(SensorModelPart.class);
     mockGrid = mock(GridModelPart.class);
     mockModel = mock(Model.class);
+    mockMyGrid = mock(Grid.class);
     when(mockModel.getPart(ModelPartRegistry.SENSOR_MODEL_PART)).thenReturn(mockSensor);
     when(mockModel.getPart(ModelPartRegistry.GRID_MODEL_PART)).thenReturn(mockGrid);
+    when(mockGrid.getMyGrid()).thenReturn(mockMyGrid);
   }
 
   /**
@@ -39,15 +43,15 @@ public class IRModelProcessorTest extends TestCase {
       .thenReturn(new Point(4, 8),new Point(4, 8),new Point(4, 8));
     when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
     instance.work();
-    verify(mockGrid, times(1)).setPacman(new Point(4, 7));
+    verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(4, 7));
 
     setIRValue(2, 200, 250, 0, 0, 0);
     instance.work();
-    verify(mockGrid, times(1)).setPacman(new Point(3, 8));
+    verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(3, 8));
 
     setIRValue(8, 0, 0, 0, 250, 200);
     instance.work();
-    verify(mockGrid, times(1)).setPacman(new Point(5, 8));
+    verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(5, 8));
 
   }
 
@@ -58,7 +62,7 @@ public class IRModelProcessorTest extends TestCase {
     setIRValue(5, 0, 0, 149, 0, 0);
     when(mockGrid.getMyPosition()).thenReturn(new Point(4, 10));
     instance.work();
-    verify(mockGrid, times(0)).setPacman(new Point(4, 7));
+    verify(mockGrid, times(0)).setPacman(mockGrid.getMyGrid(), new Point(4, 7));
   }
 
   @Test
@@ -71,19 +75,19 @@ public class IRModelProcessorTest extends TestCase {
     setIRValue(8, 0, 0, 0, 250, 200);
     when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
     instance.work();
-    verify(mockGrid, times(1)).setPacman(new Point(5, 10));
+    verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(5, 10));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.E);
     instance.work();
-    verify(mockGrid, times(1)).setPacman(new Point(4, 11));
+    verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(4, 11));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.S);
     instance.work();
-    verify(mockGrid, times(1)).setPacman(new Point(3, 10));
+    verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(3, 10));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.W);
     instance.work();
-    verify(mockGrid, times(1)).setPacman(new Point(4, 9));
+    verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(4, 9));
   }
 
   private void setIRValue(int dir, int i0, int i1, int i2, int i3, int i4) {

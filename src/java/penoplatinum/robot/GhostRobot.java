@@ -21,6 +21,7 @@ import penoplatinum.grid.LinkedSector;
 import penoplatinum.grid.Agent;
 import penoplatinum.grid.BarcodeAgent;
 
+import penoplatinum.grid.GhostAgent;
 import penoplatinum.model.Model;
 import penoplatinum.model.GhostModel;
 import penoplatinum.model.part.GridModelPart;
@@ -81,9 +82,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     // TODO:
 
     // BarcodeWallsModelProcessor
-    // ChangesModelProcessor
     // IRModelProcessor
-    // MergeGridModelProcessor
   }
   
   private void setupName(String name) {
@@ -191,6 +190,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
   // 2) still driving
   // 3) in the center of a tile
   public void step() {
+    MessageModelPart.from(model).getProtocolHandler().handleStart();
     if( ! this.isActive() ) { this.model.refresh();  return; }
     this.updateSensors();
     if( driver.isBusy() )   { this.driver.proceed(); return; }
@@ -309,7 +309,10 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
 
   public void handleNewAgent(String agentName) {
     GridModelPart gridModel = GridModelPart.from(this.model);
-    gridModel.getGridOf(agentName);
+    Grid g = gridModel.getGridOf(agentName);
+    Agent agent = new GhostAgent(agentName);
+    g.add(agent, new Point(0, 0), Bearing.N);
+    
   }
 
   public void handleAgentInfo(String agentName, Point position, int value, Bearing bearing) {
@@ -323,16 +326,16 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     if(value == 0){
       Agent agent = g.getAgent(agentName);
       g.moveTo(agent, position, bearing);
-    }
-    else{
+    } else{
+      System.out.println("Barcode found: "+value+", "+bearing);
       BarcodeAgent barcode = BarcodeAgent.getBarcodeAgent(value);
       g.add(barcode, position, bearing);
     }
   }
 
   public void handleTargetInfo(String agentName, Point position) {
-    GridModelPart gridModel = GridModelPart.from(this.model);
-    gridModel.setPacman(position);
+    GridModelPart gridPart = GridModelPart.from(this.model);
+    gridPart.setPacman(gridPart.getGridOf(agentName), position);
   }
 
   public void handleSendGridInformation() {}

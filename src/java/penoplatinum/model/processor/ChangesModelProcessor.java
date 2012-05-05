@@ -53,7 +53,18 @@ public class ChangesModelProcessor extends ModelProcessor {
     
     MessageModelPart messagePart = MessageModelPart.from(model);
     ProtocolHandler protocol = messagePart.getProtocolHandler();
+    
+    protocol.handleEnterSector(gridPart.getMySector());
+    handleBarcode(model, gridPart, protocol);
+    handleDiscovery(gridPart, protocol, model);
+    // Send pacman position updates
+    if (gridPart.getPacmanID() > pacmanID) {
+      pacmanID = gridPart.getPacmanID();
+      protocol.handleFoundAgent(gridPart.getMyGrid(), gridPart.getPacmanAgent());
+    }
+  }
 
+  private void handleDiscovery(GridModelPart gridPart, ProtocolHandler protocol, Model model) {
     List<Sector> changed = gridPart.getChangedSectors();
     for(Sector current : changed){
       // for each changed sector, notify the GhostProtocol
@@ -64,20 +75,6 @@ public class ChangesModelProcessor extends ModelProcessor {
       }
     }
     gridPart.clearChangedSectors();
-    handleBarcode(model, gridPart, protocol);
-
-    // Send position updates 
-    /*
-    if (grid.getLastMovement() == GhostAction.FORWARD) {
-      protocol.sendPosition();
-      model.getReporter().reportAgentUpdate(gridPart.getMyAgent());
-    }/**/
-
-    // Send pacman position updates
-    if (gridPart.getPacmanID() > pacmanID) {
-      pacmanID = gridPart.getPacmanID();
-      protocol.handleFoundAgent(gridPart.getMyGrid(), gridPart.getPacmanAgent());
-    }
   }
 
   private void handleBarcode(Model model, GridModelPart gridPart, ProtocolHandler protocol) {

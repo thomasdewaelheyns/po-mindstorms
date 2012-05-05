@@ -68,6 +68,6 @@ public class IRModelProcessor extends ModelProcessor {
       dx = -dx;
     }
 
-    gridPart.setPacman(gridPart.getMyPosition().translate(dx, dy));
+    gridPart.setPacman(gridPart.getMyGrid(), gridPart.getMyPosition().translate(dx, dy));
   }
 }

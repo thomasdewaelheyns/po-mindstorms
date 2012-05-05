@@ -28,6 +28,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
   private int joins = 0;
   // indicates if we've successfully joined
   private boolean joined = false;
+  private boolean joinSent = false;
   private final String protocolVersion = "2.1";
   private String name;
 
@@ -72,8 +73,11 @@ public class GhostProtocolHandler implements ProtocolHandler {
       return;
       //TODO kijk na of de naamcheck nog ergens anders gebeurd
     } else {
-      try{handleCommand(agentName, scanner);}
-      catch(Exception e){Utils.Log("Command error: "+msg);}
+      try {
+        handleCommand(agentName, scanner);
+      } catch (Exception e) {
+        Utils.Log("Command error: " + msg + ", " + e);
+      }
     }
   }
   
@@ -125,6 +129,10 @@ public class GhostProtocolHandler implements ProtocolHandler {
   
   @Override
   public ProtocolHandler handleStart() {
+    if(joinSent){
+      return this;
+    }
+    joinSent = true;
     this.sendJoin();
     return this;
   }
@@ -142,8 +150,8 @@ public class GhostProtocolHandler implements ProtocolHandler {
     this.sendDiscover(sector.getGrid().getPositionOf(sector),sector.knowsWall(Bearing.N),
                       sector.knowsWall(Bearing.E), sector.knowsWall(Bearing.S),
                       sector.knowsWall(Bearing.W),
-                      sector.givesAccessTo(Bearing.N), sector.givesAccessTo(Bearing.E),
-                      sector.givesAccessTo(Bearing.S), sector.givesAccessTo(Bearing.W));
+                      !sector.givesAccessTo(Bearing.N), !sector.givesAccessTo(Bearing.E),
+                      !sector.givesAccessTo(Bearing.S), !sector.givesAccessTo(Bearing.W));
     return this;
   }
 
@@ -293,19 +301,18 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   private void handleName(String agentName, Scanner scanner) {
     String version = scanner.next();
-    if(renaming){
-        if(renamed.get(agentName) == null){
-          renamed.put(agentName, version);
-          this.eventHandler.handleNewAgent(agentName);
+    if (renaming) {
+      if (renamed.get(agentName) == null) {
+        renamed.put(agentName, version);
+        this.eventHandler.handleNewAgent(agentName);
       }
-        checkRenamingFinished();
-    }
-    else{
+      checkRenamingFinished();
+    } else {
       // if we're still waiting for joins, we now can begin...
-      if(!this.joined) {
+      if (!this.joined) {
         this.begin();
       }
-      if(names.get(agentName) == null){
+      if (names.get(agentName) == null) {
         names.put(agentName, version);
         this.eventHandler.handleNewAgent(agentName);
       }
@@ -327,7 +334,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
     Point position = new Point(scanner.nextInt(), scanner.nextInt());
     this.eventHandler.handleAgentInfo(agentName,
                                       this.translateToInternalFormat(position),
-                                      0, Bearing.UNKNOWN);
+                                      0, Bearing.N);
   }
   
   private void handleDiscover(String agentName, Scanner scanner){
