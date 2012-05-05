@@ -1,5 +1,6 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.util.Point;
 import penoplatinum.grid.Grid;
 import java.util.Arrays;
 import penoplatinum.grid.Sector;
@@ -12,9 +13,10 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import penoplatinum.grid.PacmanAgent;
+import penoplatinum.model.part.BarcodeModelPart;
 import penoplatinum.model.part.MessageModelPart;
 import penoplatinum.protocol.ProtocolHandler;
-import static org.junit.Assert.*;
+import penoplatinum.util.Bearing;
 import static org.mockito.Mockito.*;
 
 public class ChangesModelProcessorTest extends TestCase {
@@ -26,7 +28,9 @@ public class ChangesModelProcessorTest extends TestCase {
   private Reporter mockReporter;
   private MessageModelPart mockMessagePart;
   private ProtocolHandler mockProtocol;
+  private BarcodeModelPart mockBarcodePart;
   private Model mockModel;
+  private Grid mockGrid;
 
   @Before
   public void setUp() {
@@ -36,15 +40,20 @@ public class ChangesModelProcessorTest extends TestCase {
     mockMessagePart = mock(MessageModelPart.class);
     mockProtocol = mock(ProtocolHandler.class);
     mockReporter = mock(Reporter.class);
+    mockBarcodePart = mock(BarcodeModelPart.class);
+    mockGrid = mock(Grid.class);
 
     when(mockModel.getPart(ModelPartRegistry.SENSOR_MODEL_PART)).thenReturn(mockSensor);
     when(mockModel.getPart(ModelPartRegistry.GRID_MODEL_PART)).thenReturn(mockGridPart);
     when(mockModel.getPart(ModelPartRegistry.MESSAGE_MODEL_PART)).thenReturn(mockMessagePart);
+    when(mockModel.getPart(ModelPartRegistry.BARCODE_MODEL_PART)).thenReturn(mockBarcodePart);
     when(mockModel.getReporter()).thenReturn(mockReporter);
 
     when(mockMessagePart.getProtocolHandler()).thenReturn(mockProtocol);
     when(mockGridPart.getChangedSectors()).thenReturn(Arrays.asList(mockSector1, mockSector2));
     when(mockSensor.isMoving()).thenReturn(Boolean.TRUE);
+    
+    when(mockGridPart.getMyGrid()).thenReturn(mockGrid);
   }
 
   /**
@@ -54,8 +63,12 @@ public class ChangesModelProcessorTest extends TestCase {
   public void testWork() {
     ChangesModelProcessor instance = new ChangesModelProcessor();
     instance.setModel(mockModel);
+    when(mockGridPart.getMyPosition()).thenReturn(new Point(0, 0));
+    when(mockGridPart.getMyBearing()).thenReturn(Bearing.N);
     instance.work();
-    verify(mockGridPart, times(0)).getChangedSectors();
+    verify(mockGridPart, times(1)).getChangedSectors(); //work once, DON'T do it again.
+    instance.work();
+    verify(mockGridPart, times(1)).getChangedSectors();
     when(mockSensor.isMoving()).thenReturn(Boolean.FALSE);
     instance.work();
     verify(mockGridPart, times(1)).getChangedSectors();
@@ -65,6 +78,7 @@ public class ChangesModelProcessorTest extends TestCase {
     verify(mockReporter, times(1)).reportSectorUpdate(mockSector2);
     
     
+    when(mockGridPart.getMyPosition()).thenReturn(new Point(1, 0));
     when(mockGridPart.getPacmanID()).thenReturn(1);
     when(mockGridPart.getPacmanAgent()).thenReturn(new PacmanAgent());
     instance.work();

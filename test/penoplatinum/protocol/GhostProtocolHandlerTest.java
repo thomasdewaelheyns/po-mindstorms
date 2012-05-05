@@ -200,7 +200,7 @@ public class GhostProtocolHandlerTest extends TestCase {
     verify(this.mockedEventHandler).handleNewAgent("testRobot3");
     
     this.protocolHandler.receive("testRobot3 POSITION 2,3\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(2,-3), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(2,-3), 0, Bearing.N);
   }
   
   // receive discover
@@ -317,11 +317,11 @@ public class GhostProtocolHandlerTest extends TestCase {
     //We send and receive some communication
     
     this.protocolHandler.receive("testRobot2 POSITION 1,0\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(1,0), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(1,0), 0, Bearing.N);
     this.protocolHandler.receive("testRobot3 POSITION 1,0\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(1,0), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(1,0), 0, Bearing.N);
     this.protocolHandler.receive("testRobot1 POSITION 0,1\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot1", new Point(0,-1), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot1", new Point(0,-1), 0, Bearing.N);
     
     this.protocolHandler.handleEnterSector(mockSector(1, 0, true, true, true, false, true, false, true, false));
     verify(this.mockedGatewayClient).send(NAME + " POSITION 1,0\n", Config.BT_GHOST_PROTOCOL);
@@ -338,11 +338,11 @@ public class GhostProtocolHandlerTest extends TestCase {
     verify(this.mockedGatewayClient).send(NAME +" DISCOVER 1,0 1 0 0 0\n", Config.BT_GHOST_PROTOCOL);
     
     this.protocolHandler.receive("testRobot2 POSITION 2,0\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(2,0), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(2,0), 0, Bearing.N);
     this.protocolHandler.receive("testRobot3 POSITION 2,0\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(2,0), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(2,0), 0, Bearing.N);
     this.protocolHandler.receive("testRobot1 POSITION 0,2\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot1", new Point(0,-2), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot1", new Point(0,-2), 0, Bearing.N);
     
     this.protocolHandler.handleEnterSector(mockSector(1, 1, true, true, true, false, true, false, true, false));
     verify(this.mockedGatewayClient).send(NAME + " POSITION 1,-1\n", Config.BT_GHOST_PROTOCOL);
@@ -367,11 +367,11 @@ public class GhostProtocolHandlerTest extends TestCase {
     verify(this.mockedGatewayClient).send(NAME +" DISCOVER 1,-1 1 0 0 0\n", Config.BT_GHOST_PROTOCOL);
     
     this.protocolHandler.receive("testRobot2 POSITION 3,0\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(3,0), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot2", new Point(3,0), 0, Bearing.N);
     this.protocolHandler.receive("testRobot3 POSITION 3,0\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(3,0), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot3", new Point(3,0), 0, Bearing.N);
     this.protocolHandler.receive("testRobot4 POSITION 0,1\n");
-    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot4", new Point(0,-1), 0, Bearing.UNKNOWN);
+    verify(this.mockedEventHandler, times(1)).handleAgentInfo("testRobot4", new Point(0,-1), 0, Bearing.N);
     
     this.protocolHandler.handleEnterSector(mockSector(1, 2, true, true, true, false, true, false, true, false));
     verify(this.mockedGatewayClient).send(NAME + " POSITION 1,-2\n", Config.BT_GHOST_PROTOCOL);
@@ -435,6 +435,11 @@ public class GhostProtocolHandlerTest extends TestCase {
     when(mockedSector.hasWall(Bearing.E)).thenReturn(e);
     when(mockedSector.hasWall(Bearing.S)).thenReturn(s);
     when(mockedSector.hasWall(Bearing.W)).thenReturn(w);
+    
+    when(mockedSector.givesAccessTo(Bearing.N)).thenReturn(knowsN && !n);
+    when(mockedSector.givesAccessTo(Bearing.E)).thenReturn(knowsE && !e);
+    when(mockedSector.givesAccessTo(Bearing.S)).thenReturn(knowsS && !s);
+    when(mockedSector.givesAccessTo(Bearing.W)).thenReturn(knowsW && !w);
     
     when(mockedSector.knowsWall(Bearing.N)).thenReturn(knowsN);
     when(mockedSector.knowsWall(Bearing.E)).thenReturn(knowsE);

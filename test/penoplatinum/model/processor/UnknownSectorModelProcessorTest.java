@@ -46,8 +46,9 @@ public class UnknownSectorModelProcessorTest extends TestCase {
     when(mockCurrentSector.givesAccessTo(Bearing.S)).thenReturn(Boolean.TRUE);
     when(mockCurrentSector.givesAccessTo(Bearing.W)).thenReturn(Boolean.TRUE);
     when(mockCurrentSector.hasNeighbour(Bearing.S)).thenReturn(Boolean.TRUE);
+    when(mockGridPart.getMyPosition()).thenReturn(new Point(0, 0));
     instance.work();
-    verify(mockCurrentSector).addNeighbour(any(LinkedSector.class), eq(Bearing.E));
-    verify(mockCurrentSector).addNeighbour(any(LinkedSector.class), eq(Bearing.W));
+    verify(mockGrid).add(any(LinkedSector.class), eq(new Point(-1, 0)));
+    verify(mockGrid).add(any(LinkedSector.class), eq(new Point(1, 0)));
   }
 }
