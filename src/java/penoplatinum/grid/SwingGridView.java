@@ -94,7 +94,7 @@ public class SwingGridView extends JFrame implements GridView {
 
     // add sectors
     for (Sector sector : this.grid.getSectors()) {
-      this.board.addSector(this.grid.getPositionOf(sector).translate(-minLeft,-minTop));
+      this.board.addSector(this.grid.getPositionOf(sector).clone().translate(-minLeft,-minTop));
     }
 
     this.board.addOrigin(-minLeft, -minTop);
@@ -108,9 +108,9 @@ public class SwingGridView extends JFrame implements GridView {
     for (Sector sector : this.grid.getSectors()) {
       for (Bearing bearing : Bearing.NESW) {
         if( ! sector.knowsWall(bearing) ) {
-          this.board.addUnknownWall(grid.getPositionOf(sector).translate(-minLeft, -minTop), bearing);
+          this.board.addUnknownWall(grid.getPositionOf(sector).clone().translate(-minLeft, -minTop), bearing);
         } else if( sector.hasWall(bearing) ) {
-          this.board.addWall(grid.getPositionOf(sector).translate(-minLeft, -minTop), bearing);
+          this.board.addWall(grid.getPositionOf(sector).clone().translate(-minLeft, -minTop), bearing);
         }
       }
     }
@@ -121,7 +121,7 @@ public class SwingGridView extends JFrame implements GridView {
         minTop = this.grid.getMinTop();
 
     for (Sector sector : this.grid.getSectors()) {
-      Point position = grid.getPositionOf(sector).translate(-minLeft, -minTop);
+      Point position = grid.getPositionOf(sector).clone().translate(-minLeft, -minTop);
       this.board.addValue(position, sector.getValue());
     }
   }
@@ -132,7 +132,7 @@ public class SwingGridView extends JFrame implements GridView {
 
     for( Agent agent : this.grid.getAgents() ) {
       final java.awt.Color c = ColorLink.getColorByName(agent.getName());
-      Point position = this.grid.getPositionOf(agent);
+      Point position = this.grid.getPositionOf(agent).clone();
       position.translate(-minLeft, -minTop);
       if( ! (agent instanceof BarcodeAgent) ) {
         this.board.addAgent(position, grid.getBearingOf(agent), agent.getName(), c);

@@ -6,7 +6,7 @@ package penoplatinum.util;
  * 
  * @author Team Platinum
  */
-public class Point {
+public class Point implements Cloneable {
 
   private int x, y;
 
@@ -76,5 +76,10 @@ public class Point {
   @Override
   public int hashCode() {
     return x * 43 + y * 113;
+  }
+
+  @Override
+  public Point clone() {
+    return new Point(x, y);
   }
 }

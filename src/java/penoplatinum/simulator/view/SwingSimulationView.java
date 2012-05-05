@@ -101,7 +101,7 @@ public class SwingSimulationView extends JFrame implements SimulationView {
   
   private void updateGrids() {
     for(SwingGridView gridView : this.grids) {
-      // gridView.refresh();
+       gridView.refresh();
     }
   }
 
