@@ -41,7 +41,7 @@ public class SensorModelPart implements ModelPart {
   }
 
   public boolean isMoving() {
-    return this.leftMotorIsMoving() || this.rightMotorIsMoving();
+    return this.leftMotorIsMoving() && this.rightMotorIsMoving();
   }
 
   public boolean isTurning() {

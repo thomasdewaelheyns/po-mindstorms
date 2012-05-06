@@ -61,7 +61,7 @@ public class LineModelProcessor extends ModelProcessor {
       case WAITING:
         if( currentColor == LightColor.WHITE) {
           this.state = RECORDING;
-          Utils.Log("Start reading line");
+          //Utils.Log("Start reading line");
           this.brownCounter = 0;
           this.colorCounter = 0;
         }

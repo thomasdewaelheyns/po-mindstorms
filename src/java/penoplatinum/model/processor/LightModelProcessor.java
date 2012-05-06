@@ -48,11 +48,24 @@ public class LightModelProcessor extends ModelProcessor {
 
     int currentLightValue = this.sensor.getLightSensorValue();
 
-    float averageLightValue = this.detectAverageLightValue(currentLightValue);
-    this.light.setAverageLightValue(averageLightValue);
+    //float averageLightValue = this.detectAverageLightValue(currentLightValue);
+    //this.light.setAverageLightValue(averageLightValue);
 
-    LightColor color = this.detectColor(currentLightValue, averageLightValue);
+    //LightColor color = this.detectColor(currentLightValue, averageLightValue);
+    LightColor color = this.detectColorRuben(currentLightValue);
     this.light.setCurrentLightColor(color);
+  }
+  
+  private LightColor detectColorRuben(int   currentLightValue)
+  {
+    // if the distance from the averageLightValue is outside the variation
+    // of the sensor ... detect a new color if outside 
+    if( currentLightValue < BROWN_LOW ) {
+        return LightColor.BLACK;
+    } else if( currentLightValue > BROWN_HIGH ) {
+      return LightColor.WHITE;
+    }
+    return LightColor.BROWN;
   }
   
   private float detectAverageLightValue(int currentLightValue) {

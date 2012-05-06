@@ -26,7 +26,7 @@ public class RotationMovement {
   }
 
   private void abortMovement() {
-    internalOrientation =getInternalOrientation();
+    internalOrientation = getInternalOrientation();
     startMovement();
   }
 
@@ -35,7 +35,7 @@ public class RotationMovement {
     int tachoRightDiff = motorRight.getTachoCount() - tachoRightStart;
     float averageForward = (tachoRightDiff - tachoLeftDiff) / 2.0f;
     float inverse = (float) (averageForward * WIELOMTREK / WIELAFSTAND / Math.PI);
-    buffer = (-inverse);
+    buffer = inverse;
     buffer +=internalOrientation;
     return buffer;
   }
@@ -86,6 +86,7 @@ public class RotationMovement {
     if (movementDisabled) {
       return;
     }
+    Utils.Log("Turn");
     abortMovement();
     setSpeed(SPEEDTURN);
     angleCCW *= CCW_afwijking;

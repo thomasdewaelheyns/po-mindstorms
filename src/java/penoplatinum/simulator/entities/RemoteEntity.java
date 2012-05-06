@@ -19,7 +19,6 @@ public class RemoteEntity implements RobotEntity {
   private double positionX;       // the position of the robot in the world
   private double positionY;       //   expressed in X,Y coordinates
   private double direction;       //   and a direction it's facing
-  private Simulator simulator;
   private Queue queue;
   private String entityName;
   private int originX;
@@ -38,10 +37,6 @@ public class RemoteEntity implements RobotEntity {
     this.originY = originY;
     this.originDirection = originDirection;
     return this;
-  }
-
-  public void useSimulator(Simulator simulator) {
-    this.simulator = simulator;
   }
 
   public double getPosX() {
@@ -73,20 +68,6 @@ public class RemoteEntity implements RobotEntity {
   public void step() {
   }
 
-  public Point getCurrentTileCoordinates() {
-    // determine tile coordinates we're on
-    int left = (int) (this.positionX / simulator.getTileSize()) + 1;
-    int top = (int) (this.positionY / simulator.getTileSize()) + 1;
-    return new Point(left, top);
-  }
-
-  public Point getCurrentOnTileCoordinates() {
-    // determine tile coordinates on the tile we're on
-    int left = (int) (this.positionX % simulator.getTileSize());
-    int top = (int) (this.positionY % simulator.getTileSize());
-    return new Point(left, top);
-  }
-
   public String getEntityName() {
     return this.entityName;
   }
@@ -114,7 +95,7 @@ public class RemoteEntity implements RobotEntity {
       }
       Point p = new Point(x, y).rotate(r);
       positionX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
-      positionY = (p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
+      positionY = (-p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
     }
   }
 }

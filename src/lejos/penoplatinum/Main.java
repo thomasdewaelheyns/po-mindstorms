@@ -18,19 +18,12 @@ import penoplatinum.robot.GhostRobot;
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    System.out.println(Runtime.getRuntime().freeMemory());
     GhostRobot robot = new GhostRobot("PLATINUM");
-    System.out.println("ghi");
-    Utils.Sleep(10000);
     ManhattanDriver manhattan = new ManhattanDriver(0.4)
 	    .addBehaviour(new FrontProximityDriverBehaviour())
             .addBehaviour(new SideProximityDriverBehaviour())
             .addBehaviour(new BarcodeDriverBehaviour())
             .addBehaviour(new LineDriverBehaviour());
-     /*
-     */
-    System.out.println("def");
-    
     robot.useDriver(manhattan);
 
     Navigator navigator = new GhostNavigator();
@@ -39,7 +32,7 @@ public class Main {
     GatewayClient gateway = new RobotBluetoothGatewayClient();
     robot.useGatewayClient(gateway);
     
-    MessageModelPart.from(robot.getModel()).setProtocolHandler(new BasicProtocolHandler());
+    //MessageModelPart.from(robot.getModel()).setProtocolHandler(new BasicProtocolHandler());
 
     robot.handleActivation();
 

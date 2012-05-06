@@ -1,25 +1,44 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- *
- * @author Team Platinum
- */
 public class SimpleHashMapTest extends TestCase {
+
+  private SimpleHashMap map;
+
+  @Before
+  public void setUp() {
+    map = new SimpleHashMap();
+  }
 
   public SimpleHashMapTest(String name) {
     super(name);
   }
 
+  @Test
+  public void testMultipleHash() {
+    for(int i = 0; i < 100; i++){
+      map.put(i, i);
+    }
+    boolean[] found = new boolean[100];
+    int foundCount = 0;
+    for(Object o : map.values()){
+      if(found[(Integer) o]){
+        fail();
+      }
+      found[(Integer) o] = true;
+      foundCount++;
+    }
+    assertEquals(100, foundCount);
+  }
+
+  @Test
   public void testGet() {
-    SimpleHashMap<String, Integer> map = new SimpleHashMap<String, Integer>();
     assertEquals(null, map.get("thisDoesNotExist"));
 
     map.put("test1", 1);
@@ -32,8 +51,8 @@ public class SimpleHashMapTest extends TestCase {
     assertEquals((Integer) 3, map.get("test3"));
   }
 
+  @Test
   public void testPut() {
-    SimpleHashMap<String, Integer> map = new SimpleHashMap<String, Integer>();
     assertEquals(0, map.size());
 
     map.put("test1", 1);
@@ -52,8 +71,8 @@ public class SimpleHashMapTest extends TestCase {
     assertEquals("test1", map.findKey(3));
   }
 
+  @Test
   public void testSize() {
-    SimpleHashMap<String, Integer> map = new SimpleHashMap<String, Integer>();
     assertEquals(0, map.size());
 
     map.put("test1", 1);
@@ -69,31 +88,33 @@ public class SimpleHashMapTest extends TestCase {
     assertEquals(3, map.size());
   }
 
+  @Test
   public void testIsEmpty() {
-    SimpleHashMap<String, Integer> map = new SimpleHashMap<String, Integer>();
     assertTrue(map.isEmpty());
 
     map.put("test1", 1);
     assertFalse(map.isEmpty());
   }
 
+  @Test
   public void testValues() {
-    SimpleHashMap<String, Integer> map = new SimpleHashMap<String, Integer>();
     map.put("test1", 1);
     map.put("test2", 2);
     map.put("test3", 3);
     List<Integer> val = new ArrayList<Integer>();
 
-    for (Integer i : map.values())
-      val.add(i);
-
+    for (Object i : map.values()) {
+      val.add((Integer) i);
+    }
+    Collections.sort(val);
+    assertEquals(3, val.size());
     assertEquals((Integer) 1, val.get(0));
     assertEquals((Integer) 2, val.get(1));
     assertEquals((Integer) 3, val.get(2));
   }
 
+  @Test
   public void testFindKey() {
-    SimpleHashMap<String, Integer> map = new SimpleHashMap<String, Integer>();
     map.put("test1", 1);
     map.put("test2", 2);
     map.put("test3", 3);

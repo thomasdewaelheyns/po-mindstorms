@@ -16,9 +16,11 @@ import penoplatinum.grid.Grid;
 import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.grid.Sector;
-
-import penoplatinum.util.*;
-
+import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
+import penoplatinum.util.Scanner;
+import penoplatinum.util.SimpleHashMap;
+import penoplatinum.util.Utils;
 
 public class GhostProtocolHandler implements ProtocolHandler {
 
