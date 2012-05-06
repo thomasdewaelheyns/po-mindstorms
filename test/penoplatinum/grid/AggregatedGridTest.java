@@ -282,7 +282,8 @@ public class AggregatedGridTest extends TestCase {
     grid.activateSubGrid(grid2, TransformationTRT.Identity);
 
     assertEquals(mainAgent, grid.getAgentAt(new Point(1, 0), clsAgent));
-    assertEquals(agent1, grid.getAgentAt(new Point(0, 1), clsAgent));
+    Agent ag = grid.getAgentAt(new Point(0, 1), clsAgent);
+    assertTrue(agent1 == ag || agent2 == ag );
     assertEquals(agent3, grid.getAgentAt(new Point(1, 0), clsSubAgent));
 
     assertNull(grid.getAgentAt(new Point(0, 1), clsSubAgent));

@@ -48,11 +48,11 @@ public class LightModelProcessor extends ModelProcessor {
 
     int currentLightValue = this.sensor.getLightSensorValue();
 
-    //float averageLightValue = this.detectAverageLightValue(currentLightValue);
-    //this.light.setAverageLightValue(averageLightValue);
+    float averageLightValue = this.detectAverageLightValue(currentLightValue);
+    this.light.setAverageLightValue(averageLightValue);
 
-    //LightColor color = this.detectColor(currentLightValue, averageLightValue);
-    LightColor color = this.detectColorRuben(currentLightValue);
+    LightColor color = this.detectColor(currentLightValue, averageLightValue);
+    //LightColor color = this.detectColorRuben(currentLightValue);
     this.light.setCurrentLightColor(color);
   }
   
