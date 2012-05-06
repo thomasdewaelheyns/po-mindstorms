@@ -2,6 +2,7 @@ package penoplatinum.fullTests;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -41,6 +42,7 @@ import penoplatinum.simulator.view.SwingSimulationView;
 import penoplatinum.grid.view.SwingGridView;
 import penoplatinum.map.MapFactory;
 import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
+import penoplatinum.simulator.entities.PacmanEntity;
 
 
 public class FullRobotTest extends TestCase {
@@ -66,7 +68,7 @@ public class FullRobotTest extends TestCase {
   // }
   
   @Test
-  public void testSimulator() throws FileNotFoundException {
+  public void testSimulator() throws FileNotFoundException, IOException, InterruptedException {
     Config.load("test.properties");
 
     // setup simulator
@@ -84,11 +86,14 @@ public class FullRobotTest extends TestCase {
     // some assertions here, these would be real unit tests ;-)
   }
 
-  private Simulator createSimulator(Map map) {
+  private Simulator createSimulator(Map map) throws IOException, InterruptedException {
     Simulator simulator    = new Simulator();
     SimulationView simView = new SwingSimulationView();
     simulator.useMap(map);
     simulator.displayOn(simView);
+    System.out.println(map.getHeight());
+    PacmanEntity pacman = new PacmanEntity(0, map.getHeight()-1);
+    simulator.setPacmanEntity(pacman);
     return simulator;
   }
 

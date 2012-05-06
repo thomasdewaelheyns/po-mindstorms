@@ -15,6 +15,8 @@ import penoplatinum.navigator.action.NavigatorAction;
 
 
 public interface NavigatorMode {
+  
+  public void activate();
 
   // the Mode indicates when it has reached its personal goal
   public boolean reachedGoal();

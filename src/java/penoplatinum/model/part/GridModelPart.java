@@ -19,13 +19,14 @@ import penoplatinum.grid.AggregatedGrid;
 import penoplatinum.grid.agent.GhostAgent;
 import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.grid.Sector;
-import penoplatinum.grid.LinkedSector;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
 
 public class GridModelPart implements ModelPart {
+  public static final int PACMAN_VALUE = 10000;
+  public static final int UNKNOWN_VALUE = 5000;
   // boilerplate implementation required to register and retrieve a ModelPart
   // from the model
   public static GridModelPart from(Model model) {
@@ -128,17 +129,17 @@ public class GridModelPart implements ModelPart {
       Point position = diffuseGrid.getPositionOf(sector);
       
       // a hunting agent resets the value of its sector
-      if( diffuseGrid.getAgentAt(position, PacmanAgent.class) != null ) {
-        total = 10000;
-        count = 1;
+      if( diffusePacman && diffuseGrid.getAgentAt(position, PacmanAgent.class) != null ) {
+        total = PACMAN_VALUE;
+        sector.setValue(total);
       } else if( diffuseGrid.getAgentAt(position, GhostAgent.class) != null) {
         // a ghost blocks all diffusion
         total = 0;
-        count = 0;
-      } else if( ! sector.isFullyKnown() ) {
+        sector.setValue(total);
+      } else if( diffuseUnknownSectors && ! sector.isFullyKnown() ) {
         // unknown sectors are "interesting"
-        total = 5000;
-        count = 1;
+        total = UNKNOWN_VALUE;
+        sector.setValue(total);
       } else {
         // diffuse
         for( Bearing atBearing: Bearing.NESW ) { 
@@ -151,12 +152,11 @@ public class GridModelPart implements ModelPart {
             }
           }
         }
-        
-      }
-      if (count > 0) {
-        sector.setValue((int) ((total / count) * 0.75));
-      } else {
-        sector.setValue(0);
+        if (count > 0) {
+          sector.setValue((int) ((total / count) * 0.75));
+        } else {
+          sector.setValue(0);
+        }
       }
     }
   }
@@ -193,12 +193,15 @@ public class GridModelPart implements ModelPart {
   }
 
   public void setPacman(Grid g, Point pos) {
-    if(this.pacman == null){
-      this.pacman = new PacmanAgent();
+    System.out.println("Pacman: "+pos);
+    if(g.getPositionOf(pacman) == null){
       g.add(this.pacman, pos, Bearing.N);
     } else {
       g.moveTo(this.pacman, pos, Bearing.N);
     }
+  }
+
+  public void incrementPacmanID() {
     this.pacmanID++;
   }
   

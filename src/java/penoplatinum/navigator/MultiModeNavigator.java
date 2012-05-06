@@ -16,12 +16,10 @@ package penoplatinum.navigator;
 import java.util.List;
 import java.util.ArrayList;
 
-import java.util.Arrays;
 import penoplatinum.driver.Driver;
 
 import penoplatinum.model.Model;
 
-import penoplatinum.navigator.action.IdleAction;
 import penoplatinum.navigator.action.NavigatorAction;
 import penoplatinum.navigator.mode.NavigatorMode;
 
@@ -42,6 +40,7 @@ public class MultiModeNavigator implements Navigator {
                                   "perform another one first." );
     }
     this.thenUse(mode);
+    this.modes.get(0).activate();
   }
 
   protected void thenUse(NavigatorMode mode) {
@@ -93,6 +92,7 @@ public class MultiModeNavigator implements Navigator {
     // switch to next mode once the current one has reached its goal
     while( this.getCurrentMode().reachedGoal() ) {
       this.discardCurrentMode();
+      this.modes.get(0).activate();
     }
     this.plan = this.getCurrentMode().createNewPlan();
     if( this.plan.size() == 0 ) {
@@ -137,7 +137,7 @@ public class MultiModeNavigator implements Navigator {
   private void discardCurrentMode() {
     //System.out.println("DISCARD CURRENT MODE" );    
     if( this.modes.size() > 1 ) {
-      //System.out.println("DISCARD CURRENT MODE" );
+      System.out.println("DISCARD CURRENT MODE" );
       this.modes.remove(0);
     }
   }

@@ -23,7 +23,7 @@ public class ScrewGridUpModelProcessor extends ModelProcessor {
     prevPosition = gridPart.getMyPosition();
     prevBearing = gridPart.getMyBearing();
     
-    if(rand.nextInt(100)<20){
+    if(rand.nextInt(100)<0){
       Grid grid = gridPart.getFullGrid();
       int minLeft = grid.getMinLeft(), minTop = grid.getMinTop();
       int x = rand.nextInt(grid.getWidth()) + minLeft;

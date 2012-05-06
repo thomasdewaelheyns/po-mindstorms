@@ -7,14 +7,11 @@ import penoplatinum.gateway.MessageReceiver;
 import penoplatinum.simulator.view.ViewRobot;
 import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.tiles.Sector;
-import penoplatinum.util.Point;
-import penoplatinum.util.Rotation;
 import penoplatinum.util.Scanner;
 
 public class PacmanEntity implements RobotEntity {
   private int originX = 0;
   private int originY = 0;
-  private int originD = 0;
 
   private double posX;
   private double posY;
@@ -28,7 +25,11 @@ public class PacmanEntity implements RobotEntity {
     this.queue = null;
   }
 
-  public PacmanEntity() throws IOException, InterruptedException {
+  public PacmanEntity(int originX, int originY) throws IOException, InterruptedException {
+    this.originX = originX;
+    this.originY = originY;
+    posX = originX * Sector.SIZE + Sector.SIZE / 2;
+    posY = originY * Sector.SIZE + Sector.SIZE / 2;
     this.queue = new MQ().connectToMQServer(Config.MQ_SERVER)
                          .follow(Config.GHOST_CHANNEL);
     this.queue.subscribe(new PacmanProtocolSpy());
@@ -70,6 +71,9 @@ public class PacmanEntity implements RobotEntity {
       // strip off the newline
       msg = msg.substring(0, msg.length() - 1);
       Scanner scanner = new Scanner(msg);
+      if(!scanner.hasNext()){
+        return;
+      }
       String agentName = scanner.next();
       if (!agentName.equals(getEntityName())) {
         return;
@@ -78,15 +82,13 @@ public class PacmanEntity implements RobotEntity {
       if (!command.equals("POSITION")) {
         return;
       }
+      System.out.println("Got position");
       int x = scanner.nextInt();
       int y = scanner.nextInt();
-      Rotation r = Rotation.NONE;
-      for (int i = 0; i < originD; i++) {
-        r = r.add(Rotation.L90); 
-      }
-      Point p = new Point(x, y).rotate(r);
-      posX = (p.getX() + originX) * Sector.SIZE + Sector.SIZE / 2;
-      posY = (-p.getY() + originY) * Sector.SIZE + Sector.SIZE / 2;
+      posX = (x + originX) * Sector.SIZE + Sector.SIZE / 2;
+      posY = (-y + originY) * Sector.SIZE + Sector.SIZE / 2;
+      System.out.println(originX+", "+originY);
+      System.out.println(posX+" "+posY);
     }
   }
 }

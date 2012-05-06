@@ -111,4 +111,8 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
   private Bearing getMyBearing() {
     return this.grids.getMyBearing();
   }
+
+  @Override
+  public void activate() {
+  }
 }
