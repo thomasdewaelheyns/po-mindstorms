@@ -23,5 +23,6 @@ public interface Reporter {
   // the reporter can process updates to the information
   public Reporter reportModelUpdate();
   public Reporter reportSectorUpdate(Sector sector);
+  public Reporter reportValueUpdate(Sector sector);
   public Reporter reportAgentUpdate(Agent agent);
 }

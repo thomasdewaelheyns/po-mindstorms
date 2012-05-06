@@ -104,10 +104,10 @@ public class DashboardReporter implements Reporter {
     }
   }
 
-  public Reporter reportWalls(Sector sector) {
-    this.sendSectorWalls(this.robot.getName(), "myGrid", sector);
-    return this;
-  }
+  // public Reporter reportWalls(Sector sector) {
+  //   this.sendSectorWalls(this.robot.getName(), "myGrid", sector);
+  //   return this;
+  // }
 
   private void sendSectorWalls(String name, String grid, Sector sector) {
     this.clear()
@@ -200,6 +200,11 @@ public class DashboardReporter implements Reporter {
   @Override
   public Reporter reportSectorUpdate(Sector sector) {
     this.sendSectorWalls(this.robot.getName(), "myGrid", sector);
+    return this;
+  }
+  
+  public Reporter reportValueUpdate(Sector sector) {
+    this.sendSectorValue(this.robot.getName(), "myGrid", sector);
     return this;
   }
 

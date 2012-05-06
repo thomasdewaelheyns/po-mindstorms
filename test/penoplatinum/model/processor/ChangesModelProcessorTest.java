@@ -65,6 +65,10 @@ public class ChangesModelProcessorTest extends TestCase {
     instance.setModel(mockModel);
     when(mockGridPart.getMyPosition()).thenReturn(new Point(1, 1));
     when(mockGridPart.getMyBearing()).thenReturn(Bearing.S);
+    Grid mockedMyGrid = mock(Grid.class);
+    when(mockGridPart.getMyGrid()).thenReturn(mockedMyGrid);
+    Sector mockedSector = mock(Sector.class);
+    when(mockedMyGrid.getSectors()).thenReturn(Arrays.asList(mockedSector));
     instance.work();
     verify(mockGridPart, times(1)).getChangedSectors(); // work once, DON'T do it again.
     instance.work();

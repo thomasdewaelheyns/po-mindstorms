@@ -12,6 +12,8 @@ import java.util.List;
 
 import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.Sector;
+import penoplatinum.grid.agent.Agent;
+import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.model.Model;
 import penoplatinum.model.part.Barcode;
 import penoplatinum.model.part.BarcodeModelPart;
@@ -56,19 +58,22 @@ public class ChangesModelProcessor extends ModelProcessor {
     
     // notify other ghosts of my new position
     protocol.handleEnterSector(gridPart.getMySector());
+
+    // report
     this.handleBarcode(model, gridPart, protocol);
-    this.handleDiscovery(gridPart, protocol, model);
-    // TODO
-    // this.handleChangedValues(gridPart, protocol, model);
+    this.handleDiscovery(model, gridPart, protocol);
+    this.handleChangedValues(model, gridPart, protocol);
 
     // Send pacman position updates
     if (gridPart.getPacmanID() > pacmanID) {
       pacmanID = gridPart.getPacmanID();
-      protocol.handleFoundAgent(gridPart.getMyGrid(), gridPart.getPacmanAgent());
+      PacmanAgent pacman = gridPart.getPacmanAgent();
+      protocol.handleFoundAgent(gridPart.getMyGrid(), pacman);
+      model.getReporter().reportAgentUpdate(pacman);
     }
   }
 
-  private void handleDiscovery(GridModelPart gridPart, ProtocolHandler protocol, Model model) {
+  private void handleDiscovery(Model model, GridModelPart gridPart, ProtocolHandler protocol) {
     for(Sector current : gridPart.getChangedSectors() ){
       
       // for each changed sector, notify the GhostProtocol
@@ -90,7 +95,6 @@ public class ChangesModelProcessor extends ModelProcessor {
         barcodeBearing = barcodeBearing.reverse();
         alignedCode = Barcode.reverse(alignedCode, 6);
       }
-      //Utils.Log("Found barcode, handle barcode: "+gridPart.getMyPosition()+", "+barcodeBearing+" : "+alignedCode);
       BarcodeAgent agent = BarcodeAgent.getBarcodeAgent(alignedCode);
       gridPart.getMyGrid().add(agent, gridPart.getMyPosition(), barcodeBearing);
       protocol.handleFoundAgent(gridPart.getMyGrid(), agent);
@@ -98,6 +102,15 @@ public class ChangesModelProcessor extends ModelProcessor {
         model.getReporter().reportAgentUpdate(agent);
       }
       
+    }
+  }
+
+  private void handleChangedValues(Model model,
+                                   GridModelPart gridPart, 
+                                   ProtocolHandler protocol)
+  {
+    for(Sector sector : gridPart.getMyGrid().getSectors()) {
+      model.getReporter().reportValueUpdate(sector);
     }
   }
 }
