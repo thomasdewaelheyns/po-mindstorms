@@ -11,6 +11,7 @@ public class MapHashed implements Map {
 
   @SuppressWarnings("unchecked")
   private HashMap<Point, Tile> map = new HashMap();
+  private Tile first;
   private int minX = Integer.MAX_VALUE;
   private int maxX = Integer.MIN_VALUE;
   private int minY = Integer.MAX_VALUE;
@@ -34,7 +35,7 @@ public class MapHashed implements Map {
 
   @Override
   public Tile getFirst() {
-    return map.values().toArray(new Tile[1])[0];
+    return first;
   }
 
   @Override
@@ -76,6 +77,7 @@ public class MapHashed implements Map {
       minX = left;
     }
     map.put(new Point(left, top), tile);
+    first = tile;
     return this;
   }
 

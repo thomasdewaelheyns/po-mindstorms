@@ -51,7 +51,7 @@ public class GridBoard extends JPanel {
   }
   
   private void setupCanvas() {
-    this.setBackground(BROWN);
+    this.setBackground(BLACK);
     this.setDoubleBuffered(true);
     this.clearSectors();
   }
@@ -100,19 +100,20 @@ public class GridBoard extends JPanel {
   }
 
   private Rectangle createWall(Point position, Bearing location) {
+    int width = 1;
     switch (location) {
       case N: return new Rectangle(position.getX() * this.sectorSize, 
-                                   position.getY() * this.sectorSize - 3,
-                                   this.sectorSize, 6);
-      case W: return new Rectangle(position.getX() * this.sectorSize - 3,
+                                   position.getY() * this.sectorSize - width,
+                                   this.sectorSize, width*2);
+      case W: return new Rectangle(position.getX() * this.sectorSize - width,
                                    position.getY() * this.sectorSize,
-                                   6, this.sectorSize);
-      case E: return new Rectangle((position.getX() + 1) * this.sectorSize - 6,
+                                   width*2, this.sectorSize);
+      case E: return new Rectangle((position.getX() + 1) * this.sectorSize - width*2,
                                     position.getY() * this.sectorSize,
-                                    6, this.sectorSize);
+                                    width*2, this.sectorSize);
       case S: return new Rectangle(position.getX() * this.sectorSize,
-                                  (position.getY() + 1) * this.sectorSize - 6,
-                                  this.sectorSize, 6);
+                                  (position.getY() + 1) * this.sectorSize - width*2,
+                                  this.sectorSize, width*2);
     }
     throw new RuntimeException( "Can't create wall at bearing = " + location );
   }
@@ -263,7 +264,7 @@ public class GridBoard extends JPanel {
   
   void addOrigin(int minLeft, int minTop) {
     sectorsG.setColor(Color.WHITE);
-    sectorsG.setStroke(new java.awt.BasicStroke(2));
+    sectorsG.setStroke(new java.awt.BasicStroke(1));
     sectorsG.drawRect(minLeft * this.sectorSize + 1, minTop * this.sectorSize + 1, this.sectorSize - 1, this.sectorSize - 1);
   }
   
