@@ -51,10 +51,10 @@ public class ImportWallsModelProcessorTest extends TestCase {
     mockPosition = mock(Point.class);
     when(mockGrid.getSectorAt(mockPosition)).thenReturn(mockGridCurrent);
     when(mockGrid.getPositionOf(any(Agent.class))).thenReturn(mockPosition);
-//    when(mockGrid.getSectorOf(any(Agent.class))).thenReturn(mockGridCurrent);
+    when(mockGridPart.getMySector()).thenReturn(mockGridCurrent);
     
     when(mockWallCurrent.knowsWall(Bearing.N)).thenReturn(Boolean.TRUE);
-    when(mockWallCurrent.hasWall(Bearing.N))  .thenReturn(Boolean.TRUE);
+    when(mockWallCurrent.hasWall  (Bearing.N)).thenReturn(Boolean.TRUE);
     when(mockWallCurrent.knowsWall(Bearing.E)).thenReturn(Boolean.TRUE);
     when(mockWallCurrent.hasNoWall(Bearing.E)).thenReturn(Boolean.TRUE);
     

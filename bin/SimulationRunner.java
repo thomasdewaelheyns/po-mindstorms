@@ -27,7 +27,7 @@ import penoplatinum.simulator.view.SwingSimulationView;
 import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
 
-import penoplatinum.grid.SwingGridView;
+import penoplatinum.grid.view.SwingGridView;
 
 import penoplatinum.driver.Driver;
 

@@ -2,7 +2,7 @@
 import java.io.FileNotFoundException;
 import java.util.Random;
 import org.junit.Test;
-import penoplatinum.grid.SwingGridView;
+import penoplatinum.grid.view.SwingGridView;
 import penoplatinum.pacman.GhostNavigator;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.simulator.entities.PacmanEntity;

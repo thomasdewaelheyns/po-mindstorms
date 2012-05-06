@@ -32,27 +32,7 @@ public class ProtocolMapFactory implements MapFactory{
       }
       c.interpret(map, sc);
     }
-    
-    //printMap(map);
-    
     return map;
-  }
-
-  private void printMap(MapHashed map) {
-    System.out.println(map.getHeight());
-    System.out.println(map.getWidth());
-    for(int i = 1; i<map.getHeight(); i++){
-      for(int j = 1; j<map.getWidth(); j++){
-        System.out.print(j+","+i+",");
-        System.out.print((map.get(j, i).hasWall(Bearing.N)?1:0));
-        System.out.print((map.get(j, i).hasWall(Bearing.E)?1:0));
-        System.out.print((map.get(j, i).hasWall(Bearing.S)?1:0));
-        System.out.print((map.get(j, i).hasWall(Bearing.W)?1:0));
-        System.out.print(" ");
-        
-      }
-      System.out.println();
-    }
   }
 
   private void addCommando(Commando c) {

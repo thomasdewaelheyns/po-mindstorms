@@ -4,6 +4,8 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.view.SwingGridView;
+import penoplatinum.grid.view.GridFactory;
 import junit.framework.Assert;
 import org.junit.Test;
 import penoplatinum.model.processor.MergeGridModelProcessor;

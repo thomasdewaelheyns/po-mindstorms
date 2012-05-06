@@ -140,6 +140,7 @@ public class SimulatedEntity implements RobotEntity {
 
     // based on the new location, determine the value of the different sensors
     this.updateSensorValues();
+    
     this.getRobot().step();
   }
 

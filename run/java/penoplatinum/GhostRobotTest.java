@@ -8,7 +8,7 @@ import org.junit.Test;
 import penoplatinum.barcode.BarcodeTranslator;
 import penoplatinum.pacman.GhostRobot;
 import penoplatinum.pacman.LeftFollowingGhostNavigator;
-import penoplatinum.grid.SwingGridView;
+import penoplatinum.grid.view.SwingGridView;
 import penoplatinum.pacman.GhostNavigator;
 import penoplatinum.simulator.Bearing;
 import penoplatinum.simulator.entities.SimulatedEntity;

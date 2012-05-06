@@ -1,5 +1,7 @@
 package penoplatinum.util;
 
+import penoplatinum.simulator.Simulator;
+
 /**
  * This class represents a point in 2D space.
  * Note: NOT IMMUTABLE
@@ -82,4 +84,5 @@ public class Point implements Cloneable {
   public Point clone() {
     return new Point(x, y);
   }
+
 }

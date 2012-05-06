@@ -15,6 +15,7 @@ import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.model.part.LightModelPart;
 
 import penoplatinum.util.LightColor;
+import penoplatinum.util.Utils;
 
 
 public class BarcodeModelProcessor extends ModelProcessor {
@@ -25,7 +26,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
   }
 
   // the number of readings of brown before we decide we passed the barcode
-  private static final int BROWN_AFTER            =  5;
+  private static final int BROWN_AFTER            =  10;
   // the number of brow interference we find acceptable in ...
   private static final int MAX_BROWN_INTERFERENCE =  5;
   // the first minimum amount of readings
@@ -62,7 +63,7 @@ public class BarcodeModelProcessor extends ModelProcessor {
       // BLACK marks the beginning of a new barcode
       if( this.sensors.getCurrentLightColor() == LightColor.BLACK ) {
         this.startReading();
-        System.out.println("Start reading barcode.");
+        //Utils.Log("Start reading barcode.");
       }
     } else { // we're reading...
       // turning makes the barcodereading corrupted, discard it
@@ -70,13 +71,13 @@ public class BarcodeModelProcessor extends ModelProcessor {
        if (this.robot.isTurning() ) {
         this.discardReading();
         wasCorrupt = true;
-        System.out.println("Turning, stupid driver, I can't read the barcode.");
+        //Utils.Log("Turning, stupid driver, I can't read the barcode.");
         
        } else if( this.readInterference()){
         this.discardReading();
         isWaiting = true;
         wasCorrupt = false;
-        System.out.println("Too much brown, I can't read it");
+        //Utils.Log("Too much brown, I can't read it");
         
       } else if( !this.robot.isMoving() ){  // if we are not moving wait until we are moving again.
         
@@ -118,10 +119,10 @@ public class BarcodeModelProcessor extends ModelProcessor {
   
   private void stopReading() {
     this.barcodePart.finishReading();
-    System.out.println("It was: "+this.barcodePart.getLastBarcodeValue());
-    System.out.println("Without border: "+this.barcodePart.getLastBarcodeValue()/2);
-    System.out.println("Reversed: " + Barcode.reverse(this.barcodePart.getLastBarcodeValue(), 8));
-    System.out.println("W/O border: " + Barcode.reverse(this.barcodePart.getLastBarcodeValue(), 8)/2);
+    //Utils.Log("It was: "+this.barcodePart.getLastBarcodeValue());
+    //Utils.Log("Without border: "+this.barcodePart.getLastBarcodeValue()/2);
+    //Utils.Log("Reversed: " + Barcode.reverse(this.barcodePart.getLastBarcodeValue(), 8));
+    //Utils.Log("W/O border: " + Barcode.reverse(this.barcodePart.getLastBarcodeValue(), 8)/2);
     this.isWaiting = true;
   }
 

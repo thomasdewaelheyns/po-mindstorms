@@ -40,7 +40,7 @@ public class TurnDriverActionTest extends TestCase {
   
   public void testCanBeInterrupted() {
     TurnDriverAction action = this.createAction();
-    assertTrue(action.canBeInterrupted());
+    assertFalse(action.canBeInterrupted());
   }
 
   public void testInterrupts() {

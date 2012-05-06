@@ -76,13 +76,13 @@ public class FullRobotTest extends TestCase {
     GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 220, 220, -180);
     //GridModelPart.from(robot1.getModel()).getMyAgent().activate();
 //
-    //GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -90);
+    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -90);
 //    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
 
     GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 20, 220, 0);
     //GridModelPart.from(robot3.getModel()).getMyAgent().activate();
 
-    //GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
+    GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
 //    //GridModelPart.from(robot4.getModel()).getMyAgent().activate();
 
     // run the simulator for 30000 steps
@@ -148,7 +148,6 @@ public class FullRobotTest extends TestCase {
     Scanner sc = new Scanner(new File("../../maps/wolfraam.txt"));
     return mapFac.getMap(sc);
   }
-  
   private Map makeLongMap(){
     MapHashed out = new MapHashed();
     Sector s1 = new Sector();
@@ -228,7 +227,6 @@ public class FullRobotTest extends TestCase {
     out.put(s1, 7, 2);
     return out;
   }
-  
   private Map makeSquareMap() {
     MapHashed out = new MapHashed();
     Sector s1 = new Sector();
@@ -281,6 +279,4 @@ public class FullRobotTest extends TestCase {
 
     return out;
   }
-
-  
 }

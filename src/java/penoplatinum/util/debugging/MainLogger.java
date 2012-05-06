@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.util.debugging;
 
 import java.io.File;
@@ -17,7 +13,7 @@ import penoplatinum.bluetooth.RemoteFileLogger;
 public class MainLogger {
 
     public static void main(String[] args) {
-        Config.load("../../src/java/robot.properties");
+        Config.load("robot.properties");
         PCBluetoothConnection conn = new PCBluetoothConnection();
         conn.initializeConnection();
         RemoteFileLogger logger = new RemoteFileLogger(conn, "RobotLog", new File("logs"));

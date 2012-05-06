@@ -7,7 +7,6 @@ import penoplatinum.simulator.RobotEntity;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.entities.PacmanEntity;
-import penoplatinum.util.Point;
 
 public class IRSensorTest extends TestCase {
   

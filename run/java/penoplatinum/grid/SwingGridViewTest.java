@@ -4,6 +4,7 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.view.SwingGridView;
 import junit.framework.TestCase;
 import org.junit.Test;
 

@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.SimpleGrid;
-import penoplatinum.grid.SwingGridView;
+import penoplatinum.grid.view.SwingGridView;
 import penoplatinum.util.TransformationTRT;
 import penoplatinum.simulator.Bearing;
 

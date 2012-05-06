@@ -13,7 +13,6 @@ import penoplatinum.simulator.tiles.Tile;
 import penoplatinum.simulator.view.SilentSimulationView;
 import penoplatinum.simulator.view.SimulationView;
 import penoplatinum.simulator.view.ViewRobot;
-import penoplatinum.util.Point;
 
 public class SimulatorTest extends TestCase {
 
@@ -69,8 +68,6 @@ public class SimulatorTest extends TestCase {
    */
   @Test
   public void testGetFreeDistance() {
-    Point tile = new Point(1, 1);
-    Point pos = new Point(20, 20);
     Simulator instance = new Simulator().useMap(MapTestUtil.getMap());
     int angle = 0;
     assertEquals(60, instance.getFreeDistance(20.0, 20.0, angle));

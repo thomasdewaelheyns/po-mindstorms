@@ -1,4 +1,4 @@
-package penoplatinum.grid;
+package penoplatinum.grid.agent;
 
 /**
  * ModelTest
@@ -10,13 +10,13 @@ package penoplatinum.grid;
 import junit.framework.*;
 import static org.mockito.Mockito.*;
 
-public class MovingAgentTest extends TestCase {
+public class AgentTest extends TestCase {
 
-  public MovingAgentTest(String name) {
+  public AgentTest(String name) {
     super(name);
   }
 
   public void testAvailablity() {
-    mock(MovingAgentTest.class);
+    mock(Agent.class);
   }
 }

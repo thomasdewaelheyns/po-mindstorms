@@ -91,8 +91,8 @@ public class RotationMovement {
     angleCCW *= CCW_afwijking;
 
     int h = (int) (angleCCW * Math.PI * WIELAFSTAND / WIELOMTREK);
-    motorLeft.rotate(h, true);
-    motorRight.rotate(-h, true);
+    motorLeft.rotate(-h, true);
+    motorRight.rotate(h, true);
   }
 
   public void turn(boolean ccw) {

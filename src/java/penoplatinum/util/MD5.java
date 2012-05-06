@@ -2,6 +2,17 @@
 package penoplatinum.util;
 
 public class MD5 {
+  
+
+  public static byte[] getBytes(String s) {
+    char[] characters;
+    characters = s.toCharArray();
+    byte[] b = new byte[characters.length];
+    for (int i = 0; i < characters.length; i++) {
+      b[i] = (byte) characters[i];
+    }
+    return b;
+  }
  
     /**
      * Class constructor
@@ -60,7 +71,8 @@ public class MD5 {
      */
     public static String getHashString(String s){
         MD5 md5 = new MD5();
-        md5.update(md5.workingState, s.getBytes(), 0, s.getBytes().length);
+        final byte[] bytes = getBytes(s);
+        md5.update(md5.workingState, bytes, 0, bytes.length);
         return md5.getHashString();
     }
  
@@ -93,7 +105,7 @@ public class MD5 {
      *
      * @since ostermillerutils 1.00.00
      */
-    private void update (MD5State state, byte buffer[], int offset, int length) {
+    private void update (MD5State state, byte[] buffer, int offset, int length) {
  
         finalState.valid = false;
  

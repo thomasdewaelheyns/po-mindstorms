@@ -47,12 +47,12 @@ public class Arrays {
             Math.min(original.length - from, newLength));
     return copy;
   }
+  
   public static <T extends Object> List<T> asList(T... obj){
     ArrayList<T> out = new ArrayList<T>();
     for(T o : obj){
       out.add(o);
     }
     return out;
-    
   }
 }

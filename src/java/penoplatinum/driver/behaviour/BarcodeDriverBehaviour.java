@@ -9,9 +9,7 @@ package penoplatinum.driver.behaviour;
  * @author Team Platinum
  */
 import penoplatinum.model.Model;
-
 import penoplatinum.model.part.BarcodeModelPart;
-
 import penoplatinum.driver.action.DriverAction;
 import penoplatinum.driver.action.CombinedDriverAction;
 import penoplatinum.driver.action.MoveDriverAction;

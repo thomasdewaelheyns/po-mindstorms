@@ -60,7 +60,6 @@ public class Utils {
    * @param conn 
    */
   public static void EnableRemoteLogging(IConnection conn, String logname) {
-
     QueuedPacketTransporter t = new QueuedPacketTransporter(conn);
     conn.RegisterTransporter(t, Config.BT_LOG);
     conn.RegisterTransporter(t, Config.BT_START_LOG);

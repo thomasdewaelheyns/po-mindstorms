@@ -5,7 +5,6 @@ package penoplatinum.bluetooth;
  * 
  * @author: Team Platinum
  */
-
 import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,14 +24,11 @@ public class RemoteFileLogger {
   private final File directory;
   private final QueuedPacketTransporter pt;
 
-
   public void setOutputStream(IRemoteLoggerCallback outputStream) {
     this.outputStream = outputStream;
   }
 
   public RemoteFileLogger(IConnection conn, String baseFilename, final File directory) {
-    int testNum = 0;
-
     pt = new QueuedPacketTransporter(conn);
     conn.RegisterTransporter(pt, Config.BT_LOG);
     conn.RegisterTransporter(pt, Config.BT_START_LOG);
@@ -56,7 +52,7 @@ public class RemoteFileLogger {
             String s;
             s = scanner.nextLine();
             fs.println(s);
-            // System.out.println(s);
+            System.out.println(s);
 
             if (extraOutputStream != null) {
               extraOutputStream.onLog(s);

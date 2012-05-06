@@ -118,7 +118,7 @@ public class MultiModeNavigator implements Navigator {
   private void discardCurrentAction() {
     //System.out.print("DISCARD : " + this.plan.size() + " -> ");
     if( this.plan.size() > 0 ) { this.plan.remove(0); }
-    System.out.println( this.plan.size() );
+    //System.out.println( this.plan.size() );
   }
   
   private void discardCurrentPlan() {

@@ -51,7 +51,7 @@ public class UnknownSectorModelProcessor extends ModelProcessor {
       if( current.givesAccessTo(bearing) && ! current.hasNeighbour(bearing) ) {
         Sector neighbour = new LinkedSector();
         neighbour.setValue(5000);
-        System.out.println("Adding wall: "+bearing);
+        //Utils.Log("Adding wall: "+bearing);
         Point p = gridPart.getMyPosition();
         int left = Position.moveLeft(bearing, p.getX());
         int top = Position.moveTop(bearing, p.getY());

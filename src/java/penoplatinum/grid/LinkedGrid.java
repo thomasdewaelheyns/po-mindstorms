@@ -103,7 +103,6 @@ public class LinkedGrid implements Grid {
     if (getSectorAt(position) == null){
       add(new LinkedSector(), position);
     }
-    int index = CantorDiagonal.transform(position);
     agentPositions.put(agent, position);
     agentBearings.put(agent, bearing);
     return this;

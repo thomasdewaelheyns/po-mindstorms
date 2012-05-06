@@ -76,7 +76,7 @@ public class WallDetectionModelProcessor extends ModelProcessor {
 
     // store the new sector layout
     wallsPart.updateSector(sector);
-    System.out.println("Detected walls: "+sector);
+    //Utils.Log("Detected walls: "+sector);
   }
   
   private boolean newSonarValuesAreAvailable() {

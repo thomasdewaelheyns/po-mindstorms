@@ -151,9 +151,9 @@ public class GhostProtocolHandler implements ProtocolHandler {
   // when we find a new sector, we need to send out discover information
   @Override
   public ProtocolHandler handleFoundSector(Sector sector) {
-    this.sendDiscover(sector.getGrid().getPositionOf(sector),sector.knowsWall(Bearing.N),
-                      sector.knowsWall(Bearing.E), sector.knowsWall(Bearing.S),
-                      sector.knowsWall(Bearing.W),
+    this.sendDiscover(sector.getGrid().getPositionOf(sector),
+                      sector.knowsWall(Bearing.N), sector.knowsWall(Bearing.E), 
+                      sector.knowsWall(Bearing.S), sector.knowsWall(Bearing.W),
                       !sector.givesAccessTo(Bearing.N), !sector.givesAccessTo(Bearing.E),
                       !sector.givesAccessTo(Bearing.S), !sector.givesAccessTo(Bearing.W));
     return this;

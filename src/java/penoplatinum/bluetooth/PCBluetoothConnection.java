@@ -12,6 +12,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,7 +80,6 @@ public class PCBluetoothConnection implements IConnection {
           return;
         }
         t.onPacketReceived(packetIdentifier, dgram, 0, size);
-
       }
 
       @Override

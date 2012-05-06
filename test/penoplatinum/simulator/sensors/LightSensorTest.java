@@ -3,13 +3,11 @@ package penoplatinum.simulator.sensors;
 import junit.framework.TestCase;
 import org.junit.Test;
 import penoplatinum.map.MapTestUtil;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import penoplatinum.map.Map;
 import penoplatinum.simulator.entities.SimulatedEntity;
 import penoplatinum.simulator.Simulator;
 import penoplatinum.simulator.tiles.Sector;
-import penoplatinum.util.Point;
 
 public class LightSensorTest extends TestCase {
 

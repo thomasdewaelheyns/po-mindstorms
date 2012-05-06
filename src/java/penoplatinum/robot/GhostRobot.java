@@ -8,8 +8,6 @@ package penoplatinum.robot;
  * @author Team Platinum
  */
 
-import java.text.NumberFormat;
-
 import penoplatinum.Config;
 
 import penoplatinum.driver.Driver;
@@ -186,6 +184,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     this.robotAPI.stop();
   }
 
+  private long prevCount = 0;
   // we are ...
   // 1) inactive
   // 2) still driving
@@ -195,7 +194,6 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     if( ! this.isActive() ) { this.model.refresh();  return; }
     this.updateSensors();
     if( driver.isBusy() )   { this.driver.proceed(); return; }
-    
     this.inCenterOfTile();
   }
   
@@ -222,20 +220,13 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
    */
   private void inCenterOfTile() {
     if( ! this.newSweepIsReady() ) { return; }
-
     this.navigator.finish(driver);
-    
-    SonarModelPart.from(this.model)
-      .update(this.robotAPI.getSweepResult(), this.angles);
-
+    SonarModelPart.from(this.model).update(this.robotAPI.getSweepResult(), this.angles);
     this.sweepID = this.robotAPI.getSweepID();
-    this.model.refresh(); // TODO: double call
-    
+    this.model.refresh();
     this.navigator.instruct(driver);
     this.sendMessages();
-
     if( this.reporter != null ) { this.reporter.reportModelUpdate(); }
-
     this.manageMemory();
   }
   
@@ -262,7 +253,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
   }
 
   private void manageMemory() {
-    System.gc(); System.gc(); System.gc(); System.gc();
+    /*System.gc(); System.gc(); System.gc(); System.gc();
 
     Runtime       runtime = Runtime.getRuntime();
     NumberFormat  format  = NumberFormat.getInstance();
@@ -275,7 +266,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     sb.append("       allocated : " + format.format(allocatedMemory / 1024) + "\n");
     sb.append("       max       : " + format.format(maxMemory / 1024) + "\n");
     sb.append("       total free: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + "\n");
-    
+    /**/
     //System.out.println(sb);
   }
   
@@ -328,7 +319,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
       Agent agent = g.getAgent(agentName);
       g.moveTo(agent, position, bearing);
     } else{
-      System.out.println("Barcode found: "+value+", "+bearing);
+      //Utils.Log("Barcode found: "+value+", "+bearing);
       BarcodeAgent barcode = BarcodeAgent.getBarcodeAgent(value);
       g.add(barcode, position, bearing);
     }

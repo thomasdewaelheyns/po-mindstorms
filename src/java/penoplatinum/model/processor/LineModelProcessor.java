@@ -13,6 +13,7 @@ import penoplatinum.model.part.SensorModelPart;
 
 import penoplatinum.util.LightColor;
 import penoplatinum.util.Line;
+import penoplatinum.util.Utils;
 
 
 public class LineModelProcessor extends ModelProcessor {
@@ -60,7 +61,7 @@ public class LineModelProcessor extends ModelProcessor {
       case WAITING:
         if( currentColor == LightColor.WHITE) {
           this.state = RECORDING;
-          System.out.println("Start reading line");
+          Utils.Log("Start reading line");
           this.brownCounter = 0;
           this.colorCounter = 0;
         }
@@ -71,7 +72,7 @@ public class LineModelProcessor extends ModelProcessor {
           if( this.brownCounter > 5 && this.colorCounter < 2 ) {
             this.state = WAITING;
           } else if( this.brownCounter > 5 ) {
-            System.out.println("OOH, It is, It is a line!");
+            Utils.Log("OOH, It is, It is a line!");
             lightPart.setLine(Line.WHITE);
             this.state = WAITING;
           }

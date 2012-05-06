@@ -11,9 +11,7 @@ package penoplatinum.driver.behaviour;
  * @author: Team Platinum
  */
 import penoplatinum.model.Model;
-
 import penoplatinum.model.part.WallsModelPart;
-
 import penoplatinum.driver.action.DriverAction;
 import penoplatinum.driver.action.MoveDriverAction;
 import penoplatinum.driver.action.CombinedDriverAction;

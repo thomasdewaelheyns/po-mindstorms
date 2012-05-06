@@ -86,7 +86,7 @@ public class ChangesModelProcessor extends ModelProcessor {
         barcodeBearing = barcodeBearing.reverse();
         alignedCode = Barcode.reverse(alignedCode, 6);
       }
-      System.out.println("Found barcode, handle barcode: "+gridPart.getMyPosition()+", "+barcodeBearing+" : "+alignedCode);
+      //Utils.Log("Found barcode, handle barcode: "+gridPart.getMyPosition()+", "+barcodeBearing+" : "+alignedCode);
       BarcodeAgent agent = BarcodeAgent.getBarcodeAgent(alignedCode);
       gridPart.getMyGrid().add(agent, gridPart.getMyPosition(), barcodeBearing);
       protocol.handleFoundAgent(gridPart.getMyGrid(), agent);
