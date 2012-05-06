@@ -59,6 +59,7 @@ public class DashboardReporterTest extends TestCase{
     when(sensorPart.getIRValue(4)).thenReturn(0);
     when(grid.getPositionOf(agent)).thenReturn(point);
     when(gridPart.getMyGrid()).thenReturn(grid);
+    when(gridPart.getMyAgent()).thenReturn(agent);
     when(grid.getPositionOf(sector)).thenReturn(point);
     when(grid.getSectorAt(point)).thenReturn(sector);
     
@@ -79,7 +80,7 @@ public class DashboardReporterTest extends TestCase{
     
     reporter.useGatewayClient(client);
     reporter.setRobot(robot);
-    reporter.reportModelUpdate(agent);
+    reporter.reportModelUpdate();
     verify(client).send("\"Angie\",90,\"WHITE\",70,8,30,40,0,20,200,20,0,-1,8,20,30,10,50,\"\",\"\",\"\",\"\",\"\",\"\",0", Config.BT_MODEL);
   }
   

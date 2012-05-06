@@ -45,16 +45,19 @@ public class DashboardReporter implements Reporter {
     return this;
   }
 
-  private void sendModelDeltas(Agent agent) {
+  private void sendModelDeltas() {
     long now = System.nanoTime();
     if(now < this.nextTime) { return; }
     this.nextTime = now + 300000000;
-    Point pos = this.getMainGrid(this.model).getPositionOf(agent);
-    Sector currentSector = this.getMainGrid(this.model).getSectorAt(pos);
-    
     SensorModelPart sensorPart = SensorModelPart.from(this.model);
     BarcodeModelPart barcodePart = BarcodeModelPart.from(this.model);
     LightModelPart lightPart = LightModelPart.from(this.model);
+    GridModelPart gridPart = GridModelPart.from(this.model);
+    Agent agent = gridPart.getMyAgent();
+    Point pos = this.getMainGrid(this.model).getPositionOf(agent);
+    Sector currentSector = this.getMainGrid(this.model).getSectorAt(pos);
+    
+    
     this.clear()
         .add(this.robot.getName())                                       .c()
         .add(sensorPart.getLightSensorValue())           .c()
@@ -189,8 +192,8 @@ public class DashboardReporter implements Reporter {
   }
 
   @Override
-  public Reporter reportModelUpdate(Agent agent) {
-    this.sendModelDeltas(agent);
+  public Reporter reportModelUpdate() {
+    this.sendModelDeltas();
     return this;
   }
 

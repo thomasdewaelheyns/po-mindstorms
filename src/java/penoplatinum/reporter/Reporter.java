@@ -10,15 +10,15 @@ package penoplatinum.reporter;
  */
 
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.grid.Agent;
 import penoplatinum.grid.Sector;
+import penoplatinum.grid.agent.Agent;
 
 
 public interface Reporter {
   public Reporter useGatewayClient(GatewayClient client);
 
   // the reporter can process updates to the information
-  public Reporter reportModelUpdate(Agent agent);
+  public Reporter reportModelUpdate();
   public Reporter reportSectorUpdate(Sector sector);
   public Reporter reportAgentUpdate(Agent agent);
 }
