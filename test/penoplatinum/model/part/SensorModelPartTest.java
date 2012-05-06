@@ -57,17 +57,17 @@ public class SensorModelPartTest extends TestCase {
                                                Config.MOTORSTATE_FORWARD,
                                                Config.MOTORSTATE_STOPPED,
                                                10, 11, 12, 13, 14, 15, 16 } );
-    //assertTrue(this.part.isMoving());
+    assertFalse(this.part.isMoving());
     this.part.updateSensorValues( new int[] {  1,  2,  3,  4,  5,  6, 7,
                                                Config.MOTORSTATE_STOPPED,
                                                Config.MOTORSTATE_BACKWARD,
                                                10, 11, 12, 13, 14, 15, 16 } );
-    //assertTrue(this.part.isMoving());
+    assertFalse(this.part.isMoving());
     this.part.updateSensorValues( new int[] {  1,  2,  3,  4,  5,  6, 7,
                                                Config.MOTORSTATE_BACKWARD,
                                                Config.MOTORSTATE_STOPPED,
                                                10, 11, 12, 13, 14, 15, 16 } );
-    //assertTrue(this.part.isMoving());
+    assertFalse(this.part.isMoving());
     this.part.updateSensorValues( new int[] {  1,  2,  3,  4,  5,  6, 7, 
                                                Config.MOTORSTATE_STOPPED,
                                                Config.MOTORSTATE_STOPPED,
@@ -96,22 +96,22 @@ public class SensorModelPartTest extends TestCase {
                                                Config.MOTORSTATE_STOPPED,
                                                Config.MOTORSTATE_FORWARD,
                                                10, 11, 12, 13, 14, 15, 16 } );
-    //assertTrue(this.part.isTurning());
+    assertFalse(this.part.isTurning());
     this.part.updateSensorValues( new int[] {  1,  2,  3,  4,  5,  6, 7,
                                                Config.MOTORSTATE_FORWARD,
                                                Config.MOTORSTATE_STOPPED,
                                                10, 11, 12, 13, 14, 15, 16 } );
-    //assertTrue(this.part.isTurning());
+    assertFalse(this.part.isTurning());
     this.part.updateSensorValues( new int[] {  1,  2,  3,  4,  5,  6, 7,
                                                Config.MOTORSTATE_STOPPED,
                                                Config.MOTORSTATE_BACKWARD,
                                                10, 11, 12, 13, 14, 15, 16 } );
-    //assertTrue(this.part.isTurning());
+    assertFalse(this.part.isTurning());
     this.part.updateSensorValues( new int[] {  1,  2,  3,  4,  5,  6, 7,
                                                Config.MOTORSTATE_BACKWARD,
                                                Config.MOTORSTATE_STOPPED,
                                                10, 11, 12, 13, 14, 15, 16 } );
-    //assertTrue(this.part.isTurning());
+    assertFalse(this.part.isTurning());
     this.part.updateSensorValues( new int[] {  1,  2,  3,  4,  5,  6, 7,
                                                Config.MOTORSTATE_STOPPED,
                                                Config.MOTORSTATE_STOPPED,
