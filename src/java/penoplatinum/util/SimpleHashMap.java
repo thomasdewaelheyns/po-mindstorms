@@ -1,82 +1,223 @@
 package penoplatinum.util;
 
-/**
- * Because Lejos doesn't implement HashMap, we implement our own. 
- */
-
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
+public class SimpleHashMap<K, V> {
+  private Entry<K, V>[] list;
+  private int size;
 
-public class SimpleHashMap<K, T>  {
-
-  public List<K> keys = new ArrayList<K>();
-  public List<T> values = new ArrayList<T>();
-
-  public T get(K key) {
-    int index = indexOf(key);
-    if (index == -1) {
-      return null;
-    }
-
-    return values.get(index);
-  }
-
-  private int indexOf(K key) {
-    for (int i = 0; i < keys.size(); i++) {
-      if (keys.get(i).equals(key)) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  /**
-   * Puts a new entry into the map, or replaces the old one if key already
-   * exists in the map
-   */
-  public void put(K key, T value) {
-    int index = indexOf(key);
-    if (index == -1) {
-      keys.add(key);
-      values.add(value);
-      return;
-    }
-    
-    values.set(index, value);
-    
+  public SimpleHashMap() {
+    size = 0;
+    list = new Entry[16];
   }
   
-  public void remove(K key)
-  {
-    values.remove(get(key));
-    keys.remove(key);
+  public static class Entry<K, V> {
+    public K key;
+    public V value;
+    public Entry<K, V> next;
+
+    public Entry(K key, V value) {
+      this.key = key;
+      this.value = value;
+    }
   }
 
-  public int size() {
-    return keys.size();
+  public K findKey(V value) {
+    for(Entry<K, V> e : list){
+      while(e != null && !e.value.equals(value)){
+        e = e.next;
+      }
+      if(e == null){
+        continue;
+      }
+      return e.key;
+    }
+    return null;
+  }
+
+  public V get(K key) {
+    int hash = Math.abs(key.hashCode() % list.length);
+    Entry<K, V> e = list[hash];
+    while(e != null && !e.key.equals(key)){
+      e = e.next;
+    }
+    if(e == null){
+      return null;
+    }
+    return e.value;
   }
 
   public boolean isEmpty() {
-    return keys.size() == 0;
+    return size == 0;
   }
 
-  public Iterable<T> values() {
-    return values;
+  public Iterable<K> keys() {
+    return new Iterable<K>() {
+      @Override
+      public Iterator<K> iterator() {
+        return new KeyIterator();
+      }
+    };
   }
   
-  public Iterable<K> keys()
-  {
-    return keys;
+  public void put(K key, V value) {
+    ensureCapacity();
+    size++;
+    int hash = Math.abs(key.hashCode()) % list.length;
+    Entry<K, V> c = list[hash];
+    if(c == null){
+      list[hash] = new Entry<K, V>(key, value);
+      return;
+    }
+    while(c.next != null && !c.key.equals(key)){
+      c = c.next;
+    }
+    if(c.key.equals(key)){
+      c.value = value;
+      size--;
+    } else {
+      c.next = new Entry(key, value);
+    }
   }
 
-  public K findKey(T g) {
-    for (int i = 0; i < values.size(); i++) {
-      if (g.equals(values.get(i)))
-        return keys.get(i);
+  public void remove(K key) {
+    int hash = Math.abs(key.hashCode()) % list.length;
+    Entry<K, V> e = list[hash];
+    if(e.key == key){
+      list[hash] = e.next;
+      size--;
+      return;
     }
-    return null;
+    while(e.next.key != key){
+      e = e.next;
+      if(e.next == null){
+        return;
+      }
+    }
+    e.next = e.next.next;
+    size--;
+    return;
+  }
+
+  public int size() {
+    return size;
+  }
+
+  public Iterable<V> values() {
+    return new Iterable<V>() {
+
+      @Override
+      public Iterator<V> iterator() {
+        return new ValueIterator();
+      }
+    };
+  }
+
+  private void ensureCapacity() {
+    if(size <= list.length*0.75){
+      return;
+    }
+    Entry<K, V>[] oldList = list;
+    list = new Entry[list.length*2];
+    size = 0;
+    for(Entry<K, V> e : oldList){
+      while(e != null){
+        put(e.key, e.value);
+        e = e.next;
+      }
+    }
+  }
+
+  public Iterable<Entry<K, V>> entries() {
+    return new Iterable<Entry<K, V>>() {
+
+      @Override
+      public Iterator<Entry<K, V>> iterator() {
+        return new EntryIterator();
+      }
+    };
+  }
+
+  private class ValueIterator implements Iterator<V> {
+    EntryIterator entry = new EntryIterator();
+    public ValueIterator() {
+    }
+
+    @Override
+    public boolean hasNext() {
+      return entry.hasNext();
+    }
+
+    @Override
+    public V next() {
+      return entry.next().value;
+    }
+
+    @Override
+    public void remove() {
+      entry.next();
+    }
+
+  }
+
+  private class EntryIterator implements Iterator<Entry<K, V>> {
+    private int hashPos = -1;
+    private Entry<K, V> currentEntry;
+
+    public EntryIterator() {
+      for(hashPos++; hashPos < list.length; hashPos++){
+        currentEntry = list[hashPos];
+        if(list[hashPos] != null){
+          break;
+        }
+      }
+    }
+    
+    @Override
+    public boolean hasNext() {
+      return currentEntry != null;
+    }
+
+    @Override
+    public Entry<K, V> next() {
+      Entry out = currentEntry;
+      currentEntry = currentEntry.next;
+      if(currentEntry != null){
+        return out;
+      }
+      for(hashPos++; hashPos < list.length; hashPos++){
+        currentEntry = list[hashPos];
+        if(currentEntry != null){
+          return out;
+        }
+      }
+      return out;
+    }
+
+    @Override
+    public void remove() {
+      next();
+    }
+
+  }
+  private class KeyIterator implements Iterator<K> {
+      EntryIterator entry = new EntryIterator();
+
+    @Override
+    public boolean hasNext() {
+      return entry.hasNext();
+    }
+
+    @Override
+    public K next() {
+      return entry.next().key;
+    }
+
+    @Override
+    public void remove() {
+      entry.next();
+    }
+      
   }
 
 }
