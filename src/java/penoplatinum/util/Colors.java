@@ -1,16 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.util;
 
 /**
- *
- * @author Florian
+ * Colors
+ * 
+ * pseudo-Enum for colors.
+ * 
+ * @author Team Platinum
  */
+
 public class Colors {
 
-  public static Color YELLOW = new Color(255, 255, 0);
-  public static Color WHITE = new Color(255, 255, 255);
-  public static Color GREY = new Color(200, 200, 200);
+  public final static Color YELLOW   = new Color(255, 255, 0);
+  public final static Color WHITE    = new Color(255, 255, 255);
+  public final static Color GREY     = new Color(200, 200, 200);
+  public final static Color NO_COLOR = new Color(0,0,0);
 }

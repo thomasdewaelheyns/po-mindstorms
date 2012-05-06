@@ -41,6 +41,10 @@ public class Color {
       return false;
     return true;
   }
+  
+  public String toString() {
+    return "rgb(" + this.getR() + "," + this.getG() + "," + this.getB() + ")";
+  }
 
   
 }
