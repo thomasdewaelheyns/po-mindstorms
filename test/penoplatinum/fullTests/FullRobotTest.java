@@ -12,6 +12,9 @@ import penoplatinum.driver.Driver;
 import penoplatinum.driver.ManhattanDriver;
 import penoplatinum.driver.behaviour.*;
 
+import penoplatinum.reporter.Reporter;
+import penoplatinum.reporter.DashboardReporter;
+
 import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.map.Map;
@@ -42,25 +45,25 @@ import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
 public class FullRobotTest extends TestCase {
 
-  @Test
-  public void testMerge() throws FileNotFoundException {
-    Config.load("test.properties");
-  
-    // setup simulator
-    Simulator       simulator = this.createSimulator(makeLongMap());    
-  
-    // add four ghosts ...
-    GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 260, 20, -90);
-    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 20, 20, 90);
-    GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 260, 60, -90);
-    GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 20, 60, -90);
-  
-    // run the simulator for 30000 steps
-    simulator.run(30000);
-    
-    // If we remove delays in the simulator and its view, and if we then add
-    // some assertions here, these would be real unit tests ;-)
-  }
+  // @Test
+  // public void testMerge() throws FileNotFoundException {
+  //   Config.load("test.properties");
+  // 
+  //   // setup simulator
+  //   Simulator       simulator = this.createSimulator(makeLongMap());    
+  // 
+  //   // add four ghosts ...
+  //   GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 260, 20, -90);
+  //   GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 20, 20, 90);
+  //   GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 260, 60, -90);
+  //   GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 20, 60, -90);
+  // 
+  //   // run the simulator for 30000 steps
+  //   simulator.run(30000);
+  //   
+  //   // If we remove delays in the simulator and its view, and if we then add
+  //   // some assertions here, these would be real unit tests ;-)
+  // }
   
   @Test
   public void testSimulator() throws FileNotFoundException {
@@ -109,9 +112,11 @@ public class FullRobotTest extends TestCase {
     Driver        driver    = this.createDriver();
     Navigator     navigator = this.createNavigator();
     GatewayClient client    = this.createGatewayClient();
+    Reporter      reporter  = this.createReporter();
     robot.useDriver(driver)
          .useNavigator(navigator)
-         .useGatewayClient(client);
+         .useGatewayClient(client)
+         .useReporter(reporter);
     return robot;
   }
   
@@ -129,6 +134,10 @@ public class FullRobotTest extends TestCase {
   
   private GatewayClient createGatewayClient() {
     return new SimulatedGatewayClient();    
+  }
+  
+  private Reporter createReporter() {
+    return new DashboardReporter();
   }
   
   private SimulatedEntity createSimulatedEntityFor(GhostRobot robot) {

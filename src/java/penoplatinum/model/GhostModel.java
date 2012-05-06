@@ -35,14 +35,6 @@ public class GhostModel implements Model {
   // a reporter reports on a Model
   private Reporter reporter;
 
-  /**
-   * Dit is verwijderd aangezien deze de kleuren kapot doet.
-   * Gebruik vanaf nu altijd de naam van de robot om de grid mee op te stellen.
-   * Zie ook GridModelPart.
-   *
-  public GhostModel() {
-    this("mine");
-  }/**/
   
   // setup the parts of the GhostModel
   public GhostModel(String name) {

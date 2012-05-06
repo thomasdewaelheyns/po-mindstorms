@@ -74,7 +74,7 @@ public class Config {
   public static final int MOTORSTATE_STOPPED  = 3;
 
   // we're tracking these sensors/actuators
-  public static final int SENSORVALUES_NUM = 15;
+  public static final int SENSORVALUES_NUM = 16;
 
   // names for sensor/actuator indexes
   public static final int M1  = 0; 
@@ -92,6 +92,7 @@ public class Config {
   public static final int IR2 = 12;
   public static final int IR3 = 13;
   public static final int IR4 = 14;
+  public static final int IR_DISTANCE = 15;
 
   // mapping logical names to physical indexes
   public static final int MOTOR_RIGHT       = M1;

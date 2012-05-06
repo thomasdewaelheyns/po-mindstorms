@@ -5,19 +5,18 @@ package penoplatinum.grid.agent;
  * 
  * Implementation of an Agent, extending a MovingAgent into a Barcode
  * 
- * @author: Team Platinum
- */
-
-import penoplatinum.util.Color;
-import penoplatinum.util.SimpleHashMap;
-
-/**
  * A BarcodeAgent is supposed to be unique for each type of barcode!!
  * Note: barcodes should be normalized!!! (so no reversed BarcodeAgents are 
  * allowed to exists)
  * 
- * @author MHGameWork
+ * @author: Team Platinum
  */
+
+import penoplatinum.util.Color;
+import penoplatinum.util.Colors;
+import penoplatinum.util.SimpleHashMap;
+
+
 public class BarcodeAgent extends MovingAgent {
   
   private  static SimpleHashMap<Integer,BarcodeAgent> agents = new SimpleHashMap<Integer, BarcodeAgent>();
@@ -43,6 +42,6 @@ public class BarcodeAgent extends MovingAgent {
   @Override
   public int   getValue() { return this.code; }
   @Override
-  public Color getColor() { return null;      }
+  public Color getColor() { return Colors.NO_COLOR;      }
 
 }

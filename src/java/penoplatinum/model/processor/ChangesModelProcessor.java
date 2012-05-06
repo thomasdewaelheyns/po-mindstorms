@@ -39,8 +39,8 @@ public class ChangesModelProcessor extends ModelProcessor {
   }
   
   
-  private Point prevPosition;
-  private Bearing prevBearing;
+  private Point prevPosition = new Point(0,0);
+  private Bearing prevBearing = Bearing.N;
 
   protected void work() {
     Model model = getModel();
@@ -54,9 +54,13 @@ public class ChangesModelProcessor extends ModelProcessor {
     MessageModelPart messagePart = MessageModelPart.from(model);
     ProtocolHandler protocol = messagePart.getProtocolHandler();
     
+    // notify other ghosts of my new position
     protocol.handleEnterSector(gridPart.getMySector());
-    handleBarcode(model, gridPart, protocol);
-    handleDiscovery(gridPart, protocol, model);
+    this.handleBarcode(model, gridPart, protocol);
+    this.handleDiscovery(gridPart, protocol, model);
+    // TODO
+    // this.handleChangedValues(gridPart, protocol, model);
+
     // Send pacman position updates
     if (gridPart.getPacmanID() > pacmanID) {
       pacmanID = gridPart.getPacmanID();
@@ -65,12 +69,12 @@ public class ChangesModelProcessor extends ModelProcessor {
   }
 
   private void handleDiscovery(GridModelPart gridPart, ProtocolHandler protocol, Model model) {
-    List<Sector> changed = gridPart.getChangedSectors();
-    for(Sector current : changed){
+    for(Sector current : gridPart.getChangedSectors() ){
+      
       // for each changed sector, notify the GhostProtocol
       protocol.handleFoundSector(current);
       // and report to dashboard (directly)
-      if(model.getReporter() != null){
+      if(model.getReporter() != null) {
         model.getReporter().reportSectorUpdate(current);
       }
     }
@@ -90,6 +94,10 @@ public class ChangesModelProcessor extends ModelProcessor {
       BarcodeAgent agent = BarcodeAgent.getBarcodeAgent(alignedCode);
       gridPart.getMyGrid().add(agent, gridPart.getMyPosition(), barcodeBearing);
       protocol.handleFoundAgent(gridPart.getMyGrid(), agent);
+      if(model.getReporter() != null) {
+        model.getReporter().reportAgentUpdate(agent);
+      }
+      
     }
   }
 }

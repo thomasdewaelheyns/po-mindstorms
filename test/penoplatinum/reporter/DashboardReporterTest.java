@@ -17,6 +17,7 @@ import penoplatinum.robot.GhostRobot;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.LightColor;
 import penoplatinum.util.Point;
+import penoplatinum.util.Colors;
 
 /**
  *
@@ -57,6 +58,7 @@ public class DashboardReporterTest extends TestCase{
     when(sensorPart.getIRValue(2)).thenReturn(200);
     when(sensorPart.getIRValue(3)).thenReturn(20);
     when(sensorPart.getIRValue(4)).thenReturn(0);
+    when(sensorPart.getIRDistance()).thenReturn(123);
     when(grid.getPositionOf(agent)).thenReturn(point);
     when(gridPart.getMyGrid()).thenReturn(grid);
     when(gridPart.getMyAgent()).thenReturn(agent);
@@ -79,9 +81,9 @@ public class DashboardReporterTest extends TestCase{
     when(neighbourW.getValue()).thenReturn(50);
     
     reporter.useGatewayClient(client);
-    reporter.setRobot(robot);
+    reporter.reportFor(robot);
     reporter.reportModelUpdate();
-    verify(client).send("\"Angie\",90,\"WHITE\",70,8,30,40,0,20,200,20,0,-1,8,20,30,10,50,\"\",\"\",\"\",\"\",\"\",\"\",0", Config.BT_MODEL);
+    verify(client).send("\"Angie\",90,\"WHITE\",70,8,30,40,0,20,200,20,0,123,8,20,30,10,50,\"\",\"\",\"\",\"\",\"\",\"\",0", Config.BT_MODEL);
   }
   
   public void testReportSectorUpdate(){
@@ -98,7 +100,7 @@ public class DashboardReporterTest extends TestCase{
     when(grid.getPositionOf(sector)).thenReturn(new Point(1,1));
     
     reporter.useGatewayClient(client);
-    reporter.setRobot(robot);
+    reporter.reportFor(robot);
     reporter.reportSectorUpdate(sector);
     verify(client).send("\"Angie\",\"myGrid\",1,1,8", Config.BT_WALLS);
   }
@@ -120,12 +122,13 @@ public class DashboardReporterTest extends TestCase{
     when(agent.getName()).thenReturn("Megatron");
     when(grid.getBearingOf(agent)).thenReturn(Bearing.N);
     when(grid.getSectorAt(point)).thenReturn(sector);
-    //TODO hier verder
+    when(agent.getColor()).thenReturn(Colors.WHITE);
+
     reporter.useGatewayClient(client);
-    reporter.setRobot(robot);
+    reporter.reportFor(robot);
     
     reporter.reportAgentUpdate(agent);
-    verify(client).send("\"Angie\",\"myGrid\",\"Megatron\",1,1,1,\"white\"", Config.BT_AGENTS);
+    verify(client).send("\"Angie\",\"myGrid\",\"Megatron\",1,1,1,\"rgb(255,255,255)\"", Config.BT_AGENTS);
   }
   
   private GatewayClient mockGatewayClient(){

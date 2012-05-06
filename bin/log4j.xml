@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
     <appender class="org.apache.log4j.ConsoleAppender" name="console">
         <layout class="org.apache.log4j.PatternLayout">
             <param value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" name="ConversionPattern"/>
@@ -55,7 +56,7 @@
             <param value="%m" name="ConversionPattern"/>
         </layout>
         <filter class="org.apache.log4j.varia.StringMatchFilter">
-            <param name="StringToMatch" value="robot1 " />
+            <param name="StringToMatch" value="robot1 POSITION" />
             <param name="AcceptOnMatch" value="true" />
         </filter>
         <filter class="org.apache.log4j.varia.DenyAllFilter"/>
@@ -90,37 +91,37 @@
 
     <logger name="agents">
         <level value="info"/>
-        <appender-ref ref="static"/>
+        <appender-ref ref="agents-db"/>
     </logger>
 
     <logger name="model">
         <level value="info"/>
-        <appender-ref ref="static"/>
-    </logger>
-
-    <logger name="SimulatedMQ">
-        <level value="info"/>
-        <appender-ref ref="twitter"/>
+        <appender-ref ref="model-db"/>
     </logger>
 
     <logger name="values">
         <level value="info"/>
-        <appender-ref ref="static"/>
+        <appender-ref ref="values-db"/>
     </logger>
 
     <logger name="walls">
         <level value="info"/>
-        <appender-ref ref="static"/>
+        <appender-ref ref="walls-db"/>
     </logger>
 
-    <logger name="org.apache.commons.httpclient.params.DefaultHttpParams">
+    <logger name="ghostprotocol">
         <level value="info"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="SimulatedMQ">
+        <level value="error"/>
         <appender-ref ref="console"/>
     </logger>
 
     <root>
         <level value="info"/>
-        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
     </root>
 
 </log4j:configuration>

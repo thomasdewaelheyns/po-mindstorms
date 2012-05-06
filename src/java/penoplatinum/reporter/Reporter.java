@@ -13,9 +13,12 @@ import penoplatinum.gateway.GatewayClient;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.agent.Agent;
 
+import penoplatinum.robot.Robot;
+
 
 public interface Reporter {
   public Reporter useGatewayClient(GatewayClient client);
+  public Reporter reportFor(Robot robot);
 
   // the reporter can process updates to the information
   public Reporter reportModelUpdate();

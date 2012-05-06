@@ -25,6 +25,7 @@ public class SensorModelPart implements ModelPart {
   private double totalTurnedAngle;
   private int valuesId = 0;
 
+  private int fps = 0;
 
   // receive an update of the sensor values
   public void updateSensorValues(int[] values) {
@@ -59,6 +60,14 @@ public class SensorModelPart implements ModelPart {
   public int getIRDirection() {
     return this.getSensorValue(Config.IR_DIRECTION);
   }
+
+  public int getIRDistance() {
+    return this.getSensorValue(Config.IR_DISTANCE);
+  }
+
+  public void setIRDistance(int distance) {
+    this.setSensorValue(Config.IR_DISTANCE, distance);
+  }
   
   public int getIRValue(int direction) {
     return this.getSensorValue(Config.IR0 + direction);
@@ -78,6 +87,14 @@ public class SensorModelPart implements ModelPart {
 
   public int getValuesID() {
     return this.valuesId;
+  }
+  
+  public int getFPS() {
+    return this.fps;
+  }
+
+  public void setFPS(int fps) {
+    this.fps = fps;
   }
 
   // private helper methods
@@ -100,8 +117,12 @@ public class SensorModelPart implements ModelPart {
     return this.getSensorValue(Config.MOTOR_STATE_LEFT);
   }
 
-  // DO NOT MAKE THIS METHOD PUBLIC ... add additional accessors + tests !!!
+  // DO NOT MAKE THESE METHOD PUBLIC ... add additional accessors + tests !!!
   private int getSensorValue(int num) {
     return this.sensors[num];
+  }
+
+  private void setSensorValue(int num, int value) {
+    this.sensors[num] = value;
   }
 }

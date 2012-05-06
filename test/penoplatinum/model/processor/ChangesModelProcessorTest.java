@@ -63,10 +63,10 @@ public class ChangesModelProcessorTest extends TestCase {
   public void testWork() {
     ChangesModelProcessor instance = new ChangesModelProcessor();
     instance.setModel(mockModel);
-    when(mockGridPart.getMyPosition()).thenReturn(new Point(0, 0));
-    when(mockGridPart.getMyBearing()).thenReturn(Bearing.N);
+    when(mockGridPart.getMyPosition()).thenReturn(new Point(1, 1));
+    when(mockGridPart.getMyBearing()).thenReturn(Bearing.S);
     instance.work();
-    verify(mockGridPart, times(1)).getChangedSectors(); //work once, DON'T do it again.
+    verify(mockGridPart, times(1)).getChangedSectors(); // work once, DON'T do it again.
     instance.work();
     verify(mockGridPart, times(1)).getChangedSectors();
     when(mockSensor.isMoving()).thenReturn(Boolean.FALSE);

@@ -48,6 +48,8 @@ stat:
 ${BUILD_DIR}:
 	@mkdir -p build
 	@cp -r ../resources build/
+	@cp ../bin/log4j.xml build/
+	@cp ../bin/robot.properties build/
 
 clean:
 	@${RM} ${BUILD_DIR}

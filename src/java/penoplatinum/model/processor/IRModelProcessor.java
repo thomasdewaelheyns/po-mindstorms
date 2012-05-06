@@ -49,7 +49,17 @@ public class IRModelProcessor extends ModelProcessor {
     } else {
       sum += sensor.getIRValue(dir/2);
     }
-    if( sum <= 150 ) { return; }
+    
+    // TODO: validate these magic numbers ;-)
+    if( sum > 150 ) {
+      sensor.setIRDistance(1);
+    } else {
+      if( sum > 100 )      { sensor.setIRDistance(2); }
+      else if( sum >  75 ) { sensor.setIRDistance(3); }
+      else if( sum >  50 ) { sensor.setIRDistance(4); }
+      else                 { sensor.setIRDistance(5); }
+      return;
+    }
 
     GridModelPart gridPart = GridModelPart.from(this.getModel());
 

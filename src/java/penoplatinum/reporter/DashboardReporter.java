@@ -39,7 +39,7 @@ public class DashboardReporter implements Reporter {
     return this;
   }
   
-  public DashboardReporter setRobot(Robot robot) {
+  public DashboardReporter reportFor(Robot robot) {
     this.robot = (GhostRobot)robot;
     this.model = (GhostModel)this.robot.getModel();
     return this;
@@ -49,30 +49,31 @@ public class DashboardReporter implements Reporter {
     long now = System.nanoTime();
     if(now < this.nextTime) { return; }
     this.nextTime = now + 300000000;
-    SensorModelPart sensorPart = SensorModelPart.from(this.model);
+
+    SensorModelPart  sensorPart = SensorModelPart.from(this.model);
     BarcodeModelPart barcodePart = BarcodeModelPart.from(this.model);
-    LightModelPart lightPart = LightModelPart.from(this.model);
-    GridModelPart gridPart = GridModelPart.from(this.model);
+    LightModelPart   lightPart = LightModelPart.from(this.model);
+    GridModelPart    gridPart = GridModelPart.from(this.model);
+
     Agent agent = gridPart.getMyAgent();
     Point pos = this.getMainGrid(this.model).getPositionOf(agent);
+
     Sector currentSector = this.getMainGrid(this.model).getSectorAt(pos);
-    
     
     this.clear()
         .add(this.robot.getName())                                       .c()
-        .add(sensorPart.getLightSensorValue())           .c()
-        .add(lightPart.getCurrentLightColor().toString()).c()
-        .add((int)lightPart.getAverageLightValue())      .c()
-        .add(barcodePart.getLastBarcodeValue())                   .c()
-        .add(sensorPart.getSonarAngle())                  .c()
-        .add(sensorPart.getSonarDistance())              .c()
-        .add(sensorPart.getIRValue(0))                .c()
-        .add(sensorPart.getIRValue(1))                .c()
-        .add(sensorPart.getIRValue(2))                .c()
-        .add(sensorPart.getIRValue(3))                .c()
-        .add(sensorPart.getIRValue(4))                .c()
-        // ir_dist the shortest distance        
-        .add(-1)                                                         .c()
+        .add(sensorPart.getLightSensorValue())                           .c()
+        .add(lightPart.getCurrentLightColor().toString())                .c()
+        .add((int)lightPart.getAverageLightValue())                      .c()
+        .add(barcodePart.getLastBarcodeValue())                          .c()
+        .add(sensorPart.getSonarAngle())                                 .c()
+        .add(sensorPart.getSonarDistance())                              .c()
+        .add(sensorPart.getIRValue(0))                                   .c()
+        .add(sensorPart.getIRValue(1))                                   .c()
+        .add(sensorPart.getIRValue(2))                                   .c()
+        .add(sensorPart.getIRValue(3))                                   .c()
+        .add(sensorPart.getIRValue(4))                                   .c()
+        .add(sensorPart.getIRDistance())                                 .c()
         .add(this.getWalls(currentSector)).c();
 
     for(Bearing direction: Bearing.NESW){
@@ -82,7 +83,6 @@ public class DashboardReporter implements Reporter {
 
     String event = "", source = "", plan = "", 
            queue = "", action = "", argument = "";
-    int fps = 0;
 
     this.add(event)                                                      .c()
         .add(source)                                                     .c()
@@ -90,7 +90,7 @@ public class DashboardReporter implements Reporter {
         .add(queue)                                                      .c()
         .add(action)                                                     .c()
         .add(argument)                                                   .c()
-        .add(fps);
+        .add(sensorPart.getFPS());
 
     this.sendBuffer(Config.BT_MODEL);
   }
@@ -145,10 +145,10 @@ public class DashboardReporter implements Reporter {
         .add(name)                                                       .c()
         .add(grid)                                                       .c()
         .add(agent.getName())                                            .c()
-        .add(pos.getX())                         .c()
-        .add(pos.getY())                         .c()
-        .add(translateBearingToInt(mainGrid.getBearingOf(agent)))          .c()
-        .add("white")
+        .add(pos.getX())                                                 .c()
+        .add(pos.getY())                                                 .c()
+        .add(translateBearingToInt(mainGrid.getBearingOf(agent)))        .c()
+        .add(agent.getColor().toString())
         .sendBuffer(Config.BT_AGENTS);
     return this;
   }

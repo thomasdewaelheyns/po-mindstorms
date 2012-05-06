@@ -37,7 +37,7 @@ import penoplatinum.reporter.Reporter;
 
 import penoplatinum.util.Point;
 import penoplatinum.util.Bearing;
-
+import penoplatinum.util.FPS;
 
 public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
 
@@ -47,6 +47,8 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
   private Navigator            navigator;
   private GatewayClient        gatewayClient;
   private Reporter             reporter;
+  
+  private FPS fps = new FPS();
   
   private String name;
 
@@ -76,8 +78,12 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
                              new ImportWallsModelProcessor(
                              new UnknownSectorModelProcessor(
                              new ChangesModelProcessor(
-                             new ScrewGridUpModelProcessor(
-                                             )))))))))));
+                                             ))))))))));
+
+    if( this.reporter != null && this.model != null ) {
+      this.model.setReporter(this.reporter);
+    }
+
     // TODO:
 
     // BarcodeWallsModelProcessor
@@ -157,6 +163,10 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     if( this.reporter != null && this.gatewayClient != null ) {
       this.reporter.useGatewayClient(this.gatewayClient);
     }
+    if( this.reporter != null && this.model != null ) {
+      this.model.setReporter(this.reporter);
+    }
+    this.reporter.reportFor(this);
     return this;
   }
 
@@ -190,15 +200,40 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
   // 2) still driving
   // 3) in the center of a tile
   public void step() {
+    // TODO: move this to single instance
     MessageModelPart.from(model).getProtocolHandler().handleStart();
-    if( ! this.isActive() ) { this.model.refresh();  return; }
+
+    this.startProfiling();
+    
+    if( ! this.isActive() ) { 
+      this.model.refresh();
+      return;
+    }
+
     this.updateSensors();
-    if( driver.isBusy() )   { this.driver.proceed(); return; }
+
+    if( driver.isBusy() ) {
+      this.driver.proceed(); 
+      this.stopProfiling();
+      return;
+    }
+
+    this.stopProfiling();
+
     this.inCenterOfTile();
   }
   
   private boolean isActive() {
     return GridModelPart.from(this.model).getMyAgent().isActive();  
+  }
+
+  private void startProfiling() {
+    this.fps.setCheckPoint();
+  }
+
+  private void stopProfiling() {
+    this.fps.endCheckPoint();
+    SensorModelPart.from(this.model).setFPS(this.fps.getFps());
   }
 
   private void updateSensors() {

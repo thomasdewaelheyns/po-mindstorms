@@ -39,6 +39,7 @@ public class SimulatedEntityFactory {
     entity.setSensor(Config.IR2, new IRdistanceSensor(0));
     entity.setSensor(Config.IR3, new IRdistanceSensor(-60));
     entity.setSensor(Config.IR4, new IRdistanceSensor(-120));
+    entity.setSensor(Config.IR_DISTANCE, new NoneSensor());
     
     robot.useRobotAPI(new SimulationRobotAPI().setSimulatedEntity(entity));
     return entity;
