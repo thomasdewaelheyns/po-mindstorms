@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
+import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 
 /**
@@ -88,14 +89,20 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Sector getSectorAt(Point position) {
-    return getSector(getSectorId(position));
+    transformation.inverseTransform(position);
+    Sector s = grid.getSectorAt(position);
+    transformation.transform(position);
+
+    if (s == null)
+      return null;
+
+    return new TransformedSector(s, transformation);
   }
 
   @Override
   public Point getPositionOf(Sector sector) {
-    if (sector instanceof FacadeSector) {
-      sector = grid.getSector(((FacadeSector) sector).getSectorId());
-    }
+    while (sector instanceof TransformedSector)
+      sector = ((TransformedSector) sector).getDecoratedSector();
 
     Point p = grid.getPositionOf(sector);
     transformation.transform(p);
@@ -104,11 +111,10 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Iterable<Sector> getSectors() {
-    //TODO: Only use on pc!!!
+    //Only use on pc!!!
     List<Sector> ret = new ArrayList<Sector>();
-    for (Sector s : grid.getSectors()) {
-      ret.add(getSector(grid.getSectorId(grid.getPositionOf(s))));
-    }
+    for (Sector s : grid.getSectors())
+      ret.add(new TransformedSector(s, transformation));
     return ret;
   }
 
@@ -147,14 +153,14 @@ public class TransformedGrid implements Grid {
     return grid.getAgent(name);
   }
 
+
   @Override
   public Point getPositionOf(Agent agent) {
     Point pos = grid.getPositionOf(agent);
-    if (pos == null)
-      return null;
-
+    if (pos == null) return null;
+    
     transformation.transform(pos);
-
+    
     return pos;
   }
 
@@ -162,21 +168,25 @@ public class TransformedGrid implements Grid {
   public Agent getAgentAt(Point position, Class cls) {
     transformation.inverseTransform(position);
 
-    Agent a = grid.getAgentAt(position, cls);
+    Agent a = grid.getAgentAt(position,cls);
 
     transformation.transform(position);
     return a;
   }
-
+  
   @Override
   public Iterable<Agent> getAgents() {
     return grid.getAgents();
   }
+  private Point minBuf = new Point(0, 0);
+  private Point maxBuf = new Point(0, 0);
 
   private int getBoundAt(Bearing b) {
 
-    Point min = new Point(grid.getMinLeft(), grid.getMinTop());
-    Point max = new Point(grid.getMaxLeft(), grid.getMaxTop());
+    Point min = minBuf;
+    Point max = maxBuf;
+    minBuf.set(grid.getMinLeft(), grid.getMinTop());
+    maxBuf.set(grid.getMaxLeft(), grid.getMaxTop());
 
     transformation.transform(min);
     transformation.transform(max);
@@ -246,37 +256,7 @@ public class TransformedGrid implements Grid {
   public String toString() {
     return GridUtils.createGridSectorsString(this);
   }
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  // Sector functions
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-
+}
   @Override
   public boolean hasNeighbour(int sectorId, Bearing atBearing) {
 

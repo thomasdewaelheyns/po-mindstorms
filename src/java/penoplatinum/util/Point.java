@@ -30,6 +30,12 @@ public class Point implements Cloneable {
     return this.y;
   }
 
+  public void set(int x, int y)
+  {
+    this.x = x;
+    this.y = y;
+  }
+  
   public Point translate(int dx, int dy) {
     this.x += dx;
     this.y += dy;

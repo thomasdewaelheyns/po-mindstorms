@@ -131,6 +131,7 @@ public class Simulator {
   }
 
   private void step() {
+    
     for (RobotEntity robotEntity : robotEntities) {
       robotEntity.step();
     }
