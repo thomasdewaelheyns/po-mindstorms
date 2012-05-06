@@ -12,7 +12,7 @@ import penoplatinum.gateway.MessageReceiver;
 public class SimulatedMQ implements Queue {
   private List<MessageReceiver> subscribers = new ArrayList<MessageReceiver>();
 
-  private static Logger logger = Logger.getLogger("SimulatdMQ");
+  private static Logger logger = Logger.getLogger("SimulatedMQ");
 
   private static SimulatedMQ singleton = new SimulatedMQ();
 

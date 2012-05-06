@@ -1,238 +1,32 @@
-overzicht van classes die nog geen unit test hebben
----------------------------------------------------
-(dit is op basis van mijn huidige unit branch en wat ik weet wat er gaande is)
+Simulator:
+- border in kleur van "owning" ghost rond GridView (na merges weet je anders
+  nog moeilijk van wie de gridview is)
+- fix startup exception
+  Exception in thread "AWT-EventQueue-0" java.lang.IllegalStateException:
+  penoplatinum.grid.GridBoard[,0,0,0x0,invalid,layout=java.awt.FlowLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+  is not attached to a vertical group
 
-Manier van werken: Deze file zit mee in de repo en moet onderhouden worden. Opmerkingen, bedenkingen,... moeten hier in bijgehouden worden. Telkens bestanden in orde zijn, mogen ze verwijderd worden. Doel is om deze file LEEG te krijgen.
-
-Als je iets opneemt, zet er dan je naam bij. Als je info kan verschaffen, zet je naam er dan bij, zodat diegene die het opneemt weet wie info kan verschaffen.
-
----
-
-bluetooth/CallbackPacketTransporter.java
-bluetooth/IConnection.java
-bluetooth/IPacketHandler.java
-bluetooth/IPacketReceiver.java
-bluetooth/IPacketTransporter.java
-bluetooth/IRemoteLoggerCallback.java
-bluetooth/PCBluetoothConnection.java
-bluetooth/Packet.java
-bluetooth/PacketBuilder.java
-bluetooth/QueuedPacketTransporter.java
-bluetooth/RemoteFileLogger.java
-bluetooth/SimulatedConnection.java
-
-Heel de bluetooth package heeft tot nu toe niet echt voor veel problemen gezorgd. Michiel, nice job ! ;-) Dus deze package heeft zeker geen prioriteit. Maar het zou goed zijn om ook deze te voorzien van een degelijke set unit testen. Ik heb persoonlijk al enkele keren ondervonden, tijdens het opstellen van de eerste lading testen dat er soms nog serieuze verbeteringen mogelijk zijn (vooral vereenvoudigingen) en onverwachten fouten kunnen opduiken.
-
-INFO: Michiel
-TODO: anybody, bij voorkeur iemand anders dan Michiel om een ander paar ogen er over te laten gaan.
-
-driver/GhostDriver.java
-driver/action/AlignDriverAction.java
-driver/behaviour/LineDriverBehaviour.java
-driver/behaviour/RestoreDriverBehaviour.java
-
-Driver package heb ik tijdens de vakantie aangepakt. Deze classes zijn nog de laatste loose ends. Ik zorg er nog wel voor dat deze opgelost worden.
-
-INFO: xtof
-TODO: xtof
-
-gateway/BluetoothConnection.java
-gateway/Gateway.java
-gateway/GatewayRunner.java
-gateway/MQ.java
-gateway/MQRunner.java
-gateway/NullGatewayClient.java
-gateway/UpdatesJSAppender.java
-
-De gateway is een op zich staande executable. Het meeste hiervan is ok, maar ik wil het nog nakijken. Daarna zou dit ook best voorzien worden van unit tests omdat het belangrijk is in de communicatie.
-Er moeten hier nog enkele functionele uitbreidingen voorzien worden. Ik zal die classes doornemen, bijwerken en annoteren. Daarna lijkt het mij een mooi package om door iemand anders te afwerken en voorzien van unit tests.
-
-INFO: xtof
-TODO: functioneel afwerken: xtof
-			implementatie afwerken en testen: anybody
-
-grid/Agent.java
-grid/AggregatedGrid.java
-grid/AggregatedSubGrid.java
-grid/BarcodeAgent.java
-grid/ConsoleGridView.java
-grid/DiffusionGridProcessor.java
-grid/GhostAgent.java
-grid/GridBoard.java
-grid/GridFactory.java
-grid/GridProcessor.java
-grid/GridView.java
-grid/MovingAgent.java
-grid/NullGrid.java
-grid/NullGridView.java
-grid/PacmanAgent.java
-grid/ProxyAgent.java
-grid/Sector.java
-grid/SimpleGrid.java
-grid/StaticTargetAgent.java
-grid/SwingGridView.java
-
-Michiel is bezig met de Grid package volledig te reviseren. Hij zal dit ook best unit testen terwijl hij dit doet.
-
-INFO: Michiel/xtof
-TODO: Michiel
-
-model/GhostModel.java
-model/part/BarcodeModelPart.java
-model/part/GapModelPart.java
-model/part/GridModelPart.java
-model/part/LightModelPart.java
-model/part/MessageModelPart.java
-model/part/SensorModelPart.java
-model/part/SonarModelPart.java
-model/part/WallsModelPart.java
-model/processor/AgentWallsUpdateProcessor.java
-model/processor/GapModelProcessor.java
-model/processor/GhostProtocolModelProcessor.java
-model/processor/HistogramModelProcessor.java
-model/processor/IRModelProcessor.java
-model/processor/InboxProcessor.java
-model/processor/LightColorModelProcessor.java
-model/processor/LineModelProcessor.java
-model/processor/MergeGridModelProcessor.java
-model/processor/NewSectorsUpdateProcessor.java
-model/processor/WallDetectionModelProcessor.java
-model/processor/WallDetectorProcessor.java
-
-Dit is de package waar ik nu mee bezig ben.
-
-INFO: xtof/Michiel
-TODO: xtof
-
-pacman/GhostProtocolCommandHandler.java
-pacman/GhostProtocolModelCommandHandler.java
-pacman/OtherGhost.java
-
-Deze classes moeten verdwijnen of op een betere plek terecht komen. Moet nog bekeken worden. Alle GhostProtocol zaken moeten in GhostProtocolHandler terecht komen. Deze class is al opgekuist en voorzien van een basis set aan unit testen. MAAR moet nog vervolledigd worden op basis van de huidige protocolbeschrijving.
-
-INFO: Michiel
-TODO: anybody
-
-reporter/DashboardReporter.java
-
-Hier ben ik mee bezig/het was het startpunt van mijn opkuisactie vlak voor de vakantie. Ik moet de status er van verder bekijken. Dit zal gebeuren bij de integratie van alle nog los staande zaken. Ik stel voor dat ik ook hier weer een functiele review doe en commentaar aanbreng, zodat iemand anders de code kan afwerken en voorzien van unit tests
-
-INFO: Michiel
-TODO: functioneel afwerken: xtof
-			implementatie + unit tests: anybody
-
-robot/GhostRobot.java
-
-Dit ligt in mijn scope om het robot package af te werken.
-
-INFO: xtof
-TODO: xtof
-
-simulator/Barcode.java
-simulator/ColorLink.java
-simulator/Line.java
-simulator/Motor.java
-simulator/PacmanEntity.java
-simulator/PacmanViewRobot.java
-simulator/RemoteEntity.java
-simulator/RemoteViewRobot.java
-simulator/RobotEntity.java
-simulator/SimulatedConnection.java
-simulator/SimulatedEntity.java
-simulator/SimulatedGatewayClient.java
-simulator/SimulatedMQ.java
-simulator/SimulatedViewRobot.java
-simulator/SimulationRobotAPI.java
-simulator/SimulationRunner.java
-simulator/Simulator.java
-simulator/Tickable.java
-simulator/mini/MessageHandler.java
-simulator/mini/MessageSpy.java
-simulator/mini/MiniGhostRobot.java
-simulator/mini/MiniManhattanDriver.java
-simulator/mini/MiniSimulatedGatewayClient.java
-simulator/mini/MiniSimulation.java
-simulator/mini/MiniSimulationRobotAPI.java
-simulator/mini/NullGhostProtocolHandler.java
-simulator/mini/Queue.java
-simulator/mini/ShowMap.java
-...
-
-simulator/t/DistanceTest.java
-simulator/t/MapTest.java
-simulator/t/TileTest.java
-
-Deze tests moeten weg of verplaatst worden naar de tests/ tree.
-
-TODO: anybody
-
-simulator/tiles/Sector.java
-simulator/tiles/SectorDraw.java
-simulator/tiles/Sectors.java
-simulator/tiles/Tile.java
-simulator/tiles/TileDraw.java
-simulator/tiles/TileGeometry.java
-
-INFO: Ruben
-TODO: check tests
-
-simulator/view/Board.java
-simulator/view/ConsoleSimulationView.java
-simulator/view/SilentSimulationView.java
-simulator/view/SimulationView.java
-simulator/view/SwingSimulationView.java
-simulator/view/ViewRobot.java
-
-De volledige simulator zou ook voorzien moeten worden van unit tests. Deze is te cruciaal in de hele oplossing. Ik denk dat Ruben er aan begonnen is. Please confirm, anders anybody.
-
-INFO: Ruben,xtof
-TODO: Ruben
-Status: nothing
-
-src/lejos/java/util/Arrays.java
-src/lejos/penoplatinum/AngieEventLoop.java
-src/lejos/penoplatinum/AngieRobotAPI.java
-src/lejos/penoplatinum/Main.java
-src/lejos/penoplatinum/bluetooth/RobotBluetoothAgent.java
-src/lejos/penoplatinum/bluetooth/RobotBluetoothConnection.java
-src/lejos/penoplatinum/movement/RotationMovement.java
-src/lejos/penoplatinum/sensor/IRSeekerV2.java
-src/lejos/penoplatinum/sensor/RotatingSonarSensor.java
-
-Heel de lejos/ tree moet nagekeken worden, code opgekuist worden en hopelijk zoveel mogelijk code naar de java/ tree gebracht worden. Alleen de echt technische afhankelijke classes van de NXT libraries mogen hier overblijven. Bij voorkeur als dunne laagjes (het zou eigenlijk alleen maar een EventLoop mogen zijn samen met een RobotAPI) en al de rest in de java/ tree.
-
-INFO: Ruben
-TODO: started
-
-ui/server/DataProvider.java
-ui/server/JSWrapper.java
-ui/server/ReplayServlet.java
-ui/server/RobotsServlet.java
-ui/server/StreamServlet.java
-ui/server/Streamer.java
-
-Dit zal ik proberen op te nemen, tenzij iemand het graag wil doen ;-)
-
-INFO: xtof
-TODO: xtof
-
-util/CantorDiagonal.java
-util/CircularQueue.java
-util/ExtendedVector.java
-util/FPS.java
-util/ReferencePosition.java
-util/SimpleHashMap.java
-util/Utils.java
-util/debugging/MainLogger.java
-
-De resterende util classes moeten opgekuist worden. Hoe meer er weg kan hoe beter. Deze zijn meestal niet afhankelijk van elkaar en kunnen dus los van elkaar opgenomen worden door iedereen. Bij voorkeur schrappen, als echt nodig zo eenvoudig en opzich staand mogelijk maken.
-
-INFO: Michiel,Ruben
-TODO: anybody
-
----
-
-Zaken waar we nog moeten aan denken:
+Dashboard:
 - rapporteer LightModelPart.averageLightValue en maak histogram in dashboard
 - rapporteer memory-consumption,... (misschien een SystemModelPart/Processor)
 
+Gateway:
+- Twitter integratie verfijnen ;-)
+- Gateway extra logging opzetten (eventueel toch nog posten naar MQ via log4j?)
+
+GhostProtocol:
+- geen andere commanod's versturen vooralleer join-procedure afgerond is
+  08:07:50,647  INFO SimulatedMQ:33 - JOIN
+  08:07:50,650  INFO SimulatedMQ:33 - robot1 POSITION 0,0
+  08:07:50,653  INFO SimulatedMQ:33 - JOIN
+  08:07:50,653  INFO SimulatedMQ:33 - robot2 POSITION 0,0
+  08:07:50,660  INFO SimulatedMQ:33 - JOIN
+  08:07:50,661  INFO SimulatedMQ:33 - robot3 POSITION 0,0
+  08:07:50,662  INFO SimulatedMQ:33 - JOIN
+  08:07:50,662  INFO SimulatedMQ:33 - robot4 NAME 2.1
+  08:07:50,662  INFO SimulatedMQ:33 - robot4 POSITION 0,0
+  08:07:50,670  INFO SimulatedMQ:33 - robot1 NAME 2.1
+  08:07:50,671  INFO SimulatedMQ:33 - robot2 NAME 2.1
+  08:07:50,673  INFO SimulatedMQ:33 - robot3 NAME 2.1
+
+- presentatie demo 3 voorbereiden

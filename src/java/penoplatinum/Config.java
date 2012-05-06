@@ -15,8 +15,6 @@ import java.util.Properties;
 
 
 public class Config {
-  public static int SIMULATOR_WAIT = 0;
-  
   public static void load(String file) {
     try {
       Properties p = new Properties();
@@ -35,6 +33,8 @@ public class Config {
     Config.GHOST_CHANNEL = props.getProperty("mq.channel");
     Config.IMAGE_DIR     = props.getProperty("dir.images");
   }
+
+  public static int     SIMULATOR_WAIT = 1;
 
   public static String  IMAGE_DIR;
 

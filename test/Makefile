@@ -12,8 +12,9 @@ JAR_BLUE=${LEJOS_DIR}/3rdparty/lib/bluecove.jar
 JAR_RABBIT=${LIB_DIR}/rabbitmq-client.jar
 JAR_LEJOS=${LEJOS_DIR}/lib/pccomm.jar
 JAR_BLUE=${LEJOS_DIR}/3rdparty/lib/bluecove.jar
+JAR_TWITTER=${LIB_DIR}/twitter4j-core-2.2.5.jar
 
-LIBS=${JAR_JUNIT}:${JAR_MOCKITO}:${JAR_LOG4J}:${JAR_MYSQL}:${JAR_CLI}:${JAR_IO}:${JAR_LEJOS}:${JAR_BLUE}:${JAR_RABBIT}
+LIBS=${JAR_JUNIT}:${JAR_MOCKITO}:${JAR_LOG4J}:${JAR_MYSQL}:${JAR_CLI}:${JAR_IO}:${JAR_LEJOS}:${JAR_BLUE}:${JAR_RABBIT}:${JAR_TWITTER}
 
 BUILD_DIR=build
 CP=.:../src/java:${LIBS}
@@ -36,7 +37,6 @@ stat:
 	@echo "source classes: ${CLASS_COUNT} / ${LINE_COUNT}"
 	@echo "test   classes: ${TEST_CLASS_COUNT} / ${TEST_LINE_COUNT}"
 	@echo "class coverage: ${CLASS_COVERAGE_PCT}%"
-
 
 %.class: %.java ${BUILD_DIR}
 	@${JAVAC} $<

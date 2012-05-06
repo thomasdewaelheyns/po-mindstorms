@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender class="org.apache.log4j.ConsoleAppender" name="console">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" name="ConversionPattern"/>
+        </layout>
+    </appender>
+
+    <appender class="org.apache.log4j.RollingFileAppender" name="file">
+        <param value="/tmp/robot.log" name="File"/>
+        <param value="10" name="MaxBackupIndex"/>
+        <param value="10MB" name="MaxFileSize"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" name="ConversionPattern"/>
+        </layout>
+    </appender>
+
+    <appender class="org.apache.log4j.jdbc.JDBCAppender" name="model-db">
+        <param value="com.mysql.jdbc.Driver" name="driver"/>
+        <param value="platinum" name="password"/>
+        <param value="INSERT INTO model (robot, lightValue, lightColor, avgLightValue, barcode, sonarAngle, sonarDistance, ir1, ir2, ir3, ir4, ir5, ir_dist, walls, value_n, value_e, value_s, value_w, event, source, plan, queue, action, argument, rate) VALUES ( %m );" name="sql"/>
+        <param value="jdbc:mysql://localhost/robots" name="URL"/>
+        <param value="platinum" name="user"/>
+        <layout class="org.apache.log4j.PatternLayout"/>
+    </appender>
+
+    <appender class="org.apache.log4j.RollingFileAppender" name="mqfile">
+        <param value="/tmp/mq.log" name="File"/>
+        <param value="10" name="MaxBackupIndex"/>
+        <param value="10MB" name="MaxFileSize"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" name="ConversionPattern"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.StringMatchFilter">
+            <param name="StringToMatch" value="robot1 " />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+		    <filter class="org.apache.log4j.varia.DenyAllFilter"/>
+    </appender>
+
+    <appender class="penoplatinum.gateway.UpdatesJSAppender" name="static">
+        <param value="250" name="Count"/>
+        <param value="/Users/xtof/Workspace/KUL/po-mindstorms/src/java/penoplatinum/ui/dashboard/updates-1.js" name="File1"/>
+        <param value="/Users/xtof/Workspace/KUL/po-mindstorms/src/java/penoplatinum/ui/dashboard/updates-2.js" name="File2"/>
+        <param value="Ghost1" name="Robot"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param value="%m" name="ConversionPattern"/>
+        </layout>
+    </appender>
+
+    <appender class="penoplatinum.gateway.TwitterAppender" name="twitter">
+        <param value="INFO" name="Threshold"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param value="%m" name="ConversionPattern"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.StringMatchFilter">
+            <param name="StringToMatch" value="robot1 " />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+        <filter class="org.apache.log4j.varia.DenyAllFilter"/>
+    </appender>
+    
+    <appender class="org.apache.log4j.jdbc.JDBCAppender" name="agents-db">
+        <param value="com.mysql.jdbc.Driver" name="driver"/>
+        <param value="platinum" name="password"/>
+        <param value="INSERT INTO sectorAgents ( robot, grid, name, x, y, bearing, color ) VALUES ( %m );" name="sql"/>
+        <param value="jdbc:mysql://localhost/robots" name="URL"/>
+        <param value="platinum" name="user"/>
+        <layout class="org.apache.log4j.PatternLayout"/>
+    </appender>
+
+    <appender class="org.apache.log4j.jdbc.JDBCAppender" name="values-db">
+        <param value="com.mysql.jdbc.Driver" name="driver"/>
+        <param value="platinum" name="password"/>
+        <param value="INSERT INTO sectorValues ( robot, grid, x, y, value ) VALUES ( %m );" name="sql"/>
+        <param value="jdbc:mysql://localhost/robots" name="URL"/>
+        <param value="platinum" name="user"/>
+        <layout class="org.apache.log4j.PatternLayout"/>
+    </appender>
+
+    <appender class="org.apache.log4j.jdbc.JDBCAppender" name="walls-db">
+        <param value="com.mysql.jdbc.Driver" name="driver"/>
+        <param value="platinum" name="password"/>
+        <param value="INSERT INTO sectorWalls ( robot, grid, x, y, walls ) VALUES ( %m );" name="sql"/>
+        <param value="jdbc:mysql://localhost/robots" name="URL"/>
+        <param value="platinum" name="user"/>
+        <layout class="org.apache.log4j.PatternLayout"/>
+    </appender>
+
+    <logger name="agents">
+        <level value="info"/>
+        <appender-ref ref="static"/>
+    </logger>
+
+    <logger name="model">
+        <level value="info"/>
+        <appender-ref ref="static"/>
+    </logger>
+
+    <logger name="SimulatedMQ">
+        <level value="info"/>
+        <appender-ref ref="twitter"/>
+    </logger>
+
+    <logger name="values">
+        <level value="info"/>
+        <appender-ref ref="static"/>
+    </logger>
+
+    <logger name="walls">
+        <level value="info"/>
+        <appender-ref ref="static"/>
+    </logger>
+
+    <logger name="org.apache.commons.httpclient.params.DefaultHttpParams">
+        <level value="info"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <root>
+        <level value="info"/>
+        <appender-ref ref="console"/>
+    </root>
+
+</log4j:configuration>

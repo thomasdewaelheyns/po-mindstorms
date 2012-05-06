@@ -41,52 +41,44 @@ import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
 
 public class FullRobotTest extends TestCase {
+
   @Test
   public void testMerge() throws FileNotFoundException {
-    Config.load("../../test/fullTest.properties");
-
+    Config.load("test.properties");
+  
     // setup simulator
     Simulator       simulator = this.createSimulator(makeLongMap());    
-
+  
     // add four ghosts ...
     GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 260, 20, -90);
-    //GridModelPart.from(robot1.getModel()).getMyAgent().activate();
-
     GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 20, 20, 90);
-    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
-    // add four ghosts ...
     GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 260, 60, -90);
-    //GridModelPart.from(robot1.getModel()).getMyAgent().activate();
-
     GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 20, 60, -90);
-    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
-
+  
     // run the simulator for 30000 steps
     simulator.run(30000);
+    
+    // If we remove delays in the simulator and its view, and if we then add
+    // some assertions here, these would be real unit tests ;-)
   }
   
   @Test
   public void testSimulator() throws FileNotFoundException {
-    Config.load("../../test/fullTest.properties");
+    Config.load("test.properties");
 
     // setup simulator
     Simulator       simulator = this.createSimulator(makeMap());    
 
-    // add four ghosts ...
     GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 220, 220, -180);
-    //GridModelPart.from(robot1.getModel()).getMyAgent().activate();
-//
     GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -90);
-//    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
-
     GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 20, 220, 0);
-    //GridModelPart.from(robot3.getModel()).getMyAgent().activate();
-
     GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
-//    //GridModelPart.from(robot4.getModel()).getMyAgent().activate();
 
     // run the simulator for 30000 steps
     simulator.run(30000);
+
+    // If we remove delays in the simulator and its view, and if we then add
+    // some assertions here, these would be real unit tests ;-)
   }
 
   private Simulator createSimulator(Map map) {
@@ -145,7 +137,7 @@ public class FullRobotTest extends TestCase {
   
   private Map makeMap() throws FileNotFoundException{
     MapFactory mapFac = new ProtocolMapFactory();
-    Scanner sc = new Scanner(new File("../../maps/wolfraam.txt"));
+    Scanner sc = new Scanner(new File("../maps/wolfraam.txt"));
     return mapFac.getMap(sc);
   }
   private Map makeLongMap(){
