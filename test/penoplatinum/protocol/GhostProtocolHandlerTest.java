@@ -22,7 +22,6 @@ import penoplatinum.grid.Grid;
 import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.util.MD5;
 
 
 public class GhostProtocolHandlerTest extends TestCase {
@@ -264,11 +263,11 @@ public class GhostProtocolHandlerTest extends TestCase {
     this.setup();
     this.protocolHandler.receive("JOIN\n");
     this.protocolHandler.receive("JOIN\n");
-    String signature = MD5.getHashString(Config.SECRET + " " + 1 + " FORCESTART");
+    // String signature = MD5.getHashString(Config.SECRET + " " + 1 + " FORCESTART");
+    String signature = "blahblah";
     this.protocolHandler.receive(NAME + " PLATINUM_CMD "+ signature + " 1 FORCESTART\n");
     verify(this.mockedEventHandler).handleActivation();
     verify(this.mockedGatewayClient).send(NAME + " NAME " + this.protocolHandler.getVersion() + "\n",Config.BT_GHOST_PROTOCOL);
-    
   }
 
   // constructors

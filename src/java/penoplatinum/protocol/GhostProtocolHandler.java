@@ -117,8 +117,10 @@ public class GhostProtocolHandler implements ProtocolHandler {
       return;
     }
     String command = scanner.next();
-    String expectedSignature = MD5.getHashString(Config.SECRET + " " + counter + " " + command);
-    if( ! signature.equals(expectedSignature) ) { return; }
+    // NOTE: we moved the MD5 check to the Gateway, which made our program "fit"
+    //       the program memory space
+    // String expectedSignature = MD5.getHashString(Config.SECRET + " " + counter + " " + command);
+    // if( ! signature.equals(expectedSignature) ) { return; }
     this.commandCounter = counter;
     if (command.equals("FORCESTART") && !joined) {
       handleForceStart();

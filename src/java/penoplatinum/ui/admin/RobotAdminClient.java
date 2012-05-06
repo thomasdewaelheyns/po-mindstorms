@@ -10,7 +10,7 @@ package penoplatinum.ui.admin;
 
 import penoplatinum.gateway.Queue;
 
-import penoplatinum.util.MD5;
+import java.security.*;
 
 
 public class RobotAdminClient {
@@ -51,8 +51,21 @@ public class RobotAdminClient {
   private void sendMessage(String message) {
     this.counter++;      
     message = this.counter + " " + message;
-    String signature = MD5.getHashString(this.secret + " " + message);
+    String signature = md5(this.secret + " " + message);
     this.send(this.name + " PLATINUM_CMD "+ signature + " " + message);
+  }
+  
+  private String md5(String message) {
+    try {
+      MessageDigest md = MessageDigest.getInstance("MD5");
+      byte[] digest = md.digest(message.getBytes("UTF-8"));
+      StringBuffer sb = new StringBuffer();
+      for (int i = 0; i < digest.length; i++) {
+        sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
+      }
+      return sb.toString();
+    } catch(Exception e) {}
+    return "";
   }
 
   private void send(String line){

@@ -139,7 +139,6 @@ public class RunAllTests {
       penoplatinum.util.ColorsTest.class,
       penoplatinum.util.LightColorTest.class,
       penoplatinum.util.LineTest.class,
-      penoplatinum.util.MD5Test.class,
       penoplatinum.util.PointTest.class,
       penoplatinum.util.PositionTest.class,
       penoplatinum.util.RotationTest.class,

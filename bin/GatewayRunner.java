@@ -20,7 +20,7 @@ public class GatewayRunner extends BaseRunner {
 
 
   private GatewayRunner(String[] args) {
-    super(args, "rmj");
+    super(args, "rmjs");
     this.setupBluetooth();
     this.setupGateway();
   }
@@ -40,7 +40,8 @@ public class GatewayRunner extends BaseRunner {
   private void setupGateway() {
     System.out.println("--- Setting up Gateway...");
     this.gateway = new Gateway().useConnection(this.connection)
-                                .useQueue(this.queue);
+                                .useQueue(this.queue)
+                                .useSecret(this.secret);
   }
   
   private void start() {
