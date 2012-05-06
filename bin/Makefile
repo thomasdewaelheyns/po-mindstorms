@@ -56,14 +56,16 @@ sim:
 	@mkdir -p ${BUILD_DIR}
 	@echo "*** compiling Simulator..."
 	@${JAVAC} SimulationRunner.java
-	@${JAVAC}	../src/java/penoplatinum/simulator/SimulatedGatewayClient.java
-	@${JAVAC}	../src/java/penoplatinum/simulator/ColorLink.java
-	@${JAVAC}	../src/java/penoplatinum/driver/ManhattanDriver.java
-	@${JAVAC}	../src/java/penoplatinum/robot/GhostRobot.java
-	@${JAVAC}	../src/java/penoplatinum/navigator/GhostNavigator.java
-	@${JAVAC}	../src/java/penoplatinum/reporter/DashboardReporter.java
-	@${JAVAC}	../src/java/penoplatinum/gateway/UpdatesJSAppender.class
-	@cp -r ../src/java/penoplatinum/simulator/images ${BUILD_DIR}/penoplatinum/simulator/
+	@${JAVAC} ../src/java/penoplatinum/simulator/SimulatedGatewayClient.java
+	@${JAVAC} ../src/java/penoplatinum/simulator/ColorLink.java
+	@${JAVAC} ../src/java/penoplatinum/driver/ManhattanDriver.java
+	@${JAVAC} ../src/java/penoplatinum/robot/GhostRobot.java
+	@${JAVAC} ../src/java/penoplatinum/navigator/GhostNavigator.java
+	@${JAVAC} ../src/java/penoplatinum/reporter/DashboardReporter.java
+	@${JAVAC} ../src/java/penoplatinum/gateway/UpdatesJSAppender.java
+	@cp -r ../resources ${BUILD_DIR}/
+	@cp log4j.xml ${BUILD_DIR}
+	@cp robot.properties ${BUILD_DIR}
 	@echo "*** running Simulator..."
 	@${JAVA} SimulationRunner ${ARGS}
 

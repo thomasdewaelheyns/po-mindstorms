@@ -91,22 +91,22 @@
 
     <logger name="agents">
         <level value="info"/>
-        <appender-ref ref="agents-db"/>
+        <appender-ref ref="console"/>
     </logger>
 
     <logger name="model">
         <level value="info"/>
-        <appender-ref ref="model-db"/>
+        <appender-ref ref="console"/>
     </logger>
 
     <logger name="values">
         <level value="info"/>
-        <appender-ref ref="values-db"/>
+        <appender-ref ref="console"/>
     </logger>
 
     <logger name="walls">
         <level value="info"/>
-        <appender-ref ref="walls-db"/>
+        <appender-ref ref="console"/>
     </logger>
 
     <logger name="ghostprotocol">

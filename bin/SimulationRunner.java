@@ -18,18 +18,23 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.cli.*;
 
+import penoplatinum.Config;
+
 import penoplatinum.simulator.entities.PacmanEntity;
 import penoplatinum.simulator.entities.SimulatedEntity;
+import penoplatinum.simulator.entities.SimulatedEntityFactory;
 
 import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.SwingSimulationView;
 
 import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
+import penoplatinum.model.part.GridModelPart;
 
 import penoplatinum.grid.view.SwingGridView;
 
-import penoplatinum.driver.Driver;
+import penoplatinum.driver.*;
+import penoplatinum.driver.behaviour.*;
 
 import penoplatinum.gateway.GatewayClient;
 
@@ -38,6 +43,7 @@ import penoplatinum.navigator.Navigator;
 import penoplatinum.reporter.Reporter;
 
 import penoplatinum.robot.Robot;
+import penoplatinum.robot.AdvancedRobot;
 import penoplatinum.robot.RobotAPI;
 
 import penoplatinum.simulator.RobotEntity;
@@ -54,7 +60,7 @@ public class SimulationRunner {
   private final static String DEFAULT_DRIVER         = "penoplatinum.driver.ManhattanDriver";
   private final static String DEFAULT_GATEWAY_CLIENT = "penoplatinum.simulator.SimulatedGatewayClient";
   private final static String DEFAULT_REPORTER       = "penoplatinum.reporter.DashboardReporter";
-  private final static String DEFAULT_MAP            = "../../maps/wolfraam.txt";
+  private final static String DEFAULT_MAP            = "../maps/wolfraam.txt";
   private final static String DEFAULT_START          = "0";
 
   private Simulator simulator;
@@ -77,6 +83,7 @@ public class SimulationRunner {
 
 
   public SimulationRunner() {
+    Config.load("robot.properties" );
     this.simulator = new Simulator();
   }
 
@@ -159,17 +166,12 @@ public class SimulationRunner {
   }
 
   public Driver createDriverInstance(String name) {
-    try {
-      Class theClass = Class.forName(this.driverClassName);
-      return (Driver) theClass.newInstance();
-    } catch (ClassNotFoundException ex) {
-      System.err.println(ex + " Driver class must be in class-path.");
-    } catch (InstantiationException ex) {
-      System.err.println(ex + " Driver class must be concrete.");
-    } catch (IllegalAccessException ex) {
-      System.err.println(ex + " Driver class must have a no-arg constr.");
-    }
-    return null;
+    // WARNING: HARD-CODED ...
+    return new ManhattanDriver(0.4)
+	    .addBehaviour(new FrontProximityDriverBehaviour())
+            .addBehaviour(new SideProximityDriverBehaviour())
+            .addBehaviour(new BarcodeDriverBehaviour())
+            .addBehaviour(new LineDriverBehaviour());
   }
 
   // GATEWAYCLIENT
@@ -252,43 +254,63 @@ public class SimulationRunner {
     return this;
   }
 
-  public SimulationRunner putGhostAt(String name, int x, int y, int direction) {
-    Robot robot = this.getRobot(name);
+  public SimulationRunner putGhostAt(String name, int x, int y, Bearing direction) {
+    AdvancedRobot robot = (AdvancedRobot)this.getRobot(name);
     Navigator navigator = this.getNavigator(name);
     Driver driver = this.getDriver(name);
-    GatewayClient gatewayClient = this.getGatewayClient(name).setRobot(robot);
+    GatewayClient gatewayClient = this.getGatewayClient(name);
     Reporter reporter = this.getReporter(name).useGatewayClient(gatewayClient);
 
     // construct a simulatedEntity
-    SimulatedEntity simulatedEntity = new SimulatedEntity(robot);
-    simulatedEntity.putRobotAt(x * Sector.SIZE + Sector.SIZE / 2, y * Sector.SIZE + Sector.SIZE / 2, direction);
+    SimulatedEntity simulatedEntity = SimulatedEntityFactory.make(robot);
+    int directionInt = 1;
+    switch(direction) {
+      case N: directionInt = 1;
+      case E: directionInt = 2;
+      case S: directionInt = 3;
+      case W: directionInt = 4;
+    }
+    simulatedEntity.putRobotAt(x * Sector.SIZE + Sector.SIZE / 2, y * Sector.SIZE + Sector.SIZE / 2, directionInt);
     this.simulatedEntities.put(name, simulatedEntity);
 
     robot.useNavigator(navigator)
          .useGatewayClient(gatewayClient)
          .useDriver(driver)
-         .useReporter(reporter)
-         .getModel().getGridPart().displayGridOn(new SwingGridView());
+         .useReporter(reporter);
+
+    System.out.println( "DRIVER = " + driver );
+
+    SwingGridView gridView = new SwingGridView();
+    gridView.displayWithoutWindow(GridModelPart.from(robot.getModel()).getFullGrid());
+    ((SwingSimulationView) simulator.getView()).addGrid(gridView);
 
     this.simulator.addSimulatedEntity(simulatedEntity);
 
     return this;
   }
 
-  public SimulationRunner putPacmanAt(int x, int y, int direction) {
-    PacmanEntity pacman = new PacmanEntity(x * Sector.SIZE + Sector.SIZE / 2, y * Sector.SIZE + Sector.SIZE / 2, direction);
+  public SimulationRunner putPacmanAt(int x, int y, Bearing direction) {
+    int directionInt = 1;
+    switch(direction) {
+      case N: directionInt = 1;
+      case E: directionInt = 2;
+      case S: directionInt = 3;
+      case W: directionInt = 4;
+    }
+
+    PacmanEntity pacman = new PacmanEntity(x * Sector.SIZE + Sector.SIZE / 2, y * Sector.SIZE + Sector.SIZE / 2, directionInt);
     this.simulator.setPacmanEntity(pacman);
     return this;
   }
 
   public void start() {
-    for (Robot robot : robots.values()) {
-      SwingGridView gridview = (SwingGridView) robot.getModel().getGridPart().getGrid().getView();
-      gridview.disableWindow();
-
-      ((SwingSimulationView) simulator.getView()).addGrid(gridview);
-
-    }
+    // for (Robot robot : robots.values()) {
+    //   SwingGridView gridview = (SwingGridView) robot.getModel().getGridPart().getGrid().getView();
+    //   gridview.disableWindow();
+    // 
+    //   ((SwingSimulationView) simulator.getView()).addGrid(gridview);
+    // 
+    // }
     this.simulator.run();
   }
 
