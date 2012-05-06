@@ -10,9 +10,9 @@ package penoplatinum.reporter;
 
 import penoplatinum.Config;
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.grid.Agent;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.model.GhostModel;
 import penoplatinum.model.Model;
 import penoplatinum.model.part.BarcodeModelPart;
