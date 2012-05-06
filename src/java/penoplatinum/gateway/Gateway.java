@@ -59,7 +59,7 @@ public class Gateway implements MessageReceiver {
   private boolean isValid(String message) {
     String[] parts = message.split(" ");
     // only check the signature on our custom messages
-    if( "PLATINUM_CMD".equals(parts[1]) ) { 
+    if( parts.length > 4 && "PLATINUM_CMD".equals(parts[1]) ) { 
       String signature = parts[2];
       String counter   = parts[3];
       String cmd       = parts[4];
