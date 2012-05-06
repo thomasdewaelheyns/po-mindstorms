@@ -34,7 +34,7 @@ public class TurnDriverAction implements DriverAction, Cloneable {
   }
 
   public boolean canBeInterrupted() {
-    return true;
+    return false;
   }
 
   public boolean interrupts() {

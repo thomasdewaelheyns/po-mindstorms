@@ -7,6 +7,7 @@ package penoplatinum.grid;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.grid.agent.GhostAgent;
 import junit.framework.*;
 import penoplatinum.util.Color;
 import static org.mockito.Mockito.*;

@@ -58,7 +58,6 @@ public class LinkedSector implements Sector {
 
   @Override
   public Sector addNeighbour(Sector neighbour, Bearing atBearing) {
-
     if (getNeighbour(atBearing) == neighbour)
       return this;
 
@@ -67,21 +66,16 @@ public class LinkedSector implements Sector {
 
     linkNeighbour(neighbour, atBearing);
 
-
     if (getNeighbour(atBearing.leftFrom()) != null)
       left = getNeighbour(atBearing.leftFrom()).getNeighbour(atBearing);
 
     if (getNeighbour(atBearing.rightFrom()) != null)
       right = getNeighbour(atBearing.rightFrom()).getNeighbour(atBearing);
 
-
     if (right != null)
       right.addNeighbour(neighbour, atBearing.leftFrom());
     if (left != null)
       left.addNeighbour(neighbour, atBearing.rightFrom());
-
-
-
     return this;
   }
 
@@ -91,7 +85,6 @@ public class LinkedSector implements Sector {
       return;
     ((LinkedSector) neighbour).neighbours[mapBearing(atBearing.reverse())] = this;
     exchangeWallInfo(atBearing);
-
   }
 
   private LinkedSector exchangeWallInfo(Bearing atBearing) {

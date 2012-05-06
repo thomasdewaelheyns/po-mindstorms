@@ -5,6 +5,8 @@ package penoplatinum.grid;
  * 
  * @author Team Platinum
  */
+import penoplatinum.grid.view.GridView;
+import penoplatinum.grid.agent.Agent;
 import java.util.List;
 
 import penoplatinum.util.Bearing;

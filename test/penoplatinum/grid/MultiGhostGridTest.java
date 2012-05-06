@@ -4,6 +4,7 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.BarcodeAgent;
 import junit.framework.TestCase;
 import org.junit.Test;
 import penoplatinum.util.Bearing;

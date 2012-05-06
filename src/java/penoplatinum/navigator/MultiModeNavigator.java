@@ -73,7 +73,7 @@ public class MultiModeNavigator implements Navigator {
   // first we check if our previous/current action was successfully performed
   // next we give the next instruction in our plan
   public final MultiModeNavigator instruct(Driver driver) {
-    System.out.println("INSTRUCT");
+    //System.out.println("INSTRUCT");
     if( ! this.reachedGoal() ) { 
       this.getCurrentAction().instruct(driver);
     }
@@ -81,7 +81,7 @@ public class MultiModeNavigator implements Navigator {
   }
   
   private NavigatorAction getCurrentAction() {
-    System.out.println("GET CURRENT ACTION" );
+    //System.out.println("GET CURRENT ACTION" );
     if( this.plan.size() == 0 ) {
       this.createNewPlan();
     }
@@ -89,7 +89,7 @@ public class MultiModeNavigator implements Navigator {
   }
 
   private void createNewPlan() {
-    System.out.println("CREATE NEW PLAN");
+    //System.out.println("CREATE NEW PLAN");
     // switch to next mode once the current one has reached its goal
     while( this.getCurrentMode().reachedGoal() ) {
       this.discardCurrentMode();
@@ -103,31 +103,31 @@ public class MultiModeNavigator implements Navigator {
   public final boolean reachedGoal() {
     boolean reached = this.getCurrentMode().reachedGoal(),
             nonext  = this.noNextAction();
-    System.out.println( "REACHED : " + reached + " " + nonext );
+    //System.out.println( "REACHED : " + reached + " " + nonext );
     return reached && nonext;
     // return this.getCurrentMode().reachedGoal() && this.noNextAction();
   }
 
   // when we're at the last action of the last mode, there is no next action
   private boolean noNextAction() {
-    System.out.print( this.plan.size() + " / " + this.modes.size() + " " );
+    //System.out.print( this.plan.size() + " / " + this.modes.size() + " " );
     return this.plan.size() < 1 && this.modes.size() < 2;
   }
 
 
   private void discardCurrentAction() {
-    System.out.print("DISCARD : " + this.plan.size() + " -> ");
+    //System.out.print("DISCARD : " + this.plan.size() + " -> ");
     if( this.plan.size() > 0 ) { this.plan.remove(0); }
     System.out.println( this.plan.size() );
   }
   
   private void discardCurrentPlan() {
-    System.out.println("DISCARD PLAN" );
+    //System.out.println("DISCARD PLAN" );
     this.plan.clear();
   }
   
   private NavigatorMode getCurrentMode() {
-    System.out.println( "GET CURRENT MODE" );
+    //System.out.println( "GET CURRENT MODE" );
     if( this.modes.size() < 1 ) {
       throw new RuntimeException( "No current NavigatorMode !" );
     }
@@ -135,9 +135,9 @@ public class MultiModeNavigator implements Navigator {
   }
 
   private void discardCurrentMode() {
-    System.out.println("DISCARD CURRENT MODE" );    
+    //System.out.println("DISCARD CURRENT MODE" );    
     if( this.modes.size() > 1 ) {
-      System.out.println("DISCARD CURRENT MODE" );
+      //System.out.println("DISCARD CURRENT MODE" );
       this.modes.remove(0);
     }
   }

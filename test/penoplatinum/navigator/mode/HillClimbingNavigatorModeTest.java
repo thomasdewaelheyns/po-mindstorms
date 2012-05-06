@@ -16,7 +16,7 @@ import java.util.List;
 import penoplatinum.util.Bearing;
 
 import penoplatinum.grid.Grid;
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.Sector;
 
 import penoplatinum.model.Model;

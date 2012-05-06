@@ -1,4 +1,4 @@
-package penoplatinum.grid;
+package penoplatinum.grid.view;
 
 /**
  * SwingGridView
@@ -7,8 +7,12 @@ package penoplatinum.grid;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.grid.agent.BarcodeAgent;
+import penoplatinum.grid.agent.Agent;
 import javax.swing.JFrame;
 
+import penoplatinum.grid.Grid;
+import penoplatinum.grid.Sector;
 import penoplatinum.util.Bearing;
 import penoplatinum.simulator.ColorLink;
 

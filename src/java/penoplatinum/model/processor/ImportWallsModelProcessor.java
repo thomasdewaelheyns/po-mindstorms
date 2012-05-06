@@ -38,16 +38,17 @@ public class ImportWallsModelProcessor extends ModelProcessor {
   private void updateWallInfo() {
     Model model = getModel();
 
-    GridModelPart grid = GridModelPart.from(model);
+    GridModelPart g = GridModelPart.from(model);
     WallsModelPart walls = WallsModelPart.from(model);
 
     Sector detected = walls.getCurrentSector();
-    Sector current = grid.getMyGrid().getSectorAt(grid.getMyGrid().getPositionOf(grid.getMyAgent()));
+    Sector current = g.getMySector();
 
     for (Bearing b : Bearing.NESW) {
       copyWallSector(detected, current, b);
+      g.markSectorChanged(current.getNeighbour(b));      
     }
-    grid.markSectorChanged(current);
+    g.markSectorChanged(current);
   }
 
   private void copyWallSector(Sector from, Sector to, Bearing atLocation) {

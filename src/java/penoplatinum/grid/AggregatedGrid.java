@@ -1,5 +1,6 @@
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.Agent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

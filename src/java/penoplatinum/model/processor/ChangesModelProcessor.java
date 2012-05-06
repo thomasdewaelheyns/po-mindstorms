@@ -10,7 +10,7 @@ package penoplatinum.model.processor;
 
 import java.util.List;
 
-import penoplatinum.grid.BarcodeAgent;
+import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.Sector;
 import penoplatinum.model.Model;
 import penoplatinum.model.part.Barcode;

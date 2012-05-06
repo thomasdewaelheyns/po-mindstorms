@@ -11,7 +11,7 @@ package penoplatinum.reporter;
 
 import penoplatinum.gateway.GatewayClient;
 
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.Sector;
 
 

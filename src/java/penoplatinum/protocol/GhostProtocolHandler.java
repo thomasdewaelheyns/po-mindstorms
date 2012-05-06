@@ -13,8 +13,8 @@ import penoplatinum.Config;
 import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.grid.Grid;
-import penoplatinum.grid.BarcodeAgent;
-import penoplatinum.grid.PacmanAgent;
+import penoplatinum.grid.agent.BarcodeAgent;
+import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.grid.Sector;
 
 import penoplatinum.util.*;
@@ -66,6 +66,10 @@ public class GhostProtocolHandler implements ProtocolHandler {
     msg = msg.substring(0, msg.length() -1);
     Scanner scanner = new Scanner(msg);
 
+    if(!scanner.hasNext()){
+      
+      return;
+    }
     String agentName = scanner.next();
     if( "JOIN".equals(agentName) && ! scanner.hasNext() ) {
       this.handleJoin();

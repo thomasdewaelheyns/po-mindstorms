@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import penoplatinum.barcode.BarcodeTranslator;
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 
 import penoplatinum.grid.Sector;
 import penoplatinum.simulator.RobotAPI;

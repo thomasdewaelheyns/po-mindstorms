@@ -17,7 +17,7 @@ import penoplatinum.util.Bearing;
 
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 
 import penoplatinum.model.Model;
 import penoplatinum.model.part.ModelPartRegistry;

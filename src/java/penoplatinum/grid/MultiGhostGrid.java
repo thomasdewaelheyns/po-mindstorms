@@ -4,6 +4,8 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.BarcodeAgent;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.SimpleHashMap;

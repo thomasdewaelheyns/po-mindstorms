@@ -7,6 +7,7 @@ package penoplatinum.grid;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.grid.agent.PacmanAgent;
 import junit.framework.*;
 import static org.mockito.Mockito.*;
 

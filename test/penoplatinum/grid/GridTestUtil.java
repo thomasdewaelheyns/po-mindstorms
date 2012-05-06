@@ -4,6 +4,7 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 

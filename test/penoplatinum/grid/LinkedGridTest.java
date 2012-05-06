@@ -1,5 +1,6 @@
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.Agent;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
@@ -23,43 +24,30 @@ public class LinkedGridTest extends TestCase {
   @Test
   public void testAddSector() {
     Grid grid = new LinkedGrid();
-
     LinkedSector s1 = new LinkedSector();
 
     // Add sector
     grid.add(s1, new Point(2, 2));
-
     assertEquals(s1, grid.getSectorAt(new Point(2, 2)));
     assertEquals(new Point(2, 2), grid.getPositionOf(s1));
-
   }
 
   @Test
   public void testAddInvalidSector() {
-
     Grid grid = new LinkedGrid();
-
     Sector s = mock(Sector.class);
-
-
     boolean failed = true;
     try {
       grid.add(s, new Point(2, 2));
-
     } catch (IllegalArgumentException e) {
       failed = false;
-
     }
     assertFalse(failed);
-
-
   }
 
   @Test
   public void testAddSectorCreatePath() {
-
     Grid grid2Sector = new LinkedGrid();
-
     LinkedSector s1 = new LinkedSector();
     LinkedSector s2 = new LinkedSector();
 
@@ -68,7 +56,6 @@ public class LinkedGridTest extends TestCase {
 
     assertNotNull("s1 has no neighbour!", getSingleNeighbour(s1));
     assertEquals("There is no path from s1 to s2!!", getSingleNeighbour(s1), getSingleNeighbour(s2));
-
   }
 
   @Test
@@ -86,7 +73,19 @@ public class LinkedGridTest extends TestCase {
 
     assertNotNull(grid.getSectorAt(pos)); // Sector must be created
     assertEquals(pos, grid.getPositionOf(a));
+  }
 
+  @Test
+  public void testAddNullAgent() {
+    Agent a = null;
+
+    Grid grid = new LinkedGrid();
+    Point pos = new Point(4, 4);
+    try{
+      grid.add(a, pos, Bearing.E);
+      fail("Throws exception");
+    } catch(IllegalArgumentException e){
+    }
   }
 
   @Test

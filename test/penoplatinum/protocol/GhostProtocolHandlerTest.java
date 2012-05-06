@@ -16,10 +16,10 @@ import penoplatinum.Config;
 import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.grid.Sector;
-import penoplatinum.grid.BarcodeAgent;
+import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.Grid;
 
-import penoplatinum.grid.PacmanAgent;
+import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.MD5;

@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 
 import penoplatinum.driver.ManhattanDriver;
 import penoplatinum.model.part.GridModelPart;
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.Grid;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;

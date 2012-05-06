@@ -15,7 +15,7 @@ import penoplatinum.model.GhostModel;
 
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 
 import penoplatinum.gateway.GatewayClient;
 import penoplatinum.model.Model;

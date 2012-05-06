@@ -4,6 +4,7 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 

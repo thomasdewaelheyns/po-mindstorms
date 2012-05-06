@@ -14,10 +14,10 @@ import penoplatinum.model.Model;
 
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.MultiGhostGrid;
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.AggregatedGrid;
-import penoplatinum.grid.GhostAgent;
-import penoplatinum.grid.PacmanAgent;
+import penoplatinum.grid.agent.GhostAgent;
+import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.LinkedSector;
 
@@ -121,6 +121,8 @@ public class GridModelPart implements ModelPart {
         count = 1;
       } else if( diffuseGrid.getAgentAt(position, GhostAgent.class) != null) {
         // a ghost blocks all diffusion
+        total = 0;
+        count = 0;
       } else if( ! sector.isFullyKnown() ) {
         // unknown sectors are "interesting"
         total = 5000;
@@ -130,7 +132,7 @@ public class GridModelPart implements ModelPart {
         for( Bearing atBearing: Bearing.NESW ) { 
           // if we know about walls and there is NO wall take the sector's
           // value into account
-          if( sector.knowsWall(atBearing) && ! sector.hasWall(atBearing)) {
+          if( sector.givesAccessTo(atBearing)) {
             if( sector.hasNeighbour(atBearing) ) {
               total += sector.getNeighbour(atBearing).getValue();
               count++;
@@ -160,6 +162,9 @@ public class GridModelPart implements ModelPart {
   }
   
   public void markSectorChanged(Sector sector){
+    if(sector == null){
+      return;
+    }
     this.changedSectors.add(sector);
   }
 
@@ -177,6 +182,7 @@ public class GridModelPart implements ModelPart {
 
   public void setPacman(Grid g, Point pos) {
     if(this.pacman == null){
+      this.pacman = new PacmanAgent();
       g.add(this.pacman, pos, Bearing.N);
     } else {
       g.moveTo(this.pacman, pos, Bearing.N);

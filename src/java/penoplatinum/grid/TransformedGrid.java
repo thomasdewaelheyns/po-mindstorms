@@ -4,6 +4,7 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.Agent;
 import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.util.Bearing;

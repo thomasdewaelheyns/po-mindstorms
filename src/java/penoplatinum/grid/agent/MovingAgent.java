@@ -1,4 +1,4 @@
-package penoplatinum.grid;
+package penoplatinum.grid.agent;
 
 /**
  * MovingAgent abstract base class

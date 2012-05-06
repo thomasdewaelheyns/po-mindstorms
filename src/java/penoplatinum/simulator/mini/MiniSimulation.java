@@ -7,13 +7,13 @@ package penoplatinum.simulator.mini;
  * 
  */
 import penoplatinum.grid.Grid;
-import penoplatinum.grid.GridView;
-import penoplatinum.grid.SwingGridView;
-import penoplatinum.grid.ProxyAgent;
-import penoplatinum.grid.StaticTargetAgent;
+import penoplatinum.grid.view.GridView;
+import penoplatinum.grid.view.SwingGridView;
+import penoplatinum.grid.agent.ProxyAgent;
+import penoplatinum.grid.agent.StaticTargetAgent;
 import penoplatinum.grid.DiffusionGridProcessor;
 
-import penoplatinum.grid.GridFactory;
+import penoplatinum.grid.view.GridFactory;
 
 import penoplatinum.pacman.GhostNavigator;
 import penoplatinum.simulator.Robot;

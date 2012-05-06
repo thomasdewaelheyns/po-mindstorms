@@ -14,7 +14,7 @@ import penoplatinum.model.processor.ModelProcessor;
 
 
 
-import penoplatinum.grid.GridView;
+import penoplatinum.grid.view.GridView;
 import penoplatinum.model.GhostModel;
 import penoplatinum.model.processor.GhostProtocolModelProcessor;
 import penoplatinum.model.processor.GridRecalcModelProcessor;

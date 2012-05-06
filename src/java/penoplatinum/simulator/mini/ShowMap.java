@@ -9,10 +9,10 @@ package penoplatinum.simulator.mini;
 
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.SimpleGrid;
-import penoplatinum.grid.GridView;
-import penoplatinum.grid.SwingGridView;
+import penoplatinum.grid.view.GridView;
+import penoplatinum.grid.view.SwingGridView;
 import penoplatinum.grid.DiffusionGridProcessor;
-import penoplatinum.grid.GridFactory;
+import penoplatinum.grid.view.GridFactory;
 
 public class ShowMap {
   public static void main(String[] args) {

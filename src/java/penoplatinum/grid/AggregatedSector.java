@@ -6,6 +6,7 @@ package penoplatinum.grid;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
+import penoplatinum.util.Position;
 
 /**
  *
@@ -38,7 +39,7 @@ public class AggregatedSector implements Sector {
 
   @Override
   public Grid getGrid() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return this.grid;
   }
 
   @Override
@@ -48,12 +49,15 @@ public class AggregatedSector implements Sector {
 
   @Override
   public boolean hasNeighbour(Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return getNeighbour(atBearing)!= null;
   }
 
   @Override
   public Sector getNeighbour(Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    Point p = this.grid.getPositionOf(this);
+    int left = Position.moveLeft(atBearing, p.getX());
+    int top = Position.moveTop(atBearing, p.getY());
+    return this.grid.getSectorAt(new Point(left, top));
   }
 
   @Override
@@ -95,7 +99,14 @@ public class AggregatedSector implements Sector {
 
   @Override
   public Sector clearWall(Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    for (int i = 0; i < grid.getActiveGrids().size(); i++) {
+      Grid g = grid.getActiveGrids().get(i);
+      Sector s = g.getSectorAt(position);
+      if (s == null)
+        continue;
+      s.clearWall(atBearing);
+    }
+    return this;
   }
 
   @Override

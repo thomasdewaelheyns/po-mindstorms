@@ -18,10 +18,10 @@ import penoplatinum.gateway.GatewayClient;
 import penoplatinum.grid.Grid;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.LinkedSector;
-import penoplatinum.grid.Agent;
-import penoplatinum.grid.BarcodeAgent;
+import penoplatinum.grid.agent.Agent;
+import penoplatinum.grid.agent.BarcodeAgent;
 
-import penoplatinum.grid.GhostAgent;
+import penoplatinum.grid.agent.GhostAgent;
 import penoplatinum.model.Model;
 import penoplatinum.model.GhostModel;
 import penoplatinum.model.part.GridModelPart;
@@ -78,7 +78,8 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
                              new ImportWallsModelProcessor(
                              new UnknownSectorModelProcessor(
                              new ChangesModelProcessor(
-                                     ))))))))));
+                             new ScrewGridUpModelProcessor(
+                                             )))))))))));
     // TODO:
 
     // BarcodeWallsModelProcessor
@@ -275,7 +276,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     sb.append("       max       : " + format.format(maxMemory / 1024) + "\n");
     sb.append("       total free: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024) + "\n");
     
-    System.out.println(sb);
+    //System.out.println(sb);
   }
   
   // ExternalEventHandler

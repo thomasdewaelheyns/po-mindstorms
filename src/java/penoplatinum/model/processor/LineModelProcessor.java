@@ -60,6 +60,7 @@ public class LineModelProcessor extends ModelProcessor {
       case WAITING:
         if( currentColor == LightColor.WHITE) {
           this.state = RECORDING;
+          System.out.println("Start reading line");
           this.brownCounter = 0;
           this.colorCounter = 0;
         }

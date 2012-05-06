@@ -2,7 +2,7 @@ package penoplatinum.model.processor;
 
 import penoplatinum.util.Point;
 import penoplatinum.grid.Grid;
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;

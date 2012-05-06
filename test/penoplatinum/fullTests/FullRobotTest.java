@@ -35,7 +35,7 @@ import penoplatinum.simulator.tiles.Sector;
 import penoplatinum.simulator.view.SimulationView;
 import penoplatinum.simulator.view.SwingSimulationView;
 
-import penoplatinum.grid.SwingGridView;
+import penoplatinum.grid.view.SwingGridView;
 import penoplatinum.map.MapFactory;
 import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 
@@ -43,7 +43,7 @@ import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 public class FullRobotTest extends TestCase {
   @Test
   public void testMerge() throws FileNotFoundException {
-    Config.load("../../test/test.properties");
+    Config.load("../../test/fullTest.properties");
 
     // setup simulator
     Simulator       simulator = this.createSimulator(makeLongMap());    
@@ -67,7 +67,7 @@ public class FullRobotTest extends TestCase {
   
   @Test
   public void testSimulator() throws FileNotFoundException {
-    Config.load("../../test/test.properties");
+    Config.load("../../test/fullTest.properties");
 
     // setup simulator
     Simulator       simulator = this.createSimulator(makeMap());    
@@ -75,15 +75,15 @@ public class FullRobotTest extends TestCase {
     // add four ghosts ...
     GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 220, 220, -180);
     //GridModelPart.from(robot1.getModel()).getMyAgent().activate();
-
-    GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -90);
-    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
+//
+    //GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -90);
+//    //GridModelPart.from(robot2.getModel()).getMyAgent().activate();
 
     GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 20, 220, 0);
     //GridModelPart.from(robot3.getModel()).getMyAgent().activate();
 
-    GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
-    //GridModelPart.from(robot4.getModel()).getMyAgent().activate();
+    //GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
+//    //GridModelPart.from(robot4.getModel()).getMyAgent().activate();
 
     // run the simulator for 30000 steps
     simulator.run(30000);

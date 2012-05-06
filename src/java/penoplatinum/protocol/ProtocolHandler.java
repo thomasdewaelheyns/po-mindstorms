@@ -11,8 +11,8 @@ package penoplatinum.protocol;
 import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.grid.Grid;
-import penoplatinum.grid.BarcodeAgent;
-import penoplatinum.grid.PacmanAgent;
+import penoplatinum.grid.agent.BarcodeAgent;
+import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.grid.Sector;
 
 import penoplatinum.util.Point;

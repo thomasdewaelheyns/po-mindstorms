@@ -2,10 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package penoplatinum.grid;
+package penoplatinum.grid.view;
 
+import penoplatinum.grid.agent.GhostAgent;
+import penoplatinum.grid.agent.Agent;
+import penoplatinum.grid.agent.PacmanAgent;
 import java.io.File;
 import java.util.Scanner;
+import penoplatinum.grid.Grid;
+import penoplatinum.grid.Sector;
 
 /**
  *

@@ -1,4 +1,6 @@
-package penoplatinum.grid;
+package penoplatinum.grid.view;
+
+import penoplatinum.grid.Grid;
 
 /**
  * NullGridView

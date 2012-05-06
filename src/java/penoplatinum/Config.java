@@ -15,7 +15,7 @@ import java.util.Properties;
 
 
 public class Config {
-  public static int SIMULATOR_WAIT = 1;
+  public static int SIMULATOR_WAIT = 0;
   
   public static void load(String file) {
     try {

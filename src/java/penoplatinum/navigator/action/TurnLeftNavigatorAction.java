@@ -10,7 +10,7 @@ package penoplatinum.navigator.action;
 import penoplatinum.driver.Driver;
 import penoplatinum.driver.ManhattanDriver;
 
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.model.part.GridModelPart;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;

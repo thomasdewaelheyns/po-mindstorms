@@ -1,7 +1,7 @@
 package penoplatinum.model.processor;
 
 import penoplatinum.util.Point;
-import penoplatinum.grid.Agent;
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.Grid;
 import org.junit.Test;

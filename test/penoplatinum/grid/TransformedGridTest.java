@@ -4,6 +4,7 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.Agent;
 import junit.framework.TestCase;
 import static org.mockito.Mockito.*;
 

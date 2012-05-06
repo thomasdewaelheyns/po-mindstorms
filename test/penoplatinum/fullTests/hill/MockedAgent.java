@@ -1,7 +1,7 @@
 package penoplatinum.fullTests.hill;
 
-import penoplatinum.grid.Agent;
-import penoplatinum.grid.MovingAgent;
+import penoplatinum.grid.agent.Agent;
+import penoplatinum.grid.agent.MovingAgent;
 import penoplatinum.util.Color;
 import penoplatinum.util.Position;
 import static org.mockito.Mockito.*;

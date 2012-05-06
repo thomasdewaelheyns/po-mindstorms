@@ -143,6 +143,8 @@ public class ManhattanDriver implements Driver {
       if( behaviour.requiresAction(this.advancedRobot.getModel(), 
                                    this.currentAction) )
       {
+        System.out.println("Was "+this.currentAction);
+        System.out.println("Interrupting: "+behaviour);
         this.interrupt(behaviour.getNextAction());
         break; // we don't allow behaviours to override each other
                // the first behaviour that is triggered is honoured

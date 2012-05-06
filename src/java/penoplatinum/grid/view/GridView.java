@@ -1,4 +1,4 @@
-package penoplatinum.grid;
+package penoplatinum.grid.view;
 
 /**
  * GridView Interface
@@ -9,6 +9,7 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
 
+import penoplatinum.grid.Grid;
 import penoplatinum.grid.Grid;
 
 public interface GridView {

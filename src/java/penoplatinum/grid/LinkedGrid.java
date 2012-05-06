@@ -12,6 +12,7 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
  
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.CantorDiagonal;
@@ -96,9 +97,12 @@ public class LinkedGrid implements Grid {
   }
 
   public Grid add(Agent agent, Point position, Bearing bearing) {
-    if (getSectorAt(position) == null)
+    if(agent == null){
+      throw new IllegalArgumentException();
+    }
+    if (getSectorAt(position) == null){
       add(new LinkedSector(), position);
-
+    }
     int index = CantorDiagonal.transform(position);
     agentPositions.put(agent, position);
     agentBearings.put(agent, bearing);

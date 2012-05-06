@@ -19,7 +19,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.JFrame;
 
-import penoplatinum.grid.SwingGridView;
+import penoplatinum.grid.view.SwingGridView;
 import penoplatinum.map.Map;
 
 import penoplatinum.simulator.tiles.Sector;

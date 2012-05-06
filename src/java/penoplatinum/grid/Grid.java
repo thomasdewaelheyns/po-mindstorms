@@ -8,6 +8,7 @@ package penoplatinum.grid;
  * @author: Team Platinum
  */
 
+import penoplatinum.grid.agent.Agent;
 import penoplatinum.util.Point;
 import penoplatinum.util.Bearing;
 

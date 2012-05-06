@@ -4,6 +4,8 @@
  */
 package penoplatinum.grid;
 
+import penoplatinum.grid.agent.Agent;
+
 /**
  *
  * @author MHGameWork

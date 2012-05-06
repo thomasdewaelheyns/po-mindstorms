@@ -12,7 +12,7 @@ import penoplatinum.model.part.SensorModelPart;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import penoplatinum.grid.PacmanAgent;
+import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.model.part.BarcodeModelPart;
 import penoplatinum.model.part.MessageModelPart;
 import penoplatinum.protocol.ProtocolHandler;
