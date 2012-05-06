@@ -1,3 +1,6 @@
+
+import java.util.Scanner;
+
 /**
  * MQSpy
  * 
@@ -19,11 +22,20 @@ public class MQSpy extends BaseRunner {
     System.out.println(message.trim());
   }
   
+  public void send(String message){
+    this.queue.send(message+"\n");
+  }
+  
   public static void main(String[] args) throws java.lang.InterruptedException {
     MQSpy spy = new MQSpy(args);
 
     System.out.println("Waiting for messages. To exit press CTRL+C");
     spy.connect();
-    while (true) { Thread.sleep(100); }
+    Scanner sc = new Scanner(System.in);
+    while (true) { 
+      if(sc.hasNextLine()){
+        spy.send(sc.nextLine());
+      }
+      Thread.sleep(100); }
   }
 }
