@@ -1,5 +1,13 @@
 package penoplatinum.util;
 
+/**
+ * FPS
+ * 
+ * calculated the Frame-rate Per Second
+ * 
+ * @author Team Platinum
+ */
+
 public class FPS {
 
   // the external tick...
@@ -8,8 +16,7 @@ public class FPS {
   private long start = 0;
   private int fps = 0;
 
-  public FPS() {
-  }
+  public FPS() {}
 
   public void setCheckPoint() {
     start = System.nanoTime();
@@ -19,12 +26,12 @@ public class FPS {
     delta += System.nanoTime() - start;
     if (delta > 1000L * 1000 * 1000 || count > 100) {
       fps = (int) (count / (double) delta * 1000d * 1000d * 1000d);
-      Utils.Log("FPS: " + Integer.toString(fps));
       count = 0;
       delta = 0;
     }
     count++;
   }
+
   public int getFps(){
     return fps;
   }

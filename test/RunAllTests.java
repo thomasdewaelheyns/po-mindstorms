@@ -138,6 +138,7 @@ public class RunAllTests {
       penoplatinum.util.CircularQueueTest.class,
       penoplatinum.util.ColorTest.class,
       penoplatinum.util.ColorsTest.class,
+      penoplatinum.util.FPSTest.class,
       penoplatinum.util.LightColorTest.class,
       penoplatinum.util.LineTest.class,
       penoplatinum.util.PointTest.class,
