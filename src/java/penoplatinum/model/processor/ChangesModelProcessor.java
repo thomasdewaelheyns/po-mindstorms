@@ -85,9 +85,9 @@ public class ChangesModelProcessor extends ModelProcessor {
   //   }
   //   // TODO: how do we handle changed names ?
   //   if( this.other1 != null && this.other2 != null && this.other3 != null ) {
-  //     this.handleChangedSectors(this.other1, "others1");
-  //     this.handleChangedSectors(this.other2, "others2");
-  //     this.handleChangedSectors(this.other3, "others3");
+  //     this.handleChangedSectors(this.other1, "others[0]");
+  //     this.handleChangedSectors(this.other2, "others[1]");
+  //     this.handleChangedSectors(this.other3, "others[2]");
   //   }
   // }
   // 
