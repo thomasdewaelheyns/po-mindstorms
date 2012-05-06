@@ -17,26 +17,6 @@ import penoplatinum.util.Bearing;
  * @author MHGameWork
  */
 public interface Grid {
-//  // set the root-processor for this Grid
-//  public Grid         setProcessor(GridProcessor processor);
-//
-//  // a sector contains a root sector
-//  public Grid         addRoot(Sector sector);
-//
-//  // using the navigation links on Sectors, the Grid can traverse through
-//  // the sectors, returning the Sector with requested left and top coordinates
-//  public Sector       getSector(Point position);
-//  public Point        getPosition(Sector sector);
-//  public List<Sector> getSectors();
-//
-//  // Grid contains Agents
-//  public Grid         add(Agent agent, Point position);
-//  public Grid         moveForward(Agent agent);
-//  public Grid         remove(Agent agent);
-//  public Agent        getAgent(String name);
-//  public List<Agent>  getAgents();
-//  public Grid         clearAgents();
-//  public Point        getPosition(Agent agent);
 
   /**
    * Adds given sector to the grid at given position

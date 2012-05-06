@@ -15,8 +15,9 @@ import penoplatinum.grid.agent.Agent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.CantorDiagonal;
+import penoplatinum.util.Entry;
+import penoplatinum.util.Position;
 import penoplatinum.util.SimpleHashMap;
-import penoplatinum.util.SimpleHashMap.Entry;
 
 public class LinkedGrid implements Grid {
 
@@ -123,10 +124,10 @@ public class LinkedGrid implements Grid {
   public Agent getAgentAt(Point pos, Class cls) {
     // This is a cheat for optimization!
 
-    for (Entry<Agent, Point> e : agentPositions.entries()) {
+    for (Entry e : agentPositions.entries()) {
       if (!pos.equals(e.value))
         continue;
-      Agent a = e.key;
+      Agent a = (Agent) e.key;
 
       if (a.getClass() == cls)
         return a;

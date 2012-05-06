@@ -76,33 +76,16 @@ public class TransformedGrid implements Grid {
     return this;
   }
 
-  private void copyWallFrom(Sector source, Sector target, Bearing sourceBearing, Bearing targetBearing) {
-    if (!source.knowsWall(sourceBearing))
-      target.clearWall(targetBearing);
-    else {
-      if (source.hasWall(sourceBearing))
-        target.setWall(targetBearing);
-      else
-        target.setNoWall(targetBearing);
-    }
-  }
-
   @Override
   public Sector getSectorAt(Point position) {
-    transformation.inverseTransform(position);
-    Sector s = grid.getSectorAt(position);
-    transformation.transform(position);
-
-    if (s == null)
-      return null;
-
-    return new TransformedSector(s, transformation);
+    return getSector(getSectorId(position));
   }
 
   @Override
   public Point getPositionOf(Sector sector) {
-    while (sector instanceof TransformedSector)
-      sector = ((TransformedSector) sector).getDecoratedSector();
+    if (sector instanceof FacadeSector) {
+      sector = grid.getSector(((FacadeSector) sector).getSectorId());
+    }
 
     Point p = grid.getPositionOf(sector);
     transformation.transform(p);
@@ -111,10 +94,11 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Iterable<Sector> getSectors() {
-    //Only use on pc!!!
+    //TODO: Only use on pc!!!
     List<Sector> ret = new ArrayList<Sector>();
-    for (Sector s : grid.getSectors())
-      ret.add(new TransformedSector(s, transformation));
+    for (Sector s : grid.getSectors()) {
+      ret.add(getSector(grid.getSectorId(grid.getPositionOf(s))));
+    }
     return ret;
   }
 
@@ -153,14 +137,14 @@ public class TransformedGrid implements Grid {
     return grid.getAgent(name);
   }
 
-
   @Override
   public Point getPositionOf(Agent agent) {
     Point pos = grid.getPositionOf(agent);
-    if (pos == null) return null;
-    
+    if (pos == null)
+      return null;
+
     transformation.transform(pos);
-    
+
     return pos;
   }
 
@@ -168,12 +152,12 @@ public class TransformedGrid implements Grid {
   public Agent getAgentAt(Point position, Class cls) {
     transformation.inverseTransform(position);
 
-    Agent a = grid.getAgentAt(position,cls);
+    Agent a = grid.getAgentAt(position, cls);
 
     transformation.transform(position);
     return a;
   }
-  
+
   @Override
   public Iterable<Agent> getAgents() {
     return grid.getAgents();
@@ -256,7 +240,7 @@ public class TransformedGrid implements Grid {
   public String toString() {
     return GridUtils.createGridSectorsString(this);
   }
-}
+
   @Override
   public boolean hasNeighbour(int sectorId, Bearing atBearing) {
 

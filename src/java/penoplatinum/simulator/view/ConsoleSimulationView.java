@@ -27,7 +27,6 @@ public class ConsoleSimulationView implements SimulationView {
     // no map required on console ;-)
   }
 
-  @Override
   public void log(String msg) {
     System.out.println( msg );
   }
