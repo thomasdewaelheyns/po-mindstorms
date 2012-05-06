@@ -78,9 +78,8 @@ public class ChangesModelProcessorTest extends TestCase {
     verify(mockGridPart, times(1)).getChangedSectors();
     verify(mockProtocol, times(1)).handleFoundSector(mockSector1);
     verify(mockProtocol, times(1)).handleFoundSector(mockSector2);
-    verify(mockReporter, times(1)).reportSectorUpdate(mockSector1);
-    verify(mockReporter, times(1)).reportSectorUpdate(mockSector2);
-    
+    verify(mockReporter, times(1)).reportSectorUpdate(mockSector1, "myGrid");
+    verify(mockReporter, times(1)).reportSectorUpdate(mockSector2, "myGrid");
     
     when(mockGridPart.getMyPosition()).thenReturn(new Point(1, 0));
     when(mockGridPart.getPacmanID()).thenReturn(1);

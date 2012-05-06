@@ -64,6 +64,9 @@ public class ChangesModelProcessor extends ModelProcessor {
     this.handleDiscovery(model, gridPart, protocol);
     this.handleChangedValues(model, gridPart, protocol);
 
+    // TODO: activate for reporting of other ghosts' grids
+    // this.handleOtherGridChanges(gridPart);
+
     // Send pacman position updates
     if (gridPart.getPacmanID() > pacmanID) {
       pacmanID = gridPart.getPacmanID();
@@ -72,15 +75,49 @@ public class ChangesModelProcessor extends ModelProcessor {
       model.getReporter().reportAgentUpdate(pacman);
     }
   }
+  
+  // TODO: activate for reporting of other ghosts' grids
+  // private String other1, other2, other3;
+  // 
+  // private void handleOtherGridChanges(GridModelPart gridPart) {
+  //   if( this.other1 == null || this.other2 == null || this.other3 == null ) {
+  //     this.initAgentNames(gridPart);
+  //   }
+  //   // TODO: how do we handle changed names ?
+  //   if( this.other1 != null && this.other2 != null && this.other3 != null ) {
+  //     this.handleChangedSectors(this.other1, "others1");
+  //     this.handleChangedSectors(this.other2, "others2");
+  //     this.handleChangedSectors(this.other3, "others3");
+  //   }
+  // }
+  // 
+  // private void handleChangedSectors(String gridName, String dashboardName)
+  // {
+  //   Model model = this.getModel();
+  //   if(model.getReporter() != null) {
+  //     for(Sector sector : gridPart.getChangedSectorsOf(gridName)) {
+  //       model.getReporter().reportSectorUpdate(sector, dashboardName);
+  //   }
+  // }
+  // 
+  // private void initAgentNames(GridModelPart gridPart) {
+  //   List<String> names = gridPart.getOtherAgentsNames();
+  //   if( names.size() == 3 ) {
+  //     this.other1 = names.get(0);
+  //     this.other2 = names.get(1);
+  //     this.other3 = names.get(2);
+  //   } else {
+  //     System.out.println( "WARNING: didn't get enough other Ghost's names" );
+  //   }
+  // } 
 
   private void handleDiscovery(Model model, GridModelPart gridPart, ProtocolHandler protocol) {
     for(Sector current : gridPart.getChangedSectors() ){
-      
       // for each changed sector, notify the GhostProtocol
       protocol.handleFoundSector(current);
       // and report to dashboard (directly)
       if(model.getReporter() != null) {
-        model.getReporter().reportSectorUpdate(current);
+        model.getReporter().reportSectorUpdate(current, "myGrid");
       }
     }
     gridPart.clearChangedSectors();

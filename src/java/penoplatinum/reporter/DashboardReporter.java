@@ -132,11 +132,6 @@ public class DashboardReporter implements Reporter {
     return this;
   }
 
-  public Reporter reportAgent(Agent agent) {
-    this.sendSectorAgent(this.robot.getName(), "myGrid", agent);
-    return this;
-  }
-
   private DashboardReporter sendSectorAgent(String name, String grid, Agent agent) {
     Grid mainGrid = this.getMainGrid(this.model);
     Point pos = mainGrid.getPositionOf(agent);
@@ -198,8 +193,8 @@ public class DashboardReporter implements Reporter {
   }
 
   @Override
-  public Reporter reportSectorUpdate(Sector sector) {
-    this.sendSectorWalls(this.robot.getName(), "myGrid", sector);
+  public Reporter reportSectorUpdate(Sector sector, String dashboardGridName) {
+    this.sendSectorWalls(this.robot.getName(), dashboardGridName, sector);
     return this;
   }
   
@@ -210,7 +205,7 @@ public class DashboardReporter implements Reporter {
 
   @Override
   public Reporter reportAgentUpdate(Agent agent) {
-    this.reportAgent(agent);
+    this.sendSectorAgent(this.robot.getName(), "myGrid", agent);
     return this;
   }
   

@@ -42,14 +42,8 @@ public class GridModelPart implements ModelPart {
 
   private MultiGhostGrid grids;
 
-  /**
-   * Dit is verwijderd aangezien deze de kleuren kapot doet.
-   * Gebruik vanaf nu altijd de naam van de robot om de grid mee op te stellen.
-   *
-  public GridModelPart() {
-    this("mine");
-  }/**/
-  
+  private String myName;
+
   public GridModelPart(String name) {
     this.setup(name);
   }
@@ -57,12 +51,12 @@ public class GridModelPart implements ModelPart {
   // we create the combined ghosts' grid
   // we keep a reference to our own grid and set up the first sector and agent
   private void setup(String name) {
+    this.myName = name;
     this.grids = new MultiGhostGrid(name);
     this.myGrid = this.grids.getGhostGrid(name);
     AggregatedGrid aggGrid = new AggregatedGrid();
     this.grids.useAggregatedGrid(aggGrid);
     Point position = new Point(0,0);
-    // this.myGrid.add(new LinkedSector(), position);
     this.myAgent = new GhostAgent(name);
     this.myGrid.add(this.myAgent, position, Bearing.N);
   }
@@ -70,6 +64,24 @@ public class GridModelPart implements ModelPart {
   public Grid getMyGrid() {
     return this.myGrid;
   }
+
+  public List<String> getOtherAgentsNames() {
+    List<String> names = new ArrayList<String>();
+    for(Agent agent : this.grids.getAgents()) {
+      if( agent instanceof GhostAgent ) {
+        String name = agent.getName();
+        if( ! this.myName.equals(name) ) {
+          names.add(name);
+        }
+      }
+    }
+    return names;
+  }
+
+  // TODO: activate to allow reporting on other ghosts' grids
+  // public List<Sector> getChangedSectors(String name) {
+  //   return this.grids.getChangedSectors(name);
+  // }
 
   public Grid getGridOf(String agentName) {
     return this.grids.getGhostGrid(agentName);

@@ -101,7 +101,7 @@ public class DashboardReporterTest extends TestCase{
     
     reporter.useGatewayClient(client);
     reporter.reportFor(robot);
-    reporter.reportSectorUpdate(sector);
+    reporter.reportSectorUpdate(sector, "myGrid");
     verify(client).send("\"Angie\",\"myGrid\",1,1,8", Config.BT_WALLS);
   }
   
