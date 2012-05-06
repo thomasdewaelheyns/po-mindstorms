@@ -105,6 +105,7 @@ public class RunAllTests {
       penoplatinum.protocol.ExternalEventHandlerTest.class,
       penoplatinum.protocol.GhostProtocolHandlerTest.class,
       penoplatinum.protocol.ProtocolHandlerTest.class,
+      penoplatinum.reporter.DashboardReporterTest.class,
       penoplatinum.reporter.ReporterTest.class,
       penoplatinum.robot.RobotAPITest.class,
       penoplatinum.robot.RobotTest.class,
