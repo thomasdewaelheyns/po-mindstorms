@@ -83,9 +83,7 @@ public class Gateway implements MessageReceiver {
         sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
       }
       return sb.toString();
-    } catch(Exception e) {
-      fail( "Could not generate MD5.");
-    }
+    } catch(Exception e) {}
     return "";
   }
 
