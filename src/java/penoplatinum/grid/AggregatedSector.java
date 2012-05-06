@@ -43,13 +43,8 @@ public class AggregatedSector implements Sector {
   }
 
   @Override
-  public Sector addNeighbour(Sector neighbour, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
   public boolean hasNeighbour(Bearing atBearing) {
-    return getNeighbour(atBearing)!= null;
+    return getNeighbour(atBearing) != null;
   }
 
   @Override
@@ -134,11 +129,11 @@ public class AggregatedSector implements Sector {
     int ret = 0;
     for (int i = 0; i < grid.getActiveGrids().size(); i++) {
       Grid g = grid.getActiveGrids().get(i);
-      Sector s = g.getSectorAt(position);
-      if (s == null)
+      int s = g.getSectorId(position);
+      if (s == -1)
         continue;
 
-      ret += !s.knowsWall(atBearing) ? 0 : (s.hasWall(atBearing) ? 1 : -1);
+      ret += !g.knowsWall(s, atBearing) ? 0 : (g.hasWall(s, atBearing) ? 1 : -1);
 
     }
     return ret;

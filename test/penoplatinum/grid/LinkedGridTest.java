@@ -45,18 +45,18 @@ public class LinkedGridTest extends TestCase {
     assertFalse(failed);
   }
 
-  @Test
-  public void testAddSectorCreatePath() {
-    Grid grid2Sector = new LinkedGrid();
-    LinkedSector s1 = new LinkedSector();
-    LinkedSector s2 = new LinkedSector();
-
-    grid2Sector.add(s1, new Point(0, 0)); // This must be the origin!
-    grid2Sector.add(s2, new Point(1, 1));
-
-    assertNotNull("s1 has no neighbour!", getSingleNeighbour(s1));
-    assertEquals("There is no path from s1 to s2!!", getSingleNeighbour(s1), getSingleNeighbour(s2));
-  }
+//  @Test
+//  public void testAddSectorCreatePath() {
+//    Grid grid2Sector = new LinkedGrid();
+//    LinkedSector s1 = new LinkedSector();
+//    LinkedSector s2 = new LinkedSector();
+//
+//    grid2Sector.add(s1, new Point(0, 0)); // This must be the origin!
+//    grid2Sector.add(s2, new Point(1, 1));
+//
+//    assertNotNull("s1 has no neighbour!", getSingleNeighbour(s1));
+//    assertEquals("There is no path from s1 to s2!!", getSingleNeighbour(s1), getSingleNeighbour(s2));
+//  }
 
   @Test
   public void testAddAgent() {

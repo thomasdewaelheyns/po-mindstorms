@@ -362,4 +362,199 @@ public class TransformedGridTest extends TestCase {
   private Grid mockGrid() {
     return mock(Grid.class);
   }
+
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //
+  // Sector functions
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //  
+  //
+  public void testHasNeighbour() {
+
+    TransformedGrid grid = createSectorWithNeighbourE();
+
+    grid.setTransformation(TransformationTRT.fromRotation(Rotation.R90));
+
+    Sector sector = grid.getSectorAt(new Point(0, 0));
+
+    assertFalse(sector.hasNeighbour(Bearing.N));
+    assertFalse(sector.hasNeighbour(Bearing.E));
+    assertTrue(sector.hasNeighbour(Bearing.S));
+    assertFalse(sector.hasNeighbour(Bearing.W));
+  }
+
+  public void testGetNeighbour() {
+
+    TransformedGrid grid = createSectorWithNeighbourE();
+
+    grid.setTransformation(TransformationTRT.fromRotation(Rotation.R90));
+
+    Sector sector = grid.getSectorAt(new Point(0, 0));
+    assertNull(sector.getNeighbour(Bearing.N));
+    assertNull(sector.getNeighbour(Bearing.E));
+    assertNotNull(sector.getNeighbour(Bearing.S));
+    assertNull(sector.getNeighbour(Bearing.W));
+
+    Sector sector2 = sector.getNeighbour(Bearing.S);
+
+//    assertEquals(sector, sector2.getNeighbour(Bearing.N));
+    assertNull(sector2.getNeighbour(Bearing.E));
+    assertNull(sector2.getNeighbour(Bearing.S));
+    assertNull(sector2.getNeighbour(Bearing.W));
+
+  }
+
+  public void testSectorRotationRotatesWalls() {
+    TransformedGrid transformed = this.createGridWithWallsNW();
+    Sector sector = transformed.getSectorAt(new Point(0, 0));
+
+    transformed.setTransformation(TransformationTRT.fromRotation(Rotation.R90));
+
+    assertTrue("90 degree rotated sector doesn't have N wall.",
+            sector.hasWall(Bearing.N));
+    assertTrue("90 degree rotated sector doesn't have E wall.",
+            sector.hasWall(Bearing.E));
+    assertFalse("90 degree rotated sector has W wall.",
+            sector.knowsWall(Bearing.W));
+    assertFalse("90 degree rotated sector has S wall.",
+            sector.hasWall(Bearing.S));
+
+    transformed.setTransformation(TransformationTRT.fromRotation(Rotation.R180));
+
+
+    assertTrue("180 degree rotated sector doesn't have E wall.",
+            sector.hasWall(Bearing.E));
+    assertTrue("180 degree rotated sector doesn't have S wall.",
+            sector.hasWall(Bearing.S));
+    assertFalse("180 degree rotated sector has W wall.",
+            sector.hasWall(Bearing.W));
+    assertFalse("180 degree rotated sector has N wall.",
+            sector.knowsWall(Bearing.N));
+
+    transformed.setTransformation(TransformationTRT.fromRotation(Rotation.R270));
+
+
+    assertTrue("270 degree rotated sector doesn't have S wall.",
+            sector.hasWall(Bearing.S));
+    assertTrue("270 degree rotated sector doesn't have W wall.",
+            sector.hasWall(Bearing.W));
+    assertFalse("270 degree rotated sector has E wall.",
+            sector.knowsWall(Bearing.E));
+    assertFalse("270 degree rotated sector has N wall.",
+            sector.hasWall(Bearing.N));
+
+    transformed.setTransformation(TransformationTRT.fromRotation(Rotation.R360));
+
+    assertTrue("360 degree rotated sector doesn't have N wall.",
+            sector.hasWall(Bearing.N));
+    assertTrue("360 degree rotated sector doesn't have W wall.",
+            sector.hasWall(Bearing.W));
+    assertFalse("360 degree rotated sector has E wall.",
+            sector.hasWall(Bearing.E));
+    assertFalse("360 degree rotated sector has S wall.",
+            sector.knowsWall(Bearing.S));
+  }
+
+  public void testAlterWalls() {
+  }
+
+  public void testHasSameWallsAs() {
+
+
+    TransformedGrid grid1 = createSectorWithWallsNE();
+    TransformedGrid grid2 = createGridWithWallsNW();
+
+
+    grid1.setTransformation(TransformationTRT.fromRotation(Rotation.L90));
+    grid2.setTransformation(TransformationTRT.fromRotation(Rotation.NONE));
+
+
+    Sector t1 = grid1.getSectorAt(new Point(0, 0));
+    Sector t2 = grid1.getSectorAt(new Point(0, 0));
+
+    t1.toString();
+//    assertFalse(t1.hasSameWallsAs(s1));
+//    assertTrue(t1.hasSameWallsAs(s2));
+    assertTrue(t1.hasSameWallsAs(t2));
+    assertTrue(t2.hasSameWallsAs(t1));
+
+  }
+
+  // utility methods to setup basic components
+  private TransformedGrid createGridWithWallsNW() {
+    /* result looks like this:
+     *    +--+
+     *    |
+     *    +??+
+     */
+
+    TransformedGrid grid = new TransformedGrid(new LinkedGrid());
+
+    Sector s = new LinkedSector();
+    s.setWall(Bearing.N);
+    s.setNoWall(Bearing.E);
+    s.clearWall(Bearing.S);
+    s.setWall(Bearing.W);
+
+    grid.add(s, new Point(0, 0));
+
+    return grid;
+  }
+
+  private TransformedGrid createSectorWithWallsNE() {
+    /* result looks like this:
+     *    +--+
+     *    ?  |
+     *    +  +
+     */
+    TransformedGrid grid = new TransformedGrid(new LinkedGrid());
+
+    Sector s = new LinkedSector();
+    s.setWall(Bearing.E);
+    s.setNoWall(Bearing.S);
+    s.clearWall(Bearing.W);
+    s.setWall(Bearing.N);
+
+    grid.add(s, new Point(0, 0));
+
+    return grid;
+  }
+
+  private TransformedGrid createSectorWithNeighbourE() {
+
+    TransformedGrid grid = new TransformedGrid(new LinkedGrid());
+
+    Sector ret = new LinkedSector();
+    Sector neighbour = new LinkedSector();
+
+
+    grid.add(ret, new Point(0, 0));
+    grid.add(neighbour, new Point(1, 0));
+
+    return grid;
+  }
 }

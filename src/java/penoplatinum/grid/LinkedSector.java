@@ -25,16 +25,11 @@ public class LinkedSector implements Sector {
 
   private Grid grid;
   // links to the adjacent Sectors
-
-  private LinkedSector[] neighbours = new LinkedSector[4];
-  // walls and the certainty about them
-
   private char walls = 0;
-
   private char certainty = 0;
   // the value associated with this sector
-
   private int value = 0;
+  private int id = -2;
 
   public LinkedSector() {
     this.putOn(NullGrid.getInstance());
@@ -44,7 +39,16 @@ public class LinkedSector implements Sector {
     this();
     addWalls(((LinkedSector) original).walls);
   }
-  
+
+  public int getId() {
+    return this.id;
+  }
+
+  public Sector setId(int value) {
+    this.id = value;
+    return this;
+  }
+
   @Override
   public LinkedSector putOn(Grid grid) {
     this.grid = grid;
@@ -56,21 +60,20 @@ public class LinkedSector implements Sector {
     return this.grid;
   }
 
-  @Override
   public Sector addNeighbour(Sector neighbour, Bearing atBearing) {
     if (getNeighbour(atBearing) == neighbour)
       return this;
 
-    Sector left = null;
-    Sector right = null;
+    LinkedSector left = null;
+    LinkedSector right = null;
 
     linkNeighbour(neighbour, atBearing);
 
     if (getNeighbour(atBearing.leftFrom()) != null)
-      left = getNeighbour(atBearing.leftFrom()).getNeighbour(atBearing);
+      left = (LinkedSector) getNeighbour(atBearing.leftFrom()).getNeighbour(atBearing);
 
     if (getNeighbour(atBearing.rightFrom()) != null)
-      right = getNeighbour(atBearing.rightFrom()).getNeighbour(atBearing);
+      right = (LinkedSector) getNeighbour(atBearing.rightFrom()).getNeighbour(atBearing);
 
     if (right != null)
       right.addNeighbour(neighbour, atBearing.leftFrom());
@@ -80,10 +83,11 @@ public class LinkedSector implements Sector {
   }
 
   private void linkNeighbour(Sector neighbour, Bearing atBearing) {
-    neighbours[mapBearing(atBearing)] = (LinkedSector) neighbour;
+
+//    neighbours[mapBearing(atBearing)] = (LinkedSector) neighbour;
     if (neighbour == null)
       return;
-    ((LinkedSector) neighbour).neighbours[mapBearing(atBearing.reverse())] = this;
+//    ((LinkedSector) neighbour).neighbours[mapBearing(atBearing.reverse())] = this;
     exchangeWallInfo(atBearing);
   }
 
@@ -129,10 +133,11 @@ public class LinkedSector implements Sector {
   // returns the neighbour at a given location
   @Override
   public LinkedSector getNeighbour(Bearing atBearing) {
-    if (atBearing == Bearing.UNKNOWN) {
-      return this;
-    }
-    return this.neighbours[this.mapBearing(atBearing)];
+    return (LinkedSector) grid.getSector(grid.getNeighbourId(this.id, atBearing));
+//    if (atBearing == Bearing.UNKNOWN) {
+//      return this;
+//    }
+//    return this.neighbours[this.mapBearing(atBearing)];
   }
 
   // sets the value of the sector
@@ -152,39 +157,33 @@ public class LinkedSector implements Sector {
   @Override
   public Sector setWall(Bearing atBearing) {
     setWallInternal(atBearing);
-    // also set the wall at our neighbour's
-    if (this.hasNeighbour(atBearing)) {
-      this.getNeighbour(atBearing).setWallInternal(atBearing.reverse());
-    }
-    // this.grid.wallsNeedRefresh();
+    LinkedSector n = getNeighbour(atBearing);
+    if (n != null)
+      n.setWallInternal(atBearing.reverse());
     return this;
   }
 
   @Override
   public Sector setNoWall(Bearing atBearing) {
     setNoWallInternal(atBearing);
-    // also remove the wall at our neighbour's
-    if (this.hasNeighbour(atBearing)) {
-      this.getNeighbour(atBearing).setNoWallInternal(atBearing.reverse());
-    }
-    // this.grid.wallsNeedRefresh();
+    LinkedSector n = getNeighbour(atBearing);
+    if (n != null)
+      n.setNoWallInternal(atBearing.reverse());
     return this;
   }
 
   @Override
   public Sector clearWall(Bearing atBearing) {
-    // clears all knowledge about a wal
     clearWallInternal(atBearing);
-    // also update neighbour
-    if (this.hasNeighbour(atBearing)) {
-      this.getNeighbour(atBearing).clearWallInternal(atBearing.reverse());
-    }
+    LinkedSector n = getNeighbour(atBearing);
+    if (n != null)
+      n.clearWallInternal(atBearing.reverse());
     return this;
   }
 
   @Override
   public boolean hasWall(Bearing wall) {
-    if( ! this.knowsWall(wall) ) {
+    if (!this.knowsWall(wall)) {
       throw new IllegalArgumentException("Don't know wall: " + wall);
     }
     int bit = this.mapBearing(wall);
@@ -211,7 +210,8 @@ public class LinkedSector implements Sector {
     return this.certainty == 15;
   }
 
-  public LinkedSector clearWalls() {
+  @Override
+  public Sector clearWalls() {
     this.walls = 0;
     this.certainty = 0;
     return this;
@@ -222,6 +222,7 @@ public class LinkedSector implements Sector {
     if (!knowsWall(atBearing))
       return false;
     return !hasWall(atBearing);
+
   }
 
   public String toString() {
@@ -245,19 +246,19 @@ public class LinkedSector implements Sector {
     return index;
   }
 
-  private void setWallInternal(Bearing atBearing) {
+  public void setWallInternal(Bearing atBearing) {
     int bit = this.mapBearing(atBearing);
     this.walls = (char) BitwiseOperations.setBit(this.walls, bit);
     this.certainty = (char) BitwiseOperations.setBit(this.certainty, bit);
   }
 
-  private void setNoWallInternal(Bearing atBearing) {
+  public void setNoWallInternal(Bearing atBearing) {
     int bit = this.mapBearing(atBearing);
     this.walls = (char) BitwiseOperations.unsetBit(this.walls, bit);
     this.certainty = (char) BitwiseOperations.setBit(this.certainty, bit);
   }
 
-  private void clearWallInternal(Bearing atBearing) {
+  public void clearWallInternal(Bearing atBearing) {
     int bit = this.mapBearing(atBearing);
     this.certainty = (char) BitwiseOperations.unsetBit(this.certainty, bit);
   }
@@ -288,13 +289,12 @@ public class LinkedSector implements Sector {
     }
   }
 
-  private void disengage() {
-    for (int i = 0; i < 4; i++) {
-      this.neighbours[i] = null;
-    }
-    grid = null;
-  }
-
+//  private void disengage() {
+//    for (int i = 0; i < 4; i++) {
+//      this.neighbours[i] = null;
+//    }
+//    grid = null;
+//  }
   @Override
   public boolean hasSameWallsAs(Sector s) {
     if (s instanceof LinkedSector)
@@ -307,7 +307,7 @@ public class LinkedSector implements Sector {
       if (s.knowsWall(b) && (s.hasWall(b) != hasWall(b)))
         return false;
     }
-    
+
     return true;
 
   }

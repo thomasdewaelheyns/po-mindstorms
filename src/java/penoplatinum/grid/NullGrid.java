@@ -199,11 +199,86 @@ public class NullGrid implements Grid {
 
   @Override
   public Point getPositionOf(Agent agent) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
   }
 
   @Override
   public Agent getAgentAt(Point position, Class cls) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
+  }
+
+  @Override
+  public int getSectorId(Point position) {
+    return 0;
+  }
+
+  @Override
+  public Sector getSector(int id) {
+    return null;
+  }
+
+  @Override
+  public boolean hasNeighbour(int sectorId, Bearing atBearing) {
+    return false;
+  }
+
+  @Override
+  public int getNeighbourId(int sectorId, Bearing atBearing) {
+    return -1;
+  }
+
+  @Override
+  public Grid setValue(int sectorId, int value) {
+    return this;
+  }
+
+  @Override
+  public int getValue(int sectorId) {
+    return 0;
+  }
+
+  @Override
+  public Grid setWall(int sectorId, Bearing atBearing) {
+    return this;
+  }
+
+  @Override
+  public Grid setNoWall(int sectorId, Bearing atBearing) {
+    return this;
+  }
+
+  @Override
+  public Grid clearWall(int sectorId, Bearing atBearing) {
+    return this;
+  }
+
+  @Override
+  public boolean hasWall(int sectorId, Bearing atBearing) {
+    return false;
+  }
+
+  @Override
+  public boolean hasNoWall(int sectorId, Bearing atBearing) {
+    return false;
+  }
+
+  @Override
+  public boolean knowsWall(int sectorId, Bearing atBearing) {
+    return false;
+  }
+
+  @Override
+  public boolean isFullyKnown(int sectorId) {
+    return false;
+  }
+
+  @Override
+  public Grid clearWalls(int sectorId) {
+    return this;
+  }
+
+  @Override
+  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
+    return false;
   }
 }

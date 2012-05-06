@@ -127,4 +127,82 @@ public class ObservableGrid implements Grid {
   public Agent getAgentAt(Point position, Class cls) {
     return grid.getAgentAt(position, cls);
   }
+
+  @Override
+  public int getSectorId(Point position) {
+    return grid.getSectorId(position);
+  }
+
+  @Override
+  public Sector getSector(int id) {
+    return grid.getSector(id);
+  }
+
+  @Override
+  public boolean hasNeighbour(int sectorId, Bearing atBearing) {
+    return grid.hasNeighbour(sectorId, atBearing);
+  }
+
+  @Override
+  public int getNeighbourId(int sectorId, Bearing atBearing) {
+    return grid.getNeighbourId(sectorId, atBearing);
+  }
+
+  @Override
+  public Grid setValue(int sectorId, int value) {
+    grid.setValue(sectorId, value);
+    return this;
+  }
+
+  @Override
+  public int getValue(int sectorId) {
+    return grid.getValue(sectorId);
+  }
+
+  @Override
+  public Grid setWall(int sectorId, Bearing atBearing) {
+    return grid.setWall(sectorId, atBearing);
+  }
+
+  @Override
+  public Grid setNoWall(int sectorId, Bearing atBearing) {
+    return grid.setNoWall(sectorId, atBearing);
+  }
+
+  @Override
+  public Grid clearWall(int sectorId, Bearing atBearing) {
+    grid.clearWall(sectorId, atBearing);
+    return this;
+  }
+
+  @Override
+  public boolean hasWall(int sectorId, Bearing atBearing) {
+    return grid.hasWall(sectorId, atBearing);
+  }
+
+  @Override
+  public boolean hasNoWall(int sectorId, Bearing atBearing) {
+    return grid.hasNoWall(sectorId, atBearing);
+  }
+
+  @Override
+  public boolean knowsWall(int sectorId, Bearing atBearing) {
+    return grid.knowsWall(sectorId, atBearing);
+  }
+
+  @Override
+  public boolean isFullyKnown(int sectorId) {
+    return grid.isFullyKnown(sectorId);
+  }
+
+  @Override
+  public Grid clearWalls(int sectorId) {
+    grid.clearWalls(sectorId);
+    return this;
+  }
+
+  @Override
+  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
+    return grid.givesAccessTo(sectorId, atBearing);
+  }
 }

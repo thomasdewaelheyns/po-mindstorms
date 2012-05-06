@@ -11,14 +11,12 @@ package penoplatinum.grid;
  * 
  * @author: Team Platinum
  */
- 
 import penoplatinum.grid.agent.Agent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.CantorDiagonal;
 import penoplatinum.util.Position;
 import penoplatinum.util.SimpleHashMap;
-
 
 public class LinkedGrid implements Grid {
 
@@ -35,9 +33,14 @@ public class LinkedGrid implements Grid {
    * on the x-axis, next on the y axis
    * 
    */
-  public Grid add(Sector sector, Point position) {
-    if (!(sector instanceof LinkedSector))
+  public Grid add(Sector inSector, Point position) {
+    if (!(inSector instanceof LinkedSector))
       throw new IllegalArgumentException();
+
+    LinkedSector sector = (LinkedSector) inSector;
+
+    sector.setId(CantorDiagonal.transform(position));
+
     placeNewSectorPathTo(new Point(position));
     sector.putOn(this);
 
@@ -97,10 +100,10 @@ public class LinkedGrid implements Grid {
   }
 
   public Grid add(Agent agent, Point position, Bearing bearing) {
-    if(agent == null){
+    if (agent == null) {
       throw new IllegalArgumentException();
     }
-    if (getSectorAt(position) == null){
+    if (getSectorAt(position) == null) {
       add(new LinkedSector(), position);
     }
     agentPositions.put(agent, position);
@@ -128,12 +131,12 @@ public class LinkedGrid implements Grid {
       if (a.getClass() == cls)
         return a;
     }
-    
+
     return null;
   }
 
   public Point getPositionOf(Agent agent) {
-    if(agentPositions.get(agent) == null){
+    if (agentPositions.get(agent) == null) {
       return null;
     }
     return agentPositions.get(agent).clone();
@@ -202,15 +205,15 @@ public class LinkedGrid implements Grid {
   }
 
   // returns the sector at given absolute/relative coordinates or null
-  public Sector getSector(int left, int top) {
-    return (Sector) this.sectors.get(CantorDiagonal.transform(left, top));
+  public LinkedSector getSector(int left, int top) {
+    return (LinkedSector) this.sectors.get(CantorDiagonal.transform(left, top));
   }
 
   public Iterable<Sector> getSectors() {
     return this.sectors.values();
   }
 
-  private void connect(Sector sector, Sector other, Bearing location) {
+  private void connect(LinkedSector sector, LinkedSector other, Bearing location) {
     if (sector != null) {
       sector.addNeighbour(other, location);
     }
@@ -221,5 +224,118 @@ public class LinkedGrid implements Grid {
 
   public int getSize() {
     return sectors.size();
+  }
+
+  @Override
+  public int getSectorId(Point position) {
+    int ret = CantorDiagonal.transform(position);
+    if (sectors.get(ret) == null)
+      return -1;
+
+    return ret;
+
+  }
+
+  @Override
+  public LinkedSector getSector(int id) {
+    if (id < 0)
+      return null;
+    return (LinkedSector) sectors.get(id);
+  }
+
+  public Point getPosition(int id) {
+    if (id < 0)
+      return null;
+    return CantorDiagonal.transform(id);
+
+  }
+
+  @Override
+  public boolean hasNeighbour(int sectorId, Bearing atBearing) {
+    return getNeighbourId(sectorId, atBearing) != -1;
+  }
+
+  @Override
+  public int getNeighbourId(int sectorId, Bearing atBearing) {
+    Point p = getPosition(sectorId);
+    if (p == null)
+      return -1;
+    p = new Point(Position.moveLeft(atBearing, p.getX()), Position.moveTop(atBearing, p.getY()));
+
+    return getSectorId(p);
+  }
+
+  @Override
+  public Grid setValue(int sectorId, int value) {
+    getSector(sectorId).setValue(value);
+    return this;
+  }
+
+  @Override
+  public int getValue(int sectorId) {
+    return getSector(sectorId).getValue();
+  }
+
+  @Override
+  public Grid setWall(int sectorId, Bearing atBearing) {
+    LinkedSector sector = getSector(sectorId);
+
+    sector.setWall(atBearing);
+    return this;
+  }
+
+  @Override
+  public Grid setNoWall(int sectorId, Bearing atBearing) {
+    LinkedSector sector = getSector(sectorId);
+
+    sector.setNoWall(atBearing);
+    return this;
+  }
+
+  @Override
+  public Grid clearWall(int sectorId, Bearing atBearing) {
+    LinkedSector sector = getSector(sectorId);
+
+    sector.clearWall(atBearing);
+    return this;
+  }
+
+  @Override
+  public boolean hasWall(int sectorId, Bearing atBearing) {
+    LinkedSector sector = getSector(sectorId);
+
+    return sector.hasWall(atBearing);
+
+  }
+
+  @Override
+  public boolean hasNoWall(int sectorId, Bearing atBearing) {
+    LinkedSector sector = getSector(sectorId);
+    return sector.hasNoWall(atBearing);
+  }
+
+  @Override
+  public boolean knowsWall(int sectorId, Bearing atBearing) {
+    LinkedSector sector = getSector(sectorId);
+    return sector.knowsWall(atBearing);
+  }
+
+  @Override
+  public boolean isFullyKnown(int sectorId) {
+    LinkedSector sector = getSector(sectorId);
+    return sector.isFullyKnown();
+  }
+
+  @Override
+  public Grid clearWalls(int sectorId) {
+    LinkedSector sector = getSector(sectorId);
+    sector.clearWalls();
+    return this;
+  }
+
+  @Override
+  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
+    LinkedSector sector = getSector(sectorId);
+    return sector.givesAccessTo(atBearing);
   }
 }

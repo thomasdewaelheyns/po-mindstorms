@@ -23,11 +23,6 @@ public interface Sector {
 
   public String toString();
 
-  /**
-   * Sets given sector as a neighbour of this sector. The 'neighbour' sector is
-   * removed from his old neighbours
-   */
-  public Sector addNeighbour(Sector neighbour, Bearing atBearing);
   public boolean hasNeighbour(Bearing atBearing);
   public Sector getNeighbour(Bearing atBearing);
 

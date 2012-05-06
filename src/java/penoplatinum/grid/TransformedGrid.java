@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 
 /**
@@ -89,20 +88,14 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Sector getSectorAt(Point position) {
-    transformation.inverseTransform(position);
-    Sector s = grid.getSectorAt(position);
-    transformation.transform(position);
-
-    if (s == null)
-      return null;
-
-    return new TransformedSector(s, transformation);
+    return getSector(getSectorId(position));
   }
 
   @Override
   public Point getPositionOf(Sector sector) {
-    while (sector instanceof TransformedSector)
-      sector = ((TransformedSector) sector).getDecoratedSector();
+    if (sector instanceof FacadeSector) {
+      sector = grid.getSector(((FacadeSector) sector).getSectorId());
+    }
 
     Point p = grid.getPositionOf(sector);
     transformation.transform(p);
@@ -111,10 +104,11 @@ public class TransformedGrid implements Grid {
 
   @Override
   public Iterable<Sector> getSectors() {
-    //Only use on pc!!!
+    //TODO: Only use on pc!!!
     List<Sector> ret = new ArrayList<Sector>();
-    for (Sector s : grid.getSectors())
-      ret.add(new TransformedSector(s, transformation));
+    for (Sector s : grid.getSectors()) {
+      ret.add(getSector(grid.getSectorId(grid.getPositionOf(s))));
+    }
     return ret;
   }
 
@@ -153,14 +147,14 @@ public class TransformedGrid implements Grid {
     return grid.getAgent(name);
   }
 
-
   @Override
   public Point getPositionOf(Agent agent) {
     Point pos = grid.getPositionOf(agent);
-    if (pos == null) return null;
-    
+    if (pos == null)
+      return null;
+
     transformation.transform(pos);
-    
+
     return pos;
   }
 
@@ -168,12 +162,12 @@ public class TransformedGrid implements Grid {
   public Agent getAgentAt(Point position, Class cls) {
     transformation.inverseTransform(position);
 
-    Agent a = grid.getAgentAt(position,cls);
+    Agent a = grid.getAgentAt(position, cls);
 
     transformation.transform(position);
     return a;
   }
-  
+
   @Override
   public Iterable<Agent> getAgents() {
     return grid.getAgents();
@@ -252,5 +246,133 @@ public class TransformedGrid implements Grid {
   public String toString() {
     return GridUtils.createGridSectorsString(this);
   }
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  // Sector functions
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
+  @Override
+  public boolean hasNeighbour(int sectorId, Bearing atBearing) {
+
+    atBearing = mapBearing(atBearing);
+    return grid.hasNeighbour(sectorId, atBearing);
+  }
+
+  @Override
+  public Grid setValue(int sectorId, int value) {
+    grid.setValue(sectorId, value);
+    return this;
+  }
+
+  @Override
+  public int getValue(int sectorId) {
+    return grid.getValue(sectorId);
+  }
+
+  @Override
+  public Grid setWall(int sectorId, Bearing atBearing) {
+    atBearing = mapBearing(atBearing);
+    grid.setWall(sectorId, atBearing);
+    return this;
+  }
+
+  @Override
+  public Grid setNoWall(int sectorId, Bearing atBearing) {
+    atBearing = mapBearing(atBearing);
+    grid.setNoWall(sectorId, atBearing);
+    return this;
+  }
+
+  @Override
+  public Grid clearWall(int sectorId, Bearing atBearing) {
+    atBearing = mapBearing(atBearing);
+    grid.clearWall(sectorId, atBearing);
+    return this;
+  }
+
+  @Override
+  public boolean hasWall(int sectorId, Bearing atBearing) {
+    atBearing = mapBearing(atBearing);
+    return grid.hasWall(sectorId, atBearing);
+  }
+
+  @Override
+  public boolean hasNoWall(int sectorId, Bearing atBearing) {
+    atBearing = mapBearing(atBearing);
+    return grid.hasNoWall(sectorId, atBearing);
+  }
+
+  @Override
+  public boolean knowsWall(int sectorId, Bearing atBearing) {
+    atBearing = mapBearing(atBearing);
+    return grid.knowsWall(sectorId, atBearing);
+  }
+
+  @Override
+  public boolean isFullyKnown(int sectorId) {
+    return grid.isFullyKnown(sectorId);
+  }
+
+  @Override
+  public Grid clearWalls(int sectorId) {
+    return grid.clearWalls(sectorId);
+  }
+
+  @Override
+  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
+    atBearing = mapBearing(atBearing);
+    return grid.givesAccessTo(sectorId, atBearing);
+  }
+
+  private Bearing mapBearing(Bearing atBearing) {
+    return atBearing.rotate(transformation.getRotation().invert());
+  }
+
+  @Override
+  public int getSectorId(Point position) {
+    transformation.inverseTransform(position);
+    int id = grid.getSectorId(position);
+    transformation.transform(position);
+    return id;
+  }
+
+  @Override
+  public Sector getSector(int id) {
+    if (id < 0)
+      return null;
+    FacadeSector ret = new FacadeSector(this, id);
+    return ret;
+  }
+
+  @Override
+  public int getNeighbourId(int sectorId, Bearing atBearing) {
+    atBearing = mapBearing(atBearing);
+    return grid.getNeighbourId(sectorId, atBearing);
+  }
 }

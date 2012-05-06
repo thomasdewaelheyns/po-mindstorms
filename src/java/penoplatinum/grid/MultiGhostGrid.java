@@ -4,12 +4,14 @@
  */
 package penoplatinum.grid;
 
+import java.util.List;
 import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.agent.Agent;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.SimpleHashMap;
 import penoplatinum.util.TransformationTRT;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * This grid only supports read operations!! The grid is the merged result
@@ -59,6 +61,12 @@ public class MultiGhostGrid implements Grid, GridObserver {
     return g;
   }
 
+  public List<Sector> getChangedSectors(String ghostname)
+  {
+    //TODO
+    throw new NotImplementedException();
+  }
+  
   @Override
   public Grid add(Sector s, Point position) {
     throw new UnsupportedOperationException("Not supported yet.");
@@ -222,6 +230,81 @@ public class MultiGhostGrid implements Grid, GridObserver {
   @Override
   public Agent getAgentAt(Point position, Class cls) {
     return grid.getAgentAt(position, cls);
+  }
+
+  @Override
+  public int getSectorId(Point position) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Sector getSector(int id) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public boolean hasNeighbour(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getNeighbourId(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid setValue(int sectorId, int value) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public int getValue(int sectorId) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid setWall(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid setNoWall(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid clearWall(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public boolean hasWall(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public boolean hasNoWall(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public boolean knowsWall(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public boolean isFullyKnown(int sectorId) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Grid clearWalls(int sectorId) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   class Ghost {

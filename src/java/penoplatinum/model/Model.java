@@ -18,6 +18,7 @@ import penoplatinum.reporter.Reporter;
 
 
 public interface Model {
+  
   // adds a part to the Model
   public Model register(ModelPart part);
   // retrieves a registered ModelPart based on its assigned ID
