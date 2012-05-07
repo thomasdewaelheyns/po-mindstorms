@@ -315,6 +315,13 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   private void handleRename(String agentName, Scanner scanner) {
     String version = scanner.next();
+    
+    if (!joined){
+      this.begin();
+      renaming = true;
+    }
+    
+    
     if (renaming) {
       if (renamed.get(agentName) == null) {
         renamed.put(agentName, version);
