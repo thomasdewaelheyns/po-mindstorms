@@ -9,6 +9,7 @@ package penoplatinum.navigator.mode;
  * @author Team Platinum
  */
 
+import penoplatinum.grid.Sector;
 import penoplatinum.model.Model;
 
 public class DiscoverHillClimbingNavigatorMode extends HillClimbingNavigatorMode {
@@ -19,17 +20,15 @@ public class DiscoverHillClimbingNavigatorMode extends HillClimbingNavigatorMode
 
   @Override
   public void activate() {
-    this.grids.applyDiffusionFlags(true, true);
+    this.grids.onlyApplyCollaborateDiffusionOnUnknownSectors();
   }
   
 
   // we reached our goal if there are no unknown sectors in our grid anymore
   public boolean reachedGoal() {
-    return false;
-    /*
     for(Sector sector : this.grids.getMyGrid().getSectors()) {
       if(! sector.isFullyKnown()) { return false; }
     }
-    return false;/**/
+    return true;
   }
 }
