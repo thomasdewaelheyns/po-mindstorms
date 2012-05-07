@@ -11,7 +11,7 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
-import penoplatinum.DashboardReporter.DashboardReporter;
+import penoplatinum.reporter.DashboardReporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.bluetooth.RobotBluetoothGatewayClient;
 import penoplatinum.driver.ManhattanDriver;
@@ -317,14 +317,15 @@ public class AngieRobotAPI implements RobotAPI {
     gateway.useConnection(conn);
     gateway.run();
     
-    robot.useReporter(new DashboardReporter());
-
-    robot.handleActivation();
+    //robot.useReporter(new DashboardReporter());
 
     FPS fps = new FPS();
     AngieRobotAPI angie = new AngieRobotAPI();
     robot.useRobotAPI(angie);
-    angie.beep();
+    
+    if(Config.makeEverythingWork){
+      robot.handleActivation();
+    }
 
     angie.setFps(fps.getFps());
     while (true) {

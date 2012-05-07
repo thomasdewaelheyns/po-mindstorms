@@ -12,7 +12,7 @@ public class SurroundedModelProcessor extends ModelProcessor {
 
   protected void work() {
     GridModelPart gridPart = GridModelPart.from(getModel());
-    if(pacmanID <= gridPart.getPacmanID()){
+    if(pacmanID >= gridPart.getPacmanID()){
       return;
     }
     pacmanID = gridPart.getPacmanID();

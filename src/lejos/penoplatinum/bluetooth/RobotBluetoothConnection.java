@@ -44,7 +44,7 @@ public class RobotBluetoothConnection implements IConnection {
         }
         while (!connect()) {
             Utils.Log("BT Fail");
-            Utils.Sleep(1000);
+            Utils.Sleep(100);
 //            Utils.Log("Restarting connecting");
         }
 //        Utils.Log("Connected");
@@ -59,6 +59,7 @@ public class RobotBluetoothConnection implements IConnection {
                 IPacketTransporter t = findTransporterByPacketIdentifier(packetIdentifier);
                 if (t == null) {
                     //Utils.Log("Unkown packet type received! (" + packetIdentifier + ")");
+                    //System.out.println(t.toString());
                     return;
                 }
 

@@ -61,7 +61,7 @@ public class PacketBuilder {
         } catch (IOException ex) {
 //          Utils.Log("Receive error!");
           if (ex.toString() != null) {
-            Utils.Log(ex.toString());
+//            Utils.Log(ex.toString());
           }
           setErrorOccured(true);
           receiver.onError(ex);
@@ -83,6 +83,7 @@ public class PacketBuilder {
   public void sendPacket(int packetIdentifier, byte[] dgram) {
     try {
       //Utils.Log("Send packet." + packetIdentifier);
+      //System.out.println(packetIdentifier);
       outputStream.writeInt(packetIdentifier);
       outputStream.writeShort((short) dgram.length);
       outputStream.write(dgram, 0, dgram.length);

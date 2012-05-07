@@ -83,10 +83,10 @@ public class FullRobotTest extends TestCase {
     GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 220, 220, -180);
     GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -90);
     GhostRobot robot3 = this.createGhostRobot("robot3", simulator, 20, 220, 0);
-    GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
+    //GhostRobot robot4 = this.createGhostRobot("robot4", simulator, 60, 20, 90);
 
     // run the simulator for 30000 steps
-    simulator.run(30000);
+    simulator.run();
 
     // If we remove delays in the simulator and its view, and if we then add
     // some assertions here, these would be real unit tests ;-)
@@ -166,7 +166,7 @@ public class FullRobotTest extends TestCase {
   
   private Map makeMap() throws FileNotFoundException{
     MapFactory mapFac = new ProtocolMapFactory();
-    Scanner sc = new Scanner(new File("../../maps/wolfraam.txt"));
+    Scanner sc = new Scanner(new File("../../maps/MediumBoard.txt"));
     return mapFac.getMap(sc);
   }
   private Map makeLongMap(){

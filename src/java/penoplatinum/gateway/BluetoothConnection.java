@@ -44,12 +44,13 @@ public class BluetoothConnection implements Connection {
   
   public void initTransporter() {
     this.endPoint = new QueuedPacketTransporter(this.connection);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_GHOST_PROTOCOL);
     this.connection.RegisterTransporter(this.endPoint, Config.BT_MODEL);
     this.connection.RegisterTransporter(this.endPoint, Config.BT_WALLS);
     this.connection.RegisterTransporter(this.endPoint, Config.BT_VALUES);
     this.connection.RegisterTransporter(this.endPoint, Config.BT_AGENTS);
     this.connection.RegisterTransporter(this.endPoint, Config.BT_LOG);
-    this.connection.RegisterTransporter(this.endPoint, Config.BT_GHOST_PROTOCOL);
+    this.connection.RegisterTransporter(this.endPoint, Config.BT_START_LOG);
   }
 
   public BluetoothConnection send(String msg, int channel) {
@@ -69,8 +70,8 @@ public class BluetoothConnection implements Connection {
 
     while (logging) {
       packet = this.endPoint.ReceivePacket();
-      data   = new Scanner(this.endPoint.getReceiveStream()).nextLine();
-      if( data.length() > 10 ) {
+      data   = new Scanner(this.endPoint.getReceiveStream()).nextLine()+"\n";
+      if( data.length() > 1 ) {
         this.nextType = packet;
         this.nextMsg = data;
         return true;

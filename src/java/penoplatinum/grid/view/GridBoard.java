@@ -8,13 +8,10 @@ package penoplatinum.grid.view;
  * @author: Team Platinum
  */
 import java.awt.*;
-import java.awt.geom.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 
 import penoplatinum.util.Bearing;
-import penoplatinum.util.Position;
 import penoplatinum.util.Point;
 
 
@@ -51,7 +48,7 @@ public class GridBoard extends JPanel {
   }
   
   private void setupCanvas() {
-    this.setBackground(BLACK);
+    this.setBackground(BROWN);
     this.setDoubleBuffered(true);
     this.clearSectors();
   }
