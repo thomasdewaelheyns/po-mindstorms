@@ -190,19 +190,4 @@ public class ObservableGrid implements Grid {
     return grid.knowsWall(sectorId, atBearing);
   }
 
-  @Override
-  public boolean isFullyKnown(int sectorId) {
-    return grid.isFullyKnown(sectorId);
-  }
-
-  @Override
-  public Grid clearWalls(int sectorId) {
-    grid.clearWalls(sectorId);
-    return this;
-  }
-
-  @Override
-  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
-    return grid.givesAccessTo(sectorId, atBearing);
-  }
 }

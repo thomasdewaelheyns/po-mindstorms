@@ -265,18 +265,4 @@ public class NullGrid implements Grid {
     return false;
   }
 
-  @Override
-  public boolean isFullyKnown(int sectorId) {
-    return false;
-  }
-
-  @Override
-  public Grid clearWalls(int sectorId) {
-    return this;
-  }
-
-  @Override
-  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
-    return false;
-  }
 }

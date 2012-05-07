@@ -38,38 +38,41 @@ public class GridUtils {
     /**/
   }
 
-  public void DEBUG_checkGridCorrectness(Agent agent) {
-//    if (!Config.DEBUGMODE) {
-//      return;
-//    }
-//
-//    boolean fail = false;
-//
-//    Point initial = Simulator.Running_Instance.getSimulatedEntityByName(agent.getName()).getInitialPosition();
-//
-//    for (Sector s : getSectors()) {
-//      penoplatinum.simulator.tiles.Sector t = (penoplatinum.simulator.tiles.Sector) Simulator.Running_Instance.getMap().get(s.getLeft() + initial.x, s.getTop() + initial.y);
-//      if (t == null) {
-//        fail = true;
-//        break;
-//
-//      }
-//      for (int i = 0; i < 4; i++) {
-//        if (!s.isKnown(i)) {
-//          continue;
-//        }
-//        if (s.hasWall(i) != t.hasWall(i)) {
-//          fail = true;
-//          break;
-//
-//        }
-//      }
-//
-//
-//    }
-//
-//    if (fail) {
-//      int magic = 5;//throw new RuntimeException("Grid incorrect!!!");
-//    }
+  public static boolean hasSameWallsAs(Sector s, Sector d) {
+    for (Bearing b : Bearing.NESW) {
+
+      if (s.knowsWall(b) != d.knowsWall(b))
+        return false;
+      if (s.knowsWall(b) && (s.hasWall(b) != d.hasWall(b)))
+        return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * True when each wall is known
+   */
+  public static boolean isFullyKnown(Sector s) {
+    for (Bearing b : Bearing.NESW)
+      if (!s.knowsWall(b))
+        return false;
+
+    return true;
+  }
+
+  public static void clearWalls(Sector s) {
+    for (Bearing b : Bearing.NESW)
+      s.clearWall(b);
+  }
+
+  /**
+   * Returns true when we can say for sure that it is possible for the robot
+   * to access the neighbour at given bearing
+   * @param atBearing
+   * @return 
+   */
+  public static boolean givesAccessTo(Sector s, Bearing atBearing) {
+    return s.knowsWall(atBearing) && s.hasNoWall(atBearing);
   }
 }

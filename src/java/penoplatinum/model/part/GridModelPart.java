@@ -16,6 +16,7 @@ import penoplatinum.grid.Grid;
 import penoplatinum.grid.MultiGhostGrid;
 import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.AggregatedGrid;
+import penoplatinum.grid.GridUtils;
 import penoplatinum.grid.agent.GhostAgent;
 import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.grid.Sector;
@@ -138,7 +139,7 @@ public class GridModelPart implements ModelPart {
         // a ghost blocks all diffusion
         total = 0;
         sector.setValue(total);
-      } else if( diffuseUnknownSectors && ! sector.isFullyKnown() ) {
+      } else if( diffuseUnknownSectors && !  GridUtils.isFullyKnown(sector) ) {
         // unknown sectors are "interesting"
         total = UNKNOWN_VALUE;
         sector.setValue(total);
@@ -147,7 +148,7 @@ public class GridModelPart implements ModelPart {
         for( Bearing atBearing: Bearing.NESW ) { 
           // if we know about walls and there is NO wall take the sector's
           // value into account
-          if( sector.givesAccessTo(atBearing)) {
+          if( GridUtils.givesAccessTo(sector,atBearing)) {
             if( sector.hasNeighbour(atBearing) ) {
               total += sector.getNeighbour(atBearing).getValue();
               count++;

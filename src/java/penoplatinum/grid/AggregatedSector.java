@@ -1,9 +1,17 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package penoplatinum.grid;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.Position;
 
+/**
+ *
+ * @author MHGameWork
+ */
 public class AggregatedSector implements Sector {
 
   private final AggregatedGrid grid;
@@ -26,8 +34,7 @@ public class AggregatedSector implements Sector {
 
   @Override
   public Sector putOn(Grid grid) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
@@ -77,14 +84,12 @@ public class AggregatedSector implements Sector {
 
   @Override
   public Sector setWall(Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public Sector setNoWall(Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
@@ -132,39 +137,6 @@ public class AggregatedSector implements Sector {
 
     }
     return ret;
-  }
-
-  @Override
-  public boolean hasSameWallsAs(Sector s) {
-    for (Bearing b : Bearing.NESW) {
-      if (knowsWall(b) != s.knowsWall(b))
-        return false;
-      if (!knowsWall(b))
-        continue;
-      if (hasWall(b) != s.hasWall(b))
-        return false;;
-    }
-    return true;
-  }
-
-  @Override
-  public boolean isFullyKnown() {
-    for (Bearing b : Bearing.NESW)
-      if (!knowsWall(b))
-        return false;
-
-    return true;
-  }
-
-  @Override
-  public Sector clearWalls() {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean givesAccessTo(Bearing atBearing) {
-    return knowsWall(atBearing) && hasNoWall(atBearing);
   }
 
   @Override

@@ -91,35 +91,6 @@ public class FacadeSector implements Sector {
   }
 
   @Override
-  public boolean hasSameWallsAs(Sector s) {
-      for (Bearing b : Bearing.NESW) {
-      if (knowsWall(b) != s.knowsWall(b))
-        return false;
-      if (!knowsWall(b))
-        continue;
-      if (hasWall(b) != s.hasWall(b))
-        return false;;
-    }
-    return true;
-  }
-
-  @Override
-  public boolean isFullyKnown() {
-    return grid.isFullyKnown(sectorId);
-  }
-
-  @Override
-  public Sector clearWalls() {
-    grid.clearWalls(sectorId);
-    return this;
-  }
-
-  @Override
-  public boolean givesAccessTo(Bearing atBearing) {
-    return grid.givesAccessTo(sectorId, atBearing);
-  }
-
-  @Override
   public String toString() {
     return GridUtils.createSectorWallsString(this);
   }

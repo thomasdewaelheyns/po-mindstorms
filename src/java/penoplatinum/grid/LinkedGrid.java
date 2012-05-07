@@ -321,22 +321,4 @@ public class LinkedGrid implements Grid {
     return sector.knowsWall(atBearing);
   }
 
-  @Override
-  public boolean isFullyKnown(int sectorId) {
-    LinkedSector sector = getSector(sectorId);
-    return sector.isFullyKnown();
-  }
-
-  @Override
-  public Grid clearWalls(int sectorId) {
-    LinkedSector sector = getSector(sectorId);
-    sector.clearWalls();
-    return this;
-  }
-
-  @Override
-  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
-    LinkedSector sector = getSector(sectorId);
-    return sector.givesAccessTo(atBearing);
-  }
 }

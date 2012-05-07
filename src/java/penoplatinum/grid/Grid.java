@@ -111,9 +111,4 @@ public interface Grid {
 
   public boolean knowsWall(int sectorId, Bearing atBearing);
 
-  public boolean isFullyKnown(int sectorId);
-
-  public Grid clearWalls(int sectorId);
-
-  public boolean givesAccessTo(int sectorId, Bearing atBearing);
 }

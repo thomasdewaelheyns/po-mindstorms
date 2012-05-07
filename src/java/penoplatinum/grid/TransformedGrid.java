@@ -293,22 +293,6 @@ public class TransformedGrid implements Grid {
     return grid.knowsWall(sectorId, atBearing);
   }
 
-  @Override
-  public boolean isFullyKnown(int sectorId) {
-    return grid.isFullyKnown(sectorId);
-  }
-
-  @Override
-  public Grid clearWalls(int sectorId) {
-    return grid.clearWalls(sectorId);
-  }
-
-  @Override
-  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
-    atBearing = mapBearing(atBearing);
-    return grid.givesAccessTo(sectorId, atBearing);
-  }
-
   private Bearing mapBearing(Bearing atBearing) {
     return atBearing.rotate(transformation.getRotation().invert());
   }

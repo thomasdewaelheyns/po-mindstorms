@@ -371,20 +371,7 @@ public class AggregatedGrid implements Grid {
     return getSector(sectorId).knowsWall(atBearing);
   }
 
-  @Override
-  public boolean isFullyKnown(int sectorId) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public Grid clearWalls(int sectorId) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+ 
 
   class SubGrid {
 

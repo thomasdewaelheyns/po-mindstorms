@@ -39,20 +39,6 @@ public interface Sector {
   
   //TODO: do we need this? public char getWalls();
 
-  public boolean hasSameWallsAs(Sector s);
-  
-  /**
-   * True when each wall is known
-   */
-  public boolean isFullyKnown();
-  public Sector clearWalls();
-  /**
-   * Returns true when we can say for sure that it is possible for the robot
-   * to access the neighbour at given bearing
-   * @param atBearing
-   * @return 
-   */
-  public boolean givesAccessTo(Bearing atBearing);
 
   
   // OLD

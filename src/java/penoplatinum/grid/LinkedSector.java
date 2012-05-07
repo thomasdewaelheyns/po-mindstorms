@@ -206,26 +206,6 @@ public class LinkedSector implements Sector {
     return this.walls;
   }
 
-  @Override
-  public boolean isFullyKnown() {
-    return this.certainty == 15;
-  }
-
-  @Override
-  public Sector clearWalls() {
-    this.walls = 0;
-    this.certainty = 0;
-    return this;
-  }
-
-  @Override
-  public boolean givesAccessTo(Bearing atBearing) {
-    if (!knowsWall(atBearing))
-      return false;
-    return !hasWall(atBearing);
-
-  }
-
   public String toString() {
     return GridUtils.createSectorWallsString(this);
   }
@@ -290,26 +270,4 @@ public class LinkedSector implements Sector {
     }
   }
 
-//  private void disengage() {
-//    for (int i = 0; i < 4; i++) {
-//      this.neighbours[i] = null;
-//    }
-//    grid = null;
-//  }
-  @Override
-  public boolean hasSameWallsAs(Sector s) {
-    if (s instanceof LinkedSector)
-      return ((LinkedSector) s).walls == walls;
-
-    for (Bearing b : Bearing.NESW) {
-
-      if (s.knowsWall(b) != knowsWall(b))
-        return false;
-      if (s.knowsWall(b) && (s.hasWall(b) != hasWall(b)))
-        return false;
-    }
-
-    return true;
-
-  }
 }

@@ -12,6 +12,7 @@ import penoplatinum.Config;
 import penoplatinum.gateway.GatewayClient;
 
 import penoplatinum.grid.Grid;
+import penoplatinum.grid.GridUtils;
 import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.grid.Sector;
@@ -148,10 +149,10 @@ public class GhostProtocolHandler implements ProtocolHandler {
   @Override
   public ProtocolHandler handleFoundSector(Sector sector) {
     this.sendDiscover(sector.getGrid().getPositionOf(sector),
-            sector.knowsWall(Bearing.N), sector.knowsWall(Bearing.E),
-            sector.knowsWall(Bearing.S), sector.knowsWall(Bearing.W),
-            !sector.givesAccessTo(Bearing.N), !sector.givesAccessTo(Bearing.E),
-            !sector.givesAccessTo(Bearing.S), !sector.givesAccessTo(Bearing.W));
+                      sector.knowsWall(Bearing.N), sector.knowsWall(Bearing.E), 
+                      sector.knowsWall(Bearing.S), sector.knowsWall(Bearing.W),
+                      !GridUtils.givesAccessTo(sector,Bearing.N), !GridUtils.givesAccessTo(sector,Bearing.E),
+                      !GridUtils.givesAccessTo(sector,Bearing.S), !GridUtils.givesAccessTo(sector,Bearing.W));
     return this;
   }
 
@@ -176,10 +177,10 @@ public class GhostProtocolHandler implements ProtocolHandler {
     this.sendRePacman(position);
     for (Sector sec : sectors) {
       this.sendReDiscover(sec.getGrid().getPositionOf(sec), sec.knowsWall(Bearing.N),
-              sec.knowsWall(Bearing.E), sec.knowsWall(Bearing.S),
-              sec.knowsWall(Bearing.W),
-              sec.givesAccessTo(Bearing.N), sec.givesAccessTo(Bearing.E),
-              sec.givesAccessTo(Bearing.S), sec.givesAccessTo(Bearing.W));
+                      sec.knowsWall(Bearing.E), sec.knowsWall(Bearing.S),
+                      sec.knowsWall(Bearing.W),
+                      GridUtils.givesAccessTo( sec,Bearing.N), GridUtils.givesAccessTo( sec,Bearing.E),
+                      GridUtils.givesAccessTo( sec,Bearing.S), GridUtils.givesAccessTo( sec,Bearing.W));
       //TODO check voor barcode
     }
     return this;

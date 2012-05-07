@@ -11,7 +11,6 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.SimpleHashMap;
 import penoplatinum.util.TransformationTRT;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * This grid only supports read operations!! The grid is the merged result
@@ -162,7 +161,8 @@ public class MultiGhostGrid implements Grid, GridObserver {
 
   public List<Sector> getChangedSectors(String ghostname) {
     //TODO
-    throw new NotImplementedException();
+    throw new UnsupportedOperationException("Not supported yet.");
+    
   }
 
   @Override
@@ -335,23 +335,6 @@ public class MultiGhostGrid implements Grid, GridObserver {
   @Override
   public boolean knowsWall(int sectorId, Bearing atBearing) {
     return grid.knowsWall(sectorId, atBearing);
-  }
-
-  @Override
-  public boolean isFullyKnown(int sectorId) {
-    return grid.isFullyKnown(sectorId);
-  }
-
-  @Override
-  public Grid clearWalls(int sectorId) {
-    return grid.clearWalls(sectorId);
-  }
-
-  @Override
-  public boolean givesAccessTo(int sectorId, Bearing atBearing) {
-    return grid.givesAccessTo(sectorId, atBearing);
-
-
   }
 
   class Ghost {

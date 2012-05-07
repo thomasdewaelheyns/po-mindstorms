@@ -7,6 +7,7 @@ package penoplatinum.model.processor;
  * 
  * @author: Team Platinum
  */
+import penoplatinum.grid.GridUtils;
 import penoplatinum.grid.LinkedSector;
 import penoplatinum.grid.Sector;
 
@@ -48,7 +49,7 @@ public class UnknownSectorModelProcessor extends ModelProcessor {
     Sector current = gridPart.getMySector();
 
     for (Bearing bearing : Bearing.NESW) {
-      if( current.givesAccessTo(bearing) && ! current.hasNeighbour(bearing) ) {
+      if( GridUtils.givesAccessTo(current, bearing)  && ! current.hasNeighbour(bearing) ) {
         Sector neighbour = new LinkedSector();
         neighbour.setValue(5000);
         //Utils.Log("Adding wall: "+bearing);
