@@ -108,16 +108,16 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   private void handlePlatinumCommand(Scanner scanner) {
     String signature = scanner.next();
-    int counter = scanner.nextInt();
-    if (counter <= this.commandCounter) {
-      return;
-    }
+//    int counter = scanner.nextInt();
+//    if (counter <= this.commandCounter) {
+//      return;
+//    }
     String command = scanner.next();
     // NOTE: we moved the MD5 check to the Gateway, which made our program "fit"
     //       the program memory space
     // String expectedSignature = MD5.getHashString(Config.SECRET + " " + counter + " " + command);
     // if( ! signature.equals(expectedSignature) ) { return; }
-    this.commandCounter = counter;
+//    this.commandCounter = counter;
     if (command.equals("FORCESTART") && !joined) {
       handleForceStart();
     }

@@ -108,7 +108,7 @@ public class GridModelPart implements ModelPart {
 
   public void refreshMyGrid() {
     //if( ! this.hasChangedSectors()) { return; }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
       this.applyDiffusion();
     }
   }

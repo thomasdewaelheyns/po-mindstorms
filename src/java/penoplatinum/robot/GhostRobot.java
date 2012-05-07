@@ -208,7 +208,6 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     // TODO: move this to single instance
     MessageModelPart.from(model).getProtocolHandler().handleStart();
 
-    this.startProfiling();
     
     if( ! this.isActive() ) { 
       this.model.refresh();
@@ -219,12 +218,8 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
 
     if( driver.isBusy() ) {
       this.driver.proceed(); 
-      this.stopProfiling();
       return;
     }
-
-    this.stopProfiling();
-
     this.inCenterOfTile();
   }
   
@@ -264,6 +259,10 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     SonarModelPart.from(this.model).update(this.robotAPI.getSweepResult(), this.angles);
     this.sweepID = this.robotAPI.getSweepID();
     this.model.refresh();
+    
+    this.startProfiling();
+    GridModelPart.from(model).refreshMyGrid();
+    this.stopProfiling();
     this.navigator.instruct(driver);
     this.sendMessages();
 //    if( this.reporter != null ) { this.reporter.reportModelUpdate(); }

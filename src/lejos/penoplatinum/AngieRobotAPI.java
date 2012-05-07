@@ -293,7 +293,7 @@ public class AngieRobotAPI implements RobotAPI {
   
   
   public static void main(String[] args) throws Exception {
-    GhostRobot robot = new GhostRobot("PLATINUM");
+    GhostRobot robot = new GhostRobot("Platinum");
     ManhattanDriver manhattan = new ManhattanDriver(0.4)
             .addBehaviour(new FrontProximityDriverBehaviour())
             .addBehaviour(new SideProximityDriverBehaviour())
@@ -306,9 +306,6 @@ public class AngieRobotAPI implements RobotAPI {
 
     RobotBluetoothGatewayClient gateway = new RobotBluetoothGatewayClient();
     robot.useGatewayClient(gateway);
-
-    //MessageModelPart.from(robot.getModel()).setProtocolHandler(new GhostProtocolHandler);
-
 
     RobotBluetoothConnection conn = new RobotBluetoothConnection();
     conn.initializeConnection();
@@ -328,6 +325,7 @@ public class AngieRobotAPI implements RobotAPI {
       angie.updateSonarMovement();
       fps.setCheckPoint();
       robot.step();
+      System.gc();
       fps.endCheckPoint();
     }
   }

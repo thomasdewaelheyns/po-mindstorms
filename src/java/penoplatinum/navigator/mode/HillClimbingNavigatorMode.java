@@ -40,7 +40,6 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
   public final List<NavigatorAction> createNewPlan() {
     // first trigger the update of the values using the collaborate diffusion
     // algorithm
-    this.grids.refreshMyGrid();
 
     return this.constructPlan(this.chooseBestBearing());
   }
