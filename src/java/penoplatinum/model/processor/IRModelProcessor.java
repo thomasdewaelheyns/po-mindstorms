@@ -8,10 +8,12 @@ package penoplatinum.model.processor;
  * @author Team Platinum
  */
 
+import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
 import penoplatinum.model.part.SensorModelPart;
 
 import penoplatinum.util.Bearing;
+import penoplatinum.util.Point;
 
 
 public class IRModelProcessor extends ModelProcessor {
@@ -21,11 +23,18 @@ public class IRModelProcessor extends ModelProcessor {
     super(nextProcessor);
   }
 
+  private Point prevPosition = new Point(0,0);
+  private Bearing prevBearing = Bearing.N;
+
   protected void work() {
+    Model model = getModel();
+    GridModelPart gridPart = GridModelPart.from(model);
+    if(gridPart.getMyPosition().equals(prevPosition) && prevBearing == gridPart.getMyBearing()){
+      return;
+    }
+    prevPosition = gridPart.getMyPosition();
+    prevBearing = gridPart.getMyBearing();
     SensorModelPart sensor = SensorModelPart.from(this.getModel());
-    
-    // we don't work while moving
-    if( sensor.isMoving()) { return; }
     
     // based on the direction of the signal, we calculate the translation
     // of the position, relative to our current position
@@ -60,8 +69,6 @@ public class IRModelProcessor extends ModelProcessor {
       else                 { sensor.setIRDistance(5); }
       return;
     }
-
-    GridModelPart gridPart = GridModelPart.from(this.getModel());
 
     // more magic changes to the translation
     // luckily the bug was in the unit test and not here, because it's close

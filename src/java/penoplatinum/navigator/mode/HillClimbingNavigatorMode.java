@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import penoplatinum.grid.GridUtils;
 import penoplatinum.grid.Sector;
 import penoplatinum.util.Bearing;
-
-
 import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
 import penoplatinum.navigator.action.ForwardNavigatorAction;
@@ -60,7 +58,9 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
         bestBearing = bearing;
       }
     }
-
+    if(highestValue == GridModelPart.PACMAN_VALUE){
+      return Bearing.UNKNOWN;
+    }
     return bestBearing;
   }
 

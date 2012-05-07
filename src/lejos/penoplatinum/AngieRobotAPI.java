@@ -11,17 +11,16 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
+import penoplatinum.DashboardReporter.DashboardReporter;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.bluetooth.RobotBluetoothGatewayClient;
 import penoplatinum.driver.ManhattanDriver;
-import penoplatinum.driver.behaviour.BarcodeDriverBehaviour;
+import penoplatinum.driver.behaviour.BarcodeDriverBehaviourLejos;
 import penoplatinum.driver.behaviour.FrontProximityDriverBehaviour;
 import penoplatinum.driver.behaviour.LineDriverBehaviour;
 import penoplatinum.driver.behaviour.SideProximityDriverBehaviour;
-import penoplatinum.gateway.GatewayClient;
 import penoplatinum.navigator.GhostNavigator;
 import penoplatinum.navigator.Navigator;
-import penoplatinum.reporter.DashboardReporter;
 import penoplatinum.robot.GhostRobot;
 import penoplatinum.robot.RobotAPI;
 import penoplatinum.sensor.IRSeekerV2;
@@ -298,7 +297,7 @@ public class AngieRobotAPI implements RobotAPI {
     ManhattanDriver manhattan = new ManhattanDriver(0.4)
             .addBehaviour(new FrontProximityDriverBehaviour())
             .addBehaviour(new SideProximityDriverBehaviour())
-            .addBehaviour(new BarcodeDriverBehaviour())
+            .addBehaviour(new BarcodeDriverBehaviourLejos())
             .addBehaviour(new LineDriverBehaviour());
     robot.useDriver(manhattan);
 
@@ -318,7 +317,7 @@ public class AngieRobotAPI implements RobotAPI {
     gateway.useConnection(conn);
     gateway.run();
     
-    //robot.useReporter(new DashboardReporter());
+    robot.useReporter(new DashboardReporter());
 
     robot.handleActivation();
 
