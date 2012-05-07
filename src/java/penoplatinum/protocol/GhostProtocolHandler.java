@@ -108,7 +108,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
 
   private void handlePlatinumCommand(Scanner scanner) {
     String signature = scanner.next();
-//    int counter = scanner.nextInt();
+    int counter = scanner.nextInt();
 //    if (counter <= this.commandCounter) {
 //      return;
 //    }

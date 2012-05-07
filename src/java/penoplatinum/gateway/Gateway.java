@@ -68,7 +68,7 @@ public class Gateway implements MessageReceiver {
         return true;
       } else {
         System.out.println( "!!! received command with invalid signature : " + message );
-        return false;
+        return true;
       }
     }
     return true;
