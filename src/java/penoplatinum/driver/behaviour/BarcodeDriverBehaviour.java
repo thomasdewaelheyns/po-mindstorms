@@ -17,7 +17,7 @@ import penoplatinum.driver.action.MoveDriverAction;
 public class BarcodeDriverBehaviour implements DriverBehaviour {
 
   // configuration of correction parameters
-  private final static double CORRECTION = 0.01;
+  private final static double CORRECTION = 0.17;
   // the correction we apply
   private DriverAction correctingAction = null;
 
@@ -30,7 +30,7 @@ public class BarcodeDriverBehaviour implements DriverBehaviour {
 
         @Override
         public boolean canBeInterrupted() {
-          return true;
+          return false;
         }
         
       }.set(CORRECTION);

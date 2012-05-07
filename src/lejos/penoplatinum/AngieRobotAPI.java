@@ -40,7 +40,7 @@ public class AngieRobotAPI implements RobotAPI {
   private IRSeekerV2 irSeeker;
   private int fps = 0;
   
-  private final UltrasonicSensor sonarSensor;
+  private UltrasonicSensor sonarSensor;
   private int forwardTacho;
   private int[] currentSweepAngles;
   private int currentSweepAngleIndex;
@@ -87,23 +87,7 @@ public class AngieRobotAPI implements RobotAPI {
   public void step() {
     updateSonarMovement();
   }
-
-  public LightSensor getLight() {
-    return light;
-  }
-
-  public Motor getMotorLeft() {
-    return motorLeft;
-  }
-
-  public Motor getMotorRight() {
-    return motorRight;
-  }
-
-  public IRSeekerV2 getIrSeeker() {
-    return irSeeker;
-  }
-
+  
   public int[] getSensorValues() {
     values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
     values[sensorNumberMotorRight] = motorRight.getTachoCount();
@@ -229,7 +213,6 @@ public class AngieRobotAPI implements RobotAPI {
 
   public int getFps() {
     return this.fps;
-
   }
 
   private void abortMovement() {
@@ -258,16 +241,6 @@ public class AngieRobotAPI implements RobotAPI {
     motorRight.rotate(r, true);
   }
 
-  /**
-   * This function blocks until movement is complete
-   * TODO: WARNING: spins this thread! Preferable use this in a single thread, eg the main thread 
-   */
-  public void waitForMovementComplete() {
-    while (motorLeft.isMoving()) {
-      Utils.Sleep(20);
-    }
-  }
-
   public void turn(int angleCCW2) {
     abortMovement();
     setSpeed(SPEEDTURN);
@@ -287,10 +260,6 @@ public class AngieRobotAPI implements RobotAPI {
     abortMovement();
     motorLeft.stop();
     motorRight.stop();
-  }
-
-  public boolean isStopped() {
-    return (!motorLeft.isMoving() && !motorRight.isMoving());
   }
 
   /**
@@ -349,17 +318,19 @@ public class AngieRobotAPI implements RobotAPI {
     gateway.useConnection(conn);
     gateway.run();
     
-    robot.useReporter(new DashboardReporter());
+    //robot.useReporter(new DashboardReporter());
 
     robot.handleActivation();
 
     FPS fps = new FPS();
     AngieRobotAPI angie = new AngieRobotAPI();
     robot.useRobotAPI(angie);
+    angie.beep();
 
+    angie.setFps(fps.getFps());
     while (true) {
+      angie.updateSonarMovement();
       fps.setCheckPoint();
-      angie.setFps(fps.getFps());
       robot.step();
       fps.endCheckPoint();
     }
