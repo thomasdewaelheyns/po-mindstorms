@@ -5,6 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>Client</name>
             <source-roots>
+                <root id="src.bin.dir" name="Bin"/>
                 <root id="src.java.dir" name="Source"/>
             </source-roots>
             <test-roots>
