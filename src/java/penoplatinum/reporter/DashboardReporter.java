@@ -220,4 +220,10 @@ public class DashboardReporter implements Reporter {
       return 4;
     return 0;
   }
+
+  @Override
+  public void reportCaptured() {
+    //TODO
+    int magic = 0;
+  }
 }

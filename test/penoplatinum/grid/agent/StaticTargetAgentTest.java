@@ -7,9 +7,7 @@ package penoplatinum.grid.agent;
  * 
  * @author: Team Platinum
  */
-import penoplatinum.grid.agent.StaticTargetAgent;
 import junit.framework.*;
-import static org.mockito.Mockito.*;
 
 public class StaticTargetAgentTest extends TestCase {
 

@@ -25,4 +25,6 @@ public interface Reporter {
   public Reporter reportSectorUpdate(Sector sector, String dashboardGridName);
   public Reporter reportValueUpdate(Sector sector);
   public Reporter reportAgentUpdate(Agent agent);
+
+  public void reportCaptured();
 }

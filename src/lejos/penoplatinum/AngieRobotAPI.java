@@ -5,16 +5,28 @@ package penoplatinum;
  * TODO: WARNING, WHEN CHANGIN' PORTS THIS ENTIRE CLASS MUST BE CHECKED
  * @author: Team Platinum
  */
+import java.util.ArrayList;
 import java.util.List;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
-import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
-import penoplatinum.movement.RotationMovement;
+import penoplatinum.bluetooth.RobotBluetoothConnection;
+import penoplatinum.bluetooth.RobotBluetoothGatewayClient;
+import penoplatinum.driver.ManhattanDriver;
+import penoplatinum.driver.behaviour.BarcodeDriverBehaviour;
+import penoplatinum.driver.behaviour.FrontProximityDriverBehaviour;
+import penoplatinum.driver.behaviour.LineDriverBehaviour;
+import penoplatinum.driver.behaviour.SideProximityDriverBehaviour;
+import penoplatinum.gateway.GatewayClient;
+import penoplatinum.navigator.GhostNavigator;
+import penoplatinum.navigator.Navigator;
+import penoplatinum.reporter.DashboardReporter;
+import penoplatinum.robot.GhostRobot;
 import penoplatinum.robot.RobotAPI;
 import penoplatinum.sensor.IRSeekerV2;
-import penoplatinum.sensor.RotatingSonarSensor;
+import penoplatinum.util.FPS;
+import penoplatinum.util.Utils;
 
 public class AngieRobotAPI implements RobotAPI {
 
@@ -25,10 +37,28 @@ public class AngieRobotAPI implements RobotAPI {
   private final Motor motorRight = Motor.C;
   private final Motor motorSonar = Motor.A;
   private LightSensor light;
-  private RotatingSonarSensor sonar;
   private IRSeekerV2 irSeeker;
-  private RotationMovement movement;
   private int fps = 0;
+  
+  private final UltrasonicSensor sonarSensor;
+  private int forwardTacho;
+  private int[] currentSweepAngles;
+  private int currentSweepAngleIndex;
+  private List<Integer> resultBuffer = new ArrayList<Integer>();
+  private int sweepID = 0;
+  
+  
+  public static double CCW_afwijking = 1.01;
+  public int SPEEDFORWARD = 400; //400
+  public int SPEEDTURN = 250;
+  public final int WIELOMTREK = 175; //mm
+  public final int WIELAFSTAND = 160;//112mm
+
+  private int tachoLeftStart;
+  private int tachoRightStart;
+  private float internalOrientation;
+  private float buffer;
+  
   private static final int sensorNumberInfraRed = Config.S1;
   private static final int sensorNumberLight = Config.S4;
   private static final int sensorNumberSonar = Config.S3;
@@ -42,19 +72,20 @@ public class AngieRobotAPI implements RobotAPI {
     motorSonar.resetTachoCount();
     motorLeft.resetTachoCount();
     motorRight.resetTachoCount();
-    movement = new RotationMovement(motorLeft, motorRight);
 
     light = new LightSensor(LIGHT_SENSORPORT, true);
-    sonar = new RotatingSonarSensor(motorSonar, new UltrasonicSensor(SONAR_SENSORPORT));
+    sonarSensor = new UltrasonicSensor(SONAR_SENSORPORT);
     irSeeker = new IRSeekerV2(IR_SENSORPORT, IRSeekerV2.Mode.AC);
+
+    motorSonar.smoothAcceleration(true);
+    if (motorSonar.getTachoCount() != 0) {
+      motorSonar.resetTachoCount();
+    }
+    forwardTacho = motorSonar.getTachoCount();
   }
 
   public void step() {
-    sonar.updateSonarMovement();
-  }
-
-  public RotationMovement getMovement() {
-    return movement;
+    updateSonarMovement();
   }
 
   public LightSensor getLight() {
@@ -69,47 +100,21 @@ public class AngieRobotAPI implements RobotAPI {
     return motorRight;
   }
 
-  public RotatingSonarSensor getSonar() {
-    return sonar;
-  }
-
-  public TouchSensor getTouchLeft() {
-    return null;
-    //return touchLeft;
-  }
-
-  public TouchSensor getTouchRight() {
-    return null;
-    //return touchRight;
-  }
-
   public IRSeekerV2 getIrSeeker() {
     return irSeeker;
-  }
-
-  public void move(double distance) {
-    getMovement().driveDistance(distance);
-  }
-
-  public void turn(double angle) {
-    getMovement().turnAngle(angle);
-  }
-
-  public void stop() {
-    getMovement().stop();
   }
 
   public int[] getSensorValues() {
     values[sensorNumberMotorLeft] = motorLeft.getTachoCount();
     values[sensorNumberMotorRight] = motorRight.getTachoCount();
-    values[sensorNumberMotorSonar] = sonar.getMotor().getTachoCount();
+    values[sensorNumberMotorSonar] = motorSonar.getTachoCount();
     values[Config.MS1] = getMotorState(motorLeft);
     values[Config.MS2] = getMotorState(motorRight);
     values[Config.MS3] = getMotorState(motorSonar);
 
     values[sensorNumberLight] = light.getNormalizedLightValue();
     if (this.isSweeping()) {
-      values[sensorNumberSonar] = (int) sonar.getDistance();
+      values[sensorNumberSonar] = (int) sonarSensor.getDistance();
       values[sensorNumberInfraRed] = irSeeker.getDirection();
       values[Config.IR0] = irSeeker.getSensorValue(1);
       values[Config.IR1] = irSeeker.getSensorValue(2);
@@ -139,20 +144,16 @@ public class AngieRobotAPI implements RobotAPI {
     return 0;
   }
 
-  public void turn(int angle) {
-    getMovement().turnAngle(angle);
-  }
-
   public void setSpeed(int motor, int speed) {
     switch (motor) {
       case Config.M3:
         motorSonar.setSpeed(speed);
         break;
       case Config.M1:
-        movement.SPEEDFORWARD = speed > 400 ? 400 : speed;
+        SPEEDFORWARD = speed > 400 ? 400 : speed;
         break;
       case Config.M2:
-        movement.SPEEDFORWARD = speed > 400 ? 400 : speed;
+        SPEEDFORWARD = speed > 400 ? 400 : speed;
         break;
     }
   }
@@ -163,28 +164,55 @@ public class AngieRobotAPI implements RobotAPI {
   private float outAngle;
 
   public void setReferenceAngle(float reference) {
-    reference = movement.getInternalOrientation();
+    reference = getInternalOrientation();
   }
 
   public float getRelativeAngle(float reference) {
-    outAngle = -reference + movement.getInternalOrientation();
+    outAngle = -reference + getInternalOrientation();
     return outAngle;
   }
 
+  public void updateSonarMovement() {
+    if (!isSweeping()) {
+      return;
+    }
+    if (motorSonar.isMoving()) {
+      return;
+    }
+    int currentTacho = motorSonar.getTachoCount() - forwardTacho;
+    int currentAngle = currentSweepAngles[currentSweepAngleIndex] - forwardTacho;
+    if (currentTacho != currentAngle) {
+      motorSonar.rotateTo(currentAngle, true);
+      return;
+    }
+    resultBuffer.add(sonarSensor.getDistance());
+    currentSweepAngleIndex++;
+
+    if (currentSweepAngleIndex >= currentSweepAngles.length) {
+      motorSonar.rotateTo(currentSweepAngles[0] - forwardTacho, true);
+      currentSweepAngles = null;
+      sweepID++;
+    }
+  }
+
   public boolean isSweeping() {
-    return sonar.sweepInProgress();
+    return currentSweepAngles != null;
   }
 
   public void sweep(int[] i) {
-    sonar.sweep(i);
+    currentSweepAngles = i;
+    currentSweepAngleIndex = 0;
+    //WARNING: the result list can be used after the next sweep is requested! resultBuffer.clear();
+    resultBuffer = new ArrayList<Integer>();
+    //resultBuffer.clear();
   }
 
   public List<Integer> getSweepResult() {
-    return sonar.getSweepResult();
+    return resultBuffer;
   }
 
   public int getSweepID() {
-    return this.sonar.getSweepID();
+    return sweepID;
   }
 
   public long getFreeMemory() {
@@ -201,6 +229,136 @@ public class AngieRobotAPI implements RobotAPI {
 
   public int getFps() {
     return this.fps;
-  
+
   }
+
+  private void abortMovement() {
+    internalOrientation = getInternalOrientation();
+    tachoLeftStart = motorLeft.getTachoCount();
+    tachoRightStart = motorRight.getTachoCount();
+  }
+
+  public float getInternalOrientation() {
+    int tachoLeftDiff = motorLeft.getTachoCount() - tachoLeftStart;
+    int tachoRightDiff = motorRight.getTachoCount() - tachoRightStart;
+    float averageForward = (tachoRightDiff - tachoLeftDiff) / 2.0f;
+    float inverse = (float) (averageForward * WIELOMTREK / WIELAFSTAND / Math.PI);
+    buffer = inverse;
+    buffer +=internalOrientation;
+    return buffer;
+  }
+
+  public void move(double distance) {
+    abortMovement();
+    distance *= 1000;
+    distance /= 0.99;
+    int r = (int) (distance * 360 / WIELOMTREK);
+    setSpeed(SPEEDFORWARD);
+    motorLeft.rotate(r, true);
+    motorRight.rotate(r, true);
+  }
+
+  /**
+   * This function blocks until movement is complete
+   * TODO: WARNING: spins this thread! Preferable use this in a single thread, eg the main thread 
+   */
+  public void waitForMovementComplete() {
+    while (motorLeft.isMoving()) {
+      Utils.Sleep(20);
+    }
+  }
+
+  public void turn(int angleCCW2) {
+    abortMovement();
+    setSpeed(SPEEDTURN);
+    double angleCCW = angleCCW2 * CCW_afwijking;
+
+    int h = (int) (angleCCW * Math.PI * WIELAFSTAND / WIELOMTREK);
+    motorLeft.rotate(-h, true);
+    motorRight.rotate(h, true);
+  }
+
+  public void setSpeed(int speed) {
+    motorLeft.setSpeed(speed);
+    motorRight.setSpeed(speed);
+  }
+
+  public void stop() {
+    abortMovement();
+    motorLeft.stop();
+    motorRight.stop();
+  }
+
+  public boolean isStopped() {
+    return (!motorLeft.isMoving() && !motorRight.isMoving());
+  }
+
+  /**
+   * Returns the average tacho count of the 2 motors
+   */
+  public float getAverageTacho() {
+    return (motorLeft.getTachoCount() + motorRight.getTachoCount()) / 2f;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  public static void main(String[] args) throws Exception {
+    GhostRobot robot = new GhostRobot("PLATINUM");
+    ManhattanDriver manhattan = new ManhattanDriver(0.4)
+            .addBehaviour(new FrontProximityDriverBehaviour())
+            .addBehaviour(new SideProximityDriverBehaviour())
+            .addBehaviour(new BarcodeDriverBehaviour())
+            .addBehaviour(new LineDriverBehaviour());
+    robot.useDriver(manhattan);
+
+    Navigator navigator = new GhostNavigator();
+    robot.useNavigator(navigator);
+
+    GatewayClient gateway = new RobotBluetoothGatewayClient();
+    robot.useGatewayClient(gateway);
+
+    //MessageModelPart.from(robot.getModel()).setProtocolHandler(new GhostProtocolHandler);
+
+    robot.useReporter(new DashboardReporter());
+
+    robot.handleActivation();
+
+    RobotBluetoothConnection conn = new RobotBluetoothConnection();
+    conn.initializeConnection();
+    Utils.EnableRemoteLogging(conn);
+
+    FPS fps = new FPS();
+    AngieRobotAPI angie = new AngieRobotAPI();
+    robot.useRobotAPI(angie);
+
+    while (true) {
+      fps.setCheckPoint();
+      angie.setFps(fps.getFps());
+      robot.step();
+      fps.endCheckPoint();
+    }
+  }
+
 }

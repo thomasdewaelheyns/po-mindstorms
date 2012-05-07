@@ -11,9 +11,9 @@ package penoplatinum.navigator.mode;
 
 import penoplatinum.model.Model;
 
-public class DiscoverHillClimbingNavigatorMode extends HillClimbingNavigatorMode {
+public class FullDiscover extends HillClimbingNavigatorMode {
 
-  public DiscoverHillClimbingNavigatorMode(Model model) {
+  public FullDiscover(Model model) {
     super(model);
   }
 

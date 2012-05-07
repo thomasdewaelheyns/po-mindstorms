@@ -162,17 +162,10 @@ public class GridModelPart implements ModelPart {
       }
     }
   }
-  
-  // WARNING: not in use, but don't remove yet
-  public void onlyApplyCollaborateDiffusionOnPacman() {
-    this.diffusePacman = true;
-    this.diffuseUnknownSectors = false;
-  }
 
-  // WARNING: not in use, but don't remove yet
-  public void onlyApplyCollaborateDiffusionOnUnknownSectors() {
-    this.diffuseUnknownSectors = true;
-    this.diffusePacman = false;
+  public void applyDiffusionFlags(boolean unknown, boolean pacman) {
+    this.diffuseUnknownSectors = unknown;
+    this.diffusePacman = pacman;
   }
   
   public void markSectorChanged(Sector sector){

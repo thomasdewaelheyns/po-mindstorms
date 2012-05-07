@@ -17,7 +17,7 @@ import penoplatinum.driver.action.MoveDriverAction;
 public class BarcodeDriverBehaviour implements DriverBehaviour {
 
   // configuration of correction parameters
-  private final static double CORRECTION = 0.17;
+  private final static double CORRECTION = 0.01;
   // the correction we apply
   private DriverAction correctingAction = null;
 

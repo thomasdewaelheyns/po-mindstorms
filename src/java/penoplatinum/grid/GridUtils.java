@@ -17,7 +17,7 @@ public class GridUtils {
   public static String createGridSectorsString(Grid grid) {
     String ret = "";
 
-    /*for (int top = grid.getMinTop(); top <= grid.getMaxTop(); top++) {
+    for (int top = grid.getMinTop(); top <= grid.getMaxTop(); top++) {
       for (int left = grid.getMinLeft(); left <= grid.getMaxLeft(); left++) {
         Sector sector = grid.getSectorAt(new Point(left, top));
         if (sector == null)
@@ -30,13 +30,12 @@ public class GridUtils {
   }
 
   public static String createSectorWallsString(Sector s) {
-    return "";
-    /*return "N" + (s.knowsWall(Bearing.N) ? (s.hasWall(Bearing.N) ? "Y" : " ") : "?")
+    //return "";
+    return "N" + (s.knowsWall(Bearing.N) ? (s.hasWall(Bearing.N) ? "Y" : " ") : "?")
             + "E" + (s.knowsWall(Bearing.E) ? (s.hasWall(Bearing.E) ? "Y" : " ") : "?")
             + "S" + (s.knowsWall(Bearing.S) ? (s.hasWall(Bearing.S) ? "Y" : " ") : "?")
             + "W" + (s.knowsWall(Bearing.W) ? (s.hasWall(Bearing.W) ? "Y" : " ") : "?");
-     * 
-     */
+    /**/
   }
 
   public void DEBUG_checkGridCorrectness(Agent agent) {

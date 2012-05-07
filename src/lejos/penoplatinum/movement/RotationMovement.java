@@ -50,7 +50,7 @@ public class RotationMovement {
     motorRight.backward();
   }
 
-  public void driveDistance(double distance) {
+  public void move(double distance) {
     abortMovement();
     distance *= 1000;
     distance /= 0.99;
@@ -70,7 +70,7 @@ public class RotationMovement {
     }
   }
 
-  public void turnAngle(double angleCCW) {
+  public void turn(double angleCCW) {
     abortMovement();
     setSpeed(SPEEDTURN);
     angleCCW *= CCW_afwijking;

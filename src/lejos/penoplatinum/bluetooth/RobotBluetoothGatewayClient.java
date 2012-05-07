@@ -2,9 +2,7 @@ package penoplatinum.bluetooth;
 
 import java.io.IOException;
 import penoplatinum.Config;
-import penoplatinum.util.Utils;
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.robot.AdvancedRobot;
 import penoplatinum.robot.Robot;
 
 /**
@@ -18,7 +16,7 @@ import penoplatinum.robot.Robot;
  */
 public class RobotBluetoothGatewayClient implements GatewayClient {
 
-  private AdvancedRobot robot;
+  private Robot robot;
   private IConnection conn;
   private CallbackPacketTransporter t;
 
@@ -31,7 +29,7 @@ public class RobotBluetoothGatewayClient implements GatewayClient {
   }
 
   @Override
-  public RobotBluetoothGatewayClient setRobot(AdvancedRobot robot) {
+  public RobotBluetoothGatewayClient setRobot(Robot robot) {
     this.robot = robot;
     return this;
   }
@@ -70,7 +68,7 @@ public class RobotBluetoothGatewayClient implements GatewayClient {
       t.getSendStream().write(buf, 0, buf.length);
       t.SendPacket(channel);
     } catch (IOException ex) {
-      Utils.Log("Send error!");
+//      Utils.Log("Send error!");
     }
   }
 

@@ -43,7 +43,7 @@ public class ChaseHillClimbingNavigatorMode extends HillClimbingNavigatorMode {
 
   @Override
   public void activate() {
-    this.grids.onlyApplyCollaborateDiffusionOnPacman();
+    this.grids.applyDiffusionFlags(false, true);
   }
   
 }

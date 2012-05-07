@@ -2,24 +2,19 @@ package penoplatinum.model.processor;
 
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.agent.GhostAgent;
-import penoplatinum.model.Model;
 import penoplatinum.model.part.GridModelPart;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
 public class SurroundedModelProcessor extends ModelProcessor {
-  
-  private Point prevPosition = new Point(0,0);
-  private Bearing prevBearing = Bearing.N;
+  private int pacmanID;
 
   protected void work() {
-    Model model = getModel();
-    GridModelPart gridPart = GridModelPart.from(model);
-    if(gridPart.getMyPosition().equals(prevPosition) && prevBearing == gridPart.getMyBearing()){
+    GridModelPart gridPart = GridModelPart.from(getModel());
+    if(pacmanID <= gridPart.getPacmanID()){
       return;
     }
-    prevPosition = gridPart.getMyPosition();
-    prevBearing = gridPart.getMyBearing();
+    pacmanID = gridPart.getPacmanID();
     
     Point pos = gridPart.getFullGrid().getPositionOf(gridPart.getPacmanAgent());
     Sector s = gridPart.getFullGrid().getSectorAt(pos);

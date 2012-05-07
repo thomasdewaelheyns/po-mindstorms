@@ -71,6 +71,9 @@ public class ChangesModelProcessor extends ModelProcessor {
       protocol.handleFoundAgent(gridPart.getMyGrid(), pacman);
       model.getReporter().reportAgentUpdate(pacman);
     }
+    if(gridPart.pacmanSurrounded){
+      model.getReporter().reportCaptured();
+    }
   }
   
   // TODO: activate for reporting of other ghosts' grids
