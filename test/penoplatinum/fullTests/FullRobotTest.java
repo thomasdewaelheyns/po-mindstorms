@@ -69,7 +69,7 @@ public class FullRobotTest extends TestCase {
   
   @Test
   public void testSimulator() throws FileNotFoundException, IOException, InterruptedException {
-    Config.load("../../test/fullTest.properties");
+    Config.load("test/fullTest.properties");
 
     // setup simulator
     Simulator       simulator = this.createSimulator(makeMap());    

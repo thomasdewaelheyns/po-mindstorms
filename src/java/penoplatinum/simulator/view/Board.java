@@ -59,7 +59,8 @@ public class Board extends JPanel {
   }
   
   private URL getImageResource(String image) {
-    return this.getClass().getResource("../../../" + Config.IMAGE_DIR + "/" + image);
+    String name = "/" + Config.IMAGE_DIR + "/" + image;
+    return this.getClass().getResource(name);
   }
 
   public void showMap(Map map) {
