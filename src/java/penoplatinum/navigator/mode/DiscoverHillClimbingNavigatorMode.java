@@ -20,7 +20,7 @@ public class DiscoverHillClimbingNavigatorMode extends HillClimbingNavigatorMode
 
   @Override
   public void activate() {
-    this.grids.onlyApplyCollaborateDiffusionOnUnknownSectors();
+    this.grids.applyDiffusionFlags(true, false);
   }
   
 

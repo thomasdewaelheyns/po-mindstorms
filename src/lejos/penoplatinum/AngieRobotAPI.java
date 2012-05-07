@@ -336,18 +336,22 @@ public class AngieRobotAPI implements RobotAPI {
     Navigator navigator = new GhostNavigator();
     robot.useNavigator(navigator);
 
-    GatewayClient gateway = new RobotBluetoothGatewayClient();
+    RobotBluetoothGatewayClient gateway = new RobotBluetoothGatewayClient();
     robot.useGatewayClient(gateway);
 
     //MessageModelPart.from(robot.getModel()).setProtocolHandler(new GhostProtocolHandler);
 
-    robot.useReporter(new DashboardReporter());
-
-    robot.handleActivation();
 
     RobotBluetoothConnection conn = new RobotBluetoothConnection();
     conn.initializeConnection();
     Utils.EnableRemoteLogging(conn);
+    
+    gateway.useConnection(conn);
+    gateway.run();
+    
+    robot.useReporter(new DashboardReporter());
+
+    robot.handleActivation();
 
     FPS fps = new FPS();
     AngieRobotAPI angie = new AngieRobotAPI();

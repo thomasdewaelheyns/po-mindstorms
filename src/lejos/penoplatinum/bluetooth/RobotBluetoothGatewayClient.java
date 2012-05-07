@@ -3,7 +3,8 @@ package penoplatinum.bluetooth;
 import java.io.IOException;
 import penoplatinum.Config;
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.robot.Robot;
+import penoplatinum.robot.AdvancedRobot;
+import penoplatinum.util.Utils;
 
 /**
  * RobotBluetoothGatewayClient
@@ -16,7 +17,7 @@ import penoplatinum.robot.Robot;
  */
 public class RobotBluetoothGatewayClient implements GatewayClient {
 
-  private Robot robot;
+  private AdvancedRobot robot;
   private IConnection conn;
   private CallbackPacketTransporter t;
 
@@ -29,7 +30,7 @@ public class RobotBluetoothGatewayClient implements GatewayClient {
   }
 
   @Override
-  public RobotBluetoothGatewayClient setRobot(Robot robot) {
+  public RobotBluetoothGatewayClient setRobot(AdvancedRobot robot) {
     this.robot = robot;
     return this;
   }
@@ -40,7 +41,6 @@ public class RobotBluetoothGatewayClient implements GatewayClient {
     }
 
     this.t = new CallbackPacketTransporter(conn, new IPacketHandler() {
-
       public void receive(int packetID, byte[] dgram) {
         RobotBluetoothGatewayClient.this.receive(new String(dgram));
       }
@@ -61,8 +61,7 @@ public class RobotBluetoothGatewayClient implements GatewayClient {
 
   @Override
   public void send(String msg, int channel) {
-    byte[] buf = null;
-    buf = getBytes(msg);
+    byte[] buf = getBytes(msg);
 
     try {
       t.getSendStream().write(buf, 0, buf.length);
