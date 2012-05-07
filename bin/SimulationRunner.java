@@ -60,8 +60,8 @@ public class SimulationRunner {
   private final static String DEFAULT_DRIVER         = "penoplatinum.driver.ManhattanDriver";
   private final static String DEFAULT_GATEWAY_CLIENT = "penoplatinum.simulator.SimulatedGatewayClient";
   private final static String DEFAULT_REPORTER       = "penoplatinum.reporter.DashboardReporter";
-  private final static String DEFAULT_MAP            = "../maps/wolfraam.txt";
-  private final static String DEFAULT_START          = "0";
+  private final static String DEFAULT_MAP            = "wolfraam.txt";
+  private final static String DEFAULT_START          = "3";
 
   private Simulator simulator;
 
@@ -236,10 +236,11 @@ public class SimulationRunner {
       this.simulator.useMap(map);
 
       // add the ghosts
-      int robotNr = this.start;
+      int robotNr = -1;
       for (Point position : map.getGhostPositions()) {
         robotNr++;
-        this.putGhostAt("" + robotNr, position.getX(), position.getY(), Bearing.N);
+        if (robotNr != start) continue;
+        this.putGhostAt("" + robotNr, position.getX()-1, position.getY()-1, Bearing.N);
       }
 
       // add a pacman
@@ -273,9 +274,9 @@ public class SimulationRunner {
     simulatedEntity.putRobotAt(x * Sector.SIZE + Sector.SIZE / 2, y * Sector.SIZE + Sector.SIZE / 2, directionInt);
     this.simulatedEntities.put(name, simulatedEntity);
 
-    robot.useNavigator(navigator)
+    robot.useDriver(driver)
+         .useNavigator(navigator)
          .useGatewayClient(gatewayClient)
-         .useDriver(driver)
          .useReporter(reporter);
 
     System.out.println( "DRIVER = " + driver );

@@ -265,7 +265,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     this.model.refresh();
     this.navigator.instruct(driver);
     this.sendMessages();
-    if( this.reporter != null ) { this.reporter.reportModelUpdate(); }
+//    if( this.reporter != null ) { this.reporter.reportModelUpdate(); }
     this.manageMemory();
   }
   
