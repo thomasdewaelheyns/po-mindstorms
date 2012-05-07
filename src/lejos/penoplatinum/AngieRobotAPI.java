@@ -317,15 +317,11 @@ public class AngieRobotAPI implements RobotAPI {
     gateway.useConnection(conn);
     gateway.run();
     
-    //robot.useReporter(new DashboardReporter());
+    robot.useReporter(new DashboardReporter());
 
     FPS fps = new FPS();
     AngieRobotAPI angie = new AngieRobotAPI();
     robot.useRobotAPI(angie);
-    
-    if(Config.makeEverythingWork){
-      robot.handleActivation();
-    }
 
     angie.setFps(fps.getFps());
     while (true) {

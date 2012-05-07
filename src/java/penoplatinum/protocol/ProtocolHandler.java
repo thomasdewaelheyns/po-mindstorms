@@ -36,6 +36,8 @@ public interface ProtocolHandler {
   public ProtocolHandler handleFoundAgent(Grid grid, BarcodeAgent agent);
   public ProtocolHandler handleFoundAgent(Grid grid, PacmanAgent agent);
   public ProtocolHandler handleResendData(Iterable<Sector> sectors, Point pacmanPoint, Point position);
+  
+  public ProtocolHandler handleCaptured();
 
   // used to manage incoming messages
   public void receive(String msg);

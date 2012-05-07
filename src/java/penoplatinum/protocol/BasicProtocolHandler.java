@@ -62,5 +62,10 @@ public class BasicProtocolHandler implements ProtocolHandler {
   public String getName() {
     return "";
   }
+
+  @Override
+  public ProtocolHandler handleCaptured() {
+    return this;
+  }
   
 }

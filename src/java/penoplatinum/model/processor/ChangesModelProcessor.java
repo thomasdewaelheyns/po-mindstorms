@@ -67,10 +67,12 @@ public class ChangesModelProcessor extends ModelProcessor {
       pacmanID = gridPart.getPacmanID();
       PacmanAgent pacman = gridPart.getPacmanAgent();
       protocol.handleFoundAgent(gridPart.getMyGrid(), pacman);
-      model.getReporter().reportAgentUpdate(pacman);
+      if(model.getReporter() != null){
+        model.getReporter().reportAgentUpdate(pacman);
+      }
     }
     if (gridPart.pacmanSurrounded) {
-      model.getReporter().reportCaptured();
+      MessageModelPart.from(model).getProtocolHandler().handleCaptured();
     }
   }
   private String other1, other2, other3;

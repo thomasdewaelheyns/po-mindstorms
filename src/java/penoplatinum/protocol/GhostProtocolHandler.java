@@ -555,4 +555,10 @@ public class GhostProtocolHandler implements ProtocolHandler {
 //      System.out.println("iterator error" + e.toString());
     }
   }
+
+  @Override
+  public GhostProtocolHandler handleCaptured() {
+    send(name, "CAPTURED");
+    return this;
+  }
 }

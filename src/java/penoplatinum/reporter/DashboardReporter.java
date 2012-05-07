@@ -223,7 +223,6 @@ public class DashboardReporter implements Reporter {
 
   @Override
   public void reportCaptured() {
-    //TODO
-    int magic = 0;
+    
   }
 }

@@ -20,7 +20,7 @@ public class SurroundedModelProcessor extends ModelProcessor {
     Point pos = gridPart.getFullGrid().getPositionOf(gridPart.getPacmanAgent());
     Sector s = gridPart.getFullGrid().getSectorAt(pos);
     for(Bearing b : Bearing.NESW){
-      if(GridUtils.givesAccessTo(s,b)){
+      if(!GridUtils.givesAccessTo(s,b)){
         continue;
       }
       Point neighbour = gridPart.getFullGrid().getPositionOf(s.getNeighbour(b));
