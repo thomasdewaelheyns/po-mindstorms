@@ -13,11 +13,13 @@ import penoplatinum.driver.Driver;
 import penoplatinum.driver.ManhattanDriver;
 import penoplatinum.driver.behaviour.*;
 
+import penoplatinum.grid.Grid;
 import penoplatinum.reporter.Reporter;
 import penoplatinum.reporter.DashboardReporter;
 
 import penoplatinum.gateway.GatewayClient;
 
+import penoplatinum.grid.TransformedGrid;
 import penoplatinum.map.Map;
 import penoplatinum.map.MapHashed;
 
@@ -43,6 +45,10 @@ import penoplatinum.grid.view.SwingGridView;
 import penoplatinum.map.MapFactory;
 import penoplatinum.map.mazeprotocol.ProtocolMapFactory;
 import penoplatinum.simulator.entities.PacmanEntity;
+import penoplatinum.util.Bearing;
+import penoplatinum.util.Rotation;
+import penoplatinum.util.TransformationTRT;
+import penoplatinum.util.Utils;
 
 
 public class FullRobotTest extends TestCase {
@@ -72,7 +78,7 @@ public class FullRobotTest extends TestCase {
     Config.load("test/fullTest.properties");
 
     // setup simulator
-    Simulator       simulator = this.createSimulator(makeMap());    
+    Simulator       simulator = this.createSimulator(makeMap());
 
     GhostRobot robot1 = this.createGhostRobot("robot1", simulator, 220, 220, -180);
     GhostRobot robot2 = this.createGhostRobot("robot2", simulator, 220, 20, -90);
@@ -92,7 +98,7 @@ public class FullRobotTest extends TestCase {
     simulator.useMap(map);
     simulator.displayOn(simView);
     System.out.println(map.getHeight());
-    PacmanEntity pacman = new PacmanEntity(0, map.getHeight()-1);
+    PacmanEntity pacman = new PacmanEntity(1, map.getHeight()-1-1);
     simulator.setPacmanEntity(pacman);
     return simulator;
   }
@@ -105,8 +111,17 @@ public class FullRobotTest extends TestCase {
     entity.putRobotAt(x, y, b);
     simulator.addSimulatedEntity(entity);
 
+    
+    
+    Bearing bearing = Bearing.NESW.get((int)(Utils.ClampLooped(b, 0, 360) /90));
+        
+    TransformationTRT trans = new TransformationTRT().setTransformation(0, 0, bearing.to(bearing.E), 0, 0);
+    
+    Grid fullGrid = GridModelPart.from(robot.getModel()).getFullGrid();
+    fullGrid = new TransformedGrid(fullGrid).setTransformation(trans);
+    
     SwingGridView gridView = new SwingGridView();
-    gridView.displayWithoutWindow(GridModelPart.from(robot.getModel()).getFullGrid());
+    gridView.displayWithoutWindow(fullGrid);
     ((SwingSimulationView) simulator.getView()).addGrid(gridView);
 
     return robot;

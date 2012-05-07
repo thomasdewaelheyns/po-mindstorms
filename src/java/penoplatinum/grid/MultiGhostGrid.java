@@ -11,6 +11,7 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.SimpleHashMap;
 import penoplatinum.util.TransformationTRT;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * This grid only supports read operations!! The grid is the merged result
@@ -31,6 +32,105 @@ public class MultiGhostGrid implements Grid, GridObserver {
     this.mainGhostName = mainGhostName;
 
 
+  }
+
+  @Override
+  public void agentChanged(Grid g, Agent a) {
+    if (!(a instanceof BarcodeAgent))
+      return;
+    attemptMapBarcodeOnGrid(a, g);
+
+
+  }
+
+  public void attemptMapBarcodeOnGrid(Agent a, Grid g) {
+    BarcodeAgent barcode = (BarcodeAgent) a;
+
+
+    if (g == getGhostGrid(mainGhostName)) {
+      for (Ghost ghost : ghosts.values()) {
+        Grid iGrid = ghost.getGrid();
+        if (iGrid == g)
+          continue;
+     
+
+        TransformationTRT trans = mapBarcode(g, iGrid, barcode);
+        if (trans == null)
+          continue;
+        mapTransitive(iGrid, trans);
+        mapGhost(ghost, trans);
+
+      }
+    } else {
+      TransformationTRT trans = findMapping(getGhostGrid(mainGhostName), g);
+      if (trans == null)
+        return;
+
+      mapTransitive(g, trans);
+      mapGhost(findGhostWithGrid(g), trans);
+
+
+    }
+  }
+
+  public void mapTransitive(Grid iGrid, TransformationTRT trans) {
+
+    // Map transitive
+
+    TransformedGrid transformed = new TransformedGrid(iGrid);
+    transformed.setTransformation(trans);
+
+    for (Ghost transtiveGhost : ghosts.values()) {
+      Grid transitiveGrid = transtiveGhost.getGrid();
+      if (transitiveGrid == getGhostGrid(mainGhostName) || transitiveGrid == iGrid)
+        continue;
+
+      TransformationTRT transitiveTRT = findMapping(transformed, transitiveGrid);
+
+      if (transitiveTRT == null)
+        continue;
+      mapGhost(findGhostWithGrid(transitiveGrid), transitiveTRT);
+    }
+  }
+
+  /**
+   * Creates a transformation to transform coordinates from grid 2 to grid 1
+   */
+  private TransformationTRT mapBarcode(Grid g1, Grid g2, BarcodeAgent barcode) {
+    Bearing b1 = g1.getBearingOf(barcode);
+    Bearing b2 = g2.getBearingOf(barcode);
+    Point pos1 = g1.getPositionOf(barcode);
+    Point pos2 = g2.getPositionOf(barcode);
+
+    if (pos1 == null || pos2 == null)
+      return null;
+
+    TransformationTRT transform = new TransformationTRT().setTransformation(-pos2.getX(), -pos2.getY(), b1.to(b2).invert(), pos1.getX(), pos1.getY());
+    return transform;
+  }
+
+  /**
+   * Maps from g2 to g1
+   */
+  private TransformationTRT findMapping(Grid g1, Grid g2) {
+
+    Grid g = g1;
+
+    for (Agent barcode : g1.getAgents()) {
+      if (!(barcode instanceof BarcodeAgent))
+        continue;
+
+      Grid iGrid = g2;
+
+      if (iGrid.getPositionOf(barcode) == null)
+        continue; // Barcode not found on grid
+
+      TransformationTRT transform = mapBarcode(g, iGrid, (BarcodeAgent) barcode);
+
+      return transform;
+
+    }
+    return null;
   }
 
   public MultiGhostGrid useAggregatedGrid(AggregatedGrid aggGrid) {
@@ -60,17 +160,14 @@ public class MultiGhostGrid implements Grid, GridObserver {
     return g;
   }
 
-  public List<Sector> getChangedSectors(String ghostname)
-  {
+  public List<Sector> getChangedSectors(String ghostname) {
     //TODO
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    throw new NotImplementedException();
   }
-  
+
   @Override
   public Grid add(Sector s, Point position) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
@@ -90,14 +187,12 @@ public class MultiGhostGrid implements Grid, GridObserver {
 
   @Override
   public Grid add(Agent agent, Point position, Bearing bearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public Grid moveTo(Agent agent, Point position, Bearing bearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
@@ -150,49 +245,6 @@ public class MultiGhostGrid implements Grid, GridObserver {
     return grid.getSize();
   }
 
-  @Override
-  public void agentChanged(Grid g, Agent a) {
-    if (!(a instanceof BarcodeAgent))
-      return;
-
-    BarcodeAgent barcode = (BarcodeAgent) a;
-
-    for (Ghost ghost : ghosts.values()) {
-      Grid iGrid = ghost.getGrid();
-      if (iGrid == g)
-        continue;
-
-      if (iGrid.getPositionOf(a) == null)
-        continue; // Barcode not found on grid
-
-      TransformationTRT transform = mapBarcode(g, iGrid, barcode);
-
-      Ghost remoteGhost;
-      if (g == getGhostGrid(mainGhostName))
-      {
-        // g is the local ghost, so iGrid is the remote ghost
-        // transformation is ok!
-        remoteGhost = findGhostWithGrid(iGrid);
-      }
-      else if (iGrid == getGhostGrid(mainGhostName))
-      {
-        // g is the remote and transform maps from iGrid to g
-        transform.invert();
-        remoteGhost = findGhostWithGrid(g);
-      }
-      else
-      {
-        // Remote grids are mapped, don't use this info yet!
-        continue;
-      }
-      
-      mapGhost(remoteGhost, transform);
-
-    }
-
-
-  }
-
   private Ghost findGhostWithGrid(Grid g) {
     for (Ghost ghost : ghosts.values())
       if (ghost.getGrid() == g)
@@ -212,19 +264,6 @@ public class MultiGhostGrid implements Grid, GridObserver {
 
   }
 
-  /**
-   * Creates a transformation to transform coordinates from grid 2 to grid 1
-   */
-  private TransformationTRT mapBarcode(Grid g1, Grid g2, BarcodeAgent barcode) {
-    Bearing b1 = g1.getBearingOf(barcode);
-    Bearing b2 = g2.getBearingOf(barcode);
-    Point pos1 = g1.getPositionOf(barcode);
-    Point pos2 = g2.getPositionOf(barcode);
-
-    TransformationTRT transform = new TransformationTRT().setTransformation(-pos2.getX(), -pos2.getY(), b1.to(b2).invert(), pos1.getX(), pos1.getY());
-    return transform;
-  }
-
   @Override
   public Point getPositionOf(Agent agent) {
     return grid.getPositionOf(agent);
@@ -237,92 +276,82 @@ public class MultiGhostGrid implements Grid, GridObserver {
 
   @Override
   public int getSectorId(Point position) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.getSectorId(position);
   }
 
   @Override
   public Sector getSector(int id) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.getSector(id);
   }
 
   @Override
   public boolean hasNeighbour(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.hasNeighbour(sectorId, atBearing);
   }
 
   @Override
   public int getNeighbourId(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.getNeighbourId(sectorId, atBearing);
   }
 
   @Override
   public Grid setValue(int sectorId, int value) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.setValue(sectorId, value);
   }
 
   @Override
   public int getValue(int sectorId) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.getValue(sectorId);
   }
 
   @Override
   public Grid setWall(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    grid.setWall(sectorId, atBearing);
+    return this;
   }
 
   @Override
   public Grid setNoWall(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    grid.setNoWall(sectorId, atBearing);
+    return this;
   }
 
   @Override
   public Grid clearWall(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    grid.clearWall(sectorId, atBearing);
+    return this;
   }
 
   @Override
   public boolean hasWall(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.hasWall(sectorId, atBearing);
   }
 
   @Override
   public boolean hasNoWall(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.hasNoWall(sectorId, atBearing);
   }
 
   @Override
   public boolean knowsWall(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.knowsWall(sectorId, atBearing);
   }
 
   @Override
   public boolean isFullyKnown(int sectorId) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.isFullyKnown(sectorId);
   }
 
   @Override
   public Grid clearWalls(int sectorId) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.clearWalls(sectorId);
   }
 
   @Override
   public boolean givesAccessTo(int sectorId, Bearing atBearing) {
-//    throw new UnsupportedOperationException("Not supported yet.");
-    throw new UnsupportedOperationException();
+    return grid.givesAccessTo(sectorId, atBearing);
+
+
   }
 
   class Ghost {
