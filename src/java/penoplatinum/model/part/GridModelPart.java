@@ -36,6 +36,7 @@ public class GridModelPart implements ModelPart {
   private Grid  myGrid;
   private Agent myAgent;
   private PacmanAgent pacman = new PacmanAgent();
+  public boolean pacmanSurrounded = false;
   private ArrayList<Sector> changedSectors = new ArrayList<Sector>();
   private int pacmanID;
   

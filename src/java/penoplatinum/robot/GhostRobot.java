@@ -79,7 +79,8 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
                              new ImportWallsModelProcessor(
                              new UnknownSectorModelProcessor(
                              new ChangesModelProcessor(
-                                             )))))))))));
+                             new SurroundedModelProcessor(
+                                     ))))))))))));
 
     if( this.reporter != null && this.model != null ) {
       this.model.setReporter(this.reporter);

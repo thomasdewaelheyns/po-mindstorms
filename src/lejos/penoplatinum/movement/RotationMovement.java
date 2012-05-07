@@ -14,7 +14,6 @@ public class RotationMovement {
   public Motor motorLeft;
   public Motor motorRight;
 
-  private boolean movementDisabled;
   private int tachoLeftStart;
   private int tachoRightStart;
   private float internalOrientation;
@@ -27,7 +26,8 @@ public class RotationMovement {
 
   private void abortMovement() {
     internalOrientation = getInternalOrientation();
-    startMovement();
+    tachoLeftStart = motorLeft.getTachoCount();
+    tachoRightStart = motorRight.getTachoCount();
   }
 
   public float getInternalOrientation() {
@@ -38,15 +38,6 @@ public class RotationMovement {
     buffer = inverse;
     buffer +=internalOrientation;
     return buffer;
-  }
-
-  private void startMovement() {
-    tachoLeftStart = motorLeft.getTachoCount();
-    tachoRightStart = motorRight.getTachoCount();
-  }
-
-  public void setMovementDisabled(boolean movementDisabled) {
-    this.movementDisabled = movementDisabled;
   }
 
   public void driveForward() {
@@ -60,9 +51,6 @@ public class RotationMovement {
   }
 
   public void driveDistance(double distance) {
-    if (movementDisabled) {
-      return;
-    }
     abortMovement();
     distance *= 1000;
     distance /= 0.99;
@@ -83,9 +71,6 @@ public class RotationMovement {
   }
 
   public void turnAngle(double angleCCW) {
-    if (movementDisabled) {
-      return;
-    }
     abortMovement();
     setSpeed(SPEEDTURN);
     angleCCW *= CCW_afwijking;
@@ -96,9 +81,6 @@ public class RotationMovement {
   }
 
   public void turn(boolean ccw) {
-    if (movementDisabled) {
-      return;
-    }
     setSpeed(SPEEDTURN);
     if (ccw) {
       motorLeft.forward();
