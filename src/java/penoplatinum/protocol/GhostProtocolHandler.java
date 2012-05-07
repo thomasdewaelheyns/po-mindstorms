@@ -459,7 +459,8 @@ public class GhostProtocolHandler implements ProtocolHandler {
       case W:
         return 4;
     }
-    throw new RuntimeException("Invalid Bearing: " + bearing);
+    throw new RuntimeException();
+//    throw new RuntimeException("Invalid Bearing: " + bearing);
   }
 
   private Bearing translateDirectionToBearing(int direction) {
@@ -550,7 +551,7 @@ public class GhostProtocolHandler implements ProtocolHandler {
         renaming = false;
       }
     } catch (Exception e) {
-      System.out.println("iterator error" + e.toString());
+//      System.out.println("iterator error" + e.toString());
     }
   }
 }
