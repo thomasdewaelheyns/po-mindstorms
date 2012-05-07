@@ -32,6 +32,7 @@ import penoplatinum.navigator.Navigator;
 
 import penoplatinum.protocol.ExternalEventHandler;
 import penoplatinum.protocol.GhostProtocolHandler;
+import penoplatinum.protocol.ProtocolHandler;
 
 import penoplatinum.reporter.Reporter;
 
@@ -369,7 +370,16 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     gridPart.setPacman(gridPart.getGridOf(agentName), position);
   }
 
-  public void handleSendGridInformation() {}
+  public void handleSendGridInformation() {
+  GridModelPart gridPart = GridModelPart.from(this.model);
+    ProtocolHandler handler = MessageModelPart.from(this.model).getProtocolHandler();
+    Iterable<Sector> sectors = gridPart.getMyGrid().getSectors();
+    Point pacman = gridPart.getMyGrid().getPositionOf(gridPart.getPacmanAgent());
+    Point position = gridPart.getMyPosition();
+    handler.handleResendData(sectors, pacman, position);
+  }
+  
+  
   public void handleCaptured(String agentName) {}
   public void handleRemoveAgent(String agentName) {}
 }
