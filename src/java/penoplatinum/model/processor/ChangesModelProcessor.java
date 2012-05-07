@@ -7,7 +7,7 @@ package penoplatinum.model.processor;
  *  
  * @author Team Platinum
  */
-
+import java.util.List;
 import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.agent.PacmanAgent;
@@ -36,23 +36,21 @@ public class ChangesModelProcessor extends ModelProcessor {
   public ChangesModelProcessor(ModelProcessor nextProcessor) {
     super(nextProcessor);
   }
-  
-  
-  private Point prevPosition = new Point(0,0);
+  private Point prevPosition = new Point(0, 0);
   private Bearing prevBearing = Bearing.N;
 
   protected void work() {
     Model model = getModel();
     GridModelPart gridPart = GridModelPart.from(model);
-    if(gridPart.getMyPosition().equals(prevPosition) && prevBearing == gridPart.getMyBearing()){
+    if (gridPart.getMyPosition().equals(prevPosition) && prevBearing == gridPart.getMyBearing()) {
       return;
     }
     prevPosition = gridPart.getMyPosition();
     prevBearing = gridPart.getMyBearing();
-    
+
     MessageModelPart messagePart = MessageModelPart.from(model);
     ProtocolHandler protocol = messagePart.getProtocolHandler();
-    
+
     // notify other ghosts of my new position
     protocol.handleEnterSector(gridPart.getMySector());
 
@@ -62,7 +60,7 @@ public class ChangesModelProcessor extends ModelProcessor {
     this.handleChangedValues(model, gridPart, protocol);
 
     // TODO: activate for reporting of other ghosts' grids
-    // this.handleOtherGridChanges(gridPart);
+    this.handleOtherGridChanges(gridPart);
 
     // Send pacman position updates
     if (gridPart.getPacmanID() > pacmanID) {
@@ -71,52 +69,50 @@ public class ChangesModelProcessor extends ModelProcessor {
       protocol.handleFoundAgent(gridPart.getMyGrid(), pacman);
       model.getReporter().reportAgentUpdate(pacman);
     }
-    if(gridPart.pacmanSurrounded){
+    if (gridPart.pacmanSurrounded) {
       model.getReporter().reportCaptured();
     }
   }
-  
-  // TODO: activate for reporting of other ghosts' grids
-  // private String other1, other2, other3;
-  // 
-  // private void handleOtherGridChanges(GridModelPart gridPart) {
-  //   if( this.other1 == null || this.other2 == null || this.other3 == null ) {
-  //     this.initAgentNames(gridPart);
-  //   }
-  //   // TODO: how do we handle changed names ?
-  //   if( this.other1 != null && this.other2 != null && this.other3 != null ) {
-  //     this.handleChangedSectors(this.other1, "others[0]");
-  //     this.handleChangedSectors(this.other2, "others[1]");
-  //     this.handleChangedSectors(this.other3, "others[2]");
-  //   }
-  // }
-  // 
-  // private void handleChangedSectors(String gridName, String dashboardName)
-  // {
-  //   Model model = this.getModel();
-  //   if(model.getReporter() != null) {
-  //     for(Sector sector : gridPart.getChangedSectorsOf(gridName)) {
-  //       model.getReporter().reportSectorUpdate(sector, dashboardName);
-  //   }
-  // }
-  // 
-  // private void initAgentNames(GridModelPart gridPart) {
-  //   List<String> names = gridPart.getOtherAgentsNames();
-  //   if( names.size() == 3 ) {
-  //     this.other1 = names.get(0);
-  //     this.other2 = names.get(1);
-  //     this.other3 = names.get(2);
-  //   } else {
-  //     System.out.println( "WARNING: didn't get enough other Ghost's names" );
-  //   }
-  // } 
+  private String other1, other2, other3;
+
+  private void handleOtherGridChanges(GridModelPart gridPart) {
+    if (this.other1 == null || this.other2 == null || this.other3 == null) {
+      this.initAgentNames(gridPart);
+    }
+    // TODO: how do we handle changed names ?
+    if (this.other1 != null && this.other2 != null && this.other3 != null) {
+      this.handleChangedSectors(gridPart, this.other1, "others[0]");
+      this.handleChangedSectors(gridPart, this.other2, "others[1]");
+      this.handleChangedSectors(gridPart, this.other3, "others[2]");
+    }
+  }
+
+  private void handleChangedSectors(GridModelPart gridPart, String gridName, String dashboardName) {
+    Model model = this.getModel();
+    if (model.getReporter() != null) {
+      for (Sector sector : gridPart.getChangedSectors(gridName)) {
+        model.getReporter().reportSectorUpdate(sector, dashboardName);
+      }
+    }
+  }
+
+  private void initAgentNames(GridModelPart gridPart) {
+    List<String> names = gridPart.getOtherAgentsNames();
+    if (names.size() == 3) {
+      this.other1 = names.get(0);
+      this.other2 = names.get(1);
+      this.other3 = names.get(2);
+    } else {
+      System.out.println("WARNING: didn't get enough other Ghost's names");
+    }
+  }
 
   private void handleDiscovery(Model model, GridModelPart gridPart, ProtocolHandler protocol) {
-    for(Sector current : gridPart.getChangedSectors() ){
+    for (Sector current : gridPart.getChangedSectors()) {
       // for each changed sector, notify the GhostProtocol
       protocol.handleFoundSector(current);
       // and report to dashboard (directly)
-      if(model.getReporter() != null) {
+      if (model.getReporter() != null) {
         model.getReporter().reportSectorUpdate(current, "myGrid");
       }
     }
@@ -124,30 +120,29 @@ public class ChangesModelProcessor extends ModelProcessor {
   }
 
   private void handleBarcode(Model model, GridModelPart gridPart, ProtocolHandler protocol) {
-    if(lastBarcode != BarcodeModelPart.from(model).getLastBarcodeValue()){
+    if (lastBarcode != BarcodeModelPart.from(model).getLastBarcodeValue()) {
       lastBarcode = BarcodeModelPart.from(model).getLastBarcodeValue();
       Bearing barcodeBearing = gridPart.getMyBearing();
-      int alignedCode = lastBarcode/2;
-      if(alignedCode > Barcode.reverse(alignedCode, 6)){
+      int alignedCode = lastBarcode / 2;
+      if (alignedCode > Barcode.reverse(alignedCode, 6)) {
         barcodeBearing = barcodeBearing.reverse();
         alignedCode = Barcode.reverse(alignedCode, 6);
       }
       BarcodeAgent agent = BarcodeAgent.getBarcodeAgent(alignedCode);
       gridPart.getMyGrid().add(agent, gridPart.getMyPosition(), barcodeBearing);
       protocol.handleFoundAgent(gridPart.getMyGrid(), agent);
-      if(model.getReporter() != null) {
+      if (model.getReporter() != null) {
         model.getReporter().reportAgentUpdate(agent);
       }
-      
+
     }
   }
 
   private void handleChangedValues(Model model,
-                                   GridModelPart gridPart, 
-                                   ProtocolHandler protocol)
-  {
-    for(Sector sector : gridPart.getMyGrid().getSectors()) {
-      if(model.getReporter() == null){
+          GridModelPart gridPart,
+          ProtocolHandler protocol) {
+    for (Sector sector : gridPart.getMyGrid().getSectors()) {
+      if (model.getReporter() == null) {
         continue;
       }
       model.getReporter().reportValueUpdate(sector);

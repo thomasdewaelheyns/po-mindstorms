@@ -1,5 +1,6 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.grid.GridUtils;
 import penoplatinum.grid.Sector;
 import penoplatinum.grid.agent.GhostAgent;
 import penoplatinum.model.part.GridModelPart;
@@ -19,7 +20,7 @@ public class SurroundedModelProcessor extends ModelProcessor {
     Point pos = gridPart.getFullGrid().getPositionOf(gridPart.getPacmanAgent());
     Sector s = gridPart.getFullGrid().getSectorAt(pos);
     for(Bearing b : Bearing.NESW){
-      if(s.givesAccessTo(b)){
+      if(GridUtils.givesAccessTo(s,b)){
         continue;
       }
       Point neighbour = gridPart.getFullGrid().getPositionOf(s.getNeighbour(b));

@@ -4,6 +4,7 @@
  */
 package penoplatinum.grid;
 
+import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.agent.Agent;
@@ -159,9 +160,18 @@ public class MultiGhostGrid implements Grid, GridObserver {
     return g;
   }
 
-  public List<Sector> getChangedSectors(String ghostname) {
-    //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
+  public  List<Sector> getChangedSectors(String ghostname) {
+    Ghost ghost = ghosts.get(ghostname);
+    
+    List<Sector> ret = new ArrayList<Sector>(ghost.changedSectors.size());
+    
+    for (int i = 0; i < ghost.changedSectors.size(); i++) {
+      ret.add(ghost.changedSectors.get(i));
+    }
+    
+    ghost.changedSectors.clear();
+    
+    return ret;
     
   }
 
@@ -337,11 +347,17 @@ public class MultiGhostGrid implements Grid, GridObserver {
     return grid.knowsWall(sectorId, atBearing);
   }
 
+  @Override
+  public void sectorChanged(Grid g, Sector s) {
+  }
+
   class Ghost {
 
     private Grid grid;
     private TransformationTRT transform;
 
+    public List<Sector> changedSectors = new ArrayList<Sector>();
+    
     public Ghost(Grid grid) {
       this.grid = grid;
     }

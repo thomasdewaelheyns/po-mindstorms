@@ -6,7 +6,6 @@ package penoplatinum.model.part;
  * 
  * @author Team Platinum
  */
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -24,27 +23,24 @@ import penoplatinum.grid.Sector;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 
-
 public class GridModelPart implements ModelPart {
+
   public static final int PACMAN_VALUE = 10000;
   public static final int UNKNOWN_VALUE = 5000;
   // boilerplate implementation required to register and retrieve a ModelPart
   // from the model
-  public static GridModelPart from(Model model) {
-    return (GridModelPart)model.getPart(ModelPartRegistry.GRID_MODEL_PART);
-  }
 
-  private Grid  myGrid;
+  public static GridModelPart from(Model model) {
+    return (GridModelPart) model.getPart(ModelPartRegistry.GRID_MODEL_PART);
+  }
+  private Grid myGrid;
   private Agent myAgent;
   private PacmanAgent pacman = new PacmanAgent();
   public boolean pacmanSurrounded = false;
   private ArrayList<Sector> changedSectors = new ArrayList<Sector>();
   private int pacmanID;
-  
   private boolean diffusePacman, diffuseUnknownSectors;
-
   private MultiGhostGrid grids;
-
   private String myName;
 
   public GridModelPart(String name) {
@@ -59,7 +55,7 @@ public class GridModelPart implements ModelPart {
     this.myGrid = this.grids.getGhostGrid(name);
     AggregatedGrid aggGrid = new AggregatedGrid();
     this.grids.useAggregatedGrid(aggGrid);
-    Point position = new Point(0,0);
+    Point position = new Point(0, 0);
     this.myAgent = new GhostAgent(name);
     this.myGrid.add(this.myAgent, position, Bearing.N);
   }
@@ -70,10 +66,10 @@ public class GridModelPart implements ModelPart {
 
   public List<String> getOtherAgentsNames() {
     List<String> names = new ArrayList<String>();
-    for(Agent agent : this.grids.getAgents()) {
-      if( agent instanceof GhostAgent ) {
+    for (Agent agent : this.grids.getAgents()) {
+      if (agent instanceof GhostAgent) {
         String name = agent.getName();
-        if( ! this.myName.equals(name) ) {
+        if (!this.myName.equals(name)) {
           names.add(name);
         }
       }
@@ -81,10 +77,9 @@ public class GridModelPart implements ModelPart {
     return names;
   }
 
-  // TODO: activate to allow reporting on other ghosts' grids
-  // public List<Sector> getChangedSectors(String name) {
-  //   return this.grids.getChangedSectors(name);
-  // }
+  public List<Sector> getChangedSectors(String name) {
+    return this.grids.getChangedSectors(name);
+  }
 
   public Grid getGridOf(String agentName) {
     return this.grids.getGhostGrid(agentName);
@@ -93,63 +88,63 @@ public class GridModelPart implements ModelPart {
   public Agent getMyAgent() {
     return this.myAgent;
   }
-  
+
   public Sector getMySector() {
-    Sector sector  = this.myGrid.getSectorAt(this.getMyPosition());
-    if( sector == null ) {
+    Sector sector = this.myGrid.getSectorAt(this.getMyPosition());
+    if (sector == null) {
 //      throw new RuntimeException( "GridModelPart::getMySector: my current sector == null" );
       throw new RuntimeException();
     }
     return sector;
   }
 
-  public Point getMyPosition(){
+  public Point getMyPosition() {
     return this.myGrid.getPositionOf(this.myAgent);
   }
-  
-  public Bearing getMyBearing(){
+
+  public Bearing getMyBearing() {
     return this.myGrid.getBearingOf(this.myAgent);
   }
 
   public void refreshMyGrid() {
     //if( ! this.hasChangedSectors()) { return; }
-    for(int i=0; i<10; i++) {
+    for (int i = 0; i < 10; i++) {
       this.applyDiffusion();
     }
   }
-  
+
   private void applyDiffusion() {
     Grid diffuseGrid = this.grids;
     //Grid diffuseGrid = this.myGrid;
-    
-    int minLeft = diffuseGrid.getMinLeft(), maxLeft = diffuseGrid.getMaxLeft(),
-        minTop = diffuseGrid.getMinTop(), maxTop = diffuseGrid.getMaxTop();
 
-    for(Sector sector : diffuseGrid.getSectors()) {
+    int minLeft = diffuseGrid.getMinLeft(), maxLeft = diffuseGrid.getMaxLeft(),
+            minTop = diffuseGrid.getMinTop(), maxTop = diffuseGrid.getMaxTop();
+
+    for (Sector sector : diffuseGrid.getSectors()) {
       int total = 0;
       int count = 0;
-      
+
       Point position = diffuseGrid.getPositionOf(sector);
-      
+
       // a hunting agent resets the value of its sector
-      if( diffusePacman && diffuseGrid.getAgentAt(position, PacmanAgent.class) != null ) {
+      if (diffusePacman && diffuseGrid.getAgentAt(position, PacmanAgent.class) != null) {
         total = PACMAN_VALUE;
         sector.setValue(total);
-      } else if( diffuseGrid.getAgentAt(position, GhostAgent.class) != null) {
+      } else if (diffuseGrid.getAgentAt(position, GhostAgent.class) != null) {
         // a ghost blocks all diffusion
         total = 0;
         sector.setValue(total);
-      } else if( diffuseUnknownSectors && !  GridUtils.isFullyKnown(sector) ) {
+      } else if (diffuseUnknownSectors && !GridUtils.isFullyKnown(sector)) {
         // unknown sectors are "interesting"
         total = UNKNOWN_VALUE;
         sector.setValue(total);
       } else {
         // diffuse
-        for( Bearing atBearing: Bearing.NESW ) { 
+        for (Bearing atBearing : Bearing.NESW) {
           // if we know about walls and there is NO wall take the sector's
           // value into account
-          if( GridUtils.givesAccessTo(sector,atBearing)) {
-            if( sector.hasNeighbour(atBearing) ) {
+          if (GridUtils.givesAccessTo(sector, atBearing)) {
+            if (sector.hasNeighbour(atBearing)) {
               total += sector.getNeighbour(atBearing).getValue();
               count++;
             }
@@ -168,9 +163,9 @@ public class GridModelPart implements ModelPart {
     this.diffuseUnknownSectors = unknown;
     this.diffusePacman = pacman;
   }
-  
-  public void markSectorChanged(Sector sector){
-    if(sector == null){
+
+  public void markSectorChanged(Sector sector) {
+    if (sector == null) {
       return;
     }
     this.changedSectors.add(sector);
@@ -179,18 +174,18 @@ public class GridModelPart implements ModelPart {
   public boolean hasChangedSectors() {
     return this.changedSectors.size() > 0;
   }
-  
+
   public List<Sector> getChangedSectors() {
     return this.changedSectors;
   }
-  
+
   public void clearChangedSectors() {
     this.changedSectors.clear();
   }
 
   public void setPacman(Grid g, Point pos) {
 //    System.out.println("Pacman: "+pos);
-    if(g.getPositionOf(pacman) == null){
+    if (g.getPositionOf(pacman) == null) {
       g.add(this.pacman, pos, Bearing.N);
     } else {
       g.moveTo(this.pacman, pos, Bearing.N);
@@ -200,12 +195,12 @@ public class GridModelPart implements ModelPart {
   public void incrementPacmanID() {
     this.pacmanID++;
   }
-  
+
   public int getPacmanID() {
     return this.pacmanID;
   }
-  
-  public PacmanAgent getPacmanAgent(){
+
+  public PacmanAgent getPacmanAgent() {
     return this.pacman;
   }
 

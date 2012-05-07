@@ -25,6 +25,11 @@ public class ObservableGrid implements Grid {
       @Override
       public void agentChanged(Grid g, Agent a) {
       }
+
+      @Override
+      public void sectorChanged(Grid g, Sector s) {
+        
+      }
     };
   }
 
@@ -36,6 +41,7 @@ public class ObservableGrid implements Grid {
   @Override
   public Grid add(Sector s, Point position) {
     grid.add(s, position);
+    observer.sectorChanged(this, s);
     return this;
   }
 
@@ -150,7 +156,9 @@ public class ObservableGrid implements Grid {
 
   @Override
   public Grid setValue(int sectorId, int value) {
+    
     grid.setValue(sectorId, value);
+    observer.sectorChanged(this, getSector(sectorId));
     return this;
   }
 
@@ -161,17 +169,22 @@ public class ObservableGrid implements Grid {
 
   @Override
   public Grid setWall(int sectorId, Bearing atBearing) {
-    return grid.setWall(sectorId, atBearing);
+     grid.setWall(sectorId, atBearing);
+    observer.sectorChanged(this, getSector(sectorId));
+    return this;
   }
 
   @Override
   public Grid setNoWall(int sectorId, Bearing atBearing) {
-    return grid.setNoWall(sectorId, atBearing);
+     grid.setNoWall(sectorId, atBearing);
+    observer.sectorChanged(this, getSector(sectorId));
+    return this;
   }
 
   @Override
   public Grid clearWall(int sectorId, Bearing atBearing) {
     grid.clearWall(sectorId, atBearing);
+    observer.sectorChanged(this, getSector(sectorId));
     return this;
   }
 

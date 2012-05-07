@@ -13,4 +13,5 @@ import penoplatinum.grid.agent.Agent;
 public interface GridObserver {
 
   void agentChanged(Grid g, Agent a);
+  void sectorChanged(Grid g, Sector s);
 }

@@ -435,11 +435,6 @@ public class GhostProtocolHandlerTest extends TestCase {
     when(mockedSector.hasWall(Bearing.S)).thenReturn(s);
     when(mockedSector.hasWall(Bearing.W)).thenReturn(w);
     
-    when(mockedSector.givesAccessTo(Bearing.N)).thenReturn(knowsN && !n);
-    when(mockedSector.givesAccessTo(Bearing.E)).thenReturn(knowsE && !e);
-    when(mockedSector.givesAccessTo(Bearing.S)).thenReturn(knowsS && !s);
-    when(mockedSector.givesAccessTo(Bearing.W)).thenReturn(knowsW && !w);
-    
     when(mockedSector.knowsWall(Bearing.N)).thenReturn(knowsN);
     when(mockedSector.knowsWall(Bearing.E)).thenReturn(knowsE);
     when(mockedSector.knowsWall(Bearing.S)).thenReturn(knowsS);
