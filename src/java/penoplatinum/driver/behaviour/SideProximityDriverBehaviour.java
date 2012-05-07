@@ -45,11 +45,11 @@ public class SideProximityDriverBehaviour implements DriverBehaviour {
     // if the left or right wall are too close, schedule a corrective turn
     if (walls.getWallLeftDistance() < MIN_DISTANCE) {
       this.correctingAction = new TurnDriverAction(model).set(CORRECTION_LEFT);
-      System.out.println("AAH, A wall, turn left!");
+//      System.out.println("AAH, A wall, turn left!");
       return true;
     } else if (walls.getWallRightDistance() < MIN_DISTANCE) {
       this.correctingAction = new TurnDriverAction(model).set(CORRECTION_RIGHT);
-      System.out.println("AAH, A wall, turn right!");
+//      System.out.println("AAH, A wall, turn right!");
       return true;
     }
     // no correction needed, proceed as planned
@@ -63,7 +63,8 @@ public class SideProximityDriverBehaviour implements DriverBehaviour {
   //       requiresAction.
   public DriverAction getNextAction() {
     if (this.correctingAction == null) {
-      throw new RuntimeException("No correction means no next action!");
+//      throw new RuntimeException("No correction means no next action!");
+      throw new RuntimeException();
     }
     return new CombinedDriverAction().firstPerform(this.correctingAction).thenPerform(this.originalAction);
   }

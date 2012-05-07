@@ -25,13 +25,13 @@ public class Utils {
     try {
       Thread.sleep(milliseconds);
     } catch (InterruptedException ex) {
-      System.out.println("InterruptException");
+//      System.out.println("InterruptException");
     }
   }
 
   public static void Log(String message) {
     if (message == null) {
-      Utils.Log("NULL!!");
+//      Utils.Log("NULL!!");
       return;
     }
     System.out.println(message);
@@ -73,7 +73,8 @@ public class Utils {
 
   public static double ClampLooped(double val, int start, int end) {
     if (end <= start) {
-      throw new IllegalArgumentException("end must be bigger than start");
+      //throw new IllegalArgumentException("end must be bigger than start");
+      throw new IllegalArgumentException();
     }
     int interval = Math.abs(end - start);
     double distance = 0;

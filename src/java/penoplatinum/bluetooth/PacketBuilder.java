@@ -50,7 +50,7 @@ public class PacketBuilder {
             int identifier = inputStream.readInt();
             int size = inputStream.readShort();
             if (size > buffer.length) {
-              Utils.Log("Packet tooooo big!!");
+//              Utils.Log("Packet tooooo big!!");
               continue;
             }
             inputStream.read(buffer, 0, size);
@@ -59,7 +59,7 @@ public class PacketBuilder {
 
           }
         } catch (IOException ex) {
-          Utils.Log("Receive error!");
+//          Utils.Log("Receive error!");
           if (ex.toString() != null) {
             Utils.Log(ex.toString());
           }
@@ -90,7 +90,7 @@ public class PacketBuilder {
       //TODO: flush??
     } catch (IOException ex) {
       setErrorOccured(true);
-      Utils.Log("Send error!");
+//      Utils.Log("Send error!");
       if (ex.getMessage() != null) {
         Utils.Log(ex.getMessage());
       }

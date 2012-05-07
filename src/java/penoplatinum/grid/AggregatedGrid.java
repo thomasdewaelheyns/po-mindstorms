@@ -114,7 +114,8 @@ public class AggregatedGrid implements Grid {
   @Override
   public penoplatinum.util.Point getPositionOf(Sector sector) {
     if (!(sector instanceof AggregatedSector))
-      throw new UnsupportedOperationException("Not supported yet.");
+//      throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
 
     return ((AggregatedSector) sector).getPosition();
 
@@ -302,7 +303,8 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public int getSize() {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -312,77 +314,92 @@ public class AggregatedGrid implements Grid {
 
   @Override
   public int getSectorId(Point position) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Sector getSector(int id) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean hasNeighbour(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public int getNeighbourId(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Grid setValue(int sectorId, int value) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public int getValue(int sectorId) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Grid setWall(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Grid setNoWall(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Grid clearWall(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean hasWall(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean hasNoWall(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean knowsWall(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isFullyKnown(int sectorId) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Grid clearWalls(int sectorId) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean givesAccessTo(int sectorId, Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   class SubGrid {

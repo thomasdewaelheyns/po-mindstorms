@@ -9,7 +9,6 @@ package penoplatinum.model.part;
  */
 
 import java.util.List;
-import penoplatinum.model.Model;
 
 import penoplatinum.model.Model;
 

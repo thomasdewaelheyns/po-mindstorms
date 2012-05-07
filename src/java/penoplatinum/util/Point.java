@@ -1,7 +1,5 @@
 package penoplatinum.util;
 
-import penoplatinum.simulator.Simulator;
-
 /**
  * This class represents a point in 2D space.
  * Note: NOT IMMUTABLE

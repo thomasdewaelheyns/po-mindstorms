@@ -9,13 +9,11 @@ package penoplatinum.model.processor;
 
 import penoplatinum.model.Model;
 
-import penoplatinum.model.part.Barcode;
 import penoplatinum.model.part.BarcodeModelPart;
 import penoplatinum.model.part.SensorModelPart;
 import penoplatinum.model.part.LightModelPart;
 
 import penoplatinum.util.LightColor;
-import penoplatinum.util.Utils;
 
 
 public class BarcodeModelProcessor extends ModelProcessor {

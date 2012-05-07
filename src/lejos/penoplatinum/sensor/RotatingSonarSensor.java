@@ -3,7 +3,6 @@ package penoplatinum.sensor;
 import java.util.ArrayList;
 import java.util.List;
 import lejos.nxt.Motor;
-import lejos.nxt.Sound;
 import lejos.nxt.UltrasonicSensor;
 import penoplatinum.util.Utils;
 
@@ -26,8 +25,8 @@ public class RotatingSonarSensor {
     this.sensor = sensor;
     motor.smoothAcceleration(true);
     if (motor.getTachoCount() != 0) {
-      Sound.playNote(Sound.PIANO, 220, 1);
-      Utils.Log("Initial tacho of the motor should've been 0!");
+      //Sound.playNote(Sound.PIANO, 220, 1);
+      //Utils.Log("Initial tacho of the motor should've been 0!");
       motor.resetTachoCount();
     }
     forwardTacho = motor.getTachoCount();

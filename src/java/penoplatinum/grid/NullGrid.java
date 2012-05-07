@@ -11,8 +11,6 @@ import java.util.List;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.util.Rotation;
-import penoplatinum.util.TransformationTRT;
 
 public class NullGrid implements Grid {
 

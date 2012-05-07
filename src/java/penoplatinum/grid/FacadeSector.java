@@ -27,7 +27,8 @@ public class FacadeSector implements Sector {
 
   @Override
   public Sector putOn(Grid grid) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override

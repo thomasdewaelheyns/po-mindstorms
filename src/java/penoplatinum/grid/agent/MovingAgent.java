@@ -9,8 +9,6 @@ package penoplatinum.grid.agent;
  * @author: Team Platinum
  */
 
-import penoplatinum.util.Bearing;
-
 
 public abstract class MovingAgent implements Agent {
 

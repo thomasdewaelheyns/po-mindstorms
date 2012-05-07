@@ -1,5 +1,6 @@
 package penoplatinum;
 
+import java.io.File;
 import penoplatinum.util.Utils;
 import penoplatinum.bluetooth.RobotBluetoothConnection;
 import penoplatinum.bluetooth.RobotBluetoothGatewayClient;
@@ -9,10 +10,9 @@ import penoplatinum.driver.behaviour.FrontProximityDriverBehaviour;
 import penoplatinum.driver.behaviour.LineDriverBehaviour;
 import penoplatinum.driver.behaviour.SideProximityDriverBehaviour;
 import penoplatinum.gateway.GatewayClient;
-import penoplatinum.model.part.MessageModelPart;
 import penoplatinum.navigator.GhostNavigator;
 import penoplatinum.navigator.Navigator;
-import penoplatinum.protocol.BasicProtocolHandler;
+import penoplatinum.reporter.DashboardReporter;
 import penoplatinum.robot.GhostRobot;
 
 public class Main {
@@ -32,7 +32,9 @@ public class Main {
     GatewayClient gateway = new RobotBluetoothGatewayClient();
     robot.useGatewayClient(gateway);
     
-    //MessageModelPart.from(robot.getModel()).setProtocolHandler(new BasicProtocolHandler());
+    //MessageModelPart.from(robot.getModel()).setProtocolHandler(new GhostProtocolHandler);
+    
+    robot.useReporter(new DashboardReporter());
 
     robot.handleActivation();
 
@@ -43,7 +45,7 @@ public class Main {
 
     Runnable runnable = new Runnable() {
       public void run() {
-        Utils.Log("Started!");
+//        Utils.Log("Started!");
         angie.runEventLoop();
       }
     };

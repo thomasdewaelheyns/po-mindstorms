@@ -30,7 +30,8 @@ public class SensorModelPart implements ModelPart {
   // receive an update of the sensor values
   public void updateSensorValues(int[] values) {
     if( values.length != Config.SENSORVALUES_NUM ) {
-      throw new RuntimeException("Invalid number of sensorvalues given!");
+      //throw new RuntimeException("Invalid number of sensorvalues given!");
+      throw new RuntimeException();
     }
 
     for (int i = 0; i<Config.SENSORVALUES_NUM; i++) {

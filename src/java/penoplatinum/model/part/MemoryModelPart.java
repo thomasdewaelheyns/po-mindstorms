@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package penoplatinum.model.part;
-import penoplatinum.Config;
 
 import penoplatinum.model.Model;
 

@@ -1,17 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.bluetooth;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.Arrays;
 
-/**
- *
- * @author: Team Platinum
- */
 public class CallbackPacketTransporter implements IPacketTransporter {
 
   private ByteArrayOutputStream byteArrayOutputStream;
@@ -42,6 +34,4 @@ public class CallbackPacketTransporter implements IPacketTransporter {
   public void onPacketReceived(int packetIdentifier, byte[] dgram, int offset, int size) {
     handler.receive(packetIdentifier, Arrays.copyOfRange(dgram, offset, size));
   }
-
-
 }

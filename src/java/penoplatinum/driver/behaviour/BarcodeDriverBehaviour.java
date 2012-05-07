@@ -17,7 +17,7 @@ import penoplatinum.driver.action.MoveDriverAction;
 public class BarcodeDriverBehaviour implements DriverBehaviour {
 
   // configuration of correction parameters
-  private final static double CORRECTION = 0.01;
+  private final static double CORRECTION = 0.17;
   // the correction we apply
   private DriverAction correctingAction = null;
 
@@ -26,7 +26,14 @@ public class BarcodeDriverBehaviour implements DriverBehaviour {
     BarcodeModelPart barcode = BarcodeModelPart.from(model);
 
     if (barcode.isReadingBarcode()) {
-      this.correctingAction = new MoveDriverAction(model).set(CORRECTION);
+      this.correctingAction = new MoveDriverAction(model){
+
+        @Override
+        public boolean canBeInterrupted() {
+          return true;
+        }
+        
+      }.set(CORRECTION);
       return true;
     }
 
@@ -39,7 +46,8 @@ public class BarcodeDriverBehaviour implements DriverBehaviour {
   //       requiresAction.
   public DriverAction getNextAction() {
     if (this.correctingAction == null) {
-      throw new RuntimeException("No correction means no next action!");
+      //throw new RuntimeException("No correction means no next action!");
+      throw new RuntimeException();
     }
     return new CombinedDriverAction().firstPerform(this.correctingAction);
   }

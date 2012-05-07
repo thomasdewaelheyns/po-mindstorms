@@ -24,6 +24,7 @@ public enum LightColor {
       case  1: return "WHITE";
       case  0: return "BROWN";
     }
-    throw new RuntimeException( "Impossible Unknown Enum value." );
+//    throw new RuntimeException( "Impossible Unknown Enum value." );
+    throw new RuntimeException();
   }
 }

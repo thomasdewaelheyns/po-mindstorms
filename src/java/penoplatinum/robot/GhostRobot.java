@@ -72,13 +72,14 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
     this.model.setProcessor( new LightModelProcessor(
                              new FreeDistanceModelProcessor(
                              new LineModelProcessor(
+                             new IRModelProcessor(
                              new BarcodeModelProcessor(
                              new InboxModelProcessor(
                              new WallDetectionModelProcessor(
                              new ImportWallsModelProcessor(
                              new UnknownSectorModelProcessor(
                              new ChangesModelProcessor(
-                                             ))))))))));
+                                             )))))))))));
 
     if( this.reporter != null && this.model != null ) {
       this.model.setReporter(this.reporter);
@@ -101,6 +102,7 @@ public class GhostRobot implements AdvancedRobot, ExternalEventHandler {
   
   private void setupProtocolHandling() {
     MessageModelPart.from(this.model)
+      //  .setProtocolHandler(new BasicProtocolHandler());
       .setProtocolHandler(new GhostProtocolHandler().setName(getName())
                             .useExternalEventHandler(this));
   }

@@ -5,8 +5,6 @@
 package penoplatinum.grid;
 
 import penoplatinum.grid.agent.Agent;
-import java.util.ArrayList;
-import java.util.List;
 import static org.mockito.Mockito.*;
 
 import junit.framework.TestCase;
@@ -14,7 +12,6 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
-import penoplatinum.util.Utils;
 
 /**
  *

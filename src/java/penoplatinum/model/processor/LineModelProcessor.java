@@ -72,7 +72,7 @@ public class LineModelProcessor extends ModelProcessor {
           if( this.brownCounter > 5 && this.colorCounter < 2 ) {
             this.state = WAITING;
           } else if( this.brownCounter > 5 ) {
-            Utils.Log("OOH, It is, It is a line!");
+//            Utils.Log("OOH, It is, It is a line!");
             lightPart.setLine(Line.WHITE);
             this.state = WAITING;
           }

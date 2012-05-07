@@ -74,10 +74,6 @@ public class HillClimbingNavigatorMode implements NavigatorMode {
     return -1; // TODO: remove magic number ?
   }
   
-  private Sector getCurrentSector() {
-    return this.grids.getMyGrid().getSectorAt(this.grids.getMyGrid().getPositionOf(this.grids.getMyAgent()));
-  }
-  
   private List<NavigatorAction> constructPlan(Bearing bestBearing) {
     List<NavigatorAction> plan = new ArrayList<NavigatorAction>();
 

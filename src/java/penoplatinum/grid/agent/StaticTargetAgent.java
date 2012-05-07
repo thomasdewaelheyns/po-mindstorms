@@ -17,7 +17,7 @@ public class StaticTargetAgent implements Agent {
   // our color
   private Color color = Colors.YELLOW;
 
-  public String getName()   { return "target"; }
+  public String getName()   { return null; }
   public int    getValue()  { return 10000; }
   public Color  getColor()  { return this.color; }
 

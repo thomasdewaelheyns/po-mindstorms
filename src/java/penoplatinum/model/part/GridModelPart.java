@@ -95,7 +95,8 @@ public class GridModelPart implements ModelPart {
   public Sector getMySector() {
     Sector sector  = this.myGrid.getSectorAt(this.getMyPosition());
     if( sector == null ) {
-      throw new RuntimeException( "GridModelPart::getMySector: my current sector == null" );
+//      throw new RuntimeException( "GridModelPart::getMySector: my current sector == null" );
+      throw new RuntimeException();
     }
     return sector;
   }
@@ -193,7 +194,7 @@ public class GridModelPart implements ModelPart {
   }
 
   public void setPacman(Grid g, Point pos) {
-    System.out.println("Pacman: "+pos);
+//    System.out.println("Pacman: "+pos);
     if(g.getPositionOf(pacman) == null){
       g.add(this.pacman, pos, Bearing.N);
     } else {

@@ -1,6 +1,6 @@
 package penoplatinum.movement;
 
-import lejos.nxt.*;
+import lejos.nxt.Motor;
 import penoplatinum.util.Utils;
 
 public class RotationMovement {
@@ -86,7 +86,6 @@ public class RotationMovement {
     if (movementDisabled) {
       return;
     }
-    Utils.Log("Turn");
     abortMovement();
     setSpeed(SPEEDTURN);
     angleCCW *= CCW_afwijking;

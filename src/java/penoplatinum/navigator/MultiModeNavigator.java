@@ -36,8 +36,9 @@ public class MultiModeNavigator implements Navigator {
   // overriding classes can add Modes to define their logic
   protected void firstUse(NavigatorMode mode) {
     if(modes.size() > 0) {
-      throw new RuntimeException( "Already have at least one mode. Can't " +
-                                  "perform another one first." );
+      throw new RuntimeException();
+//      throw new RuntimeException( "Already have at least one mode. Can't " +
+//                                  "perform another one first." );
     }
     this.thenUse(mode);
     this.modes.get(0).activate();
@@ -96,7 +97,8 @@ public class MultiModeNavigator implements Navigator {
     }
     this.plan = this.getCurrentMode().createNewPlan();
     if( this.plan.size() == 0 ) {
-      throw new RuntimeException( "Couldn't create a plan ?!" );
+//      throw new RuntimeException( "Couldn't create a plan ?!" );
+      throw new RuntimeException();
     }
   }
 
@@ -129,7 +131,8 @@ public class MultiModeNavigator implements Navigator {
   private NavigatorMode getCurrentMode() {
     //System.out.println( "GET CURRENT MODE" );
     if( this.modes.size() < 1 ) {
-      throw new RuntimeException( "No current NavigatorMode !" );
+      //throw new RuntimeException( "No current NavigatorMode !" );
+      throw new RuntimeException();
     }
     return this.modes.get(0);
   }
@@ -137,7 +140,7 @@ public class MultiModeNavigator implements Navigator {
   private void discardCurrentMode() {
     //System.out.println("DISCARD CURRENT MODE" );    
     if( this.modes.size() > 1 ) {
-      System.out.println("DISCARD CURRENT MODE" );
+//      System.out.println("DISCARD CURRENT MODE" );
       this.modes.remove(0);
     }
   }

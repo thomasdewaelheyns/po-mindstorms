@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.grid;
 
 import penoplatinum.grid.agent.Agent;
@@ -9,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
-import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 
 /**

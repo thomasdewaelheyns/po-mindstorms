@@ -54,7 +54,8 @@ public enum Bearing {
       case 7:
         return NW;
     }
-    throw new RuntimeException("" + value + " isn't a valid Bearing.");
+//    throw new RuntimeException("" + value + " isn't a valid Bearing.");
+    throw new RuntimeException();
   }
 
   // returns the reverse Bearing
@@ -112,7 +113,8 @@ public enum Bearing {
       case 6:
         return Rotation.L90;
       default:
-        throw new RuntimeException("Not implemented...");
+        throw new RuntimeException();
+//        throw new RuntimeException("Not implemented...");
     }
   }
 }

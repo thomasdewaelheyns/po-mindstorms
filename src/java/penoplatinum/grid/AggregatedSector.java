@@ -1,17 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.grid;
 
 import penoplatinum.util.Bearing;
 import penoplatinum.util.Point;
 import penoplatinum.util.Position;
 
-/**
- *
- * @author MHGameWork
- */
 public class AggregatedSector implements Sector {
 
   private final AggregatedGrid grid;
@@ -34,7 +26,8 @@ public class AggregatedSector implements Sector {
 
   @Override
   public Sector putOn(Grid grid) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -84,12 +77,14 @@ public class AggregatedSector implements Sector {
 
   @Override
   public Sector setWall(Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Sector setNoWall(Bearing atBearing) {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -163,7 +158,8 @@ public class AggregatedSector implements Sector {
 
   @Override
   public Sector clearWalls() {
-    throw new UnsupportedOperationException("Not supported yet.");
+//    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException();
   }
 
   @Override

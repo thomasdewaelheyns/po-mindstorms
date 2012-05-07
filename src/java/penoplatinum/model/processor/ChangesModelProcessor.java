@@ -8,11 +8,8 @@ package penoplatinum.model.processor;
  * @author Team Platinum
  */
 
-import java.util.List;
-
 import penoplatinum.grid.agent.BarcodeAgent;
 import penoplatinum.grid.Sector;
-import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.agent.PacmanAgent;
 import penoplatinum.model.Model;
 import penoplatinum.model.part.Barcode;
@@ -147,6 +144,9 @@ public class ChangesModelProcessor extends ModelProcessor {
                                    ProtocolHandler protocol)
   {
     for(Sector sector : gridPart.getMyGrid().getSectors()) {
+      if(model.getReporter() == null){
+        continue;
+      }
       model.getReporter().reportValueUpdate(sector);
     }
   }

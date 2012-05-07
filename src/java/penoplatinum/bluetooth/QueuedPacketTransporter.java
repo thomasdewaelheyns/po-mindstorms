@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.bluetooth;
 
 import penoplatinum.util.CircularQueue;
@@ -55,7 +51,7 @@ public class QueuedPacketTransporter implements IPacketTransporter {
         try {
           receivedQueue.wait();
         } catch (InterruptedException ex) {
-          Utils.Log("ReceivePacketException");
+//          Utils.Log("ReceivePacketException");
         }
       }
 
@@ -72,7 +68,7 @@ public class QueuedPacketTransporter implements IPacketTransporter {
     try {
       receiveStream.close();
     } catch (IOException ex) {
-      Utils.Log("UpdateReceiveStream: " + ex.getClass());
+//      Utils.Log("UpdateReceiveStream: " + ex.getClass());
     }
 
     ByteArrayInputStream strm = new ByteArrayInputStream(p.Dgram);
@@ -119,7 +115,7 @@ public class QueuedPacketTransporter implements IPacketTransporter {
     synchronized (receivedQueue) {
       if (receivedQueue.isFull())
       {
-        Utils.Log("Discarding packet!");
+//        Utils.Log("Discarding packet!");
         return;
       }
       receivedQueue.insert(p);

@@ -41,13 +41,6 @@ public class RestoreDriverBehaviour {
     return state > 0;
   }
 
-  public String getKind() {
-    return "Align to line";
-  }
-
-  public String getArgument() {
-    return "";
-  }
 }
 
 

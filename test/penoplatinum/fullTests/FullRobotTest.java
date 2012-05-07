@@ -69,7 +69,7 @@ public class FullRobotTest extends TestCase {
   
   @Test
   public void testSimulator() throws FileNotFoundException, IOException, InterruptedException {
-    Config.load("test.properties");
+    Config.load("../../test/fullTest.properties");
 
     // setup simulator
     Simulator       simulator = this.createSimulator(makeMap());    
@@ -151,7 +151,7 @@ public class FullRobotTest extends TestCase {
   
   private Map makeMap() throws FileNotFoundException{
     MapFactory mapFac = new ProtocolMapFactory();
-    Scanner sc = new Scanner(new File("../maps/wolfraam.txt"));
+    Scanner sc = new Scanner(new File("../../maps/wolfraam.txt"));
     return mapFac.getMap(sc);
   }
   private Map makeLongMap(){

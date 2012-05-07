@@ -49,7 +49,8 @@ public class GhostModel implements Model {
 
   // adds a part to the Model
   public Model register(ModelPart part) {
-    throw new RuntimeException("GhostModel doesn't allow adding more parts.");
+    //throw new RuntimeException("GhostModel doesn't allow adding more parts.");
+    throw new RuntimeException();
   }
 
   // retrieves a registered ModelPart based on its assigned ID
@@ -72,7 +73,8 @@ public class GhostModel implements Model {
       // case GAP_MODEL_PART     : return this.gapPart;
       // case MESSAGE_MODEL_PART : return this.gapPart;
     }
-    throw new RuntimeException("Unknown model part: " + id);
+//    throw new RuntimeException("Unknown model part: " + id);
+    throw new RuntimeException(Integer.toString(id));
   }
 
   // a Model can be processed by ModelProcessors

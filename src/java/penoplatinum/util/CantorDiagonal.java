@@ -24,7 +24,8 @@ public class CantorDiagonal {
 
   public static Point transform(int in) {
     if (in < 0) {
-      throw new RuntimeException("Only positive numbers");
+//      throw new RuntimeException("Only positive numbers");
+      throw new RuntimeException();
     }
     if (in == 0) {
       return new Point(0, 0);
@@ -43,7 +44,8 @@ public class CantorDiagonal {
       case 3:
         return new Point(zijdeOver - rand, -rand);
     }
-    throw new RuntimeException("Cannot happen");
+//    throw new RuntimeException("Cannot happen");
+    throw new RuntimeException();
 
   }
 

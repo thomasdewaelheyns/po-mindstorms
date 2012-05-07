@@ -6,12 +6,15 @@ package penoplatinum;
  * @author: Team Platinum
  */
 import java.util.List;
-import lejos.nxt.*;
+import lejos.nxt.LightSensor;
+import lejos.nxt.Motor;
+import lejos.nxt.SensorPort;
+import lejos.nxt.TouchSensor;
+import lejos.nxt.UltrasonicSensor;
 import penoplatinum.movement.RotationMovement;
 import penoplatinum.robot.RobotAPI;
 import penoplatinum.sensor.IRSeekerV2;
 import penoplatinum.sensor.RotatingSonarSensor;
-import penoplatinum.util.Utils;
 
 public class AngieRobotAPI implements RobotAPI {
 
@@ -130,9 +133,9 @@ public class AngieRobotAPI implements RobotAPI {
         return Config.MOTORSTATE_BACKWARD;
       }
     }
-    Utils.Error("Syncronized??? " + (m.isMoving() ? 1 : 0) + "," + (m.isForward() ? 1 : 0) + "," + (m.isBackward() ? 1 : 0) + "," + (m.isStopped() ? 1 : 0) + "," + (m.isFloating() ? 1 : 0));
+    //Utils.Error("Syncronized??? " + (m.isMoving() ? 1 : 0) + "," + (m.isForward() ? 1 : 0) + "," + (m.isBackward() ? 1 : 0) + "," + (m.isStopped() ? 1 : 0) + "," + (m.isFloating() ? 1 : 0));
     //1, 0, 0, 1, 0
-    Utils.Error("I M P O S S I B L E !");
+    //Utils.Error("I M P O S S I B L E !");
     return 0;
   }
 

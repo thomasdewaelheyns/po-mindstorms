@@ -26,8 +26,9 @@ public class CombinedDriverAction implements DriverAction {
 
   public CombinedDriverAction firstPerform(DriverAction action) {
     if(actions.size() > 0) {
-      throw new RuntimeException( "Already have at least one action. Can't " +
-                                  "perform another one first." );
+      throw new RuntimeException( );
+//      throw new RuntimeException( "Already have at least one action. Can't " +
+//                                  "perform another one first." );
     }
     return this.thenPerform(action);
   }

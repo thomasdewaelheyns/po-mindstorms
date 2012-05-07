@@ -48,7 +48,8 @@ public class LineDriverBehaviour implements DriverBehaviour {
   //       requiresAction.
   public DriverAction getNextAction() {
     if (this.correctingAction == null) {
-      throw new RuntimeException("No correction means no next action!");
+//      throw new RuntimeException("No correction means no next action!");
+      throw new RuntimeException();
     }
     return this.correctingAction;
   }

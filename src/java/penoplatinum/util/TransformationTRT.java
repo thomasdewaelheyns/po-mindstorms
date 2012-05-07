@@ -58,7 +58,7 @@ public class TransformationTRT implements Transformation {
   }
 
   public String toString() {
-    return "Transformation: " + this.translationAX + "," + this.translationAY
+    return "TRT: " + this.translationAX + "," + this.translationAY
             + ":" + this.rotation + ":" + this.translationBX
             + "," + this.translationBY;
   }

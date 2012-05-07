@@ -39,15 +39,15 @@ public class RobotBluetoothConnection implements IConnection {
 
     public void initializeConnection() {
         if (isConnected()) {
-            Utils.Log("Already connected!");
+//            Utils.Log("Already connected!");
             return;
         }
         while (!connect()) {
-            Utils.Log("Connection failed, trying again");
+            Utils.Log("BT Fail");
             Utils.Sleep(1000);
-            Utils.Log("Restarting connecting");
+//            Utils.Log("Restarting connecting");
         }
-        Utils.Log("Connected");
+//        Utils.Log("Connected");
         // Connected to NXJ, perform packet ID synchronization here
 
         IPacketReceiver r = null;
@@ -58,7 +58,7 @@ public class RobotBluetoothConnection implements IConnection {
             public void onPacketReceived(int packetIdentifier, byte[] dgram, int size) {
                 IPacketTransporter t = findTransporterByPacketIdentifier(packetIdentifier);
                 if (t == null) {
-                    Utils.Log("Unkown packet type received! (" + packetIdentifier + ")");
+                    //Utils.Log("Unkown packet type received! (" + packetIdentifier + ")");
                     return;
                 }
 
@@ -66,7 +66,7 @@ public class RobotBluetoothConnection implements IConnection {
             }
 
             public void onError(Exception ex) {
-                Utils.Log("PacketBuilder error!");
+//                Utils.Log("PacketBuilder error!");
 
                 //TODO
             }
@@ -80,7 +80,7 @@ public class RobotBluetoothConnection implements IConnection {
     }
 
     private boolean connect() {
-        Utils.Log("Connecting.");
+//        Utils.Log("Connecting.");
         conn = Bluetooth.waitForConnection(5000, NXTConnection.PACKET);
         if (conn == null) {
             stri = null;
@@ -90,7 +90,7 @@ public class RobotBluetoothConnection implements IConnection {
         }
         stri = conn.openDataInputStream();
         stro = conn.openDataOutputStream();
-        Utils.Log("Connected: " + conn.getAddress());
+//        Utils.Log("Connected: " + conn.getAddress());
         return true;
     }
 
@@ -110,7 +110,7 @@ public class RobotBluetoothConnection implements IConnection {
         synchronized (this) {
             for (int i = 0; i < transporterItems.size(); i++) {
                 if (transporterItems.get(i).packetIdentifier == packetIdentifier) {
-                    Utils.Log("A transporter has already been created with given packetIdentifer");
+//                    Utils.Log("A transporter has already been created with given packetIdentifer");
                     return;
                 }
 
@@ -118,14 +118,14 @@ public class RobotBluetoothConnection implements IConnection {
 
             TransporterItem item = new TransporterItem(packetIdentifier, transporter);
             transporterItems.add(item);
-            Utils.Log(transporterItems.size() + "");
+//            Utils.Log(transporterItems.size() + "");
         }
     }
 
     public void SendPacket(IPacketTransporter transporter, int packetIdentifier, byte[] dgram) {
 
         if (!isConnected()) {
-            Utils.Log("No connection! Packet discarded");
+//            Utils.Log("No connection! Packet discarded");
             return;
         }
         //TODO: remove security check for speed
@@ -134,11 +134,11 @@ public class RobotBluetoothConnection implements IConnection {
         t = findTransporterByPacketIdentifier(packetIdentifier);
 
         if (t == null) {
-            Utils.Log("Unknown packet identifier!");
+//            Utils.Log("Unknown packet identifier!");
             return;
         }
         if (t != transporter) {
-            Utils.Log("Transporter is not allowed to send packets with given identifier");
+            //Utils.Log("Transporter is not allowed to send packets with given identifier");
             return;
         }
 
