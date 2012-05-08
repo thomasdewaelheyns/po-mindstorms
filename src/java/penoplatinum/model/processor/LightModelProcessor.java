@@ -24,10 +24,10 @@ public class LightModelProcessor extends ModelProcessor {
 
   private final int   BROWN_LOW  = 470;
   private final int   BROWN_HIGH = 540;
-  private final float BROWN_MID  = (BROWN_HIGH + BROWN_LOW) / 2;
+  //private final float BROWN_MID  = (BROWN_HIGH + BROWN_LOW) / 2;
 
-  private final float AVERAGE_EXPONENT = 0.001f;
-  private final int   SENSOR_VARIATION = 30;
+  //private final float AVERAGE_EXPONENT = 0.001f;
+  //private final int   SENSOR_VARIATION = 30;
 
   private SensorModelPart  sensor;
   private LightModelPart   light;
@@ -48,7 +48,7 @@ public class LightModelProcessor extends ModelProcessor {
 
     int currentLightValue = this.sensor.getLightSensorValue();
 
-    float averageLightValue = this.detectAverageLightValue(currentLightValue);
+    //float averageLightValue = this.detectAverageLightValue(currentLightValue);
     //this.light.setAverageLightValue(averageLightValue);
     //this.light.averageLightValue = averageLightValue;
 
@@ -68,7 +68,7 @@ public class LightModelProcessor extends ModelProcessor {
     }
     return LightColor.BROWN;
   }
-  
+  /*
   private float detectAverageLightValue(int currentLightValue) {
     float averageLightValue    = this.light.getAverageLightValue();
 
@@ -102,5 +102,5 @@ public class LightModelProcessor extends ModelProcessor {
     }
 
     return LightColor.BROWN;
-  }
+  }/**/
 }

@@ -39,17 +39,27 @@ public class IRModelProcessorTest extends TestCase {
     IRModelProcessor instance = new IRModelProcessor();
     instance.setModel(mockModel);
     setIRValue(5, 0, 0, 250, 0, 0);
-    when(mockGrid.getMyPosition())
-      .thenReturn(new Point(4, 8),new Point(4, 8),new Point(4, 8));
+    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 8));
     when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
+
     instance.work();
     verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(4, 7));
 
     setIRValue(2, 200, 250, 0, 0, 0);
+    when(mockGrid.getMyBearing()).thenReturn(Bearing.S);
+    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 8));
+    instance.work();
+    verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(5, 8));
+
+    setIRValue(2, 200, 250, 0, 0, 0);
+    when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
+    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 8));
     instance.work();
     verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(3, 8));
 
     setIRValue(8, 0, 0, 0, 250, 200);
+    when(mockGrid.getMyBearing()).thenReturn(Bearing.E);
+    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 8));
     instance.work();
     verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(5, 8));
 
@@ -70,22 +80,24 @@ public class IRModelProcessorTest extends TestCase {
     IRModelProcessor instance = new IRModelProcessor();
     instance.setModel(mockModel);
     
-    when(mockGrid.getMyPosition())
-      .thenReturn(new Point(4, 10),new Point(4, 10),new Point(4, 10),new Point(4, 10));
+    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 10));
     setIRValue(8, 0, 0, 0, 250, 200);
     when(mockGrid.getMyBearing()).thenReturn(Bearing.N);
     instance.work();
     verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(5, 10));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.E);
+    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 10));
     instance.work();
     verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(4, 11));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.S);
+    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 10));
     instance.work();
     verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(3, 10));
 
     when(mockGrid.getMyBearing()).thenReturn(Bearing.W);
+    when(mockGrid.getMyPosition()).thenReturn(new Point(4, 10));
     instance.work();
     verify(mockGrid, times(1)).setPacman(mockMyGrid, new Point(4, 9));
   }

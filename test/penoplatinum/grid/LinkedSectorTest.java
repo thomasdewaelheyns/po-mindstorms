@@ -60,26 +60,25 @@ public class LinkedSectorTest extends TestCase {
   public void testIsFullyKnown() {
     LinkedSector s1 = new LinkedSector();
     s1.setWall(Bearing.E);
-    assertFalse(s1.isFullyKnown());
+    assertFalse(GridUtils.isFullyKnown(s1));
     s1.setWall(Bearing.N);
-    assertFalse(s1.isFullyKnown());
+    assertFalse(GridUtils.isFullyKnown(s1));
     s1.setWall(Bearing.S);
-    assertFalse(s1.isFullyKnown());
+    assertFalse(GridUtils.isFullyKnown(s1));
     s1.setNoWall(Bearing.S);
-    assertFalse(s1.isFullyKnown());
+    assertFalse(GridUtils.isFullyKnown(s1));
 
     s1.setNoWall(Bearing.W);
-    assertTrue(s1.isFullyKnown());
+    assertTrue(GridUtils.isFullyKnown(s1));
 
     s1.clearWall(Bearing.S);
-    assertFalse(s1.isFullyKnown());
-
+    assertFalse(GridUtils.isFullyKnown(s1));
   }
 
   public void testClearWalls() {
     LinkedSector s1 = new LinkedSector();
     s1.setWall(Bearing.E).setWall(Bearing.N).setNoWall(Bearing.S);
-    s1.clearWalls();
+    GridUtils.clearWalls(s1);
 
     for (Bearing b : Bearing.NESW)
       assertFalse(s1.knowsWall(b));
@@ -88,11 +87,11 @@ public class LinkedSectorTest extends TestCase {
   public void testGivesAccessTo() {
     LinkedSector s1 = new LinkedSector();
     s1.setWall(Bearing.N);
-    assertFalse(s1.givesAccessTo(Bearing.N));
+    assertFalse(GridUtils.givesAccessTo(s1, Bearing.N));
     s1.setNoWall(Bearing.N);
-    assertTrue(s1.givesAccessTo(Bearing.N));
+    assertTrue(GridUtils.givesAccessTo(s1, Bearing.N));
     s1.clearWall(Bearing.N);
-    assertFalse(s1.givesAccessTo(Bearing.N));
+    assertFalse(GridUtils.givesAccessTo(s1, Bearing.N));
   }
 
   public void testAddNeighbourSimple() {

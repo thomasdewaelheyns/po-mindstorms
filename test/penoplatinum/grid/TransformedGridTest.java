@@ -499,8 +499,8 @@ public class TransformedGridTest extends TestCase {
     t1.toString();
 //    assertFalse(t1.hasSameWallsAs(s1));
 //    assertTrue(t1.hasSameWallsAs(s2));
-    assertTrue(t1.hasSameWallsAs(t2));
-    assertTrue(t2.hasSameWallsAs(t1));
+    assertTrue(GridUtils.hasSameWallsAs(t1, t2));
+    assertTrue(GridUtils.hasSameWallsAs(t2, t1));
 
   }
 

@@ -1,5 +1,6 @@
 package penoplatinum.model.processor;
 
+import penoplatinum.grid.GridUtils;
 import penoplatinum.util.Point;
 import penoplatinum.grid.agent.Agent;
 import penoplatinum.grid.Sector;
@@ -42,13 +43,16 @@ public class UnknownSectorModelProcessorTest extends TestCase {
     UnknownSectorModelProcessor instance = new UnknownSectorModelProcessor();
     instance.setModel(mockModel);
     when(mockGridPart.hasChangedSectors()).thenReturn(true);
-    when(mockCurrentSector.givesAccessTo(Bearing.E)).thenReturn(Boolean.TRUE);
-    when(mockCurrentSector.givesAccessTo(Bearing.S)).thenReturn(Boolean.TRUE);
-    when(mockCurrentSector.givesAccessTo(Bearing.W)).thenReturn(Boolean.TRUE);
+    when(mockCurrentSector.knowsWall(Bearing.E)).thenReturn(Boolean.TRUE);
+    when(mockCurrentSector.knowsWall(Bearing.S)).thenReturn(Boolean.TRUE);
+    when(mockCurrentSector.knowsWall(Bearing.W)).thenReturn(Boolean.TRUE);
+    when(mockCurrentSector.hasNoWall(Bearing.E)).thenReturn(Boolean.TRUE);
+    when(mockCurrentSector.hasNoWall(Bearing.S)).thenReturn(Boolean.TRUE);
+    when(mockCurrentSector.hasNoWall(Bearing.W)).thenReturn(Boolean.TRUE);
     when(mockCurrentSector.hasNeighbour(Bearing.S)).thenReturn(Boolean.TRUE);
     when(mockGridPart.getMyPosition()).thenReturn(new Point(0, 0));
     instance.work();
-    verify(mockGrid).add(any(LinkedSector.class), eq(new Point(-1, 0)));
     verify(mockGrid).add(any(LinkedSector.class), eq(new Point(1, 0)));
+    verify(mockGrid).add(any(LinkedSector.class), eq(new Point(-1, 0)));
   }
 }

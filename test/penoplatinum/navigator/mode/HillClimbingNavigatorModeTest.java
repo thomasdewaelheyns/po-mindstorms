@@ -54,11 +54,6 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testNoAccessToNeighboursCreatesPlanWithLeftTurn() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(false);
-
     List<NavigatorAction> plan = this.mode.createNewPlan();
     
     assertEquals(1, plan.size());
@@ -68,10 +63,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testFacingNorthAccessToNorthNeighbourCreatesForwardPlan() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(true);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(false);
+    when(this.mockedMySector.knowsWall(Bearing.N)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.N)).thenReturn(Boolean.TRUE);
 
     when(this.mockedNorthSector.getValue()).thenReturn(1);
 
@@ -89,10 +82,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testFacingEastAccessToEastNeighbourCreatesForwardPlan() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(true);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(false);
+    when(this.mockedMySector.knowsWall(Bearing.E)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.E)).thenReturn(Boolean.TRUE);
 
     when(this.mockedEastSector.getValue()).thenReturn(1);
 
@@ -110,10 +101,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testFacingSouthAccessToSouthNeighbourCreatesForwardPlan() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(true);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(false);
+    when(this.mockedMySector.knowsWall(Bearing.S)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.S)).thenReturn(Boolean.TRUE);
 
     when(this.mockedSouthSector.getValue()).thenReturn(1);
 
@@ -131,10 +120,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testFacingWestAccessToWestNeighbourCreatesForwardPlan() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(true);
+    when(this.mockedMySector.knowsWall(Bearing.W)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.W)).thenReturn(Boolean.TRUE);
 
     when(this.mockedWestSector.getValue()).thenReturn(1);
 
@@ -152,10 +139,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testFacingNorthAccessToEastNeighbourCreatesTurnRightForwardPlan() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(true);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(false);
+    when(this.mockedMySector.knowsWall(Bearing.E)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.E)).thenReturn(Boolean.TRUE);
 
     when(this.mockedEastSector.getValue()).thenReturn(1);
 
@@ -174,10 +159,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testFacingNorthAccessToSouthNeighbourCreates2TurnRightForwardPlan() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(true);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(false);
+    when(this.mockedMySector.knowsWall(Bearing.S)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.S)).thenReturn(Boolean.TRUE);
 
     when(this.mockedSouthSector.getValue()).thenReturn(1);
 
@@ -197,10 +180,8 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testFacingNorthAccessToWestNeighbourCreatesTurnLeftForwardPlan() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(true);
+    when(this.mockedMySector.knowsWall(Bearing.W)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.W)).thenReturn(Boolean.TRUE);
 
     when(this.mockedWestSector.getValue()).thenReturn(1);
 
@@ -219,10 +200,10 @@ public class HillClimbingNavigatorModeTest extends TestCase {
   public void testFacingNorthAccessToEastWestWithWestHigestCreatesTurnRightPlan() {
     this.setup();
 
-    when(this.mockedMySector.givesAccessTo(Bearing.N)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.E)).thenReturn(true);
-    when(this.mockedMySector.givesAccessTo(Bearing.S)).thenReturn(false);
-    when(this.mockedMySector.givesAccessTo(Bearing.W)).thenReturn(true);
+    when(this.mockedMySector.knowsWall(Bearing.E)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.E)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.knowsWall(Bearing.W)).thenReturn(Boolean.TRUE);
+    when(this.mockedMySector.hasNoWall(Bearing.W)).thenReturn(Boolean.TRUE);
 
     when(this.mockedEastSector.getValue()).thenReturn(1);
     when(this.mockedWestSector.getValue()).thenReturn(2);

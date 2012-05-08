@@ -96,7 +96,7 @@ public class AggregatedGrid implements Grid {
   /**
    * For internal use by AggregatedSector
    */
-  List<Grid> getActiveGrids() {
+  protected List<Grid> getActiveGrids() {
     return gridList;
   }
 

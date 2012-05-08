@@ -15,11 +15,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 import penoplatinum.grid.Grid;
+import penoplatinum.grid.GridUtils;
 import penoplatinum.grid.Sector;
 
 import penoplatinum.model.Model;
 import penoplatinum.model.part.ModelPartRegistry;
 import penoplatinum.model.part.GridModelPart;
+import penoplatinum.util.Bearing;
 
 
 public class DiscoverHillClimbingNavigatorModeTest extends TestCase {
@@ -36,22 +38,26 @@ public class DiscoverHillClimbingNavigatorModeTest extends TestCase {
 
   public void testNotReachedGoal() {
     this.setup();
-
-    when(this.mockedSectors.get(0).isFullyKnown()).thenReturn(true);
-    when(this.mockedSectors.get(1).isFullyKnown()).thenReturn(true);
-    when(this.mockedSectors.get(2).isFullyKnown()).thenReturn(true);
-    when(this.mockedSectors.get(3).isFullyKnown()).thenReturn(false);
+    makeFullyKnown(this.mockedSectors.get(0));
+    makeFullyKnown(this.mockedSectors.get(1));
+    makeFullyKnown(this.mockedSectors.get(2));
     
     assertFalse(this.mode.reachedGoal());
-	}
+  }
+  
+  private void makeFullyKnown(Sector s){
+    for(Bearing b : Bearing.NESW){
+      when(s.knowsWall(b)).thenReturn(true);
+    }
+  }
 
   public void testReachedGoal() {
     this.setup();
-
-    when(this.mockedSectors.get(0).isFullyKnown()).thenReturn(true);
-    when(this.mockedSectors.get(1).isFullyKnown()).thenReturn(true);
-    when(this.mockedSectors.get(2).isFullyKnown()).thenReturn(true);
-    when(this.mockedSectors.get(3).isFullyKnown()).thenReturn(true);
+    makeFullyKnown(this.mockedSectors.get(0));
+    makeFullyKnown(this.mockedSectors.get(1));
+    makeFullyKnown(this.mockedSectors.get(2));
+    makeFullyKnown(this.mockedSectors.get(3));
+    
     
     assertTrue(this.mode.reachedGoal());
 	}
@@ -74,7 +80,6 @@ public class DiscoverHillClimbingNavigatorModeTest extends TestCase {
     this.mockedSectors.add(mock(Sector.class));
     
     when(this.mockedMyGrid.getSectors()).thenReturn(this.mockedSectors);
-    
-	  this.mode = new DiscoverHillClimbingNavigatorMode(this.mockedModel);
+    this.mode = new DiscoverHillClimbingNavigatorMode(this.mockedModel);
   }
 }
