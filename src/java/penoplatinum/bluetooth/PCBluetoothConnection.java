@@ -121,7 +121,7 @@ public class PCBluetoothConnection implements IConnection {
 
       NXTInfo lejosInfo = null;
       for (NXTInfo inf : infos) {
-        if (inf.name.equals(Config.ROBOT_NAME)) {
+        if (inf.name.equals("NXJ Platinum")) {
           lejosInfo = inf;
 
         }
@@ -134,7 +134,6 @@ public class PCBluetoothConnection implements IConnection {
         Utils.Log("Default robot not found, picking only found robot:"+lejosInfo.name);
       } else if (infos.length > 1) {
         Utils.Log("Multiple possible connections found, aborting!");
-        return false;
       }
 
       if (lejosInfo == null) {

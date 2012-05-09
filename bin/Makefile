@@ -42,6 +42,8 @@ spy:
 gw:
 	@BUILD_DIR=build/$@
 	@mkdir -p ${BUILD_DIR}
+	@cp twitter4j.properties ${BUILD_DIR}
+	@cp log4j.xml ${BUILD_DIR}
 	@echo "*** compiling Gateway..."
 	@${JAVAC} GatewayRunner.java
 	@${JAVAC} ../src/java/penoplatinum/bluetooth/IConnection.java

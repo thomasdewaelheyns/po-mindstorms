@@ -56,7 +56,7 @@
             <param value="%m" name="ConversionPattern"/>
         </layout>
         <filter class="org.apache.log4j.varia.StringMatchFilter">
-            <param name="StringToMatch" value="robot1 POSITION" />
+            <param name="StringToMatch" value="Platinum POSITION" />
             <param name="AcceptOnMatch" value="true" />
         </filter>
         <filter class="org.apache.log4j.varia.DenyAllFilter"/>

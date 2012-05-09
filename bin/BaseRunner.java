@@ -78,7 +78,7 @@ public class BaseRunner implements MessageReceiver {
         this.robotName     = line.getOptionValue("robot", DEFAULT_ROBOT);
         if( ! line.hasOption("debug") ) {
           this.mqServerName  = line.getOptionValue("mq", DEFAULT_MQ_SERVER);
-          this.mqChannelName = line.getOptionValue("channel", DEFAULT_MQ_CHANNEL);
+          this.mqChannelName = line.getOptionValue("join", DEFAULT_MQ_CHANNEL);
         }
         if( line.hasOption("secret") ) {
           this.secret = line.getOptionValue("secret");
@@ -107,6 +107,7 @@ public class BaseRunner implements MessageReceiver {
   
   private void setupRemoteMQ() {
     try {
+      System.out.println( "=== Joining " + this.mqChannelName );
       this.queue = new MQ().connectToMQServer(this.mqServerName)
                            .follow(this.mqChannelName)
                            .subscribe(this);
