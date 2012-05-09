@@ -44,7 +44,7 @@ Het project wordt zoals in het eerste semester begeleid door het gebruik van tus
 
 Het doel van de eerste demo is een vereenvoudigde vorm van het einddoel waarbij we een stilstaande Pac-Man zoeken binnen het doolhof. De simulator dient  reeds beschikbaar te zijn en moet drie virtuele robots de fysieke laten bijstaan. Voor de tweede demo mag de commissie beslissen welke doelstellingen passen in het verdere proces richting het einddoel.
 
-Tijdens het eerste semester zijn we er in geslaagd om zeer herbruikbare code te produceren: de architecturale concepten, zoals \emph{Robot}, \emph{Navigator} en Model, zijn duidelijk binnen het team en de verdere uitwerking van deze concepten in het tweede semester werd ervaren als een natuurlijke evolutie. Aangezien we te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
+Tijdens het eerste semester zijn we er in geslaagd om zeer herbruikbare code te produceren: de architecturale concepten, zoals \emph{Robot}, \emph{Navigator} en \emph{Model}, zijn duidelijk binnen het team en de verdere uitwerking van deze concepten in het tweede semester werd ervaren als een natuurlijke evolutie. Aangezien we te maken hebben met een grote diversiteit aan kleine taken, gebeurt het grootste deel van de taakverdeling week op week.
 
 Het verslag is anders opgebouwd ten opzichte van het vorige semester: er werd gekozen voor een onderverdeling in subsecties per demo binnen een context van hoofdstukken. De opbouw van deze hoofdstukken is erg gelijkend hoewel natuurlijk de inhoud veranderd is t.o.v.\ het eerste semester. Nieuw zijn de stukken over de strategie i.v.m.\ de opgegeven spelomgeving, over de samenwerking en over de finale analyse van het jaarproject.
 
@@ -108,7 +108,7 @@ De ghosts vertrekken op de vier hoekpunten van het doolhof, zodat de verkenning 
 
 \section{Communicatieprotocol}
 
-We verwijzen naar de offici\"ele documentatie van het \emph{Ghost Protocol}. Ten tijde van het schrijven van dit verslag was versie 1.0 beschikbaar. Het \emph{Ghost Protocol} is het resultaat van een werkgroep die aangesteld werd door de scheidsrechtercommissie. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken de voor- en nadelen ervan m.b.t.\ onze eigen ontwikkeling.
+We verwijzen naar de offici\"ele documentatie van het \emph{Ghost Protocol}. Ten tijde van het schrijven van dit verslag was versie 2.2 beschikbaar. Het \emph{Ghost Protocol} is het resultaat van een werkgroep die aangesteld werd door de scheidsrechtercommissie. In dit deel van het verslag belichten we de positieve en de negatieve punten van het voorgestelde protocol en bespreken we de voor- en nadelen ervan m.b.t.\ onze eigen ontwikkeling.
 
 \subsection{Voordelen}
 
@@ -126,11 +126,11 @@ Deze functionaliteit is aanwezig in het huidige protocol, dus is het compatibel 
 
 \subsection{Nadelen}
 
-In het algemeen ondervinden we geen nadelen van de beslissingen die genomen zijn. Aangezien we voldoende informatie kunnen verzamelen met een subset, zal het volledige protocol slechts een marginale implementatie-meerkost met zich meebrengen. Volgens ons kan het protocol wel sterk vereenvoudigd worden. Aangezien die slechts vervelend is en niet als nadeel beschouwd kan worden, voegen we onze opmerkingen toe in de vorm van een analyse.
+In het algemeen ondervinden we geen nadelen van de beslissingen die genomen zijn. Aangezien we voldoende informatie kunnen verzamelen met een subset, zal het volledige protocol slechts een marginale implementatie-meerkost met zich meebrengen. Volgens ons kan het protocol wel sterk vereenvoudigd worden. Aangezien dit slechts vervelend is en niet als nadeel beschouwd kan worden, voegen we onze opmerkingen toe in de vorm van een analyse.
 
 \subsection{Analyse van het GhostProtocol}
 
-De \emph{JOIN} procedure lijkt overbodig. Wanneer een spook laattijdig \emph{JOIN't}, zal hij gewoon de volgende berichten horen en zijn wereldbeeld beginnen opbouwen. Eventueel kan een commando toegevoegd worden om reeds gestuurde informatie opnieuw te sturen. In een latere versie van het protocol werd het \emph{SHOWMAP} commando toegevoegd, wat deze functie gedeeltelijk vervult. Dit overlapt gedeeltelijk met het \emph{JOIN} principe. Bovendien eist de procedure dat er exact 4 spoken zijn. Indien een spook uitvalt, of een extra spook op het kanaal komt, zorgt dit voor problemen. Hiervoor werd een 'override' commando toegevoegd, om toch te starten indien er een spook geen \emph{JOIN} stuurt. Het protocol voorziet een beperking van 4 spoken is volgens ons volledig onnodig, net als de \emph{JOIN} procedure. 
+De \emph{JOIN} procedure lijkt overbodig. Wanneer een \emph{gehost} laattijdig \emph{JOIN't}, zal hij gewoon de volgende berichten horen en zijn wereldbeeld beginnen opbouwen. Eventueel kan een commando toegevoegd worden om reeds gestuurde informatie opnieuw te sturen. In een latere versie van het protocol werd het \emph{SHOWMAP} commando toegevoegd, wat deze functie gedeeltelijk vervult. Dit overlapt gedeeltelijk met het \emph{JOIN} principe. Bovendien eist de procedure dat er exact 4 spoken zijn. Indien een \emph{gehost} uitvalt, of een extra \emph{gehost} op het kanaal komt, zorgt dit voor problemen. Hiervoor werd een 'override' commando toegevoegd, om toch te starten indien er een \emph{gehost} geen \emph{JOIN} stuurt. Het protocol voorziet een beperking van 4 spoken, dit is volgens ons volledig onnodig, net als de \emph{JOIN} procedure. 
 
 In plaats van dynamisch namen uit te wisselen kunnen evengoed vaste namen afgesproken worden, dit zou het protocol eenvoudiger maken. Er zijn tal van mogelijkheden: alle teams hebben een naam of de echte namen van de vier spoken kunnen gehanteerd worden. Een conventie lijkt ons hier ver boven een configuratie te verkiezen.
 
@@ -152,11 +152,11 @@ Er werd eveneens een \emph{UNDOBARCODE} toegevoegd om teams toe te laten eerdere
 
 \subsection{Aanpassingen Demo 3}
 
-De besproken versie betreft versie 2.2. De belangrijkste aanpassingen voor de laatste demo zijn deze met betrekking tot een \emph{reconnect}-procedure.
+De besproken versie betreft versie 2.2 van het \emph{Ghost Protocol}. De belangrijkste aanpassingen voor de laatste demo zijn deze met betrekking tot een \emph{reconnect}-procedure.
 
-Ten eerste werd het scenario uitgewerkt met betrekking op het ontvangen van een \emph{JOIN} commando, indien we al bezig zijn. Door middel van het \emph{RENAME} commando worden de oude robots onderscheiden van de robot die na falen opnieuw verbindt met de message queue en zich (opnieuw) aanmeldt met een \emph{JOIN} commando. Deze robot zal uit de \emph{RENAME} antwoorden kunnen opmaken dat hij een bestaande sessie vervoegt. Zelf gebruikt hij wel het \emph{NAME} commando.
+Ten eerste werd het scenario uitgewerkt met betrekking tot het ontvangen van een \emph{JOIN} commando, indien we al bezig zijn. Door middel van het \emph{RENAME} commando kunnen de oude robots onderscheiden worden van de robot die na falen opnieuw verbindt met de message queue en zich (opnieuw) aanmeldt met een \emph{JOIN} commando. Deze robot zal uit de \emph{RENAME} antwoorden kunnen opmaken dat hij een bestaande sessie vervoegt. Zelf gebruikt hij wel het \emph{NAME} commando.
 
-Ten tweede werd een commando in het leven geroepen waarmee robots informatie van elkaar kunnen vragen. De robots kunnen, bijvoorbeeld wanneer ze uitvallen, een \emph{SHOWMAP} commando gebruiken, nadat ze terug toegelaten zijn tot het spel. Dit heeft als doel het uitzenden van een grote hoeveelheid informatie na herstarten. Initieel werd voorgesteld om de bestaande commando's te hergebruiken. Dit zorgde blijkbaar voor problemen, waardoor ze voorzien werden van een \emph{RE-} prefix. Tevens gaat het niet over het delen van de informatie die men als bekend beschouwd, maar om het heruitzenden van een log van alle reeds uitgezonden commando's. Echter deze definitie wordt verder gespecificeerd en het samenballen van informatie, bijvoorbeeld over \'e\'en zelfde sector, wordt tevens toegestaan.
+Ten tweede werd een commando in het leven geroepen waarmee robots informatie van elkaar kunnen vragen. De robots kunnen, bijvoorbeeld wanneer ze uitvallen, een \emph{SHOWMAP} commando gebruiken, nadat ze terug toegelaten zijn tot het spel. Initieel werd voorgesteld om de bestaande commando's te hergebruiken. Dit zorgde blijkbaar voor problemen, waardoor ze voorzien werden van een \emph{RE-} prefix. Tevens gaat het niet over het delen van de informatie die men als bekend beschouwt, maar om het heruitzenden van een log van alle reeds uitgezonden commando's. Echter deze definitie wordt verder gespecificeerd en het samenballen van informatie, bijvoorbeeld over \'e\'en zelfde sector, is tevens toegestaan.
 
 \subsection{Finale evaluatie}
 
@@ -223,11 +223,11 @@ Aangezien in demo 1 bleek dat de lichtsensor niet goed functioneerde, zullen we 
 
 \section{Demo 3}
 
-Aangezien afgesproken werd in de commissie om de robots te voorzien van een vlaggetje waarop hun kleur bekend gemaakt wordt, werd dit aan de onze robot bevestigd. Verder werden er geen aanpassingen meer doorgevoerd, aangezien de lichtsensor bij demo 2 werkte naar verwachting.
+Aangezien afgesproken werd in de commissie om de robots te voorzien van een vlaggetje waarop hun kleur bekend gemaakt wordt, werd dit aan onze robot bevestigd. Verder werden er geen aanpassingen meer doorgevoerd, aangezien de lichtsensor bij demo 2 werkte naar verwachting.
 
 \chapter{Strategie}
 
-Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voor gegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome \emph{ghosts} gedaan.
+Aangezien wij ons slechts sinds enkele maanden begeven op het terrein van autonome robots en artifici\"ele intelligentie, zou het dom zijn te veronderstellen dat er ons nog niemand is voorgegaan. We hebben daarom een literatuurstudie rond de concepten van Pac-Man en autonome \emph{ghosts} gedaan.
 
 We vonden een paper omtrent \emph{Collaborate Diffusion} \cite{Repenning06}. Hierin wordt voorgesteld om een vorm van \emph{Hill Climbing} toe te passen om zo verschillende autonome \emph{ghosts} toe te laten samen te werken om een Pac-Man te achtervolgen. Hierbij hebben zij geen nood aan bijkomende onderlinge communicatie naast de informatie over de omgeving.
 
@@ -291,7 +291,7 @@ De gevolgen voor het \emph{Collaborate Diffusion} algoritme kunnen inhouden dat 
 
 Het \emph{Collaborate Diffusion} algoritme werkt optimaal indien alle achtervolgende robots dezelfde implementatie en parameters gebruiken. Ofschoon dit niet het geval is in onze situatie kan het toch zijn nut bewijzen voor onze robot op zich. Zo is de mogelijkheid om simultaan zowel sectoren te verkennen, als het achtervolgen van Pac-Man, een groot pluspunt voor de robuustheid van de robot.
 
-Het \emph{collaboratie diffusion} algoritme is in essentie een implementatie van het \emph{Hill Climbing II} algoritme. Dit zorgt ervoor dat de robot ten alle tijde volgens het meest optimale pad naar de Pac-Man tracht te rijden. Mits kennis van dit algoritme is het voor de bestuurder van de Pac-Man zeker mogelijk om hiermee rekening te houden en er voordeel uit te halen. Het algoritme zal bijvoorbeeld nooit een minder optimale weg kiezen om de Pac-Man via een andere weg klem te rijden.
+Het \emph{Collaborate Diffusion} algoritme is in essentie een implementatie van het \emph{Hill Climbing II} algoritme. Dit zorgt ervoor dat de robot ten alle tijde volgens het meest optimale pad naar de Pac-Man tracht te rijden. Mits kennis van dit algoritme is het voor de bestuurder van de Pac-Man zeker mogelijk om hiermee rekening te houden en er voordeel uit te halen. Het algoritme zal bijvoorbeeld nooit een minder optimale weg kiezen om de Pac-Man via een andere weg klem te rijden.
 
 Dit concept is wel inherent ingebouwd indien een andere robot het meest optimale pad kiest en zo de verspreiding van de \emph{geur} tegen gaat. Op dit moment lijkt het alsof de robot een minder optimaal pad zal volgen, doch het is een pad waarlangs de \emph{geur} hem wel bereikt.
 
@@ -301,7 +301,7 @@ Met de mini-simulator hebben we verschillende scenario's uitgetest. Hierbij werd
 
 In het eerste semester hadden we reeds een redelijk uitgebreid raamwerk opgebouwd om robots samen te stellen uit componenten. Dankzij dit werk kunnen we in het tweede semester hier op verder bouwen door de bestaande concepten verder te verfijnen en uit te breiden.
 
-Echter, vooraleer de definitieve beslissing genomen werd om ver te bouwen op de bestaande architectuur, werden enkele andere opties bekeken. Enerzijds werd de bestaande \emph{Pilot} klasse van de Lejos software bekeken en anderzijds werd in literatuur gezocht naar andere mogelijke opstellingen.
+Echter, vooraleer de definitieve beslissing genomen werd om verder te bouwen op de bestaande architectuur, werden enkele andere opties bekeken. Enerzijds werd de bestaande \emph{Pilot} klasse van de Lejos software bekeken en anderzijds werd in literatuur gezocht naar andere mogelijke opstellingen.
 
 De bestaande \emph{Pilot} klasse van Lejos volgt geen radicaal verschillende aanpak. Wel hebben we het \emph{behaviour} idee ge\"incorporeerd in ons eigen ontwerp. Bij onze zoektocht in de literatuur moesten we tot het besluit komen dat er waarschijnlijk evenveel mogelijke ontwerpen zijn als er robots zijn. Veel van de bekeken oplossingen begeven zich deels op het vlak van Lejos of belichten een veel hoger niveau. Een concrete, de facto, alternatieve architectuur voor het aansturen van een robot werd niet gevonden. Wel hebben we veel idee\"en opgedaan die verwerkt werden tijdens de verschillende bijwerkingen van de software.
 
@@ -330,7 +330,7 @@ Het is duidelijk dat dit raamwerk een sterk herbruikbare basis biedt om verschil
 
 Ofschoon we een nieuwe \emph{Navigator} zouden kunnen maken die perfect zou passen, werd snel duidelijk dat er een verfijning van het raamwerk mogelijk was: daar waar tijdens het eerste semester de robot geen resolutie had bij het rijden, is dit in het tweede semester wel het geval. Door het introduceren van het concept van sectoren is er een duidelijk onderscheid tussen het operationele en strategische aspect van het besturen van de robot. Operationeel dient de robot optimaal van sector naar sector te rijden, zodat op strategisch niveau kan geredeneerd worden in termen van deze sectoren.
 
-De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een \emph{Navigator}-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. \emph{Driver}. Het klasse diagram op figuur \ref{uml:design-semster2} toont dat de introductie van de Driver letterlijk een uitbreiding is van het bestaande raamwerk. Voor het tweede semester is er tevens een eerste implementatie van de Driver gemaakt in de vorm van een \emph{ManhattanDriver}.\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie.} 
+De functionaliteit om van sector naar sector te rijden zou typisch terecht gekomen zijn in een \emph{Navigator}-implementatie. Deze wordt in het verfijnde raamwerk ondergebracht in een zgn. \emph{Driver}. Het klasse diagram op figuur \ref{uml:design-semster2} toont dat de introductie van de \emph{Driver} letterlijk een uitbreiding is van het bestaande raamwerk. Voor het tweede semester is er tevens een eerste implementatie van de \emph{Driver} gemaakt in de vorm van een \emph{ManhattanDriver}.\footnote{Zo genoemd naar analogie met Manhattan Distance en de Taxicab geometrie.} 
 
 \begin{figure}[htbp]
   \centering
@@ -341,9 +341,9 @@ De functionaliteit om van sector naar sector te rijden zou typisch terecht gekom
 
 \subsection{Grids en Sectoren}
 
-De \emph{Navigator} kan zich nu specifiek toeleggen op het bepalen van de volgende \emph{Sector}, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten \emph{Grid}, \emph{Sector} en \emph{Agent} in het leven geroepen. 
+De \emph{Navigator} kan zich nu specifiek toeleggen op het bepalen van de volgende \emph{Sector}, waarheen de \emph{Driver} moet rijden. Om deze taak te ondersteunen werden de concepten \emph{Grid}, \emph{Sector} en \emph{Agent} in het leven geroepen. 
 
-Centraal staat het concept van de \emph{Sector} in een \emph{Grid}. Een \emph{Sector} heeft een co\"ordinaat relatief t.o.v.\ de \emph{Grid} waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een \emph{Agent}. De waarde van een \emph{Sector} zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een \emph{Agent} kan zich doorheen de \emph{Grid} bewegen langs de sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de \emph{PacmanAgent} en \emph{GhostAgent} zo de agents die op de \emph{Grid} voorkomen. Een \emph{ProxyAgent} werd gebruikt om in een simulator een echte \emph{Agent} voor te stellen die de volledige \emph{Grid} nog niet kent en de \emph{StaticTargetAgent} werd speciaal voorzien voor de voorbereiding van de eerste demo.
+Centraal staat het concept van de \emph{Sector} in een \emph{Grid}. Een \emph{Sector} heeft een co\"ordinaat relatief t.o.v.\ de \emph{Grid} waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een \emph{Agent}. De waarde van een \emph{Sector} zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een \emph{Agent} kan zich doorheen de \emph{Grid} bewegen langs de sectoren. De meeste functionaliteit van een \emph{Agent} is ge\"implementeerd in een abstract basis klasse, \emph{MovingAgent}. Mits kleine configuratieaanpassingen, implementeren de \emph{PacmanAgent} en \emph{GhostAgent} zo de agents die op de \emph{Grid} voorkomen. Een \emph{ProxyAgent} werd gebruikt om in een simulator een echte \emph{Agent} voor te stellen die de volledige \emph{Grid} nog niet kent en de \emph{StaticTargetAgent} werd speciaal voorzien voor de voorbereiding van de eerste demo.
 
 Optioneel kan aan een \emph{Grid} ook een \emph{GridView} gegeven worden. Deze voorziet een visualisatie van de \emph{Grid} en kan op verschillende manieren ingevuld worden. Voor dit project hebben we twee implementaties gemaakt: enerzijds een \emph{ConsoleGridView} die gedetailleerde informatie over de sectoren weergeeft en een \emph{SwingGridView} die een grafische voorstelling geeft van de \emph{Grid}. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
 
@@ -354,27 +354,30 @@ De nieuwe robot zal ook informatie van andere robots ontvangen. Deze worden alle
 In het licht van de derde demo is het grid systeem van de robot opnieuw bekeken. Het ontwerp is aangepast om 2 belangrijke problemen met de vorige implementatie op te lossen:
 
 Geheugengebruik, met name werkgeheugengebruik (oude implementaties maakten al vlug enkele duizenden Point objecten. Deze blijven echter maar 1 robot-frame bestaan, maar geven toch een enorme tijdelijke burst in werkgeheugen, wat evengoed problemen veroorzaakt)
-Invoeren van extra abstractielagen: de vorige implementatie bevatte verschillende logische element door elkaar, met het zicht op unit testen en stabiliteit was het beter om de functionaliteiten van de grid in onafhankelijke lagen te verdelen.
+
+Invoeren van extra abstractielagen: de vorige implementatie bevatte verschillende logische elementen door elkaar, met het zicht op unit testen en stabiliteit was het beter om de functionaliteiten van de grid in onafhankelijke lagen te verdelen.
 
 \subsubsection{Geheugengebruik}
 
 Met oog op compatibiliteit met de oude code werd de structuur Grid-Sector behouden. Op deze manier kan in de robot logica gewerkt worden met hoog-niveau sectoren en blijft de interne werking van Grid linking, merging en mapping verborgen voor de rest van de software.
 
-In tegenstelling tot de vorige versie, is de logica in de sector klassen verplaatst naar de grid klassen. De sectoren treden op als een \emph{facade} (\footnote{\url{http://en.wikipedia.org/wiki/Facade_pattern}} voor het sector gedeelte van de functies op de Grid interface. Deze sector functions op Grid gebruiken een sector ID om de sectoren te identificeren. Dit heeft als enorme voordeel dat niet alle sector objecten in het geheugen geladen moeten worden. Het aantal objecten in het werkgeheugen neemt op deze manier sterk af, want sectoren kunnen nu met een integer ge\"dentificeerd worden in plaats van met een Sector object of een Point object. Het resultaat is dat de Grid klassen voor het merendeel van hun bewerkingen geen nieuwe objecten aanmaken eenmaal het programma in een \emph{steady-state} is.
+In tegenstelling tot de vorige versie, is de logica in de sector klassen verplaatst naar de grid klassen. De sectoren treden op als een \emph{facade}\footnote{\url{http://en.wikipedia.org/wiki/Facade_pattern}} voor het sector gedeelte van de functies op de Grid interface. Deze sector functions op Grid gebruiken een sector ID om de sectoren te identificeren. Dit heeft als enorme voordeel dat niet alle sector objecten in het geheugen geladen moeten worden. Het aantal objecten in het werkgeheugen neemt op deze manier sterk af, want sectoren kunnen nu met een integer ge\"identificeerd worden in plaats van met een Sector object of een Point object. Het resultaat is dat de Grid klassen voor het merendeel van hun bewerkingen geen nieuwe objecten aanmaken eenmaal het programma in een \emph{steady-state} is.
+
+De grids onderling gebruiken geen sector of point objecten, maar maken rechtstreeks gebruik van de Grid interface. Dit zorgt ervoor dat transformatie en aggregatie van grids gebeurt zonder aanmaak van tijdelijke objecten.
 
 \subsubsection{Functionaliteiten}
 
 \begin{description}
 \item[LinkedGrid]
-Deze grid implementeerd de datastore logica van de grid. De linked grid structuur wordt intact gehouden, alsook de datastorage van de agents. Intern gebruikt deze klasse de LinkedSector klassen om informatie in verband met muren op te slaan
+Deze grid implementeert de datastore logica van de grid. De linked grid structuur wordt door deze klasse intact gehouden, alsook de datastorage van de agents. Intern gebruikt deze klasse de \emph{LinkedSector} klassen om informatie in verband met muren op te slaan.
 \item[TransformedGrid]
-Deze grid vormt een decorated \footnote{\url{http://en.wikipedia.org/wiki/Decorator\_pattern}} voor een andere Grid, en laat toe op alle functies die uitgevoerd worden op grid een transformatie toe te passen. Dezelfde transformatie is ook van toepassing op de sectoren die opgehaald worden uit deze grid. 
+Deze grid vormt een decorator \footnote{\url{http://en.wikipedia.org/wiki/Decorator\_pattern}} voor een andere \emph{}Grid, en laat toe op alle functies die uitgevoerd worden op grid een transformatie toe te passen. Dezelfde transformatie is ook van toepassing op de sectoren die opgehaald worden uit deze grid. 
 \item[ObservableGrid]
-Deze grid is weer een decorater voor een andere Grid. Alle changes tot deze decorated grid worden bekeken, en kunnen via een GridObserver gedetecteerd worden. Dit laat het uitvoeren van logica bij grid changes toe, zonder dat deze logica gemengd wordt met de overige grid code.
+Deze grid is weer een decorator voor een andere \emph{Grid}. Alle changes tot deze decorated grid worden bekeken, en kunnen via een \emph{GridObserver} gedetecteerd worden. Dit laat het uitvoeren van logica bij grid changes toe, zonder dat deze logica gemengd wordt met de overige grid code.
 \item[AggregatedGrid]
-Deze grid verzameld een aantal verschillende grids en staat toe deze te ‘activeren’ gegeven een transformatie. De sectoren, agents en muren van sectoren worden gecombineerd door de aggregated Grid. AggregatedGrid implementeert de gewone grid interface. Deze kan dus gebruikt worden zoals elke andere Grid. De AggregatedGrid is als een aparte grid-laag ingevoerd zodat het mergen van grids dynamisch kan gebeuren. Op deze manier moet er geen extra gemergde informatie opgeslagen worden in het geheugen van de robot om alsnog het geheugenverbruik van de robot in te perken.
+Deze grid verzameld een aantal verschillende grids en staat toe deze te ‘activeren’ gegeven een transformatie. De sectoren, agents en muren van sectoren worden gecombineerd door de aggregated Grid. \emph{AggregatedGrid} implementeert de gewone grid interface. Deze kan dus gebruikt worden zoals elke andere Grid. De \emph{AggregatedGrid} is als een aparte grid-laag ingevoerd zodat het mergen van grids dynamisch kan gebeuren. Op deze manier moet er geen extra gemergde informatie opgeslagen worden in het geheugen van de robot. Dit om alsnog het geheugenverbruik van de robot in te perken.
 \item[MultiGhostGrid]
-Intern houdt deze grid laag een aantal ‘sub’-grids bij, een voor elke ghost. Met behulp van ObservableGrid’s detecteert de MultiGhostGrid veranderingen aan de onderliggende ‘sub’-grids. Vervolgens probeert hij aan de hand van barcode informatie de ghost grids te mappen. Indien een correcte mapping gevonden wordt, gaat de MultiGhostGrid de betreffende ghost grids mergen door deze correct te ‘activeren’ op een AggregatedGrid.
+Intern houdt deze grid laag een aantal ‘sub’-grids bij, een voor elke ghost. Met behulp van \emph{ObservableGrids} detecteert de \emph{MultiGhostGrid} veranderingen aan de onderliggende ‘sub’-grids. Vervolgens probeert hij aan de hand van barcode informatie de ghost grids te mappen. Indien een correcte mapping gevonden wordt, gaat de \emph{MultiGhostGrid} de betreffende ghost grids mergen door deze correct te ‘activeren’ op een \emph{AggregatedGrid}.
 \item[LinkedSector]
 Deze wordt intern gebruikt door de LinkedGrid om de wall data op te slaan.
 \item[FacadeSector]
@@ -392,7 +395,7 @@ Het klasse diagram op figuur \ref{uml:ghostrobot} geeft tot slot de volledige co
   \label{uml:ghostrobot}
 \end{figure}
 
-Het \emph{GhostModel} bevat \emph{Grids} voor elk van de andere robots alsook een \emph{AggregatedGrid} voor de eigen Agent. Zolang er geen gemeenschappelijk referentiepunt\footnote{Referentiepunten worden op het parcours voorgesteld door geori\"enteerde barcodes.} is gevonden zijn de verschillende \emph{Grids} niet met elkaar in verband te brengen. Wanneer er echter een gemeenschappelijk referentiepunt gevonden is, kan de corresponderende \emph{Grid} van de andere robot toegevoegd worden aan de eigen \emph{AggregatedGrid}, waardoor de informatie van beide \emph{Grids} gecombineerd wordt en een ruimer wereldbeeld beschikbaar wordt.
+Het \emph{GhostModel} bevat \emph{Grids} voor elk van de andere robots alsook een \emph{AggregatedGrid} voor de eigen \emph{Agent}. Zolang er geen gemeenschappelijk referentiepunt\footnote{Referentiepunten worden op het parcours voorgesteld door geori\"enteerde barcodes.} is gevonden zijn de verschillende \emph{Grids} niet met elkaar in verband te brengen. Wanneer er echter een gemeenschappelijk referentiepunt gevonden is, kan de corresponderende \emph{Grid} van de andere robot toegevoegd worden aan de eigen \emph{AggregatedGrid}, waardoor de informatie van beide \emph{Grids} gecombineerd wordt en een ruimer wereldbeeld beschikbaar wordt.
 
 De eigen \emph{AggregatedGrid} beschikt ook over een \emph{DiffusingGridProcessor} die het algoritme voor het bepalen van de waarde van een \emph{Sector} zal toepassen op de \emph{AggregatedGrid}, waardoor de \emph{GhostNavigator} een redelijk eenvoudige beslissing kan nemen op basis van de waarden van de vier aangrenzende sectoren.
 
@@ -452,14 +455,14 @@ Deze tool verkleinde de gebruikte bytecode nog verder aan de hand van volgende o
 \begin{itemize}
 \item Verwijderen van ongebruikte klassen, velden en methoden die de linker mist. 
 \item Evalueren van constante expressies.
-\item Verwijderen van onnodige methode oproepen, vergelijkingen, instanceof testen, ongebruikte code blokken, branches, veldtoegangen,
+\item Verwijderen van onnodige methodeoproepen, vergelijkingen, instanceof testen, ongebruikte code blokken, branches, veldtoegangen,
 \item Samenvoegen van identieke blokken code
 \item Opkuisen van ongebruikte methode parameters en verplaatsen van dubbele methodes
 \item Inlinen van constanten, methode parameters, returnwaarden en weinig gebruikte methodes
 \item Tail recursie versimpelen
 \item Samenvoegen klassen en interfaces (bvb indien maar 1 keer ge\"implementeerd.)
 \item Methodes en klassen private, static en final maken
-\item Mini-optimilisaties zoals .*2 = .<<1.
+\item Mini-optimilisaties zoals .*2 = .$<<$1.
 \item Verwijderen van Logging code
 \item Loop optimalisaties.
 \end{itemize}
@@ -485,12 +488,12 @@ We trachten bij de ontwikkeling van de software zo veel mogelijk bestaande compo
 
 Anderzijds trachten we ook het wiel niet opnieuw uit te vinden. Het inzetten van \emph{Log4J} begon als een klassieke keuze voor een industri\"ele standaard, maar groeide gaandeweg uit tot een centrale component. Via de configuratie van \emph{Log4J} zijn we niet alleen in staat om de informatie die van de robot naar de \emph{Gateway} wordt gezonden, op te slaan in een simpele log file of in de databank. Ook de detail uitsplitsing van deze informatie naar verschillende tabellen kan ondertussen op dit niveau gebeuren. Ook werd een eigen \emph{LogAppender} gemaakt die de informatie in een bestand opslaat. Dit bestand kan vervolgens gebruikt worden door een \emph{Dashboard} zonder dat een connectie naar een server nodig is.
 
-Zonder enige structurele uitbreiding van de code zijn we zelfs in staat om deze informatie te posten naar bijvoorbeeld Twitter, waardoor onze robot zonder twijfel de eerste \emph{twitterende} robot is geworden. Mits een eenvoudige Log4J Appender (op basis van Twitter4J\footnote{\url{http://twitter4j.org}}) moeten we louter een sectie toevoegen aan de configuratie en onze robot kan gevolgd worden op Twitter: \url{https://twitter.com/\#!/RobotPlatinum}. Dus \emph{follow @RobotPlatinum}.
+Zonder enige structurele uitbreiding van de code zijn we zelfs in staat om deze informatie te posten naar bijvoorbeeld Twitter, waardoor onze robot zonder twijfel de eerste \emph{twitterende} P\&O robot is geworden. Mits een eenvoudige Log4J Appender (op basis van Twitter4J\footnote{\url{http://twitter4j.org}}) moeten we louter een sectie toevoegen aan de configuratie en onze robot kan gevolgd worden op Twitter: \url{https://twitter.com/\#!/RobotPlatinum}. Dus \emph{follow @RobotPlatinum}.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=120mm]{resources/twitter.png}
-  \caption{RobotPlatinum \emph{tweets} zijn positie door tijdens de finale demo...}
+  \caption{RobotPlatinum \emph{tweets} zijn positie door tijdens de finale demo.}
   \label{fig:twitter}
 \end{figure}
 
@@ -554,7 +557,7 @@ In het tweede semester moet de simulator op niet minder dan 3 verschillende mani
 \item Naast onderlinge communicatie tussen de robots in de simulatoren moeten ook fysieke robots kunnen deelnemen, in een zgn. hybride modus.
 \end{itemize}
 
-Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het \emph{Ghost Protocol} en de MQ-server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de ServiceAgent en het \emph{Log4J} logging framework opgeslagen worden in de databank, waarna ze consulteerbaar zijn via de webclient.
+Figuur \ref{fig:simulator-modi} geeft een overzicht van de verschillende mogelijkheden en hoe deze uitgewerkt zullen worden binnen onze oplossing. De groene pijlen tonen hoe berichten tussen de verschillende robots worden uitgewisseld via het \emph{Ghost Protocol} en de MQ-server. De blauwe pijlen geven aan hoe de informatie over de werking van de robot via de \emph{ServiceAgent} en het \emph{Log4J} logging framework opgeslagen worden in de databank, waarna ze consulteerbaar zijn via de webclient.
 
 \begin{figure}[htbp]
   \centering
@@ -594,7 +597,7 @@ Functioneel werden tijdens de voorbereiding van deze demo geen aanpassingen geda
 
 De simulator is gebouwd volgens een principe van continu\"iteit. Zo worden alle aspecten berekend volgens de fysische grootheden uit de realiteit. Alle sensoren zijn virtueel ge\"mplementeerd en berekenen op basis van de fysische eigenschappen van de echte robot de juiste verschillen tussen twee opeenvolgende stappen. Zo worden bijvoorbeeld de motoren gesimuleerd volgens het juist aantal rotaties per seconde, wat een effect heeft op de afstand die afgelegd is in relatie tot de echte omtrek van de wielen en de afstand tussen deze wielen.
 
-Op deze manier gedraagt de robot in de simulator zich nagenoeg identiek aan zijn fysieke tegenhanger. In combinatie met het gebruiken van exact dezelfde software op de fysieke robot als in de simulator zorgt voor een zeer realiteitsgetrouw effect.
+Op deze manier gedraagt de robot in de simulator zich nagenoeg identiek aan zijn fysieke tegenhanger.  Door gebruik te maken van exact dezelfde software, op zowel de fysieke robot als in de simulator, bekomen we een zeer realistisch beeld.
 
 \chapter{Conclusies}
 
@@ -604,7 +607,7 @@ In appendix A werden de verschillende relevante beoordelingsdocumenten toegevoeg
 
 \subsection{Feedback}
 
-De robot reed consistent en robuust. Zelfs wanneer de robot fouten maakte werden deze hersteld. In het begin las de lichtsensor foute waarden en reed de robot heen en weer. De introductie van het nieuwe algoritme om deze sensor automatisch te kalibreren lag hier aan de oorsprong. Na enige tijd was de kalibratie duidelijk beter en begon de robot alsnog het speelveld verder te verkennen. Hierbij viel op hoe robuust de implementatie van de Driver is.
+De robot reed consistent en robuust. Zelfs wanneer de robot fouten maakte werden deze hersteld. In het begin las de lichtsensor foute waarden en reed de robot heen en weer. De introductie van het nieuwe algoritme om deze sensor automatisch te kalibreren lag hier aan de oorsprong. Na enige tijd was de kalibratie duidelijk beter en begon de robot alsnog het speelveld verder te verkennen. Hierbij viel op hoe robuust de implementatie van de \emph{Driver} is.
 
 De feedback van het didactische team was overwegend positief. Er werd duidelijk goed nagedacht over de softwarearchitectuur, zowel op niveau van robuustheid, uitbreidbaarheid als structuur. De gebruikte strategie i.v.m.\ Collaborative diffusion is goed gevonden en werkt duidelijk goed door zijn eenvoud. Het dashboard werd positief vermeld en de inhoud en opmaak van het verslag waren in lijn met de overige kwaliteit.
 
@@ -641,17 +644,17 @@ De doelstellingen opgesteld na demo 1 werden dus niet gehaald en daarom is het o
 
 \section{Demo 3}
 
-Over het algemeen slaagde er niemand in het behalen van de doelstelling, namelijk Pac-Man vangen. Als we achteraf analyseren waarom niemand in deze opzet slaagde bleek deze opdracht dan ook vrijwel onmogelijk te kunnen slagen. Het vangen van Pac-Man was immers niet genoeg, alle robots moesten ook aangeven dat er de Pac-Man wel degelijk \emph{captured} was. Als men dan veronderstelt dat er geen enkel team in zijn uitvoering faalt is dit nog steeds een huzarenstukje. Men moet immers \emph{mergen} met alle teams voor men daadwerkelijk de Pac-Man kan beginnen insluiten.
+Over het algemeen slaagde er niemand in het behalen van de doelstelling, namelijk Pac-Man vangen. Als we achteraf analyseren waarom niemand in deze opzet slaagde, bleek deze opdracht dan ook vrijwel onmogelijk te kunnen slagen. Het vangen van Pac-Man was immers niet genoeg, alle robots moesten ook aangeven dat er de Pac-Man wel degelijk \emph{captured} was. Als men dan veronderstelt dat er geen enkel team in zijn uitvoering faalt is dit nog steeds een huzarenstukje. Men moet immers \emph{mergen} met alle teams voor men daadwerkelijk de Pac-Man kan beginnen insluiten.
 
-Vervolgens nemen we dan nog in acht dat de opgestelde doolhof vol plekken zat waar minstens vier \emph{ghosts} nodig waren om in te sluiten. De combinatie van deze aspecten, maar ook het ontbreken van een ontwijkingsstrategie met de andere robots en het feit dat de Pac-Man door een mens bestuurd werd, maakten deze opdracht dus gedoemd tot falen. Dit wil natuurlijk niet zeggen dat veel teams met een slecht gevoel naar huis gaan, sterker nog de meeste hebben de voor zichzelf gestelde doelen behaald.  De demo duurde immers maar 10minuten, voor een gebied van 64 sectoren met slechts enkele barcodes. Als deze van meer barcodes voorzien was geweest had men mogelijk al een interessanter situatie gehad. Een op voorhanden afgesproken symmetrie had bijvoorbeeld ook geholpen.
+Vervolgens nemen we dan nog in acht dat de opgestelde doolhof vol plekken zat waar minstens vier \emph{ghosts} nodig waren om in te sluiten. De combinatie van deze aspecten, maar ook het ontbreken van een ontwijkingsstrategie met de andere robots en het feit dat de Pac-Man door een mens bestuurd werd, maakten deze opdracht dus gedoemd tot falen. Dit wil natuurlijk niet zeggen dat veel teams met een slecht gevoel naar huis gaan, sterker nog, de meeste hebben de voor zichzelf gestelde doelen behaald.  De demo duurde immers maar 10 minuten, voor een gebied van 64 sectoren met slechts enkele barcodes. Als deze van meer barcodes voorzien was geweest had men mogelijk al een interessantere situatie gehad. Een op voorhand afgesproken symmetrie had bijvoorbeeld ook geholpen.
 
 \subsection{Reflectie}
 
-Wij waren dan ook \'e\'en van de teams die met een goed gevoel naar huis keerden. Hoewel we met een bang hart waren binnengaan presteerde onze robot even goed of beter als de meeste andere robots. Als we dan in acht nemen dat wij een groot deel van onze tijd gespendeerd hebben aan het realiseren van deze opdracht binnen de beperkingen van een embedded systeem, dan is dit zeker een geslaagde opdracht voor ons. Zeker als we dit cijfermatig gaan uitdrukken, een geheugengebruik van minder dan 64KB ten opzichte van letterlijk GBytes bij andere teams. Een processorcapaciteit van 48Mhz tov van de dual en quad cores in de respectievelijke pc's gebruikt door de andere teams.
+Wij waren dan ook \'e\'en van de teams die met een goed gevoel naar huis keerden. Hoewel we met een bang hart waren binnengegaan presteerde onze robot even goed of beter als de meeste andere robots. Als we dan in acht nemen dat wij een groot deel van onze tijd gespendeerd hebben aan het realiseren van deze opdracht binnen de beperkingen van een embedded systeem, dan kunnen we dit voor onszelf een meer dan geslaagde opdracht noemen. Zeker wanneer we dit cijfermatig gaan uitdrukken:on een geheugengebruik van minder dan 64KB ten opzichte van letterlijk GBytes bij andere teams en een processorcapaciteit van 48Mhz t.o.v.\ van de dual en quad cores in de respectievelijke pc's gebruikt door de andere teams.
 
 Verder vinden wij dan ook dat als er inderdaad iets moet gezegd worden omtrent het niet behalen van de doelstelling, dat dit vooral moet gaan over het samenwerkingsaspect. We vinden dat de laatste demo duidelijk heeft aangetoond dat het ontwikkelen van een protocol in een zijdelings traject een onverantwoord idee is. Als we alleen al kijken naar het minimale gebruik van sommige onderdelen van het protocol in de uiteindelijke uitvoering, dan is dit punt voldoende aangetoond. Beter had men op dag 1 een brainstormgroep gemaakt die dit probleem vanaf het begin in een werkbare oplossing goot en dit dan nog best onder sterke begeleiding van ervaren mensen.
 
-Als laatste zou ik nog willen toevoegen dat de individuele demo beter individueel had gebleven, er ontstond een grote chaos met de veelheid aan teams, waardoor er amper vragen gesteld worden. Wij begonnen ons dan ook al snel vragen te stellen of dit zo bedoeld was, aangezien dit niet zeer respectvol overkwam voor de vele uren die sommigen in dit project gestoken hebben.
+Als laatste willen we nog toevoegen dat de individuele demo beter individueel was gebleven, er ontstond een grote chaos met de veelheid aan teams, waardoor er amper vragen gesteld worden. Wij begonnen ons dan ook al snel vragen te stellen of dit zo bedoeld was, aangezien dit niet zeer respectvol overkwam voor de vele uren die sommigen in dit project gestoken hebben.
 
 \chapter{Procesbeschrijving}
 \label{ch:process}
@@ -678,11 +681,11 @@ Naast deze aanpak gaan we ook proberen om het concept \emph{pair programming} to
 
 \section{Demo 3}
 
-Na de grote teleurstelling in demo 2 beslisten we onze aandacht op de architectuur en de code vol te houden. Onze refactoring aanpak werd wel aangevuld met het cre\"eren van een uitgebreid unit test suite. Waarbij op het moment van schrijven een dekking van meer dan zestig procent van de totale codebase is bereikt. Een dekking van honderd percent is enerzijds niet realistisch, maar is tevens ook niet nodig. Logischerwijze wensen we een dekking voor de relevante klassen. Bij de creatie van deze suite werd in parallel alle code nagekeken. Zo werd er veel ongebruikte code verwijderd en losten we een heel reeks bugs op. Aangezien we reeds tijdens de voorbereiding van de eerste demo getracht hadden de volledige scope te bereiken, waren we nu tevens in staat om functioneel alles tot in dewe  details uit werken zonder onbekende delen.
+Na de grote teleurstelling in demo 2 beslisten we onze aandacht op de architectuur en de code vol te houden. Onze refactoring aanpak werd wel aangevuld met het cre\"eren van een uitgebreide unit test suite. Een dekking van honderd percent is enerzijds niet realistisch, maar is tevens ook niet nodig. Logischerwijze wensen we een dekking voor de relevante klassen. Bij de creatie van deze suite werd in parallel alle code nagekeken. Zo werd er veel ongebruikte code verwijderd en losten we een heel reeks bugs op. Aangezien we reeds tijdens de voorbereiding van de eerste demo getracht hadden de volledige scope te bereiken, waren we nu tevens in staat om functioneel alles tot in de details uit werken zonder onbekende delen.
 
 Zo werd o.a.\ de volledige interne voorstelling van de sectoren aangepakt. Met de ervaring die we opgedaan hadden tijdens de voorbereiding van demo 2, waren we nu in staat om deze implementatie sterk te verbeteren met het oog op geheugengebruik en inzetbaarheid.
 
-Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces opnieuw gedefineerd hebben, zodat we allen konden werken aan afgeronde gehelen. Dit gaf natuurlijk het nadeel dat de volledige source code onbruikbaar was tot al deze gehelen opnieuw ge\"integreerd waren. We geloven er sterk in dat dit proces onze code veel stabieler heeft gemaakt en onze robot hier dus baat bij heeft.
+Verder valt er nog op te merken dat we bij dit proces eerst bepaalde interfaces opnieuw gedefinieerd hebben, zodat we allen konden werken aan afgeronde gehelen. Dit had natuurlijk als nadeel dat de volledige source code onbruikbaar was tot al deze gehelen opnieuw ge\"integreerd waren. We geloven er sterk in dat dit proces onze code veel stabieler heeft gemaakt en onze robot hier dus baat bij heeft.
 
 \section{Unit testen}
 \label{unittesten}
@@ -697,7 +700,7 @@ Aangezien de functionaliteit compleet was, konden we de volledige scope overzien
 
 Met een codebase van ongeveer 17.000 lijnen code is dit echter geen sinecure en ging dit veel tijd vragen. Het alternatief was nog veel onzekerder: verder gaan met een onstabiele codebase zou mogelijk een onbetrouwbare oplossing met zich meebrengen en de wetenschap hieromtrent zou net een falen zijn in \'e\'en van de belangrijkste aspecten van de opdracht.
 
-Met nog vier weken voor de finale deadline begonnen we aan een grote onderneming. Week na week groeide het volume aan testen en begon de \emph{coverage} stilaan nuttige vormen aan te nemen. Toen uitspraken als \emph{God zij dank dat we de unit testen hebben.} bij alle teamleden begonnen te rijzen, wisten we dat we op de goede weg zaten. Figuur \ref{fig:sloc} toont de evolutie van de volledige codebase en het aantal lijnen code (SLOC). Hier is duidelijk te zien dat vanaf begin april er een sterke en gestage toename is van het aantal lijnen code te wijten aan het structureel invoeren van unit testen. Ook toont deze grafiek zeer duidelijk dat ook de groei van de functionele code gestopt is en dat er zelfs een lichte daling is op te tekenen.
+Met nog vier weken voor de finale deadline begonnen we aan een grote onderneming. Week na week groeide het volume aan testen en begon de \emph{coverage} stilaan nuttige vormen aan te nemen. Toen uitspraken als \emph{"Godzijdank dat we de unit testen hebben."} bij alle teamleden begonnen te rijzen, wisten we dat we op de goede weg zaten. Figuur \ref{fig:sloc} toont de evolutie van de volledige codebase en het aantal lijnen code (SLOC). Hier is duidelijk te zien dat vanaf begin april er een sterke en gestage toename is van het aantal lijnen code te wijten aan het structureel invoeren van unit testen. Ook toont deze grafiek zeer duidelijk dat ook de groei van de functionele code gestopt is en dat er zelfs een lichte daling is op te tekenen.
 
 \begin{figure}[htbp]
   \centering
@@ -726,7 +729,7 @@ Alle voordelen van een codebase met een goede \emph{coverage} begonnen zich op t
 
 Deze aanpak heeft natuurlijk \'e\'en groot nadeel. Sequentieel door de volledige codebase lopen, alle code opschonen en elke klasse op zich van de nodige unit testen te voorzien, betekent dat de codebase als een geheel niet langer functioneel is. Dit was een risico dat we moesten nemen om zelf te kunnen ondervinden of deze piste inderdaad een onderbouwde zekerheid kan bieden.
 
-Al het werk heeft uiteindelijk zijn vruchten afgeworpen. Tijdens de laatste voorbereidingen voor de demo hebben de unit testen ons meermaals beschermd tegen ondoordachte keuzes. Met een uiteindelijke \emph{class coverage} van meer dan 70\% voelde we de ruggesteun van de testen keer op keer en waren we bij elke aanpassing zeker dat er op andere plaatsen geen problemen ontstonden.
+Al het werk heeft uiteindelijk zijn vruchten afgeworpen. Tijdens de laatste voorbereidingen voor de demo hebben de unit testen ons meermaals beschermd tegen ondoordachte keuzes. Met een uiteindelijke \emph{class coverage} van meer dan 70\% voelden we de ruggesteun van de testen keer op keer en waren we bij elke aanpassing zeker dat er op andere plaatsen geen problemen ontstonden.
 
 \chapter{Werkverdeling}
 
@@ -736,11 +739,11 @@ Natuurlijk zijn er delen die door \'e\'en persoon meer bekeken worden en we trac
 
 \section{Ruben}
 
-Ruben was tijdens dit semester de nieuwe co\"rdinator. Daarnaast heeft hij zich hoofdzakelijk bezig gehouden met de technische componenten van de robot zelf. Een tweede belangrijke taak voor hem was het verder op punt stellen van de simulator. Met zijn zeer goede wiskundige en algoritmische achtergrond kon hij complexe problemen dikwijls in zeer weinig code en zeer optimaal oplossen.
+Ruben was tijdens dit semester de nieuwe co\"ordinator. Daarnaast heeft hij zich hoofdzakelijk bezig gehouden met de technische componenten van de robot zelf. Een tweede belangrijke taak voor hem was het verder op punt stellen van de simulator. Met zijn zeer goede wiskundige en algoritmische achtergrond kon hij complexe problemen dikwijls in zeer weinig code en zeer optimaal oplossen.
 
 \section{Michiel}
 
-Na zijn werk aan de \emph{Bluethooth} laag in het eerste semester, heeft Michiel zijn tanden gezet in het \emph{AggregatedGrid} verhaal. Deze uiterst complexe materie werd nog verder bemoeilijkt door de beperkingen aangaande het geheugen van de robot.
+Na zijn werk aan de \emph{Bluethooth} laag in het eerste semester, heeft Michiel zijn tanden gezet in het \emph{AggregatedGrid} verhaal. Deze uiterst complexe materie werd nog verder bemoeilijkt door de beperkingen aangaande het geheugen van de robot. Hij heeft zich tevens voor demo 1 ook bezig gehouden met de implementatie van de Driver en de correcties op de robot.
 
 \section{Thomas}
 
@@ -758,15 +761,15 @@ Tijdens het eerste deel van het semester heeft Christophe onderzoek gedaan naar 
 
 P\&O Computerwetenschappen 2011-2012 bevatte alle elementen van een gefaald project: geen ervaren teamleden, vage vereisten, deadlines voor alles, geen analyse(tijd), een puur technische focus,... In het bedrijfsleven vormt dit het schoolvoorbeeld van hoe een softwareproject niet mag opgezet worden. De leerschool van dit project moet dan ook gezocht worden in de ervaring van zulk een \emph{slecht} voorbeeld en het hopelijk herkennen en vermijden in de toekomst.
 
-Ondanks dit negatieve kader, heeft Team Platinum resoluut gekozen voor de uitdaging om iets te leren. Twee belangrijke peilers stonden voor ons voorop: software kwaliteit en een consequente aanpak. Het eerste is evident, maar legt een strenge bijkomende eis op. De ervaring binnen het team was duidelijk groot genoeg om te trachten ook op puur software-vlak een mooi design en uitwerking te realiseren.
+Ondanks dit negatieve kader, heeft Team Platinum resoluut gekozen voor de uitdaging om iets te leren. Twee belangrijke pijlers stonden voor ons voorop: software kwaliteit en een consequente aanpak. Het eerste is evident, maar legt een strenge bijkomende eis op. De ervaring binnen het team was duidelijk groot genoeg om te trachten ook op puur software-vlak een mooi design en uitwerking te realiseren.
 
-De consequente aanpak bestond er voor Team Platinum in, om ook in het tweede semester een echte autonome robot op te leveren. Daar waar andere teams ingingen op de mogelijkheid om gebruik te maken van een PC om bepaalde delen van de software op uit te voeren, kozen wij er voor om alle logica op de robot zelf te implementeren.
+De consequente aanpak bestond er voor Team Platinum in, om ook in het tweede semester een echt autonome robot op te leveren. Daar waar andere teams ingingen op de mogelijkheid om gebruik te maken van een PC om bepaalde delen van de software op uit te voeren, kozen wij er voor om alle logica op de robot zelf te implementeren.
 
 Beide extra focussen legde zonder twijfel een redelijke druk op de schouders van alle team leden. Maar het resultaat mocht er zijn. Tijdens de finale demonstratie presteerden veel robots even goed of zelfs minder goed dan onze robot. Gegeven het grote verschil in mogelijkheden, zijn we trots op het resultaat dat we opgeleverd hebben, zowel op vlak van de robot, als op vlak van de softwarekwaliteit en in extremis ook nog van het niveau van de testen die het geheel inkapselen.
 
 Maar we hebben ook veel fouten gemaakt. De sterke karakters van Team Platinum beten zich niet alleen op een positieve manier vast in een probleem, maar soms ook op negatieve wijze, \emph{te lang}. Door deze volharding werden problemen op bepaalde momenten eerder groter. Dit typische probleem had ondervangen kunnen worden door een gedetailleerdere planning en betere interne communicatie.
 
-We zouden hier kunnen aanbrengen dat we bijna als enige team met vijf totaal andere agenda's dienden rekening te houden en dat we uit totaal andere richtingen kwamen, maar feitelijk hebben we dit zelf nooit als een groot probleem ervaren. Team Platinum is een hecht team dat elkaar gevonden heeft in een doorzettingsvermogen en een drijfveer om kwalitatieve resultaten te boeken.
+We zouden hier kunnen aanbrengen dat we bijna als enige team met vijf totaal andere agenda's dienden rekening te houden en dat we uit totaal andere richtingen kwamen, maar feitelijk hebben we dit zelf nooit als een groot probleem ervaren. Team Platinum is een hecht team dat elkaar gevonden heeft in doorzettingsvermogen en in een drijfveer om kwalitatieve resultaten te boeken.
 
 Verder heeft heel het team aan den lijve ondervonden wat unit testen kunnen betekenen voor een project. Gedurende ruim 2/3 van het project voelden we op alle mogelijke manieren de afwezigheid ervan en op het einde ervoeren we meermaals de kracht van een degelijke unit test suite. De algemene teneur was unaniem: we hadden vanaf dag \'e\'en met unit testen moeten beginnen en we hadden nooit zulke problemen gehad zoals bij de tweede demo.
 
@@ -779,9 +782,9 @@ Tot slot trapten we keer op keer in de val van het \emph{time management}. Wanne
   \label{fig:effort}
 \end{figure}
 
-Op dezelfde figuur is met een groene lijn het gemiddelde aangeduid dat gepresteerd werd. Het is duidelijk dat mits een betere planning de zgn.\\epmh{werk-golven} niet opwaarts maar zelfs neerwaarts hadden kunnen verlopen, met veel minder stress tot gevolg. De piekmomenten van de demo's eisten een dalmoment in de weken daarna om opnieuw aandacht aan andere vakken te kunnen geven. Op deze manier ontstond een vicieuze cirkel die we stilaan wel erkenden, maar nog moeilijk konden doorbreken.
+Op dezelfde figuur is met een groene lijn het gemiddelde aangeduid dat gepresteerd werd. Het is duidelijk dat mits een betere planning de zgn.\emph{werk-golven} niet opwaarts maar zelfs neerwaarts hadden kunnen verlopen, met veel minder stress tot gevolg. De piekmomenten van de demo's eisten een dalmoment in de weken daarna om opnieuw aandacht aan andere vakken te kunnen geven. Op deze manier ontstond een vicieuze cirkel die we stilaan wel erkenden, maar nog moeilijk konden doorbreken.
 
-De aanleiding van de piekmoment was meestal telkens dezelfde: overschatting van de mogelijkheden van het team en het moeten realiseren van deze initieel te licht ingeschatte geplande aanpassingen. Een degelijke analyse, vooral op functioneel vlak, als een meer afgelijnde werkverdeling hadden hier zonder twijfel solaas kunnen brengen.
+De aanleiding van de piekmoment was meestal telkens dezelfde: overschatting van de mogelijkheden van het team en het moeten realiseren van deze initieel te licht ingeschatte geplande aanpassingen. Een degelijke analyse, vooral op functioneel vlak, als een meer afgelijnde werkverdeling hadden hier zonder twijfel soelaas kunnen brengen.
 
 Naast de interne evolutie, waren er ook externe factoren waar we be\"invloed door werden. De spelregelcommissie en de beslissingen die door dit orgaan genomen werden werkten zeker niet in ons voordeel. Ook hier hebben we de bal waarschijnlijk mis geslagen op het vlak van communicatie en hebben we te snel de handdoek in de ring geworpen, waardoor de uitkomst van de commissie nog verder ontaard is in een volledig gemiste kans om te leren samenwerken en te leren hoe een commissie echt kan werken.
 
@@ -1035,7 +1038,7 @@ Het project voorziet verschillende gebruikers interfaces: Zo is er een dashboard
 
 \section{Dashboard}
 
-Het \emph{Dashboard} is een web toepassing die informatie ontvangt uit de databank waarin de \emph{Gateway} de ontvangen feedback van een robot opslaat. De web toepassing ontvangt deze informatie via een \emph{JSONP}\footnote{JSONP wordt typisch opgebouwd met een lang-lopende connectie waarover de server constant nieuwe Javascript commando's verstuurd. Deze worden op de client uitgevoerd, waardoor updates van bijvoorbeeld data kunnen verwerkt worden. Zie ook \url{http://en.wikipedia.org/wiki/JSONP}} connectie. Op deze manier kan de web toepassing toch in real-time een informatiestroom van de robot ontvangen.
+Het \emph{Dashboard} is een webtoepassing die informatie ontvangt uit de databank waarin de \emph{Gateway} de ontvangen feedback van een robot opslaat. De webtoepassing ontvangt deze informatie via een \emph{JSONP}\footnote{JSONP wordt typisch opgebouwd met een lang-lopende connectie waarover de server constant nieuwe Javascript commando's verstuurd. Deze worden op de client uitgevoerd, waardoor updates van bijvoorbeeld data kunnen verwerkt worden. Zie ook \url{http://en.wikipedia.org/wiki/JSONP}} connectie. Op deze manier kan de webtoepassing toch in real-time een informatiestroom van de robot ontvangen.
 
 Figuur \ref{fig:dashboard_overview} toont het \emph{Dashboard} met al zijn samenstellende delen. Het principe van het \emph{Dashboard} bestaat uit een reeks van onafhankelijke panelen die elk een conceptueel deel van de informatie waarover de robot beschikt voorstellen. Zo zijn er typisch panelen voor elk van de sensoren. Een paneel voor een sensor toont enerzijds de laatst gelezen waarde, maar tracht ook een nuttige histogram van de informatie aan te bieden. Zo is er bijvoorbeeld voor de lichtsensor een voortschrijdende balk waarop barcodes visueel ook kunnen herkend worden. De sonar wordt weergegeven zoals een klassieke sonar, enz. Daarnaast worden de verschillende \emph{Grids} gevisualiseerd. Tot slot zijn er nog panelen die informatie geven over de gebeurtenissen waarop de robot reageert en de acties dat hij hierdoor onderneemt.
 
