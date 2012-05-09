@@ -407,6 +407,31 @@ Deze aanpak heeft natuurlijk een groot nadeel. Eens de gegevens van een andere r
 
 Met het oog op demo 2 en 3 willen we nog verdere optimalisaties doorvoeren op het vlak van het geheugengebruik van een \emph{Sector}. Anderzijds onderzoeken we een oplossing waarbij er sectoren uit de verschillende mappen van andere robots verwijderd worden in functie van het nog beschikbare geheugen.
 
+\subsubsection{Opslagcapaciteit voor het programma}
+
+Volgens de specificatie van de Lego NXT Brick komt de maximale opslag neer op 256KB maar de robot blijkt te werken met een 16bit offset bij zijn interne tabellen. Bijgevolg is de theoretische limiet van 64KB, in de praktijk werd deze limiet rond de 60KB opgemerkt.
+
+Reductie werd bekomen door het snijden in de code, zo werd bvb eerst en vooral de MD5 hash verplaatst naar de \emph{Gateway}. Verder werd het \emph{Lejos} gedeelte dat bestond uit \emph{RotationMovement}, \emph{RotatingSonar}, \emph{Main} en \emph{AngieEventLoop} samengebracht in \emph{AngieRobotApi}.
+
+Er werden zoveel mogelijk Strings verwijderd en anders werden deze zo klein mogelijk gemaakt. \emph{toString} methodes werden leeg gemaakt zodat deze geen kostbare geheugenruimte verbruikten.  Verdere aanpassingen van grote impact werden reeds vermeld bij de bespreking van \emph{Grid}. Uiteindelijk werd zelfs overgegaan tot bytecode \emph{shrinking} met behulp van ProGuard \footnote{\url{http://proguard.sourceforge.net}}.
+
+Deze tool verkleinde de gebruikte bytecode nog verder aan de hand van volgende optimalisaties\footnote{We vonden deze tool via de volgende thesis \url{http://www.vmars.tuwien.ac.at/documents/extern/2601/joptimizer-thesis.pdf}}:
+
+\begin{itemize}
+\item Verwijderen van ongebruikte klassen, velden en methoden die de linker mist. 
+\item Evalueren van constante expressies.
+\item Verwijderen van onnodige methode oproepen, vergelijkingen, instanceof testen, ongebruikte code blokken, branches, veldtoegangen,
+\item Samenvoegen van identieke blokken code
+\item Opkuisen van ongebruikte methode parameters en verplaatsen van dubbele methodes
+\item Inlinen van constanten, methode parameters, returnwaarden en weinig gebruikte methodes
+\item Tail recursie versimpelen
+\item Samenvoegen klassen en interfaces (bvb indien maar 1 keer ge\"implementeerd.)
+\item Methodes en klassen private, static en final maken
+\item Mini-optimilisaties zoals .*2 = .<<1.
+\item Verwijderen van Logging code
+\item Loop optimalisaties.
+\end{itemize}
+
 \section{PC}
 
 Op het vlak van de PC kunnen we opnieuw verder bouwen op onze bestaande \emph{ServiceAgent}. Naast het logging-kanaal, zal deze nu ook een tweede Bluetooth kanaal volgen, langs het welke de boodschappen van het \emph{Ghost Protocol} kunnen uitgewisseld worden met de \emph{exchange-queue} op de RabbitMQ server.
