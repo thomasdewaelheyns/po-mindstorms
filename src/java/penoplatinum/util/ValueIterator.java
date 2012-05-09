@@ -6,6 +6,7 @@ class ValueIterator<V> implements Iterator<V> {
   private EntryIterator<?, V> entry;
   private SimpleHashMap<?, V> outer;
 
+  @SuppressWarnings("unchecked")
   public ValueIterator(SimpleHashMap<?, V> outer) {
     this.outer = outer;
     entry = new EntryIterator(outer);

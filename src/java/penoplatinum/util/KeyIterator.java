@@ -5,6 +5,7 @@ import java.util.Iterator;
 class KeyIterator<K> implements Iterator<K> {
   EntryIterator<K, ?> entry;
 
+  @SuppressWarnings("unchecked")
   KeyIterator(SimpleHashMap<K, ?> outer) {
      entry = new EntryIterator(outer);
   }

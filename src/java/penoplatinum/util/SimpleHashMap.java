@@ -7,6 +7,7 @@ public class SimpleHashMap<K, V> {
   Entry<K, V>[] list;
   private int size;
 
+  @SuppressWarnings("unchecked")
   public SimpleHashMap() {
     size = 0;
     list = new Entry[16];
@@ -41,6 +42,7 @@ public class SimpleHashMap<K, V> {
     return size == 0;
   }
 
+  @SuppressWarnings("unchecked")
   public void put(K key, V value) {
     ensureCapacity();
     size++;
@@ -84,6 +86,7 @@ public class SimpleHashMap<K, V> {
     return size;
   }
 
+  @SuppressWarnings("unchecked")
   private void ensureCapacity() {
     if (size <= list.length * 0.75) {
       return;
@@ -99,14 +102,17 @@ public class SimpleHashMap<K, V> {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public Iterable<Entry<K, V>> entries() {
     return new It(new EntryIterator(this));
   }
 
+  @SuppressWarnings("unchecked")
   public Iterable<K> keys() {
     return new It(new KeyIterator(this));
   }
 
+  @SuppressWarnings("unchecked")
   public Iterable<V> values() {
     return new It(new ValueIterator(this));
   }
@@ -118,6 +124,7 @@ public class SimpleHashMap<K, V> {
       this.iterator = iterator;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Iterator<T> iterator() {
       return iterator;

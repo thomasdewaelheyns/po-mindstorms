@@ -105,7 +105,7 @@ public class ChangesModelProcessor extends ModelProcessor {
       this.other2 = names.get(1);
       this.other3 = names.get(2);
     } else {
-      System.out.println("WARNING: didn't get enough other Ghost's names");
+      // System.out.println("WARNING: didn't get enough other Ghost's names");
     }
   }
 

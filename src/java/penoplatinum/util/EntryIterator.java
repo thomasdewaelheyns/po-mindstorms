@@ -22,6 +22,7 @@ class EntryIterator<K, V> implements Iterator<Entry<K, V>> {
     return currentEntry != null;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Entry<K, V> next() {
     Entry out = currentEntry;

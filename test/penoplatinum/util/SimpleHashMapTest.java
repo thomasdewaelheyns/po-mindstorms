@@ -20,6 +20,7 @@ public class SimpleHashMapTest extends TestCase {
     super(name);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testMultipleHash() {
     for(int i = 0; i < 100; i++){
@@ -37,6 +38,7 @@ public class SimpleHashMapTest extends TestCase {
     assertEquals(100, foundCount);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testGet() {
     assertEquals(null, map.get("thisDoesNotExist"));
@@ -51,6 +53,7 @@ public class SimpleHashMapTest extends TestCase {
     assertEquals((Integer) 3, map.get("test3"));
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testPut() {
     assertEquals(0, map.size());
@@ -71,6 +74,7 @@ public class SimpleHashMapTest extends TestCase {
     assertEquals("test1", map.findKey(3));
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testSize() {
     assertEquals(0, map.size());
@@ -88,6 +92,7 @@ public class SimpleHashMapTest extends TestCase {
     assertEquals(3, map.size());
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testIsEmpty() {
     assertTrue(map.isEmpty());
@@ -96,6 +101,7 @@ public class SimpleHashMapTest extends TestCase {
     assertFalse(map.isEmpty());
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testValues() {
     map.put("test1", 1);
@@ -113,6 +119,7 @@ public class SimpleHashMapTest extends TestCase {
     assertEquals((Integer) 3, val.get(2));
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testFindKey() {
     map.put("test1", 1);

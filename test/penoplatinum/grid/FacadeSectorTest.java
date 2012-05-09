@@ -1,8 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package penoplatinum.grid;
+
+/**
+ * FacadeSectorTest
+ *  
+ * Test availability of FacadeSector interface
+ * 
+ * @author Team Platinum
+ */
 
 import static org.mockito.Mockito.*;
 
@@ -11,10 +15,14 @@ import penoplatinum.util.Bearing;
 import penoplatinum.util.Rotation;
 import penoplatinum.util.TransformationTRT;
 
-/**
- *
- * @author MHGameWork
- */
 public class FacadeSectorTest extends TestCase {
+
+  public FacadeSectorTest(String name) {
+    super(name);
+  }
+
+  public void testAvailablity() {
+    mock(FacadeSector.class);
+  }
 
 }

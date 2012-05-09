@@ -85,7 +85,7 @@ public class MultiGhostGridTest extends TestCase {
     multiGrid.getGhostGrid("michiel").add(BarcodeAgent.getBarcodeAgent(19), new Point(0, 1), Bearing.E);
 //    assertEquals("the merge wasn't succesful", multiGrid.toString(), mergeGoalGrid.toString());
     GridTestUtil.createGridWest(multiGrid.getGhostGrid("ruben"));
-    System.out.println(multiGrid.toString());
+    // System.out.println(multiGrid.toString());
 //    (new SwingGridView()).display(multiGrid.getGhostGrid("flor"));
 //    (new SwingGridView()).display(multiGrid.getGhostGrid("michiel"));
 //    (new SwingGridView()).display(multiGrid.getGhostGrid("ruben"));

@@ -43,8 +43,7 @@ public class Color {
   }
   
   public String toString() {
-    return "";
-    //return "rgb(" + this.getR() + "," + this.getG() + "," + this.getB() + ")";
+    return "rgb(" + this.getR() + "," + this.getG() + "," + this.getB() + ")";
   }
 
   

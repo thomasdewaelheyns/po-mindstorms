@@ -242,8 +242,7 @@ public class LinkedSectorTest extends TestCase {
     
   }
   
-  public void testToString()
-  {
+  public void testToString() {
     assertEquals("NYE S WY", createSectorWithWallsNW().toString());
   }
 
@@ -254,7 +253,10 @@ public class LinkedSectorTest extends TestCase {
      *    |
      *    +
      */
-    return new LinkedSector().setWall(Bearing.N).setNoWall(Bearing.E).setNoWall(Bearing.S).setWall(Bearing.W);
+    return new LinkedSector().setWall  (Bearing.N)
+                             .setNoWall(Bearing.E)
+                             .setNoWall(Bearing.S)
+                             .setWall  (Bearing.W);
   }
 
   private Grid createMockedGrid() {
