@@ -27,7 +27,8 @@ public class BaseRunner implements MessageReceiver {
   protected String robotName, mqServerName, mqChannelName;
   protected String secret;
 
-  protected Queue            queue;
+  protected boolean useDebugMQ;
+  protected Queue  queue;
 
   protected BaseRunner(String[] args, String supportedOptions) {
     this.loadConfig();
@@ -41,6 +42,7 @@ public class BaseRunner implements MessageReceiver {
     DEFAULT_ROBOT      = Config.ROBOT_NAME;
     DEFAULT_MQ_SERVER  = Config.MQ_SERVER;
     DEFAULT_MQ_CHANNEL = Config.GHOST_CHANNEL;
+    this.useDebugMQ    = Config.USE_LOCAL_MQ;
   }
   
   private void prepareCommandLineOptions(String supportedOptions) {
@@ -98,16 +100,16 @@ public class BaseRunner implements MessageReceiver {
 
 
   private void setupMQ() {
-    if( this.mqServerName != null && this.mqChannelName != null ) {
-      this.setupRemoteMQ();
-    } else {
+    if( this.useDebugMQ ) {
       this.setupDebugMQ();
+    } else {
+      this.setupRemoteMQ();
     }
   }
   
   private void setupRemoteMQ() {
     try {
-      System.out.println( "=== Joining " + this.mqChannelName );
+      System.out.println( "=== Joining " + this.mqChannelName + " on " + this.mqServerName);
       this.queue = new MQ().connectToMQServer(this.mqServerName)
                            .follow(this.mqChannelName)
                            .subscribe(this);

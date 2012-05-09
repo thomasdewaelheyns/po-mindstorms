@@ -64,7 +64,7 @@ public class SimulationRunner {
   private final static String DEFAULT_GATEWAY_CLIENT = "penoplatinum.simulator.SimulatedGatewayClient";
   private final static String DEFAULT_REPORTER = "penoplatinum.reporter.DashboardReporter";
   private final static String DEFAULT_MAP = "wolfraam.txt";
-  private final static String DEFAULT_START = "3";
+  private final static String DEFAULT_START = "1";
   private Simulator simulator;
   private String robotClassName;
   private String navigatorClassName;

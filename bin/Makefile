@@ -53,7 +53,6 @@ gw:
 	@${JAVA} GatewayRunner ${ARGS}
 
 sim:
-	@echo "!!! not yet ;-)"
 	@BUILD_DIR=build/$@
 	@mkdir -p ${BUILD_DIR}
 	@echo "*** compiling Simulator..."
@@ -67,7 +66,7 @@ sim:
 	@${JAVAC} ../src/java/penoplatinum/gateway/UpdatesJSAppender.java
 	@cp -r ../resources ${BUILD_DIR}/
 	@cp log4j.xml ${BUILD_DIR}
-	@cp robot.properties ${BUILD_DIR}
+	@cp ../maps/wolfraam.txt .
 	@echo "*** running Simulator..."
 	@${JAVA} SimulationRunner ${ARGS}
 
@@ -76,6 +75,7 @@ sim:
 
 clean:
 	@${RM} ${BUILD_DIR}
+	@${RM} *.txt
 
 test:
 	@(cd test; make && make stat)

@@ -59,7 +59,7 @@ public class Board extends JPanel {
   }
   
   private URL getImageResource(String image) {
-    String name = "/" + Config.IMAGE_DIR + "/" + image;
+    String name = "../../../" + Config.IMAGE_DIR + "/" + image;
     return this.getClass().getResource(name);
   }
 

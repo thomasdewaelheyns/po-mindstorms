@@ -1,11 +1,10 @@
 This repository contains software developed for a Computer Science course,
 aiming to construct and program an autonomous Mindstorms robot, capable of
 finding its way on a unknown track outlined by marker-lines and walls.
-It's a group project I conducted with 5 fellow students:
+It's a group project I conducted with 4 fellow students:
 - Michiel Huygen
 - Florian Hendrickx
 - Ruben Lapauw
-- Daniel Denil
 - Thomas De Waelheyns
 - Christophe Van Ginneken
 
@@ -26,27 +25,65 @@ Use version 8.5beta!
 Consult the Lejos documentation to setup a paired bluetooth connection between
 your pc and your robot.
 
-+ Build, upload and run the demo's
-
-$ cd po-mindstorms/demos
-$ make clean run PROJECT=demo1 NAME=robot-name
-
-Follow the instructions on the screen of the robot.
-
-$ cd po-mindstorms/demos
-$ make clean run PROJECT=demo2 NAME=robot-name
-$ cd ../console
-$ make clean run PROJECT=demo2
-
-Use the console GUI to start any of the three sub-demo's.
-
 + NetBeans
 
 We have also provided an integrated NetBeans project in nbproject.
 
-+ Simulator
++ The bin/ directory contains some applications:
 
-To allow multiple team members to construct and test robot logic, we're also creating a simulator.
+$ cd bin
+$ make spy ARGS=-h
+*** compiling MQ spy...
+*** running MQ spy...
+usage: MQSpy
+ -h,--help         show this information.
+ -j,--join <arg>   join <channel>. default=ghost
+ -m,--mq <arg>     connect to MQ <server>. default=localhost
 
-$ cd po-mindstorms/src/java/penoplatinum/simulator
-$ make clean run
+$ make rash ARGS=-h
+*** compiling rash...
+*** running rash...
+usage: RobotAdminShellRunner
+ -d,--debug          run in debug-mode.
+ -h,--help           show this information.
+ -j,--join <arg>     join <channel>. default=ghost
+ -m,--mq <arg>       connect to MQ <server>. default=localhost
+ -r,--robot <arg>    admin robot <name>. default=Platinum
+ -s,--secret <arg>   <secret> for robot.
+
+$ make gw ARGS=-h
+*** compiling Gateway...
+*** running Gateway...
+usage: GatewayRunner
+ -h,--help           show this information.
+ -j,--join <arg>     join <channel>. default=ghost
+ -m,--mq <arg>       connect to MQ <server>. default=localhost
+ -r,--robot <arg>    admin robot <name>. default=Platinum
+ -s,--secret <arg>   <secret> for robot.
+
+$ make sim ARGS=-h
+*** compiling Simulator...
+*** running Simulator...
+usage: SimulationRunner
+ -d,--driver <arg>          use driver <classname>.
+                            default=penoplatinum.driver.ManhattanDriver
+ -g,--gatewayClient <arg>   use gatewayClient <classname>.
+                            default=penoplatinum.simulator.SimulatedGatewa
+                            yClient
+ -h,--help                  show this helpful information.
+ -m,--map <arg>             use mapfile. default=wolfraam.txt
+ -n,--navigator <arg>       use navigator <classname>.
+                            default=penoplatinum.navigator.GhostNavigator
+ -p,--reporter <arg>        use reporter <classname>.
+                            default=penoplatinum.reporter.DashboardReporte
+                            r
+ -q,--quiet                 don't show a user interface.
+ -r,--robot <arg>           use robot <classname>.
+                            default=penoplatinum.robot.GhostRobot
+ -s,--start <arg>           use start number <number>. default=1
+
+$ make sim
+
+... will launch the simulator with sensible defaults. The simulator will not
+do anything, because it is waiting for at least 3 more ghosts to show up. If
+you start three more instances they would start moving around ;-)
