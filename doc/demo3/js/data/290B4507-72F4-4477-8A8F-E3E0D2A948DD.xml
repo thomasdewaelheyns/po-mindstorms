@@ -1,0 +1,5 @@
+tocTab[tocTab.length] = new Array("2.6:1", "", "model", "EARoot/EA2/EA6/EA131.html", "3.png", "47", "0", "", "Logical diagram0","{6F2F7B3E-C9B2-49b0-A540-BF15B102DB50}");
+tocTab[tocTab.length] = new Array("2.6:2", "", "GhostModel", "EARoot/EA2/EA6/EA133.html", "5.png", "159", "0", "", "Class0","{258749F6-8533-423f-90BB-256FCEFD6627}");
+tocTab[tocTab.length] = new Array("2.6:3", "", "«interface» Model", "EARoot/EA2/EA6/EA134.html", "8.png", "397", "0", "", "Interface0","{B91ABD7C-5B66-4282-9577-6E8104845E04}");
+tocTab[tocTab.length] = new Array("2.6.1", "1", "part", "EARoot/EA2/EA6/EA135.html", "4.png", "", "", "{B39E3A6B-C6C0-4904-9A2B-BB4E2F419517}", "Package");
+tocTab[tocTab.length] = new Array("2.6.2", "1", "processor", "EARoot/EA2/EA6/EA136.html", "4.png", "", "", "{ACD37988-A0F1-4c38-BC4E-C6607FC01E36}", "Package");

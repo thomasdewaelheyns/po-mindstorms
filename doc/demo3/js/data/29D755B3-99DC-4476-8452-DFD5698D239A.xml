@@ -1,0 +1,5 @@
+tocTab[tocTab.length] = new Array("2.9:1", "", "protocol", "EARoot/EA2/EA9/EA190.html", "3.png", "51", "0", "", "Logical diagram0","{74CBBD0B-3F9A-4c69-8D14-0ABF2D36475A}");
+tocTab[tocTab.length] = new Array("2.9:2", "", "BasicProtocolHandler", "EARoot/EA2/EA9/EA192.html", "5.png", "415", "0", "", "Class0","{B0AB5D0E-7E21-4bc2-AE40-C3C18B6ABB6A}");
+tocTab[tocTab.length] = new Array("2.9:3", "", "«interface» ExternalEventHandler", "EARoot/EA2/EA9/EA193.html", "8.png", "416", "0", "", "Interface0","{48264FE6-BB84-4c32-A4E8-C98A44F88E0D}");
+tocTab[tocTab.length] = new Array("2.9:4", "", "GhostProtocolHandler", "EARoot/EA2/EA9/EA194.html", "5.png", "417", "0", "", "Class0","{68E9093A-70B0-487d-9BB4-E810E5AEAD8F}");
+tocTab[tocTab.length] = new Array("2.9:5", "", "«interface» ProtocolHandler", "EARoot/EA2/EA9/EA195.html", "8.png", "418", "0", "", "Interface0","{E8F06E70-18EB-42e5-AA59-FECEB67C2B64}");

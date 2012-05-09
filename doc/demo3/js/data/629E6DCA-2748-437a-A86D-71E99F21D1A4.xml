@@ -1,0 +1,8 @@
+tocTab[tocTab.length] = new Array("2.4.1:1", "", "agent", "EARoot/EA2/EA4/EA1/EA100.html", "3.png", "40", "0", "", "Logical diagram0","{EED21959-2C8B-47bf-8FAE-9ACCCFC7B00F}");
+tocTab[tocTab.length] = new Array("2.4.1:2", "", "«interface» Agent", "EARoot/EA2/EA4/EA1/EA102.html", "8.png", "340", "0", "", "Interface0","{0C50ED9D-BD9F-4d6d-B2C7-99CFC6A6CB07}");
+tocTab[tocTab.length] = new Array("2.4.1:3", "", "BarcodeAgent", "EARoot/EA2/EA4/EA1/EA103.html", "5.png", "341", "0", "", "Class0","{B16DB8FE-7714-4269-BAE4-8DF1542E68DB}");
+tocTab[tocTab.length] = new Array("2.4.1:4", "", "GhostAgent", "EARoot/EA2/EA4/EA1/EA104.html", "5.png", "342", "0", "", "Class0","{1D199F49-80E6-4fc8-9707-CD7833667BD1}");
+tocTab[tocTab.length] = new Array("2.4.1:5", "", "MovingAgent", "EARoot/EA2/EA4/EA1/EA105.html", "5.png", "343", "0", "", "Class0","{CD470306-417F-4a9e-9900-0D21FF09BF04}");
+tocTab[tocTab.length] = new Array("2.4.1:6", "", "PacmanAgent", "EARoot/EA2/EA4/EA1/EA106.html", "5.png", "344", "0", "", "Class0","{3DAA7E1D-D0BD-43b2-A2BE-E1301D08EFE3}");
+tocTab[tocTab.length] = new Array("2.4.1:7", "", "ProxyAgent", "EARoot/EA2/EA4/EA1/EA107.html", "5.png", "345", "0", "", "Class0","{B5302BF5-147C-46f7-B81A-08C2755C4336}");
+tocTab[tocTab.length] = new Array("2.4.1:8", "", "StaticTargetAgent", "EARoot/EA2/EA4/EA1/EA108.html", "5.png", "346", "0", "", "Class0","{09BE3B3C-CFF8-49df-9757-AF578466B0AA}");

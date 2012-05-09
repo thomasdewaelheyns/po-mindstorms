@@ -1,0 +1,5 @@
+tocTab[tocTab.length] = new Array("2.11:1", "", "robot", "EARoot/EA2/EA11/EA200.html", "3.png", "53", "0", "", "Logical diagram0","{E47F44B7-BBB4-4768-90D0-5118C36806A3}");
+tocTab[tocTab.length] = new Array("2.11:2", "", "«interface» AdvancedRobot", "EARoot/EA2/EA11/EA202.html", "8.png", "423", "0", "", "Interface0","{F7A7E24D-62DC-4fcc-A28A-E30592E9BF9B}");
+tocTab[tocTab.length] = new Array("2.11:3", "", "GhostRobot", "EARoot/EA2/EA11/EA203.html", "5.png", "424", "0", "", "Class0","{4F362192-2DAC-4feb-979A-1CBDCD5680AA}");
+tocTab[tocTab.length] = new Array("2.11:4", "", "«interface» Robot", "EARoot/EA2/EA11/EA204.html", "8.png", "425", "0", "", "Interface0","{8E397B32-A575-4778-9953-CD0E901838EB}");
+tocTab[tocTab.length] = new Array("2.11:5", "", "«interface» RobotAPI", "EARoot/EA2/EA11/EA205.html", "8.png", "426", "0", "", "Interface0","{E3FECB24-6276-4117-B6BF-D6559FC9C7B0}");

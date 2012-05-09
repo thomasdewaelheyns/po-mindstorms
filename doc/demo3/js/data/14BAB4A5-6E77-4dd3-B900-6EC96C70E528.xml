@@ -1,0 +1,11 @@
+tocTab[tocTab.length] = new Array("2.3:1", "", "gateway", "EARoot/EA2/EA3/EA69.html", "3.png", "39", "0", "", "Logical diagram0","{CE796511-189D-4a7c-A2A0-7B0EA665A702}");
+tocTab[tocTab.length] = new Array("2.3:2", "", "BluetoothConnection", "EARoot/EA2/EA3/EA71.html", "5.png", "96", "0", "", "Class0","{BA8EBDCC-DAF8-4bda-ADB5-657AFA23B9C0}");
+tocTab[tocTab.length] = new Array("2.3:3", "", "«interface» Connection", "EARoot/EA2/EA3/EA72.html", "8.png", "97", "0", "", "Interface0","{CCC5A3B4-387E-4404-8C6D-5DE51783187B}");
+tocTab[tocTab.length] = new Array("2.3:4", "", "Gateway", "EARoot/EA2/EA3/EA73.html", "5.png", "98", "0", "", "Class0","{6237A936-C7D3-4ba0-A4BC-74D3D8057329}");
+tocTab[tocTab.length] = new Array("2.3:5", "", "«interface» GatewayClient", "EARoot/EA2/EA3/EA74.html", "8.png", "99", "0", "", "Interface0","{55172A36-4772-49c2-8C60-D7FDB7A80B00}");
+tocTab[tocTab.length] = new Array("2.3:6", "", "«interface» MessageReceiver", "EARoot/EA2/EA3/EA75.html", "8.png", "101", "0", "", "Interface0","{607D32EB-22B9-4308-8834-3CC9A5447DB7}");
+tocTab[tocTab.length] = new Array("2.3:7", "", "MQ", "EARoot/EA2/EA3/EA76.html", "5.png", "102", "0", "", "Class0","{A8B9467E-6E1B-4d50-8903-20954836B516}");
+tocTab[tocTab.length] = new Array("2.3:8", "", "NullGatewayClient", "EARoot/EA2/EA3/EA77.html", "5.png", "336", "0", "", "Class0","{25591922-42B4-4c26-AAE1-F23AB754D285}");
+tocTab[tocTab.length] = new Array("2.3:9", "", "«interface» Queue", "EARoot/EA2/EA3/EA78.html", "8.png", "104", "0", "", "Interface0","{6AE90EF0-183E-4517-BBC0-A93595F370E3}");
+tocTab[tocTab.length] = new Array("2.3:10", "", "TwitterAppender", "EARoot/EA2/EA3/EA79.html", "5.png", "337", "0", "", "Class0","{DBC0D9BF-7062-4349-8FCA-6B0DCF9BB2A1}");
+tocTab[tocTab.length] = new Array("2.3:11", "", "UpdatesJSAppender", "EARoot/EA2/EA3/EA80.html", "5.png", "105", "0", "", "Class0","{A749A168-50EF-42b0-A47D-B43BBE6169F6}");

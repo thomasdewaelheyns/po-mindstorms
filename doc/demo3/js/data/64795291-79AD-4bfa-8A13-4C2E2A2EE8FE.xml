@@ -1,0 +1,4 @@
+tocTab[tocTab.length] = new Array("2.12:1", "", "sensor", "EARoot/EA2/EA12/EA206.html", "3.png", "66", "0", "", "Logical diagram0","{9D9ABB4D-A2B0-4a06-AF1A-CFAD02E40476}");
+tocTab[tocTab.length] = new Array("2.12:2", "", "IRSeekerV2", "EARoot/EA2/EA12/EA208.html", "5.png", "295", "0", "", "Class0","{C8438EEA-2A15-4583-A315-7955B5B7EC17}");
+tocTab[tocTab.length] = new Array("2.12:3", "", "RotatingSonarSensor", "EARoot/EA2/EA12/EA209.html", "5.png", "296", "0", "", "Class0","{28B57524-5F8C-4079-8DE3-FAA177893D93}");
+tocTab[tocTab.length] = new Array("2.12:4", "", "«static» Mode", "EARoot/EA2/EA12/EA210.html", "5.png", "473", "295", "", "Class0","{988F7FF5-6020-4045-AAF2-28772AE61534}");

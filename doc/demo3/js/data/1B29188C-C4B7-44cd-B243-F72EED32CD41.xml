@@ -1,0 +1,6 @@
+tocTab[tocTab.length] = new Array("2.2.1.1:1", "", "subaction", "EARoot/EA2/EA2/EA1/EA1/EA55.html", "3.png", "33", "0", "", "Logical diagram0","{72E57BE8-0792-4eeb-A9FD-EA377DCCE742}");
+tocTab[tocTab.length] = new Array("2.2.1.1:2", "", "FindLeftWhiteLine", "EARoot/EA2/EA2/EA1/EA1/EA57.html", "5.png", "308", "0", "", "Class0","{DD891079-734E-4d71-BCA7-031B64E391CC}");
+tocTab[tocTab.length] = new Array("2.2.1.1:3", "", "FindRightWhiteLine", "EARoot/EA2/EA2/EA1/EA1/EA58.html", "5.png", "309", "0", "", "Class0","{410C9E2C-2EE7-48a8-A8F5-B8B8AC58CA42}");
+tocTab[tocTab.length] = new Array("2.2.1.1:4", "", "ReturnSubAction", "EARoot/EA2/EA2/EA1/EA1/EA59.html", "5.png", "310", "0", "", "Class0","{39624E8C-F6FA-4666-BCA8-A07745DF2A75}");
+tocTab[tocTab.length] = new Array("2.2.1.1:5", "", "«interface» SubAction", "EARoot/EA2/EA2/EA1/EA1/EA60.html", "8.png", "311", "0", "", "Interface0","{7337A6B2-8E27-44fc-9506-15180D1D790D}");
+tocTab[tocTab.length] = new Array("2.2.1.1:6", "", "TurnToAlign", "EARoot/EA2/EA2/EA1/EA1/EA61.html", "5.png", "312", "0", "", "Class0","{ACDE20EB-1389-4bcb-BE12-C3E9797C4EF1}");

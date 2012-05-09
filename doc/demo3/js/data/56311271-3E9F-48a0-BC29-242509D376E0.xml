@@ -1,0 +1,6 @@
+tocTab[tocTab.length] = new Array("2.8.2:1", "", "mode", "EARoot/EA2/EA8/EA2/EA183.html", "3.png", "49", "0", "", "Logical diagram0","{ED49DC5C-F24F-463b-AF77-16CC9ACA7D2E}");
+tocTab[tocTab.length] = new Array("2.8.2:2", "", "ChaseHillClimbingNavigatorMode", "EARoot/EA2/EA8/EA2/EA185.html", "5.png", "406", "0", "", "Class0","{9E413B63-D45A-4615-AFC7-39F84037ABD1}");
+tocTab[tocTab.length] = new Array("2.8.2:3", "", "DiscoverHillClimbingNavigatorMode", "EARoot/EA2/EA8/EA2/EA186.html", "5.png", "407", "0", "", "Class0","{A59F208B-6EAC-440f-A42A-94DEB62F5379}");
+tocTab[tocTab.length] = new Array("2.8.2:4", "", "FullDiscover", "EARoot/EA2/EA8/EA2/EA187.html", "5.png", "408", "0", "", "Class0","{9168E430-3B4F-4a16-B674-93785AA3B6F2}");
+tocTab[tocTab.length] = new Array("2.8.2:5", "", "HillClimbingNavigatorMode", "EARoot/EA2/EA8/EA2/EA188.html", "5.png", "409", "0", "", "Class0","{06AF2DBA-91B9-46f1-BBC2-E51897A7E817}");
+tocTab[tocTab.length] = new Array("2.8.2:6", "", "«interface» NavigatorMode", "EARoot/EA2/EA8/EA2/EA189.html", "8.png", "410", "0", "", "Interface0","{ED18407C-824D-4c92-AB37-5528BA891380}");

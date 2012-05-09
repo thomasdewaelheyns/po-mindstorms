@@ -1,0 +1,6 @@
+tocTab[tocTab.length] = new Array("2.8:1", "", "navigator", "EARoot/EA2/EA8/EA169.html", "3.png", "50", "0", "", "Logical diagram0","{2A8DB282-4243-41ea-944E-6DF0A4F040B9}");
+tocTab[tocTab.length] = new Array("2.8:2", "", "GhostNavigator", "EARoot/EA2/EA8/EA172.html", "5.png", "411", "0", "", "Class0","{65934311-361A-4756-89CA-3FC08413F0DD}");
+tocTab[tocTab.length] = new Array("2.8:3", "", "MultiModeNavigator", "EARoot/EA2/EA8/EA174.html", "5.png", "412", "0", "", "Class0","{BC07B003-51D4-49fa-9370-097275D14C3A}");
+tocTab[tocTab.length] = new Array("2.8:4", "", "«interface» Navigator", "EARoot/EA2/EA8/EA175.html", "8.png", "413", "0", "", "Interface0","{95DEEC49-F32A-4e2f-ADDC-D5A411FF35A7}");
+tocTab[tocTab.length] = new Array("2.8.1", "1", "action", "EARoot/EA2/EA8/EA171.html", "4.png", "", "", "{68D931A2-A42E-448f-90D5-E1D8D14C8D5C}", "Package");
+tocTab[tocTab.length] = new Array("2.8.2", "1", "mode", "EARoot/EA2/EA8/EA173.html", "4.png", "", "", "{56311271-3E9F-48a0-BC29-242509D376E0}", "Package");
