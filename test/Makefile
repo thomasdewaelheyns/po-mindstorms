@@ -25,10 +25,10 @@ JUNIT=${JAVA} junit.textui.TestRunner
 
 RM=rm -rf
 
-CLASS_COUNT=$(shell find ../src -name '*.java' | grep -v fullTests | grep -v 'mini' | wc -l | head -1)
-LINE_COUNT=$(shell find ../src -name '*.java' | grep -v fullTests | grep -v 'mini' | xargs wc -l | sort -rn | head -1)
-TEST_CLASS_COUNT=$(shell find . -name '*Test.java' | grep -v fullTests | grep -v 'mini' | wc -l | head -1)
-TEST_LINE_COUNT=$(shell find . -name '*Test.java' | grep -v fullTests | grep -v 'mini' | xargs wc -l | sort -rn | head -1)
+CLASS_COUNT=$(shell find ../src -name '*.java' | grep -v fullTests | grep -v 'server' | grep -v 'lejos' | wc -l | head -1)
+LINE_COUNT=$(shell find ../src -name '*.java' | grep -v fullTests | grep -v 'server' | grep -v 'lejos' | xargs wc -l | sort -rn | head -1)
+TEST_CLASS_COUNT=$(shell find . -name '*Test.java' | grep -v fullTests | grep -v 'server' | wc -l | head -1)
+TEST_LINE_COUNT=$(shell find . -name '*Test.java' | grep -v fullTests | grep -v 'server' | xargs wc -l | sort -rn | head -1)
 CLASS_COVERAGE_PCT=$(shell echo "scale=2; ${TEST_CLASS_COUNT}*100/${CLASS_COUNT}" | bc)
 
 all: clean ${TARGETS}
