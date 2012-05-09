@@ -171,7 +171,14 @@ Alleen al het ontbreken van een \emph{time-to-live} maakt sommige commando's inh
 
 Door de gewijzigde specificaties van de fysieke omgeving en de extra infrarood sensor, moesten enkele wijzigingen gemaakt worden aan de fysieke robot. Zo zijn de druksensoren verwijderd om een sensorpoort vrij te maken voor de infraroodsensor. Bovendien is het in dit project noodzakelijk om zo precies mogelijk door het midden van de sectoren te rijden - touch-sensoren zijn minder van toepassing in deze strategie. Aangezien het doolhof minder breed is (sectoren zijn 40 centimeter in plaats van 80) zijn de extra wielen weggehaald om het geheel iets slanker te maken.
 
-Verder is ook de motor, die de sonar laat draaien, iets naar onder en naar het midden verplaatst. Hierdoor hebben we de tandwielen tussen de motor en de sensor kunnen elimineren waardoor de sensor rechtstreeks op de motor zit. Om eenvoudiger de uitvoer op het scherm van de robot te kunnen lezen, is de \emph{NXT Brick} omgedraaid, zodat het scherm zich nu aan de onderzijde van de robot bevindt. Hiermee kunnen we de robot gemakkelijker besturen en connecteren met de computer.
+Verder is ook de motor, die de sonar laat draaien, iets naar onder en naar het midden verplaatst. Hierdoor hebben we de tandwielen tussen de motor en de sensor kunnen elimineren waardoor de sensor rechtstreeks op de motor zit. Om eenvoudiger de uitvoer op het scherm van de robot te kunnen lezen, is de \emph{NXT Brick} omgedraaid, zodat het scherm zich nu aan de onderzijde van de robot bevindt. Hiermee kunnen we de knoppen van de robot gemakkelijker bedienen. Figuur \ref{fig:fysiek2} toont het afgeslankte ontwerp voor het tweede semester.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=70mm]{resources/RobotPlatinum.png}
+  \caption{Afgeslankte fysieke ontwerp voor het tweede semester.}
+  \label{fig:fysiek2}
+\end{figure}
 
 \subsection{IR-sensor}
 
@@ -430,7 +437,14 @@ We trachten bij de ontwikkeling van de software zo veel mogelijk bestaande compo
 
 Anderzijds trachten we ook het wiel niet opnieuw uit te vinden. Het inzetten van \emph{Log4J} begon als een klassieke keuze voor een industri\"ele standaard, maar groeide gaandeweg uit tot een centrale component. Via de configuratie van \emph{Log4J} zijn we niet alleen in staat om de informatie die van de robot naar de \emph{Gateway} wordt gezonden, op te slaan in een simpele log file of in de databank. Ook de detail uitsplitsing van deze informatie naar verschillende tabellen kan ondertussen op dit niveau gebeuren. Ook werd een eigen \emph{LogAppender} gemaakt die de informatie in een bestand opslaat. Dit bestand kan vervolgens gebruikt worden door een \emph{Dashboard} zonder dat een connectie naar een server nodig is.
 
-Zonder enige uitbreiding van de code zijn we zelfs in staat om deze informatie te posten naar bijvoorbeeld Twitter, waardoor onze robot zonder twijfel de eerste \emph{twitterende} robot is geworden. Er bestaat immers een Log4J Appender die dit voor ons doet\footnote{\url{http://code.google.com/p/twitter-log4j/}}. We moeten louter een sectie toevoegen aan de configuratie en onze robot kan gevolgd worden op Twitter: \url{https://twitter.com/\#!/RobotPlatinum}. Dus \emph{follow @RobotPlatinum}.
+Zonder enige structurele uitbreiding van de code zijn we zelfs in staat om deze informatie te posten naar bijvoorbeeld Twitter, waardoor onze robot zonder twijfel de eerste \emph{twitterende} robot is geworden. Mits een eenvoudige Log4J Appender (op basis van Twitter4J\footnote{\url{http://twitter4j.org}}) moeten we louter een sectie toevoegen aan de configuratie en onze robot kan gevolgd worden op Twitter: \url{https://twitter.com/\#!/RobotPlatinum}. Dus \emph{follow @RobotPlatinum}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=120mm]{resources/twitter.png}
+  \caption{RobotPlatinum \emph{tweets} zijn positie door tijdens de finale demo...}
+  \label{fig:twitter}
+\end{figure}
 
 Een laatste belangrijke externe component is zonder twijfel \emph{Mockito}\footnote{\url{http://code.google.com/p/mockito/}}. Dit \emph{mocking framework} is de hoeksteen van een goed uitgevoerde suite aan unit testen. Van oorsprong was \emph{Mockito} echter een \emph{spying framework}, maar omdat de lijn tussen de twee verantwoordelijkheden zo dun begon te worden en meer en meer mensen gebruik wensten te maken van \emph{Mockito} is de nodige functionaliteit toegevoegd en is het op dit ogenblik \'e\'en van de beste \emph{mocking frameworks} dat beschikbaar is. De belangrijkste eigenschap van \emph{Mockito} is de laagdrempeligheid. Dit was binnen het team een belangrijke factor, omdat er weinig tot geen ervaring was hieromtrent bij de meeste van de teamleden. Dankzij deze laagdrempeligheid en de snelle \emph{return on investment} werden alle teamleden snel grote fans van dit framework.
 
@@ -562,7 +576,6 @@ De simulator werkte niet zoals verwacht. Barcodes werden niet goed gelezen en du
 
 \section{Demo 2}
 
-
 \subsection{Feedback}
 
 De feedback kwam deze keer van een ander team, namelijk team zilver. Het grootste deel van deze feedback kwam neer op stijlopmerkingen i.v.m.\ het verslag. Het verslag zelf werd inhoudelijk overzichtelijk en gestructureerd bevonden. Het presentatiegedeelte kreeg echter welverdiende negatieve feedback. Zowel de virtuele simulator als de fysieke simulator faalde immers in hun uitvoering.
@@ -573,14 +586,24 @@ Ook merkten zij op dat tijdens de presentatie \'e\'en van de gesimuleerde robots
 
 Het rijgedrag van de robot bleef consistent met de vorige demo. De nieuwe lichtsensor implementatie bleek wel beter te werken dan de vorige keer.
 
-De virtuele simulator bleek geen rekening te houden met het gebruik van een intern assenstel dat afwijkt van het gebruikte assenstel door de andere teams. Een spijtig voorval dat zijn oorsprong vindt in onze voorsprong uit het eerste semester. Dit werd snel opgelost en getest met de andere teams. Enkele andere interpretatieverschillen met betrekking tot het protocol werden eveneens reeds weggewerkt.
+De virtuele simulator bleek geen rekening te houden met het gebruik van een intern assenstelsel dat afwijkt van het gebruikte assenstelsel door de andere teams. Een spijtig voorval dat zijn oorsprong vindt in onze voorsprong uit het eerste semester. Dit werd snel opgelost en getest met de andere teams. Enkele andere interpretatieverschillen met betrekking tot het protocol werden eveneens reeds weggewerkt.
 
 De uitvoering van de strategie was duidelijk niet geslaagd, de implementatie van de grids was dan ook niet vervolledigd, bijgevolg werd de informatie van de teams nog niet correct gecombineerd.
 De doelstellingen opgesteld na demo 1 werden dus niet gehaald en daarom is het ook logisch dat de demo sterk tegenviel. We slaagden er wel in om het geheugengebruik te reduceren tot een werkbaar niveau, zonder functionaliteit te verwijderen.
 
 \section{Demo 3}
 
-Dit deel wordt later toegevoegd.
+Over het algemeen slaagde er niemand in het behalen van de doelstelling, namelijk Pac-Man vangen. Als we achteraf analyseren waarom niemand in deze opzet slaagde bleek deze opdracht dan ook vrijwel onmogelijk te kunnen slagen. Het vangen van Pac-Man was immers niet genoeg, alle robots moesten ook aangeven dat er de Pac-Man wel degelijk \emph{captured} was. Als men dan veronderstelt dat er geen enkel team in zijn uitvoering faalt is dit nog steeds een huzarenstukje. Men moet immers \emph{mergen} met alle teams voor men daadwerkelijk de Pac-Man kan beginnen insluiten.
+
+Vervolgens nemen we dan nog in acht dat de opgestelde doolhof vol plekken zat waar minstens vier \emph{ghosts} nodig waren om in te sluiten. De combinatie van deze aspecten, maar ook het ontbreken van een ontwijkingsstrategie met de andere robots en het feit dat de Pac-Man door een mens bestuurd werd, maakten deze opdracht dus gedoemd tot falen. Dit wil natuurlijk niet zeggen dat veel teams met een slecht gevoel naar huis gaan, sterker nog de meeste hebben de voor zichzelf gestelde doelen behaald.  De demo duurde immers maar 10minuten, voor een gebied van 64 sectoren met slechts enkele barcodes. Als deze van meer barcodes voorzien was geweest had men mogelijk al een interessanter situatie gehad. Een op voorhanden afgesproken symmetrie had bijvoorbeeld ook geholpen.
+
+\subsection{Reflectie}
+
+Wij waren dan ook ŽŽn van de teams die met een goed gevoel naar huis keerden. Hoewel we met een bang hart waren binnengaan presteerde onze robot even goed of beter als de meeste andere robots. Als we dan in acht nemen dat wij een groot deel van onze tijd gespendeerd hebben aan het realiseren van deze opdracht binnen de beperkingen van een embedded systeem, dan is dit zeker een geslaagde opdracht voor ons. Zeker als we dit cijfermatig gaan uitdrukken, een geheugengebruik van minder dan 64KB ten opzichte van letterlijk GBytes bij andere teams. Een processorcapaciteit van 48Mhz tov van de dual en quad cores in de respectievelijke pcÕs gebruikt door de andere teams.
+
+Verder vinden wij dan ook dat als er inderdaad iets moet gezegd worden omtrent het niet behalen van de doelstelling, dat dit vooral moet gaan over het samenwerkingsaspect. We vinden dat de laatste demo duidelijk heeft aangetoond dat het ontwikkelen van een protocol in een zijdelings traject een onverantwoord idee is. Als we alleen al kijken naar het minimale gebruik van sommige onderdelen van het protocol in de uiteindelijke uitvoering, dan is dit punt voldoende aangetoond. Beter had men op dag 1 een brainstormgroep gemaakt die dit probleem vanaf het begin in een werkbare oplossing goot en dit dan nog best onder sterke begeleiding van ervaren mensen.
+
+Als laatste zou ik nog willen toevoegen dat de individuele demo beter individueel had gebleven, er ontstond een grote chaos met de veelheid aan teams, waardoor er amper vragen gesteld worden. Wij begonnen ons dan ook al snel vragen te stellen of dit zo bedoeld was, aangezien dit niet zeer respectvol overkwam voor de vele uren die sommigen in dit project gestoken hebben.
 
 \chapter{Procesbeschrijving}
 \label{ch:process}
@@ -620,7 +643,7 @@ Na de eerste demo van het tweede semester werden we geconfronteerd met de gevolg
 
 Gegeven de manier waarop de software ontwikkeld was tot dan toe, was dit niet geheel onbegrijpelijk. We hadden twee opties: verder gaan op de manier die we gehanteerd hadden en elk probleempje proberen te \emph{fixen} of structureel een ingrijpende verandering doorvoeren in de manier waarop we met de code omgingen.
 
-Aangezien \'e\'en van de doelen van P\&O Computerwetenschappen net is om te leren in praktijk hoe een middelgroot softwareproject dient uitgebaat te worden, hebben we deze kans aangegrepen om een stap verder te gaan en zelf aan den lijve te ondervinden of en hoe een andere aanpak effectief meer stabiliteit kan brengen. We begonnen met het invoeren van structurele unit testen voor zoveel mogelijk code.
+Aangezien \'e\'en van de doelen van P\&O Computerwetenschappen net is om te leren in praktijk hoe een middelgroot softwareproject dient uitgebaat te worden, hebben we deze kans aangegrepen om een stap verder te gaan en zelf aan den lijve te ondervinden of en hoe een andere aanpak effectief meer stabiliteit kan brengen. We begonnen met het invoeren van unit testen voor zoveel mogelijk code.
 
 Aangezien de functionaliteit compleet was, konden we de volledige scope overzien. De architectuur die we gekozen hadden bleek een goed antwoord voor de meeste van de uitdagingen die in de opdracht vervat zaten. Vertrekkende van deze twee pijlers konden we dus sequentieel door de volledige code gaan en elke klasse op zich perfect vormgeven en voorzien van testen.
 
@@ -630,21 +653,21 @@ Met nog vier weken voor de finale deadline begonnen we aan een grote onderneming
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=125mm]{resources/sloc.pdf}
+  \includegraphics[width=115mm]{resources/sloc.pdf}
   \caption{Evolutie van het totale aantal SLOC en het aandeel van de unit testen}
   \label{fig:sloc}
 \end{figure}
 
-Figuur \ref{fig:coverage} toont dan weer het aantal klassen in het project samen met de \emph{coverage} van de unit test klassen. De evolutie is natuurlijk gelijklopend, maar beide grafieken bieden een ander inzicht in de evolutie. Op amper vier weken bereikten we reeds een \emph{class coverage} van meer dan 60\%.
+Figuur \ref{fig:coverage} toont dan weer het aantal klassen in het project samen met de \emph{coverage} van de unit test klassen. De evolutie is natuurlijk gelijklopend, maar beide grafieken bieden een ander inzicht in de evolutie. Op amper vier weken bereikten we reeds een \emph{class coverage} van meer dan 60\%. Ten tijde van de finale demo hadden we zelfs reeds 70\% bereikt.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=120mm]{resources/coverage.pdf}
+  \includegraphics[width=115mm]{resources/coverage.pdf}
   \caption{Evolutie van het aantal klassen en de coverage van de unit test klassen}
   \label{fig:coverage}
 \end{figure}
 
-Alle voordelen van een codebase met een goede \emph{coverage} begonnen zich op te werpen: bij elke commit kon een \emph{RunAllTests} test suite doorlopen worden en bracht een succesvolle uitvoering een gegronde zekerheid dat een aanpassing geen problemen had teweeggebracht in andere delen van de oplossing. Figuur \ref{fig:runalltests} toont deze uitvoer en bevestiging.
+Alle voordelen van een codebase met een goede \emph{coverage} begonnen zich op te werpen: bij elke commit kon een \emph{RunAllTests} test suite doorlopen worden en bracht een succesvolle uitvoering een gegronde zekerheid dat een aanpassing geen problemen had teweeggebracht in andere delen van de oplossing. Figuur \ref{fig:runalltests} toont deze uitvoer en bevestiging als ook een indicatie van de \emph{class coverage}.
 
 \begin{figure}[htbp]
   \centering
@@ -655,18 +678,66 @@ Alle voordelen van een codebase met een goede \emph{coverage} begonnen zich op t
 
 Deze aanpak heeft natuurlijk \'e\'en groot nadeel. Sequentieel door de volledige codebase lopen, alle code opschonen en elke klasse op zich van de nodige unit testen te voorzien, betekent dat de codebase als een geheel niet langer functioneel is. Dit was een risico dat we moesten nemen om zelf te kunnen ondervinden of deze piste inderdaad een onderbouwde zekerheid kan bieden.
 
-Dit deel wordt nog verder aangevuld nadat de effectieve resultaten van deze onderneming bereikt zijn.
+Al het werk heeft uiteindelijk zijn vruchten afgeworpen. Tijdens de laatste voorbereidingen voor de demo hebben de unit testen ons meermaals beschermd tegen ondoordachte keuzes. Met een uiteindelijke \emph{class coverage} van meer dan 70\% voelde we de ruggesteun van de testen keer op keer en waren we bij elke aanpassing zeker dat er op andere plaatsen geen problemen ontstonden.
 
 \chapter{Werkverdeling}
 
-Dit deel wordt later toegevoegd.
+Aangezien de samenstelling van ons team ons opzadelt met een moeilijke agenda is het gevaarlijk om een op zich staand deel toe te wijzen aan \'e\'en persoon. Dikwijls moeten we werk van elkaar overnemen om een minimale planning te respecteren. Op die manier moet en mag ook iedereen zich meester maken over alle aspecten van de code.
+
+Natuurlijk zijn er delen die door \'e\'en persoon meer bekeken worden en we trachten ook expertises optimaal te benutten. Op deze manier kunnen we een ruwe werkverdeling als volgt toekennen aan de verschillende leden:
+
+\section{Ruben}
+
+Ruben was tijdens dit semester de nieuwe co\"rdinator. Daarnaast heeft hij zich hoofdzakelijk bezig gehouden met de technische componenten van de robot zelf. Een tweede belangrijke taak voor hem was het verder op punt stellen van de simulator. Met zijn zeer goede wiskundige en algoritmische achtergrond kon hij complexe problemen dikwijls in zeer weinig code en zeer optimaal oplossen.
+
+\section{Michiel}
+
+Na zijn werk aan de \emph{Bluethooth} laag in het eerste semester, heeft Michiel zijn tanden gezet in het \emph{AggregatedGrid} verhaal. Deze uiterst complexe materie werd nog verder bemoeilijkt door de beperkingen aangaande het geheugen van de robot.
+
+\section{Thomas}
+
+Thomas heeft zich ontpopt tot de \emph{Swing} specialist en heeft tal van verbeteringen aangebracht aan de visuele kant van de simulator. Verder heeft hij de nieuwe \emph{DashboardReporter} en \emph{GhostProtocolHandler} tot in de kleinste details uitgewerkt en getest.
+
+\section{Florian}
+
+Met de afwezigheid van een secretaris-rol tijdens het tweede semester, heeft Florian deze rol dikwijls op zich genomen. Verder heeft hij zich ontfermd over tal van unit testen en heeft hij consequent \emph{pairs} gevormd met iedereen die bijgestaan moest worden. Op het moment dat de opslagcapaciteit voor het programma een probleem werd, heeft Florian de zoektocht getrokken naar een oplossing om onze \emph{class files} te comprimeren.
+
+\section{Christophe}
+
+Tijdens het eerste deel van het semester heeft Christophe onderzoek gedaan naar het \emph{Collaborate Diffusion} algoritme en hiervoor o.a.\ de mini simulator gebouwd. Daarna heeft hij de basis gelegd voor het latere werk van Michiel omtrent de \emph{AggregatedGrid}. Daarnaast tracht hij vooral de interfaces en top-level applicaties in goede banen te leiden. Hierbij staan het \emph{Dashboard} en bijhorende componenten centraal.
 
 \chapter{Kritische analyse}
 
-%(a) Maak een analyse van de sterke en zwakke punten van het project. Welke punten zijn
-%vatbaar voor verbetering. Wat zou je, met je huidige kennis, anders aangepakt hebben?
+P\&O Computerwetenschappen 2011-2012 bevatte alle elementen van een gefaald project: geen ervaren teamleden, vage vereisten, deadlines voor alles, geen analyse(tijd), een puur technische focus,... In het bedrijfsleven vormt dit het schoolvoorbeeld van hoe een softwareproject niet mag opgezet worden. De leerschool van dit project moet dan ook gezocht worden in de ervaring van zulk een \emph{slecht} voorbeeld en het hopelijk herkennen en vermijden in de toekomst.
 
-Dit deel wordt later toegevoegd.
+Ondanks dit negatieve kader, heeft Team Platinum resoluut gekozen voor de uitdaging om iets te leren. Twee belangrijke peilers stonden voor ons voorop: software kwaliteit en een consequente aanpak. Het eerste is evident, maar legt een strenge bijkomende eis op. De ervaring binnen het team was duidelijk groot genoeg om te trachten ook op puur software-vlak een mooi design en uitwerking te realiseren.
+
+De consequente aanpak bestond er voor Team Platinum in, om ook in het tweede semester een echte autonome robot op te leveren. Daar waar andere teams ingingen op de mogelijkheid om gebruik te maken van een PC om bepaalde delen van de software op uit te voeren, kozen wij er voor om alle logica op de robot zelf te implementeren.
+
+Beide extra focussen legde zonder twijfel een redelijke druk op de schouders van alle team leden. Maar het resultaat mocht er zijn. Tijdens de finale demonstratie presteerden veel robots even goed of zelfs minder goed dan onze robot. Gegeven het grote verschil in mogelijkheden, zijn we trots op het resultaat dat we opgeleverd hebben, zowel op vlak van de robot, als op vlak van de softwarekwaliteit en in extremis ook nog van het niveau van de testen die het geheel inkapselen.
+
+Maar we hebben ook veel fouten gemaakt. De sterke karakters van Team Platinum beten zich niet alleen op een positieve manier vast in een probleem, maar soms ook op negatieve wijze, \emph{te lang}. Door deze volharding werden problemen op bepaalde momenten eerder groter. Dit typische probleem had ondervangen kunnen worden door een gedetailleerdere planning en betere interne communicatie.
+
+We zouden hier kunnen aanbrengen dat we bijna als enige team met vijf totaal andere agenda's dienden rekening te houden en dat we uit totaal andere richtingen kwamen, maar feitelijk hebben we dit zelf nooit als een groot probleem ervaren. Team Platinum is een hecht team dat elkaar gevonden heeft in een doorzettingsvermogen en een drijfveer om kwalitatieve resultaten te boeken.
+
+Verder heeft heel het team aan den lijve ondervonden wat unit testen kunnen betekenen voor een project. Gedurende ruim 2/3 van het project voelden we op alle mogelijke manieren de afwezigheid ervan en op het einde ervoeren we meermaals de kracht van een degelijke unit test suite. De algemene teneur was unaniem: we hadden vanaf dag \'e\'en met unit testen moeten beginnen en we hadden nooit zulke problemen gehad zoals bij de tweede demo.
+
+Tot slot trapten we keer op keer in de val van het \emph{time management}. Wanneer we het tijdbestedingspatroon in figuur \ref{fig:effort} van het gehele team samen bekijken, merken we dat er drie grote piekmomenten zijn geweest, die toevallig samenvielen met de drie demo's. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=85mm]{resources/effort.pdf}
+  \caption{Gepresteerde uren per week.}
+  \label{fig:effort}
+\end{figure}
+
+Op dezelfde figuur is met een groene lijn het gemiddelde aangeduid dat gepresteerd werd. Het is duidelijk dat mits een betere planning de zgn.\\epmh{werk-golven} niet opwaarts maar zelfs neerwaarts hadden kunnen verlopen, met veel minder stress tot gevolg. De piekmomenten van de demo's eisten een dalmoment in de weken daarna om opnieuw aandacht aan andere vakken te kunnen geven. Op deze manier ontstond een vicieuze cirkel die we stilaan wel erkenden, maar nog moeilijk konden doorbreken.
+
+De aanleiding van de piekmoment was meestal telkens dezelfde: overschatting van de mogelijkheden van het team en het moeten realiseren van deze initieel te licht ingeschatte geplande aanpassingen. Een degelijke analyse, vooral op functioneel vlak, als een meer afgelijnde werkverdeling hadden hier zonder twijfel solaas kunnen brengen.
+
+Naast de interne evolutie, waren er ook externe factoren waar we be\"invloed door werden. De spelregelcommissie en de beslissingen die door dit orgaan genomen werden werkten zeker niet in ons voordeel. Ook hier hebben we de bal waarschijnlijk mis geslagen op het vlak van communicatie en hebben we te snel de handdoek in de ring geworpen, waardoor de uitkomst van de commissie nog verder ontaard is in een volledig gemiste kans om te leren samenwerken en te leren hoe een commissie echt kan werken.
+
+De slotsom voor elk van de leden van Team Platinum is ronduit positief: we hebben de doelstellingen van het vak bereikt en we hebben onze eigen doelstellingen bereikt. Bovenal heeft elk teamlid het gevoel veel bijgeleerd te hebben, dankzij de robot en vooral van elkaar.
 
 \appendix
 
