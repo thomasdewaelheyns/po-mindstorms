@@ -341,13 +341,45 @@ De functionaliteit om van sector naar sector te rijden zou typisch terecht gekom
 
 \subsection{Grids en Sectoren}
 
-De \emph{Navigator} kan zich nu specifiek toeleggen op het bepalen van de volgende \emph{Sector}, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten \emph{Grid}, \emph{Sector} en Agent in het leven geroepen. Het klasse diagram op figuur \ref{uml:grids-sectoren} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. \emph{GhostRobot} opbouwen.
+De \emph{Navigator} kan zich nu specifiek toeleggen op het bepalen van de volgende \emph{Sector}, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten \emph{Grid}, \emph{Sector} en \emph{Agent} in het leven geroepen. 
 
-Centraal staat het concept van de \emph{Sector} in een \emph{Grid}. Een \emph{Sector} heeft een co\"ordinaat relatief t.o.v.\ de \emph{Grid} waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een Agent. De waarde van een \emph{Sector} zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de \emph{Grid} bewegen langs de sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de \emph{PacmanAgent} en \emph{GhostAgent} zo de agents die op de \emph{Grid} voorkomen. Een \emph{ProxyAgent} werd gebruikt om in een simulator een echte \emph{Agent} voor te stellen die de volledige \emph{Grid} nog niet kent en de \emph{StaticTargetAgent} werd speciaal voorzien voor de voorbereiding van de eerste demo.
+Centraal staat het concept van de \emph{Sector} in een \emph{Grid}. Een \emph{Sector} heeft een co\"ordinaat relatief t.o.v.\ de \emph{Grid} waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een \emph{Agent}. De waarde van een \emph{Sector} zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een \emph{Agent} kan zich doorheen de \emph{Grid} bewegen langs de sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de \emph{PacmanAgent} en \emph{GhostAgent} zo de agents die op de \emph{Grid} voorkomen. Een \emph{ProxyAgent} werd gebruikt om in een simulator een echte \emph{Agent} voor te stellen die de volledige \emph{Grid} nog niet kent en de \emph{StaticTargetAgent} werd speciaal voorzien voor de voorbereiding van de eerste demo.
 
 Optioneel kan aan een \emph{Grid} ook een \emph{GridView} gegeven worden. Deze voorziet een visualisatie van de \emph{Grid} en kan op verschillende manieren ingevuld worden. Voor dit project hebben we twee implementaties gemaakt: enerzijds een \emph{ConsoleGridView} die gedetailleerde informatie over de sectoren weergeeft en een \emph{SwingGridView} die een grafische voorstelling geeft van de \emph{Grid}. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
 
 De nieuwe robot zal ook informatie van andere robots ontvangen. Deze worden allemaal opgeslagen in een zelfde \emph{Grid}. Een tweede implementatie van het \emph{Grid} concept, de zgn. \emph{AggregatedGrid}, is in staat om een aantal verschillende grids samen in beschouwing te nemen en de \emph{som} van deze als een geaggregeerd beeld aan te bieden.
+
+\subsubsection{Demo 3}
+
+In het licht van de derde demo is het grid systeem van de robot opnieuw bekeken. Het ontwerp is aangepast om 2 belangrijke problemen met de vorige implementatie op te lossen:
+
+Geheugengebruik, met name werkgeheugengebruik (oude implementaties maakten al vlug enkele duizenden Point objecten. Deze blijven echter maar 1 robot-frame bestaan, maar geven toch een enorme tijdelijke burst in werkgeheugen, wat evengoed problemen veroorzaakt)
+Invoeren van extra abstractielagen: de vorige implementatie bevatte verschillende logische element door elkaar, met het zicht op unit testen en stabiliteit was het beter om de functionaliteiten van de grid in onafhankelijke lagen te verdelen.
+
+\subsubsection{Geheugengebruik}
+
+Met oog op compatibiliteit met de oude code werd de structuur Grid-Sector behouden. Op deze manier kan in de robot logica gewerkt worden met hoog-niveau sectoren en blijft de interne werking van Grid linking, merging en mapping verborgen voor de rest van de software.
+
+In tegenstelling tot de vorige versie, is de logica in de sector klassen verplaatst naar de grid klassen. De sectoren treden op als een \emph{facade} (\footnote{\url{http://en.wikipedia.org/wiki/Facade_pattern}} voor het sector gedeelte van de functies op de Grid interface. Deze sector functions op Grid gebruiken een sector ID om de sectoren te identificeren. Dit heeft als enorme voordeel dat niet alle sector objecten in het geheugen geladen moeten worden. Het aantal objecten in het werkgeheugen neemt op deze manier sterk af, want sectoren kunnen nu met een integer ge\"dentificeerd worden in plaats van met een Sector object of een Point object. Het resultaat is dat de Grid klassen voor het merendeel van hun bewerkingen geen nieuwe objecten aanmaken eenmaal het programma in een \emph{steady-state} is.
+
+\subsubsection{Functionaliteiten}
+
+\begin{description}
+\item[LinkedGrid]
+Deze grid implementeerd de datastore logica van de grid. De linked grid structuur wordt intact gehouden, alsook de datastorage van de agents. Intern gebruikt deze klasse de LinkedSector klassen om informatie in verband met muren op te slaan
+\item[TransformedGrid]
+Deze grid vormt een decorated \footnote{\url{http://en.wikipedia.org/wiki/Decorator\_pattern}} voor een andere Grid, en laat toe op alle functies die uitgevoerd worden op grid een transformatie toe te passen. Dezelfde transformatie is ook van toepassing op de sectoren die opgehaald worden uit deze grid. 
+\item[ObservableGrid]
+Deze grid is weer een decorater voor een andere Grid. Alle changes tot deze decorated grid worden bekeken, en kunnen via een GridObserver gedetecteerd worden. Dit laat het uitvoeren van logica bij grid changes toe, zonder dat deze logica gemengd wordt met de overige grid code.
+\item[AggregatedGrid]
+Deze grid verzameld een aantal verschillende grids en staat toe deze te ‘activeren’ gegeven een transformatie. De sectoren, agents en muren van sectoren worden gecombineerd door de aggregated Grid. AggregatedGrid implementeert de gewone grid interface. Deze kan dus gebruikt worden zoals elke andere Grid. De AggregatedGrid is als een aparte grid-laag ingevoerd zodat het mergen van grids dynamisch kan gebeuren. Op deze manier moet er geen extra gemergde informatie opgeslagen worden in het geheugen van de robot om alsnog het geheugenverbruik van de robot in te perken.
+\item[MultiGhostGrid]
+Intern houdt deze grid laag een aantal ‘sub’-grids bij, een voor elke ghost. Met behulp van ObservableGrid’s detecteert de MultiGhostGrid veranderingen aan de onderliggende ‘sub’-grids. Vervolgens probeert hij aan de hand van barcode informatie de ghost grids te mappen. Indien een correcte mapping gevonden wordt, gaat de MultiGhostGrid de betreffende ghost grids mergen door deze correct te ‘activeren’ op een AggregatedGrid.
+\item[LinkedSector]
+Deze wordt intern gebruikt door de LinkedGrid om de wall data op te slaan.
+\item[FacadeSector]
+De FacadeSector bevat simpelweg een verwijzing naar de grid waartoe hij behoort, plus een sector Id. Alle aanroepen op deze klassen worden doorverwezen naar de Grid. 
+\end{description}
 
 \subsection{GhostRobot}
 
