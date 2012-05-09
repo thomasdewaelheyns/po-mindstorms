@@ -343,18 +343,9 @@ De functionaliteit om van sector naar sector te rijden zou typisch terecht gekom
 
 De \emph{Navigator} kan zich nu specifiek toeleggen op het bepalen van de volgende \emph{Sector}, waarheen de Driver moet rijden. Om deze taak te ondersteunen werden de concepten \emph{Grid}, \emph{Sector} en Agent in het leven geroepen. Het klasse diagram op figuur \ref{uml:grids-sectoren} geeft een overzicht van hun samenhang en van de effectieve implementaties die samen de zgn. \emph{GhostRobot} opbouwen.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=200mm, angle=90]{resources/grids-sectors.png}
-  \caption{Design Grids en Sectoren}
-  \label{uml:grids-sectoren}
-\end{figure}
-
 Centraal staat het concept van de \emph{Sector} in een \emph{Grid}. Een \emph{Sector} heeft een co\"ordinaat relatief t.o.v.\ de \emph{Grid} waarop het zich bevindt, heeft potentieel 4 muren, elk al dan niet gekend, heeft een waarde en kan bezet worden door een Agent. De waarde van een \emph{Sector} zal gebruikt worden om de hoogte of de intensiteit van de geur weer te geven. Een Agent kan zich doorheen de \emph{Grid} bewegen langs de sectoren. De meeste functionaliteit van een Agent is ge\"implementeerd in een abstract basis klasse, MovingAgent. Mits kleine configuratieaanpassingen, implementeren de \emph{PacmanAgent} en \emph{GhostAgent} zo de agents die op de \emph{Grid} voorkomen. Een \emph{ProxyAgent} werd gebruikt om in een simulator een echte \emph{Agent} voor te stellen die de volledige \emph{Grid} nog niet kent en de \emph{StaticTargetAgent} werd speciaal voorzien voor de voorbereiding van de eerste demo.
 
 Optioneel kan aan een \emph{Grid} ook een \emph{GridView} gegeven worden. Deze voorziet een visualisatie van de \emph{Grid} en kan op verschillende manieren ingevuld worden. Voor dit project hebben we twee implementaties gemaakt: enerzijds een \emph{ConsoleGridView} die gedetailleerde informatie over de sectoren weergeeft en een \emph{SwingGridView} die een grafische voorstelling geeft van de \emph{Grid}. Deze laatste wordt gebruikt voor de visualisatie in o.a. de simulator.
-
-Een \emph{Grid} beschikt ook over een \emph{GridProcessor}. Net zoals de \emph{ModelProcessor} kan dit een geschakelde lijst van processoren zijn die de \emph{Grid} kunnen ondervragen en bijwerken. Zo hebben we een \emph{DiffusionGridProcessor} ge\"implementeerd die de waarde van de sectoren zal bijwerken volgens het eerder beschreven algoritme.
 
 De nieuwe robot zal ook informatie van andere robots ontvangen. Deze worden allemaal opgeslagen in een zelfde \emph{Grid}. Een tweede implementatie van het \emph{Grid} concept, de zgn. \emph{AggregatedGrid}, is in staat om een aantal verschillende grids samen in beschouwing te nemen en de \emph{som} van deze als een geaggregeerd beeld aan te bieden.
 
@@ -599,7 +590,7 @@ Vervolgens nemen we dan nog in acht dat de opgestelde doolhof vol plekken zat wa
 
 \subsection{Reflectie}
 
-Wij waren dan ook ŽŽn van de teams die met een goed gevoel naar huis keerden. Hoewel we met een bang hart waren binnengaan presteerde onze robot even goed of beter als de meeste andere robots. Als we dan in acht nemen dat wij een groot deel van onze tijd gespendeerd hebben aan het realiseren van deze opdracht binnen de beperkingen van een embedded systeem, dan is dit zeker een geslaagde opdracht voor ons. Zeker als we dit cijfermatig gaan uitdrukken, een geheugengebruik van minder dan 64KB ten opzichte van letterlijk GBytes bij andere teams. Een processorcapaciteit van 48Mhz tov van de dual en quad cores in de respectievelijke pcÕs gebruikt door de andere teams.
+Wij waren dan ook \'e\'en van de teams die met een goed gevoel naar huis keerden. Hoewel we met een bang hart waren binnengaan presteerde onze robot even goed of beter als de meeste andere robots. Als we dan in acht nemen dat wij een groot deel van onze tijd gespendeerd hebben aan het realiseren van deze opdracht binnen de beperkingen van een embedded systeem, dan is dit zeker een geslaagde opdracht voor ons. Zeker als we dit cijfermatig gaan uitdrukken, een geheugengebruik van minder dan 64KB ten opzichte van letterlijk GBytes bij andere teams. Een processorcapaciteit van 48Mhz tov van de dual en quad cores in de respectievelijke pc's gebruikt door de andere teams.
 
 Verder vinden wij dan ook dat als er inderdaad iets moet gezegd worden omtrent het niet behalen van de doelstelling, dat dit vooral moet gaan over het samenwerkingsaspect. We vinden dat de laatste demo duidelijk heeft aangetoond dat het ontwikkelen van een protocol in een zijdelings traject een onverantwoord idee is. Als we alleen al kijken naar het minimale gebruik van sommige onderdelen van het protocol in de uiteindelijke uitvoering, dan is dit punt voldoende aangetoond. Beter had men op dag 1 een brainstormgroep gemaakt die dit probleem vanaf het begin in een werkbare oplossing goot en dit dan nog best onder sterke begeleiding van ervaren mensen.
 
@@ -1061,7 +1052,56 @@ De keuze om van \emph{rash} een aparte applicatie te maken was evident: het behe
 
 \chapter{Klasse Diagrammen}
 
-Dit deel wordt later toegevoegd.
+De volgende figuren tonen de belangrijkste \emph{packages} uit het project.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=200mm, angle=90]{resources/model-bluetooth2.png}
+  \caption{Bluetooth}
+  \label{uml:bluetooth}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=150mm]{resources/model-protocol2.png}
+  \caption{Protocol}
+  \label{uml:protocol}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=150mm]{resources/model-robot2.png}
+  \caption{Robot}
+  \label{uml:robot}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=200mm, angle=90]{resources/model-driver2.png}
+  \caption{Driver}
+  \label{uml:driver}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=200mm, angle=90]{resources/model-navigator2.png}
+  \caption{Navigator}
+  \label{uml:navigator}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=200mm, angle=90]{resources/model-modelpart2.png}
+  \caption{ModelPart}
+  \label{uml:modelpart}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=200mm, angle=90]{resources/model-modelprocessor2.png}
+  \caption{ModelProcessor}
+  \label{uml:modelprocessor}
+\end{figure}
 
 \chapter{Planning}
 
